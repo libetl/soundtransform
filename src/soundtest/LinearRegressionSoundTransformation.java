@@ -15,11 +15,13 @@ public class LinearRegressionSoundTransformation implements SoundTransformation 
 	@Override
     public Sound transform (Sound input) {
 		SplineInterpolator reg = new SplineInterpolator();
-	    double [] x = new double [input.getSamples ().length / step + 1];
-	    double [] y = new double [input.getSamples ().length / step + 1];
+	    double [] x = new double [input.getSamples ().length / step];
+	    double [] y = new double [input.getSamples ().length / step];
 		for (int i = 0 ; i < input.getSamples ().length ; i+= step){
-			x [i / step] = i;
-			y [i / step] = input.getSamples () [i];
+			if (i / step < x.length){
+			  x [i / step] = i;
+			  y [i / step] = input.getSamples () [i];
+			}
 		}
 		
 		PolynomialSplineFunction psf = reg.interpolate (x, y);
