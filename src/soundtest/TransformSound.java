@@ -113,7 +113,7 @@ public class TransformSound {
 				data [i] = (byte) ((int)(channels [currentChannel].getSamples () [currentFrame]) >> (8 * (audioFormat.getFrameSize () - 1 - currentFrameByte)));				
 			}
 		}
-
+		
 		this.notifyAll ("Creating output file");
 		// now save the file
 		ByteArrayInputStream bais = new ByteArrayInputStream (data);

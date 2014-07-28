@@ -16,7 +16,6 @@ public class ReverseSoundTransformation implements SoundTransformation {
 		double [] newdata = new double [sound.getSamples ().length];
 		// this is the raw audio data -- no header
 
-
 		for (int i = 0; i < data.length; i++) {
 			newdata [i] = data [data.length - i - 1];
 		}

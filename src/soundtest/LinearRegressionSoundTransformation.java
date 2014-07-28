@@ -1,6 +1,7 @@
 package soundtest;
 
-import org.apache.commons.math3.stat.regression.SimpleRegression;
+import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
+import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 
 public class LinearRegressionSoundTransformation implements SoundTransformation {
 
@@ -13,16 +14,20 @@ public class LinearRegressionSoundTransformation implements SoundTransformation 
 
 	@Override
     public Sound transform (Sound input) {
-		SimpleRegression reg = new SimpleRegression();
+		SplineInterpolator reg = new SplineInterpolator();
+	    double [] x = new double [input.getSamples ().length / step + 1];
+	    double [] y = new double [input.getSamples ().length / step + 1];
 		for (int i = 0 ; i < input.getSamples ().length ; i+= step){
-			reg.addData (i, input.getSamples () [i]);
+			x [i / step] = i;
+			y [i / step] = input.getSamples () [i];
 		}
 		
-		reg.regress ();
+		PolynomialSplineFunction psf = reg.interpolate (x, y);
+		
 		Sound outputSound = new Sound (new double [input.getSamples ().length],
 				input.getNbBytesPerFrame ());
 		for (int i = 0 ; i < input.getSamples ().length ; i+= step){
-			outputSound.getSamples () [i] = reg.predict (i);
+			outputSound.getSamples () [i] = psf.value (i);
 		}
 		
 		return outputSound;
