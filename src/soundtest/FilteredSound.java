@@ -2,19 +2,11 @@ package soundtest;
 
 public class FilteredSound extends Sound {
 
-	double[] time;
+	int division;
 
-	public double [] getTime () {
-		return time;
-	}
-
-	public void setTime (double [] time) {
-		this.time = time;
-	}
-
-	public FilteredSound (double [] samples, double [] time, int nbBytesPerFrame) {
+	public FilteredSound (double [] samples,int division, int nbBytesPerFrame) {
 	    super (samples, nbBytesPerFrame);
-	    this.time = time;
+	    this.division = division;
     }
 	
 	

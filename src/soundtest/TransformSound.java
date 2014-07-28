@@ -20,6 +20,9 @@ public class TransformSound {
 	
 	public TransformSound (TransformObserver... observers) {
 		this.observers = observers;
+		for (TransformObserver observer : observers){
+			this.notifyAll ("Adding observer " + observer.getClass ().getSimpleName ());
+		}
     }
 
 	public TransformSound () {
@@ -31,7 +34,9 @@ public class TransformSound {
 		int transformNumber = 0;
 		for (SoundTransformation st : sts){
 			for (int i = 0; i < input.length; i++) {
-				this.notifyAll ("Transform n°" + (transformNumber + 1) + ", channel n°" + (i + 1) + "/" + input.length);
+				this.notifyAll ("Transform n°" + (transformNumber + 1) + "/" + sts.length + " (" +
+			    st.getClass ().getSimpleName ()
+			    + "), channel n°" + (i + 1) + "/" + input.length);
 				output [i] = st.transform (output [i]);
 			}
 			transformNumber++;
@@ -55,10 +60,11 @@ public class TransformSound {
 		int channels = ais.getFormat ().getChannels();
 		int currentChannel = 0;
 		Sound [] ret = new Sound [channels];
+		int length = (int) (ais.getFrameLength() / ais.getFormat().getFrameSize());
 		for (int channel = 0 ; channel < channels ; channel++){
-			ret [channel] = new Sound (new double [(int)ais.getFrameLength()], ais.getFormat().getFrameSize());
+			ret [channel] = new Sound (new double [length], ais.getFormat().getFrameSize());
 		}
-		for (int position = 0; position < ais.getFrameLength();) {
+		for (int position = 0; position < length;) {
 			byte [] frame = new byte [ais.getFormat ().getFrameSize ()];
 			ais.read (frame);
 			this.byteArrayToFrame (frame, ret [currentChannel], position, 

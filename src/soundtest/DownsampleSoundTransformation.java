@@ -14,12 +14,16 @@ public class DownsampleSoundTransformation implements SoundTransformation {
 		Sound fs = input;
 		UnivariateFunction function = this.getFunction (fs);
 		return DownsampleSoundTransformation.buildSoundFromFunction (function,
-		        (int) fs.getTime () [fs.getTime ().length - 1], input.getNbBytesPerFrame ());
+		        fs.getSamples ().length, input.getNbBytesPerFrame ());
 	}
 
 	protected UnivariateFunction getFunction (Sound fs) {
+		double[] time = new double [fs.getSamples ().length];
+		for (int i = 0 ; i < time.length ; i++){
+			time [i] = i;
+		}
 		return new SplineInterpolator ()
-		        .interpolate (fs.getTime (), fs.getSamples ());
+		        .interpolate (time, fs.getSamples ());
     }
 
 

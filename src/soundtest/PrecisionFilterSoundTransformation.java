@@ -25,14 +25,12 @@ public class PrecisionFilterSoundTransformation implements SoundTransformation {
 		float incr = nbSamples / nbFiltered;
 		double [] data = sound.getSamples ();
 		double [] ret = new double [(int) (nbFiltered)];
-		double [] time = new double [(int) (nbFiltered)];
 		for (float i = 0; i < incr * nbFiltered; i += incr) {
 			int j = (int) (i / incr);
 			if (j < ret.length) {
 				ret [j] = data [(int) i];
-				time [j] = i;
 			}
 		}
-		return new FilteredSound (ret, time, sound.getNbBytesPerFrame ());
+		return new FilteredSound (ret, (int)incr, sound.getNbBytesPerFrame ());
 	}
 }

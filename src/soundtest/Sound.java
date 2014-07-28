@@ -3,19 +3,8 @@ package soundtest;
 public class Sound {
 
 	double[] samples;
-	double[] time;
 	int[] audio;
 	int nbBytesPerFrame;
-
-	public double [] getTime (){
-		if (this.time == null){
-			this.time = new double [samples.length];
-			for (int i = 0 ; i < this.time.length ; i++){
-				this.time [i] = i;
-			}
-		}
-		return time;
-	}
 	
 	public double [] getSamples () {
 		return samples;
