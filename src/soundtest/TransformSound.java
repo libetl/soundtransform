@@ -60,7 +60,7 @@ public class TransformSound {
 		int channels = ais.getFormat ().getChannels();
 		int currentChannel = 0;
 		Sound [] ret = new Sound [channels];
-		int length = (int) ais.getFrameLength();
+		int length = (int) (ais.getFrameLength() / channels);
 		for (int channel = 0 ; channel < channels ; channel++){
 			ret [channel] = new Sound (new double [length], ais.getFormat().getFrameSize());
 		}
@@ -98,7 +98,7 @@ public class TransformSound {
 
 	private AudioInputStream toStream (Sound [] channels, AudioFormat audioFormat) {
 
-		int length = audioFormat.getFrameSize () * channels [0].getSamples ().length;
+		int length = channels.length * audioFormat.getFrameSize () * channels [0].getSamples ().length;
 		byte [] data = new byte [length];
 		
 		for (int i = 0 ; i < data.length ; i++){
@@ -117,7 +117,7 @@ public class TransformSound {
 		this.notifyAll ("Creating output file");
 		// now save the file
 		ByteArrayInputStream bais = new ByteArrayInputStream (data);
-		return new AudioInputStream (bais, audioFormat, channels [0].getSamples ().length);
+		return new AudioInputStream (bais, audioFormat, channels [0].getSamples ().length * channels.length);
 	}
 
 	public void transformWav (File fOrigin, File fDest, SoundTransformation... sts) throws UnsupportedAudioFileException, IOException {
