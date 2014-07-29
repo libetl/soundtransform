@@ -31,7 +31,7 @@ public class TestTransformMain {
 			File fDest = new File ("after.wav");
 			TestTransformMain.copyFile (fParam, fOrigin);
 			new TransformSound (new PrintlnTransformObserver ()).transformWav (fOrigin, fDest, 
-					new PrecisionFilterSoundTransformation (115));
+					new ReverseSoundTransformation ());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace ();
 		} catch (UnsupportedAudioFileException e) {
