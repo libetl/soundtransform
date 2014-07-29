@@ -3,7 +3,6 @@ package soundtest;
 public class Sound {
 
 	double[] samples;
-	int[] audio;
 	int nbBytesPerFrame;
 	
 	public double [] getSamples () {
@@ -19,14 +18,6 @@ public class Sound {
 	    this.samples = samples;
 	    this.nbBytesPerFrame = nbBytesPerFrame;
     }
-
-	public int [] getAudio () {
-		return audio;
-	}
-
-	public void setAudio (int [] audio) {
-		this.audio = audio;
-	}
 
 	public int getNbBytesPerFrame () {
 		return nbBytesPerFrame;
