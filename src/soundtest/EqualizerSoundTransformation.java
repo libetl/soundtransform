@@ -1,5 +1,7 @@
 package soundtest;
 
+import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
+import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
@@ -7,10 +9,10 @@ import org.apache.commons.math3.transform.TransformType;
 
 public class EqualizerSoundTransformation implements SoundTransformation {
 	
-	private int [] ranges;
-	private int [] amplification;
+	private double [] ranges;
+	private double [] amplification;
 
-	public EqualizerSoundTransformation (int [] ranges1, int [] amplification1) {
+	public EqualizerSoundTransformation (double [] ranges1, double [] amplification1) {
 		this.ranges = ranges1;
 		this.amplification = amplification1;
     }
@@ -18,23 +20,38 @@ public class EqualizerSoundTransformation implements SoundTransformation {
 
 	@Override
 	public Sound transform (Sound input) {
-		return EqualizerSoundTransformation.equalize (input, this.ranges, this.amplification);
+
+		SplineInterpolator reg = new SplineInterpolator();
+
+		PolynomialSplineFunction psf = reg.interpolate (this.ranges, this.amplification);
+		return EqualizerSoundTransformation.equalize (input, psf);
 	}
 
-	private static Sound equalize (Sound sound, int [] r, int [] a) {
+	private static Sound equalize (Sound sound, PolynomialSplineFunction psf) {
+		int freqmax = 22000;
+		int maxlength = (int)Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
 		double [] data = sound.getSamples ();
-		double [] newdata = new double [
-		              (int)Math.pow (2, Math.ceil (Math.log (
-		            		  sound.getSamples ().length) / Math.log (2)))];
-   		System.arraycopy (data, 0, newdata, 0, data.length);
+		double [] newdata = new double [sound.getSamples ().length];
+		double [] transformeddata = new double [maxlength];
 		
 		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer ( DftNormalization.STANDARD);
-		Complex[] complexArray = fastFourierTransformer.transform (newdata, TransformType.FORWARD);
-		for (int i = 0 ; i < complexArray.length ; i++){
-			double module = Math.sqrt (
-					Math.pow (complexArray [i].getReal (), 2) +
-					Math.pow (complexArray [i].getImaginary (), 2));
-			double phase = complexArray [i].getArgument ();
+		for (int i = 0 ; i < data.length ; i++){
+			int length = Math.min (maxlength, data.length - i);
+	   		System.arraycopy (data, i, transformeddata, 0, length);			
+			Complex[] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
+			double [] newAmpl = new double [maxlength];
+			for (int j = 0 ; j < length ; j++){
+			  double module = Math.sqrt (
+					  Math.pow (complexArray [j].getReal (), 2) +
+					  Math.pow (complexArray [j].getImaginary (), 2));
+			  double phase = complexArray [j].getArgument ();
+			  double freq = j / complexArray.length * freqmax;
+			  System.out.println ((j * freqmax / complexArray.length) + " -> " + module);
+			  newAmpl [(int)freq] = module * psf.value (j);
+			}
+			complexArray = fastFourierTransformer.transform (newAmpl, TransformType.INVERSE);
+
+			newdata [i] = complexArray [0].getReal ();
 		}
 		// normalized result in newdata
 		return new Sound (newdata, sound.getNbBytesPerFrame ());

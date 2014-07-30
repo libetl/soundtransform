@@ -31,7 +31,7 @@ public class TestTransformMain {
 			File fDest = new File ("after.wav");
 			TestTransformMain.copyFile (fParam, fOrigin);
 			new TransformSound (new PrintlnTransformObserver ()).transformWav (fOrigin, fDest, 
-					new LinearRegressionSoundTransformation (25));
+					new EqualizerSoundTransformation (new double [] {0, 20000, 40000}, new double []{1, 1, 1}));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace ();
 		} catch (UnsupportedAudioFileException e) {
