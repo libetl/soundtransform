@@ -35,7 +35,7 @@ public class EqualizerSoundTransformation implements SoundTransformation {
 		double [] transformeddata = new double [maxlength];
 		
 		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer ( DftNormalization.STANDARD);
-		for (int i = 0 ; i < data.length ; i++){
+		for (int i = 0 ; i < data.length ; i+= freqmax / 2){
 			int length = Math.min (maxlength, data.length - i);
 	   		System.arraycopy (data, i, transformeddata, 0, length);			
 			Complex[] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
@@ -45,13 +45,16 @@ public class EqualizerSoundTransformation implements SoundTransformation {
 					  Math.pow (complexArray [j].getReal (), 2) +
 					  Math.pow (complexArray [j].getImaginary (), 2));
 			  double phase = complexArray [j].getArgument ();
-			  double freq = j / complexArray.length * freqmax;
-			  System.out.println ((j * freqmax / complexArray.length) + " -> " + module);
+			  double freq = j * freqmax / complexArray.length;
 			  newAmpl [(int)freq] = module * psf.value (j);
 			}
 			complexArray = fastFourierTransformer.transform (newAmpl, TransformType.INVERSE);
-
-			newdata [i] = complexArray [0].getReal ();
+			
+			for (int j = 0 ; j < freqmax / 2 ; j++){
+				if (i + j < newdata.length){
+			      newdata [i + j] = complexArray [j].getReal ();
+				}
+			}
 		}
 		// normalized result in newdata
 		return new Sound (newdata, sound.getNbBytesPerFrame ());
