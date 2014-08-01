@@ -28,7 +28,7 @@ public class EqualizerSoundTransformation implements SoundTransformation {
 	}
 
 	private static Sound equalize (Sound sound, PolynomialSplineFunction psf) {
-		int freqmax = 22000;
+		double freqmax = 44100;
 		int maxlength = (int)Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
 		double [] data = sound.getSamples ();
 		double [] newdata = new double [sound.getSamples ().length];
@@ -40,19 +40,19 @@ public class EqualizerSoundTransformation implements SoundTransformation {
 	   		System.arraycopy (data, i, transformeddata, 0, length);			
 			Complex[] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
 			double [] newAmpl = new double [maxlength];
-			for (int j = 0 ; j < length ; j++){
+			for (double j = 0 ; j < length ; j++){
 			  double module = Math.sqrt (
-					  Math.pow (complexArray [j].getReal (), 2) +
-					  Math.pow (complexArray [j].getImaginary (), 2));
-			  double phase = complexArray [j].getArgument ();
+					  Math.pow (complexArray [(int)j].getReal (), 2) +
+					  Math.pow (complexArray [(int)j].getImaginary (), 2));
+			  //double phase = complexArray [(int)j].getArgument ();
 			  double freq = j * freqmax / complexArray.length;
-			  newAmpl [(int)freq] = module * psf.value (j);
+			  newAmpl [(int)freq] = module * psf.value (freq / 2);
 			}
 			complexArray = fastFourierTransformer.transform (newAmpl, TransformType.INVERSE);
 			
 			for (int j = 0 ; j < freqmax / 2 ; j++){
 				if (i + j < newdata.length){
-			      newdata [i + j] = complexArray [j].getReal ();
+			      newdata [i + j] = Math.floor(complexArray [j].getReal ());
 				}
 			}
 		}
