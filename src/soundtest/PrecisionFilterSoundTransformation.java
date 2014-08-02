@@ -18,7 +18,7 @@ public class PrecisionFilterSoundTransformation implements SoundTransformation {
 	private static Sound precisionFilter (Sound sound, float percent) {
 		float total = 100;
 		if (percent == total){
-			return new Sound (sound.getSamples (), sound.getNbBytesPerFrame ());
+			return new Sound (sound.getSamples (), sound.getNbBytesPerFrame (), sound.getFreq());
 		}
 		float nbSamples = sound.getSamples ().length;
 		float nbFiltered = percent / total * nbSamples;
@@ -31,6 +31,6 @@ public class PrecisionFilterSoundTransformation implements SoundTransformation {
 				ret [j] = data [(int) i];
 			}
 		}
-		return new FilteredSound (ret, (int)incr, sound.getNbBytesPerFrame ());
+		return new FilteredSound (ret, (int)incr, sound.getNbBytesPerFrame (), sound.getFreq());
 	}
 }

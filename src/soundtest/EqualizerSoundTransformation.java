@@ -28,7 +28,7 @@ public class EqualizerSoundTransformation implements SoundTransformation {
 	}
 
 	private static Sound equalize (Sound sound, PolynomialSplineFunction psf) {
-		double freqmax = 44100;
+		double freqmax = sound.getFreq();
 		int maxlength = (int)Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
 		double [] data = sound.getSamples ();
 		double [] newdata = new double [sound.getSamples ().length];
@@ -57,6 +57,6 @@ public class EqualizerSoundTransformation implements SoundTransformation {
 			}
 		}
 		// normalized result in newdata
-		return new Sound (newdata, sound.getNbBytesPerFrame ());
+		return new Sound (newdata, sound.getNbBytesPerFrame (), sound.getFreq());
 	}
 }

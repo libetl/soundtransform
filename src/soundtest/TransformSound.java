@@ -60,7 +60,8 @@ public class TransformSound {
 		Sound [] ret = new Sound [channels];
 		int length = (int) (ais.getFrameLength() / channels);
 		for (int channel = 0 ; channel < channels ; channel++){
-			ret [channel] = new Sound (new double [length], ais.getFormat().getFrameSize());
+			ret [channel] = new Sound (new double [length], ais.getFormat().getFrameSize(), 
+					ais.getFormat().getFrameSize());
 		}
 		for (int position = 0; position < length;) {
 			byte [] frame = new byte [ais.getFormat ().getFrameSize ()];

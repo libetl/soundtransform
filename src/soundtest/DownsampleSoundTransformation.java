@@ -14,7 +14,7 @@ public class DownsampleSoundTransformation implements SoundTransformation {
 		Sound fs = input;
 		UnivariateFunction function = this.getFunction (fs);
 		return DownsampleSoundTransformation.buildSoundFromFunction (function,
-		        fs.getSamples ().length, input.getNbBytesPerFrame ());
+		        fs.getSamples ().length, input.getNbBytesPerFrame (), input.getFreq());
 	}
 
 	protected UnivariateFunction getFunction (Sound fs) {
@@ -28,12 +28,12 @@ public class DownsampleSoundTransformation implements SoundTransformation {
 
 
 	private static Sound buildSoundFromFunction (UnivariateFunction function,
-	        int length, int nbBytesPerFrame) {
+	        int length, int nbBytesPerFrame, int freq) {
 		double [] result = new double [length];
 		for (int i = 0; i < length; i++) {
 			result [i] = function.value (i);
 		}
-		return new Sound (result, nbBytesPerFrame);
+		return new Sound (result, nbBytesPerFrame, freq);
 	}
 }
 
