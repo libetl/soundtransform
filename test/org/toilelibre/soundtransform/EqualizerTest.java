@@ -1,18 +1,17 @@
-package soundtransform;
+package org.toilelibre.soundtransform;
 
 import java.util.Arrays;
 
 import org.junit.Test;
-
-import soundtest.EqualizerSoundTransformation;
-import soundtest.Sound;
+import org.toilelibre.soundtransform.EqualizerSoundTransformation;
+import org.toilelibre.soundtransform.Sound;
 
 public class EqualizerTest {
 
 	@Test
 	public void test (){
-		double [] testarray = new double [] {0, 1, 2, 3, 4, 5, 6, 7};
-		Sound testsound = new Sound (testarray, 1, 4);
+		double [] testarray = new double [] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+		Sound testsound = new Sound (testarray, 1, testarray.length);
 		EqualizerSoundTransformation est =
 				new EqualizerSoundTransformation (
 						new double [] {0, 4, 8}, new double []{1, 1, 1});

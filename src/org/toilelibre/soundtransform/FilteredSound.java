@@ -1,4 +1,4 @@
-package soundtest;
+package org.toilelibre.soundtransform;
 
 public class FilteredSound extends Sound {
 

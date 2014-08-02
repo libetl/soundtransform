@@ -1,4 +1,4 @@
-package soundtest;
+package org.toilelibre.soundtransform;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
