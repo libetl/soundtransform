@@ -12,8 +12,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 public class TransformSound {
 
 	TransformObserver[] observers = new TransformObserver [0];
@@ -78,6 +76,19 @@ public class TransformSound {
 		return ret;
 	}
 
+	public Byte[] toObject (byte[] array) {
+	    if (array == null) {
+		  return null;
+		} else if (array.length == 0) {
+		  return new Byte [0];
+		}
+		final Byte[] result = new Byte [array.length];
+		for (int i = 0; i < array.length; i++) {
+		  result[i] = Byte.valueOf (array[i]);
+		}
+		return result;
+	}
+	
 	private void byteArrayToFrame (byte [] frame, Sound sound, int position,
 			boolean bigEndian) {
 		double value = 0;
@@ -87,7 +98,7 @@ public class TransformSound {
 			int fromIndex = (i < destination ? i : destination);
 			int toIndex = (i < destination ? destination : i);
 			if (fromIndex < toIndex && !new HashSet<Object> (
-					Arrays.asList (ArrayUtils.toObject(frame)).subList (fromIndex, toIndex)).equals (
+					Arrays.asList (this.toObject(frame)).subList (fromIndex, toIndex)).equals (
 							new HashSet<Object> (Arrays.asList (new byte [] {0})))){
 			  value *= 256;
 			  value += frame [i];
