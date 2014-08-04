@@ -61,7 +61,6 @@ public class TransformSound {
 		int length = (int) (ais.getFrameLength() / channels);
 		for (int channel = 0 ; channel < channels ; channel++){
 			ret [channel] = new Sound (new double [length], 
-					new byte [length * ais.getFormat().getFrameSize()],
 					ais.getFormat().getFrameSize(), 
 					(int)ais.getFormat().getSampleRate());
 		}
@@ -95,7 +94,7 @@ public class TransformSound {
 	private void byteArrayToFrame (byte [] frame, Sound sound, int position,
 			boolean bigEndian) {
 		double value = 0;
-		int destination = (bigEndian ? 0 : frame.length - 1);
+		int destination = (!bigEndian ? 0 : frame.length - 1);
 		for (int j = 0 ; j < frame.length ; j++){
 			int i = (bigEndian ? frame.length - j - 1: j);
 			int fromIndex = (i < destination ? i : destination);
@@ -106,7 +105,6 @@ public class TransformSound {
 			  value *= 256;
 			  value += frame [i];
 			}
-			sound.getRaw () [position * sound.getNbBytesPerFrame () + j] = frame [i];
 		}
 	    sound.getSamples () [position] = value;
     }
@@ -122,7 +120,7 @@ public class TransformSound {
 			int currentChannel = (i / audioFormat.getFrameSize ()) % channels.length;
 			int currentFrame = i / (audioFormat.getFrameSize () * channels.length);
 
-			if (!audioFormat.isBigEndian ()){
+			if (audioFormat.isBigEndian ()){
 				data [i] = (byte) ((int)(channels [currentChannel].getSamples () [currentFrame]) >> (8 * currentFrameByte));
 			}else{
 				data [i] = (byte) ((int)(channels [currentChannel].getSamples () [currentFrame]) >> (8 * (audioFormat.getFrameSize () - 1 - currentFrameByte)));				

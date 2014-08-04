@@ -31,8 +31,8 @@ public class TestTransformMain {
 			File fDest = new File ("after.wav");
 			TestTransformMain.copyFile (fParam, fOrigin);
 			new TransformSound (new PrintlnTransformObserver ()).transformWav (fOrigin, fDest, 
-					
-							new EightBitsSoundTransformation(25));
+							new EqualizerSoundTransformation (new double [] {0, 10000, 22050}, new double [] {1, 1, 1}),
+									new EightBitsSoundTransformation (25));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace ();
 		} catch (UnsupportedAudioFileException e) {
