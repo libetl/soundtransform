@@ -60,7 +60,9 @@ public class TransformSound {
 		Sound [] ret = new Sound [channels];
 		int length = (int) (ais.getFrameLength() / channels);
 		for (int channel = 0 ; channel < channels ; channel++){
-			ret [channel] = new Sound (new double [length], ais.getFormat().getFrameSize(), 
+			ret [channel] = new Sound (new double [length], 
+					new byte [length * ais.getFormat().getFrameSize()],
+					ais.getFormat().getFrameSize(), 
 					(int)ais.getFormat().getSampleRate());
 		}
 		for (int position = 0; position < length;) {
@@ -104,6 +106,7 @@ public class TransformSound {
 			  value *= 256;
 			  value += frame [i];
 			}
+			sound.getRaw () [position * sound.getNbBytesPerFrame () + j] = frame [i];
 		}
 	    sound.getSamples () [position] = value;
     }

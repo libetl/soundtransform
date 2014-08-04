@@ -28,14 +28,14 @@ public class LinearRegressionSoundTransformation implements SoundTransformation 
 		
 		Sound outputSound = new Sound (new double [input.getSamples ().length],
 				input.getNbBytesPerFrame (), input.getFreq());
-		for (int i = 0 ; i < input.getSamples ().length ; i+= step){
-			if (i / step < x.length){
-			  outputSound.getSamples () [i] = psf.value (i);
+		for (int i = 0 ; i < input.getSamples ().length ; i++){
+			if (i < x [x.length - 1]){
+			  outputSound.getSamples () [i] = psf.value ((double)i);
 			}else{
 			  outputSound.getSamples () [i] = input.getSamples () [i];
 			}
 		}
-		
+
 		return outputSound;
     }
 
