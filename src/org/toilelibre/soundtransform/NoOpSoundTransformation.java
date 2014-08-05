@@ -15,6 +15,12 @@ public class NoOpSoundTransformation implements SoundTransformation {
 		double [] data = sound.getSamples ();
 
 		// normalized result in newdata
-		return new Sound (data, sound.getNbBytesPerFrame (), sound.getFreq());
+		double [] newdata = new double [data.length];
+		
+		for (int i = 0 ; i < data.length ; i++){
+			newdata [i] = data [i];
+		}
+		
+		return new Sound (newdata, sound.getNbBytesPerFrame (), sound.getFreq());
 	}
 }

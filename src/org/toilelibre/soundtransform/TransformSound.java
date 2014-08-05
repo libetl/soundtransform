@@ -130,7 +130,7 @@ public class TransformSound {
 		this.notifyAll ("Creating output file");
 		// now save the file
 		ByteArrayInputStream bais = new ByteArrayInputStream (data);
-		return new AudioInputStream (bais, audioFormat, channels [0].getSamples ().length * channels.length);
+		return new AudioInputStream (bais, audioFormat, length / audioFormat.getFrameSize ());
 	}
 
 	public void transformWav (File fOrigin, File fDest, SoundTransformation... sts) throws UnsupportedAudioFileException, IOException {

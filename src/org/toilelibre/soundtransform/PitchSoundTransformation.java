@@ -1,17 +1,17 @@
 package org.toilelibre.soundtransform;
 
-public class PrecisionFilterSoundTransformation implements SoundTransformation {
+public class PitchSoundTransformation implements SoundTransformation {
 
 	private int percent = 20;
 	
-	public PrecisionFilterSoundTransformation (int percent) {
+	public PitchSoundTransformation (int percent) {
 		this.percent = percent;
     }
 
 
 	@Override
 	public Sound transform (Sound input) {
-		return PrecisionFilterSoundTransformation.precisionFilter (input, this.percent);
+		return PitchSoundTransformation.precisionFilter (input, this.percent);
 	}
 
 
