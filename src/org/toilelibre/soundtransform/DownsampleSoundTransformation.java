@@ -5,7 +5,11 @@ import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 
 public class DownsampleSoundTransformation implements SoundTransformation {
 	
-	public DownsampleSoundTransformation () {
+	private int times;
+
+
+	public DownsampleSoundTransformation (int times) {
+		this.times = times;
     }
 
 
@@ -13,7 +17,7 @@ public class DownsampleSoundTransformation implements SoundTransformation {
 	public Sound transform (Sound input) {
 		Sound fs = input;
 		UnivariateFunction function = this.getFunction (fs);
-		return DownsampleSoundTransformation.buildSoundFromFunction (function,
+		return DownsampleSoundTransformation.buildSoundFromFunction (function, this.times,
 		        fs.getSamples ().length, input.getNbBytesPerFrame (), input.getFreq());
 	}
 
@@ -27,11 +31,11 @@ public class DownsampleSoundTransformation implements SoundTransformation {
     }
 
 
-	private static Sound buildSoundFromFunction (UnivariateFunction function,
+	private static Sound buildSoundFromFunction (UnivariateFunction function, int times,
 	        int length, int nbBytesPerFrame, int freq) {
-		double [] result = new double [length];
-		for (int i = 0; i < length; i++) {
-			result [i] = function.value (i);
+		double [] result = new double [length * times];
+		for (int i = 0; i < length * times; i++) {
+			result [i] = function.value (i / times);
 		}
 		return new Sound (result, nbBytesPerFrame, freq);
 	}
