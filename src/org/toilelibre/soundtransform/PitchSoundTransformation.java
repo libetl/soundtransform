@@ -11,11 +11,11 @@ public class PitchSoundTransformation implements SoundTransformation {
 
 	@Override
 	public Sound transform (Sound input) {
-		return PitchSoundTransformation.precisionFilter (input, this.percent);
+		return PitchSoundTransformation.pitch (input, this.percent);
 	}
 
 
-	private static Sound precisionFilter (Sound sound, float percent) {
+	private static Sound pitch (Sound sound, float percent) {
 		float total = 100;
 		if (percent == total){
 			return new Sound (sound.getSamples (), sound.getNbBytesPerFrame (), sound.getFreq());
