@@ -16,17 +16,20 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 	protected abstract FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxfrequency);
 
 	protected abstract int getOffsetFromASimpleLoop(int i, double step);
-
+	
+	protected abstract double getLowThreshold (double defaultValue);
+	
 	public Sound transform (Sound sound) {
 	    Sound output = this.initSound(sound);
 		double freqmax = sound.getFreq();
+		double threshold = this.getLowThreshold (freqmax);
 		int maxlength = (int)Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
 		double [] data = sound.getSamples ();
 		double [] newdata = output.getSamples();
 		double [] transformeddata = new double [maxlength];
 		
 		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer ( DftNormalization.STANDARD);
-		for (int i = 0 ; i < data.length ; i+= freqmax){
+		for (int i = 0 ; i < data.length ; i+= threshold){
 			int length = Math.min (maxlength, data.length - i);
 	   		System.arraycopy (data, i, transformeddata, 0, length);			
 			Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);

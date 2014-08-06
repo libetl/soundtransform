@@ -40,4 +40,9 @@ public class EqualizerSoundTransformation extends AbstractFrequencySoundTransfor
     protected int getOffsetFromASimpleLoop(int i, double step) {
         return 0;
     }
+
+	@Override
+    protected double getLowThreshold (double defaultValue) {
+	    return defaultValue;
+    }
 }
