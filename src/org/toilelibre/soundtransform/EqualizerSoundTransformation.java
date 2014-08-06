@@ -3,11 +3,8 @@ package org.toilelibre.soundtransform;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.complex.Complex;
-import org.apache.commons.math3.transform.DftNormalization;
-import org.apache.commons.math3.transform.FastFourierTransformer;
-import org.apache.commons.math3.transform.TransformType;
 
-public class EqualizerSoundTransformation implements SoundTransformation {
+public class EqualizerSoundTransformation extends AbstractFrequencySoundTransformation {
 	
 	private double [] ranges;
 	private double [] amplification;
@@ -17,45 +14,30 @@ public class EqualizerSoundTransformation implements SoundTransformation {
 		this.amplification = amplification1;
     }
 
+    @Override
+    public FrequenciesState transformFrequencies(FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxFrequency) {
+        SplineInterpolator reg = new SplineInterpolator();
 
-	@Override
-	public Sound transform (Sound input) {
+        PolynomialSplineFunction psf = reg.interpolate (this.ranges, this.amplification);
+        Complex [] newAmpl = new Complex [powOf2NearestLength];
+        for (double j = 0 ; j < length ; j++){
+          double freq = j * maxFrequency / fs.getState().length;
+          newAmpl [(int)j] = fs.getState() [(int)j].multiply(psf.value (freq / 2));
+        }
+        for (int j = length ; j < powOf2NearestLength ; j++){
+            newAmpl [j] = new Complex (0, 0);
+        }
+        return new FrequenciesState (newAmpl);
+    }
 
-		SplineInterpolator reg = new SplineInterpolator();
+    @Override
+    public Sound initSound(Sound input) {
+        double [] newdata = new double [input.getSamples ().length];
+        return new Sound (newdata, input.getNbBytesPerFrame (), input.getFreq());
+    }
 
-		PolynomialSplineFunction psf = reg.interpolate (this.ranges, this.amplification);
-		return EqualizerSoundTransformation.equalize (input, psf);
-	}
-
-	private static Sound equalize (Sound sound, PolynomialSplineFunction psf) {
-		double freqmax = sound.getFreq();
-		int maxlength = (int)Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
-		double [] data = sound.getSamples ();
-		double [] newdata = new double [sound.getSamples ().length];
-		double [] transformeddata = new double [maxlength];
-		
-		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer ( DftNormalization.STANDARD);
-		for (int i = 0 ; i < data.length ; i+= freqmax){
-			int length = Math.min (maxlength, data.length - i);
-	   		System.arraycopy (data, i, transformeddata, 0, length);			
-			Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
-			Complex [] newAmpl = new Complex [maxlength];
-			for (double j = 0 ; j < length ; j++){
-			  double freq = j * freqmax / complexArray.length;
-			  newAmpl [(int)j] = complexArray [(int)j].multiply(psf.value (freq / 2));
-			}
-			for (int j = length ; j < maxlength ; j++){
-				newAmpl [j] = new Complex (0, 0);
-			}
-			complexArray = fastFourierTransformer.transform (newAmpl, TransformType.INVERSE);
-			
-			for (int j = 0 ; j < freqmax ; j++){
-				if (i + j < newdata.length){
-			      newdata [i + j] = Math.floor(complexArray [j].getReal ());
-				}
-			}
-		}
-		// normalized result in newdata
-		return new Sound (newdata, sound.getNbBytesPerFrame (), sound.getFreq());
-	}
+    @Override
+    protected int getOffsetFromASimpleLoop(int i, double step) {
+        return 0;
+    }
 }
