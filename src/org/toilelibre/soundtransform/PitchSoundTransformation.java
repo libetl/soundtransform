@@ -31,6 +31,6 @@ public class PitchSoundTransformation implements SoundTransformation {
 				ret [j] = data [(int) i];
 			}
 		}
-		return new FilteredSound (ret, (int)incr, sound.getNbBytesPerFrame (), sound.getFreq());
+		return new Sound (ret, sound.getNbBytesPerFrame (), sound.getFreq());
 	}
 }
