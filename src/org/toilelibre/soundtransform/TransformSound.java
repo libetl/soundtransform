@@ -12,6 +12,10 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import org.toilelibre.soundtransform.objects.Sound;
+import org.toilelibre.soundtransform.observer.TransformObserver;
+import org.toilelibre.soundtransform.transforms.SoundTransformation;
+
 public class TransformSound {
 
 	TransformObserver[] observers = new TransformObserver [0];

@@ -1,4 +1,4 @@
-package org.toilelibre.soundtransform;
+package org.toilelibre.soundtransform.objects;
 
 import org.apache.commons.math3.complex.Complex;
 

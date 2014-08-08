@@ -1,4 +1,4 @@
-package org.toilelibre.soundtransform;
+package org.toilelibre.soundtransform.observer;
 
 public interface TransformObserver {
 

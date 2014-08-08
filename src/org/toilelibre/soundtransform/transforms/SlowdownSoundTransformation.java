@@ -1,9 +1,11 @@
-package org.toilelibre.soundtransform;
+package org.toilelibre.soundtransform.transforms;
 
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
+import org.toilelibre.soundtransform.objects.FrequenciesState;
+import org.toilelibre.soundtransform.objects.Sound;
 
 //WARN : long time execution soundtransform
 public class SlowdownSoundTransformation extends

@@ -1,4 +1,5 @@
-package org.toilelibre.soundtransform;
+package org.toilelibre.soundtransform.observer;
+
 
 public class PrintlnTransformObserver implements TransformObserver {
 

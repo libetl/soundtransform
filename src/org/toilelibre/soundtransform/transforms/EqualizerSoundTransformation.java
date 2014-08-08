@@ -1,8 +1,9 @@
-package org.toilelibre.soundtransform;
+package org.toilelibre.soundtransform.transforms;
 
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.complex.Complex;
+import org.toilelibre.soundtransform.objects.FrequenciesState;
 
 public class EqualizerSoundTransformation extends NoOpFrequencySoundTransformation {
 	

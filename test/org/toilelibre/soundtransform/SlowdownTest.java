@@ -3,7 +3,8 @@ package org.toilelibre.soundtransform;
 import java.util.Arrays;
 
 import org.junit.Test;
-import org.toilelibre.soundtransform.Sound;
+import org.toilelibre.soundtransform.objects.Sound;
+import org.toilelibre.soundtransform.transforms.SlowdownSoundTransformation;
 
 public class SlowdownTest {
 

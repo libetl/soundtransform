@@ -1,6 +1,7 @@
-package org.toilelibre.soundtransform;
+package org.toilelibre.soundtransform.transforms;
 
 import org.apache.commons.math3.complex.Complex;
+import org.toilelibre.soundtransform.objects.FrequenciesState;
 
 public class PurifySoundTransformation extends NoOpFrequencySoundTransformation {
 	

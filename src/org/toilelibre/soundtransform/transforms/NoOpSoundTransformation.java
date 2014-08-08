@@ -1,4 +1,6 @@
-package org.toilelibre.soundtransform;
+package org.toilelibre.soundtransform.transforms;
+
+import org.toilelibre.soundtransform.objects.Sound;
 
 public class NoOpSoundTransformation implements SoundTransformation {
 	
