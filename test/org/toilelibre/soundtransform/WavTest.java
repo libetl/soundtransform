@@ -17,7 +17,7 @@ public class WavTest {
 			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 			new TransformSound(new PrintlnTransformObserver()).transformWav(
 					new File (classLoader.getResource("before.wav").getFile()), 
-					new File (classLoader.getResource("after.wav").getFile()), 
+					new File (classLoader.getResource("before.wav").getPath() + "after.wav"), 
 					new EightBitsSoundTransformation(25));
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
