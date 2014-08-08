@@ -10,6 +10,7 @@ import org.toilelibre.soundtransform.observer.PrintlnTransformObserver;
 import org.toilelibre.soundtransform.transforms.EightBitsSoundTransformation;
 import org.toilelibre.soundtransform.transforms.EqualizerSoundTransformation;
 import org.toilelibre.soundtransform.transforms.ReverseSoundTransformation;
+import org.toilelibre.soundtransform.transforms.SlowdownSoundTransformation;
 
 public class WavTest {
 
@@ -50,6 +51,18 @@ public class WavTest {
 		try {
 			new TransformSound(new PrintlnTransformObserver()).transformWav (input, output,
 			    new ReverseSoundTransformation());
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testSlowdown (){
+		try {
+			new TransformSound(new PrintlnTransformObserver()).transformWav (input, output,
+			    new SlowdownSoundTransformation(200));
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

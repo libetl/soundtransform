@@ -6,8 +6,10 @@ import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.soundtransform.objects.FrequenciesState;
 import org.toilelibre.soundtransform.objects.Sound;
+import org.toilelibre.soundtransform.observer.LogEvent;
+import org.toilelibre.soundtransform.observer.LogEvent.LogLevel;
 
-//WARN : long time execution soundtransform
+//WARN : long execution time soundtransform
 public class SlowdownSoundTransformation extends
         AbstractFrequencySoundTransformation {
 
@@ -30,6 +32,12 @@ public class SlowdownSoundTransformation extends
 	@Override
 	protected FrequenciesState transformFrequencies (FrequenciesState fs,
 	        int offset, int powOf2NearestLength, int length, double maxfrequency) {
+		int total = this.sound.getSamples ().length * times;
+		if (offset % ((total / 100 - (total / 100) % this.threshold)) == 0){
+		  this.log (new LogEvent (LogLevel.VERBOSE, 
+				"SlowdownSoundTransformation : Iteration #" + 
+		                offset + "/" + sound.getSamples ().length / times));
+		}
 		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer ( DftNormalization.STANDARD);
 		Complex [] complexArray = fs.getState ();
 		for (int p = 0 ; p < times - 1 ; p++){

@@ -6,9 +6,13 @@ import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.soundtransform.objects.FrequenciesState;
 import org.toilelibre.soundtransform.objects.Sound;
+import org.toilelibre.soundtransform.observer.LogAware;
+import org.toilelibre.soundtransform.observer.LogEvent;
+import org.toilelibre.soundtransform.observer.TransformObserver;
 
-public abstract class AbstractFrequencySoundTransformation implements SoundTransformation {
+public abstract class AbstractFrequencySoundTransformation implements SoundTransformation, LogAware {
 	
+	private TransformObserver[] observers;
 
 	public AbstractFrequencySoundTransformation () {
     }
@@ -20,6 +24,18 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 	protected abstract int getOffsetFromASimpleLoop(int i, double step);
 	
 	protected abstract double getLowThreshold (double defaultValue);
+	
+	@Override
+	public  void setObservers (TransformObserver[] observers1){
+		this.observers = observers1;
+	}
+	
+	@Override
+	public void log (LogEvent logEvent){
+		for (TransformObserver transformObserver : this.observers){
+			transformObserver.notify(logEvent);
+		}
+	}
 	
 	public Sound transform (Sound sound) {
 	    Sound output = this.initSound(sound);

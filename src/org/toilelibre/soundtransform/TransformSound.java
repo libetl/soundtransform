@@ -13,18 +13,17 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.toilelibre.soundtransform.objects.Sound;
+import org.toilelibre.soundtransform.observer.LogAware;
+import org.toilelibre.soundtransform.observer.LogEvent;
 import org.toilelibre.soundtransform.observer.TransformObserver;
 import org.toilelibre.soundtransform.transforms.SoundTransformation;
 
-public class TransformSound {
+public class TransformSound implements LogAware {
 
 	TransformObserver[] observers = new TransformObserver [0];
 	
 	public TransformSound (TransformObserver... observers) {
-		this.observers = observers;
-		for (TransformObserver observer : observers){
-			this.notifyAll ("Adding observer " + observer.getClass ().getSimpleName ());
-		}
+		this.setObservers(observers);
     }
 
 	public TransformSound () {
@@ -36,9 +35,12 @@ public class TransformSound {
 		int transformNumber = 0;
 		for (SoundTransformation st : sts){
 			for (int i = 0; i < input.length; i++) {
-				this.notifyAll ("Transform nÂ°" + (transformNumber + 1) + "/" + sts.length + " (" +
+				this.notifyAll ("Transform n°" + (transformNumber + 1) + "/" + sts.length + " (" +
 			    st.getClass ().getSimpleName ()
-			    + "), channel nÂ°" + (i + 1) + "/" + input.length);
+			    + "), channel n°" + (i + 1) + "/" + input.length);
+				if (st instanceof LogAware){
+					((LogAware)st).setObservers(this.observers);
+				}
 				output [i] = st.transform (output [i]);
 			}
 			transformNumber++;
@@ -53,8 +55,13 @@ public class TransformSound {
 
 	private void notifyAll (String s){
 		for (TransformObserver to : this.observers){
-			to.notify (s);
+			to.notify (new LogEvent (LogEvent.LogLevel.INFO, s));
 		}
+	}
+
+	@Override
+	public void log(LogEvent event) {
+		
 	}
 	
 	private Sound [] fromAudioInputStream (AudioInputStream ais) throws IOException {
@@ -146,5 +153,13 @@ public class TransformSound {
 			AudioSystem.write (ais2, AudioFileFormat.Type.WAVE, fDest);
 			this.notifyAll ("Wrote output");
 			this.notifyAll ("output : " + ais2.getFormat ().toString ());
+	}
+
+	@Override
+	public void setObservers(TransformObserver[] observers2) {
+		this.observers = observers2;
+		for (TransformObserver observer : observers2){
+			this.notifyAll ("Adding observer " + observer.getClass ().getSimpleName ());
+		}
 	}
 }
