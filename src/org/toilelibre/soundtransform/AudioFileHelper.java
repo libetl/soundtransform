@@ -1,42 +1,31 @@
 package org.toilelibre.soundtransform;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import org.toilelibre.soundtransform.observer.PrintlnTransformObserver;
-import org.toilelibre.soundtransform.transforms.SoundTransformation;
+import javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream;
 
 public class AudioFileHelper {
-
-	private static String tmpfile = "before.wav";
 	
-	private static void copyFile(File source, File dest) throws IOException {
-		FileChannel inputChannel = null;
-		FileChannel outputChannel = null;
-		try {
-			inputChannel = new FileInputStream(source).getChannel();
-			outputChannel = new FileOutputStream(dest).getChannel();
-			outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
-		} finally {
-			inputChannel.close();
-			outputChannel.close();
+	private static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	private static File tmpfile = new File (classLoader.getResource("before.wav").getFile());
+	
+	public static AudioInputStream getAudioInputStream(File inputFile) throws UnsupportedAudioFileException, IOException {
+		File f = inputFile;
+		if (inputFile.getName().toLowerCase().endsWith(".mp3")) {
+			AudioInputStream ais = new javazoom.spi.mpeg.sampled.file.MpegAudioFileReader()
+					.getAudioInputStream(inputFile);
+			AudioFormat cdFormat = new AudioFormat (44100, 16, 2, true, false);
+			DecodedMpegAudioInputStream decodedais = new DecodedMpegAudioInputStream (cdFormat, ais);
+			AudioSystem.write(decodedais, AudioFileFormat.Type.WAVE, AudioFileHelper.tmpfile);
+			f = AudioFileHelper.tmpfile;
 		}
-	}
-
-	public static void transform(String inputFile, String outputFile,
-			SoundTransformation... sts) throws IOException,
-			UnsupportedAudioFileException {
-		//TODO : detect file extension and convert
-		File fParam = new File(inputFile);
-		File fOrigin = new File(AudioFileHelper.tmpfile);
-		File fDest = new File(outputFile);
-		AudioFileHelper.copyFile(fParam, fOrigin);
-		new TransformSound(new PrintlnTransformObserver()).transformWav(
-				fOrigin, fDest, sts);
+		return AudioSystem.getAudioInputStream(f);
 	}
 }

@@ -144,9 +144,9 @@ public class TransformSound implements LogAware {
 		return new AudioInputStream (bais, audioFormat, length / audioFormat.getFrameSize ());
 	}
 
-	public void transformWav (File fOrigin, File fDest, SoundTransformation... sts) throws UnsupportedAudioFileException, IOException {
+	public void transformFile (File fOrigin, File fDest, SoundTransformation... sts) throws UnsupportedAudioFileException, IOException {
 			File file = fOrigin;
-			AudioInputStream ais1 = AudioSystem.getAudioInputStream (file);
+			AudioInputStream ais1 = AudioFileHelper.getAudioInputStream (file);
 			this.notifyAll ("input : " + ais1.getFormat ().toString ());
 			AudioInputStream ais2 = ais1;
 			ais2 = this.transformAudioStream (ais1, sts);
