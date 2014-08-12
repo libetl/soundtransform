@@ -27,9 +27,9 @@ public class NormalizeSoundTransformation implements SoundTransformation {
 
 		// now find the result, with scaling:
 		double maxValue = Math.pow (256, sound.getNbBytesPerFrame () - 1) / 2;
+		double ratio = maxValue / max;
 		for (int i = 0; i < data.length; i++) {
-			double underOne = data [i] / max;
-			double rescaled = underOne * maxValue;
+			double rescaled = data [i] * ratio;
 			newdata [i] = Math.floor (rescaled);
 		}
 

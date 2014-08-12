@@ -16,6 +16,7 @@ import org.toilelibre.soundtransform.objects.Sound;
 import org.toilelibre.soundtransform.observer.LogAware;
 import org.toilelibre.soundtransform.observer.LogEvent;
 import org.toilelibre.soundtransform.observer.TransformObserver;
+import org.toilelibre.soundtransform.observer.LogEvent.LogLevel;
 import org.toilelibre.soundtransform.transforms.SoundTransformation;
 
 public class TransformSound implements LogAware {
@@ -35,9 +36,9 @@ public class TransformSound implements LogAware {
 		int transformNumber = 0;
 		for (SoundTransformation st : sts){
 			for (int i = 0; i < input.length; i++) {
-				this.notifyAll ("Transform n°" + (transformNumber + 1) + "/" + sts.length + " (" +
+				this.notifyAll ("Transform nÂ°" + (transformNumber + 1) + "/" + sts.length + " (" +
 			    st.getClass ().getSimpleName ()
-			    + "), channel n°" + (i + 1) + "/" + input.length);
+			    + "), channel nÂ°" + (i + 1) + "/" + input.length);
 				if (st instanceof LogAware){
 					((LogAware)st).setObservers(this.observers);
 				}
@@ -54,13 +55,14 @@ public class TransformSound implements LogAware {
 	}
 
 	private void notifyAll (String s){
-		for (TransformObserver to : this.observers){
-			to.notify (new LogEvent (LogEvent.LogLevel.INFO, s));
-		}
+		this.log (new LogEvent (LogLevel.INFO, s));
 	}
 
 	@Override
 	public void log(LogEvent event) {
+		for (TransformObserver to : this.observers){
+			to.notify (event);
+		}
 		
 	}
 	
@@ -106,16 +108,18 @@ public class TransformSound implements LogAware {
 			boolean bigEndian) {
 		double value = 0;
 		int destination = (!bigEndian ? 0 : frame.length - 1);
-		for (int j = 0 ; j < frame.length ; j++){
+		for (int j = 0 ; j <= frame.length ; j++){
 			int i = (bigEndian ? frame.length - j - 1: j);
 			int fromIndex = (i < destination ? i : destination);
 			int toIndex = (i < destination ? destination : i);
+
 			if (fromIndex < toIndex && !new HashSet<Object> (
 					Arrays.asList (this.toObject(frame)).subList (fromIndex, toIndex)).equals (
 							new HashSet<Object> (Arrays.asList (new byte [] {0})))){
-			  value *= 256;
-			  value += frame [i];
+			  value += frame [i - 1] * Math.pow (256, i - 1);
+
 			}
+
 		}
 	    sound.getSamples () [position] = value;
     }

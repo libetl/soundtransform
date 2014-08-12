@@ -10,6 +10,7 @@ import org.toilelibre.soundtransform.observer.PrintlnTransformObserver;
 import org.toilelibre.soundtransform.transforms.EightBitsSoundTransformation;
 import org.toilelibre.soundtransform.transforms.EqualizerSoundTransformation;
 import org.toilelibre.soundtransform.transforms.LinearRegressionSoundTransformation;
+import org.toilelibre.soundtransform.transforms.NormalizeSoundTransformation;
 import org.toilelibre.soundtransform.transforms.PitchSoundTransformation;
 import org.toilelibre.soundtransform.transforms.ReverseSoundTransformation;
 import org.toilelibre.soundtransform.transforms.SlowdownSoundTransformation;
@@ -18,7 +19,7 @@ public class WavTest {
 
 	private ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 	private File input  = new File (classLoader.getResource("before.wav").getFile());
-	//private File input  = new File ("D:/Mes Soirées 80's-Spécial Discothèques/CD 1/08 Captain Sensible-Wot.mp3");
+	//private File input  = new File ("D:/Mes Soirï¿½es 80's-Spï¿½cial Discothï¿½ques/CD 1/08 Captain Sensible-Wot.mp3");
 	private File output = new File (new File (
 			classLoader.getResource("before.wav").getFile()).getParent() + "/after.wav");
 	
@@ -78,6 +79,18 @@ public class WavTest {
 		try {
 			new TransformSound(new PrintlnTransformObserver()).transformFile (input, output,
 			    new PitchSoundTransformation(85));
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testNormalize (){
+		try {
+			new TransformSound(new PrintlnTransformObserver()).transformFile (input, output,
+			    new NormalizeSoundTransformation());
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
