@@ -90,7 +90,6 @@ public class TransformSound implements LogAware {
     }
     
 	private Sound [] fromInputStream (AudioInputStream ais) throws IOException {
-		this.notifyAll ("Converting input into java object");
 		int channels = ais.getFormat ().getChannels();
 		long frameLength = ais.getFrameLength();
 		int frameSize = ais.getFormat ().getFrameSize ();
