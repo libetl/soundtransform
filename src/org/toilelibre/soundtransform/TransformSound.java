@@ -117,16 +117,13 @@ public class TransformSound implements LogAware {
 			boolean bigEndian) {
 		double value = 0;
 		int destination = (!bigEndian ? 0 : frame.length - 1);
-		for (int j = 0 ; j <= frame.length ; j++){
-			int i = (bigEndian ? frame.length - j - 1: j);
-			int fromIndex = (i < destination ? i : destination);
-			int toIndex = (i < destination ? destination : i);
+		for (int j = 0 ; j < frame.length ; j++){
+			int cursor = (!bigEndian ? frame.length - j - 1 : j);
+			int fromIndex = (cursor < destination ? cursor : destination);
+			int toIndex = (cursor < destination ? destination : cursor);
 
-			if (fromIndex < toIndex && !new HashSet<Object> (
-					Arrays.asList (this.toObject(frame)).subList (fromIndex, toIndex)).equals (
-							new HashSet<Object> (Arrays.asList (new byte [] {0})))){
-			  value += frame [i - 1] * Math.pow (256, i - 1);
-
+			if (fromIndex <= toIndex){
+			      value += frame [cursor] * Math.pow (256, cursor);
 			}
 
 		}
@@ -153,7 +150,7 @@ public class TransformSound implements LogAware {
             if (!bigEndian){
                 data [i] = (byte) ((int)(channels [currentChannel].getSamples () [currentFrame]) >> (8 * currentFrameByte));
             }else{
-                data [i] = (byte) ((int)(channels [currentChannel].getSamples () [currentFrame]) >> (8 * (frameSize - 1 - currentFrameByte)));                
+                data [i] = (byte) ((int)(channels [currentChannel].getSamples () [currentFrame]) >> (8 * (frameSize - 1 - currentFrameByte)));
             }
         }
         return data;

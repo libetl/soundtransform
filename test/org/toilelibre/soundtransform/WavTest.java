@@ -10,6 +10,7 @@ import org.toilelibre.soundtransform.observer.PrintlnTransformObserver;
 import org.toilelibre.soundtransform.transforms.EightBitsSoundTransformation;
 import org.toilelibre.soundtransform.transforms.EqualizerSoundTransformation;
 import org.toilelibre.soundtransform.transforms.LinearRegressionSoundTransformation;
+import org.toilelibre.soundtransform.transforms.NoOpSoundTransformation;
 import org.toilelibre.soundtransform.transforms.NormalizeSoundTransformation;
 import org.toilelibre.soundtransform.transforms.PitchSoundTransformation;
 import org.toilelibre.soundtransform.transforms.ReverseSoundTransformation;
@@ -91,6 +92,18 @@ public class WavTest {
 		try {
 			new TransformSound(new PrintlnTransformObserver()).transformFile (input, output,
 			    new NormalizeSoundTransformation());
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testNoOp (){
+		try {
+			new TransformSound(new PrintlnTransformObserver()).transformFile (input, output,
+			    new NoOpSoundTransformation());
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
