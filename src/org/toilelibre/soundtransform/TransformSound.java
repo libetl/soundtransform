@@ -3,6 +3,7 @@ package org.toilelibre.soundtransform;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -31,7 +32,7 @@ public class TransformSound implements LogAware {
     }
 
 	public AudioInputStream transformAudioStream (AudioInputStream ais, SoundTransformation... sts) throws IOException {
-		Sound [] input = this.fromAudioInputStream (ais);
+		Sound [] input = this.fromInputStream (ais);
 		Sound [] output = Arrays.copyOf (input, input.length);
 		int transformNumber = 0;
 		for (SoundTransformation st : sts){
@@ -65,31 +66,40 @@ public class TransformSound implements LogAware {
 		}
 		
 	}
-	
-	private Sound [] fromAudioInputStream (AudioInputStream ais) throws IOException {
+
+    private Sound [] fromInputStream (InputStream ais, int channels, long frameLength, int frameSize, double sampleRate, boolean bigEndian) throws IOException {
+        this.notifyAll ("Converting input into java object");
+        int currentChannel = 0;
+        Sound [] ret = new Sound [channels];
+        int length = (int) (frameLength / channels);
+        for (int channel = 0 ; channel < channels ; channel++){
+            ret [channel] = new Sound (new double [length], 
+                    frameSize, (int)sampleRate);
+        }
+        for (int position = 0; position < length;) {
+            byte [] frame = new byte [frameSize];
+            ais.read (frame);
+            this.byteArrayToFrame (frame, ret [currentChannel], position, bigEndian);
+            currentChannel = (currentChannel + 1) % channels;
+            if (currentChannel == 0){
+                position++;
+            }
+        }
+        this.notifyAll ("Convert done");
+        return ret;
+    }
+    
+	private Sound [] fromInputStream (AudioInputStream ais) throws IOException {
 		this.notifyAll ("Converting input into java object");
 		int channels = ais.getFormat ().getChannels();
-		int currentChannel = 0;
-		Sound [] ret = new Sound [channels];
-		int length = (int) (ais.getFrameLength() / channels);
-		for (int channel = 0 ; channel < channels ; channel++){
-			ret [channel] = new Sound (new double [length], 
-					ais.getFormat().getFrameSize(), 
-					(int)ais.getFormat().getSampleRate());
-		}
-		for (int position = 0; position < length;) {
-			byte [] frame = new byte [ais.getFormat ().getFrameSize ()];
-			ais.read (frame);
-			this.byteArrayToFrame (frame, ret [currentChannel], position, 
-					ais.getFormat ().isBigEndian ());
-			currentChannel = (currentChannel + 1) % channels;
-			if (currentChannel == 0){
-				position++;
-			}
-		}
-		this.notifyAll ("Convert done");
-		return ret;
+		long frameLength = ais.getFrameLength();
+		int frameSize = ais.getFormat ().getFrameSize ();
+		double sampleRate = ais.getFormat().getSampleRate();
+		boolean bigEndian = ais.getFormat ().isBigEndian ();
+
+        return this.fromInputStream(ais, channels, frameLength, frameSize, sampleRate, bigEndian);
 	}
+	
 
 	public Byte[] toObject (byte[] array) {
 	    if (array == null) {
@@ -124,24 +134,36 @@ public class TransformSound implements LogAware {
 	    sound.getSamples () [position] = value;
     }
 
+    protected Sound [] byteArrayToFrames (byte [] byteArray, int channels, long frameLength, int frameSize, double sampleRate, boolean bigEndian) throws IOException {
+        this.notifyAll ("[Test] byteArray -> ByteArrayInputStream");
+        
+        ByteArrayInputStream bais = new ByteArrayInputStream (byteArray);
+        return this.fromInputStream(bais, channels, frameLength, frameSize, sampleRate, bigEndian);
+    }
+
+	protected byte[] framesToByteArray (Sound [] channels, int frameSize, boolean bigEndian){
+        int length = channels.length * frameSize * channels [0].getSamples ().length;
+        byte [] data = new byte [length];
+        
+        for (int i = 0 ; i < data.length ; i++){
+            
+            int currentFrameByte = i % frameSize;
+            int currentChannel = (i / frameSize) % channels.length;
+            int currentFrame = i / (frameSize * channels.length);
+
+            if (!bigEndian){
+                data [i] = (byte) ((int)(channels [currentChannel].getSamples () [currentFrame]) >> (8 * currentFrameByte));
+            }else{
+                data [i] = (byte) ((int)(channels [currentChannel].getSamples () [currentFrame]) >> (8 * (frameSize - 1 - currentFrameByte)));                
+            }
+        }
+        return data;
+	}
+	
 	private AudioInputStream toStream (Sound [] channels, AudioFormat audioFormat) {
 
-		int length = channels.length * audioFormat.getFrameSize () * channels [0].getSamples ().length;
-		byte [] data = new byte [length];
-		
-		for (int i = 0 ; i < data.length ; i++){
-			
-			int currentFrameByte = i % audioFormat.getFrameSize ();
-			int currentChannel = (i / audioFormat.getFrameSize ()) % channels.length;
-			int currentFrame = i / (audioFormat.getFrameSize () * channels.length);
-
-			if (audioFormat.isBigEndian ()){
-				data [i] = (byte) ((int)(channels [currentChannel].getSamples () [currentFrame]) >> (8 * currentFrameByte));
-			}else{
-				data [i] = (byte) ((int)(channels [currentChannel].getSamples () [currentFrame]) >> (8 * (audioFormat.getFrameSize () - 1 - currentFrameByte)));				
-			}
-		}
-		
+        int length = channels.length * audioFormat.getFrameSize () * channels [0].getSamples ().length;
+	    byte [] data = this.framesToByteArray (channels, audioFormat.getFrameSize (), audioFormat.isBigEndian());
 		this.notifyAll ("Creating output file");
 		// now save the file
 		ByteArrayInputStream bais = new ByteArrayInputStream (data);
