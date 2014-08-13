@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.HashSet;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
@@ -97,20 +96,6 @@ public class TransformSound implements LogAware {
 		boolean bigEndian = ais.getFormat ().isBigEndian ();
 
         return this.fromInputStream(ais, channels, frameLength, frameSize, sampleRate, bigEndian);
-	}
-	
-
-	public Byte[] toObject (byte[] array) {
-	    if (array == null) {
-		  return null;
-		} else if (array.length == 0) {
-		  return new Byte [0];
-		}
-		final Byte[] result = new Byte [array.length];
-		for (int i = 0; i < array.length; i++) {
-		  result[i] = Byte.valueOf (array[i]);
-		}
-		return result;
 	}
 	
 	private void byteArrayToFrame (byte [] frame, Sound sound, int position,
