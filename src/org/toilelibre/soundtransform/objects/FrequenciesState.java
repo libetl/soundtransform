@@ -6,15 +6,13 @@ public class FrequenciesState {
 
 	private Complex[] state;
 
+	public FrequenciesState(Complex[] state) {
+		super();
+		this.state = state;
+	}
 
-    public FrequenciesState(Complex[] state) {
-        super();
-        this.state = state;
-    }
-    
-    public Complex[] getState() {
-        return state;
-    }
-	
-	
+	public Complex[] getState() {
+		return state;
+	}
+
 }

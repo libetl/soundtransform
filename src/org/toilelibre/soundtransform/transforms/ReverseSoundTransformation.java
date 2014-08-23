@@ -3,25 +3,24 @@ package org.toilelibre.soundtransform.transforms;
 import org.toilelibre.soundtransform.objects.Sound;
 
 public class ReverseSoundTransformation implements SoundTransformation {
-	
-	public ReverseSoundTransformation () {
-    }
 
-
-	@Override
-	public Sound transform (Sound input) {
-		return ReverseSoundTransformation.reverse (input);
+	public ReverseSoundTransformation() {
 	}
 
-	private static Sound reverse (Sound sound) {
-		double [] data = sound.getSamples ();
-		double [] newdata = new double [sound.getSamples ().length];
+	@Override
+	public Sound transform(Sound input) {
+		return ReverseSoundTransformation.reverse(input);
+	}
+
+	private static Sound reverse(Sound sound) {
+		long[] data = sound.getSamples();
+		long[] newdata = new long[sound.getSamples().length];
 		// this is the raw audio data -- no header
 
 		for (int i = 0; i < data.length; i++) {
-			newdata [i] = data [data.length - i - 1];
+			newdata[i] = data[data.length - i - 1];
 		}
 		// normalized result in newdata
-		return new Sound (newdata, sound.getNbBytesPerFrame (), sound.getFreq());
+		return new Sound(newdata, sound.getNbBytesPerSample(), sound.getFreq());
 	}
 }

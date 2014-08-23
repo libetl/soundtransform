@@ -5,34 +5,33 @@ import org.toilelibre.soundtransform.objects.Sound;
 public class PitchSoundTransformation implements SoundTransformation {
 
 	private int percent = 20;
-	
-	public PitchSoundTransformation (int percent) {
+
+	public PitchSoundTransformation(int percent) {
 		this.percent = percent;
-    }
-
-
-	@Override
-	public Sound transform (Sound input) {
-		return PitchSoundTransformation.pitch (input, this.percent);
 	}
 
+	@Override
+	public Sound transform(Sound input) {
+		return PitchSoundTransformation.pitch(input, this.percent);
+	}
 
-	private static Sound pitch (Sound sound, float percent) {
+	private static Sound pitch(Sound sound, float percent) {
 		float total = 100;
-		if (percent == total){
-			return new Sound (sound.getSamples (), sound.getNbBytesPerFrame (), sound.getFreq());
+		if (percent == total) {
+			return new Sound(sound.getSamples(), sound.getNbBytesPerSample(),
+					sound.getFreq());
 		}
-		float nbSamples = sound.getSamples ().length;
+		float nbSamples = sound.getSamples().length;
 		float nbFiltered = percent / total * nbSamples;
 		float incr = nbSamples / nbFiltered;
-		double [] data = sound.getSamples ();
-		double [] ret = new double [(int) (nbFiltered)];
+		long[] data = sound.getSamples();
+		long[] ret = new long[(int) (nbFiltered)];
 		for (float i = 0; i < incr * nbFiltered; i += incr) {
 			int j = (int) (i / incr);
 			if (j < ret.length) {
-				ret [j] = data [(int) i];
+				ret[j] = data[(int) i];
 			}
 		}
-		return new Sound (ret, sound.getNbBytesPerFrame (), sound.getFreq());
+		return new Sound(ret, sound.getNbBytesPerSample(), sound.getFreq());
 	}
 }

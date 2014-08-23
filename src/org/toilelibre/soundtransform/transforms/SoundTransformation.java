@@ -4,5 +4,5 @@ import org.toilelibre.soundtransform.objects.Sound;
 
 public interface SoundTransformation {
 
-	Sound transform (Sound input);
+	Sound transform(Sound input);
 }

@@ -2,7 +2,6 @@ package org.toilelibre.soundtransform.observer;
 
 import java.util.Date;
 
-
 public class LogEvent {
 
 	private LogLevel level;
@@ -13,11 +12,16 @@ public class LogEvent {
 		this.msg = msg1;
 	}
 
-	public enum LogLevel {
-		VERBOSE, INFO, WARN, ERROR
+	public LogLevel getLevel() {
+		return level;
 	}
 
-	public String toString (){
-		return new Date ().toString () + " [" + this.level + "] " + this.msg;
+	public enum LogLevel {
+		PARANOIAC, VERBOSE, INFO, WARN, ERROR
+	}
+
+	@Override
+	public String toString() {
+		return new Date().toString() + " [" + this.level + "] " + this.msg;
 	}
 }

@@ -10,9 +10,11 @@ import org.toilelibre.soundtransform.observer.PrintlnTransformObserver;
 import org.toilelibre.soundtransform.transforms.EightBitsSoundTransformation;
 import org.toilelibre.soundtransform.transforms.EqualizerSoundTransformation;
 import org.toilelibre.soundtransform.transforms.LinearRegressionSoundTransformation;
+import org.toilelibre.soundtransform.transforms.NoOpFrequencySoundTransformation;
 import org.toilelibre.soundtransform.transforms.NoOpSoundTransformation;
 import org.toilelibre.soundtransform.transforms.NormalizeSoundTransformation;
 import org.toilelibre.soundtransform.transforms.PitchSoundTransformation;
+import org.toilelibre.soundtransform.transforms.PurifySoundTransformation;
 import org.toilelibre.soundtransform.transforms.ReverseSoundTransformation;
 import org.toilelibre.soundtransform.transforms.SlowdownSoundTransformation;
 
@@ -100,6 +102,18 @@ public class WavTest {
 	}
 
 	@Test
+	public void testFreqNoOp (){
+		try {
+			new TransformSound(new PrintlnTransformObserver()).transformFile (input, output,
+			    new NoOpFrequencySoundTransformation());
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
 	public void testNoOp (){
 		try {
 			new TransformSound(new PrintlnTransformObserver()).transformFile (input, output,
@@ -117,6 +131,18 @@ public class WavTest {
 		try {
 			new TransformSound(new PrintlnTransformObserver()).transformFile (input, output,
 			    new SlowdownSoundTransformation(200));
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testPurify (){
+		try {
+			new TransformSound(new PrintlnTransformObserver()).transformFile (input, output,
+					new PurifySoundTransformation());
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
