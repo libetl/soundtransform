@@ -4,14 +4,14 @@ import org.apache.commons.math3.complex.Complex;
 
 public class FrequenciesState {
 
-	private Complex[] state;
+	private Complex []	state;
 
-	public FrequenciesState(Complex[] state) {
-		super();
+	public FrequenciesState (Complex [] state) {
+		super ();
 		this.state = state;
 	}
 
-	public Complex[] getState() {
+	public Complex [] getState () {
 		return state;
 	}
 
