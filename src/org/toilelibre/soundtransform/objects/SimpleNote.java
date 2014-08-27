@@ -1,6 +1,5 @@
-package org.toilelibre.soundtransform.note;
+package org.toilelibre.soundtransform.objects;
 
-import org.toilelibre.soundtransform.objects.Sound;
 import org.toilelibre.soundtransform.transforms.PitchSoundTransformation;
 
 public class SimpleNote implements Note {
