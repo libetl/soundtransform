@@ -1,5 +1,7 @@
 package org.toilelibre.soundtransform;
 
+import java.util.Arrays;
+
 import org.apache.commons.math3.exception.NonMonotonicSequenceException;
 import org.apache.commons.math3.util.MathArrays;
 import org.toilelibre.soundtransform.objects.FrequenciesState;
@@ -25,7 +27,7 @@ public class Sound2Note {
 	}
 
 	private static int findFrequency (Sound channel1) {
-		final int threshold = channel1.getFreq () / 10;
+		final int threshold = channel1.getFreq () / 10; //Must not be accurate
 		double sum = 0;
 		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
 
@@ -60,13 +62,79 @@ public class Sound2Note {
 	}
 
 	private static int findSustain (Sound channel1, int decay) {
-		// TODO Auto-generated method stub
-		return 0;
+		final int threshold = 100; //Has to be accurate
+		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
+		int sustainIndex = decay;
+
+		SoundTransformation magnitudeTransform = new NoOpFrequencySoundTransformation () {
+			int	arraylength	= 0;
+
+			@Override
+			public Sound initSound (Sound input) {
+				this.arraylength = 0;
+				return super.initSound (input);
+			}
+
+			@Override
+			protected double getLowThreshold (double defaultValue) {
+				return threshold;
+			}
+
+			@Override
+			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxFrequency) {
+				magnitude [arraylength++] = Sound2Note.computeMagnitude (fs);
+				return super.transformFrequencies (fs, offset, powOf2NearestLength, length, maxFrequency);
+			}
+
+		};
+
+		magnitudeTransform.transform (channel1);
+
+		try {
+			MathArrays.checkOrder (Arrays.copyOfRange (magnitude, decay, magnitude.length), 
+					MathArrays.OrderDirection.DECREASING, true);
+		} catch (NonMonotonicSequenceException nmse) {
+			sustainIndex = (nmse.getIndex () - 1) * threshold;
+		}
+		return sustainIndex;
 	}
 
 	private static int findDecay (Sound channel1, int attack) {
-		// TODO Auto-generated method stub
-		return 0;
+		final int threshold = 100; //Has to be accurate
+		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
+		int decayIndex = attack;
+
+		SoundTransformation magnitudeTransform = new NoOpFrequencySoundTransformation () {
+			int	arraylength	= 0;
+
+			@Override
+			public Sound initSound (Sound input) {
+				this.arraylength = 0;
+				return super.initSound (input);
+			}
+
+			@Override
+			protected double getLowThreshold (double defaultValue) {
+				return threshold;
+			}
+
+			@Override
+			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxFrequency) {
+				magnitude [arraylength++] = Sound2Note.computeMagnitude (fs);
+				return super.transformFrequencies (fs, offset, powOf2NearestLength, length, maxFrequency);
+			}
+
+		};
+
+		magnitudeTransform.transform (channel1);
+
+		try {
+			MathArrays.checkOrder (Arrays.copyOfRange (magnitude, attack, magnitude.length), 
+					MathArrays.OrderDirection.INCREASING, true);
+		} catch (NonMonotonicSequenceException nmse) {
+			decayIndex = (nmse.getIndex () - 1) * threshold;
+		}
+		return decayIndex;
 	}
 
 	private static int findRelease (Sound channel1) {
@@ -102,7 +170,7 @@ public class Sound2Note {
 		try {
 			MathArrays.checkOrder (magnitude, MathArrays.OrderDirection.INCREASING, true);
 		} catch (NonMonotonicSequenceException nmse) {
-			releaseIndexFromReversed = nmse.getIndex () * threshold;
+			releaseIndexFromReversed = (nmse.getIndex () - 1) * threshold;
 		}
 		return magnitude.length - releaseIndexFromReversed;
 	}
