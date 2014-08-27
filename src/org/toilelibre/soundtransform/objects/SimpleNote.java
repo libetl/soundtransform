@@ -26,24 +26,32 @@ public class SimpleNote implements Note {
 		}
 	}
 
+	private float getRatio (Sound [] subsound) {
+	    return subsound [0].getSamples ().length /
+	    		(this.attack [0].getSamples ().length +
+	    				this.decay [0].getSamples ().length +
+	    				this.sustain [0].getSamples ().length +
+	    				this.release [0].getSamples ().length);
+    }
+	
 	@Override
 	public Sound [] getAttack (int frequency, int length) {
-		return this.transformSubsound (this.attack, frequency, (int) 0.1 * length);
+		return this.transformSubsound (this.attack, frequency, (int) (this.getRatio (this.attack) * length));
 	}
 
 	@Override
 	public Sound [] getDecay (int frequency, int length) {
-		return this.transformSubsound (this.decay, frequency, (int) 0.2 * length);
+		return this.transformSubsound (this.decay, frequency, (int) (this.getRatio (this.decay) * length));
 	}
 
 	@Override
 	public Sound [] getSustain (int frequency, int length) {
-		return this.transformSubsound (this.sustain, frequency, (int) 0.5 * length);
+		return this.transformSubsound (this.sustain, frequency, (int) (this.getRatio (this.sustain) * length));
 	}
 
 	@Override
 	public Sound [] getRelease (int frequency, int length) {
-		return this.transformSubsound (this.release, frequency, (int) 0.2 * length);
+		return this.transformSubsound (this.release, frequency, (int) (this.getRatio (this.release) * length));
 	}
 
 	private Sound [] transformSubsound (Sound [] subSound, int frequency, int length) {
