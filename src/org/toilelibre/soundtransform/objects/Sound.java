@@ -1,5 +1,7 @@
 package org.toilelibre.soundtransform.objects;
 
+import java.util.Arrays;
+
 public class Sound {
 
 	private long []	samples;
@@ -24,5 +26,18 @@ public class Sound {
 	public int getFreq () {
 		return freq;
 	}
+	
+	public Sound toSubSound (int beginning, int end){
+	    long [] newsamples = Arrays.copyOfRange (
+	            this.samples, beginning, end);
+	    return new Sound (newsamples, nbBytesPerSample, freq);
+	}	
+
+    public Sound concat (Sound otherSound){
+        long [] newsamples = new long [this.samples.length + otherSound.samples.length];
+        System.arraycopy(this.samples, 0, newsamples, 0, this.samples.length);
+        System.arraycopy(otherSound.samples, 0, newsamples, this.samples.length, otherSound.samples.length);
+        return new Sound (newsamples, nbBytesPerSample, freq);
+    }
 
 }
