@@ -55,7 +55,7 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 			Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
 			FrequenciesState fs = new FrequenciesState (complexArray);
 			FrequenciesState result = this.transformFrequencies (fs, i, maxlength, length, freqmax);
-			if (result == null){
+			if (result == null) {
 				continue;
 			}
 			complexArray = fastFourierTransformer.transform (result.getState (), TransformType.INVERSE);

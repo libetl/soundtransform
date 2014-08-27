@@ -30,7 +30,7 @@ public class SpeedUpSoundTransformation extends AbstractFrequencySoundTransforma
 		if (offset % ( (total / 100 - (total / 100) % this.threshold)) == 0) {
 			this.log (new LogEvent (LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #" + offset + "/" + sound.getSamples ().length * factor));
 		}
-		if (offset % (threshold * factor) == 0){
+		if (offset % (threshold * factor) == 0) {
 			return fs;
 		}
 		return null;
@@ -38,7 +38,7 @@ public class SpeedUpSoundTransformation extends AbstractFrequencySoundTransforma
 
 	@Override
 	protected int getOffsetFromASimpleLoop (int i, double step) {
-		return - i * (factor - 1) / factor;
+		return -i * (factor - 1) / factor;
 	}
 
 	@Override
