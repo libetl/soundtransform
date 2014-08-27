@@ -27,7 +27,7 @@ public class SimpleNote implements Note {
 	}
 
 	private float getRatio (Sound [] subsound) {
-	    return subsound [0].getSamples ().length /
+	    return subsound [0].getSamples ().length * 1.0f /
 	    		(this.attack [0].getSamples ().length +
 	    				this.decay [0].getSamples ().length +
 	    				this.sustain [0].getSamples ().length +
