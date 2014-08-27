@@ -30,7 +30,11 @@ public class Sound2NoteTest {
         AudioInputStream ais = AudioFileHelper.getAudioInputStream(input);
         TransformSound ts = new TransformSound();
 
-        Sound[] channels = ts.fromInputStream(ais);
+        return this.convert(ts.fromInputStream(ais));
+    }
+    
+    @Test
+    public Note convert(Sound[] channels) throws UnsupportedAudioFileException, IOException {
         Sound channel1 = channels[0];
 
         int attack = 0;
