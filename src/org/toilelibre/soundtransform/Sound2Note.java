@@ -69,7 +69,7 @@ public class Sound2Note {
         return 0;
     }
 
-    private static int findDecay(Sound channel1, int decay) {
+    private static int findDecay(Sound channel1, int attack) {
         // TODO Auto-generated method stub
         return 0;
     }

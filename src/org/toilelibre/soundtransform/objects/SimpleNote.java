@@ -27,26 +27,26 @@ public class SimpleNote implements Note {
     }
 
     @Override
-    public Sound[] getAttack(int frequency) {
-        return this.transformSubsound(this.attack, frequency);
+    public Sound[] getAttack(int frequency, int length) {
+        return this.transformSubsound(this.attack, frequency, (int) 0.1 * length);
     }
 
     @Override
-    public Sound[] getDecay(int frequency) {
-        return this.transformSubsound(this.decay, frequency);
+    public Sound[] getDecay(int frequency, int length) {
+        return this.transformSubsound(this.decay, frequency, (int) 0.2 * length);
     }
 
     @Override
-    public Sound[] getSustain(int frequency) {
-        return this.transformSubsound(this.sustain, frequency);
+    public Sound[] getSustain(int frequency, int length) {
+        return this.transformSubsound(this.sustain, frequency, (int) 0.5 * length);
     }
 
     @Override
-    public Sound[] getRelease(int frequency) {
-        return this.transformSubsound(this.release, frequency);
+    public Sound[] getRelease(int frequency, int length) {
+        return this.transformSubsound(this.release, frequency, (int) 0.2 * length);
     }
 
-    private Sound[] transformSubsound(Sound[] subSound, int frequency) {
+    private Sound[] transformSubsound(Sound[] subSound, int frequency, int length) {
         if (frequency == this.frequency) {
             return subSound;
         }

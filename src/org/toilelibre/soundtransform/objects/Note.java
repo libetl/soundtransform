@@ -4,8 +4,8 @@ import org.toilelibre.soundtransform.objects.Sound;
 
 public interface Note {
 
-	Sound[] getAttack (int frequency);
-	Sound[] getDecay (int frequency);
-	Sound[] getSustain (int frequency);
-	Sound[] getRelease (int frequency);
+	Sound[] getAttack (int frequency, int length);
+	Sound[] getDecay (int frequency, int length);
+	Sound[] getSustain (int frequency, int length);
+	Sound[] getRelease (int frequency, int length);
 }

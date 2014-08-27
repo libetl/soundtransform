@@ -17,6 +17,7 @@ import org.toilelibre.soundtransform.transforms.PitchSoundTransformation;
 import org.toilelibre.soundtransform.transforms.PurifySoundTransformation;
 import org.toilelibre.soundtransform.transforms.ReverseSoundTransformation;
 import org.toilelibre.soundtransform.transforms.SlowdownSoundTransformation;
+import org.toilelibre.soundtransform.transforms.SpeedUpSoundTransformation;
 
 public class WavTest {
 
@@ -119,7 +120,18 @@ public class WavTest {
 	public void testSlowdown () {
 		// WARN : quite long
 		try {
-			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new SlowdownSoundTransformation (200));
+			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new SlowdownSoundTransformation (200, 2));
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace ();
+		} catch (IOException e) {
+			e.printStackTrace ();
+		}
+	}
+
+	@Test
+	public void testSpeedUp () {
+		try {
+			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new SpeedUpSoundTransformation (200, 2));
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {

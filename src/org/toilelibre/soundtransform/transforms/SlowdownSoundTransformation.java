@@ -12,31 +12,31 @@ import org.toilelibre.soundtransform.observer.LogEvent.LogLevel;
 //WARN : long execution time soundtransform
 public class SlowdownSoundTransformation extends AbstractFrequencySoundTransformation {
 
-	private int	  times;
+	private int	  factor;
 	private Sound	sound;
 	private int	  threshold;
 
-	public SlowdownSoundTransformation (int threshold) {
-		this.times = 2;
+	public SlowdownSoundTransformation (int threshold, int factor) {
+		this.factor = factor;
 		this.threshold = threshold;
 	}
 
 	@Override
 	protected Sound initSound (Sound input) {
-		long [] newdata = new long [input.getSamples ().length * times];
+		long [] newdata = new long [input.getSamples ().length * factor];
 		this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getFreq ());
 		return this.sound;
 	}
 
 	@Override
 	protected FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxfrequency) {
-		int total = this.sound.getSamples ().length * times;
+		int total = this.sound.getSamples ().length * factor;
 		if (offset % ( (total / 100 - (total / 100) % this.threshold)) == 0) {
-			this.log (new LogEvent (LogLevel.VERBOSE, "SlowdownSoundTransformation : Iteration #" + offset + "/" + sound.getSamples ().length / times));
+			this.log (new LogEvent (LogLevel.VERBOSE, "SlowdownSoundTransformation : Iteration #" + offset + "/" + sound.getSamples ().length / factor));
 		}
 		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 		Complex [] complexArray = fs.getState ();
-		for (int p = 0; p < times - 1; p++) {
+		for (int p = 0; p < factor - 1; p++) {
 			complexArray = fastFourierTransformer.transform (complexArray, TransformType.INVERSE);
 
 			for (int j = 0; j < maxfrequency; j++) {
@@ -50,7 +50,7 @@ public class SlowdownSoundTransformation extends AbstractFrequencySoundTransform
 
 	@Override
 	protected int getOffsetFromASimpleLoop (int i, double step) {
-		return (times - 1) * i;
+		return (factor - 1) * i;
 	}
 
 	@Override
