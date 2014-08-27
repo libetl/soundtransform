@@ -1,6 +1,8 @@
 package org.toilelibre.soundtransform.objects;
 
 import org.toilelibre.soundtransform.transforms.PitchSoundTransformation;
+import org.toilelibre.soundtransform.transforms.SlowdownSoundTransformation;
+import org.toilelibre.soundtransform.transforms.SpeedUpSoundTransformation;
 
 public class SimpleNote implements Note {
 
@@ -47,15 +49,30 @@ public class SimpleNote implements Note {
     }
 
     private Sound[] transformSubsound(Sound[] subSound, int frequency, int length) {
-        if (frequency == this.frequency) {
-            return subSound;
-        }
+
         int percent = (int) (frequency * 100.0 / this.frequency);
         Sound[] result = new Sound[subSound.length];
 
         PitchSoundTransformation pitcher = new PitchSoundTransformation(percent);
-        for (int i = 0; i < result.length; i++) {
-            result[i] = pitcher.transform(subSound[i]);
+        if (percent < 98 || percent > 102){
+          for (int i = 0; i < result.length; i++) {
+              result[i] = pitcher.transform(subSound[i]);
+          }
+        }
+        double factor = length / subSound.length;
+        if (factor < 0.98 || factor > 1.02){
+            if (factor < 0.98){
+                SpeedUpSoundTransformation speedup = new SpeedUpSoundTransformation(100, percent);
+                for (int i = 0; i < result.length; i++) {
+                    result[i] = speedup.transform(subSound[i]);
+                }
+            	
+            }else if (factor > 1.02){
+            	SlowdownSoundTransformation slowdown = new SlowdownSoundTransformation(100, percent);
+                for (int i = 0; i < result.length; i++) {
+                    result[i] = slowdown.transform(subSound[i]);
+                }
+            }
         }
         return result;
     }
