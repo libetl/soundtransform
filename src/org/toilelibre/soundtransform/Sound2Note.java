@@ -26,7 +26,7 @@ public class Sound2Note {
     }
 
     private static int findFrequency(Sound channel1) {
-        final int threshold = 4410;
+        final int threshold = channel1.getFreq () / 10;
         double sum = 0;
         final double[] magnitude = new double[channel1.getSamples().length
                 / threshold + 1];
@@ -75,7 +75,7 @@ public class Sound2Note {
     }
 
     private static int findRelease(Sound channel1) {
-        final int threshold = 4410;
+        final int threshold = channel1.getFreq () / 10;
         Sound reversed = new ReverseSoundTransformation().transform(channel1);
         final double[] magnitude = new double[channel1.getSamples().length
                 / threshold + 1];
