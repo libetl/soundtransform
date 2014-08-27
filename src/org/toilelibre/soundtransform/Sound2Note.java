@@ -27,9 +27,9 @@ public class Sound2Note {
 	}
 
 	private static int findFrequency (Sound channel1) {
-		final int threshold = channel1.getFreq () / 10; //Must not be accurate
+		final int threshold = 100; 
 		double sum = 0;
-		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
+		final double [] magnitude = new double [channel1.getSamples ().length / threshold + threshold];
 
 		SoundTransformation magnFreqTransform = new NoOpFrequencySoundTransformation () {
 
@@ -172,7 +172,7 @@ public class Sound2Note {
 		} catch (NonMonotonicSequenceException nmse) {
 			releaseIndexFromReversed = (nmse.getIndex () - 1) * threshold;
 		}
-		return magnitude.length - releaseIndexFromReversed;
+		return channel1.getSamples ().length - releaseIndexFromReversed;
 	}
 
 	protected static int computeMagnitude (FrequenciesState fs) {

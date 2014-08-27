@@ -20,6 +20,7 @@ public class Sound2NoteTest {
 		TransformSound ts = new TransformSound ();
 
 		Note n = Sound2Note.convert (ts.fromInputStream (ais));
+		n.hashCode ();
 
 	}
 
