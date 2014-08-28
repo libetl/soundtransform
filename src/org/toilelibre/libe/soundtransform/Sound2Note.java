@@ -29,6 +29,7 @@ public class Sound2Note {
 	private static int findFrequency (Sound channel1) {
 		final int threshold = 100; 
 		double sum = 0;
+		int nb = 0;
 		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
 
 		SoundTransformation magnFreqTransform = new NoOpFrequencySoundTransformation () {
@@ -47,7 +48,7 @@ public class Sound2Note {
 
 			@Override
 			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxFrequency) {
-				magnitude [index++] += Sound2Note.computeLoudestFreq (fs);
+				magnitude [index++] += Sound2Note.computeLoudestFreq (fs, (int)maxFrequency);
 				return super.transformFrequencies (fs, offset, powOf2NearestLength, length, maxFrequency);
 			}
 		};
@@ -55,9 +56,12 @@ public class Sound2Note {
 		magnFreqTransform.transform (channel1);
 
 		for (int i = 0; i < magnitude.length; i++) {
-			sum += magnitude [i];
+		    if (magnitude [i] != 0){
+			  sum += magnitude [i];
+			  nb++;
+		    }
 		}
-		return (int) (sum / magnitude.length);
+		return (int) (sum / nb);
 	}
 
 	private static int findSustain (Sound channel1, int decay) {
@@ -182,10 +186,10 @@ public class Sound2Note {
 		return (int) (sum / fs.getState ().length);
 	}
 
-	protected static double computeLoudestFreq (FrequenciesState fs) {
+	protected static double computeLoudestFreq (FrequenciesState fs, int maxFrequency) {
 		double max = 0;
 		double freq = 0;
-		for (int i = 0; i < fs.getState ().length; i++) {
+		for (int i = 0; i < maxFrequency; i++) {
 			double val = fs.getState () [i].abs ();
 			freq = (max < val ? i : freq);
 			max = (max < val ? val : max);
