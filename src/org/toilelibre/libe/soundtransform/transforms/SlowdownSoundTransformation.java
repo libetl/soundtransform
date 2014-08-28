@@ -12,31 +12,39 @@ import org.toilelibre.libe.soundtransform.observer.LogEvent.LogLevel;
 //WARN : long execution time soundtransform
 public class SlowdownSoundTransformation extends AbstractFrequencySoundTransformation {
 
-	private int	  factor;
+	private float  factor;
 	private Sound	sound;
 	private int	  threshold;
+	private float writeIfGreaterEqThan1;
+	private int   additionalFrames;
 
-	public SlowdownSoundTransformation (int threshold, int factor) {
+	public SlowdownSoundTransformation (int threshold, float factor) {
 		this.factor = factor;
 		this.threshold = threshold;
+		this.writeIfGreaterEqThan1 = 0;
+		this.additionalFrames = 0;
 	}
 
 	@Override
 	protected Sound initSound (Sound input) {
-		long [] newdata = new long [input.getSamples ().length * factor];
+		long [] newdata = new long [(int)(input.getSamples ().length * factor)];
 		this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getFreq ());
 		return this.sound;
 	}
 
 	@Override
 	protected FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxfrequency) {
-		int total = this.sound.getSamples ().length * factor;
+		int total = (int)(this.sound.getSamples ().length * factor);
 		if (offset % ( (total / 100 - (total / 100) % this.threshold)) == 0) {
-			this.log (new LogEvent (LogLevel.VERBOSE, "SlowdownSoundTransformation : Iteration #" + offset + "/" + sound.getSamples ().length / factor));
+			this.log (new LogEvent (LogLevel.VERBOSE, "SlowdownSoundTransformation : Iteration #" + offset + "/" + (int)(sound.getSamples ().length / factor)));
 		}
 		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 		Complex [] complexArray = fs.getState ();
-		for (int p = 0; p < factor - 1; p++) {
+		float remaining = (float)(factor - Math.floor (factor));
+		int padding = (int)Math.floor(this.writeIfGreaterEqThan1 + remaining);
+		int loops = (int)(factor + padding - 1);
+		this.additionalFrames += loops;
+		for (int p = 0; p < loops; p++) {
 			complexArray = fastFourierTransformer.transform (complexArray, TransformType.INVERSE);
 
 			for (int j = 0; j < maxfrequency; j++) {
@@ -45,12 +53,17 @@ public class SlowdownSoundTransformation extends AbstractFrequencySoundTransform
 				}
 			}
 		}
+		if (padding == 1){
+			this.writeIfGreaterEqThan1 -= 1;
+		}else{
+			this.writeIfGreaterEqThan1 += remaining;			
+		}
 		return fs;
 	}
 
 	@Override
 	protected int getOffsetFromASimpleLoop (int i, double step) {
-		return (factor - 1) * i;
+		return (int)(additionalFrames * threshold);
 	}
 
 	@Override

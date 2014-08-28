@@ -121,7 +121,7 @@ public class WavTest {
 	public void testSlowdown () {
 		// WARN : quite long
 		try {
-			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new SlowdownSoundTransformation (200, 2));
+			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new SlowdownSoundTransformation (200, 1.2f));
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {
