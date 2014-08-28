@@ -18,7 +18,7 @@ public class PitchSoundTransformation implements SoundTransformation {
 	private static Sound pitch (Sound sound, float percent) {
 		float total = 100;
 		if (percent == total) {
-			return new Sound (sound.getSamples (), sound.getNbBytesPerSample (), sound.getFreq ());
+			return new Sound (sound.getSamples (), sound.getNbBytesPerSample (), sound.getFreq (), sound.getChannelNum ());
 		}
 		float nbSamples = sound.getSamples ().length;
 		float nbFiltered = percent / total * nbSamples;
@@ -31,6 +31,6 @@ public class PitchSoundTransformation implements SoundTransformation {
 				ret [j] = data [(int) i];
 			}
 		}
-		return new Sound (ret, sound.getNbBytesPerSample (), sound.getFreq ());
+		return new Sound (ret, sound.getNbBytesPerSample (), sound.getFreq (), sound.getChannelNum ());
 	}
 }

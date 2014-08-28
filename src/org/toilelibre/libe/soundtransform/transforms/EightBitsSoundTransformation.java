@@ -13,7 +13,7 @@ public class EightBitsSoundTransformation implements SoundTransformation {
 	@Override
 	public Sound transform (Sound input) {
 
-		Sound outputSound = new Sound (new long [input.getSamples ().length], input.getNbBytesPerSample (), input.getFreq ());
+		Sound outputSound = new Sound (new long [input.getSamples ().length], input.getNbBytesPerSample (), input.getFreq (), input.getChannelNum ());
 		for (int i = 0; i < input.getSamples ().length; i++) {
 			if (i % step == 0) {
 				outputSound.getSamples () [i] = input.getSamples () [i];

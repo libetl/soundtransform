@@ -16,7 +16,7 @@ public class NoOpFrequencySoundTransformation extends AbstractFrequencySoundTran
 	@Override
 	public Sound initSound (Sound input) {
 		long [] newdata = new long [input.getSamples ().length];
-		return new Sound (newdata, input.getNbBytesPerSample (), input.getFreq ());
+		return new Sound (newdata, input.getNbBytesPerSample (), input.getFreq (), input.getChannelNum ());
 	}
 
 	@Override

@@ -8,10 +8,10 @@ import org.toilelibre.libe.soundtransform.observer.LogEvent.LogLevel;
 //WARN : long execution time soundtransform
 public class SpeedUpSoundTransformation extends AbstractFrequencySoundTransformation {
 
-	private float	  factor;
+	private float	factor;
 	private Sound	sound;
 	private int	  threshold;
-	private float writeIfGreaterEqThanFactor;
+	private float	writeIfGreaterEqThanFactor;
 
 	public SpeedUpSoundTransformation (int threshold, float factor) {
 		this.factor = factor;
@@ -21,21 +21,21 @@ public class SpeedUpSoundTransformation extends AbstractFrequencySoundTransforma
 
 	@Override
 	protected Sound initSound (Sound input) {
-		long [] newdata = new long [(int)(input.getSamples ().length / factor)];
-		this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getFreq ());
+		long [] newdata = new long [(int) (input.getSamples ().length / factor)];
+		this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getFreq (), input.getChannelNum ());
 		return this.sound;
 	}
 
 	@Override
 	protected FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxfrequency) {
-		int total = (int)(this.sound.getSamples ().length / factor);
+		int total = (int) (this.sound.getSamples ().length / factor);
 		if (offset % ( (total / 100 - (total / 100) % this.threshold)) == 0) {
-			this.log (new LogEvent (LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #" + offset + "/" + (int)(sound.getSamples ().length * factor)));
+			this.log (new LogEvent (LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #" + offset + "/" + (int) (sound.getSamples ().length * factor)));
 		}
-		if (this.writeIfGreaterEqThanFactor >= factor){
+		if (this.writeIfGreaterEqThanFactor >= factor) {
 			this.writeIfGreaterEqThanFactor -= factor;
 			return fs;
-		}else{
+		} else {
 			this.writeIfGreaterEqThanFactor++;
 			return null;
 		}
@@ -43,7 +43,7 @@ public class SpeedUpSoundTransformation extends AbstractFrequencySoundTransforma
 
 	@Override
 	protected int getOffsetFromASimpleLoop (int i, double step) {
-		return (int)(-i * (factor - 1) / factor);
+		return (int) (-i * (factor - 1) / factor);
 	}
 
 	@Override

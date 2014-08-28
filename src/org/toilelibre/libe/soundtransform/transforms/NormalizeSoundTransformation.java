@@ -33,6 +33,6 @@ public class NormalizeSoundTransformation implements SoundTransformation {
 		}
 
 		// normalized result in newdata
-		return new Sound (newdata, sound.getNbBytesPerSample (), sound.getFreq ());
+		return new Sound (newdata, sound.getNbBytesPerSample (), sound.getFreq (), sound.getChannelNum ());
 	}
 }

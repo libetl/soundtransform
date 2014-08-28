@@ -78,7 +78,7 @@ public class TransformSound implements LogAware {
 		Sound [] ret = new Sound [channels];
 		long neutral = (pcmSigned ? this.getNeutral (sampleSize) : 0);
 		for (int channel = 0; channel < channels; channel++) {
-			ret [channel] = new Sound (new long [(int) frameLength], sampleSize, (int) sampleRate);
+			ret [channel] = new Sound (new long [(int) frameLength], sampleSize, (int) sampleRate, channel);
 		}
 		for (int position = 0; position < frameLength; position++) {
 			byte [] frame = new byte [sampleSize * channels];

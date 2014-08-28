@@ -27,7 +27,7 @@ public class Sound2Note {
 	}
 
 	private static int findFrequency (Sound channel1) {
-		final int threshold = 100; 
+		final int threshold = 100;
 		double sum = 0;
 		int nb = 0;
 		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
@@ -48,7 +48,7 @@ public class Sound2Note {
 
 			@Override
 			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxFrequency) {
-				magnitude [index++] += Sound2Note.computeLoudestFreq (fs, (int)maxFrequency);
+				magnitude [index++] += Sound2Note.computeLoudestFreq (fs, (int) maxFrequency);
 				return super.transformFrequencies (fs, offset, powOf2NearestLength, length, maxFrequency);
 			}
 		};
@@ -56,10 +56,10 @@ public class Sound2Note {
 		magnFreqTransform.transform (channel1);
 
 		for (int i = 0; i < magnitude.length; i++) {
-		    if (magnitude [i] != 0){
-			  sum += magnitude [i];
-			  nb++;
-		    }
+			if (magnitude [i] != 0) {
+				sum += magnitude [i];
+				nb++;
+			}
 		}
 		return (int) (sum / nb);
 	}
@@ -94,8 +94,7 @@ public class Sound2Note {
 		magnitudeTransform.transform (channel1);
 
 		try {
-			MathArrays.checkOrder (Arrays.copyOfRange (magnitude, decay, magnitude.length), 
-					MathArrays.OrderDirection.DECREASING, true);
+			MathArrays.checkOrder (Arrays.copyOfRange (magnitude, decay, magnitude.length), MathArrays.OrderDirection.DECREASING, true);
 		} catch (NonMonotonicSequenceException nmse) {
 			sustainIndex = (nmse.getIndex () - 1) * threshold;
 		}
@@ -132,8 +131,7 @@ public class Sound2Note {
 		magnitudeTransform.transform (channel1);
 
 		try {
-			MathArrays.checkOrder (Arrays.copyOfRange (magnitude, attack, magnitude.length), 
-					MathArrays.OrderDirection.INCREASING, true);
+			MathArrays.checkOrder (Arrays.copyOfRange (magnitude, attack, magnitude.length), MathArrays.OrderDirection.INCREASING, true);
 		} catch (NonMonotonicSequenceException nmse) {
 			decayIndex = (nmse.getIndex () - 1) * threshold;
 		}

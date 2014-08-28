@@ -7,16 +7,18 @@ public class Sound {
 	private long []	samples;
 	private int	    nbBytesPerSample;
 	private int	    freq;
+	private int	    channelNum;
 
 	public long [] getSamples () {
 		return samples;
 	}
 
-	public Sound (long [] samples, int nbBytesPerSample, int freq) {
+	public Sound (long [] samples, int nbBytesPerSample, int freq, int channelNum) {
 		super ();
 		this.samples = samples;
 		this.nbBytesPerSample = nbBytesPerSample;
 		this.freq = freq;
+		this.channelNum = channelNum;
 	}
 
 	public int getNbBytesPerSample () {
@@ -27,9 +29,13 @@ public class Sound {
 		return freq;
 	}
 
+	public int getChannelNum () {
+		return channelNum;
+	}
+
 	public Sound toSubSound (int beginning, int end) {
 		long [] newsamples = Arrays.copyOfRange (this.samples, beginning, end);
-		return new Sound (newsamples, nbBytesPerSample, freq);
+		return new Sound (newsamples, nbBytesPerSample, freq, channelNum);
 	}
 
 	public Sound concat (Sound... otherSounds) {
@@ -44,7 +50,7 @@ public class Sound {
 			System.arraycopy (otherSounds [i].samples, 0, newsamples, newindex, otherSounds [i].samples.length);
 			newindex += otherSounds [i].samples.length;
 		}
-		return new Sound (newsamples, nbBytesPerSample, freq);
+		return new Sound (newsamples, nbBytesPerSample, freq, channelNum);
 	}
 
 }

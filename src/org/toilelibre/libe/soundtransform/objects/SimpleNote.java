@@ -27,13 +27,10 @@ public class SimpleNote implements Note {
 	}
 
 	private float getRatio (Sound [] subsound) {
-	    return subsound [0].getSamples ().length * 1.0f /
-	    		(this.attack [0].getSamples ().length +
-	    				this.decay [0].getSamples ().length +
-	    				this.sustain [0].getSamples ().length +
-	    				this.release [0].getSamples ().length);
-    }
-	
+		return subsound [0].getSamples ().length * 1.0f
+		        / (this.attack [0].getSamples ().length + this.decay [0].getSamples ().length + this.sustain [0].getSamples ().length + this.release [0].getSamples ().length);
+	}
+
 	@Override
 	public Sound [] getAttack (int frequency, int length) {
 		return this.transformSubsound (this.attack, frequency, (int) (this.getRatio (this.attack) * length));
@@ -55,9 +52,9 @@ public class SimpleNote implements Note {
 	}
 
 	@Override
-    public int getFrequency () {
-	    return this.frequency;
-    }
+	public int getFrequency () {
+		return this.frequency;
+	}
 
 	private Sound [] transformSubsound (Sound [] subSound, int frequency, int length) {
 

@@ -21,6 +21,6 @@ public class ReverseSoundTransformation implements SoundTransformation {
 			newdata [i] = data [data.length - i - 1];
 		}
 		// normalized result in newdata
-		return new Sound (newdata, sound.getNbBytesPerSample (), sound.getFreq ());
+		return new Sound (newdata, sound.getNbBytesPerSample (), sound.getFreq (), sound.getChannelNum ());
 	}
 }
