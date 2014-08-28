@@ -29,7 +29,7 @@ public class Sound2Note {
 	private static int findFrequency (Sound channel1) {
 		final int threshold = 100; 
 		double sum = 0;
-		final double [] magnitude = new double [channel1.getSamples ().length / threshold + threshold];
+		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
 
 		SoundTransformation magnFreqTransform = new NoOpFrequencySoundTransformation () {
 
@@ -47,8 +47,7 @@ public class Sound2Note {
 
 			@Override
 			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxFrequency) {
-				index++;
-				magnitude [index] += Sound2Note.computeLoudestFreq (fs);
+				magnitude [index++] += Sound2Note.computeLoudestFreq (fs);
 				return super.transformFrequencies (fs, offset, powOf2NearestLength, length, maxFrequency);
 			}
 		};
