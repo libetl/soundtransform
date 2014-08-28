@@ -17,6 +17,7 @@ import org.toilelibre.libe.soundtransform.transforms.NormalizeSoundTransformatio
 import org.toilelibre.libe.soundtransform.transforms.PitchSoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.PurifySoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.ReverseSoundTransformation;
+import org.toilelibre.libe.soundtransform.transforms.ShapeSoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.SlowdownSoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.SpeedUpSoundTransformation;
 
@@ -144,6 +145,19 @@ public class WavTest {
 	public void testPurify () {
 		try {
 			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new PurifySoundTransformation ());
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace ();
+		} catch (IOException e) {
+			e.printStackTrace ();
+		}
+	}
+	
+
+
+	@Test
+	public void testShape () {
+		try {
+			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new ShapeSoundTransformation ());
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {
