@@ -151,8 +151,6 @@ public class WavTest {
 			e.printStackTrace ();
 		}
 	}
-	
-
 
 	@Test
 	public void testShape () {

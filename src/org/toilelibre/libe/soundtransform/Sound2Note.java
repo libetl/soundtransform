@@ -26,7 +26,7 @@ public class Sound2Note {
 
 	}
 
-	public static double [] getSoundLoudestFreqs (final double [] magnitude, final Sound sound, final int threshold){
+	public static double [] getSoundLoudestFreqs (final double [] magnitude, final Sound sound, final int threshold) {
 
 		SoundTransformation magnFreqTransform = new NoOpFrequencySoundTransformation () {
 
@@ -51,13 +51,13 @@ public class Sound2Note {
 		magnFreqTransform.transform (sound);
 		return magnitude;
 	}
-	
+
 	private static int findFrequency (Sound channel1) {
 		final int threshold = 100;
 		double sum = 0;
 		int nb = 0;
 		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
-		
+
 		Sound2Note.getSoundLoudestFreqs (magnitude, channel1, threshold);
 
 		for (int i = 0; i < magnitude.length; i++) {

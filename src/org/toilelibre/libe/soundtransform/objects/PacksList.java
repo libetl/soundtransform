@@ -11,19 +11,19 @@ import org.toilelibre.libe.soundtransform.TransformSound;
 
 public class PacksList {
 
-	private static PacksList packsList = new PacksList (); 
-	
-	public static PacksList getInstance (){
+	private static PacksList	packsList	= new PacksList ();
+
+	public static PacksList getInstance () {
 		return PacksList.packsList;
 	}
-	
-	private PacksList (){
-		
+
+	private PacksList () {
+
 	}
-	
+
 	private ClassLoader	classLoader	= Thread.currentThread ().getContextClassLoader ();
 	TransformSound	    ts	        = new TransformSound ();
-	public Pack         defaultPack	= new Pack () {
+	public Pack	        defaultPack	= new Pack () {
 		                                /**
 		 * 
 		 */
