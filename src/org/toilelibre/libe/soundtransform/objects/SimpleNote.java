@@ -32,23 +32,23 @@ public class SimpleNote implements Note {
 	}
 
 	@Override
-	public Sound [] getAttack (int frequency, int length) {
-		return this.transformSubsound (this.attack, frequency, (int) (this.getRatio (this.attack) * length));
+	public Sound getAttack (int frequency, int channelnum, int length) {
+		return this.transformSubsound (this.attack, channelnum, frequency, (int) (this.getRatio (this.attack) * length));
 	}
 
 	@Override
-	public Sound [] getDecay (int frequency, int length) {
-		return this.transformSubsound (this.decay, frequency, (int) (this.getRatio (this.decay) * length));
+	public Sound getDecay (int frequency, int channelnum, int length) {
+		return this.transformSubsound (this.decay, channelnum, frequency, (int) (this.getRatio (this.decay) * length));
 	}
 
 	@Override
-	public Sound [] getSustain (int frequency, int length) {
-		return this.transformSubsound (this.sustain, frequency, (int) (this.getRatio (this.sustain) * length));
+	public Sound getSustain (int frequency, int channelnum, int length) {
+		return this.transformSubsound (this.sustain, channelnum, frequency, (int) (this.getRatio (this.sustain) * length));
 	}
 
 	@Override
-	public Sound [] getRelease (int frequency, int length) {
-		return this.transformSubsound (this.release, frequency, (int) (this.getRatio (this.release) * length));
+	public Sound getRelease (int frequency, int channelnum, int length) {
+		return this.transformSubsound (this.release, channelnum, frequency, (int) (this.getRatio (this.release) * length));
 	}
 
 	@Override
@@ -56,30 +56,24 @@ public class SimpleNote implements Note {
 		return this.frequency;
 	}
 
-	private Sound [] transformSubsound (Sound [] subSound, int frequency, int length) {
+	private Sound transformSubsound (Sound [] subSound, int channelNum, int frequency, int length) {
 
 		int percent = (int) (frequency * 100.0 / this.frequency);
-		Sound [] result = new Sound [subSound.length];
+		Sound result = subSound [channelNum];
 
 		PitchSoundTransformation pitcher = new PitchSoundTransformation (percent);
 		if (percent < 98 || percent > 102) {
-			for (int i = 0; i < result.length; i++) {
-				result [i] = pitcher.transform (subSound [i]);
-			}
+			result = pitcher.transform (result);
 		}
 		double factor = length / subSound.length;
 		if (factor < 0.98 || factor > 1.02) {
 			if (factor < 0.98) {
 				SpeedUpSoundTransformation speedup = new SpeedUpSoundTransformation (100, percent);
-				for (int i = 0; i < result.length; i++) {
-					result [i] = speedup.transform (subSound [i]);
-				}
+				result = speedup.transform (result);
 
 			} else if (factor > 1.02) {
 				SlowdownSoundTransformation slowdown = new SlowdownSoundTransformation (100, percent);
-				for (int i = 0; i < result.length; i++) {
-					result [i] = slowdown.transform (subSound [i]);
-				}
+				result = slowdown.transform (result);
 			}
 		}
 		return result;

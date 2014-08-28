@@ -36,8 +36,8 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 
 				int length = (i - 1 - lastBegining) * threshold;
 				Note n = packsList.defaultPack.get ("piano").getNearestNote ((int) lastFreq);
-				builtSound.concat (n.getAttack ((int) lastFreq, length) [channelNum], n.getDecay ((int) lastFreq, length) [channelNum], n.getSustain ((int) lastFreq, length) [channelNum],
-				        n.getRelease ((int) lastFreq, length) [channelNum]);
+				builtSound.concat (n.getAttack ((int) lastFreq, channelNum, length), n.getDecay ((int) lastFreq, channelNum, length), n.getSustain ((int) lastFreq, channelNum, length),
+				        n.getRelease ((int) lastFreq, channelNum, length));
 
 				lastBegining = i;
 				lastFreq = freqs [i];
