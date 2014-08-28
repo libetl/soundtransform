@@ -11,4 +11,6 @@ public interface Note {
 	Sound [] getSustain (int frequency, int length);
 
 	Sound [] getRelease (int frequency, int length);
+	
+	int getFrequency ();
 }

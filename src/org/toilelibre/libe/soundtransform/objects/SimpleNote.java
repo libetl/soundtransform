@@ -54,6 +54,11 @@ public class SimpleNote implements Note {
 		return this.transformSubsound (this.release, frequency, (int) (this.getRatio (this.release) * length));
 	}
 
+	@Override
+    public int getFrequency () {
+	    return this.frequency;
+    }
+
 	private Sound [] transformSubsound (Sound [] subSound, int frequency, int length) {
 
 		int percent = (int) (frequency * 100.0 / this.frequency);

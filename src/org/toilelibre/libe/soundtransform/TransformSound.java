@@ -89,7 +89,7 @@ public class TransformSound implements LogAware {
 		return ret;
 	}
 
-	protected Sound [] fromInputStream (AudioInputStream ais) throws IOException {
+	public Sound [] fromInputStream (AudioInputStream ais) throws IOException {
 		int channels = ais.getFormat ().getChannels ();
 		long frameLength = ais.getFrameLength ();
 		int sampleSize = ais.getFormat ().getFrameSize () / channels;
