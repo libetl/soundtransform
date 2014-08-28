@@ -132,7 +132,7 @@ public class WavTest {
 	@Test
 	public void testSpeedUp () {
 		try {
-			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new SpeedUpSoundTransformation (200, 2));
+			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new SpeedUpSoundTransformation (200, 1.5f));
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {

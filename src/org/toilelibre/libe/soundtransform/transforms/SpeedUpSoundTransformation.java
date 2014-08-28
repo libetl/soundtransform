@@ -8,37 +8,42 @@ import org.toilelibre.libe.soundtransform.observer.LogEvent.LogLevel;
 //WARN : long execution time soundtransform
 public class SpeedUpSoundTransformation extends AbstractFrequencySoundTransformation {
 
-	private int	  factor;
+	private float	  factor;
 	private Sound	sound;
 	private int	  threshold;
+	private float writeIfGreaterEqThanFactor;
 
-	public SpeedUpSoundTransformation (int threshold, int factor) {
+	public SpeedUpSoundTransformation (int threshold, float factor) {
 		this.factor = factor;
 		this.threshold = threshold;
+		this.writeIfGreaterEqThanFactor = 0;
 	}
 
 	@Override
 	protected Sound initSound (Sound input) {
-		long [] newdata = new long [input.getSamples ().length / factor];
+		long [] newdata = new long [(int)(input.getSamples ().length / factor)];
 		this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getFreq ());
 		return this.sound;
 	}
 
 	@Override
 	protected FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxfrequency) {
-		int total = this.sound.getSamples ().length / factor;
+		int total = (int)(this.sound.getSamples ().length / factor);
 		if (offset % ( (total / 100 - (total / 100) % this.threshold)) == 0) {
-			this.log (new LogEvent (LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #" + offset + "/" + sound.getSamples ().length * factor));
+			this.log (new LogEvent (LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #" + offset + "/" + (int)(sound.getSamples ().length * factor)));
 		}
-		if (offset % (threshold * factor) == 0) {
+		if (this.writeIfGreaterEqThanFactor >= factor){
+			this.writeIfGreaterEqThanFactor -= factor;
 			return fs;
+		}else{
+			this.writeIfGreaterEqThanFactor++;
+			return null;
 		}
-		return null;
 	}
 
 	@Override
 	protected int getOffsetFromASimpleLoop (int i, double step) {
-		return -i * (factor - 1) / factor;
+		return (int)(-i * (factor - 1) / factor);
 	}
 
 	@Override
