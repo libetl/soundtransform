@@ -32,6 +32,9 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 
 	@Override
 	public void log (LogEvent logEvent) {
+		if (this.observers == null){
+			return;
+		}
 		for (TransformObserver transformObserver : this.observers) {
 			transformObserver.notify (logEvent);
 		}
