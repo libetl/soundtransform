@@ -28,7 +28,7 @@ public class SlowdownSoundTransformation extends AbstractFrequencySoundTransform
 	@Override
 	protected Sound initSound (Sound input) {
 		long [] newdata = new long [(int) (input.getSamples ().length * factor)];
-		this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getFreq (), sound.getChannelNum ());
+		this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getFreq (), input.getChannelNum ());
 		return this.sound;
 	}
 
