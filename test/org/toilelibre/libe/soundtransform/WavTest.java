@@ -155,7 +155,7 @@ public class WavTest {
 	@Test
 	public void testShape () {
 		try {
-			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new ShapeSoundTransformation ());
+			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new PurifySoundTransformation(), new ShapeSoundTransformation ());
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {
