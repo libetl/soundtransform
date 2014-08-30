@@ -38,8 +38,8 @@ public class Sound {
 		return new Sound (newsamples, nbBytesPerSample, freq, channelNum);
 	}
 
-	public Sound concat (boolean inPlace, Sound... otherSounds) {
-		int newlength = this.samples.length;
+	public Sound concat (boolean inPlace, int offset, Sound... otherSounds) {
+		int newlength = offset;
 		for (int i = 0; i < otherSounds.length; i++) {
 			newlength += otherSounds [i].getSamples ().length;
 		}
@@ -50,7 +50,7 @@ public class Sound {
 			newsamples = new long [newlength];
 			System.arraycopy (this.samples, 0, newsamples, 0, this.samples.length);
 		}
-		int newindex = this.samples.length;
+		int newindex = offset;
 		for (int i = 0; i < otherSounds.length; i++) {
 			System.arraycopy (otherSounds [i].samples, 0, newsamples, newindex, otherSounds [i].samples.length);
 			newindex += otherSounds [i].samples.length;

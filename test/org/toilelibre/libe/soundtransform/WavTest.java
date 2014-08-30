@@ -7,6 +7,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.TransformSound;
+import org.toilelibre.libe.soundtransform.objects.PacksList;
 import org.toilelibre.libe.soundtransform.observer.PrintlnTransformObserver;
 import org.toilelibre.libe.soundtransform.transforms.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.EqualizerSoundTransformation;
@@ -155,7 +156,10 @@ public class WavTest {
 	@Test
 	public void testShape () {
 		try {
-			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new PurifySoundTransformation(), new ShapeSoundTransformation ());
+			System.out.println("Loading packs");
+			PacksList packsList = PacksList.getInstance ();
+			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new PurifySoundTransformation(), 
+					new ShapeSoundTransformation (packsList.defaultPack, "piano"));
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {
