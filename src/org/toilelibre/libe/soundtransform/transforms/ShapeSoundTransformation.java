@@ -20,9 +20,10 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 	public Sound transform (Sound sound) {
 		this.log (new LogEvent (LogLevel.VERBOSE, "Loading packLists"));
 		PacksList packsList = PacksList.getInstance ();
-		int threshold = 2000;
+		int threshold = 20000;
 		int channelNum = sound.getChannelNum ();
-		Sound builtSound = new Sound (new long [0], sound.getNbBytesPerSample (), sound.getFreq (), channelNum);
+		Sound builtSound = new Sound (new long [sound.getSamples().length], 
+				sound.getNbBytesPerSample (), sound.getFreq (), channelNum);
 
 		double [] freqs = new double [sound.getSamples ().length / threshold + 1];
 		this.log (new LogEvent (LogLevel.VERBOSE, "Finding loudest frequency"));
@@ -36,7 +37,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 
 				int length = (i - 1 - lastBegining) * threshold;
 				Note n = packsList.defaultPack.get ("piano").getNearestNote ((int) lastFreq);
-				builtSound = builtSound.concat (n.getAttack ((int) lastFreq, channelNum, length), n.getDecay ((int) lastFreq, channelNum, length), n.getSustain ((int) lastFreq, channelNum, length),
+				builtSound = builtSound.concat (true, n.getAttack ((int) lastFreq, channelNum, length), n.getDecay ((int) lastFreq, channelNum, length), n.getSustain ((int) lastFreq, channelNum, length),
 				        n.getRelease ((int) lastFreq, channelNum, length));
 
 				lastBegining = i;
