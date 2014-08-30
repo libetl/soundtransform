@@ -47,7 +47,7 @@ public class PacksList {
 												private static final long serialVersionUID = -697360338897271102L;
 
 												{
-					                                PacksList.this.addNote (this, "piano_low.mp3");
+					                                PacksList.this.addNote (this, "piano_low.wav");
 			                                	}});
 			                                this.put ("g-piano", new Range () {
 				                                /**
