@@ -65,7 +65,7 @@ public class SimpleNote implements Note {
 		if (percent < 98 || percent > 102) {
 			result = pitcher.transform (result);
 		}
-		double factor = subSound [0].getSamples().length == 0 ? 0 : length / subSound [0].getSamples().length;
+		double factor = subSound [0].getSamples().length == 0 ? 0 : length * 1.0 / subSound [0].getSamples().length;
 		if (factor == 0){
 			return result;
 		} else if (factor < 0.98 || factor > 1.02) {

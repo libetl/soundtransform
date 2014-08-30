@@ -162,7 +162,6 @@ public class WavTest {
 					new EqualizerSoundTransformation(
 							new double [] {0, 20, 50, 100, 120, 140,  160,  180,  200,  220, 1000, 2000,  5000,  11000, 22050}, 
 							new double [] {1,  1,  1,   1,   1,   1,    1, 0.70, 0.30, 0.10, 0.10,  0.10,  0.10,  0.10,  0.10}),
-					new PurifySoundTransformation(), 
 					new ShapeSoundTransformation (packsList.defaultPack, "piano_low"));
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
