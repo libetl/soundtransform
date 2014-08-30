@@ -143,7 +143,7 @@ public class TransformSound implements LogAware {
 			int numByte = i % sampleSize;
 			int currentChannel = (i / sampleSize) % channels.length;
 			int currentFrame = i / (sampleSize * channels.length);
-			if (numByte == 0) {
+			if (numByte == 0 &&  channels [currentChannel].getSamples ().length > currentFrame) {
 				value = channels [currentChannel].getSamples () [currentFrame] + neutral;
 				// this.log(new LogEvent (LogLevel.PARANOIAC, "Sample #" + currentFrame + ", channel : " + currentChannel + ", value : " + String.format("%.0f", value)));
 			}
