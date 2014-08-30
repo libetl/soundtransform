@@ -192,7 +192,7 @@ public class Sound2Note {
 	protected static double computeLoudestFreq (FrequenciesState fs, int maxFrequency) {
 		double max = 0;
 		double freq = 0;
-		for (int i = 0; i < maxFrequency; i++) {
+		for (int i = 0; i < maxFrequency / 2; i++) {
 			double val = fs.getState () [i].abs ();
 			freq = (max < val ? i : freq);
 			max = (max < val ? val : max);
