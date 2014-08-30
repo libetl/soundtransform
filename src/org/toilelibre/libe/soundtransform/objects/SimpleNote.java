@@ -65,7 +65,7 @@ public class SimpleNote implements Note {
 		if (percent < 98 || percent > 102) {
 			result = pitcher.transform (result);
 		}
-		double factor = length / subSound.length;
+		double factor = length / subSound [0].getSamples().length;
 		if (factor < 0.98 || factor > 1.02) {
 			if (factor < 0.98) {
 				SpeedUpSoundTransformation speedup = new SpeedUpSoundTransformation (100, percent);

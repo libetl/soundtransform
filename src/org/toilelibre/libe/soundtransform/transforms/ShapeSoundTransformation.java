@@ -22,7 +22,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 
 	@Override
 	public Sound transform (Sound sound) {
-		int threshold = 2000;
+		int threshold = 100;
 		int channelNum = sound.getChannelNum ();
 		Sound builtSound = new Sound (new long [sound.getSamples().length], 
 				sound.getNbBytesPerSample (), sound.getFreq (), channelNum);
