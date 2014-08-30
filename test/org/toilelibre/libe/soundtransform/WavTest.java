@@ -158,7 +158,10 @@ public class WavTest {
 		try {
 			System.out.println("Loading packs");
 			PacksList packsList = PacksList.getInstance ();
-			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new PurifySoundTransformation(), 
+			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, 
+					new EqualizerSoundTransformation(new double [] {0, 140, 141, 900, 901, 22050}, 
+							new double [] {0, 0, 1, 1, 0, 0}),
+					new PurifySoundTransformation(), 
 					new ShapeSoundTransformation (packsList.defaultPack, "piano"));
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
