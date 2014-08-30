@@ -40,12 +40,37 @@ public class PacksList {
 					                                PacksList.this.addNote (this, "piano_a.wav");
 				                                }
 			                                });
+			                                this.put ("piano_low", new Range () {
+			                                	/**
+												 * 
+												 */
+												private static final long serialVersionUID = -697360338897271102L;
+
+												{
+					                                PacksList.this.addNote (this, "piano_low.mp3");
+			                                	}});
+			                                this.put ("g-piano", new Range () {
+				                                /**
+			 * 
+			 */
+				                                private static final long	serialVersionUID	= 5300824836424234508L;
+
+				                                {
+					                                PacksList.this.addNote (this, "g-piano3.wav");
+					                                PacksList.this.addNote (this, "g-piano4.wav");
+				                                }
+			                                });
 
 		                                }
 	                                };
 
 	private void addNote (Range range, String fileName) {
 		try {
+			Object o = classLoader.getResource (fileName);
+			if (o == null){
+				System.out.println(fileName + " not found");
+				return;
+			}
 			Note n = Sound2Note.convert (ts.fromInputStream (AudioFileHelper.getAudioInputStream (new File (classLoader.getResource (fileName).getFile ()))));
 			range.put (n.getFrequency (), n);
 		} catch (UnsupportedAudioFileException e) {
