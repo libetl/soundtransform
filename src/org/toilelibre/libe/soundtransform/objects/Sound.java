@@ -40,6 +40,7 @@ public class Sound {
 
 	public Sound concat (boolean inPlace, int offset, Sound... otherSounds) {
 		int newlength = offset;
+		boolean append = true;
 		for (int i = 0; i < otherSounds.length; i++) {
 			newlength += otherSounds [i].getSamples ().length;
 		}
@@ -49,10 +50,17 @@ public class Sound {
 		}else{
 			newsamples = new long [newlength];
 			System.arraycopy (this.samples, 0, newsamples, 0, this.samples.length);
+			append = false;
 		}
 		int newindex = offset;
 		for (int i = 0; i < otherSounds.length; i++) {
-			System.arraycopy (otherSounds [i].samples, 0, newsamples, newindex, otherSounds [i].samples.length);
+			if (!append){
+			  System.arraycopy (otherSounds [i].samples, 0, newsamples, newindex, otherSounds [i].samples.length);
+			}else{
+				for (int j = 0 ; j < otherSounds [i].samples.length ; j++){
+					newsamples [newindex + j] += otherSounds [i].samples [j];
+				}
+			}
 			newindex += otherSounds [i].samples.length;
 		}
 		return new Sound (newsamples, nbBytesPerSample, freq, channelNum);
