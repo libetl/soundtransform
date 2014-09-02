@@ -71,11 +71,11 @@ public class SimpleNote implements Note {
 			return result;
 		} else if (factor < 0.98 || factor > 1.02) {
 			if (factor < 0.98) {
-				SpeedUpSoundTransformation speedup = new SpeedUpSoundTransformation (100, percent);
+				SpeedUpSoundTransformation speedup = new SpeedUpSoundTransformation (100, (float)(1 /factor));
 				result = speedup.transform (result);
 
 			} else if (factor > 1.02) {
-				SlowdownSoundTransformation slowdown = new SlowdownSoundTransformation (100, percent);
+				SlowdownSoundTransformation slowdown = new SlowdownSoundTransformation (100, (float)factor);
 				result = slowdown.transform (result);
 			}
 		}
