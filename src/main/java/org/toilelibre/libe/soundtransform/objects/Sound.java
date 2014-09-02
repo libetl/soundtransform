@@ -38,32 +38,14 @@ public class Sound {
 		return new Sound (newsamples, nbBytesPerSample, freq, channelNum);
 	}
 
-	public Sound concat (boolean inPlace, int offset, Sound... otherSounds) {
-		int newlength = offset;
-		boolean append = true;
-		for (int i = 0; i < otherSounds.length; i++) {
-			newlength += otherSounds [i].getSamples ().length;
-		}
-		long [] newsamples;
-		if (newlength <= this.getSamples().length && inPlace){
-			newsamples = this.samples;
-		}else{
-			newsamples = new long [newlength];
-			System.arraycopy (this.samples, 0, newsamples, 0, this.samples.length);
-			append = false;
-		}
-		int newindex = offset;
-		for (int i = 0; i < otherSounds.length; i++) {
-			if (!append){
-			  System.arraycopy (otherSounds [i].samples, 0, newsamples, newindex, otherSounds [i].samples.length);
-			}else{
-				for (int j = 0 ; j < otherSounds [i].samples.length ; j++){
-					newsamples [newindex + j] += otherSounds [i].samples [j];
-				}
-			}
-			newindex += otherSounds [i].samples.length;
-		}
-		return new Sound (newsamples, nbBytesPerSample, freq, channelNum);
-	}
-
+    public void append (int usedarraylength, Sound...otherSounds) {
+        int offset = usedarraylength;
+        for (int i = 0 ; i < otherSounds.length ; i++){
+            Sound otherSound = otherSounds [i];
+            for (int j = 0 ; j < otherSound.getSamples().length ; j++){
+                this.getSamples() [offset++] = otherSound.getSamples() [j];
+            }
+        }
+        
+    }
 }
