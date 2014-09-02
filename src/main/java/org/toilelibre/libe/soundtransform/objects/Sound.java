@@ -43,7 +43,9 @@ public class Sound {
         for (int i = 0 ; i < otherSounds.length ; i++){
             Sound otherSound = otherSounds [i];
             for (int j = 0 ; j < otherSound.getSamples().length ; j++){
-                this.getSamples() [offset++] = otherSound.getSamples() [j];
+            	if (offset < this.getSamples ().length){
+                  this.getSamples() [offset++] = otherSound.getSamples() [j];
+            	}
             }
         }
         
