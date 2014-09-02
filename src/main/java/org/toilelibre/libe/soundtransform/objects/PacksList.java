@@ -37,7 +37,7 @@ public class PacksList {
 				                                private static final long	serialVersionUID	= 5300824836424234508L;
 
 				                                {
-					                                PacksList.this.addNote (this, "piano_a.wav");
+					                                PacksList.this.addNote (this, "notes/piano_a.wav");
 				                                }
 			                                });
 			                                this.put ("piano_low", new Range () {
@@ -47,7 +47,7 @@ public class PacksList {
 												private static final long serialVersionUID = -697360338897271102L;
 
 												{
-					                                PacksList.this.addNote (this, "piano_low.wav");
+					                                PacksList.this.addNote (this, "notes/piano_low.wav");
 			                                	}});
 			                                this.put ("g-piano", new Range () {
 				                                /**
@@ -56,8 +56,8 @@ public class PacksList {
 				                                private static final long	serialVersionUID	= 5300824836424234508L;
 
 				                                {
-					                                PacksList.this.addNote (this, "g-piano3.wav");
-					                                PacksList.this.addNote (this, "g-piano4.wav");
+					                                PacksList.this.addNote (this, "notes/g-piano3.wav");
+					                                PacksList.this.addNote (this, "notes/g-piano4.wav");
 				                                }
 			                                });
 

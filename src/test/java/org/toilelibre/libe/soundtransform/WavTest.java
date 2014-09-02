@@ -119,7 +119,7 @@ public class WavTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testSlowdown () {
 		// WARN : quite long
 		try {
@@ -131,8 +131,9 @@ public class WavTest {
 		}
 	}
 
-	@Test
+    //@Test
 	public void testSpeedUp () {
+        // WARN : quite long
 		try {
 			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new SpeedUpSoundTransformation (200, 1.5f));
 		} catch (UnsupportedAudioFileException e) {
@@ -153,8 +154,9 @@ public class WavTest {
 		}
 	}
 
-	@Test
+    //@Test
 	public void testShape () {
+        // WARN : quite long
 		try {
 			System.out.println("Loading packs");
 			PacksList packsList = PacksList.getInstance ();
