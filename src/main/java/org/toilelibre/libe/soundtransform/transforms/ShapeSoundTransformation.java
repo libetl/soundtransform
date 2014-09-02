@@ -38,7 +38,6 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 			int length = (i - 1 - lastBegining) * threshold;
 			if (Math.abs (freqs [i] - lastFreq) > freqs [i] / 100 &&
 					length > sound.getFreq () / 2) {
-System.out.println(length);
 				Note note = this.pack.get (this.instrument).getNearestNote ((int) lastFreq);
 				Sound attack = note.getAttack ((int) lastFreq, channelNum, length);
 				Sound decay = note.getDecay ((int) lastFreq, channelNum, length);
