@@ -43,7 +43,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 				Sound decay = note.getDecay ((int) lastFreq, channelNum, length);
 				Sound sustain = note.getSustain ((int) lastFreq, channelNum, length);
 				Sound release = note.getRelease ((int) lastFreq, channelNum, length);
-				builtSound.append (threshold * i, attack, decay, sustain, release);
+				builtSound.append (threshold * lastBegining, attack, decay, sustain, release);
 				lastBegining = i;
 				lastFreq = freqs [i];
 			}
