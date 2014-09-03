@@ -9,13 +9,13 @@ public class PurifySoundTransformation extends NoOpFrequencySoundTransformation 
 	}
 
 	@Override
-	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxFrequency) {
+	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 		Complex [] newAmpl = new Complex [powOf2NearestLength];
 		int max = 0;
 		double maxValue = 0;
 		for (int j = 0; j < length; j++) {
 			double tmp = Math.sqrt (Math.pow (fs.getState () [j].getReal (), 2) + Math.pow (fs.getState () [j].getImaginary (), 2));
-			if (tmp > maxValue && j > 100 && j < maxFrequency / 2) {
+			if (tmp > maxValue && j > 100 && j < fs.getMaxfrequency () / 2) {
 				max = j;
 				maxValue = tmp;
 			}
@@ -23,6 +23,6 @@ public class PurifySoundTransformation extends NoOpFrequencySoundTransformation 
 		for (int j = 0; j < powOf2NearestLength; j++) {
 			newAmpl [j] = fs.getState () [j].multiply (Math.exp (- (Math.pow (j - max, 2)) / 100));
 		}
-		return new FrequenciesState (newAmpl);
+		return new FrequenciesState (newAmpl, fs.getMaxfrequency ());
 	}
 }

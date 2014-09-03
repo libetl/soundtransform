@@ -9,7 +9,7 @@ public class NoOpFrequencySoundTransformation extends AbstractFrequencySoundTran
 	}
 
 	@Override
-	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxFrequency) {
+	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 		return fs;
 	}
 

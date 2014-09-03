@@ -27,7 +27,7 @@ public class SpeedUpSoundTransformation extends AbstractFrequencySoundTransforma
 	}
 
 	@Override
-	protected FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxfrequency) {
+	protected FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 		int total = (int) (this.sound.getSamples ().length / factor);
 		if (total / 100 != 0 && 
 				(total / 100 - (total / 100) % this.threshold) != 0 &&

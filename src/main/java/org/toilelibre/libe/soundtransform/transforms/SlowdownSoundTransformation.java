@@ -33,7 +33,7 @@ public class SlowdownSoundTransformation extends AbstractFrequencySoundTransform
 	}
 
 	@Override
-	protected FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxfrequency) {
+	protected FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 		int total = (int) (this.sound.getSamples ().length * factor);
 		if (total / 100 != 0 &&
 				(total / 100 - (total / 100) % this.threshold) != 0 &&
@@ -49,9 +49,9 @@ public class SlowdownSoundTransformation extends AbstractFrequencySoundTransform
 		for (int p = 0; p < loops; p++) {
 			complexArray = fastFourierTransformer.transform (complexArray, TransformType.INVERSE);
 
-			for (int j = 0; j < maxfrequency; j++) {
-				if (offset + p * maxfrequency + j < this.sound.getSamples ().length && this.sound.getSamples () [(int) (offset + p * maxfrequency + j)] == 0) {
-					this.sound.getSamples () [(int) (offset + p * maxfrequency + j)] = (long) Math.floor (complexArray [j].getReal ());
+			for (int j = 0; j < fs.getMaxfrequency (); j++) {
+				if (offset + p * fs.getMaxfrequency () + j < this.sound.getSamples ().length && this.sound.getSamples () [(int) (offset + p * fs.getMaxfrequency () + j)] == 0) {
+					this.sound.getSamples () [(int) (offset + p * fs.getMaxfrequency () + j)] = (long) Math.floor (complexArray [j].getReal ());
 				}
 			}
 		}

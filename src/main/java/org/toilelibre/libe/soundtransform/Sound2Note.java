@@ -43,9 +43,9 @@ public class Sound2Note {
 			}
 
 			@Override
-			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxFrequency) {
-				magnitude [index++] += Sound2Note.computeLoudestFreq (fs, (int) maxFrequency);
-				return super.transformFrequencies (fs, offset, powOf2NearestLength, length, maxFrequency);
+			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
+				magnitude [index++] += Sound2Note.computeLoudestFreq (fs);
+				return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
 			}
 		};
 		magnFreqTransform.transform (sound);
@@ -89,9 +89,9 @@ public class Sound2Note {
 			}
 
 			@Override
-			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxFrequency) {
+			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 				magnitude [arraylength++] = Sound2Note.computeMagnitude (fs);
-				return super.transformFrequencies (fs, offset, powOf2NearestLength, length, maxFrequency);
+				return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
 			}
 
 		};
@@ -126,9 +126,9 @@ public class Sound2Note {
 			}
 
 			@Override
-			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxFrequency) {
+			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 				magnitude [arraylength++] = Sound2Note.computeMagnitude (fs);
-				return super.transformFrequencies (fs, offset, powOf2NearestLength, length, maxFrequency);
+				return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
 			}
 
 		};
@@ -164,9 +164,9 @@ public class Sound2Note {
 			}
 
 			@Override
-			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxFrequency) {
+			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 				magnitude [arraylength++] = Sound2Note.computeMagnitude (fs);
-				return super.transformFrequencies (fs, offset, powOf2NearestLength, length, maxFrequency);
+				return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
 			}
 
 		};
@@ -189,10 +189,10 @@ public class Sound2Note {
 		return (int) (sum / fs.getState ().length);
 	}
 
-	protected static double computeLoudestFreq (FrequenciesState fs, int maxFrequency) {
+	protected static double computeLoudestFreq (FrequenciesState fs) {
 		double max = 0;
 		double freq = 0;
-		for (int i = 0; i < maxFrequency / 2; i++) {
+		for (int i = 0; i < fs.getMaxfrequency () / 2; i++) {
 			double val = fs.getState () [i].abs ();
 			freq = (max < val ? i : freq);
 			max = (max < val ? val : max);

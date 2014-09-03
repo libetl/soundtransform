@@ -19,7 +19,7 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 
 	protected abstract Sound initSound (Sound input);
 
-	protected abstract FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length, double maxfrequency);
+	protected abstract FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length);
 
 	protected abstract int getOffsetFromASimpleLoop (int i, double step);
 
@@ -56,8 +56,8 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 				transformeddata [j - i] = data [j];
 			}
 			Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
-			FrequenciesState fs = new FrequenciesState (complexArray);
-			FrequenciesState result = this.transformFrequencies (fs, i, maxlength, length, freqmax);
+			FrequenciesState fs = new FrequenciesState (complexArray, (int) freqmax);
+			FrequenciesState result = this.transformFrequencies (fs, i, maxlength, length);
 			if (result == null) {
 				continue;
 			}
