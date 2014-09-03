@@ -99,7 +99,7 @@ public class Sound2Note {
 		magnitudeTransform.transform (channel1);
 
 		try {
-			MathArrays.checkOrder (Arrays.copyOfRange (magnitude, decay, magnitude.length), MathArrays.OrderDirection.DECREASING, true);
+			MathArrays.checkOrder (Arrays.copyOfRange (magnitude, decay / threshold, magnitude.length), MathArrays.OrderDirection.DECREASING, true);
 		} catch (NonMonotonicSequenceException nmse) {
 			sustainIndex = (nmse.getIndex () - 1) * threshold;
 		}
@@ -144,7 +144,7 @@ public class Sound2Note {
 	}
 
 	private static int findRelease (Sound channel1) {
-		final int threshold = channel1.getFreq () / 10;
+		final int threshold = 100;
 		Sound reversed = new ReverseSoundTransformation ().transform (channel1);
 		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
 		int releaseIndexFromReversed = 0;

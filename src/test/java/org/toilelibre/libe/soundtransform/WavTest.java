@@ -154,7 +154,7 @@ public class WavTest {
 		}
 	}
 
-    //@Test
+    @Test
 	public void testShape () {
         // WARN : quite long
 		try {
