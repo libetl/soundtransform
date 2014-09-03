@@ -74,6 +74,8 @@ public class PacksList {
 			Note n = Sound2Note.convert (ts.fromInputStream (AudioFileHelper.getAudioInputStream (file)));
 			range.put (n.getFrequency (), n);
 		} catch (UnsupportedAudioFileException e) {
+        } catch (IllegalArgumentException e) {
+            System.err.println(fileName + " could not be parsed as an ADSR note");
 		} catch (IOException e) {
 		}
 
