@@ -8,6 +8,7 @@ import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 import org.toilelibre.libe.soundtransform.objects.Note;
 import org.toilelibre.libe.soundtransform.objects.SimpleNote;
 import org.toilelibre.libe.soundtransform.objects.Sound;
+import org.toilelibre.libe.soundtransform.transforms.CepstrumSoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.NoOpFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.ReverseSoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.SoundTransformation;
@@ -26,39 +27,13 @@ public class Sound2Note {
 
 	}
 
-	public static double [] getSoundLoudestFreqs (final double [] magnitude, final Sound sound, final int threshold) {
-
-		SoundTransformation magnFreqTransform = new NoOpFrequencySoundTransformation () {
-
-			int	index	= 0;
-
-			@Override
-			public Sound initSound (Sound input) {
-				return super.initSound (input);
-			}
-
-			@Override
-			protected double getLowThreshold (double defaultValue) {
-				return threshold;
-			}
-
-			@Override
-			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
-				magnitude [index++] += Sound2Note.computeLoudestFreq (fs);
-				return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
-			}
-		};
-		magnFreqTransform.transform (sound);
-		return magnitude;
-	}
-
 	private static int findFrequency (Sound channel1) {
-		final int threshold = 100;
 		double sum = 0;
 		int nb = 0;
-		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
 
-		Sound2Note.getSoundLoudestFreqs (magnitude, channel1, threshold);
+		CepstrumSoundTransformation cepstrum = new CepstrumSoundTransformation (100);
+		cepstrum.transform (channel1);
+		int[] magnitude =  cepstrum.getLoudestFreqs ();
 
 		for (int i = 0; i < magnitude.length; i++) {
 			if (magnitude [i] != 0) {

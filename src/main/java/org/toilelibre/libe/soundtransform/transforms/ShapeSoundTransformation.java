@@ -1,6 +1,5 @@
 package org.toilelibre.libe.soundtransform.transforms;
 
-import org.toilelibre.libe.soundtransform.Sound2Note;
 import org.toilelibre.libe.soundtransform.objects.Note;
 import org.toilelibre.libe.soundtransform.objects.Pack;
 import org.toilelibre.libe.soundtransform.objects.Sound;
@@ -27,9 +26,12 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 		Sound builtSound = new Sound (new long [sound.getSamples().length], 
 				sound.getNbBytesPerSample (), sound.getFreq (), channelNum);
 
-		double [] freqs = new double [sound.getSamples ().length / threshold + 1];
-		this.log (new LogEvent (LogLevel.VERBOSE, "Finding loudest frequency"));
-		Sound2Note.getSoundLoudestFreqs (freqs, sound, threshold);
+		int [] freqs ;
+		this.log (new LogEvent (LogLevel.VERBOSE, "Finding loudest frequencies"));
+
+		CepstrumSoundTransformation cepstrum = new CepstrumSoundTransformation (threshold);
+		cepstrum.transform (sound);
+		freqs = cepstrum.getLoudestFreqs ();
 
 		double lastFreq = freqs [0];
 		int lastBegining = 0;
