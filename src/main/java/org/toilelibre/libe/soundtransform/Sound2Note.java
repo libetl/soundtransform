@@ -168,7 +168,7 @@ public class Sound2Note {
 		double max = 0;
 		double freq = 0;
 		for (int i = 0; i < fs.getMaxfrequency () / 2; i++) {
-			double val = fs.getState () [i].abs ();
+			double val = Math.pow (fs.getState () [i].abs (), 2);
 			freq = (max < val ? i : freq);
 			max = (max < val ? val : max);
 		}

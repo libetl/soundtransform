@@ -11,7 +11,7 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 
 	private double threshold;
 	private int [] loudestfreqs;
-	private int i;
+	private int index;
 
 	public CepstrumSoundTransformation () {
 		this.threshold = 100;
@@ -23,8 +23,8 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 
 	@Override
     public Sound initSound (Sound input) {
-		this.loudestfreqs = new int [input.getSamples ().length];
-		this.i = 0;
+		this.loudestfreqs = new int [(int)(input.getSamples ().length / threshold) + 1];
+		this.index = 0;
 	    return super.initSound (input);
     }
 
@@ -40,12 +40,12 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 	private void computeLoudestFreq (FrequenciesState fs) {
 		double max = 0;
 		double freq = 0;
-		for (int j = 0; j < fs.getMaxfrequency () / 2; j++) {
+		for (int j = 50; j < 900; j++) {
 			double val = fs.getState () [j].abs ();
-			freq = (max < val ? i : freq);
+			freq = (max < val ? j : freq);
 			max = (max < val ? val : max);
 		}
-		this.loudestfreqs [i] = (int)freq;
+		this.loudestfreqs [index] = (int)freq;
     }
 	
 	@Override
@@ -65,6 +65,7 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 				fs.getMaxfrequency ());
 		
 		this.computeLoudestFreq (fscep);
+		this.index++;
 		
 		return fscep;
 	}
