@@ -9,29 +9,29 @@ import org.toilelibre.libe.soundtransform.objects.Sound;
 
 public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformation {
 
-	private double threshold;
-	private int [] loudestfreqs;
-	private int index;
+	private double	threshold;
+	private int []	loudestfreqs;
+	private int	   index;
 
 	public CepstrumSoundTransformation () {
 		this.threshold = 100;
 	}
-	
+
 	public CepstrumSoundTransformation (double threshold) {
 		this.threshold = threshold;
 	}
 
 	@Override
-    public Sound initSound (Sound input) {
-		this.loudestfreqs = new int [(int)(input.getSamples ().length / threshold) + 1];
+	public Sound initSound (Sound input) {
+		this.loudestfreqs = new int [(int) (input.getSamples ().length / threshold) + 1];
 		this.index = 0;
-	    return super.initSound (input);
-    }
+		return super.initSound (input);
+	}
 
 	@Override
-    protected double getLowThreshold (double defaultValue) {
-	    return this.threshold;
-    }
+	protected double getLowThreshold (double defaultValue) {
+		return this.threshold;
+	}
 
 	public int [] getLoudestFreqs () {
 		return loudestfreqs;
@@ -45,13 +45,13 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 			freq = (max < val ? j : freq);
 			max = (max < val ? val : max);
 		}
-		this.loudestfreqs [index] = (int)freq;
-    }
-	
+		this.loudestfreqs [index] = (int) freq;
+	}
+
 	@Override
 	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
-		
-		for (int i = 0 ; i < fs.getState ().length ; i++){
+
+		for (int i = 0; i < fs.getState ().length; i++) {
 			Complex c = fs.getState () [i];
 			double abs = c.abs ();
 			double abs2 = Math.pow (abs, 2);
@@ -60,13 +60,11 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 		}
 		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 
-		FrequenciesState fscep = new FrequenciesState (
-				fastFourierTransformer.transform (fs.getState (), TransformType.INVERSE),
-				fs.getMaxfrequency ());
-		
+		FrequenciesState fscep = new FrequenciesState (fastFourierTransformer.transform (fs.getState (), TransformType.INVERSE), fs.getMaxfrequency ());
+
 		this.computeLoudestFreq (fscep);
 		this.index++;
-		
+
 		return fscep;
 	}
 }

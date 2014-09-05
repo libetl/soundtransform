@@ -38,16 +38,16 @@ public class Sound {
 		return new Sound (newsamples, nbBytesPerSample, freq, channelNum);
 	}
 
-    public void append (int usedarraylength, Sound...otherSounds) {
-        int offset = usedarraylength;
-        for (int i = 0 ; i < otherSounds.length ; i++){
-            Sound otherSound = otherSounds [i];
-            for (int j = 0 ; j < otherSound.getSamples().length ; j++){
-            	if (offset < this.getSamples ().length){
-                  this.getSamples() [offset++] = otherSound.getSamples() [j];
-            	}
-            }
-        }
-        
-    }
+	public void append (int usedarraylength, Sound... otherSounds) {
+		int offset = usedarraylength;
+		for (int i = 0; i < otherSounds.length; i++) {
+			Sound otherSound = otherSounds [i];
+			for (int j = 0; j < otherSound.getSamples ().length; j++) {
+				if (offset < this.getSamples ().length) {
+					this.getSamples () [offset++] = otherSound.getSamples () [j];
+				}
+			}
+		}
+
+	}
 }

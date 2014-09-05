@@ -23,7 +23,7 @@ public class Sound2Note {
 		int sustain = Sound2Note.findSustain (channel1, decay);
 		int release = Sound2Note.findRelease (channel1);
 
-		return new SimpleNote (channels, Sound2Note.findFrequency (channel1.toSubSound(sustain, release)), attack, decay, sustain, release);
+		return new SimpleNote (channels, Sound2Note.findFrequency (channel1.toSubSound (sustain, release)), attack, decay, sustain, release);
 
 	}
 
@@ -33,7 +33,7 @@ public class Sound2Note {
 
 		CepstrumSoundTransformation cepstrum = new CepstrumSoundTransformation (100);
 		cepstrum.transform (channel1);
-		int[] magnitude =  cepstrum.getLoudestFreqs ();
+		int [] magnitude = cepstrum.getLoudestFreqs ();
 
 		for (int i = 0; i < magnitude.length; i++) {
 			if (magnitude [i] != 0) {

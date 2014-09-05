@@ -11,8 +11,8 @@ import org.toilelibre.libe.soundtransform.observer.TransformObserver;
 public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 
 	private TransformObserver []	observers;
-	private Pack pack;
-	private String instrument;
+	private Pack	             pack;
+	private String	             instrument;
 
 	public ShapeSoundTransformation (Pack pack, String instrument) {
 		this.pack = pack;
@@ -23,10 +23,9 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 	public Sound transform (Sound sound) {
 		int threshold = 100;
 		int channelNum = sound.getChannelNum ();
-		Sound builtSound = new Sound (new long [sound.getSamples().length], 
-				sound.getNbBytesPerSample (), sound.getFreq (), channelNum);
+		Sound builtSound = new Sound (new long [sound.getSamples ().length], sound.getNbBytesPerSample (), sound.getFreq (), channelNum);
 
-		int [] freqs ;
+		int [] freqs;
 		this.log (new LogEvent (LogLevel.VERBOSE, "Finding loudest frequencies"));
 
 		CepstrumSoundTransformation cepstrum = new CepstrumSoundTransformation (threshold);
@@ -38,8 +37,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 		for (int i = 0; i < freqs.length; i++) {
 			this.log (new LogEvent (LogLevel.VERBOSE, "Iteration " + i + " / " + freqs.length));
 			int length = (i - 1 - lastBegining) * threshold;
-			if (Math.abs (freqs [i] - lastFreq) > freqs [i] / 100 &&
-					length > sound.getFreq () / 2) {
+			if (Math.abs (freqs [i] - lastFreq) > freqs [i] / 100 && length > sound.getFreq () / 2) {
 				Note note = this.pack.get (this.instrument).getNearestNote ((int) lastFreq);
 				Sound attack = note.getAttack ((int) lastFreq, channelNum, length);
 				Sound decay = note.getDecay ((int) lastFreq, channelNum, length);

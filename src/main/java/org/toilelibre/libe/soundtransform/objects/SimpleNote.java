@@ -27,8 +27,8 @@ public class SimpleNote implements Note {
 	}
 
 	private float getRatio (Sound [] subsound) {
-	    int lengthOfSubsound = subsound [0].getSamples ().length;
-	    int lengthOfSound = (this.attack [0].getSamples ().length + this.decay [0].getSamples ().length + this.sustain [0].getSamples ().length + this.release [0].getSamples ().length);
+		int lengthOfSubsound = subsound [0].getSamples ().length;
+		int lengthOfSound = (this.attack [0].getSamples ().length + this.decay [0].getSamples ().length + this.sustain [0].getSamples ().length + this.release [0].getSamples ().length);
 		return lengthOfSubsound * 1.0f / lengthOfSound;
 	}
 
@@ -66,16 +66,16 @@ public class SimpleNote implements Note {
 		if (percent < 98 || percent > 102) {
 			result = pitcher.transform (result);
 		}
-		double factor = subSound [0].getSamples().length == 0 ? 0 : length * 1.0 / result.getSamples().length;
-		if (factor == 0){
+		double factor = subSound [0].getSamples ().length == 0 ? 0 : length * 1.0 / result.getSamples ().length;
+		if (factor == 0) {
 			return result;
 		} else if (factor < 0.98 || factor > 1.02) {
 			if (factor < 0.98) {
-				SpeedUpSoundTransformation speedup = new SpeedUpSoundTransformation (100, (float)(1 /factor));
+				SpeedUpSoundTransformation speedup = new SpeedUpSoundTransformation (100, (float) (1 / factor));
 				result = speedup.transform (result);
 
 			} else if (factor > 1.02) {
-				SlowdownSoundTransformation slowdown = new SlowdownSoundTransformation (100, (float)factor);
+				SlowdownSoundTransformation slowdown = new SlowdownSoundTransformation (100, (float) factor);
 				result = slowdown.transform (result);
 			}
 		}

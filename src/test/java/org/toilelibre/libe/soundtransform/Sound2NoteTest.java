@@ -14,19 +14,18 @@ import org.toilelibre.libe.soundtransform.TransformSound;
 import org.toilelibre.libe.soundtransform.objects.Note;
 
 public class Sound2NoteTest {
-    
-	
+
 	@Test
 	public void run () throws UnsupportedAudioFileException, IOException {
-	    ClassLoader classLoader = Sound2NoteTest.class.getClassLoader();
-	    URL fileURL = classLoader.getResource ("piano_low.wav");
-	    File        input       = new File (fileURL.getFile ());
+		ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
+		URL fileURL = classLoader.getResource ("piano_low.wav");
+		File input = new File (fileURL.getFile ());
 
 		AudioInputStream ais = AudioFileHelper.getAudioInputStream (input);
 		TransformSound ts = new TransformSound ();
 
 		Note n = Sound2Note.convert (ts.fromInputStream (ais));
-		System.out.println(n);
+		System.out.println (n);
 
 	}
 

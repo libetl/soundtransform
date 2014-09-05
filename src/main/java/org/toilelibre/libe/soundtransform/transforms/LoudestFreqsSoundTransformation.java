@@ -12,39 +12,36 @@ import org.toilelibre.libe.soundtransform.objects.Sound;
 
 public class LoudestFreqsSoundTransformation extends NoOpFrequencySoundTransformation {
 
-	private double threshold;
+	private double	threshold;
 
 	public LoudestFreqsSoundTransformation () {
 		this.threshold = 100;
 	}
-	
+
 	public LoudestFreqsSoundTransformation (double threshold) {
 		this.threshold = threshold;
 	}
 
 	@Override
-    public Sound initSound (Sound input) {
-	    return super.initSound (input);
-    }
+	public Sound initSound (Sound input) {
+		return super.initSound (input);
+	}
 
 	@Override
-    protected double getLowThreshold (double defaultValue) {
-	    return this.threshold;
-    }
+	protected double getLowThreshold (double defaultValue) {
+		return this.threshold;
+	}
 
 	@Override
 	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
-		
-		for (int i = 0 ; i < fs.getState ().length ; i++){
+
+		for (int i = 0; i < fs.getState ().length; i++) {
 			fs.getState () [i] = new Complex (Math.log (fs.getState () [i].abs ()));
 		}
 		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 
-		FrequenciesState fscep = new FrequenciesState (
-				fastFourierTransformer.transform (fs.getState (), TransformType.INVERSE),
-				fs.getMaxfrequency ());
-		
-		
+		FrequenciesState fscep = new FrequenciesState (fastFourierTransformer.transform (fs.getState (), TransformType.INVERSE), fs.getMaxfrequency ());
+
 		return fscep;
 	}
 }

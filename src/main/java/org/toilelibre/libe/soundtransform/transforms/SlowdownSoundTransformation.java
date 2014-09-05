@@ -35,9 +35,7 @@ public class SlowdownSoundTransformation extends AbstractFrequencySoundTransform
 	@Override
 	protected FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 		int total = (int) (this.sound.getSamples ().length * factor);
-		if (total / 100 != 0 &&
-				(total / 100 - (total / 100) % this.threshold) != 0 &&
-				offset % ( (total / 100 - (total / 100) % this.threshold)) == 0) {
+		if (total / 100 != 0 && (total / 100 - (total / 100) % this.threshold) != 0 && offset % ( (total / 100 - (total / 100) % this.threshold)) == 0) {
 			this.log (new LogEvent (LogLevel.VERBOSE, "SlowdownSoundTransformation : Iteration #" + offset + "/" + (int) (sound.getSamples ().length / factor)));
 		}
 		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
