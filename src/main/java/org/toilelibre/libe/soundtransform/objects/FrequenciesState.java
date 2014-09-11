@@ -23,9 +23,9 @@ public class FrequenciesState {
 
 	public String toString () {
 		float lastFrequency = maxfrequency / 2.0f;
-		int length = (int) lastFrequency / 100;
+		int length = (int) lastFrequency / 20;
 		int height = 15;
-		int maxMagn = 256 * 256 * 16;
+		int maxMagn = this.getMaxValue ();
 		StringBuffer sb = new StringBuffer ();
 		int step = (int) lastFrequency / length;
 		int [] valuesOnPlot = new int [length];
@@ -68,5 +68,15 @@ public class FrequenciesState {
 		sb.append ("\nMax is in the range " + (int) (max * 1.0 / length * lastFrequency) + "Hz - " + (int) ( (max + 1.0) / length * lastFrequency) + "Hz");
 		return sb.toString ();
 	}
+
+	private int getMaxValue () {
+		int max = 0;
+		for (int i = 0 ; i < this.state.length ; i++){
+			if (max < this.state [i].abs ()){
+				max = (int) Math.ceil (this.state [i].abs ());
+			}
+		}
+	    return max;
+    }
 
 }

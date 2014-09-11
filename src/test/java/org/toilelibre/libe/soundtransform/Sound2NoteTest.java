@@ -18,7 +18,7 @@ public class Sound2NoteTest {
 	@Test
 	public void run () throws UnsupportedAudioFileException, IOException {
 		ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
-		URL fileURL = classLoader.getResource ("piano_low.wav");
+		URL fileURL = classLoader.getResource ("notes/a-piano3.wav");
 		File input = new File (fileURL.getFile ());
 
 		AudioInputStream ais = AudioFileHelper.getAudioInputStream (input);

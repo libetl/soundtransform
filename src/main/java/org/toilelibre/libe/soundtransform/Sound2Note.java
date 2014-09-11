@@ -23,7 +23,7 @@ public class Sound2Note {
 		int sustain = Sound2Note.findSustain (channel1, decay);
 		int release = Sound2Note.findRelease (channel1);
 
-		return new SimpleNote (channels, Sound2Note.findFrequency (channel1.toSubSound (sustain, release)), attack, decay, sustain, release);
+		return new SimpleNote (channels, Sound2Note.findFrequency (channel1), attack, decay, sustain, release);
 
 	}
 
