@@ -32,11 +32,13 @@ public class FrequenciesState {
 		int max = 0;
 		int maxValue = 0;
 		for (int i = 0; i < valuesOnPlot.length; i++) {
-			double sum = 0;
+			double peak = 0;
 			for (int j = 0; j < step; j++) {
-				sum += state [i * step + j].abs ();
+			    if (peak < state [i * step + j].abs ()){
+			        peak = state [i * step + j].abs ();
+			    }
 			}
-			valuesOnPlot [i] = (int) (sum * 1.0 / step * height / (maxMagn));
+			valuesOnPlot [i] = (int) (peak * height / (maxMagn));
 			if (maxValue < valuesOnPlot [i]) {
 				maxValue = valuesOnPlot [i];
 				max = i;
