@@ -22,31 +22,35 @@ public class FrequenciesState {
 	}
 
 	public int peak (){
-	    String toString = this.toString();
+	    String toString = this.toString(50, 900);
 	    return Integer.parseInt(toString.substring(toString.lastIndexOf('-') + 2, toString.lastIndexOf('H')));
 	}
 	
 	public String toString () {
-		float lastFrequency = maxfrequency / 2.0f;
+	    return this.toString(0, (int)maxfrequency / 2);
+	}
+	
+	public String toString (int min, int max) {
+		float lastFrequency = (float)max;
 		int length = (int) lastFrequency / 20;
 		int height = 15;
 		int maxMagn = this.getMaxValue ();
 		StringBuffer sb = new StringBuffer ();
 		int step = (int) lastFrequency / length;
 		int [] valuesOnPlot = new int [length];
-		int max = 0;
+		int maxIndex = 0;
 		int maxValue = 0;
 		for (int i = 0; i < valuesOnPlot.length; i++) {
 			double peak = 0;
 			for (int j = 0; j < step; j++) {
-			    if (peak < state [i * step + j].abs ()){
-			        peak = state [i * step + j].abs ();
+			    if (peak < state [i * step + j + min].abs ()){
+			        peak = state [i * step + j + min].abs ();
 			    }
 			}
 			valuesOnPlot [i] = (int) (peak * height / (maxMagn));
 			if (maxValue < valuesOnPlot [i]) {
 				maxValue = valuesOnPlot [i];
-				max = i;
+				maxIndex = i;
 			}
 		}
 		for (int j = height; j >= 0; j--) {
@@ -72,7 +76,7 @@ public class FrequenciesState {
 			sb.append ("-");
 		}
 		sb.append ("> " + lastFrequency + "Hz (freq)");
-		sb.append ("\nMax is in the range " + (int) (max * 1.0 / length * lastFrequency) + "Hz - " + (int) ( (max + 1.0) / length * lastFrequency) + "Hz");
+		sb.append ("\nMax is in the range " + (int) (maxIndex * 1.0 / length * lastFrequency + min) + "Hz - " + (int) ( (maxIndex + 1.0) / length * lastFrequency + min) + "Hz");
 		return sb.toString ();
 	}
 
