@@ -7,6 +7,7 @@ import java.net.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.Sound2Note;
@@ -25,7 +26,7 @@ public class Sound2NoteTest {
 		TransformSound ts = new TransformSound ();
 
 		Note n = Sound2Note.convert (ts.fromInputStream (ais));
-		System.out.println (n);
+		org.junit.Assert.assertEquals (336, n.getFrequency ());
 
 	}
 

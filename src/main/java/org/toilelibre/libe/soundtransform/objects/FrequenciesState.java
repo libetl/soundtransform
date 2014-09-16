@@ -23,34 +23,48 @@ public class FrequenciesState {
 
 	public int peak (){
 	    String toString = this.toString(50, 900);
-	    return Integer.parseInt(toString.substring(toString.lastIndexOf('-') + 2, toString.lastIndexOf('H')));
+	    return Integer.parseInt(toString.substring(toString.lastIndexOf('-') + 2, toString.lastIndexOf('H'))) - 10;
+	}
+
+	public int max (){
+	    String toString = this.toString(50, 900);
+	    toString = toString.substring(0, toString.lastIndexOf('\n'));
+	    return Integer.parseInt(
+	    		toString.substring(toString.lastIndexOf('-') + 2, toString.lastIndexOf('H')));
 	}
 	
 	public String toString () {
 	    return this.toString(0, (int)maxfrequency / 2);
 	}
 	
-	public String toString (int min, int max) {
-		float lastFrequency = (float)max;
+	public String toString (int low, int high) {
+		float lastFrequency = (float)high;
 		int length = (int) lastFrequency / 20;
 		int height = 15;
-		int maxMagn = this.getMaxValue ();
+		int maxIndex = this.getMaxIndex (low, high);
+		int maxMagn = (int) this.state [maxIndex].abs ();
 		StringBuffer sb = new StringBuffer ();
 		int step = (int) lastFrequency / length;
 		int [] valuesOnPlot = new int [length];
-		int maxIndex = 0;
-		int maxValue = 0;
+		int maxPlotIndex = 0;
+		int maxPlotValue = 0;
+		double peakIndex = 0;
+		double peakValue = 0;
 		for (int i = 0; i < valuesOnPlot.length; i++) {
-			double peak = 0;
+			double maxValue = 0;
 			for (int j = 0; j < step; j++) {
-			    if (peak < state [i * step + j + min].abs ()){
-			        peak = state [i * step + j + min].abs ();
+			    if (peakValue * 2 < state [i * step + j + low].abs ()){
+			        peakValue = state [i * step + j + low].abs ();
+			        peakIndex = i * step + j + low;
+			    }
+			    if (maxValue < state [i * step + j + low].abs ()){
+			    	maxValue = state [i * step + j + low].abs ();
 			    }
 			}
-			valuesOnPlot [i] = (int) (peak * height / (maxMagn));
-			if (maxValue < valuesOnPlot [i]) {
-				maxValue = valuesOnPlot [i];
-				maxIndex = i;
+			valuesOnPlot [i] = (int) (maxValue * height / (maxMagn));
+			if (maxPlotValue < valuesOnPlot [i]) {
+				maxPlotValue = valuesOnPlot [i];
+				maxPlotIndex = i;
 			}
 		}
 		for (int j = height; j >= 0; j--) {
@@ -76,18 +90,21 @@ public class FrequenciesState {
 			sb.append ("-");
 		}
 		sb.append ("> " + lastFrequency + "Hz (freq)");
-		sb.append ("\nMax is in the range " + (int) (maxIndex * 1.0 / length * lastFrequency + min) + "Hz - " + (int) ( (maxIndex + 1.0) / length * lastFrequency + min) + "Hz");
+		sb.append ("\nMax is in the range " + (int) (maxPlotIndex * 1.0 / length * lastFrequency + low) + "Hz - " + (int) ( (maxPlotIndex + 1.0) / length * lastFrequency + low) + "Hz");
+		sb.append ("\nFirst peak is in the range " + (int) (peakIndex - 10) + "Hz - " + (int) (peakIndex + 10) + "Hz");
 		return sb.toString ();
 	}
 
-	private int getMaxValue () {
+	private int getMaxIndex (int low, int high) {
 		int max = 0;
-		for (int i = 0 ; i < this.state.length ; i++){
+		int maxIndex = 0;
+		for (int i = low ; i < high ; i++){
 			if (max < this.state [i].abs ()){
 				max = (int) Math.ceil (this.state [i].abs ());
+				maxIndex = i;
 			}
 		}
-	    return max;
+	    return maxIndex;
     }
 
 }

@@ -37,32 +37,24 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 		return loudestfreqs;
 	}
 
-	private int computeLoudestFreq (FrequenciesState fs) {
-		double max = 0;
-		double freq = 0;
-		for (int j = 50; j < 900; j++) {
-			double val = fs.getState () [j].abs ();
-			freq = (max < val ? j : freq);
-			max = (max < val ? val : max);
-		}
-		return (int)freq;
-	}
-
 	@Override
 	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 
 		for (int i = 0; i < fs.getState ().length; i++) {
 			Complex c = fs.getState () [i];
-			double abs = c.abs ();
-			double abs2 = Math.pow (abs, 2);
-			double log = Math.log (abs);
+			double log = Math.log (Math.pow (c.abs (), 2));
 			fs.getState () [i] = new Complex (log);
 		}
 		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 
-		FrequenciesState fscep = new FrequenciesState (fastFourierTransformer.transform (fs.getState (), TransformType.INVERSE), fs.getMaxfrequency ());
+		FrequenciesState fscep = new FrequenciesState (fastFourierTransformer.transform (fs.getState (), TransformType.FORWARD), fs.getMaxfrequency ());
+		for (int i = 0; i < fscep.getState ().length; i++) {
+			Complex c = fscep.getState () [i];
+			double sqr = Math.pow (c.abs (), 2);
+			fscep.getState () [i] = new Complex (sqr);
+		}
 
-        this.loudestfreqs [index] = this.computeLoudestFreq (fscep);
+        this.loudestfreqs [index] = fscep.max ();
 		this.index++;
 
 		return fscep;

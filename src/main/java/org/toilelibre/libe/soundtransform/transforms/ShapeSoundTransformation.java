@@ -28,7 +28,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 		int [] freqs;
 		this.log (new LogEvent (LogLevel.VERBOSE, "Finding loudest frequencies"));
 
-		PeakFindSoundTransformation peak = new PeakFindSoundTransformation (threshold);
+		CepstrumSoundTransformation peak = new CepstrumSoundTransformation (threshold);
 		peak.transform (sound);
 		freqs = peak.getLoudestFreqs ();
 
