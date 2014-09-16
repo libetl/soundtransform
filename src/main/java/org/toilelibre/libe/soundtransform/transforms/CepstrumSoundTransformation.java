@@ -62,7 +62,7 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 
 		FrequenciesState fscep = new FrequenciesState (fastFourierTransformer.transform (fs.getState (), TransformType.INVERSE), fs.getMaxfrequency ());
 
-        this.loudestfreqs [index] = this.computeLoudestFreq (fscep);;
+        this.loudestfreqs [index] = this.computeLoudestFreq (fscep);
 		this.index++;
 
 		return fscep;
