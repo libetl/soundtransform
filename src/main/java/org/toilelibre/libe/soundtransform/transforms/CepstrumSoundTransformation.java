@@ -37,7 +37,7 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 		return loudestfreqs;
 	}
 
-	private void computeLoudestFreq (FrequenciesState fs) {
+	private int computeLoudestFreq (FrequenciesState fs) {
 		double max = 0;
 		double freq = 0;
 		for (int j = 50; j < 900; j++) {
@@ -45,7 +45,7 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 			freq = (max < val ? j : freq);
 			max = (max < val ? val : max);
 		}
-		this.loudestfreqs [index] = (int) freq;
+		return (int)freq;
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 
 		FrequenciesState fscep = new FrequenciesState (fastFourierTransformer.transform (fs.getState (), TransformType.INVERSE), fs.getMaxfrequency ());
 
-		this.computeLoudestFreq (fscep);
+        this.loudestfreqs [index] = this.computeLoudestFreq (fscep);;
 		this.index++;
 
 		return fscep;
