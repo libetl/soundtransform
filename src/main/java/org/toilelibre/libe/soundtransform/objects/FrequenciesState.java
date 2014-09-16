@@ -21,6 +21,11 @@ public class FrequenciesState {
 		return maxfrequency;
 	}
 
+	public int peak (){
+	    String toString = this.toString();
+	    return Integer.parseInt(toString.substring(toString.lastIndexOf('-') + 2, toString.lastIndexOf('H')));
+	}
+	
 	public String toString () {
 		float lastFrequency = maxfrequency / 2.0f;
 		int length = (int) lastFrequency / 20;
