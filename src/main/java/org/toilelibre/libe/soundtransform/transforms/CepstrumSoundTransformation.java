@@ -54,7 +54,7 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 			fscep.getState () [i] = new Complex (sqr);
 		}
 
-        this.loudestfreqs [index] = fscep.max ();
+		this.loudestfreqs [index] = fscep.max ();
 		this.index++;
 
 		return fscep;

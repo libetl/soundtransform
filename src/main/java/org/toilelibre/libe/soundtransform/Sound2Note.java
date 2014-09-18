@@ -10,6 +10,7 @@ import org.toilelibre.libe.soundtransform.objects.SimpleNote;
 import org.toilelibre.libe.soundtransform.objects.Sound;
 import org.toilelibre.libe.soundtransform.transforms.CepstrumSoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.NoOpFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.transforms.PeakFindSoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.ReverseSoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.SoundTransformation;
 
@@ -31,7 +32,7 @@ public class Sound2Note {
 		double sum = 0;
 		int nb = 0;
 
-		CepstrumSoundTransformation peak = new CepstrumSoundTransformation (100);
+		PeakFindSoundTransformation peak = new PeakFindSoundTransformation (100);
 		peak.transform (channel1);
 		int [] magnitude = peak.getLoudestFreqs ();
 

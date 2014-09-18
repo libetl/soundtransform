@@ -7,7 +7,6 @@ import java.net.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.Sound2Note;
@@ -19,7 +18,7 @@ public class Sound2NoteTest {
 	@Test
 	public void run () throws UnsupportedAudioFileException, IOException {
 		ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
-		URL fileURL = classLoader.getResource ("notes/a-piano3.wav");
+		URL fileURL = classLoader.getResource ("notes/g-piano3.wav");
 		File input = new File (fileURL.getFile ());
 
 		AudioInputStream ais = AudioFileHelper.getAudioInputStream (input);
