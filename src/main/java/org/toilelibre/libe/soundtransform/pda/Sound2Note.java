@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform;
+package org.toilelibre.libe.soundtransform.pda;
 
 import java.util.Arrays;
 
@@ -8,7 +8,6 @@ import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 import org.toilelibre.libe.soundtransform.objects.Note;
 import org.toilelibre.libe.soundtransform.objects.SimpleNote;
 import org.toilelibre.libe.soundtransform.objects.Sound;
-import org.toilelibre.libe.soundtransform.transforms.CepstrumSoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.NoOpFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.PeakFindSoundTransformation;
 import org.toilelibre.libe.soundtransform.transforms.ReverseSoundTransformation;

@@ -6,8 +6,8 @@ import java.io.IOException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.toilelibre.libe.soundtransform.AudioFileHelper;
-import org.toilelibre.libe.soundtransform.Sound2Note;
 import org.toilelibre.libe.soundtransform.TransformSound;
+import org.toilelibre.libe.soundtransform.pda.Sound2Note;
 
 public class PacksList {
 

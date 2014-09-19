@@ -9,9 +9,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.AudioFileHelper;
-import org.toilelibre.libe.soundtransform.Sound2Note;
 import org.toilelibre.libe.soundtransform.TransformSound;
 import org.toilelibre.libe.soundtransform.objects.Note;
+import org.toilelibre.libe.soundtransform.pda.Sound2Note;
 
 public class Sound2NoteTest {
 

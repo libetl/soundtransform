@@ -1,11 +1,8 @@
 package org.toilelibre.libe.soundtransform.transforms;
 
-import org.apache.commons.math3.complex.Complex;
-import org.apache.commons.math3.transform.DftNormalization;
-import org.apache.commons.math3.transform.FastFourierTransformer;
-import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 import org.toilelibre.libe.soundtransform.objects.Sound;
+import org.toilelibre.libe.soundtransform.pda.FrequenciesHelper;
 
 public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformation {
 
@@ -39,22 +36,10 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 
 	@Override
 	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
+		
+		FrequenciesState fscep = FrequenciesHelper.spectrumToCepstrum(fs);
 
-		for (int i = 0; i < fs.getState ().length; i++) {
-			Complex c = fs.getState () [i];
-			double log = Math.log (Math.pow (c.abs (), 2));
-			fs.getState () [i] = new Complex (log);
-		}
-		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
-
-		FrequenciesState fscep = new FrequenciesState (fastFourierTransformer.transform (fs.getState (), TransformType.FORWARD), fs.getMaxfrequency ());
-		for (int i = 0; i < fscep.getState ().length; i++) {
-			Complex c = fscep.getState () [i];
-			double sqr = Math.pow (c.abs (), 2);
-			fscep.getState () [i] = new Complex (sqr);
-		}
-
-		this.loudestfreqs [index] = fscep.max ();
+		this.loudestfreqs [index] = FrequenciesHelper.max(fscep);
 		this.index++;
 
 		return fscep;
