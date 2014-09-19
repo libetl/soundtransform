@@ -12,20 +12,22 @@ import org.toilelibre.libe.soundtransform.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.TransformSound;
 import org.toilelibre.libe.soundtransform.objects.Note;
 import org.toilelibre.libe.soundtransform.pda.Sound2Note;
+import org.toilelibre.libe.soundtransform.transforms.GaussianEqualizerSoundTransformation;
 
 public class Sound2NoteTest {
 
 	@Test
 	public void run () throws UnsupportedAudioFileException, IOException {
 		ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
-		URL fileURL = classLoader.getResource ("notes/g-piano3.wav");
+		URL fileURL = classLoader.getResource ("notes/Piano6-A.wav");
 		File input = new File (fileURL.getFile ());
 
 		AudioInputStream ais = AudioFileHelper.getAudioInputStream (input);
 		TransformSound ts = new TransformSound ();
 
-		Note n = Sound2Note.convert (ts.fromInputStream (ais));
-		org.junit.Assert.assertEquals (336, n.getFrequency ());
+		Note n = Sound2Note.convert (
+				ts.convertAndApply (ais, new GaussianEqualizerSoundTransformation()));
+		org.junit.Assert.assertEquals (464, n.getFrequency ());
 
 	}
 
