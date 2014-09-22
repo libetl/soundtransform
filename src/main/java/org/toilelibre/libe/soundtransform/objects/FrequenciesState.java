@@ -22,7 +22,7 @@ public class FrequenciesState {
 		return maxfrequency;
 	}
 
-	public String toString (){
-		return FrequenciesHelper.fsToString(this);
+	public String toString () {
+		return FrequenciesHelper.fsToString (this);
 	}
 }

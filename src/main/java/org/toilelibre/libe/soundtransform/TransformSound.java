@@ -101,15 +101,15 @@ public class TransformSound implements LogAware {
 	}
 
 	public Sound [] convertAndApply (AudioInputStream ais, SoundTransformation transform) throws IOException {
-		Sound[] in = this.fromInputStream (ais);
-		Sound[] out = new Sound [in.length];
-		
-		for (int i = 0 ; i < out.length ; i++){
-			out [i] = transform.transform(in [i]);
+		Sound [] in = this.fromInputStream (ais);
+		Sound [] out = new Sound [in.length];
+
+		for (int i = 0; i < out.length; i++) {
+			out [i] = transform.transform (in [i]);
 		}
 		return out;
 	}
-	
+
 	private void byteArrayToFrame (byte [] frame, Sound [] sound, int position, boolean bigEndian, boolean pcmSigned, long neutral) {
 		long [] value = new long [sound.length];
 		int destination = (bigEndian ? 0 : frame.length - 1);

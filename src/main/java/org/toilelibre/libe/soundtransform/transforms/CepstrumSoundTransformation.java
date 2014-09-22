@@ -36,10 +36,10 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 
 	@Override
 	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
-		
-		FrequenciesState fscep = FrequenciesHelper.spectrumToCepstrum(fs);
 
-		this.loudestfreqs [index] = FrequenciesHelper.max(fscep);
+		FrequenciesState fscep = FrequenciesHelper.spectrumToCepstrum (fs);
+
+		this.loudestfreqs [index] = FrequenciesHelper.max (fscep);
 		this.index++;
 
 		return fscep;

@@ -19,15 +19,14 @@ public class Sound2NoteTest {
 	@Test
 	public void run () throws UnsupportedAudioFileException, IOException {
 		ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
-		URL fileURL = classLoader.getResource ("notes/Piano6-A.wav");
+		URL fileURL = classLoader.getResource ("notes/g-piano3.wav");
 		File input = new File (fileURL.getFile ());
 
 		AudioInputStream ais = AudioFileHelper.getAudioInputStream (input);
 		TransformSound ts = new TransformSound ();
 
-		Note n = Sound2Note.convert (
-				ts.convertAndApply (ais, new GaussianEqualizerSoundTransformation()));
-		org.junit.Assert.assertEquals (464, n.getFrequency ());
+		Note n = Sound2Note.convert (ts.fromInputStream (ais));
+		org.junit.Assert.assertEquals (650, n.getFrequency ());
 
 	}
 

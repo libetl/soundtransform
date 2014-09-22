@@ -6,9 +6,11 @@ import org.toilelibre.libe.soundtransform.pda.FrequenciesHelper;
 
 public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformation {
 
-	private double	threshold;
-	private int []	loudestfreqs;
-	private int	   index;
+	private double	   threshold;
+	private int []	   loudestfreqs;
+	private int	       index;
+	private int	       length;
+	private static int	shortSoundLength	= 9000;
 
 	public PeakFindSoundTransformation () {
 		this.threshold = 100;
@@ -20,14 +22,30 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
 
 	@Override
 	public Sound initSound (Sound input) {
-		this.loudestfreqs = new int [(int) (input.getSamples ().length / threshold) + 1];
 		this.index = 0;
+		this.length = input.getSamples ().length;
+		if (this.length < PeakFindSoundTransformation.shortSoundLength) {
+			this.loudestfreqs = new int [1];
+		} else {
+			this.loudestfreqs = new int [(int) (input.getSamples ().length / threshold) + 1];
+		}
 		return super.initSound (input);
 	}
 
 	@Override
 	protected double getLowThreshold (double defaultValue) {
+		if (this.length < PeakFindSoundTransformation.shortSoundLength) {
+			return this.length;
+		}		
 		return this.threshold;
+	}
+
+	@Override
+	protected int getWindowLength (double freqmax) {
+		if (this.length < PeakFindSoundTransformation.shortSoundLength) {
+			return (int) Math.pow (2, Math.ceil (Math.log (this.length) / Math.log (2)));
+		}
+		return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
 	}
 
 	public int [] getLoudestFreqs () {
@@ -37,8 +55,8 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
 	@Override
 	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 
-		int f0 = FrequenciesHelper.f0(fs, 5);
-		int fk = FrequenciesHelper.loudestMultiple (fs, f0, 50, 900);
+		int f0 = FrequenciesHelper.f0 (fs, 10);
+		int fk = FrequenciesHelper.loudestMultiple (fs, f0, 50, 1200);
 		this.loudestfreqs [index] = fk;
 		this.index++;
 

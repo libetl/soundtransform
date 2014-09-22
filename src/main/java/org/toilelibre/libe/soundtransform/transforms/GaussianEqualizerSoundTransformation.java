@@ -5,7 +5,6 @@ import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 
 public class GaussianEqualizerSoundTransformation extends NoOpFrequencySoundTransformation {
 
-
 	public GaussianEqualizerSoundTransformation () {
 	}
 
@@ -22,7 +21,7 @@ public class GaussianEqualizerSoundTransformation extends NoOpFrequencySoundTran
 		return new FrequenciesState (newAmpl, fs.getMaxfrequency ());
 	}
 
-	private Complex function(double x) {
-		return new Complex (1 - Math.exp((-Math.pow(x - 3500, 2)/1000))/2);
+	private Complex function (double x) {
+		return new Complex (1 - Math.exp ( (-Math.pow (x - 3500, 2) / 1000)) / 2);
 	}
 }

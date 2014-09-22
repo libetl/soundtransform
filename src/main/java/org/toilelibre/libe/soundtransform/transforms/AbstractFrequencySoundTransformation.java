@@ -25,6 +25,10 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 
 	protected abstract double getLowThreshold (double defaultValue);
 
+	protected int getWindowLength (double freqmax) {
+		return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
+	}
+
 	@Override
 	public void setObservers (TransformObserver [] observers1) {
 		this.observers = observers1;
@@ -45,7 +49,7 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 		Sound output = this.initSound (sound);
 		double freqmax = sound.getFreq ();
 		double threshold = this.getLowThreshold (freqmax);
-		int maxlength = (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
+		int maxlength = this.getWindowLength (freqmax);
 		long [] data = sound.getSamples ();
 		long [] newdata = output.getSamples ();
 		double [] transformeddata = new double [maxlength];

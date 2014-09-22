@@ -9,43 +9,34 @@ import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 public class FrequenciesHelper {
 
 	public static int f0 (FrequenciesState fs, int hpcfactor) {
-		return FrequenciesHelper.f0 (FrequenciesHelper.hpc (fs, hpcfactor), hpcfactor);
+		return FrequenciesHelper.max (FrequenciesHelper.hpc (fs, hpcfactor));
 	}
 
-	private static int f0 (double [] hpc, int hpcfactor) {
+	public static int max (FrequenciesState hpc) {
 		int f0 = 0;
-		double f0val = hpc [f0];
-		for (int i = 0; i < hpc.length; i++) {
-			if (f0val < hpc [i]) {
-				f0val = hpc [i];
+		double f0val = hpc.getState () [f0].getReal ();
+		for (int i = 0; i < hpc.getState ().length; i++) {
+			if (f0val < hpc.getState () [i].getReal ()) {
+				f0val = hpc.getState () [i].getReal ();
 				f0 = i;
 			}
 		}
 		return f0;
 	}
 
-	private static double [] hpc (FrequenciesState fs, int factor) {
-		double [] result = new double [fs.getMaxfrequency () / (2 * factor)];
-		for (int i = 1; i < fs.getMaxfrequency () / (2 * factor); i++) {
-			result [i] = fs.getState () [i].abs ();
+	private static FrequenciesState hpc (FrequenciesState fs, int factor) {
+		Complex [] result = new Complex [fs.getMaxfrequency () / (2 * factor)];
+		for (int i = 0; i < fs.getMaxfrequency () / (2 * factor); i++) {
+			double val = fs.getState () [i].abs ();
 			for (int j = 1; j < factor; j++) {
-				if (i * factor < fs.getMaxfrequency () / 2) {
-					result [i] *= fs.getState () [i * factor].abs ();
+				if (i * factor < fs.getMaxfrequency () / 2 &&
+						i * factor < fs.getState ().length) {
+					val *= fs.getState () [i * factor].abs ();
 				}
 			}
+			result [i] = new Complex (val);
 		}
-		return result;
-	}
-
-	public static int peak (FrequenciesState fs) {
-		String toString = FrequenciesHelper.fsToString (fs, 50, 900);
-		return Integer.parseInt (toString.substring (toString.lastIndexOf ('-') + 2, toString.lastIndexOf ('H'))) - 10;
-	}
-
-	public static int max (FrequenciesState fs) {
-		String toString = FrequenciesHelper.fsToString (fs, 50, 900);
-		toString = toString.substring (0, toString.lastIndexOf ('\n'));
-		return Integer.parseInt (toString.substring (toString.lastIndexOf ('-') + 2, toString.lastIndexOf ('H')));
+		return new FrequenciesState (result, fs.getMaxfrequency () / factor);
 	}
 
 	public static String fsToString (FrequenciesState fs) {
@@ -57,7 +48,7 @@ public class FrequenciesHelper {
 		int length = (int) lastFrequency / 20;
 		int height = 15;
 		int maxIndex = FrequenciesHelper.getMaxIndex (fs, low, high);
-		int maxMagn = (int) fs.getState () [maxIndex].abs ();
+		long maxMagn = (long) fs.getState () [maxIndex].abs ();
 		StringBuffer sb = new StringBuffer ();
 		int step = (int) lastFrequency / length;
 		int [] valuesOnPlot = new int [length];
@@ -65,6 +56,7 @@ public class FrequenciesHelper {
 		int maxPlotValue = 0;
 		double peakIndex = 0;
 		double peakValue = 0;
+		double minValuePlotted = -1;
 		for (int i = 0; i < valuesOnPlot.length; i++) {
 			double maxValue = 0;
 			for (int j = 0; j < step; j++) {
@@ -76,11 +68,17 @@ public class FrequenciesHelper {
 					maxValue = fs.getState () [i * step + j + low].abs ();
 				}
 			}
+			if (minValuePlotted == -1 || minValuePlotted > maxValue) {
+				minValuePlotted = maxValue;
+			}
 			valuesOnPlot [i] = (int) (maxValue * height / (maxMagn));
 			if (maxPlotValue < valuesOnPlot [i]) {
 				maxPlotValue = valuesOnPlot [i];
 				maxPlotIndex = i;
 			}
+		}
+		for (int i = 0; i < valuesOnPlot.length; i++) {
+			valuesOnPlot [i] -= minValuePlotted * height / maxMagn;
 		}
 		for (int j = height; j >= 0; j--) {
 			if (j == height) {
@@ -123,31 +121,34 @@ public class FrequenciesHelper {
 	}
 
 	public static int pgcd (FrequenciesState fs, int hpcfactor) {
-		double [] hpc = FrequenciesHelper.hpc (fs, hpcfactor);
-		int f0 = FrequenciesHelper.f0 (hpc, hpcfactor);
+		FrequenciesState hpc = FrequenciesHelper.hpc (fs, hpcfactor);
+		int f0 = FrequenciesHelper.max (hpc);
 		if (f0 == 0) {
 			return 0;
 		}
 		int pgcd = f0;
 		int i = f0;
-		while (i < hpc.length) {
+		while (i < hpc.getState ().length) {
 			pgcd = FrequenciesHelper.pgcd (pgcd, i);
 			i += f0;
 		}
 		return pgcd;
 	}
 
-	private static int pgcd (int a, int b) { // début de pgcd ()
-		if (a < b) // on veut le premier argument plus grand
-			return (pgcd (b, a));
-		else if (b == 0) // condition d'arrêt
+	private static int pgcd (int a, int b) {
+		if (a < b) {
+			return pgcd (b, a);
+		} else if (b == 0) {
 			return (a);
-		else
-			// on poursuit l'algorithme d'Euclide
-			return (pgcd (b, a % b));
+		}
+		return pgcd (b, a % b);
 
 	}
 
+	public static int loudestMultiple (FrequenciesState fs, int f0) {
+		return FrequenciesHelper.loudestMultiple (fs, f0, 0, fs.getMaxfrequency () / 2);
+	}
+	
 	public static int loudestMultiple (FrequenciesState fs, int f0, int low, int high) {
 		if (f0 == 0) {
 			return 0;
@@ -164,8 +165,8 @@ public class FrequenciesHelper {
 		}
 		return loudest;
 	}
-	
-	public static FrequenciesState spectrumToCepstrum (FrequenciesState fs){
+
+	public static FrequenciesState spectrumToCepstrum (FrequenciesState fs) {
 		for (int i = 0; i < fs.getState ().length; i++) {
 			Complex c = fs.getState () [i];
 			double log = Math.log (Math.pow (c.abs (), 2));
@@ -179,7 +180,7 @@ public class FrequenciesHelper {
 			double sqr = Math.pow (c.abs (), 2);
 			fscep.getState () [i] = new Complex (sqr);
 		}
-		
+
 		return fscep;
 	}
 }
