@@ -44,7 +44,7 @@ public class FrequenciesHelper {
 	}
 
 	public static String fsToString (FrequenciesState fs, int low, int high) {
-		float lastFrequency = (float) high;
+		float lastFrequency = (fs.getState ().length < high ? fs.getState ().length : (float) high);
 		int length = (int) lastFrequency / 20;
 		int height = 15;
 		int maxIndex = FrequenciesHelper.getMaxIndex (fs, low, high);
@@ -60,12 +60,13 @@ public class FrequenciesHelper {
 		for (int i = 0; i < valuesOnPlot.length; i++) {
 			double maxValue = 0;
 			for (int j = 0; j < step; j++) {
-				if (peakValue * 2 < fs.getState () [i * step + j + low].abs ()) {
-					peakValue = fs.getState () [i * step + j + low].abs ();
-					peakIndex = i * step + j + low;
+				int x = i * step + j + low;
+				if (x < fs.getState ().length && peakValue * 2 < fs.getState () [x].abs ()) {
+					peakValue = fs.getState () [x].abs ();
+					peakIndex = x;
 				}
-				if (maxValue < fs.getState () [i * step + j + low].abs ()) {
-					maxValue = fs.getState () [i * step + j + low].abs ();
+				if (x < fs.getState ().length && maxValue < fs.getState () [x].abs ()) {
+					maxValue = fs.getState () [x].abs ();
 				}
 			}
 			if (minValuePlotted == -1 || minValuePlotted > maxValue) {
@@ -111,7 +112,8 @@ public class FrequenciesHelper {
 	private static int getMaxIndex (FrequenciesState fs, int low, int high) {
 		int max = 0;
 		int maxIndex = 0;
-		for (int i = low; i < high; i++) {
+		int realhigh = Math.min (high, fs.getState ().length);
+		for (int i = low; i < realhigh; i++) {
 			if (max < fs.getState () [i].abs ()) {
 				max = (int) Math.ceil (fs.getState () [i].abs ());
 				maxIndex = i;
