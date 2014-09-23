@@ -12,14 +12,13 @@ import org.toilelibre.libe.soundtransform.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.TransformSound;
 import org.toilelibre.libe.soundtransform.objects.Note;
 import org.toilelibre.libe.soundtransform.pda.Sound2Note;
-import org.toilelibre.libe.soundtransform.transforms.GaussianEqualizerSoundTransformation;
 
 public class Sound2NoteTest {
 
 	@Test
 	public void run () throws UnsupportedAudioFileException, IOException {
 		ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
-		URL fileURL = classLoader.getResource ("notes/Piano3-E.wav");
+		URL fileURL = classLoader.getResource ("notes/Piano1-C.wav");
 		File input = new File (fileURL.getFile ());
 
 		AudioInputStream ais = AudioFileHelper.getAudioInputStream (input);

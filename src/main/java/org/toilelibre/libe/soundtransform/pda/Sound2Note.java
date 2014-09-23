@@ -36,10 +36,8 @@ public class Sound2Note {
 		int [] magnitude = peak.getLoudestFreqs ();
 
 		for (int i = 0; i < magnitude.length; i++) {
-			if (magnitude [i] > 70) {
-				sum += magnitude [i];
-				nb++;
-			}
+			sum += magnitude [i];
+			nb++;
 		}
 		return (int) (sum / nb);
 	}

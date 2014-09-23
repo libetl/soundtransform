@@ -9,6 +9,8 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 	private double	threshold;
 	private int []	loudestfreqs;
 	private int	   index;
+	private int length;
+	private static int	shortSoundLength	= 9000;
 
 	public CepstrumSoundTransformation () {
 		this.threshold = 100;
@@ -22,14 +24,31 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 	public Sound initSound (Sound input) {
 		this.loudestfreqs = new int [(int) (input.getSamples ().length / threshold) + 1];
 		this.index = 0;
+		this.length = input.getSamples ().length;
+		if (this.length < CepstrumSoundTransformation.shortSoundLength) {
+			this.loudestfreqs = new int [1];
+		} else {
+			this.loudestfreqs = new int [(int) (input.getSamples ().length / threshold) + 1];
+		}
 		return super.initSound (input);
 	}
 
 	@Override
 	protected double getLowThreshold (double defaultValue) {
+		if (this.length < CepstrumSoundTransformation.shortSoundLength) {
+			return this.length;
+		}		
 		return this.threshold;
 	}
 
+	@Override
+	protected int getWindowLength (double freqmax) {
+		if (this.length < CepstrumSoundTransformation.shortSoundLength) {
+			return (int) Math.pow (2, Math.ceil (Math.log (this.length) / Math.log (2)));
+		}
+		return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
+	}
+	
 	public int [] getLoudestFreqs () {
 		return loudestfreqs;
 	}

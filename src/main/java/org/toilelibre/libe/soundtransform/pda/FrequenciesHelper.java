@@ -25,8 +25,9 @@ public class FrequenciesHelper {
 	}
 
 	private static FrequenciesState hpc (FrequenciesState fs, int factor) {
-		Complex [] result = new Complex [fs.getMaxfrequency () / (2 * factor)];
-		for (int i = 0; i < fs.getMaxfrequency () / (2 * factor); i++) {
+		int max = Math.min (fs.getMaxfrequency () / (2 * factor), fs.getState ().length);
+		Complex [] result = new Complex [max];
+		for (int i = 0; i < max; i++) {
 			double val = fs.getState () [i].abs ();
 			for (int j = 1; j < factor; j++) {
 				if (i * factor < fs.getMaxfrequency () / 2 &&
@@ -158,7 +159,8 @@ public class FrequenciesHelper {
 		int loudest = f0;
 		double loudestValue = fs.getState () [f0].abs ();
 		int i = Math.max (f0, low);
-		while (i < high) {
+		int realhigh = Math.min (high, fs.getState ().length);
+		while (i < realhigh) {
 			if (fs.getState () [i].abs () > loudestValue) {
 				loudest = i;
 				loudestValue = fs.getState () [i].abs ();
@@ -182,6 +184,13 @@ public class FrequenciesHelper {
 			double sqr = Math.pow (c.abs (), 2);
 			fscep.getState () [i] = new Complex (sqr);
 		}
+		for (int i = 0; i < 50; i++) {
+			fscep.getState ()[i] = new Complex (0);
+		}
+		for (int i = fscep.getState ().length - 50; i < fscep.getState ().length; i++) {
+			fscep.getState ()[i] = new Complex (0);
+		}
+		
 
 		return fscep;
 	}
