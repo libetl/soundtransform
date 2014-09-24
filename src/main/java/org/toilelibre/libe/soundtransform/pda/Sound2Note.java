@@ -39,7 +39,7 @@ public class Sound2Note {
 			sum += magnitude [i];
 			nb++;
 		}
-		return (int) (sum / nb);
+		return (int) (sum / nb) * (40000 / channel1.getFreq ());
 	}
 
 	private static int findSustain (Sound channel1, int decay) {

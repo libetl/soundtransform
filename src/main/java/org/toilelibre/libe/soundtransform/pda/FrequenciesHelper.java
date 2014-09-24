@@ -8,6 +8,8 @@ import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 
 public class FrequenciesHelper {
 
+	public static final int MAX_EAR_FREQUENCY = 20000;
+	
 	public static int f0 (FrequenciesState fs, int hpcfactor) {
 		return FrequenciesHelper.max (FrequenciesHelper.hpc (fs, hpcfactor));
 	}
@@ -21,7 +23,7 @@ public class FrequenciesHelper {
 				f0 = i;
 			}
 		}
-		return f0;
+		return f0 * MAX_EAR_FREQUENCY / (2 * hpc.getMaxfrequency ());
 	}
 
 	private static FrequenciesState hpc (FrequenciesState fs, int factor) {
@@ -41,40 +43,33 @@ public class FrequenciesHelper {
 	}
 
 	public static String fsToString (FrequenciesState fs) {
-		return FrequenciesHelper.fsToString (fs, 0, (int) fs.getMaxfrequency () / 2);
+		return FrequenciesHelper.fsToString (fs, 0, (int) fs.getMaxfrequency () / 2, 20, 20);
 	}
 
-	public static String fsToString (FrequenciesState fs, int low, int high) {
-		float lastFrequency = (fs.getState ().length < high ? fs.getState ().length : (float) high);
-		int length = (int) lastFrequency / 20;
-		int height = 15;
-		int maxIndex = FrequenciesHelper.getMaxIndex (fs, low, high);
-		long maxMagn = (long) fs.getState () [maxIndex].abs ();
+	public static String fsToString (FrequenciesState fs, int low, int high, int compression, int height) {
 		StringBuffer sb = new StringBuffer ();
+		float lastFrequency = (fs.getState ().length < high ? fs.getState ().length : (float) high);
+		int length = (int) lastFrequency / compression;
+		int maxIndex = FrequenciesHelper.getMaxIndex (fs, low, high);
+		long maxMagn = (int)(20.0 * Math.log10 (fs.getState () [maxIndex].abs ()));
 		int step = (int) lastFrequency / length;
 		int [] valuesOnPlot = new int [length];
-		int maxPlotIndex = 0;
 		int maxPlotValue = 0;
-		double peakIndex = 0;
-		double peakValue = 0;
+		int maxPlotIndex = 0;
 		double minValuePlotted = -1;
 		for (int i = 0; i < valuesOnPlot.length; i++) {
 			double maxValue = 0;
 			for (int j = 0; j < step; j++) {
 				int x = i * step + j + low;
-				if (x < fs.getState ().length && peakValue * 2 < fs.getState () [x].abs ()) {
-					peakValue = fs.getState () [x].abs ();
-					peakIndex = x;
-				}
 				if (x < fs.getState ().length && maxValue < fs.getState () [x].abs ()) {
-					maxValue = fs.getState () [x].abs ();
+					maxValue = 20.0 * Math.log10 (fs.getState () [x].abs ());
 				}
 			}
 			if (minValuePlotted == -1 || minValuePlotted > maxValue) {
 				minValuePlotted = maxValue;
 			}
 			valuesOnPlot [i] = (int) (maxValue * height / (maxMagn));
-			if (maxPlotValue < valuesOnPlot [i]) {
+			if (maxPlotValue < valuesOnPlot [i] && i > 0) {
 				maxPlotValue = valuesOnPlot [i];
 				maxPlotIndex = i;
 			}
@@ -104,9 +99,16 @@ public class FrequenciesHelper {
 		for (int i = 0; i < length; i++) {
 			sb.append ("-");
 		}
-		sb.append ("> " + lastFrequency + "Hz (freq)");
-		sb.append ("\nMax is in the range " + (int) (maxPlotIndex * 1.0 / length * lastFrequency + low) + "Hz - " + (int) ( (maxPlotIndex + 1.0) / length * lastFrequency + low) + "Hz");
-		sb.append ("\nFirst peak is in the range " + (int) (peakIndex - 10) + "Hz - " + (int) (peakIndex + 10) + "Hz");
+		sb.append ("> " + (length * compression / lastFrequency * MAX_EAR_FREQUENCY) + "Hz (freq)\n");
+		for (int i = 0; i < length; i++) {
+			sb.append (" ");
+			if (i == maxPlotIndex){
+				int foundFreq = (int)((i / lastFrequency * MAX_EAR_FREQUENCY) * compression);
+				sb.append ("^" + foundFreq + "Hz");
+				i += (foundFreq == 0 ? 1 : Math.log10 (foundFreq)) + 2;
+			}
+			
+		}
 		return sb.toString ();
 	}
 

@@ -55,17 +55,9 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
 	@Override
 	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 
-		int avg = 0;
-		int nb = 0;
-		for (int i = 1 ; i < 10 ; i++){
-		  int f0 = FrequenciesHelper.f0 (fs, i);
-		  int fk = FrequenciesHelper.loudestMultiple (fs, f0, 50, 1200);
-		  if (fk != 0){
-		    avg += fk;
-		    nb++;
-		  }
-		}
-		this.loudestfreqs [index] = avg / nb;
+		int f0 = FrequenciesHelper.f0 (fs, 5);
+		int fk = FrequenciesHelper.loudestMultiple (fs, f0, 50, 1200);
+		this.loudestfreqs [index] = fk;
 		this.index++;
 
 		return fs;
