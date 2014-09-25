@@ -37,7 +37,7 @@ public class PacksList {
 					                                PacksList.this.addNotes (this, "g-piano1.wav", "g-piano2.wav", "g-piano3.wav", "g-piano4.wav", "g-piano5.wav", "g-piano6.wav");
 				                                }
 			                                });
-			                                this.put ("piano_low", new Range () {
+			                                /*this.put ("piano_low", new Range () {
 				                                {
 					                                PacksList.this.addNote (this, "piano_low.wav");
 				                                }
@@ -46,7 +46,7 @@ public class PacksList {
 				                                {
 					                                PacksList.this.addNote (this, "piano_a.wav");
 				                                }
-			                                });
+			                                });*/
 			                                this.put ("a-piano", new Range () {
 				                                {
 					                                PacksList.this.addNotes (this, "a-piano3.wav", "a-piano4.wav");
@@ -70,7 +70,7 @@ public class PacksList {
 			}
 			String completeFileName = completeURL.getFile ();
 			File file = new File (completeFileName);
-			Note n = Sound2Note.convert (ts.fromInputStream (AudioFileHelper.getAudioInputStream (file)));
+			Note n = Sound2Note.convert (fileName, ts.fromInputStream (AudioFileHelper.getAudioInputStream (file)));
 			range.put (n.getFrequency (), n);
 		} catch (UnsupportedAudioFileException e) {
 		} catch (IllegalArgumentException e) {

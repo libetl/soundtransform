@@ -11,13 +11,15 @@ public class SimpleNote implements Note {
 	private Sound []	sustain;
 	private Sound []	release;
 	private int	     frequency;
+    private final    String fileName;
 
-	public SimpleNote (Sound [] channels, int frequency, int attack, int decay, int sustain, int release) {
+	public SimpleNote (String fileName, Sound [] channels, int frequency, int attack, int decay, int sustain, int release) {
 		this.frequency = frequency;
 		this.attack = new Sound [channels.length];
 		this.decay = new Sound [channels.length];
 		this.sustain = new Sound [channels.length];
 		this.release = new Sound [channels.length];
+		this.fileName = fileName;
 		for (int i = 0; i < channels.length; i++) {
 			this.attack [i] = channels [i].toSubSound (attack, decay);
 			this.decay [i] = channels [i].toSubSound (decay, sustain);
@@ -81,5 +83,10 @@ public class SimpleNote implements Note {
 		}
 		return result;
 	}
+
+    @Override
+    public String getName() {
+        return this.fileName;
+    }
 
 }

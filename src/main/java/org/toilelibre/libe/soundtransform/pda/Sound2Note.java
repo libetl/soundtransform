@@ -15,7 +15,7 @@ import org.toilelibre.libe.soundtransform.transforms.SoundTransformation;
 
 public class Sound2Note {
 
-	public static Note convert (Sound [] channels) {
+	public static Note convert (String fileName, Sound [] channels) {
 		Sound channel1 = channels [0];
 
 		int attack = 0;
@@ -23,7 +23,7 @@ public class Sound2Note {
 		int sustain = Sound2Note.findSustain (channel1, decay);
 		int release = Sound2Note.findRelease (channel1);
 
-		return new SimpleNote (channels, Sound2Note.findFrequency (channel1), attack, decay, sustain, release);
+		return new SimpleNote (fileName, channels, Sound2Note.findFrequency (channel1), attack, decay, sustain, release);
 
 	}
 
