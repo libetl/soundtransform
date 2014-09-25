@@ -64,7 +64,9 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
         Arrays.sort(peaks);
         int f0 = this.bestCandidate (peaks);
 
-		this.loudestfreqs [index] = f0;
+        if (this.index < this.loudestfreqs.length){
+		  this.loudestfreqs [this.index] = f0;
+        }
 		this.index++;
 
 		return fs;
