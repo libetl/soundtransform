@@ -38,9 +38,9 @@ public class Sound2NoteTest {
             for (Integer noteKey : pack.get(instrument).keySet()) {
                 Note n = pack.get(instrument).get(noteKey);
                 if (frequenciesPerSound.get(n.getName()) != null) {
-                    //org.junit.Assert.assertEquals(
-                    //        frequenciesPerSound.get(n.getName()).intValue(),
-                    //        n.getFrequency());
+                    org.junit.Assert.assertEquals(
+                            frequenciesPerSound.get(n.getName()).intValue(),
+                            n.getFrequency());
                     System.out.println("f0 (" + n.getName() + ") = "
                             + n.getFrequency());
                 } else {
