@@ -1,5 +1,7 @@
 package org.toilelibre.libe.soundtransform.transforms;
 
+import java.util.Arrays;
+
 import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 import org.toilelibre.libe.soundtransform.objects.Sound;
 import org.toilelibre.libe.soundtransform.pda.FrequenciesHelper;
@@ -55,9 +57,14 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
 	@Override
 	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 
-		int f0 = FrequenciesHelper.f0 (fs, 5);
-		int fk = FrequenciesHelper.loudestMultiple (fs, f0, 50, 1200);
-		this.loudestfreqs [index] = fk;
+        int[] peaks = new int [5];
+	    for (int i = 1 ; i <= 5 ; i++){
+	        peaks [i - 1] = FrequenciesHelper.f0(fs, i);
+	    }
+	    Arrays.sort(peaks);
+		int f0 = peaks [0];
+
+		this.loudestfreqs [index] = f0;
 		this.index++;
 
 		return fs;

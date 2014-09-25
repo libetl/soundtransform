@@ -58,7 +58,7 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 
 		FrequenciesState fscep = FrequenciesHelper.spectrumToCepstrum (fs);
 
-		this.loudestfreqs [index] = FrequenciesHelper.max (fscep);
+		this.loudestfreqs [index] = FrequenciesHelper.getMaxIndex (fscep, 0, fs.getMaxfrequency());
 		this.index++;
 
 		return fscep;
