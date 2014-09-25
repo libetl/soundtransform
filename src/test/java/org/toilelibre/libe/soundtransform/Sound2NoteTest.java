@@ -17,12 +17,12 @@ public class Sound2NoteTest {
 	public void run () throws UnsupportedAudioFileException, IOException {
 	    @SuppressWarnings("serial")
         Map<String, Integer> frequenciesPerSound = new HashMap<String, Integer> (){{
-            this.put("Piano1-C.wav", 462);//Buggy
+            this.put("Piano1-C.wav", 528);//Buggy : f(0) * 2
             this.put("Piano2-D.wav", 297);//OK
-            this.put("Piano3-E.wav", 666);//Buggy
-            this.put("Piano4-F.wav", 705);//Buggy
-            this.put("Piano5-G.wav", 2646);//Buggy
-            this.put("Piano6-A.wav", 462);//OK
+            this.put("Piano3-E.wav", 666);//Buggy : f(0) * 2
+            this.put("Piano4-F.wav", 705);//Buggy : f(0) * 2
+            this.put("Piano5-G.wav", 2646);//Buggy - should be 392...
+            this.put("Piano6-A.wav", 462);//Buggy - should be 440...
             this.put("Piano7-B.wav", 501);//OK
 	        this.put("Piano8-C.wav", 528);//OK
 	    }};
