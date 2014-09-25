@@ -85,6 +85,6 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
             sum += peaks [i];
         }
 
-        return sum / (rightEdge - leftEdge);
+        return (rightEdge == leftEdge ? sum : sum / (rightEdge - leftEdge));
     }
 }
