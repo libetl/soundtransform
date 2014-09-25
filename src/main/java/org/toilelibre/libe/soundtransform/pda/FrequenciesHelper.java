@@ -18,15 +18,15 @@ public class FrequenciesHelper {
 	    return (int)(freq * (sampleRate * 2.0) / MAX_EAR_FREQUENCY);
 	}
 
-	public static int f0 (FrequenciesState fs, int hpcfactor) {
+	public static int f0 (FrequenciesState fs, int hpsfactor) {
 		return FrequenciesHelper.freqFromSampleRate(
 		        FrequenciesHelper.getMaxIndex (
-		                FrequenciesHelper.hpc (fs, hpcfactor), 0, fs.getState().length / hpcfactor), 
-		                fs.getState().length * 2 / hpcfactor);
+		                FrequenciesHelper.hps (fs, hpsfactor), 0, fs.getState().length / hpsfactor), 
+		                fs.getState().length * 2 / hpsfactor);
 	}
 
 
-	private static FrequenciesState hpc (FrequenciesState fs, int factor) {
+	private static FrequenciesState hps (FrequenciesState fs, int factor) {
 		int max = fs.getState ().length / factor;
 		Complex [] result = new Complex [max];
 		for (int i = 0; i < max; i++) {
@@ -121,29 +121,6 @@ public class FrequenciesHelper {
 			}
 		}
 		return maxIndex;
-	}
-
-	public static int loudestMultiple (FrequenciesState fs, int f0) {
-		return FrequenciesHelper.loudestMultiple (fs, f0, 0, fs.getMaxfrequency () / 2);
-	}
-	
-	public static int loudestMultiple (FrequenciesState fs, int f0, int low, int high) {
-		if (f0 == 0) {
-			return 0;
-		}
-		int realf0 = FrequenciesHelper.toSampleRate(f0, fs.getMaxfrequency());
-		int loudest = realf0;
-		double loudestValue = fs.getState () [realf0].abs ();
-		int i = Math.max (realf0, low);
-		int realhigh = Math.min (high, fs.getState ().length);
-		while (i < realhigh) {
-			if (fs.getState () [i].abs () > loudestValue) {
-				loudest = i;
-				loudestValue = fs.getState () [i].abs ();
-			}
-			i += realf0;
-		}
-		return FrequenciesHelper.freqFromSampleRate(loudest,  fs.getState().length);
 	}
 
 	public static FrequenciesState spectrumToCepstrum (FrequenciesState fs) {
