@@ -72,7 +72,7 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
 
     private int bestCandidate(int[] peaks) {
         int leftEdge = 0;
-        while (leftEdge < peaks.length && peaks [leftEdge] == 0){
+        while (leftEdge < peaks.length && peaks [leftEdge] <= 0){
             leftEdge++;
         }
         int rightEdge = leftEdge;
