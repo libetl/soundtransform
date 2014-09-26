@@ -34,7 +34,8 @@ public class Sound {
 	}
 
 	public Sound toSubSound (int beginning, int end) {
-		long [] newsamples = Arrays.copyOfRange (this.samples, beginning, end);
+		long [] newsamples = (beginning < end ? 
+				Arrays.copyOfRange (this.samples, beginning, end) : new long [0]);
 		return new Sound (newsamples, nbBytesPerSample, freq, channelNum);
 	}
 
