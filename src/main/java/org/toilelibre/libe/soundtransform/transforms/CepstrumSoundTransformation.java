@@ -6,10 +6,10 @@ import org.toilelibre.libe.soundtransform.pda.FrequenciesHelper;
 
 public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformation {
 
-	private double	threshold;
-	private int []	loudestfreqs;
-	private int	   index;
-	private int length;
+	private double	   threshold;
+	private int []	   loudestfreqs;
+	private int	       index;
+	private int	       length;
 	private static int	shortSoundLength	= 9000;
 
 	public CepstrumSoundTransformation () {
@@ -37,7 +37,7 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 	protected double getLowThreshold (double defaultValue) {
 		if (this.length < CepstrumSoundTransformation.shortSoundLength) {
 			return this.length;
-		}		
+		}
 		return this.threshold;
 	}
 
@@ -48,7 +48,7 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 		}
 		return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
 	}
-	
+
 	public int [] getLoudestFreqs () {
 		return loudestfreqs;
 	}
@@ -58,7 +58,7 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 
 		FrequenciesState fscep = FrequenciesHelper.spectrumToCepstrum (fs);
 
-		this.loudestfreqs [index] = FrequenciesHelper.getMaxIndex (fscep, 0, fs.getMaxfrequency());
+		this.loudestfreqs [index] = FrequenciesHelper.getMaxIndex (fscep, 0, fs.getMaxfrequency ());
 		this.index++;
 
 		return fscep;

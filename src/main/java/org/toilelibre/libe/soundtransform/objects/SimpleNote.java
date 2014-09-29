@@ -6,12 +6,12 @@ import org.toilelibre.libe.soundtransform.transforms.SpeedUpSoundTransformation;
 
 public class SimpleNote implements Note {
 
-	private Sound []	attack;
-	private Sound []	decay;
-	private Sound []	sustain;
-	private Sound []	release;
-	private int	     frequency;
-    private final    String fileName;
+	private Sound []	 attack;
+	private Sound []	 decay;
+	private Sound []	 sustain;
+	private Sound []	 release;
+	private int	         frequency;
+	private final String	fileName;
 
 	public SimpleNote (String fileName, Sound [] channels, int frequency, int attack, int decay, int sustain, int release) {
 		this.frequency = frequency;
@@ -84,9 +84,9 @@ public class SimpleNote implements Note {
 		return result;
 	}
 
-    @Override
-    public String getName() {
-        return this.fileName;
-    }
+	@Override
+	public String getName () {
+		return this.fileName;
+	}
 
 }

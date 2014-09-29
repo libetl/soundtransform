@@ -8,23 +8,20 @@ import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 
 public class FrequenciesHelper {
 
-	public static final int MAX_EAR_FREQUENCY = 44100;
+	public static final int	MAX_EAR_FREQUENCY	= 44100;
 
-	public static int freqFromSampleRate (int freq, int sampleRate){
-	    return (int)(freq * MAX_EAR_FREQUENCY / (sampleRate * 2.0));
+	public static int freqFromSampleRate (int freq, int sampleRate) {
+		return (int) (freq * MAX_EAR_FREQUENCY / (sampleRate * 2.0));
 	}
 
-	public static int toSampleRate (int freq, int sampleRate){
-	    return (int)(freq * (sampleRate * 2.0) / MAX_EAR_FREQUENCY);
+	public static int toSampleRate (int freq, int sampleRate) {
+		return (int) (freq * (sampleRate * 2.0) / MAX_EAR_FREQUENCY);
 	}
 
 	public static int f0 (FrequenciesState fs, int hpsfactor) {
-		return FrequenciesHelper.freqFromSampleRate(
-		        FrequenciesHelper.getMaxIndex (
-		                FrequenciesHelper.hps (fs, hpsfactor), 0, fs.getState().length / hpsfactor), 
-		                fs.getState().length * 2 / hpsfactor);
+		return FrequenciesHelper
+		        .freqFromSampleRate (FrequenciesHelper.getMaxIndex (FrequenciesHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * 2 / hpsfactor);
 	}
-
 
 	private static FrequenciesState hps (FrequenciesState fs, int factor) {
 		int max = fs.getState ().length / factor;
@@ -32,8 +29,7 @@ public class FrequenciesHelper {
 		for (int i = 0; i < max; i++) {
 			double val = fs.getState () [i].abs ();
 			for (int j = 1; j < factor; j++) {
-				if (i * factor < fs.getMaxfrequency () / 2 &&
-						i * factor < fs.getState ().length) {
+				if (i * factor < fs.getMaxfrequency () / 2 && i * factor < fs.getState ().length) {
 					val *= fs.getState () [i * factor].abs ();
 				}
 			}
@@ -51,7 +47,7 @@ public class FrequenciesHelper {
 		float lastFrequency = (fs.getState ().length < high ? fs.getState ().length : (float) high);
 		int length = (int) lastFrequency / compression;
 		int maxIndex = FrequenciesHelper.getMaxIndex (fs, low, high);
-		long maxMagn = (int)(20.0 * Math.log10 (fs.getState () [maxIndex].abs ()));
+		long maxMagn = (int) (20.0 * Math.log10 (fs.getState () [maxIndex].abs ()));
 		int step = (int) lastFrequency / length;
 		int [] valuesOnPlot = new int [length];
 		int maxPlotValue = 0;
@@ -97,15 +93,15 @@ public class FrequenciesHelper {
 		for (int i = 0; i < length; i++) {
 			sb.append ("-");
 		}
-		sb.append ("> " + FrequenciesHelper.freqFromSampleRate(length * compression, (int)lastFrequency * 2) + "Hz (freq)\n");
+		sb.append ("> " + FrequenciesHelper.freqFromSampleRate (length * compression, (int) lastFrequency * 2) + "Hz (freq)\n");
 		for (int i = 0; i < length; i++) {
 			sb.append (" ");
-			if (i == maxIndex / compression){
-				int foundFreq = FrequenciesHelper.freqFromSampleRate(maxIndex, (int)lastFrequency * 2);
+			if (i == maxIndex / compression) {
+				int foundFreq = FrequenciesHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * 2);
 				sb.append ("^" + foundFreq + "Hz");
 				i += (foundFreq == 0 ? 1 : Math.log10 (foundFreq)) + 2;
 			}
-			
+
 		}
 		return sb.toString ();
 	}
@@ -116,7 +112,7 @@ public class FrequenciesHelper {
 		int realhigh = Math.min (high, fs.getState ().length);
 		for (int i = low; i < realhigh; i++) {
 			if (max < fs.getState () [i].abs ()) {
-			    max = fs.getState () [i].abs ();
+				max = fs.getState () [i].abs ();
 				maxIndex = i;
 			}
 		}
@@ -138,12 +134,11 @@ public class FrequenciesHelper {
 			fscep.getState () [i] = new Complex (sqr);
 		}
 		for (int i = 0; i < 50; i++) {
-			fscep.getState ()[i] = new Complex (0);
+			fscep.getState () [i] = new Complex (0);
 		}
 		for (int i = fscep.getState ().length - 50; i < fscep.getState ().length; i++) {
-			fscep.getState ()[i] = new Complex (0);
+			fscep.getState () [i] = new Complex (0);
 		}
-		
 
 		return fscep;
 	}

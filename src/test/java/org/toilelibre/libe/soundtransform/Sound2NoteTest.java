@@ -1,12 +1,18 @@
 package org.toilelibre.libe.soundtransform;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
@@ -78,7 +84,7 @@ public class Sound2NoteTest {
 
 	@Test
 	public void shouldRecognizeSimpleNotes () {
-		int length = 4410;
+		int length = 2000;
 		int [] notes = new int [] { 261, 293, 329, 349, 392, 440, 493 };
 		String [] notesTitle = new String [] { "C4", "D4", "E4", "F4", "G4", "A4", "B4" };
 
@@ -86,10 +92,18 @@ public class Sound2NoteTest {
 			int samplerate = 44100;
 			long [] signal = new long [length];
 			for (int j = 0; j < length; j++) {
-				signal [j] = (long) (Math.sin (j * notes [i] * 25.0 / samplerate) * 256 * 128.0);
+				signal [j] = (long) (Math.sin (j * notes [i] * 25.0 / samplerate) * 64.0);
 			}
-			Sound s = new Sound (signal, 2, samplerate, 1);
+			Sound s = new Sound (signal, 4, samplerate, 1);
 			Note n = Sound2Note.convert ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound", new Sound [] { s });
+
+  			/*AudioInputStream ais = new TransformSound ().toStream (new Sound []{s}, new AudioFormat (samplerate, 2, 1, true, false));
+   			File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+
+   			try {
+	            AudioSystem.write (ais, AudioFileFormat.Type.WAVE, fDest);
+            } catch (IOException e) {
+            }*/
 			System.out.println ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
 			org.junit.Assert.assertTrue (n.getFrequency () > notes [i] - 10 && n.getFrequency () < notes [i] + 10);
 			System.out.println ("...acceptable");

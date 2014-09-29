@@ -4,8 +4,8 @@ import org.toilelibre.libe.soundtransform.objects.Sound;
 
 public interface Note {
 
-    String getName ();
-    
+	String getName ();
+
 	Sound getAttack (int frequency, int channelnum, int length);
 
 	Sound getDecay (int frequency, int channelnum, int length);

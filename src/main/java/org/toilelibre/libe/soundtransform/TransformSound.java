@@ -167,7 +167,7 @@ public class TransformSound implements LogAware {
 		return data;
 	}
 
-	private AudioInputStream toStream (Sound [] channels, AudioFormat audioFormat) {
+	public AudioInputStream toStream (Sound [] channels, AudioFormat audioFormat) {
 
 		int length = audioFormat.getFrameSize () * channels [0].getSamples ().length;
 		byte [] data = this.framesToByteArray (channels, audioFormat.getFrameSize () / channels.length, audioFormat.isBigEndian (), audioFormat.getEncoding () == Encoding.PCM_SIGNED);

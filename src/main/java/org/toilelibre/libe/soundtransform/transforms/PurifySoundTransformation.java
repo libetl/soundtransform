@@ -5,7 +5,8 @@ import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 
 public class PurifySoundTransformation extends NoOpFrequencySoundTransformation {
 
-	private int increment;
+	private int	increment;
+
 	public PurifySoundTransformation (int increment) {
 		this.increment = increment;
 	}
@@ -29,13 +30,13 @@ public class PurifySoundTransformation extends NoOpFrequencySoundTransformation 
 	}
 
 	@Override
-    protected double getLowThreshold (double defaultValue) {
+	protected double getLowThreshold (double defaultValue) {
 		return 100;
-    }
+	}
 
 	@Override
-    protected int getWindowLength (double freqmax) {
-	    return super.getWindowLength (freqmax);
-    }
-	
+	protected int getWindowLength (double freqmax) {
+		return super.getWindowLength (freqmax);
+	}
+
 }
