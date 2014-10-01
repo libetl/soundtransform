@@ -109,8 +109,9 @@ public class FrequenciesHelper {
 	public static int getMaxIndex (FrequenciesState fs, int low, int high) {
 		double max = 0;
 		int maxIndex = 0;
+		int reallow = low == 0 ? 1 : low;
 		int realhigh = Math.min (high, fs.getState ().length);
-		for (int i = low; i < realhigh; i++) {
+		for (int i = reallow; i < realhigh; i++) {
 			if (max < fs.getState () [i].abs ()) {
 				max = fs.getState () [i].abs ();
 				maxIndex = i;
