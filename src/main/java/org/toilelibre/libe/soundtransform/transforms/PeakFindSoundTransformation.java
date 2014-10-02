@@ -1,6 +1,8 @@
 package org.toilelibre.libe.soundtransform.transforms;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 import org.toilelibre.libe.soundtransform.objects.Sound;
@@ -8,13 +10,13 @@ import org.toilelibre.libe.soundtransform.pda.FrequenciesHelper;
 
 public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformation {
 
-	private double	   threshold;
-	private int []	   loudestfreqs;
-	private int	       index;
-	private int	       length;
-	private static int	shortSoundLength	= 9000;
+	private double	      threshold;
+	private List<Integer> loudestfreqs;
+	private boolean       note;
+	private int           fsLimit;
 
-	public PeakFindSoundTransformation () {
+	public PeakFindSoundTransformation (boolean note) {
+		this.note = note;
 		this.threshold = 100;
 	}
 
@@ -24,52 +26,41 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
 
 	@Override
 	public Sound initSound (Sound input) {
-		this.index = 0;
-		this.length = input.getSamples ().length;
-		if (this.length < PeakFindSoundTransformation.shortSoundLength) {
-			this.loudestfreqs = new int [1];
-		} else {
-			this.loudestfreqs = new int [(int) (input.getSamples ().length / threshold) + 1];
+		this.loudestfreqs = new LinkedList<Integer> ();
+		if (this.note){
+			this.threshold = input.getSamples ().length;
+			this.fsLimit = input.getSamples ().length;
+		}else{
+			this.fsLimit = input.getFreq ();
 		}
 		return super.initSound (input);
 	}
 
 	@Override
 	protected double getLowThreshold (double defaultValue) {
-		if (this.length < PeakFindSoundTransformation.shortSoundLength) {
-			return this.length;
-		}
 		return this.threshold;
 	}
 
 	@Override
 	protected int getWindowLength (double freqmax) {
-		if (this.length < PeakFindSoundTransformation.shortSoundLength) {
-			return (int) Math.pow (2, Math.ceil (Math.log (this.length) / Math.log (2)));
-		}
-		return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
+		return (int) Math.pow (2, Math.ceil (Math.log (this.fsLimit) / Math.log (2)));
 	}
 
-	public int [] getLoudestFreqs () {
-		return loudestfreqs;
+	public List<Integer> getLoudestFreqs () {
+		return this.loudestfreqs;
 	}
 
 	@Override
 	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
 
-		if (length > fs.getMaxfrequency () / 10 || length < PeakFindSoundTransformation.shortSoundLength) {
-			int [] peaks = new int [10];
-			for (int i = 1; i <= 10; i++) {
-				peaks [i - 1] = FrequenciesHelper.f0 (fs, i);
-			}
-			Arrays.sort (peaks);
-			int f0 = this.bestCandidate (peaks);
-
-			if (this.index < this.loudestfreqs.length) {
-				this.loudestfreqs [this.index] = f0;
-			}
-			this.index++;
+		int [] peaks = new int [10];
+		for (int i = 1; i <= 10; i++) {
+			peaks [i - 1] = FrequenciesHelper.f0 (fs, i);
 		}
+		Arrays.sort (peaks);
+		int f0 = this.bestCandidate (peaks);
+
+		this.loudestfreqs.add (f0);
 		return fs;
 	}
 

@@ -1,5 +1,7 @@
 package org.toilelibre.libe.soundtransform.transforms;
 
+import java.util.List;
+
 import org.toilelibre.libe.soundtransform.objects.Note;
 import org.toilelibre.libe.soundtransform.objects.Pack;
 import org.toilelibre.libe.soundtransform.objects.Sound;
@@ -25,19 +27,19 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 		int channelNum = sound.getChannelNum ();
 		Sound builtSound = new Sound (new long [sound.getSamples ().length], sound.getNbBytesPerSample (), sound.getFreq (), channelNum);
 
-		int [] freqs;
+		List<Integer> freqs;
 		this.log (new LogEvent (LogLevel.VERBOSE, "Finding loudest frequencies"));
 
 		PeakFindSoundTransformation peak = new PeakFindSoundTransformation (threshold);
 		peak.transform (sound);
 		freqs = peak.getLoudestFreqs ();
 
-		double lastFreq = freqs [0];
+		double lastFreq = freqs.get (0);
 		int lastBegining = 0;
-		for (int i = 0; i < freqs.length; i++) {
-			this.log (new LogEvent (LogLevel.VERBOSE, "Iteration " + i + " / " + freqs.length));
+		for (int i = 0; i < freqs.size(); i++) {
+			this.log (new LogEvent (LogLevel.VERBOSE, "Iteration " + i + " / " + freqs.size()));
 			int length = (i - 1 - lastBegining) * threshold;
-			if (Math.abs (freqs [i] - lastFreq) > freqs [i] / 100 && length > sound.getFreq () / 2) {
+			if (Math.abs (freqs.get (i) - lastFreq) > freqs.get (i) / 100 && length > sound.getFreq () / 2) {
 				Note note = this.pack.get (this.instrument).getNearestNote ((int) lastFreq);
 				Sound attack = note.getAttack ((int) lastFreq, channelNum, length);
 				Sound decay = note.getDecay ((int) lastFreq, channelNum, length);
@@ -45,7 +47,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 				Sound release = note.getRelease ((int) lastFreq, channelNum, length);
 				builtSound.append (threshold * lastBegining, attack, decay, sustain, release);
 				lastBegining = i;
-				lastFreq = freqs [i];
+				lastFreq = freqs.get (i);
 			}
 		}
 

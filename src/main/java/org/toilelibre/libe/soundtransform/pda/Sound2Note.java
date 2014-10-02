@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.pda;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.math3.exception.NonMonotonicSequenceException;
 import org.apache.commons.math3.util.MathArrays;
@@ -31,12 +32,12 @@ public class Sound2Note {
 		double sum = 0;
 		int nb = 0;
 
-		PeakFindSoundTransformation peak = new PeakFindSoundTransformation (100);
+		PeakFindSoundTransformation peak = new PeakFindSoundTransformation (true);
 		peak.transform (channel1);
-		int [] magnitude = peak.getLoudestFreqs ();
+		List<Integer> magnitude = peak.getLoudestFreqs ();
 
-		for (int i = 0; i < magnitude.length; i++) {
-			sum += magnitude [i];
+		for (int i = 0; i < magnitude.size(); i++) {
+			sum += magnitude.get (i).intValue ();
 			nb++;
 		}
 		return (int) (sum / nb);

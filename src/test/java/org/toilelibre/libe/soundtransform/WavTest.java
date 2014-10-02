@@ -146,7 +146,7 @@ public class WavTest {
 	@Test
 	public void testPurify () {
 		try {
-			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new PurifySoundTransformation (100));
+			new TransformSound (new PrintlnTransformObserver ()).transformFile (input, output, new PurifySoundTransformation ());
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {

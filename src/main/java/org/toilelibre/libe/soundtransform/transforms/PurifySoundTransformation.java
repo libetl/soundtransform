@@ -5,10 +5,8 @@ import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 
 public class PurifySoundTransformation extends NoOpFrequencySoundTransformation {
 
-	private int	increment;
 
-	public PurifySoundTransformation (int increment) {
-		this.increment = increment;
+	public PurifySoundTransformation () {
 	}
 
 	@Override

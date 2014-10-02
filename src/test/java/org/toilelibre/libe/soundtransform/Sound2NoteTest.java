@@ -100,7 +100,7 @@ public class Sound2NoteTest {
 		String [] notesTitle = new String [] { "C4", "D4", "E4", "F4", "G4", "A4", "B4" };
 
 		for (int i = 0; i < notes.length; i++) {
-			int samplerate = 44100;
+			int samplerate = 11025;
 			long [] signal = new long [length];
 			for (int j = 0; j < length; j++) {
 				signal [j] = (long) (Math.sin (j * notes [i] * 2 * Math.PI / samplerate) * 128.0) + 128;
@@ -109,7 +109,7 @@ public class Sound2NoteTest {
 			Note n = Sound2Note.convert ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound", new Sound [] { s });
 
 			System.out.println ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
-			//org.junit.Assert.assertTrue (n.getFrequency () > notes [i] - 10 && n.getFrequency () < notes [i] + 10);
+			org.junit.Assert.assertTrue (n.getFrequency () > notes [i] - 10 && n.getFrequency () < notes [i] + 10);
 			System.out.println ("...acceptable");
 		}
 	}
