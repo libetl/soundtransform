@@ -80,7 +80,7 @@ public class Sound2NoteTest {
 	public void shouldRecognizeAPure440Note () {
 		int length = 2000;
 
-		int samplerate = 44100;
+		int samplerate = 11025;
 		long [] signal = new long [length];
 		for (int j = 0; j < length; j++) {
 			signal [j] = (long) (Math.sin (j * 440 * 2 * Math.PI / samplerate) * 128.0) + 128;
@@ -89,7 +89,7 @@ public class Sound2NoteTest {
 		Note n = Sound2Note.convert ("Sample A4 (440 Hz) Sound", new Sound [] { s });
 
 		System.out.println ("Sample A4 (440Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
-		//org.junit.Assert.assertTrue (n.getFrequency () > 440 - 10 && n.getFrequency () < 440 + 10);
+		org.junit.Assert.assertTrue (n.getFrequency () > 440 - 10 && n.getFrequency () < 440 + 10);
 		System.out.println ("...acceptable");
 	}
 
