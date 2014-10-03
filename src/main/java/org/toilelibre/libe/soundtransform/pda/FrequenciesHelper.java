@@ -18,6 +18,12 @@ public class FrequenciesHelper {
 		return (int) (freq * (sampleRate * 2.0) / MAX_EAR_FREQUENCY);
 	}
 
+	/**
+	 * Find the f0 (fundamental frequency) using the Harmonic Product Spectrum
+	 * @param fs spectrum at a specific time
+	 * @param hpsfactor number of times to multiply the frequencies together
+	 * @return a fundamental frequency (in Hz)
+	 */
 	public static int f0 (FrequenciesState fs, int hpsfactor) {
 		return FrequenciesHelper
 		        .freqFromSampleRate (FrequenciesHelper.getMaxIndex (FrequenciesHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * 2 / hpsfactor);
