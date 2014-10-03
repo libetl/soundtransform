@@ -2,6 +2,8 @@ package org.toilelibre.libe.soundtransform.objects;
 
 import java.util.Arrays;
 
+import org.toilelibre.libe.soundtransform.transforms.ToStringSoundTransformation;
+
 public class Sound {
 
 	private long []	samples;
@@ -48,6 +50,9 @@ public class Sound {
 				}
 			}
 		}
-
+	}
+	
+	public String toString (){
+	    return new ToStringSoundTransformation(8000, 20).toString(this);
 	}
 }
