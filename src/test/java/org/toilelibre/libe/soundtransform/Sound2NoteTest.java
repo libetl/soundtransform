@@ -78,12 +78,12 @@ public class Sound2NoteTest {
 
 	@Test
 	public void shouldRecognizeAPure440Note () {
-		int length = 2000;
+		int length = 10000;
 
 		int samplerate = 11025;
 		long [] signal = new long [length];
 		for (int j = 0; j < length; j++) {
-			signal [j] = (long) (Math.sin (j * 440 * 2 * Math.PI / samplerate) * 128.0) + 128;
+			signal [j] = (long) (Math.sin (j * 440 * 2 * Math.PI / samplerate) * 32768.0);
 		}
 		Sound s = new Sound (signal, 2, samplerate, 1);
 		Note n = Sound2Note.convert ("Sample A4 (440 Hz) Sound", new Sound [] { s });
