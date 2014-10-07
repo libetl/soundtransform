@@ -103,7 +103,7 @@ public class Sound2NoteTest {
 			int samplerate = 11025;
 			long [] signal = new long [length];
 			for (int j = 0; j < length; j++) {
-				signal [j] = (long) (Math.sin (j * notes [i] * 2 * Math.PI / samplerate) * 128.0) + 128;
+				signal [j] = (long) (Math.sin (j * notes [i] * 2 * Math.PI / samplerate) * 32768.0);
 			}
 			Sound s = new Sound (signal, 2, samplerate, 1);
 			Note n = Sound2Note.convert ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound", new Sound [] { s });
