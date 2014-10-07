@@ -20,8 +20,11 @@ public class FrequenciesHelper {
 
 	/**
 	 * Find the f0 (fundamental frequency) using the Harmonic Product Spectrum
-	 * @param fs spectrum at a specific time
-	 * @param hpsfactor number of times to multiply the frequencies together
+	 * 
+	 * @param fs
+	 *            spectrum at a specific time
+	 * @param hpsfactor
+	 *            number of times to multiply the frequencies together
 	 * @return a fundamental frequency (in Hz)
 	 */
 	public static int f0 (FrequenciesState fs, int hpsfactor) {

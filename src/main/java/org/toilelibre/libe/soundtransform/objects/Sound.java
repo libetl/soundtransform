@@ -51,8 +51,8 @@ public class Sound {
 			}
 		}
 	}
-	
-	public String toString (){
-	    return new ToStringSoundTransformation(8000, 20).toString(this);
+
+	public String toString () {
+		return new ToStringSoundTransformation (8000, 20).toString (this);
 	}
 }

@@ -19,19 +19,19 @@ public class SoundGenerateTest {
 		int soundfreq = 440;
 		int sampleInBytes = 2;
 
-			int samplerate = 44100;
-			long [] signal = new long [length];
-			for (int j = 0; j < length; j++) {
-				signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
-			}
-			Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
+		int samplerate = 44100;
+		long [] signal = new long [length];
+		for (int j = 0; j < length; j++) {
+			signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
+		}
+		Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
 
-  			AudioInputStream ais = new TransformSound ().toStream (new Sound []{s}, new AudioFormat (samplerate, sampleInBytes * 8, 1, true, false));
-   			File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+		AudioInputStream ais = new TransformSound ().toStream (new Sound [] { s }, new AudioFormat (samplerate, sampleInBytes * 8, 1, true, false));
+		File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-   			try {
-	            AudioSystem.write (ais, AudioFileFormat.Type.WAVE, fDest);
-            } catch (IOException e) {
-            }
+		try {
+			AudioSystem.write (ais, AudioFileFormat.Type.WAVE, fDest);
+		} catch (IOException e) {
+		}
 	}
 }

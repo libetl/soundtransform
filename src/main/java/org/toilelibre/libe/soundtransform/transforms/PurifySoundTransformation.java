@@ -5,7 +5,6 @@ import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 
 public class PurifySoundTransformation extends NoOpFrequencySoundTransformation {
 
-
 	public PurifySoundTransformation () {
 	}
 

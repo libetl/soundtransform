@@ -11,9 +11,9 @@ import org.toilelibre.libe.soundtransform.pda.FrequenciesHelper;
 public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformation {
 
 	private double	      threshold;
-	private List<Integer> loudestfreqs;
-	private boolean       note;
-	private int           fsLimit;
+	private List<Integer>	loudestfreqs;
+	private boolean	      note;
+	private int	          fsLimit;
 
 	public PeakFindSoundTransformation (boolean note) {
 		this.note = note;
@@ -27,10 +27,10 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
 	@Override
 	public Sound initSound (Sound input) {
 		this.loudestfreqs = new LinkedList<Integer> ();
-		if (this.note){
+		if (this.note) {
 			this.threshold = input.getSamples ().length;
 			this.fsLimit = input.getSamples ().length;
-		}else{
+		} else {
 			this.fsLimit = input.getFreq ();
 		}
 		return super.initSound (input);

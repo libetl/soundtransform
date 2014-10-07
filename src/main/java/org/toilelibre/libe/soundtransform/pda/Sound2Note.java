@@ -36,7 +36,7 @@ public class Sound2Note {
 		peak.transform (channel1);
 		List<Integer> magnitude = peak.getLoudestFreqs ();
 
-		for (int i = 0; i < magnitude.size(); i++) {
+		for (int i = 0; i < magnitude.size (); i++) {
 			sum += magnitude.get (i).intValue ();
 			nb++;
 		}

@@ -10,17 +10,17 @@ import org.junit.Test;
 
 public class SoundToStringTest {
 
-    @Test
-    public void testToString (){
-        ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-        File        input       = new File (classLoader.getResource ("before.wav").getFile ());
-        try {
-            AudioInputStream ais = AudioFileHelper.getAudioInputStream (input);
-            System.out.println(new TransformSound ().fromInputStream(ais) [0]);
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	@Test
+	public void testToString () {
+		ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+		File input = new File (classLoader.getResource ("before.wav").getFile ());
+		try {
+			AudioInputStream ais = AudioFileHelper.getAudioInputStream (input);
+			System.out.println (new TransformSound ().fromInputStream (ais) [0]);
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace ();
+		} catch (IOException e) {
+			e.printStackTrace ();
+		}
+	}
 }
