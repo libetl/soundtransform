@@ -80,7 +80,7 @@ public class Sound2NoteTest {
 	public void shouldRecognizeAPure440Note () {
 		int length = 10000;
 
-		int samplerate = 11025;
+		int samplerate = 44100;
 		long [] signal = new long [length];
 		for (int j = 0; j < length; j++) {
 			signal [j] = (long) (Math.sin (j * 440 * 2 * Math.PI / samplerate) * 32768.0);

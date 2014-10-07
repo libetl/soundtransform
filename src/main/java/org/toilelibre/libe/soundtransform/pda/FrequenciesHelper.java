@@ -8,14 +8,8 @@ import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
 
 public class FrequenciesHelper {
 
-	public static final int	MAX_EAR_FREQUENCY	= 44100;
-
-	public static int freqFromSampleRate (int freq, int sampleRate) {
-		return (int) (freq * MAX_EAR_FREQUENCY / (sampleRate * 2.0));
-	}
-
-	public static int toSampleRate (int freq, int sampleRate) {
-		return (int) (freq * (sampleRate * 2.0) / MAX_EAR_FREQUENCY);
+	public static int freqFromSampleRate (int freq, int sqr2length, int sampleRate) {
+		return (int) (freq * 2.0 * sampleRate / sqr2length);
 	}
 
 	/**
@@ -29,7 +23,8 @@ public class FrequenciesHelper {
 	 */
 	public static int f0 (FrequenciesState fs, int hpsfactor) {
 		return FrequenciesHelper
-		        .freqFromSampleRate (FrequenciesHelper.getMaxIndex (FrequenciesHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * 2 / hpsfactor);
+		        .freqFromSampleRate (FrequenciesHelper.getMaxIndex (FrequenciesHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), 
+		        		fs.getState ().length * 2 / hpsfactor, fs.getMaxfrequency ());
 	}
 
 	private static FrequenciesState hps (FrequenciesState fs, int factor) {
@@ -102,11 +97,11 @@ public class FrequenciesHelper {
 		for (int i = 0; i < length; i++) {
 			sb.append ("-");
 		}
-		sb.append ("> " + FrequenciesHelper.freqFromSampleRate (length * compression, (int) lastFrequency * 2) + "Hz (freq)\n");
+		sb.append ("> " + FrequenciesHelper.freqFromSampleRate (length * compression, (int) lastFrequency * 2, (int) lastFrequency * 2) + "Hz (freq)\n");
 		for (int i = 0; i < length; i++) {
 			sb.append (" ");
 			if (i == maxIndex / compression) {
-				int foundFreq = FrequenciesHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * 2);
+				int foundFreq = FrequenciesHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * 2, (int) lastFrequency * 2);
 				sb.append ("^" + foundFreq + "Hz");
 				i += (foundFreq == 0 ? 1 : Math.log10 (foundFreq)) + 2;
 			}
