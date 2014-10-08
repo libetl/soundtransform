@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.toilelibre.libe.soundtransform.objects.PacksList;
 import org.toilelibre.libe.soundtransform.objects.Sound;
 import org.toilelibre.libe.soundtransform.observer.PrintlnTransformObserver;
+import org.toilelibre.libe.soundtransform.pda.Sound2Note;
 import org.toilelibre.libe.soundtransform.transforms.ShapeSoundTransformation;
 
 public class ShapeTest {
@@ -29,6 +30,9 @@ public class ShapeTest {
 			        packsList.defaultPack, "chord_piano"));
 
 			AudioSystem.write (outputStream, AudioFileFormat.Type.WAVE, output);
+			
+			int frequency = Sound2Note.convert ("output chord_note", new TransformSound (new PrintlnTransformObserver ()).fromInputStream (AudioFileHelper.getAudioInputStream (output))).getFrequency ();
+			System.out.println ("Output chord note should be around 293Hz, but is " + frequency + "Hz");
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {
