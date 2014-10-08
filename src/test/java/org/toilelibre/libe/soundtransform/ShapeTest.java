@@ -10,6 +10,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.objects.PacksList;
+import org.toilelibre.libe.soundtransform.objects.Sound;
 import org.toilelibre.libe.soundtransform.observer.PrintlnTransformObserver;
 import org.toilelibre.libe.soundtransform.transforms.ShapeSoundTransformation;
 
@@ -33,5 +34,15 @@ public class ShapeTest {
 		} catch (IOException e) {
 			e.printStackTrace ();
 		}
+	}
+	
+	@Test
+	public void testAppendSoundsWithDifferentNbBytes () throws IOException, UnsupportedAudioFileException{
+		ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+		File input1 = new File (classLoader.getResource ("notes/Piano2-D.wav").getFile ());
+		File input2 = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
+		Sound[] s1 = new TransformSound().fromInputStream (AudioFileHelper.getAudioInputStream (input1));
+		Sound[] s2 = new TransformSound().fromInputStream (AudioFileHelper.getAudioInputStream (input2));
+		s2[0].append (1000, s1[0]);
 	}
 }
