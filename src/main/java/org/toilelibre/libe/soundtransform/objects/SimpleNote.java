@@ -62,7 +62,7 @@ public class SimpleNote implements Note {
 	private Sound transformSubsound (Sound [] subSound, int channelNum, int frequency, int length) {
 
 		int percent = (int) (frequency * 100.0 / this.frequency);
-		Sound result = subSound [channelNum];
+		Sound result = subSound [(subSound.length > channelNum ? channelNum : subSound.length - 1)];
 
 		PitchSoundTransformation pitcher = new PitchSoundTransformation (percent);
 		if (percent < 98 || percent > 102) {

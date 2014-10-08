@@ -45,9 +45,9 @@ public class PacksList {
 											 * () { { PacksList.this.addNote
 											 * (this, "piano_a.wav"); } });
 											 */
-			                                this.put ("a-piano", new Range () {
+			                                this.put ("chord_piano", new Range () {
 				                                {
-					                                PacksList.this.addNotes (this, "a-piano3.wav", "a-piano4.wav");
+					                                PacksList.this.addNotes (this, "g-piano3.wav", "g-piano4.wav");
 				                                }
 			                                });
 		                                }
