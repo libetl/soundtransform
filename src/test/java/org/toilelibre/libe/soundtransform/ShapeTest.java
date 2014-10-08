@@ -39,6 +39,29 @@ public class ShapeTest {
 			e.printStackTrace ();
 		}
 	}
+
+	@Test
+	public void testShapeASimplePianoNoteAsAChordNoteSameFrequency () {
+
+		try {
+			System.out.println ("Loading packs");
+			PacksList packsList = PacksList.getInstance ();
+			ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+			File input = new File (classLoader.getResource ("notes/Piano3-E.wav").getFile ());
+			File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+			AudioInputStream outputStream = new TransformSound (new PrintlnTransformObserver ()).transformAudioStream (AudioFileHelper.getAudioInputStream (input), new ShapeSoundTransformation (
+			        packsList.defaultPack, "chord_piano"));
+
+			AudioSystem.write (outputStream, AudioFileFormat.Type.WAVE, output);
+			
+			int frequency = Sound2Note.convert ("output chord_note", new TransformSound (new PrintlnTransformObserver ()).fromInputStream (AudioFileHelper.getAudioInputStream (output))).getFrequency ();
+			System.out.println ("Output chord note should be around 332Hz, but is " + frequency + "Hz");
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace ();
+		} catch (IOException e) {
+			e.printStackTrace ();
+		}
+	}
 	
 	@Test
 	public void testAppendSoundsWithDifferentNbBytes () throws IOException, UnsupportedAudioFileException{
