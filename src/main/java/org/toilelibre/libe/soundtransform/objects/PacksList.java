@@ -88,8 +88,7 @@ public class PacksList {
 			}
 			String completeFileName = completeURL.getFile ();
 			File file = new File (completeFileName);
-			Note n = Sound2Note.convert (fileName, ts.fromInputStream (AudioFileHelper.getAudioInputStream (file)),
-					frequency);
+			Note n = Sound2Note.convert (fileName, ts.fromInputStream (AudioFileHelper.getAudioInputStream (file)), frequency);
 			range.put (n.getFrequency (), n);
 		} catch (UnsupportedAudioFileException e) {
 		} catch (IllegalArgumentException e) {

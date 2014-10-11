@@ -32,8 +32,9 @@ public class ShapeTest {
 			        packsList.defaultPack, "chord_piano"));
 
 			AudioSystem.write (outputStream, AudioFileFormat.Type.WAVE, output);
-			
-			int frequency = Sound2Note.convert ("output chord_note", new TransformSound (new PrintlnTransformObserver ()).fromInputStream (AudioFileHelper.getAudioInputStream (output))).getFrequency ();
+
+			int frequency = Sound2Note.convert ("output chord_note", new TransformSound (new PrintlnTransformObserver ()).fromInputStream (AudioFileHelper.getAudioInputStream (output)))
+			        .getFrequency ();
 			System.out.println ("Output chord note should be around 293Hz, but is " + frequency + "Hz");
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
@@ -55,8 +56,9 @@ public class ShapeTest {
 			        packsList.defaultPack, "chord_piano"));
 
 			AudioSystem.write (outputStream, AudioFileFormat.Type.WAVE, output);
-			
-			int frequency = Sound2Note.convert ("output chord_note", new TransformSound (new PrintlnTransformObserver ()).fromInputStream (AudioFileHelper.getAudioInputStream (output))).getFrequency ();
+
+			int frequency = Sound2Note.convert ("output chord_note", new TransformSound (new PrintlnTransformObserver ()).fromInputStream (AudioFileHelper.getAudioInputStream (output)))
+			        .getFrequency ();
 			System.out.println ("Output chord note should be around 332Hz, but is " + frequency + "Hz");
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
@@ -64,14 +66,14 @@ public class ShapeTest {
 			e.printStackTrace ();
 		}
 	}
-	
+
 	@Test
-	public void testAppendSoundsWithDifferentNbBytes () throws IOException, UnsupportedAudioFileException{
+	public void testAppendSoundsWithDifferentNbBytes () throws IOException, UnsupportedAudioFileException {
 		ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
 		File input1 = new File (classLoader.getResource ("notes/Piano2-D.wav").getFile ());
 		File input2 = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
-		Sound[] s1 = new TransformSound().fromInputStream (AudioFileHelper.getAudioInputStream (input1));
-		Sound[] s2 = new TransformSound().fromInputStream (AudioFileHelper.getAudioInputStream (input2));
-		SoundAppender.append (s2[0], 1000, s1[0]);
+		Sound [] s1 = new TransformSound ().fromInputStream (AudioFileHelper.getAudioInputStream (input1));
+		Sound [] s2 = new TransformSound ().fromInputStream (AudioFileHelper.getAudioInputStream (input2));
+		SoundAppender.append (s2 [0], 1000, s1 [0]);
 	}
 }

@@ -22,9 +22,8 @@ public class SpectrumHelper {
 	 * @return a fundamental frequency (in Hz)
 	 */
 	public static int f0 (Spectrum fs, int hpsfactor) {
-		return SpectrumHelper
-		        .freqFromSampleRate (SpectrumHelper.getMaxIndex (SpectrumHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), 
-		        		fs.getState ().length * 2 / hpsfactor, fs.getSampleRate ());
+		return SpectrumHelper.freqFromSampleRate (SpectrumHelper.getMaxIndex (SpectrumHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * 2 / hpsfactor,
+		        fs.getSampleRate ());
 	}
 
 	private static Spectrum hps (Spectrum fs, int factor) {

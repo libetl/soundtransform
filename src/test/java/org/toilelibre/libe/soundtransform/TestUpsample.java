@@ -25,17 +25,16 @@ public class TestUpsample {
 			File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 			Sound [] inputSounds = new TransformSound ().fromInputStream (AudioFileHelper.getAudioInputStream (input));
 			Sound [] outputSounds = new Sound [inputSounds.length];
-			for (int i = 0 ; i < inputSounds.length ; i++){
-				Sound tmp = SoundAppender.changeNbBytesPerSample (inputSounds [i], 2);
-				tmp = SoundAppender.resizeToSampleRate (tmp, 44100);
+			for (int i = 0; i < inputSounds.length; i++) {
+				//Sound tmp = SoundAppender.changeNbBytesPerSample (inputSounds [i], 2);
+				Sound tmp = SoundAppender.resizeToSampleRate (inputSounds [i], 44100);
 				outputSounds [i] = tmp;
 			}
-			
-			AudioInputStream ais = new TransformSound ().toStream (outputSounds, new AudioFormat (44100, 2, outputSounds.length, true, false));
 
+			AudioInputStream ais = new TransformSound ().toStream (outputSounds, new AudioFormat (44100, 1, outputSounds.length, true, false));
 
 			AudioSystem.write (ais, AudioFileFormat.Type.WAVE, output);
-			
+
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {
@@ -52,17 +51,16 @@ public class TestUpsample {
 			File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 			Sound [] inputSounds = new TransformSound ().fromInputStream (AudioFileHelper.getAudioInputStream (input));
 			Sound [] outputSounds = new Sound [inputSounds.length];
-			for (int i = 0 ; i < inputSounds.length ; i++){
+			for (int i = 0; i < inputSounds.length; i++) {
 				Sound tmp = SoundAppender.changeNbBytesPerSample (inputSounds [i], 2);
 				tmp = SoundAppender.resizeToSampleRate (tmp, 44100);
 				outputSounds [i] = tmp;
 			}
-			
+
 			AudioInputStream ais = new TransformSound ().toStream (outputSounds, new AudioFormat (44100, 2 * 8, outputSounds.length, true, false));
 
-
 			AudioSystem.write (ais, AudioFileFormat.Type.WAVE, output);
-			
+
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {
