@@ -22,7 +22,7 @@ public class SoundAppender {
 		return lastIndex;
 	}
 
-	private static Sound changeNbBytesPerSample (Sound otherSound, int newNbBytesPerSample) {
+	public static Sound changeNbBytesPerSample (Sound otherSound, int newNbBytesPerSample) {
 		int indexResult = 0;
 		int iter = Math.max (1, otherSound.getNbBytesPerSample () - newNbBytesPerSample + 1);
 		int pow = Math.max (0, newNbBytesPerSample - otherSound.getNbBytesPerSample ());
@@ -41,7 +41,7 @@ public class SoundAppender {
     }
 	
 
-	private static Sound resizeToSampleRate (Sound sound, int newfreq) {
+	public static Sound resizeToSampleRate (Sound sound, int newfreq) {
 		float ratio = (float) (newfreq * 1.0 / sound.getSampleRate ());
 		if (ratio > 1){
 			return SoundAppender.upsampleWithRatio (sound, ratio);
@@ -49,7 +49,7 @@ public class SoundAppender {
 	    return SoundAppender.downsampleWithRatio (sound, (float)(1.0 / ratio));
     }
 
-	private static Sound downsampleWithRatio (Sound sound, float ratio) {
+	public static Sound downsampleWithRatio (Sound sound, float ratio) {
 		float appendIfGreaterThanOrEqualsRatio = 0;
 		int indexResult = 0;
 		long[] result = new long [(int) Math.ceil (sound.getSamples ().length / ratio)];
