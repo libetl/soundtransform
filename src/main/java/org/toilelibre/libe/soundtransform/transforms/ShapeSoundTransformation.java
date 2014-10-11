@@ -9,6 +9,7 @@ import org.toilelibre.libe.soundtransform.observer.LogAware;
 import org.toilelibre.libe.soundtransform.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.observer.TransformObserver;
+import org.toilelibre.libe.soundtransform.sound.SoundAppender;
 
 public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 
@@ -45,7 +46,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 				Sound decay = note.getDecay ((int) lastFreq, channelNum, length);
 				Sound sustain = note.getSustain ((int) lastFreq, channelNum, length);
 				Sound release = note.getRelease ((int) lastFreq, channelNum, length);
-				builtSound.append (threshold * lastBegining, attack, decay, sustain, release);
+				SoundAppender.append (builtSound, threshold * lastBegining, attack, decay, sustain, release);
 				lastBegining = i;
 				lastFreq = freqs.get (i);
 			}

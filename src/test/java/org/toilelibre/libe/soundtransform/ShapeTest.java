@@ -13,6 +13,7 @@ import org.toilelibre.libe.soundtransform.objects.PacksList;
 import org.toilelibre.libe.soundtransform.objects.Sound;
 import org.toilelibre.libe.soundtransform.observer.PrintlnTransformObserver;
 import org.toilelibre.libe.soundtransform.pda.Sound2Note;
+import org.toilelibre.libe.soundtransform.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.transforms.ShapeSoundTransformation;
 
 public class ShapeTest {
@@ -70,6 +71,6 @@ public class ShapeTest {
 		File input2 = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
 		Sound[] s1 = new TransformSound().fromInputStream (AudioFileHelper.getAudioInputStream (input1));
 		Sound[] s2 = new TransformSound().fromInputStream (AudioFileHelper.getAudioInputStream (input2));
-		s2[0].append (1000, s1[0]);
+		SoundAppender.append (s2[0], 1000, s1[0]);
 	}
 }

@@ -47,7 +47,8 @@ public class PacksList {
 											 */
 			                                this.put ("chord_piano", new Range () {
 				                                {
-					                                PacksList.this.addNotes (this, "g-piano3.wav", "g-piano4.wav");
+					                                PacksList.this.addNote (this, "g-piano3.wav", 329);
+					                                PacksList.this.addNote (this, "g-piano4.wav", 293);
 				                                }
 			                                });
 		                                }
@@ -69,6 +70,26 @@ public class PacksList {
 			String completeFileName = completeURL.getFile ();
 			File file = new File (completeFileName);
 			Note n = Sound2Note.convert (fileName, ts.fromInputStream (AudioFileHelper.getAudioInputStream (file)));
+			range.put (n.getFrequency (), n);
+		} catch (UnsupportedAudioFileException e) {
+		} catch (IllegalArgumentException e) {
+			System.err.println (fileName + " could not be parsed as an ADSR note");
+		} catch (IOException e) {
+		}
+
+	}
+
+	private void addNote (Range range, String fileName, int frequency) {
+		try {
+			java.net.URL completeURL = classLoader.getResource ("notes/" + fileName);
+			if (completeURL == null) {
+				System.err.println (fileName + " not found");
+				return;
+			}
+			String completeFileName = completeURL.getFile ();
+			File file = new File (completeFileName);
+			Note n = Sound2Note.convert (fileName, ts.fromInputStream (AudioFileHelper.getAudioInputStream (file)),
+					frequency);
 			range.put (n.getFrequency (), n);
 		} catch (UnsupportedAudioFileException e) {
 		} catch (IllegalArgumentException e) {
