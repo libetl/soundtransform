@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.commons.math3.exception.NonMonotonicSequenceException;
 import org.apache.commons.math3.util.MathArrays;
-import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
+import org.toilelibre.libe.soundtransform.objects.Spectrum;
 import org.toilelibre.libe.soundtransform.objects.Note;
 import org.toilelibre.libe.soundtransform.objects.SimpleNote;
 import org.toilelibre.libe.soundtransform.objects.Sound;
@@ -67,7 +67,7 @@ public class Sound2Note {
 			}
 
 			@Override
-			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
+			public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 				magnitude [arraylength++] = Sound2Note.computeMagnitude (fs);
 				return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
 			}
@@ -104,7 +104,7 @@ public class Sound2Note {
 			}
 
 			@Override
-			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
+			public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 				magnitude [arraylength++] = Sound2Note.computeMagnitude (fs);
 				return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
 			}
@@ -142,7 +142,7 @@ public class Sound2Note {
 			}
 
 			@Override
-			public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
+			public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 				magnitude [arraylength++] = Sound2Note.computeMagnitude (fs);
 				return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
 			}
@@ -159,7 +159,7 @@ public class Sound2Note {
 		return channel1.getSamples ().length - releaseIndexFromReversed;
 	}
 
-	protected static int computeMagnitude (FrequenciesState fs) {
+	protected static int computeMagnitude (Spectrum fs) {
 		double sum = 0;
 		for (int i = 0; i < fs.getState ().length; i++) {
 			sum += fs.getState () [i].abs ();
@@ -167,10 +167,10 @@ public class Sound2Note {
 		return (int) (sum / fs.getState ().length);
 	}
 
-	protected static double computeLoudestFreq (FrequenciesState fs) {
+	protected static double computeLoudestFreq (Spectrum fs) {
 		double max = 0;
 		double freq = 0;
-		for (int i = 0; i < fs.getMaxfrequency () / 2; i++) {
+		for (int i = 0; i < fs.getSampleRate () / 2; i++) {
 			double val = Math.pow (fs.getState () [i].abs (), 2);
 			freq = (max < val ? i : freq);
 			max = (max < val ? val : max);

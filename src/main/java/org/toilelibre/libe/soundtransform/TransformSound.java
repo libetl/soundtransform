@@ -13,6 +13,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import org.toilelibre.libe.soundtransform.format.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.objects.Sound;
 import org.toilelibre.libe.soundtransform.observer.LogAware;
 import org.toilelibre.libe.soundtransform.observer.LogEvent;

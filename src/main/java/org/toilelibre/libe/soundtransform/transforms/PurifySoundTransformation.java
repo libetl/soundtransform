@@ -1,7 +1,7 @@
 package org.toilelibre.libe.soundtransform.transforms;
 
 import org.apache.commons.math3.complex.Complex;
-import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
+import org.toilelibre.libe.soundtransform.objects.Spectrum;
 
 public class PurifySoundTransformation extends NoOpFrequencySoundTransformation {
 
@@ -9,13 +9,13 @@ public class PurifySoundTransformation extends NoOpFrequencySoundTransformation 
 	}
 
 	@Override
-	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
+	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 		Complex [] newAmpl = new Complex [powOf2NearestLength];
 		int max = 0;
 		double maxValue = 0;
 		for (int j = 0; j < length; j++) {
 			double tmp = Math.sqrt (Math.pow (fs.getState () [j].getReal (), 2) + Math.pow (fs.getState () [j].getImaginary (), 2));
-			if (tmp > maxValue && j > 100 && j < fs.getMaxfrequency () / 2) {
+			if (tmp > maxValue && j > 100 && j < fs.getSampleRate () / 2) {
 				max = j;
 				maxValue = tmp;
 			}
@@ -23,7 +23,7 @@ public class PurifySoundTransformation extends NoOpFrequencySoundTransformation 
 		for (int j = 0; j < powOf2NearestLength; j++) {
 			newAmpl [j] = fs.getState () [j].multiply (Math.exp (- (Math.pow (j - max, 2)) / 100));
 		}
-		return new FrequenciesState (newAmpl, fs.getMaxfrequency ());
+		return new Spectrum (newAmpl, fs.getSampleRate ());
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class SoundAppender {
 	public static int append (Sound origin, int usedarraylength, Sound otherSound) {
 		Sound resultBeforeResize = SoundAppender.changeNbBytesPerSample (otherSound, origin.getNbBytesPerSample ());
 		Sound resultBeforeCopy = SoundAppender.resizeToSampleRate (
-				resultBeforeResize, origin.getFreq ());
+				resultBeforeResize, origin.getSampleRate ());
 		int lastIndex = Math.min (origin.getSamples ().length, usedarraylength + resultBeforeCopy.getSamples ().length);
 		System.arraycopy (resultBeforeCopy.getSamples (), 0, origin.getSamples (), usedarraylength, lastIndex - usedarraylength);
 		return lastIndex;
@@ -35,12 +35,12 @@ public class SoundAppender {
 				sampleValue %= divide;
 			}
 		}
-		return new Sound (resultBeforeResize, newNbBytesPerSample, otherSound.getFreq (), otherSound.getChannelNum ());
+		return new Sound (resultBeforeResize, newNbBytesPerSample, otherSound.getSampleRate (), otherSound.getChannelNum ());
     }
 	
 
 	private static Sound resizeToSampleRate (Sound sound, int newfreq) {
-		float ratio = (float) (newfreq * 1.0 / sound.getFreq ());
+		float ratio = (float) (newfreq * 1.0 / sound.getSampleRate ());
 		if (ratio > 1){
 			return SoundAppender.upsampleWithRatio (sound, ratio);
 		}
@@ -59,7 +59,7 @@ public class SoundAppender {
 				appendIfGreaterThanOrEqualsRatio += 1.0;
 			}
 		}
-		return new Sound (result, sound.getNbBytesPerSample (), (int)(sound.getFreq () / ratio), sound.getChannelNum ());
+		return new Sound (result, sound.getNbBytesPerSample (), (int)(sound.getSampleRate () / ratio), sound.getChannelNum ());
     }
 
 	private static Sound upsampleWithRatio (Sound sound, float ratio) {
@@ -73,6 +73,6 @@ public class SoundAppender {
 			}
 			appendWhileLessThanOrEqualsRatio -= ratio;
 		}
-		return new Sound (result, sound.getNbBytesPerSample (), (int)(sound.getFreq () * ratio), sound.getChannelNum ());
+		return new Sound (result, sound.getNbBytesPerSample (), (int)(sound.getSampleRate () * ratio), sound.getChannelNum ());
     }
 }

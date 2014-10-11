@@ -4,7 +4,7 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
-import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
+import org.toilelibre.libe.soundtransform.objects.Spectrum;
 import org.toilelibre.libe.soundtransform.objects.Sound;
 import org.toilelibre.libe.soundtransform.observer.LogAware;
 import org.toilelibre.libe.soundtransform.observer.LogEvent;
@@ -19,7 +19,7 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 
 	protected abstract Sound initSound (Sound input);
 
-	protected abstract FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length);
+	protected abstract Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length);
 
 	protected abstract int getOffsetFromASimpleLoop (int i, double step);
 
@@ -47,7 +47,7 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 	@Override
 	public Sound transform (Sound sound) {
 		Sound output = this.initSound (sound);
-		double freqmax = sound.getFreq ();
+		double freqmax = sound.getSampleRate ();
 		double threshold = this.getLowThreshold (freqmax);
 		int maxlength = this.getWindowLength (freqmax);
 		long [] data = sound.getSamples ();
@@ -60,8 +60,8 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 				transformeddata [j - i] = data [j];
 			}
 			Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
-			FrequenciesState fs = new FrequenciesState (complexArray, (int) freqmax);
-			FrequenciesState result = this.transformFrequencies (fs, i, maxlength, length);
+			Spectrum fs = new Spectrum (complexArray, (int) freqmax);
+			Spectrum result = this.transformFrequencies (fs, i, maxlength, length);
 			if (result == null) {
 				continue;
 			}

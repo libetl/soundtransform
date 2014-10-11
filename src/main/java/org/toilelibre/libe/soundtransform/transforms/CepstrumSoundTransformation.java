@@ -1,8 +1,8 @@
 package org.toilelibre.libe.soundtransform.transforms;
 
-import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
+import org.toilelibre.libe.soundtransform.objects.Spectrum;
 import org.toilelibre.libe.soundtransform.objects.Sound;
-import org.toilelibre.libe.soundtransform.pda.FrequenciesHelper;
+import org.toilelibre.libe.soundtransform.pda.SpectrumHelper;
 
 public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformation {
 
@@ -54,11 +54,11 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 	}
 
 	@Override
-	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
+	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 
-		FrequenciesState fscep = FrequenciesHelper.spectrumToCepstrum (fs);
+		Spectrum fscep = SpectrumHelper.spectrumToCepstrum (fs);
 
-		this.loudestfreqs [index] = FrequenciesHelper.getMaxIndex (fscep, 0, fs.getMaxfrequency ());
+		this.loudestfreqs [index] = SpectrumHelper.getMaxIndex (fscep, 0, fs.getSampleRate ());
 		this.index++;
 
 		return fscep;

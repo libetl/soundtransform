@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
+import org.toilelibre.libe.soundtransform.objects.Spectrum;
 import org.toilelibre.libe.soundtransform.objects.Sound;
-import org.toilelibre.libe.soundtransform.pda.FrequenciesHelper;
+import org.toilelibre.libe.soundtransform.pda.SpectrumHelper;
 
 public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformation {
 
@@ -31,7 +31,7 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
 			this.threshold = input.getSamples ().length;
 			this.fsLimit = input.getSamples ().length;
 		} else {
-			this.fsLimit = input.getFreq ();
+			this.fsLimit = input.getSampleRate ();
 		}
 		return super.initSound (input);
 	}
@@ -51,11 +51,11 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
 	}
 
 	@Override
-	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
+	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 
 		int [] peaks = new int [10];
 		for (int i = 1; i <= 10; i++) {
-			peaks [i - 1] = FrequenciesHelper.f0 (fs, i);
+			peaks [i - 1] = SpectrumHelper.f0 (fs, i);
 		}
 		Arrays.sort (peaks);
 		int f0 = this.bestCandidate (peaks);

@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform;
+package org.toilelibre.libe.soundtransform.format;
 
 import java.io.File;
 import java.io.IOException;

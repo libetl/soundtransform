@@ -8,18 +8,18 @@ public class Sound {
 
 	private long []	samples;
 	private int	    nbBytesPerSample;
-	private int	    freq;
+	private int	    sampleRate;
 	private int	    channelNum;
 
 	public long [] getSamples () {
 		return samples;
 	}
 
-	public Sound (long [] samples, int nbBytesPerSample, int freq, int channelNum) {
+	public Sound (long [] samples, int nbBytesPerSample, int sampleRate, int channelNum) {
 		super ();
 		this.samples = samples;
 		this.nbBytesPerSample = nbBytesPerSample;
-		this.freq = freq;
+		this.sampleRate = sampleRate;
 		this.channelNum = channelNum;
 	}
 
@@ -27,8 +27,8 @@ public class Sound {
 		return nbBytesPerSample;
 	}
 
-	public int getFreq () {
-		return freq;
+	public int getSampleRate () {
+		return sampleRate;
 	}
 
 	public int getChannelNum () {
@@ -37,7 +37,7 @@ public class Sound {
 
 	public Sound toSubSound (int beginning, int end) {
 		long [] newsamples = (beginning < end ? Arrays.copyOfRange (this.samples, beginning, end) : new long [0]);
-		return new Sound (newsamples, nbBytesPerSample, freq, channelNum);
+		return new Sound (newsamples, nbBytesPerSample, sampleRate, channelNum);
 	}
 
 	public String toString () {

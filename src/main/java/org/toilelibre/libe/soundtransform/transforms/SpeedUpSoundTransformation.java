@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.transforms;
 
-import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
+import org.toilelibre.libe.soundtransform.objects.Spectrum;
 import org.toilelibre.libe.soundtransform.objects.Sound;
 import org.toilelibre.libe.soundtransform.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.observer.LogEvent.LogLevel;
@@ -22,12 +22,12 @@ public class SpeedUpSoundTransformation extends AbstractFrequencySoundTransforma
 	@Override
 	protected Sound initSound (Sound input) {
 		long [] newdata = new long [(int) (input.getSamples ().length / factor)];
-		this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getFreq (), input.getChannelNum ());
+		this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
 		return this.sound;
 	}
 
 	@Override
-	protected FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
+	protected Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 		int total = (int) (this.sound.getSamples ().length / factor);
 		if (total / 100 != 0 && (total / 100 - (total / 100) % this.threshold) != 0 && offset % ( (total / 100 - (total / 100) % this.threshold)) == 0) {
 			this.log (new LogEvent (LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #" + offset + "/" + (int) (sound.getSamples ().length * factor)));

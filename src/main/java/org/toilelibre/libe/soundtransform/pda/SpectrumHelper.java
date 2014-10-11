@@ -4,9 +4,9 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
-import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
+import org.toilelibre.libe.soundtransform.objects.Spectrum;
 
-public class FrequenciesHelper {
+public class SpectrumHelper {
 
 	public static int freqFromSampleRate (int freq, int sqr2length, int sampleRate) {
 		return (int) (freq * 2.0 * sampleRate / sqr2length);
@@ -21,36 +21,36 @@ public class FrequenciesHelper {
 	 *            number of times to multiply the frequencies together
 	 * @return a fundamental frequency (in Hz)
 	 */
-	public static int f0 (FrequenciesState fs, int hpsfactor) {
-		return FrequenciesHelper
-		        .freqFromSampleRate (FrequenciesHelper.getMaxIndex (FrequenciesHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), 
-		        		fs.getState ().length * 2 / hpsfactor, fs.getMaxfrequency ());
+	public static int f0 (Spectrum fs, int hpsfactor) {
+		return SpectrumHelper
+		        .freqFromSampleRate (SpectrumHelper.getMaxIndex (SpectrumHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), 
+		        		fs.getState ().length * 2 / hpsfactor, fs.getSampleRate ());
 	}
 
-	private static FrequenciesState hps (FrequenciesState fs, int factor) {
+	private static Spectrum hps (Spectrum fs, int factor) {
 		int max = fs.getState ().length / factor;
 		Complex [] result = new Complex [max];
 		for (int i = 0; i < max; i++) {
 			double val = fs.getState () [i].abs ();
 			for (int j = 1; j < factor; j++) {
-				if (i * factor < fs.getMaxfrequency () / 2 && i * factor < fs.getState ().length) {
+				if (i * factor < fs.getSampleRate () / 2 && i * factor < fs.getState ().length) {
 					val *= fs.getState () [i * factor].abs ();
 				}
 			}
 			result [i] = new Complex (val);
 		}
-		return new FrequenciesState (result, fs.getMaxfrequency () / factor);
+		return new Spectrum (result, fs.getSampleRate () / factor);
 	}
 
-	public static String fsToString (FrequenciesState fs) {
-		return FrequenciesHelper.fsToString (fs, 0, (int) fs.getMaxfrequency () / 2, 20, 20);
+	public static String fsToString (Spectrum fs) {
+		return SpectrumHelper.fsToString (fs, 0, (int) fs.getSampleRate () / 2, 20, 20);
 	}
 
-	public static String fsToString (FrequenciesState fs, int low, int high, int compression, int height) {
+	public static String fsToString (Spectrum fs, int low, int high, int compression, int height) {
 		StringBuffer sb = new StringBuffer ();
 		float lastFrequency = (fs.getState ().length < high ? fs.getState ().length : (float) high);
 		int length = (int) lastFrequency / compression;
-		int maxIndex = FrequenciesHelper.getMaxIndex (fs, low, high);
+		int maxIndex = SpectrumHelper.getMaxIndex (fs, low, high);
 		long maxMagn = (int) (20.0 * Math.log10 (fs.getState () [maxIndex].abs ()));
 		int step = (int) lastFrequency / length;
 		int [] valuesOnPlot = new int [length];
@@ -97,11 +97,11 @@ public class FrequenciesHelper {
 		for (int i = 0; i < length; i++) {
 			sb.append ("-");
 		}
-		sb.append ("> " + FrequenciesHelper.freqFromSampleRate (length * compression, (int) lastFrequency * 2, (int) lastFrequency * 2) + "Hz (freq)\n");
+		sb.append ("> " + SpectrumHelper.freqFromSampleRate (length * compression, (int) lastFrequency * 2, (int) lastFrequency * 2) + "Hz (freq)\n");
 		for (int i = 0; i < length; i++) {
 			sb.append (" ");
 			if (i == maxIndex / compression) {
-				int foundFreq = FrequenciesHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * 2, (int) lastFrequency * 2);
+				int foundFreq = SpectrumHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * 2, (int) lastFrequency * 2);
 				sb.append ("^" + foundFreq + "Hz");
 				i += (foundFreq == 0 ? 1 : Math.log10 (foundFreq)) + 2;
 			}
@@ -110,7 +110,7 @@ public class FrequenciesHelper {
 		return sb.toString ();
 	}
 
-	public static int getMaxIndex (FrequenciesState fs, int low, int high) {
+	public static int getMaxIndex (Spectrum fs, int low, int high) {
 		double max = 0;
 		int maxIndex = 0;
 		int reallow = low == 0 ? 1 : low;
@@ -124,7 +124,7 @@ public class FrequenciesHelper {
 		return maxIndex;
 	}
 
-	public static FrequenciesState spectrumToCepstrum (FrequenciesState fs) {
+	public static Spectrum spectrumToCepstrum (Spectrum fs) {
 		for (int i = 0; i < fs.getState ().length; i++) {
 			Complex c = fs.getState () [i];
 			double log = Math.log (Math.pow (c.abs (), 2));
@@ -132,7 +132,7 @@ public class FrequenciesHelper {
 		}
 		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 
-		FrequenciesState fscep = new FrequenciesState (fastFourierTransformer.transform (fs.getState (), TransformType.FORWARD), fs.getMaxfrequency ());
+		Spectrum fscep = new Spectrum (fastFourierTransformer.transform (fs.getState (), TransformType.FORWARD), fs.getSampleRate ());
 		for (int i = 0; i < fscep.getState ().length; i++) {
 			Complex c = fscep.getState () [i];
 			double sqr = Math.pow (c.abs (), 2);

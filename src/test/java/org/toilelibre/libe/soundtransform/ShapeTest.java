@@ -9,6 +9,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
+import org.toilelibre.libe.soundtransform.format.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.objects.PacksList;
 import org.toilelibre.libe.soundtransform.objects.Sound;
 import org.toilelibre.libe.soundtransform.observer.PrintlnTransformObserver;

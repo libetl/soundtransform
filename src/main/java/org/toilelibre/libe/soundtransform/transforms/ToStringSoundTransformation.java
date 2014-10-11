@@ -65,7 +65,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
 		for (int i = 0; i < this.length; i++) {
 			sb.append ("-");
 		}
-		sb.append ("> " + (int) (this.length * compression / input.getFreq ()) + "s (time)\n");
+		sb.append ("> " + (int) (this.length * compression / input.getSampleRate ()) + "s (time)\n");
 
 		return input;
 	}

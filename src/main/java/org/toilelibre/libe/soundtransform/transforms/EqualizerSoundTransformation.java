@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform.transforms;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.complex.Complex;
-import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
+import org.toilelibre.libe.soundtransform.objects.Spectrum;
 
 public class EqualizerSoundTransformation extends NoOpFrequencySoundTransformation {
 
@@ -16,18 +16,18 @@ public class EqualizerSoundTransformation extends NoOpFrequencySoundTransformati
 	}
 
 	@Override
-	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
+	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 		SplineInterpolator reg = new SplineInterpolator ();
 
 		PolynomialSplineFunction psf = reg.interpolate (this.ranges, this.amplification);
 		Complex [] newAmpl = new Complex [powOf2NearestLength];
 		for (double j = 0; j < length; j++) {
-			double freq = j * fs.getMaxfrequency () / fs.getState ().length;
+			double freq = j * fs.getSampleRate () / fs.getState ().length;
 			newAmpl [(int) j] = fs.getState () [(int) j].multiply (psf.value (freq / 2));
 		}
 		for (int j = length; j < powOf2NearestLength; j++) {
 			newAmpl [j] = new Complex (0, 0);
 		}
-		return new FrequenciesState (newAmpl, fs.getMaxfrequency ());
+		return new Spectrum (newAmpl, fs.getSampleRate ());
 	}
 }

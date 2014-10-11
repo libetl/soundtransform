@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.transforms;
 
-import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
+import org.toilelibre.libe.soundtransform.objects.Spectrum;
 import org.toilelibre.libe.soundtransform.objects.Sound;
 
 public class NoOpFrequencySoundTransformation extends AbstractFrequencySoundTransformation {
@@ -9,14 +9,14 @@ public class NoOpFrequencySoundTransformation extends AbstractFrequencySoundTran
 	}
 
 	@Override
-	public FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
+	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 		return fs;
 	}
 
 	@Override
 	public Sound initSound (Sound input) {
 		long [] newdata = new long [input.getSamples ().length];
-		return new Sound (newdata, input.getNbBytesPerSample (), input.getFreq (), input.getChannelNum ());
+		return new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
 	}
 
 	@Override

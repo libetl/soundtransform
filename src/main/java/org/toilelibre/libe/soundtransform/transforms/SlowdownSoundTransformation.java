@@ -4,7 +4,7 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
-import org.toilelibre.libe.soundtransform.objects.FrequenciesState;
+import org.toilelibre.libe.soundtransform.objects.Spectrum;
 import org.toilelibre.libe.soundtransform.objects.Sound;
 import org.toilelibre.libe.soundtransform.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.observer.LogEvent.LogLevel;
@@ -28,12 +28,12 @@ public class SlowdownSoundTransformation extends AbstractFrequencySoundTransform
 	@Override
 	protected Sound initSound (Sound input) {
 		long [] newdata = new long [(int) (input.getSamples ().length * factor)];
-		this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getFreq (), input.getChannelNum ());
+		this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
 		return this.sound;
 	}
 
 	@Override
-	protected FrequenciesState transformFrequencies (FrequenciesState fs, int offset, int powOf2NearestLength, int length) {
+	protected Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 		int total = (int) (this.sound.getSamples ().length * factor);
 		if (total / 100 != 0 && (total / 100 - (total / 100) % this.threshold) != 0 && offset % ( (total / 100 - (total / 100) % this.threshold)) == 0) {
 			this.log (new LogEvent (LogLevel.VERBOSE, "SlowdownSoundTransformation : Iteration #" + offset + "/" + (int) (sound.getSamples ().length / factor)));
@@ -47,9 +47,9 @@ public class SlowdownSoundTransformation extends AbstractFrequencySoundTransform
 		for (int p = 0; p < loops; p++) {
 			complexArray = fastFourierTransformer.transform (complexArray, TransformType.INVERSE);
 
-			for (int j = 0; j < fs.getMaxfrequency (); j++) {
-				if (offset + p * fs.getMaxfrequency () + j < this.sound.getSamples ().length && this.sound.getSamples () [(int) (offset + p * fs.getMaxfrequency () + j)] == 0) {
-					this.sound.getSamples () [(int) (offset + p * fs.getMaxfrequency () + j)] = (long) Math.floor (complexArray [j].getReal ());
+			for (int j = 0; j < fs.getSampleRate (); j++) {
+				if (offset + p * fs.getSampleRate () + j < this.sound.getSamples ().length && this.sound.getSamples () [(int) (offset + p * fs.getSampleRate () + j)] == 0) {
+					this.sound.getSamples () [(int) (offset + p * fs.getSampleRate () + j)] = (long) Math.floor (complexArray [j].getReal ());
 				}
 			}
 		}
