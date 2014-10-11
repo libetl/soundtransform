@@ -1,5 +1,7 @@
 package org.toilelibre.libe.soundtransform.sound;
 
+import java.util.Arrays;
+
 import org.toilelibre.libe.soundtransform.objects.Sound;
 
 public class SoundAppender {
@@ -59,13 +61,14 @@ public class SoundAppender {
 				appendIfGreaterThanOrEqualsRatio += 1.0;
 			}
 		}
-		return new Sound (result, sound.getNbBytesPerSample (), (int)(sound.getSampleRate () / ratio), sound.getChannelNum ());
+		return new Sound (result, sound.getNbBytesPerSample (), (int)(sound.getSampleRate () / ratio), 
+				sound.getChannelNum ());
     }
 
 	private static Sound upsampleWithRatio (Sound sound, float ratio) {
 		float appendWhileLessThanOrEqualsRatio = 0;
 		int indexResult = 0;
-		long[] result = new long [(int) Math.ceil (sound.getSamples ().length * ratio)];
+		long[] result = new long [(int) Math.ceil (sound.getSamples ().length * (ratio + 1))];
 		for (int i = 0 ; i < sound.getSamples ().length ; i++){
 			while (appendWhileLessThanOrEqualsRatio <= ratio){
 				result [indexResult++] = sound.getSamples () [i];
@@ -73,6 +76,8 @@ public class SoundAppender {
 			}
 			appendWhileLessThanOrEqualsRatio -= ratio;
 		}
-		return new Sound (result, sound.getNbBytesPerSample (), (int)(sound.getSampleRate () * ratio), sound.getChannelNum ());
+		return new Sound ((indexResult == 0 ? new long [0] : Arrays.copyOfRange (result, 0, indexResult - 1)), 
+				sound.getNbBytesPerSample (), 
+				(int)(sound.getSampleRate () * ratio), sound.getChannelNum ());
     }
 }
