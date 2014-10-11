@@ -24,13 +24,13 @@ public class SoundAppender {
 
 	public static Sound changeNbBytesPerSample (Sound otherSound, int newNbBytesPerSample) {
 		int indexResult = 0;
-		int iter = Math.max (1, otherSound.getNbBytesPerSample () - newNbBytesPerSample + 1);
+		int iter = Math.max (1, newNbBytesPerSample - otherSound.getNbBytesPerSample () + 1);
 		int pow = Math.max (0, newNbBytesPerSample - otherSound.getNbBytesPerSample ());
 		long[] resultBeforeResize = new long [(iter + 1) * otherSound.getSamples ().length];
 		for (int j = 0; j < otherSound.getSamples ().length; j++) {
 			long multiple = (pow > 0 ? (long) Math.pow (256, pow) / 2 : 1);
 			long sampleValue = otherSound.getSamples () [j];
-			for (int k = iter; k >= 0; k--) {
+			for (int k = iter - 1; k >= 0; k--) {
 				long divide = (long) Math.pow (256, k);
 				long newvalue = (long) (sampleValue * multiple / divide);
 				resultBeforeResize [indexResult++] = newvalue;
