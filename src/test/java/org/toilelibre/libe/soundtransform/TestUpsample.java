@@ -17,7 +17,7 @@ import org.toilelibre.libe.soundtransform.sound.SoundAppender;
 public class TestUpsample {
 
 	@Test
-	public void testTransform8363Hz1BitSoundInto44100Hz2BitsSound () {
+	public void testTransform8363Hz1BitMonoSoundInto44100Hz2BitsMonoSound () {
 
 		try {
 			ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
@@ -44,7 +44,7 @@ public class TestUpsample {
 	}
 
 	@Test
-	public void testTransform11025Hz2BitsSoundInto44100Hz2BitsSound () {
+	public void testTransform11025Hz2BitsMonoSoundInto44100Hz2BitsMonoSound () {
 
 		try {
 			ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
