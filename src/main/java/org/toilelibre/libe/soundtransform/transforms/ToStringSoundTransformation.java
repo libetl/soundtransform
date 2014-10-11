@@ -19,7 +19,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
 		this.sb = new StringBuffer ();
 
 		float lastSample = input.getSamples ().length;
-		long maxMagn = 128;
+		long maxMagn = (long)Math.pow (256, input.getNbBytesPerSample ()) / 2;
 		int step = (int) lastSample / this.length;
 		int [] valuesOnPlot = new int [this.length];
 		int maxPlotValue = 0;
