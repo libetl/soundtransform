@@ -30,7 +30,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
 			for (int j = 0; j < step; j++) {
 				int x = i * step + j;
 				if (x < input.getSamples ().length && maxValue < input.getSamples () [x]) {
-					maxValue = 20.0 * Math.log10 (input.getSamples () [x]);
+					maxValue = input.getSamples () [x];
 				}
 			}
 			if (minValuePlotted == -1 || minValuePlotted > maxValue) {
