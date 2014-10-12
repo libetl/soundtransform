@@ -5,9 +5,10 @@ import java.util.Arrays;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.TransformSound;
-import org.toilelibre.libe.soundtransform.objects.Sound;
-import org.toilelibre.libe.soundtransform.observer.PrintlnTransformObserver;
+import org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.PrintlnTransformObserver;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.inputstream.TransformInputStreamService;
 
 public class Pcm2FrameTest {
 
@@ -19,10 +20,10 @@ public class Pcm2FrameTest {
 			data [i] = (byte) rdg.nextInt (Byte.MIN_VALUE, Byte.MAX_VALUE);
 		}
 		System.out.println (Arrays.toString (data));
-		TransformSound ts = new TransformSound (new PrintlnTransformObserver (true));
+		TransformInputStreamService ts = new TransformInputStreamService (new PrintlnTransformObserver (true));
 		Sound [] channels = ts.byteArrayToFrames (data, 2, data.length / 4, 2, 44100.0, false, true);
 
-		byte [] out = ts.framesToByteArray (channels, 2, false, true);
+		byte [] out = new ByteArrayFrameProcessor ().framesToByteArray (channels, 2, false, true);
 		System.out.println (Arrays.toString (out));
 	}
 }

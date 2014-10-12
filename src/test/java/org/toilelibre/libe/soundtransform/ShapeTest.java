@@ -9,13 +9,14 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.format.AudioFileHelper;
-import org.toilelibre.libe.soundtransform.objects.PacksList;
-import org.toilelibre.libe.soundtransform.objects.Sound;
-import org.toilelibre.libe.soundtransform.observer.PrintlnTransformObserver;
-import org.toilelibre.libe.soundtransform.pda.Sound2Note;
-import org.toilelibre.libe.soundtransform.sound.SoundAppender;
-import org.toilelibre.libe.soundtransform.transforms.ShapeSoundTransformation;
+import org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundAppender;
+import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.ShapeSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.TransformSoundService;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
+import org.toilelibre.libe.soundtransform.model.library.Library;
+import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.PrintlnTransformObserver;
 
 public class ShapeTest {
 
@@ -24,16 +25,17 @@ public class ShapeTest {
 
 		try {
 			System.out.println ("Loading packs");
-			PacksList packsList = PacksList.getInstance ();
+			Library packsList = Library.getInstance ();
 			ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
 			File input = new File (classLoader.getResource ("notes/Piano5-G.wav").getFile ());
 			File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-			AudioInputStream outputStream = new TransformSound (new PrintlnTransformObserver ()).transformAudioStream (AudioFileHelper.getAudioInputStream (input), new ShapeSoundTransformation (
-			        packsList.defaultPack, "chord_piano"));
+			AudioInputStream outputStream = new TransformSoundService (new PrintlnTransformObserver ()).transformAudioStream (
+					new ConvertAudioFileService ().callConverter (input),
+			        new ShapeSoundTransformation (packsList.defaultPack, "chord_piano"));
 
 			AudioSystem.write (outputStream, AudioFileFormat.Type.WAVE, output);
 
-			int frequency = Sound2Note.convert ("output chord_note", new TransformSound (new PrintlnTransformObserver ()).fromInputStream (AudioFileHelper.getAudioInputStream (output)))
+			int frequency = Sound2NoteService.convert ("output chord_note", new TransformSoundService (new PrintlnTransformObserver ()).fromInputStream (new ConvertAudioFileService ().callConverter (output)))
 			        .getFrequency ();
 			System.out.println ("Output chord note should be around 387Hz, but is " + frequency + "Hz");
 		} catch (UnsupportedAudioFileException e) {
@@ -48,16 +50,16 @@ public class ShapeTest {
 
 		try {
 			System.out.println ("Loading packs");
-			PacksList packsList = PacksList.getInstance ();
+			Library packsList = Library.getInstance ();
 			ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
 			File input = new File (classLoader.getResource ("notes/Piano3-E.wav").getFile ());
 			File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-			AudioInputStream outputStream = new TransformSound (new PrintlnTransformObserver ()).transformAudioStream (AudioFileHelper.getAudioInputStream (input), new ShapeSoundTransformation (
-			        packsList.defaultPack, "chord_piano"));
+			AudioInputStream outputStream = new TransformSoundService (new PrintlnTransformObserver ()).transformAudioStream (new ConvertAudioFileService ().callConverter (input),
+			        new ShapeSoundTransformation (packsList.defaultPack, "chord_piano"));
 
 			AudioSystem.write (outputStream, AudioFileFormat.Type.WAVE, output);
 
-			int frequency = Sound2Note.convert ("output chord_note", new TransformSound (new PrintlnTransformObserver ()).fromInputStream (AudioFileHelper.getAudioInputStream (output)))
+			int frequency = Sound2NoteService.convert ("output chord_note", new TransformSoundService (new PrintlnTransformObserver ()).fromInputStream (new ConvertAudioFileService ().callConverter (output)))
 			        .getFrequency ();
 			System.out.println ("Output chord note should be around 332Hz, but is " + frequency + "Hz");
 		} catch (UnsupportedAudioFileException e) {
@@ -72,8 +74,8 @@ public class ShapeTest {
 		ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
 		File input1 = new File (classLoader.getResource ("notes/Piano2-D.wav").getFile ());
 		File input2 = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
-		Sound [] s1 = new TransformSound ().fromInputStream (AudioFileHelper.getAudioInputStream (input1));
-		Sound [] s2 = new TransformSound ().fromInputStream (AudioFileHelper.getAudioInputStream (input2));
-		SoundAppender.append (s2 [0], 1000, s1 [0]);
+		Sound [] s1 = new TransformSoundService ().fromInputStream (new ConvertAudioFileService ().callConverter (input1));
+		Sound [] s2 = new TransformSoundService ().fromInputStream (new ConvertAudioFileService ().callConverter (input2));
+		new ConvertedSoundAppender ().append (s2 [0], 1000, s1 [0]);
 	}
 }

@@ -3,8 +3,8 @@ package org.toilelibre.libe.soundtransform;
 import java.util.Arrays;
 
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.objects.Sound;
-import org.toilelibre.libe.soundtransform.transforms.EqualizerSoundTransformation;
+import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.EqualizerSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class EqualizerTest {
 

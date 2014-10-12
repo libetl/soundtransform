@@ -7,7 +7,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.format.AudioFileHelper;
+import org.toilelibre.libe.soundtransform.model.TransformSoundService;
+import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
 
 public class SoundToStringTest {
 
@@ -16,8 +17,8 @@ public class SoundToStringTest {
 		ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
 		File input = new File (classLoader.getResource ("before.wav").getFile ());
 		try {
-			AudioInputStream ais = AudioFileHelper.getAudioInputStream (input);
-			System.out.println (new TransformSound ().fromInputStream (ais) [0]);
+			AudioInputStream ais = new ConvertAudioFileService ().callConverter (input);
+			System.out.println (new TransformSoundService ().fromInputStream (ais) [0]);
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {

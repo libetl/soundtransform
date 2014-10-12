@@ -10,12 +10,13 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.format.AudioFileHelper;
-import org.toilelibre.libe.soundtransform.objects.Note;
-import org.toilelibre.libe.soundtransform.objects.Pack;
-import org.toilelibre.libe.soundtransform.objects.PacksList;
-import org.toilelibre.libe.soundtransform.objects.Sound;
-import org.toilelibre.libe.soundtransform.pda.Sound2Note;
+import org.toilelibre.libe.soundtransform.model.TransformSoundService;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
+import org.toilelibre.libe.soundtransform.model.library.Library;
+import org.toilelibre.libe.soundtransform.model.library.note.Note;
+import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
+import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 
 public class Sound2NoteTest {
 
@@ -35,7 +36,7 @@ public class Sound2NoteTest {
 			}
 		};
 		System.out.println ("Loading Packs");
-		Pack pack = PacksList.getInstance ().defaultPack;
+		Pack pack = Library.getInstance ().defaultPack;
 		for (String instrument : pack.keySet ()) {
 			for (Integer noteKey : pack.get (instrument).keySet ()) {
 				Note n = pack.get (instrument).get (noteKey);
@@ -55,10 +56,10 @@ public class Sound2NoteTest {
 		URL fileURL = classLoader.getResource ("notes/Piano1-C.wav");
 		File input = new File (fileURL.getFile ());
 
-		AudioInputStream ais = AudioFileHelper.getAudioInputStream (input);
-		TransformSound ts = new TransformSound ();
+		AudioInputStream ais = new ConvertAudioFileService ().callConverter (input);
+		TransformSoundService ts = new TransformSoundService ();
 
-		Note n = Sound2Note.convert ("Piano1-C.wav", ts.fromInputStream (ais));
+		Note n = Sound2NoteService.convert ("Piano1-C.wav", ts.fromInputStream (ais));
 		System.out.println ("c' 1-line octave : " + n.getFrequency () + "Hz, should be around 261Hz");
 		org.junit.Assert.assertTrue (n.getFrequency () > 261 - 10 && n.getFrequency () < 261 + 10);
 	}
@@ -69,10 +70,10 @@ public class Sound2NoteTest {
 		URL fileURL = classLoader.getResource ("notes/Piano4-F.wav");
 		File input = new File (fileURL.getFile ());
 
-		AudioInputStream ais = AudioFileHelper.getAudioInputStream (input);
-		TransformSound ts = new TransformSound ();
+		AudioInputStream ais = new ConvertAudioFileService ().callConverter (input);
+		TransformSoundService ts = new TransformSoundService ();
 
-		Note n = Sound2Note.convert ("Piano4-F.wav", ts.fromInputStream (ais));
+		Note n = Sound2NoteService.convert ("Piano4-F.wav", ts.fromInputStream (ais));
 		System.out.println ("f' 4 : " + n.getFrequency () + "Hz, should be around 349Hz");
 		org.junit.Assert.assertTrue (n.getFrequency () > 349 - 10 && n.getFrequency () < 349 + 10);
 	}
@@ -87,7 +88,7 @@ public class Sound2NoteTest {
 			signal [j] = (long) (Math.sin (j * 440 * 2 * Math.PI / samplerate) * 32768.0);
 		}
 		Sound s = new Sound (signal, 2, samplerate, 1);
-		Note n = Sound2Note.convert ("Sample A4 (440 Hz) Sound", new Sound [] { s });
+		Note n = Sound2NoteService.convert ("Sample A4 (440 Hz) Sound", new Sound [] { s });
 
 		System.out.println ("Sample A4 (440Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
 		org.junit.Assert.assertTrue (n.getFrequency () > 440 - 10 && n.getFrequency () < 440 + 10);
@@ -107,7 +108,7 @@ public class Sound2NoteTest {
 				signal [j] = (long) (Math.sin (j * notes [i] * 2 * Math.PI / samplerate) * 32768.0);
 			}
 			Sound s = new Sound (signal, 2, samplerate, 1);
-			Note n = Sound2Note.convert ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound", new Sound [] { s });
+			Note n = Sound2NoteService.convert ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound", new Sound [] { s });
 
 			System.out.println ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
 			org.junit.Assert.assertTrue (n.getFrequency () > notes [i] - 10 && n.getFrequency () < notes [i] + 10);

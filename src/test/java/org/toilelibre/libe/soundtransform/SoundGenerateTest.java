@@ -9,7 +9,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.objects.Sound;
+import org.toilelibre.libe.soundtransform.model.TransformSoundService;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class SoundGenerateTest {
 
@@ -26,7 +27,7 @@ public class SoundGenerateTest {
 		}
 		Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
 
-		AudioInputStream ais = new TransformSound ().toStream (new Sound [] { s }, new AudioFormat (samplerate, sampleInBytes * 8, 1, true, false));
+		AudioInputStream ais = new TransformSoundService ().toStream (new Sound [] { s }, new AudioFormat (samplerate, sampleInBytes * 8, 1, true, false));
 		File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
 		try {
