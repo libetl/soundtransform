@@ -28,9 +28,7 @@ public class AddNoteService {
 			}
 			String completeFileName = completeURL.getFile ();
 			File file = new File (completeFileName);
-			Note n = Sound2NoteService.convert (fileName, 
-					new TransformInputStreamService ().fromInputStream (
-							new ConvertAudioFileService ().callConverter (file)));
+			Note n = Sound2NoteService.convert (fileName, new TransformInputStreamService ().fromInputStream (new ConvertAudioFileService ().callConverter (file)));
 			range.put (n.getFrequency (), n);
 		} catch (UnsupportedAudioFileException e) {
 		} catch (IllegalArgumentException e) {
@@ -50,8 +48,7 @@ public class AddNoteService {
 			}
 			String completeFileName = completeURL.getFile ();
 			File file = new File (completeFileName);
-			Note n = Sound2NoteService.convert (fileName, new TransformInputStreamService ().fromInputStream (
-					new ConvertAudioFileService ().callConverter (file)), frequency);
+			Note n = Sound2NoteService.convert (fileName, new TransformInputStreamService ().fromInputStream (new ConvertAudioFileService ().callConverter (file)), frequency);
 			range.put (n.getFrequency (), n);
 		} catch (UnsupportedAudioFileException e) {
 		} catch (IllegalArgumentException e) {

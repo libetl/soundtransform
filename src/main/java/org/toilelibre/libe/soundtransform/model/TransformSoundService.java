@@ -22,11 +22,11 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class TransformSoundService implements LogAware {
 
-	Observer []	    observers	= new Observer [0];
+	Observer []	                        observers	= new Observer [0];
 
 	private TransformInputStreamService	transformInputStreamService;
 	private CallTransformService	    callTransformService;
-	private ConvertAudioFileService     convertAudioFileService;
+	private ConvertAudioFileService	    convertAudioFileService;
 
 	public TransformSoundService (Observer... observers) {
 		this.setObservers (observers);

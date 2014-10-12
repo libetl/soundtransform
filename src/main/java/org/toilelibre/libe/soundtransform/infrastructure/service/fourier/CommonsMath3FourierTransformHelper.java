@@ -10,8 +10,8 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransf
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class CommonsMath3FourierTransformHelper implements FourierTransformHelper {
-	
-	public Sound transform (AbstractFrequencySoundTransformation st, Sound sound){
+
+	public Sound transform (AbstractFrequencySoundTransformation st, Sound sound) {
 		Sound output = st.initSound (sound);
 		double freqmax = sound.getSampleRate ();
 		double threshold = st.getLowThreshold (freqmax);

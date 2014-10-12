@@ -1,6 +1,5 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
-
 public interface SoundAppender {
 
 	public abstract void append (Sound origin, int usedarraylength, Sound... otherSounds);

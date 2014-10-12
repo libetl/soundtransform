@@ -8,10 +8,10 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public abstract class AbstractFrequencySoundTransformation implements SoundTransformation, LogAware {
 
-	private Observer []	observers;
+	private Observer []	           observers;
 
-	private FourierTransformHelper fourierTransformHelper;
-	
+	private FourierTransformHelper	fourierTransformHelper;
+
 	public AbstractFrequencySoundTransformation () {
 		this.fourierTransformHelper = new org.toilelibre.libe.soundtransform.infrastructure.service.fourier.CommonsMath3FourierTransformHelper ();
 	}

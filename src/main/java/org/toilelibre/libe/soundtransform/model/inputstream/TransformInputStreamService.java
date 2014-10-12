@@ -16,8 +16,8 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class TransformInputStreamService implements LogAware {
 
-	Observer []	observers	= new Observer [0];
-	FrameProcessor	     frameProcessor;
+	Observer []	   observers	= new Observer [0];
+	FrameProcessor	frameProcessor;
 
 	public TransformInputStreamService (Observer... observers) {
 		this.setObservers (observers);

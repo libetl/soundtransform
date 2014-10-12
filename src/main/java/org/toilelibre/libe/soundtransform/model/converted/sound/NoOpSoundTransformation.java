@@ -2,7 +2,6 @@ package org.toilelibre.libe.soundtransform.model.converted.sound;
 
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 
-
 public class NoOpSoundTransformation implements SoundTransformation {
 
 	public NoOpSoundTransformation () {

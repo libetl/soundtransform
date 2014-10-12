@@ -29,14 +29,13 @@ public class ShapeTest {
 			ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
 			File input = new File (classLoader.getResource ("notes/Piano5-G.wav").getFile ());
 			File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-			AudioInputStream outputStream = new TransformSoundService (new PrintlnTransformObserver ()).transformAudioStream (
-					new ConvertAudioFileService ().callConverter (input),
+			AudioInputStream outputStream = new TransformSoundService (new PrintlnTransformObserver ()).transformAudioStream (new ConvertAudioFileService ().callConverter (input),
 			        new ShapeSoundTransformation (packsList.defaultPack, "chord_piano"));
 
 			AudioSystem.write (outputStream, AudioFileFormat.Type.WAVE, output);
 
-			int frequency = Sound2NoteService.convert ("output chord_note", new TransformSoundService (new PrintlnTransformObserver ()).fromInputStream (new ConvertAudioFileService ().callConverter (output)))
-			        .getFrequency ();
+			int frequency = Sound2NoteService.convert ("output chord_note",
+			        new TransformSoundService (new PrintlnTransformObserver ()).fromInputStream (new ConvertAudioFileService ().callConverter (output))).getFrequency ();
 			System.out.println ("Output chord note should be around 387Hz, but is " + frequency + "Hz");
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
@@ -59,8 +58,8 @@ public class ShapeTest {
 
 			AudioSystem.write (outputStream, AudioFileFormat.Type.WAVE, output);
 
-			int frequency = Sound2NoteService.convert ("output chord_note", new TransformSoundService (new PrintlnTransformObserver ()).fromInputStream (new ConvertAudioFileService ().callConverter (output)))
-			        .getFrequency ();
+			int frequency = Sound2NoteService.convert ("output chord_note",
+			        new TransformSoundService (new PrintlnTransformObserver ()).fromInputStream (new ConvertAudioFileService ().callConverter (output))).getFrequency ();
 			System.out.println ("Output chord note should be around 332Hz, but is " + frequency + "Hz");
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();

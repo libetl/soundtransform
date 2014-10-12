@@ -14,10 +14,10 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 
-	private Observer []	observers;
-	private Pack	             pack;
-	private String	             instrument;
-	private SoundAppender        soundAppender;
+	private Observer []	  observers;
+	private Pack	      pack;
+	private String	      instrument;
+	private SoundAppender	soundAppender;
 
 	public ShapeSoundTransformation (Pack pack, String instrument) {
 		this.pack = pack;

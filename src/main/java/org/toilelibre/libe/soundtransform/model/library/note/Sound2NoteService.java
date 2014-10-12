@@ -3,9 +3,9 @@ package org.toilelibre.libe.soundtransform.model.library.note;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class Sound2NoteService {
-	
-	private static ADSRHelper adsrHelper = new org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.MagnitudeADSRHelper ();
-	private static FrequencyHelper frequencyHelper = new org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.CallHPSFrequencyHelper ();
+
+	private static ADSRHelper	   adsrHelper	    = new org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.MagnitudeADSRHelper ();
+	private static FrequencyHelper	frequencyHelper	= new org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.CallHPSFrequencyHelper ();
 
 	public static Note convert (String fileName, Sound [] channels) {
 		return Sound2NoteService.convert (fileName, channels, Sound2NoteService.frequencyHelper.findFrequency (channels [0]));

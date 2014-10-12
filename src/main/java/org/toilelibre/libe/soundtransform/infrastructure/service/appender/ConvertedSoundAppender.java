@@ -7,22 +7,32 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 
 public class ConvertedSoundAppender implements SoundAppender {
 
-	/* (non-Javadoc)
-	 * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.SoundAppenderI#append(org.toilelibre.libe.soundtransform.model.converted.sound.Sound, int, org.toilelibre.libe.soundtransform.model.converted.sound.Sound)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
+	 * SoundAppenderI
+	 * #append(org.toilelibre.libe.soundtransform.model.converted.sound.Sound,
+	 * int, org.toilelibre.libe.soundtransform.model.converted.sound.Sound)
 	 */
 	@Override
-    public void append (Sound origin, int usedarraylength, Sound... otherSounds) {
+	public void append (Sound origin, int usedarraylength, Sound... otherSounds) {
 		int offset = usedarraylength;
 		for (int i = 0; i < otherSounds.length; i++) {
 			offset = this.append (origin, offset, otherSounds [i]);
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.SoundAppenderI#append(org.toilelibre.libe.soundtransform.model.converted.sound.Sound, int, org.toilelibre.libe.soundtransform.model.converted.sound.Sound)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
+	 * SoundAppenderI
+	 * #append(org.toilelibre.libe.soundtransform.model.converted.sound.Sound,
+	 * int, org.toilelibre.libe.soundtransform.model.converted.sound.Sound)
 	 */
 	@Override
-    public int append (Sound origin, int usedarraylength, Sound otherSound) {
+	public int append (Sound origin, int usedarraylength, Sound otherSound) {
 		Sound resultBeforeResize = this.changeNbBytesPerSample (otherSound, origin.getNbBytesPerSample ());
 		Sound resultBeforeCopy = this.resizeToSampleRate (resultBeforeResize, origin.getSampleRate ());
 		int lastIndex = Math.min (origin.getSamples ().length, usedarraylength + resultBeforeCopy.getSamples ().length);
@@ -30,11 +40,16 @@ public class ConvertedSoundAppender implements SoundAppender {
 		return lastIndex;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.SoundAppenderI#changeNbBytesPerSample(org.toilelibre.libe.soundtransform.model.converted.sound.Sound, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
+	 * SoundAppenderI
+	 * #changeNbBytesPerSample(org.toilelibre.libe.soundtransform.model
+	 * .converted.sound.Sound, int)
 	 */
 	@Override
-    public Sound changeNbBytesPerSample (Sound sound, int newNbBytesPerSample) {
+	public Sound changeNbBytesPerSample (Sound sound, int newNbBytesPerSample) {
 		long [] newsamples = new long [sound.getSamples ().length];
 		long oldMax = (long) (Math.pow (256, sound.getNbBytesPerSample ()) / 2);
 		long newMax = (long) (Math.pow (256, newNbBytesPerSample) / 2);
@@ -44,11 +59,16 @@ public class ConvertedSoundAppender implements SoundAppender {
 		return new Sound (newsamples, newNbBytesPerSample, sound.getSampleRate (), sound.getChannelNum ());
 	}
 
-	/* (non-Javadoc)
-	 * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.SoundAppenderI#resizeToSampleRate(org.toilelibre.libe.soundtransform.model.converted.sound.Sound, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
+	 * SoundAppenderI
+	 * #resizeToSampleRate(org.toilelibre.libe.soundtransform.model
+	 * .converted.sound.Sound, int)
 	 */
 	@Override
-    public Sound resizeToSampleRate (Sound sound, int newfreq) {
+	public Sound resizeToSampleRate (Sound sound, int newfreq) {
 		float ratio = (float) (newfreq * 1.0 / sound.getSampleRate ());
 		if (ratio > 1) {
 			return this.upsampleWithRatio (sound, ratio);
@@ -56,11 +76,16 @@ public class ConvertedSoundAppender implements SoundAppender {
 		return this.downsampleWithRatio (sound, (float) (1.0 / ratio));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.SoundAppenderI#downsampleWithRatio(org.toilelibre.libe.soundtransform.model.converted.sound.Sound, float)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
+	 * SoundAppenderI
+	 * #downsampleWithRatio(org.toilelibre.libe.soundtransform.model
+	 * .converted.sound.Sound, float)
 	 */
 	@Override
-    public Sound downsampleWithRatio (Sound sound, float ratio) {
+	public Sound downsampleWithRatio (Sound sound, float ratio) {
 		float appendIfGreaterThanOrEqualsRatio = 0;
 		int indexResult = 0;
 		long [] result = new long [(int) Math.ceil (sound.getSamples ().length / ratio)];

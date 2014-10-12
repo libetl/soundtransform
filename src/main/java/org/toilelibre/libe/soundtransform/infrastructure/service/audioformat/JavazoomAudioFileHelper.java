@@ -21,8 +21,7 @@ public class JavazoomAudioFileHelper implements AudioFileHelper {
 		if (inputFile.getName ().toLowerCase ().endsWith (".mp3")) {
 			AudioInputStream ais = new javazoom.spi.mpeg.sampled.file.MpegAudioFileReader ().getAudioInputStream (inputFile);
 			AudioFormat cdFormat = new AudioFormat (44100, 16, 2, true, false);
-			javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream decodedais = 
-					new javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream (cdFormat, ais);
+			javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream decodedais = new javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream (cdFormat, ais);
 			AudioSystem.write (decodedais, AudioFileFormat.Type.WAVE, JavazoomAudioFileHelper.tmpfile);
 			f = JavazoomAudioFileHelper.tmpfile;
 		}
