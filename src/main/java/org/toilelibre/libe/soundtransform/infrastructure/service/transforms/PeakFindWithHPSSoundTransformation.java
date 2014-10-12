@@ -16,19 +16,27 @@ public class PeakFindWithHPSSoundTransformation extends NoOpFrequencySoundTransf
 	private boolean	      note;
 	private int	          fsLimit;
 	private int	          windowLength;
+	private SpectrumHelper spectrumHelper;
 
+	private PeakFindWithHPSSoundTransformation (){
+		this.spectrumHelper = new org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.HPSSpectrumHelper ();
+	}
+	
 	public PeakFindWithHPSSoundTransformation (boolean note) {
+		this();
 		this.note = note;
 		this.threshold = 100;
 		this.windowLength = -1;
 	}
 
 	public PeakFindWithHPSSoundTransformation (double threshold) {
+		this();
 		this.threshold = threshold;
 		this.windowLength = -1;
 	}
 
 	public PeakFindWithHPSSoundTransformation (double threshold, int windowLength) {
+		this();
 		this.threshold = threshold;
 		this.windowLength = windowLength;
 	}
@@ -67,7 +75,7 @@ public class PeakFindWithHPSSoundTransformation extends NoOpFrequencySoundTransf
 
 		int [] peaks = new int [10];
 		for (int i = 1; i <= 10; i++) {
-			peaks [i - 1] = SpectrumHelper.f0 (fs, i);
+			peaks [i - 1] = this.spectrumHelper.f0 (fs, i);
 		}
 		Arrays.sort (peaks);
 		int f0 = this.bestCandidate (peaks);

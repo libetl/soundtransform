@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.NoOpFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum2CepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 
 public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformation {
@@ -12,12 +13,17 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 	private int	       index;
 	private int	       length;
 	private static int	shortSoundLength	= 9000;
+	private Spectrum2CepstrumHelper spectrum2CepstrumHelper;
+	private SpectrumHelper spectrumHelper;
 
 	public CepstrumSoundTransformation () {
 		this.threshold = 100;
+		this.spectrum2CepstrumHelper = new org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.NaiveSpectrum2CepstrumHelper ();
+		this.spectrumHelper = new org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.HPSSpectrumHelper ();
 	}
 
 	public CepstrumSoundTransformation (double threshold) {
+		this ();
 		this.threshold = threshold;
 	}
 
@@ -57,9 +63,9 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 	@Override
 	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 
-		Spectrum fscep = SpectrumHelper.spectrumToCepstrum (fs);
+		Spectrum fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
 
-		this.loudestfreqs [index] = SpectrumHelper.getMaxIndex (fscep, 0, fs.getSampleRate ());
+		this.loudestfreqs [index] = this.spectrumHelper.getMaxIndex (fscep, 0, fs.getSampleRate ());
 		this.index++;
 
 		return fscep;

@@ -22,6 +22,6 @@ public class Spectrum {
 	}
 
 	public String toString () {
-		return SpectrumHelper.fsToString (this);
+		return new Spectrum2StringService ().convert (this);
 	}
 }
