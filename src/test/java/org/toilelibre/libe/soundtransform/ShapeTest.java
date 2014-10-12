@@ -26,7 +26,7 @@ public class ShapeTest {
 			System.out.println ("Loading packs");
 			PacksList packsList = PacksList.getInstance ();
 			ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-			File input = new File (classLoader.getResource ("notes/Piano2-D.wav").getFile ());
+			File input = new File (classLoader.getResource ("notes/Piano5-G.wav").getFile ());
 			File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 			AudioInputStream outputStream = new TransformSound (new PrintlnTransformObserver ()).transformAudioStream (AudioFileHelper.getAudioInputStream (input), new ShapeSoundTransformation (
 			        packsList.defaultPack, "chord_piano"));
@@ -35,7 +35,7 @@ public class ShapeTest {
 
 			int frequency = Sound2Note.convert ("output chord_note", new TransformSound (new PrintlnTransformObserver ()).fromInputStream (AudioFileHelper.getAudioInputStream (output)))
 			        .getFrequency ();
-			System.out.println ("Output chord note should be around 293Hz, but is " + frequency + "Hz");
+			System.out.println ("Output chord note should be around 387Hz, but is " + frequency + "Hz");
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {

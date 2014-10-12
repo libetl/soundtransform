@@ -4,9 +4,9 @@ import org.toilelibre.libe.soundtransform.objects.Sound;
 
 public class PitchSoundTransformation implements SoundTransformation {
 
-	private int	percent	= 20;
+	private float	percent	= 20;
 
-	public PitchSoundTransformation (int percent) {
+	public PitchSoundTransformation (float percent) {
 		this.percent = percent;
 	}
 

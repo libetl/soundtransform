@@ -14,14 +14,22 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
 	private List<Integer>	loudestfreqs;
 	private boolean	      note;
 	private int	          fsLimit;
+	private int           windowLength;
 
 	public PeakFindSoundTransformation (boolean note) {
 		this.note = note;
 		this.threshold = 100;
+		this.windowLength = -1;
 	}
 
 	public PeakFindSoundTransformation (double threshold) {
 		this.threshold = threshold;
+		this.windowLength = -1;
+	}
+
+	public PeakFindSoundTransformation (double threshold, int windowLength) {
+		this.threshold = threshold;
+		this.windowLength = windowLength;
 	}
 
 	@Override
@@ -30,7 +38,7 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
 		if (this.note) {
 			this.threshold = input.getSamples ().length;
 			this.fsLimit = input.getSamples ().length;
-		} else {
+		} else if (this.windowLength != -1){
 			this.fsLimit = input.getSampleRate ();
 		}
 		return super.initSound (input);
@@ -43,6 +51,9 @@ public class PeakFindSoundTransformation extends NoOpFrequencySoundTransformatio
 
 	@Override
 	protected int getWindowLength (double freqmax) {
+		if (this.windowLength != -1){
+			return this.windowLength;
+		}
 		return (int) Math.pow (2, Math.ceil (Math.log (this.fsLimit) / Math.log (2)));
 	}
 

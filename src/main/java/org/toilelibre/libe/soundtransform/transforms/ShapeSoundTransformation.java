@@ -31,7 +31,8 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 		List<Integer> freqs;
 		this.log (new LogEvent (LogLevel.VERBOSE, "Finding loudest frequencies"));
 
-		PeakFindSoundTransformation peak = new PeakFindSoundTransformation (threshold);
+		PeakFindSoundTransformation peak = new PeakFindSoundTransformation (100, 
+				(int)Math.pow (2, Math.ceil (Math.log (sound.getSamples ().length) / Math.log (2))));
 		peak.transform (sound);
 		freqs = peak.getLoudestFreqs ();
 
@@ -39,7 +40,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 		int lastBegining = 0;
 		for (int i = 0; i < freqs.size (); i++) {
 			this.log (new LogEvent (LogLevel.VERBOSE, "Iteration " + i + " / " + freqs.size ()));
-			int length = (i - 1 - lastBegining) * threshold;
+			int length = (i - lastBegining < 1 ? freqs.size() * threshold : (i - 1 - lastBegining) * threshold);
 			if (i == freqs.size () - 1 || (Math.abs (freqs.get (i) - lastFreq) > freqs.get (i) / 100 && length > sound.getSampleRate () / 2)) {
 				Note note = this.pack.get (this.instrument).getNearestNote ((int) lastFreq);
 				Sound attack = note.getAttack ((int) lastFreq, channelNum, length);

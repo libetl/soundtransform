@@ -1,8 +1,6 @@
 package org.toilelibre.libe.soundtransform.objects;
 
-import org.toilelibre.libe.soundtransform.transforms.PitchSoundTransformation;
-import org.toilelibre.libe.soundtransform.transforms.SlowdownSoundTransformation;
-import org.toilelibre.libe.soundtransform.transforms.SpeedUpSoundTransformation;
+import org.toilelibre.libe.soundtransform.sound.SoundPitchAndTempoHelper;
 
 public class SimpleNote implements Note {
 
@@ -34,24 +32,38 @@ public class SimpleNote implements Note {
 		return lengthOfSubsound * 1.0f / lengthOfSound;
 	}
 
+	private float getPercent (int frequency2) {
+		return (float) (frequency2 * 100.0 / this.frequency);
+    }
+
+	private Sound get (Sound [] adsr, int channelnum) {
+		if (adsr.length == 0){
+			return new Sound (new long [0], 0, 0, 0);
+		}
+		if (adsr.length <= channelnum){
+			return adsr [adsr.length - 1];
+		}
+	    return adsr [channelnum];
+    }
+	
 	@Override
 	public Sound getAttack (int frequency, int channelnum, int length) {
-		return this.transformSubsound (this.attack, channelnum, frequency, (int) (this.getRatio (this.attack) * length));
+		return SoundPitchAndTempoHelper.pitchAndSetLength (this.get (this.attack, channelnum), this.getPercent (frequency), (int) (this.getRatio (this.attack) * length));
 	}
 
 	@Override
 	public Sound getDecay (int frequency, int channelnum, int length) {
-		return this.transformSubsound (this.decay, channelnum, frequency, (int) (this.getRatio (this.decay) * length));
+		return SoundPitchAndTempoHelper.pitchAndSetLength (this.get (this.decay, channelnum), this.getPercent (frequency), (int) (this.getRatio (this.decay) * length));
 	}
 
 	@Override
 	public Sound getSustain (int frequency, int channelnum, int length) {
-		return this.transformSubsound (this.sustain, channelnum, frequency, (int) (this.getRatio (this.sustain) * length));
+		return SoundPitchAndTempoHelper.pitchAndSetLength (this.get (this.sustain, channelnum), this.getPercent (frequency), (int) (this.getRatio (this.sustain) * length));
 	}
 
 	@Override
 	public Sound getRelease (int frequency, int channelnum, int length) {
-		return this.transformSubsound (this.release, channelnum, frequency, (int) (this.getRatio (this.release) * length));
+		return SoundPitchAndTempoHelper.pitchAndSetLength (this.get (this.release, channelnum), this.getPercent (frequency), (int) (this.getRatio (this.release) * length));
 	}
 
 	@Override
@@ -59,30 +71,6 @@ public class SimpleNote implements Note {
 		return this.frequency;
 	}
 
-	private Sound transformSubsound (Sound [] subSound, int channelNum, int frequency, int length) {
-
-		int percent = (int) (frequency * 100.0 / this.frequency);
-		Sound result = subSound [ (subSound.length > channelNum ? channelNum : subSound.length - 1)];
-
-		PitchSoundTransformation pitcher = new PitchSoundTransformation (percent);
-		if (percent < 98 || percent > 102) {
-			result = pitcher.transform (result);
-		}
-		double factor = subSound [0].getSamples ().length == 0 ? 0 : length * 1.0 / result.getSamples ().length;
-		if (factor == 0) {
-			return result;
-		} else if (factor < 0.98 || factor > 1.02) {
-			if (factor < 0.98) {
-				SpeedUpSoundTransformation speedup = new SpeedUpSoundTransformation (100, (float) (1 / factor));
-				result = speedup.transform (result);
-
-			} else if (factor > 1.02) {
-				SlowdownSoundTransformation slowdown = new SlowdownSoundTransformation (100, (float) factor);
-				result = slowdown.transform (result);
-			}
-		}
-		return result;
-	}
 
 	@Override
 	public String getName () {
