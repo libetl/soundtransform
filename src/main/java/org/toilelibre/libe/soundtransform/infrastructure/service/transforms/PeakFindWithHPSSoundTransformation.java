@@ -39,7 +39,7 @@ public class PeakFindWithHPSSoundTransformation extends NoOpFrequencySoundTransf
 		if (this.note) {
 			this.threshold = input.getSamples ().length;
 			this.fsLimit = input.getSamples ().length;
-		} else if (this.windowLength != -1) {
+		} else {
 			this.fsLimit = input.getSampleRate ();
 		}
 		return super.initSound (input);
