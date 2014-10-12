@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
+import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.PitchSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
@@ -76,6 +77,25 @@ public class Sound2NoteTest {
 		Note n = Sound2NoteService.convert ("Piano4-F.wav", ts.fromInputStream (ais));
 		System.out.println ("f' 4 : " + n.getFrequency () + "Hz, should be around 349Hz");
 		org.junit.Assert.assertTrue (n.getFrequency () > 349 - 10 && n.getFrequency () < 349 + 10);
+	}
+
+	@Test
+	public void shouldBeTwiceTheF0ValuePiano4F () throws UnsupportedAudioFileException, IOException {
+		ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
+		URL fileURL = classLoader.getResource ("notes/Piano3-E.wav");
+		File input = new File (fileURL.getFile ());
+
+		AudioInputStream ais = new ConvertAudioFileService ().callConverter (input);
+		TransformSoundService ts = new TransformSoundService ();
+
+		Sound [] f4 = ts.fromInputStream (ais);
+		PitchSoundTransformation pitcher = new PitchSoundTransformation (200);
+		Sound f51 = pitcher.transform (f4 [0]);
+		Sound f52 = pitcher.transform (f4 [1]);
+		
+		Note n = Sound2NoteService.convert ("Piano4-E.wav", new Sound [] {f51, f52});
+		System.out.println ("e' 4 : " + n.getFrequency () + "Hz, should be around 664Hz");
+		org.junit.Assert.assertTrue (n.getFrequency () > 664 - 10 && n.getFrequency () < 664 + 10);
 	}
 
 	@Test

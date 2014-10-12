@@ -78,7 +78,7 @@ public class WavTest {
 	@Test
 	public void testPitch () {
 		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new PitchSoundTransformation (85));
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new PitchSoundTransformation (100));
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {
