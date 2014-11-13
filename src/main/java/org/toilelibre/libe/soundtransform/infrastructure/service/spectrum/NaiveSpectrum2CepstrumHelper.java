@@ -18,7 +18,8 @@ public class NaiveSpectrum2CepstrumHelper implements Spectrum2CepstrumHelper {
 		}
 		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 
-		Spectrum fscep = new Spectrum (fastFourierTransformer.transform (fs.getState (), TransformType.FORWARD), fs.getSampleRate ());
+		Spectrum fscep = new Spectrum (fastFourierTransformer.transform (fs.getState (), TransformType.FORWARD), 
+				fs.getSampleRate (), fs.getNbBytes ());
 		for (int i = 0; i < fscep.getState ().length; i++) {
 			Complex c = fscep.getState () [i];
 			double sqr = Math.pow (c.abs (), 2);

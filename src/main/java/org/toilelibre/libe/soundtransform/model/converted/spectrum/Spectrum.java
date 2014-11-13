@@ -6,8 +6,9 @@ public class Spectrum {
 
 	private Complex []	state;
 	private int	       sampleRate;
+	private int        nbBytes;
 
-	public Spectrum (Complex [] state, int sampleRate) {
+	public Spectrum (Complex [] state, int sampleRate, int nbBytes) {
 		super ();
 		this.state = state;
 		this.sampleRate = sampleRate;
@@ -19,6 +20,14 @@ public class Spectrum {
 
 	public int getSampleRate () {
 		return sampleRate;
+	}
+	
+	public int getNbBytes () {
+		return nbBytes;
+	}
+
+	public void setNbBytes (int nbBytes) {
+		this.nbBytes = nbBytes;
 	}
 
 	public String toString () {

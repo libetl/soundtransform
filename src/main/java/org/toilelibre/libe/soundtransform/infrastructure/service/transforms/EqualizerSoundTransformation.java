@@ -29,6 +29,6 @@ public class EqualizerSoundTransformation extends NoOpFrequencySoundTransformati
 		for (int j = length; j < powOf2NearestLength; j++) {
 			newAmpl [j] = new Complex (0, 0);
 		}
-		return new Spectrum (newAmpl, fs.getSampleRate ());
+		return new Spectrum (newAmpl, fs.getSampleRate (), fs.getNbBytes ());
 	}
 }

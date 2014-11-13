@@ -24,7 +24,7 @@ public class PurifySoundTransformation extends NoOpFrequencySoundTransformation 
 		for (int j = 0; j < powOf2NearestLength; j++) {
 			newAmpl [j] = fs.getState () [j].multiply (Math.exp (- (Math.pow (j - max, 2)) / 100));
 		}
-		return new Spectrum (newAmpl, fs.getSampleRate ());
+		return new Spectrum (newAmpl, fs.getSampleRate (), fs.getNbBytes ());
 	}
 
 	@Override

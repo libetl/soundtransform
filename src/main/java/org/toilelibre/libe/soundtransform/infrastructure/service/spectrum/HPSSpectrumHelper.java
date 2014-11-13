@@ -36,7 +36,7 @@ public class HPSSpectrumHelper implements SpectrumHelper {
 			}
 			result [i] = new Complex (val);
 		}
-		return new Spectrum (result, fs.getSampleRate () / factor);
+		return new Spectrum (result, fs.getSampleRate () / factor, fs.getNbBytes ());
 	}
 
 	
@@ -46,7 +46,8 @@ public class HPSSpectrumHelper implements SpectrumHelper {
 		int reallow = low == 0 ? 1 : low;
 		int realhigh = Math.min (high, fs.getState ().length);
 		for (int i = reallow; i < realhigh; i++) {
-			if (max < fs.getState () [i].abs ()) {
+			if (max < fs.getState () [i].abs () &&
+					fs.getState () [i].abs () > Math.pow (256, fs.getNbBytes ()) / 2) {
 				max = fs.getState () [i].abs ();
 				maxIndex = i;
 			}
