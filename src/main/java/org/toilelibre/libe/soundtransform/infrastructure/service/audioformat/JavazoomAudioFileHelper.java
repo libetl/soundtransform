@@ -14,13 +14,15 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 public class JavazoomAudioFileHelper implements AudioFileHelper {
 
 	public AudioInputStream getAudioInputStream (File inputFile) throws UnsupportedAudioFileException, IOException {
-		File tempFile =  File.createTempFile("soundtransform", ".wav");
+		File readFile = inputFile;
 		if (inputFile.getName ().toLowerCase ().endsWith (".mp3")) {
+			File tempFile =  File.createTempFile("soundtransform", ".wav");
 			AudioInputStream ais = new javazoom.spi.mpeg.sampled.file.MpegAudioFileReader ().getAudioInputStream (inputFile);
 			AudioFormat cdFormat = new AudioFormat (44100, 16, 2, true, false);
 			javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream decodedais = new javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream (cdFormat, ais);
 			AudioSystem.write (decodedais, AudioFileFormat.Type.WAVE, tempFile);
+			readFile = tempFile;
 		}
-		return AudioSystem.getAudioInputStream (tempFile);
+		return AudioSystem.getAudioInputStream (readFile);
 	}
 }
