@@ -12,6 +12,7 @@ public class Spectrum {
 		super ();
 		this.state = state;
 		this.sampleRate = sampleRate;
+		this.nbBytes = nbBytes;
 	}
 
 	public Complex [] getState () {

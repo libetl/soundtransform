@@ -47,7 +47,7 @@ public class HPSSpectrumHelper implements SpectrumHelper {
 		int realhigh = Math.min (high, fs.getState ().length);
 		for (int i = reallow; i < realhigh; i++) {
 			if (max < fs.getState () [i].abs () &&
-					fs.getState () [i].abs () > Math.pow (256, fs.getNbBytes ()) / 2) {
+					fs.getState () [i].abs () > Math.pow (256, fs.getNbBytes ()) + 1) {
 				max = fs.getState () [i].abs ();
 				maxIndex = i;
 			}
