@@ -1,4 +1,5 @@
 soundtransform
 ==============
 
-Sound Transform test package
+
+Library to shape a voice with an instrument.
