@@ -35,6 +35,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 		this.log (new LogEvent (LogLevel.VERBOSE, "Finding loudest frequencies"));
 
 		PeakFindWithHPSSoundTransformation peak = new PeakFindWithHPSSoundTransformation (100, -1);
+		peak.setObservers (this.observers);
 		peak.transform (sound);
 		freqs = peak.getLoudestFreqs ();
 

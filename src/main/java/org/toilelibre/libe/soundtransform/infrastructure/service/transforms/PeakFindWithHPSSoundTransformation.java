@@ -8,6 +8,8 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.NoOpFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class PeakFindWithHPSSoundTransformation extends NoOpFrequencySoundTransformation {
 
@@ -16,6 +18,7 @@ public class PeakFindWithHPSSoundTransformation extends NoOpFrequencySoundTransf
 	private boolean	      note;
 	private int	          fsLimit;
 	private int	          windowLength;
+	private int	          soundLength;
 	private SpectrumHelper spectrumHelper;
 
 	private PeakFindWithHPSSoundTransformation (){
@@ -27,6 +30,7 @@ public class PeakFindWithHPSSoundTransformation extends NoOpFrequencySoundTransf
 		this.note = note;
 		this.threshold = 100;
 		this.windowLength = -1;
+		this.soundLength = -1;
 	}
 
 	public PeakFindWithHPSSoundTransformation (double threshold) {
@@ -50,6 +54,7 @@ public class PeakFindWithHPSSoundTransformation extends NoOpFrequencySoundTransf
 		} else {
 			this.fsLimit = input.getSampleRate ();
 		}
+		this.soundLength = input.getSamples ().length;
 		return super.initSound (input);
 	}
 
@@ -73,6 +78,7 @@ public class PeakFindWithHPSSoundTransformation extends NoOpFrequencySoundTransf
 	@Override
 	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 
+		this.log (new LogEvent (LogLevel.VERBOSE, "Iteration " + (int)(offset / this.threshold) + " / " + (int)Math.ceil (this.soundLength / this.threshold)));
 		int [] peaks = new int [10];
 		for (int i = 1; i <= 10; i++) {
 			peaks [i - 1] = this.spectrumHelper.f0 (fs, i);
