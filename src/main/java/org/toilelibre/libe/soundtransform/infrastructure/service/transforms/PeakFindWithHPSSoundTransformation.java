@@ -78,7 +78,11 @@ public class PeakFindWithHPSSoundTransformation extends NoOpFrequencySoundTransf
 	@Override
 	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
 
-		this.log (new LogEvent (LogLevel.VERBOSE, "Iteration " + (int)(offset / this.threshold) + " / " + (int)Math.ceil (this.soundLength / this.threshold)));
+		int percent = (int) Math.floor(100.0 * (offset / this.threshold) /  (this.soundLength / this.threshold));
+		if (percent > Math.floor(100.0 * ((offset - this.threshold) / this.threshold) /  (this.soundLength / this.threshold))){
+			this.log (new LogEvent (LogLevel.VERBOSE, "Iteration " + (int)(offset / this.threshold) + " / " + (int)Math.ceil (this.soundLength / this.threshold) + 
+					", " + percent + "%"));
+		}
 		int [] peaks = new int [10];
 		for (int i = 1; i <= 10; i++) {
 			peaks [i - 1] = this.spectrumHelper.f0 (fs, i);
