@@ -162,9 +162,7 @@ public class WavTest {
 			System.out.println ("Loading packs");
 			Library packsList = Library.getInstance ();
 
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new EqualizerSoundTransformation (new double [] { 0, 20, 50, 100, 120, 140, 160, 180, 200, 220,
-			        1000, 2000, 5000, 11000, 44100 }, new double [] { 0, 0.5, 0.75, 1, 1, 1, 1, 0.70, 0.30, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00 }), new NormalizeSoundTransformation (),
-			        new ShapeSoundTransformation (packsList.defaultPack, "simple_piano"));
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new ShapeSoundTransformation (packsList.defaultPack, "simple_piano"));
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {
