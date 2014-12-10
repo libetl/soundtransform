@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTem
 
 public class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelper {
 
-	public Sound pitchAndSetLength (Sound sound, float percent, int length) {
+	public Sound pitchAndSetLength (Sound sound, float percent, float lengthInSeconds) {
 
 		Sound result = sound;
 
@@ -16,7 +16,7 @@ public class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelp
 		if (percent < 98 || percent > 102) {
 			result = pitcher.transform (result);
 		}
-		double factor = sound.getSamples ().length == 0 ? 0 : length * 1.0 / result.getSamples ().length;
+		double factor = sound.getSamples ().length == 0 ? 0 : 1.0 * lengthInSeconds * sound.getSampleRate() / result.getSamples ().length;
 		if (factor == 0) {
 			return result;
 		} else if (factor < 0.98 || factor > 1.02) {

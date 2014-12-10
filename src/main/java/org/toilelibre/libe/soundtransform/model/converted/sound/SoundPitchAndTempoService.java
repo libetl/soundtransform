@@ -8,7 +8,7 @@ public class SoundPitchAndTempoService {
 		this.helper = new org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundPitchAndTempoHelper ();
 	}
 
-	public Sound callTransform (Sound sound, float percent, int length) {
-		return this.helper.pitchAndSetLength (sound, percent, length);
+	public Sound callTransform (Sound sound, float percent, float lengthInSeconds) {
+		return this.helper.pitchAndSetLength (sound, percent, lengthInSeconds);
 	}
 }

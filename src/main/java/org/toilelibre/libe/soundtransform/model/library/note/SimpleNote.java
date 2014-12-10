@@ -28,8 +28,11 @@ public class SimpleNote implements Note {
 	}
 
 	private float getRatio (Sound [] subsound) {
-		int lengthOfSubsound = subsound [0].getSamples ().length;
-		int lengthOfSound = (this.attack [0].getSamples ().length + this.decay [0].getSamples ().length + this.sustain [0].getSamples ().length + this.release [0].getSamples ().length);
+		float lengthOfSubsound = 1.0f * subsound [0].getSamples ().length / subsound [0].getSampleRate();
+		float lengthOfSound = 1.0f * (this.attack [0].getSamples ().length / this.attack [0].getSampleRate() + 
+		        this.decay [0].getSamples ().length / this.decay [0].getSampleRate() + 
+		        this.sustain [0].getSamples ().length / this.sustain [0].getSampleRate() + 
+		        this.release [0].getSamples ().length / this.release [0].getSampleRate());
 		return lengthOfSubsound * 1.0f / lengthOfSound;
 	}
 
@@ -48,22 +51,22 @@ public class SimpleNote implements Note {
 	}
 
 	@Override
-	public Sound getAttack (int frequency, int channelnum, int length) {
+	public Sound getAttack (int frequency, int channelnum, float length) {
 		return new SoundPitchAndTempoService ().callTransform (this.get (this.attack, channelnum), this.getPercent (frequency), (int) (this.getRatio (this.attack) * length));
 	}
 
 	@Override
-	public Sound getDecay (int frequency, int channelnum, int length) {
+	public Sound getDecay (int frequency, int channelnum, float length) {
 		return new SoundPitchAndTempoService ().callTransform (this.get (this.decay, channelnum), this.getPercent (frequency), (int) (this.getRatio (this.decay) * length));
 	}
 
 	@Override
-	public Sound getSustain (int frequency, int channelnum, int length) {
+	public Sound getSustain (int frequency, int channelnum, float length) {
 		return new SoundPitchAndTempoService ().callTransform (this.get (this.sustain, channelnum), this.getPercent (frequency), (int) (this.getRatio (this.sustain) * length));
 	}
 
 	@Override
-	public Sound getRelease (int frequency, int channelnum, int length) {
+	public Sound getRelease (int frequency, int channelnum, float length) {
 		return new SoundPitchAndTempoService ().callTransform (this.get (this.release, channelnum), this.getPercent (frequency), (int) (this.getRatio (this.release) * length));
 	}
 
