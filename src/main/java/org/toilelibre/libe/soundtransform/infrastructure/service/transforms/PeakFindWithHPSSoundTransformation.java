@@ -1,7 +1,7 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -47,7 +47,7 @@ public class PeakFindWithHPSSoundTransformation extends NoOpFrequencySoundTransf
 
 	@Override
 	public Sound initSound (Sound input) {
-		this.loudestfreqs = new LinkedList<Integer> ();
+		this.loudestfreqs = new ArrayList<Integer> ();
 		if (this.note) {
 			this.threshold = input.getSamples ().length;
 			this.fsLimit = input.getSamples ().length;

@@ -43,13 +43,13 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
 		int lastBegining = 0;
 		for (int i = 0; i < freqs.size (); i++) {
 			this.log (new LogEvent (LogLevel.VERBOSE, "Iteration " + i + " / " + freqs.size ()));
-			float length = (i - lastBegining < 1 ? freqs.size () * threshold : (i - 1 - lastBegining) * threshold) / sound.getSampleRate();
-			if (i == freqs.size () - 1 || (Math.abs (freqs.get (i) - lastFreq) > freqs.get (i) / 100 && length > sound.getSampleRate () / 2)) {
+			float lengthInSeconds = (i - lastBegining < 1 ? freqs.size () * threshold : (i - 1 - lastBegining) * threshold) / sound.getSampleRate();
+			if (i == freqs.size () - 1 || (Math.abs (freqs.get (i) - lastFreq) > freqs.get (i) / 100 && lengthInSeconds > 0.5)) {
 				Note note = this.pack.get (this.instrument).getNearestNote ((int) lastFreq);
-				Sound attack = note.getAttack ((int) lastFreq, channelNum, length);
-				Sound decay = note.getDecay ((int) lastFreq, channelNum, length);
-				Sound sustain = note.getSustain ((int) lastFreq, channelNum, length);
-				Sound release = note.getRelease ((int) lastFreq, channelNum, length);
+				Sound attack = note.getAttack ((int) lastFreq, channelNum, lengthInSeconds);
+				Sound decay = note.getDecay ((int) lastFreq, channelNum, lengthInSeconds);
+				Sound sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds);
+				Sound release = note.getRelease ((int) lastFreq, channelNum, lengthInSeconds);
 				soundAppender.append (builtSound, threshold * lastBegining, attack, decay, sustain, release);
 				lastBegining = i;
 				lastFreq = freqs.get (i);
