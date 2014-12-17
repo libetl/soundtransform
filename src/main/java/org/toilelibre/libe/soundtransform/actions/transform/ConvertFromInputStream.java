@@ -8,7 +8,7 @@ import javax.sound.sampled.AudioInputStream;
 import org.toilelibre.libe.soundtransform.actions.Action;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
-public final class SoundFromInputStream extends Action {
+public final class ConvertFromInputStream extends Action {
 
 	public Sound [] fromInputStream (InputStream ais, int channels, long frameLength, int sampleSize, double sampleRate, boolean bigEndian, boolean pcmSigned) throws IOException {
 		return this.transformSound.fromInputStream (ais, channels, frameLength, sampleSize, sampleRate, bigEndian, pcmSigned);

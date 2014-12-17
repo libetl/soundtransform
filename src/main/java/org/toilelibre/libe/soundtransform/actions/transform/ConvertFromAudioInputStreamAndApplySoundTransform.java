@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.actions.Action;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 
-public final class SoundConvertAndApply extends Action {
+public final class ConvertFromAudioInputStreamAndApplySoundTransform extends Action {
 
 	public Sound [] convertAndApply (AudioInputStream ais, SoundTransformation transform) throws IOException {
 		return this.transformSound.convertAndApply (ais, transform);
