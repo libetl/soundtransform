@@ -14,6 +14,10 @@ public class PlaySoundException extends Exception {
 		super (e);
     }
 
+	public PlaySoundException (InterruptedException e) {
+		super (e);
+    }
+
 	/**
 	 * 
 	 */

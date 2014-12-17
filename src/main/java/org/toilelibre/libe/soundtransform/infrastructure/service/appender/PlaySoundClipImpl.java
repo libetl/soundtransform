@@ -11,22 +11,28 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 
+import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.transform.DftNormalization;
+import org.apache.commons.math3.transform.FastFourierTransformer;
+import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.libe.soundtransform.actions.transform.ExportSoundToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class PlaySoundClipImpl implements PlaySoundService {
 
 	@Override
-	public void play (Sound [] channels) throws PlaySoundException {
-		AudioInputStream ais = new ExportSoundToInputStream ().toStream (channels, new AudioFormat (48000, 4, 2, true, false));
+	public Object play (Sound [] channels) throws PlaySoundException {
+		AudioInputStream ais = new ExportSoundToInputStream ().toStream (channels, 
+				new AudioFormat (channels[0].getSampleRate (), channels[0].getNbBytesPerSample () * 8, channels.length, true, false));
 
-		this.play (ais);
+		return this.play (ais);
 	}
 
 	@Override
-	public void play (AudioInputStream ais) throws PlaySoundException {
+	public Object play (AudioInputStream ais) throws PlaySoundException {
 		try {
 			Line.Info linfo = new Line.Info (Clip.class);
 			Line line = AudioSystem.getLine (linfo);
@@ -54,13 +60,26 @@ public class PlaySoundClipImpl implements PlaySoundService {
 			synchronized (clip){
 				clip.wait ();	
 			}
+			return clip;
 		} catch (LineUnavailableException lineUnavailableException) {
 			throw new PlaySoundException (lineUnavailableException);
 		} catch (IOException e) {
 			throw new PlaySoundException (e);
 		} catch (InterruptedException e) {
-	        e.printStackTrace();
+			throw new PlaySoundException (e);
         }
 	}
+
+	@Override
+    public Object play (Spectrum spectrum) throws PlaySoundException {
+		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
+		Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
+		long [] sampleArray = new long [complexArray.length];
+		int i = 0;
+		for (Complex c : complexArray){
+			sampleArray [i++] = (long) c.getReal ();
+		}
+		return this.play (new Sound [] {new Sound (sampleArray, spectrum.getNbBytes (), spectrum.getSampleRate (), 0)});
+    }
 
 }
