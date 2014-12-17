@@ -17,22 +17,22 @@ public class Silence implements Note {
 	
 	@Override
     public Sound getAttack (int frequency, int channelnum, float lengthInSeconds) {
-		return this.generateSilence (frequency, channelnum, lengthInSeconds);
+		return this.generateSilence (frequency, channelnum, 1.0f / 4 * lengthInSeconds);
     }
 
 	@Override
     public Sound getDecay (int frequency, int channelnum, float lengthInSeconds) {
-		return this.generateSilence (frequency, channelnum, lengthInSeconds);
+		return this.generateSilence (frequency, channelnum, 1.0f / 4 * lengthInSeconds);
     }
 
 	@Override
     public Sound getSustain (int frequency, int channelnum, float lengthInSeconds) {
-		return this.generateSilence (frequency, channelnum, lengthInSeconds);
+		return this.generateSilence (frequency, channelnum, 1.0f / 4 * lengthInSeconds);
     }
 
 	@Override
     public Sound getRelease (int frequency, int channelnum, float lengthInSeconds) {
-		return this.generateSilence (frequency, channelnum, lengthInSeconds);
+		return this.generateSilence (frequency, channelnum, 1.0f / 4 * lengthInSeconds);
     }
 
 	@Override
