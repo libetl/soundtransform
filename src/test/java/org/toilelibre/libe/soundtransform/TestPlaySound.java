@@ -8,8 +8,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.appender.PlaySoundClipImpl;
+import org.toilelibre.libe.soundtransform.model.PlaySoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
-import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundService;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
 
 public class TestPlaySound {
