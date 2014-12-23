@@ -5,13 +5,13 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.AbstractFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 //WARN : long execution time soundtransform
-public class SlowdownSoundTransformation extends AbstractFrequencySoundTransformation {
+public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformation {
 
 	private float	factor;
 	private Sound	sound;
@@ -34,7 +34,7 @@ public class SlowdownSoundTransformation extends AbstractFrequencySoundTransform
 	}
 
 	@Override
-	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
+	public Spectrum transformFrequencies (Spectrum fs, int offset) {
 		int total = (int) (this.sound.getSamples ().length * factor);
 		if (total / 100 != 0 && (total / 100 - (total / 100) % this.threshold) != 0 && offset % ( (total / 100 - (total / 100) % this.threshold)) == 0) {
 			this.log (new LogEvent (LogLevel.VERBOSE, "SlowdownSoundTransformation : Iteration #" + offset + "/" + (int) (sound.getSamples ().length / factor)));

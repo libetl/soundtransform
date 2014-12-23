@@ -18,7 +18,7 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 
 	public abstract Sound initSound (Sound input);
 
-	public abstract Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length);
+	public abstract Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length, boolean soundDetected);
 
 	public abstract int getOffsetFromASimpleLoop (int i, double step);
 

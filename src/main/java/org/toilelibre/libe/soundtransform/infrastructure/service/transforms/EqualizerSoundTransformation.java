@@ -3,10 +3,10 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.complex.Complex;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.NoOpFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
-public class EqualizerSoundTransformation extends NoOpFrequencySoundTransformation {
+public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation {
 
 	private double []	ranges;
 	private double []	amplification;

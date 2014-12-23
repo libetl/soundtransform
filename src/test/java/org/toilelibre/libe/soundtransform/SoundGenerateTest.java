@@ -12,8 +12,7 @@ import org.junit.Test;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.NoOpFrequencySoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 
 public class SoundGenerateTest {
 
@@ -52,15 +51,7 @@ public class SoundGenerateTest {
 			signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
 		}
 		Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
-		SoundTransformation st = new NoOpFrequencySoundTransformation (){
-
-			@Override
-            public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
-				System.out.println (fs.toString ());
-	            return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
-            }
-			
-		};
+		SoundTransformation st = new SimpleFrequencySoundTransformation ();
 		st.transform (s);
 
 	}

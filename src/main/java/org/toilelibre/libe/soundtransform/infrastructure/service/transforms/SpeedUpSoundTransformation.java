@@ -1,13 +1,13 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.AbstractFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 //WARN : long execution time soundtransform
-public class SpeedUpSoundTransformation extends AbstractFrequencySoundTransformation {
+public class SpeedUpSoundTransformation extends SimpleFrequencySoundTransformation {
 
 	private float	factor;
 	private Sound	sound;
@@ -28,7 +28,7 @@ public class SpeedUpSoundTransformation extends AbstractFrequencySoundTransforma
 	}
 
 	@Override
-	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
+	public Spectrum transformFrequencies (Spectrum fs, int offset) {
 		int total = (int) (this.sound.getSamples ().length / factor);
 		if (total / 100 != 0 && (total / 100 - (total / 100) % this.threshold) != 0 && offset % ( (total / 100 - (total / 100) % this.threshold)) == 0) {
 			this.log (new LogEvent (LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #" + offset + "/" + (int) (sound.getSamples ().length * factor)));

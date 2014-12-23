@@ -7,7 +7,7 @@ import org.apache.commons.math3.util.MathArrays;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.ReverseSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.NoOpFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 
@@ -18,7 +18,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
 		int sustainIndex = decay;
 
-		SoundTransformation magnitudeTransform = new NoOpFrequencySoundTransformation () {
+		SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation () {
 			int	arraylength	= 0;
 
 			@Override
@@ -33,9 +33,9 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 			}
 
 			@Override
-			public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
+			public Spectrum transformFrequencies (Spectrum fs) {
 				magnitude [arraylength++] = MagnitudeADSRHelper.this.computeMagnitude (fs);
-				return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
+				return super.transformFrequencies (fs);
 			}
 
 		};
@@ -55,7 +55,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
 		int decayIndex = attack;
 
-		SoundTransformation magnitudeTransform = new NoOpFrequencySoundTransformation () {
+		SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation () {
 			int	arraylength	= 0;
 
 			@Override
@@ -70,9 +70,9 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 			}
 
 			@Override
-			public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
+			public Spectrum transformFrequencies (Spectrum fs) {
 				magnitude [arraylength++] = MagnitudeADSRHelper.this.computeMagnitude (fs);
-				return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
+				return super.transformFrequencies (fs);
 			}
 
 		};
@@ -93,7 +93,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 		final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
 		int releaseIndexFromReversed = 0;
 
-		SoundTransformation magnitudeTransform = new NoOpFrequencySoundTransformation () {
+		SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation () {
 			int	arraylength	= 0;
 
 			@Override
@@ -108,9 +108,9 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 			}
 
 			@Override
-			public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
+			public Spectrum transformFrequencies (Spectrum fs) {
 				magnitude [arraylength++] = MagnitudeADSRHelper.this.computeMagnitude (fs);
-				return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
+				return super.transformFrequencies (fs);
 			}
 
 		};

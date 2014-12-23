@@ -1,10 +1,10 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 
 import org.apache.commons.math3.complex.Complex;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.NoOpFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
-public class GaussianEqualizerSoundTransformation extends NoOpFrequencySoundTransformation {
+public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTransformation {
 
 	public GaussianEqualizerSoundTransformation () {
 	}

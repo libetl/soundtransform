@@ -9,7 +9,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.NoOpFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
 
@@ -37,12 +37,12 @@ public class SoundToStringTest {
 		try {
 			AudioInputStream ais = new ConvertAudioFileService ().callConverter (input);
 			Sound s = new TransformSoundService ().fromInputStream (ais) [0];
-			new NoOpFrequencySoundTransformation (){
+			new SimpleFrequencySoundTransformation (){
 
 				@Override
-                public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
+                public Spectrum transformFrequencies (Spectrum fs) {
 	                System.out.println (fs);
-	                return super.transformFrequencies (fs, offset, powOf2NearestLength, length);
+	                return super.transformFrequencies (fs);
                 }
 				
 			}.transform (s);

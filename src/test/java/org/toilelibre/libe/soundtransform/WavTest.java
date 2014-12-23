@@ -18,7 +18,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.Slow
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.SpeedUpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.NoOpSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.NoOpFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.PrintlnTransformObserver;
 
@@ -100,7 +100,7 @@ public class WavTest {
 	@Test
 	public void testFreqNoOp () {
 		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new NoOpFrequencySoundTransformation ());
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new SimpleFrequencySoundTransformation ());
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace ();
 		} catch (IOException e) {

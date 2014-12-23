@@ -1,12 +1,12 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.NoOpFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum2CepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 
-public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformation {
+public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformation {
 
 	private double	   threshold;
 	private int []	   loudestfreqs;
@@ -61,7 +61,7 @@ public class CepstrumSoundTransformation extends NoOpFrequencySoundTransformatio
 	}
 
 	@Override
-	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
+	public Spectrum transformFrequencies (Spectrum fs) {
 
 		Spectrum fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
 

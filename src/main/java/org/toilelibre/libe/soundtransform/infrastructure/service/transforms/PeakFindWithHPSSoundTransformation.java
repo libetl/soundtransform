@@ -5,13 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.NoOpFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-public class PeakFindWithHPSSoundTransformation extends NoOpFrequencySoundTransformation {
+public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTransformation {
 
 	private double	      threshold;
 	private List<Integer>	loudestfreqs;
@@ -76,20 +76,24 @@ public class PeakFindWithHPSSoundTransformation extends NoOpFrequencySoundTransf
 	}
 
 	@Override
-	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length) {
+	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length, boolean soundDetected) {
 
 		int percent = (int) Math.floor(100.0 * (offset / this.threshold) /  (this.soundLength / this.threshold));
 		if (percent > Math.floor(100.0 * ((offset - this.threshold) / this.threshold) /  (this.soundLength / this.threshold))){
 			this.log (new LogEvent (LogLevel.VERBOSE, "Iteration " + (int)(offset / this.threshold) + " / " + (int)Math.ceil (this.soundLength / this.threshold) + 
 					", " + percent + "%"));
 		}
-		int [] peaks = new int [10];
-		for (int i = 1; i <= 10; i++) {
-			peaks [i - 1] = this.spectrumHelper.f0 (fs, i);
+		int f0 = 0;
+		
+		if (soundDetected){
+			int [] peaks = new int [10];
+			for (int i = 1; i <= 10; i++) {
+				peaks [i - 1] = this.spectrumHelper.f0 (fs, i);
+			}
+			Arrays.sort (peaks);
+			f0 = this.bestCandidate (peaks);
 		}
-		Arrays.sort (peaks);
-		int f0 = this.bestCandidate (peaks);
-
+		
 		this.loudestfreqs.add (f0);
 		return fs;
 	}
