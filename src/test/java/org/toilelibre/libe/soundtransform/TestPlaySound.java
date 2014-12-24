@@ -21,6 +21,12 @@ public class TestPlaySound {
 		PlaySoundService ps = new PlaySoundClipImpl ();
 		ConvertAudioFileService convertAudioFileService = new ConvertAudioFileService ();
 		AudioInputStream ais = convertAudioFileService.callConverter (input);
-		ps.play (ais);
+		try {
+		    ps.play (ais);
+		}catch (java.lang.IllegalArgumentException iae){
+		    if (!"No line matching interface Clip is supported".equals(iae.getMessage())){
+		        throw iae;
+		    }
+		}
 	}
 }
