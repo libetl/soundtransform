@@ -32,8 +32,8 @@ public class PitchAndSpeedHelperTest {
 		Sound [] e3 = ts.fromInputStream (ais);
 		SoundPitchAndTempoHelper helper = new ConvertedSoundPitchAndTempoHelper ();
 		Sound [] e4 = new Sound [2];
-		e4 [0] = helper.pitchAndSetLength (e3 [0], 200, 10000);
-		e4 [1] = helper.pitchAndSetLength (e3 [1], 200, 10000);
+		e4 [0] = helper.pitchAndSetLength (e3 [0], 200, 1);
+		e4 [1] = helper.pitchAndSetLength (e3 [1], 200, 1);
 		
 		AudioInputStream ais2 = ts.toStream (e4, ais.getFormat ());
 		File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
