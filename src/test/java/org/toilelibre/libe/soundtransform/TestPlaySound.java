@@ -24,7 +24,7 @@ public class TestPlaySound {
 		try {
 		    ps.play (ais);
 		}catch (java.lang.IllegalArgumentException iae){
-		    if (!"No line matching interface Clip is supported".equals(iae.getMessage())){
+		    if (!"No line matching interface Clip is supported.".equals(iae.getMessage())){
 		        throw iae;
 		    }
 		}
