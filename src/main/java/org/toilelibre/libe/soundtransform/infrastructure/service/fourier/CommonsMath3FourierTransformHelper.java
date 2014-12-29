@@ -40,7 +40,7 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
 			Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
 			Spectrum fs = new Spectrum (complexArray, (int) freqmax, sound.getNbBytesPerSample ());
 			Spectrum result = st.transformFrequencies (fs, i, maxlength, length, 
-					Math.abs (maxValue - minValue) > Math.pow (256, sound.getNbBytesPerSample ()) / 6);
+					Math.abs (maxValue - minValue) > Math.pow (256, sound.getNbBytesPerSample ()) / 8);
 			if (result == null) {
 				continue;
 			}
