@@ -10,8 +10,8 @@ import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 
 public final class ExportAFileFromAFileUsingSoundTransform extends Action {
 
-	public void transformFile (final File fOrigin, final File fDest, final SoundTransformation... sts) throws UnsupportedAudioFileException, IOException {
-		this.transformSound.transformFile (fOrigin, fDest, sts);
-	}
+    public void transformFile (final File fOrigin, final File fDest, final SoundTransformation... sts) throws UnsupportedAudioFileException, IOException {
+        this.transformSound.transformFile (fOrigin, fDest, sts);
+    }
 
 }

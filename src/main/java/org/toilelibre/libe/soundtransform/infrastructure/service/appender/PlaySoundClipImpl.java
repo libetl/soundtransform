@@ -23,63 +23,63 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class PlaySoundClipImpl implements PlaySoundService {
 
-	@Override
-	public Object play (final AudioInputStream ais) throws PlaySoundException {
-		try {
-			final Line.Info linfo = new Line.Info (Clip.class);
-			final Line line = AudioSystem.getLine (linfo);
-			final Clip clip = (Clip) line;
-			clip.addLineListener (new LineListener () {
+    @Override
+    public Object play (final AudioInputStream ais) throws PlaySoundException {
+        try {
+            final Line.Info linfo = new Line.Info (Clip.class);
+            final Line line = AudioSystem.getLine (linfo);
+            final Clip clip = (Clip) line;
+            clip.addLineListener (new LineListener () {
 
-				@Override
-				public void update (final LineEvent event) {
-					final LineEvent.Type type = event.getType ();
-					if (type == LineEvent.Type.OPEN) {
-					} else if (type == LineEvent.Type.CLOSE) {
-					} else if (type == LineEvent.Type.START) {
-					} else if (type == LineEvent.Type.STOP) {
-						synchronized (clip){
-							clip.close ();
-							clip.notify ();
-						}
-					}
+                @Override
+                public void update (final LineEvent event) {
+                    final LineEvent.Type type = event.getType ();
+                    if (type == LineEvent.Type.OPEN) {
+                    } else if (type == LineEvent.Type.CLOSE) {
+                    } else if (type == LineEvent.Type.START) {
+                    } else if (type == LineEvent.Type.STOP) {
+                        synchronized (clip){
+                            clip.close ();
+                            clip.notify ();
+                        }
+                    }
 
-				}
+                }
 
-			});
-			clip.open (ais);
-			clip.start ();
-			synchronized (clip){
-				clip.wait ();
-			}
-			return clip;
-		} catch (final LineUnavailableException lineUnavailableException) {
-			throw new PlaySoundException (lineUnavailableException);
-		} catch (final IOException e) {
-			throw new PlaySoundException (e);
-		} catch (final InterruptedException e) {
-			throw new PlaySoundException (e);
+            });
+            clip.open (ais);
+            clip.start ();
+            synchronized (clip){
+                clip.wait ();
+            }
+            return clip;
+        } catch (final LineUnavailableException lineUnavailableException) {
+            throw new PlaySoundException (lineUnavailableException);
+        } catch (final IOException e) {
+            throw new PlaySoundException (e);
+        } catch (final InterruptedException e) {
+            throw new PlaySoundException (e);
         }
-	}
+    }
 
-	@Override
-	public Object play (final Sound [] channels) throws PlaySoundException {
-		final AudioInputStream ais = new ExportSoundToInputStream ().toStream (channels,
-				new AudioFormat (channels[0].getSampleRate (), channels[0].getNbBytesPerSample () * 8, channels.length, true, false));
+    @Override
+    public Object play (final Sound [] channels) throws PlaySoundException {
+        final AudioInputStream ais = new ExportSoundToInputStream ().toStream (channels,
+                new AudioFormat (channels[0].getSampleRate (), channels[0].getNbBytesPerSample () * 8, channels.length, true, false));
 
-		return this.play (ais);
-	}
+        return this.play (ais);
+    }
 
-	@Override
+    @Override
     public Object play (final Spectrum spectrum) throws PlaySoundException {
-		final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
-		final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
-		final long [] sampleArray = new long [complexArray.length];
-		int i = 0;
-		for (final Complex c : complexArray){
-			sampleArray [i++] = (long) c.getReal ();
-		}
-		return this.play (new Sound [] {new Sound (sampleArray, spectrum.getNbBytes (), spectrum.getSampleRate (), 0)});
+        final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
+        final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
+        final long [] sampleArray = new long [complexArray.length];
+        int i = 0;
+        for (final Complex c : complexArray){
+            sampleArray [i++] = (long) c.getReal ();
+        }
+        return this.play (new Sound [] {new Sound (sampleArray, spectrum.getNbBytes (), spectrum.getSampleRate (), 0)});
     }
 
 }

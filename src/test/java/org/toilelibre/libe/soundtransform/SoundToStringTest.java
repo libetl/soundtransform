@@ -15,41 +15,41 @@ import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileServ
 
 public class SoundToStringTest {
 
-	@Test
-	public void testFsToString () {
-		final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-		final File input = new File (classLoader.getResource ("before.wav").getFile ());
-		try {
-			final AudioInputStream ais = new ConvertAudioFileService ().callConverter (input);
-			final Sound s = new TransformSoundService ().fromInputStream (ais) [0];
-			new SimpleFrequencySoundTransformation (){
+    @Test
+    public void testFsToString () {
+        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+        final File input = new File (classLoader.getResource ("before.wav").getFile ());
+        try {
+            final AudioInputStream ais = new ConvertAudioFileService ().callConverter (input);
+            final Sound s = new TransformSoundService ().fromInputStream (ais) [0];
+            new SimpleFrequencySoundTransformation (){
 
-				@Override
+                @Override
                 public Spectrum transformFrequencies (final Spectrum fs) {
-	                System.out.println (fs);
-	                return super.transformFrequencies (fs);
+                    System.out.println (fs);
+                    return super.transformFrequencies (fs);
                 }
 
-			}.transform (s);
-		} catch (final UnsupportedAudioFileException e) {
-			e.printStackTrace ();
-		} catch (final IOException e) {
-			e.printStackTrace ();
-		}
-	}
+            }.transform (s);
+        } catch (final UnsupportedAudioFileException e) {
+            e.printStackTrace ();
+        } catch (final IOException e) {
+            e.printStackTrace ();
+        }
+    }
 
 
-	@Test
-	public void testToString () {
-		final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-		final File input = new File (classLoader.getResource ("before.wav").getFile ());
-		try {
-			final AudioInputStream ais = new ConvertAudioFileService ().callConverter (input);
-			System.out.println (new TransformSoundService ().fromInputStream (ais) [0]);
-		} catch (final UnsupportedAudioFileException e) {
-			e.printStackTrace ();
-		} catch (final IOException e) {
-			e.printStackTrace ();
-		}
-	}
+    @Test
+    public void testToString () {
+        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+        final File input = new File (classLoader.getResource ("before.wav").getFile ());
+        try {
+            final AudioInputStream ais = new ConvertAudioFileService ().callConverter (input);
+            System.out.println (new TransformSoundService ().fromInputStream (ais) [0]);
+        } catch (final UnsupportedAudioFileException e) {
+            e.printStackTrace ();
+        } catch (final IOException e) {
+            e.printStackTrace ();
+        }
+    }
 }

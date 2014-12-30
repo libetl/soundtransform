@@ -8,5 +8,5 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public interface AudioFileHelper {
 
-	public AudioInputStream getAudioInputStream (File inputFile) throws UnsupportedAudioFileException, IOException;
+    public AudioInputStream getAudioInputStream (File inputFile) throws UnsupportedAudioFileException, IOException;
 }
