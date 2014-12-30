@@ -71,11 +71,16 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware {
                 if (lastFreq > 50 && Math.abs (sound.getSampleRate () - lastFreq) > 100){
                     note = this.pack.get (this.instrument).getNearestNote ((int) lastFreq);
                 }
-                final Sound attack = note.getAttack ((int) lastFreq, channelNum, lengthInSeconds);
-                final Sound decay = note.getDecay ((int) lastFreq, channelNum, lengthInSeconds);
-                final Sound sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds);
-                final Sound release = note.getRelease ((int) lastFreq, channelNum, lengthInSeconds);
-                this.soundAppender.append (builtSound, threshold * lastBegining, attack, decay, sustain, release);
+                if (lengthInSeconds < 0.6){
+                    final Sound sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds * 2);
+                    this.soundAppender.append (builtSound, threshold * lastBegining, sustain);
+                }else{
+                    final Sound attack = note.getAttack ((int) lastFreq, channelNum, lengthInSeconds);
+                    final Sound decay = note.getDecay ((int) lastFreq, channelNum, lengthInSeconds);
+                    final Sound sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds);
+                    final Sound release = note.getRelease ((int) lastFreq, channelNum, lengthInSeconds);
+                    this.soundAppender.append (builtSound, threshold * lastBegining, attack, decay, sustain, release);
+                }
                 lastBegining = i;
                 lastFreq = freqs.get (i);
             }
