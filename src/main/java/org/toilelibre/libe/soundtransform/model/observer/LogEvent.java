@@ -4,20 +4,20 @@ import java.util.Date;
 
 public class LogEvent {
 
-	private LogLevel	level;
-	private String	 msg;
+	public enum LogLevel {
+		PARANOIAC, VERBOSE, INFO, WARN, ERROR
+	}
+	private final LogLevel	level;
 
-	public LogEvent (LogLevel level1, String msg1) {
+	private final String	 msg;
+
+	public LogEvent (final LogLevel level1, final String msg1) {
 		this.level = level1;
 		this.msg = msg1;
 	}
 
 	public LogLevel getLevel () {
-		return level;
-	}
-
-	public enum LogLevel {
-		PARANOIAC, VERBOSE, INFO, WARN, ERROR
+		return this.level;
 	}
 
 	@Override

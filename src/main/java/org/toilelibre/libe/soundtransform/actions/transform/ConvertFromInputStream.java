@@ -10,11 +10,11 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public final class ConvertFromInputStream extends Action {
 
-	public Sound [] fromInputStream (InputStream ais, int channels, long frameLength, int sampleSize, double sampleRate, boolean bigEndian, boolean pcmSigned) throws IOException {
-		return this.transformSound.fromInputStream (ais, channels, frameLength, sampleSize, sampleRate, bigEndian, pcmSigned);
+	public Sound [] fromInputStream (final AudioInputStream ais) throws IOException {
+		return this.transformSound.fromInputStream (ais);
 	}
 
-	public Sound [] fromInputStream (AudioInputStream ais) throws IOException {
-		return this.transformSound.fromInputStream (ais);
+	public Sound [] fromInputStream (final InputStream ais, final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned) throws IOException {
+		return this.transformSound.fromInputStream (ais, channels, frameLength, sampleSize, sampleRate, bigEndian, pcmSigned);
 	}
 }

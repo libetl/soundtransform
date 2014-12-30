@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public final class ExportSoundToInputStream extends Action {
 
-	public AudioInputStream toStream (Sound [] channels, AudioFormat audioFormat) {
+	public AudioInputStream toStream (final Sound [] channels, final AudioFormat audioFormat) {
 		return this.transformSound.toStream (channels, audioFormat);
 	}
 }

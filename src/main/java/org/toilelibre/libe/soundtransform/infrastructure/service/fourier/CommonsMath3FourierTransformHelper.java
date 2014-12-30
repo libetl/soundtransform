@@ -11,19 +11,20 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class CommonsMath3FourierTransformHelper implements FourierTransformHelper {
 
-	public Sound transform (AbstractFrequencySoundTransformation st, Sound sound) {
-		Sound output = st.initSound (sound);
-		double freqmax = sound.getSampleRate ();
-		double threshold = st.getLowThreshold (freqmax);
-		int maxlength = st.getWindowLength (freqmax);
-		long [] data = sound.getSamples ();
-		long [] newdata = output.getSamples ();
-		double [] transformeddata = new double [maxlength];
-		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
+	@Override
+    public Sound transform (final AbstractFrequencySoundTransformation st, final Sound sound) {
+		final Sound output = st.initSound (sound);
+		final double freqmax = sound.getSampleRate ();
+		final double threshold = st.getLowThreshold (freqmax);
+		final int maxlength = st.getWindowLength (freqmax);
+		final long [] data = sound.getSamples ();
+		final long [] newdata = output.getSamples ();
+		final double [] transformeddata = new double [maxlength];
+		final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 	    long maxValue = 0;
 	    long minValue = Long.MAX_VALUE;
 		for (int i = 0; i < data.length; i += threshold) {
-			int length = Math.min (maxlength, data.length - i);
+			final int length = Math.min (maxlength, data.length - i);
 			for (int j = i; j < i + length; j++) {
 				if (j - i < threshold){
 					//maxValue and minValue are used to detect if the current transformed sample
@@ -38,14 +39,14 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
 				transformeddata [j - i] = data [j];
 			}
 			Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
-			Spectrum fs = new Spectrum (complexArray, (int) freqmax, sound.getNbBytesPerSample ());
-			Spectrum result = st.transformFrequencies (fs, i, maxlength, length, 
+			final Spectrum fs = new Spectrum (complexArray, (int) freqmax, sound.getNbBytesPerSample ());
+			final Spectrum result = st.transformFrequencies (fs, i, maxlength, length,
 					Math.abs (maxValue - minValue) > Math.pow (256, sound.getNbBytesPerSample ()) / 5);
 			if (result == null) {
 				continue;
 			}
 			complexArray = fastFourierTransformer.transform (result.getState (), TransformType.INVERSE);
-			int k = st.getOffsetFromASimpleLoop (i, freqmax);
+			final int k = st.getOffsetFromASimpleLoop (i, freqmax);
 			for (int j = 0; j < freqmax; j++) {
 				if (i + j + k < newdata.length && newdata [i + j + k] == 0) {
 					newdata [i + j + k] = (long) Math.floor (complexArray [j].getReal ());

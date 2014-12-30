@@ -12,12 +12,12 @@ public class PrintlnTransformObserver implements Observer {
 
 	}
 
-	public PrintlnTransformObserver (boolean withParanoiac) {
+	public PrintlnTransformObserver (final boolean withParanoiac) {
 		this.paranoiac = withParanoiac;
 	}
 
 	@Override
-	public void notify (LogEvent logEvent) {
+	public void notify (final LogEvent logEvent) {
 		if (logEvent.getLevel () != LogLevel.PARANOIAC || this.paranoiac == true) {
 			System.out.println (logEvent);
 		}

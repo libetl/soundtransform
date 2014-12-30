@@ -19,13 +19,13 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
 	private int	          fsLimit;
 	private int	          windowLength;
 	private int	          soundLength;
-	private SpectrumHelper spectrumHelper;
+	private final SpectrumHelper spectrumHelper;
 
 	private PeakFindWithHPSSoundTransformation (){
 		this.spectrumHelper = new org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.HPSSpectrumHelper ();
 	}
-	
-	public PeakFindWithHPSSoundTransformation (boolean note) {
+
+	public PeakFindWithHPSSoundTransformation (final boolean note) {
 		this();
 		this.note = note;
 		this.threshold = 100;
@@ -33,72 +33,19 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
 		this.soundLength = -1;
 	}
 
-	public PeakFindWithHPSSoundTransformation (double threshold) {
+	public PeakFindWithHPSSoundTransformation (final double threshold) {
 		this();
 		this.threshold = threshold;
 		this.windowLength = -1;
 	}
 
-	public PeakFindWithHPSSoundTransformation (double threshold, int windowLength) {
+	public PeakFindWithHPSSoundTransformation (final double threshold, final int windowLength) {
 		this();
 		this.threshold = threshold;
 		this.windowLength = windowLength;
 	}
 
-	@Override
-	public Sound initSound (Sound input) {
-		this.loudestfreqs = new ArrayList<Integer> ();
-		if (this.note) {
-			this.threshold = input.getSamples ().length;
-			this.fsLimit = input.getSamples ().length;
-		} else {
-			this.fsLimit = input.getSampleRate ();
-		}
-		this.soundLength = input.getSamples ().length;
-		return super.initSound (input);
-	}
-
-	@Override
-	public double getLowThreshold (double defaultValue) {
-		return this.threshold;
-	}
-
-	@Override
-	public int getWindowLength (double freqmax) {
-		if (this.windowLength != -1) {
-			return this.windowLength;
-		}
-		return (int) Math.pow (2, Math.ceil (Math.log (this.fsLimit) / Math.log (2)));
-	}
-
-	public List<Integer> getLoudestFreqs () {
-		return this.loudestfreqs;
-	}
-
-	@Override
-	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length, boolean soundDetected) {
-
-		int percent = (int) Math.floor(100.0 * (offset / this.threshold) /  (this.soundLength / this.threshold));
-		if (percent > Math.floor(100.0 * ((offset - this.threshold) / this.threshold) /  (this.soundLength / this.threshold))){
-			this.log (new LogEvent (LogLevel.VERBOSE, "Iteration " + (int)(offset / this.threshold) + " / " + (int)Math.ceil (this.soundLength / this.threshold) + 
-					", " + percent + "%"));
-		}
-		int f0 = 0;
-		
-		if (soundDetected){
-			int [] peaks = new int [10];
-			for (int i = 1; i <= 10; i++) {
-				peaks [i - 1] = this.spectrumHelper.f0 (fs, i);
-			}
-			Arrays.sort (peaks);
-			f0 = this.bestCandidate (peaks);
-		}
-		
-		this.loudestfreqs.add (f0);
-		return fs;
-	}
-
-	private int bestCandidate (int [] peaks) {
+	private int bestCandidate (final int [] peaks) {
 		int leftEdge = 0;
 		while (leftEdge < peaks.length && peaks [leftEdge] <= 30) {
 			leftEdge++;
@@ -112,6 +59,59 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
 			sum += peaks [i];
 		}
 
-		return (rightEdge == leftEdge ? sum : sum / (rightEdge - leftEdge));
+		return rightEdge == leftEdge ? sum : sum / (rightEdge - leftEdge);
+	}
+
+	public List<Integer> getLoudestFreqs () {
+		return this.loudestfreqs;
+	}
+
+	@Override
+	public double getLowThreshold (final double defaultValue) {
+		return this.threshold;
+	}
+
+	@Override
+	public int getWindowLength (final double freqmax) {
+		if (this.windowLength != -1) {
+			return this.windowLength;
+		}
+		return (int) Math.pow (2, Math.ceil (Math.log (this.fsLimit) / Math.log (2)));
+	}
+
+	@Override
+	public Sound initSound (final Sound input) {
+		this.loudestfreqs = new ArrayList<Integer> ();
+		if (this.note) {
+			this.threshold = input.getSamples ().length;
+			this.fsLimit = input.getSamples ().length;
+		} else {
+			this.fsLimit = input.getSampleRate ();
+		}
+		this.soundLength = input.getSamples ().length;
+		return super.initSound (input);
+	}
+
+	@Override
+	public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length, final boolean soundDetected) {
+
+		final int percent = (int) Math.floor(100.0 * (offset / this.threshold) /  (this.soundLength / this.threshold));
+		if (percent > Math.floor(100.0 * ((offset - this.threshold) / this.threshold) /  (this.soundLength / this.threshold))){
+			this.log (new LogEvent (LogLevel.VERBOSE, "Iteration " + (int)(offset / this.threshold) + " / " + (int)Math.ceil (this.soundLength / this.threshold) +
+					", " + percent + "%"));
+		}
+		int f0 = 0;
+
+		if (soundDetected){
+			final int [] peaks = new int [10];
+			for (int i = 1; i <= 10; i++) {
+				peaks [i - 1] = this.spectrumHelper.f0 (fs, i);
+			}
+			Arrays.sort (peaks);
+			f0 = this.bestCandidate (peaks);
+		}
+
+		this.loudestfreqs.add (f0);
+		return fs;
 	}
 }

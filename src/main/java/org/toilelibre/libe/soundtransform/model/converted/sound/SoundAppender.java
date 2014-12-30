@@ -8,8 +8,8 @@ public interface SoundAppender {
 
 	public abstract Sound changeNbBytesPerSample (Sound sound, int newNbBytesPerSample);
 
-	public abstract Sound resizeToSampleRate (Sound sound, int newfreq);
-
 	public abstract Sound downsampleWithRatio (Sound sound, float ratio);
+
+	public abstract Sound resizeToSampleRate (Sound sound, int newfreq);
 
 }

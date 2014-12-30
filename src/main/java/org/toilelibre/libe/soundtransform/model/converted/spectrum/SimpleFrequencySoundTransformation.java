@@ -13,39 +13,39 @@ public class SimpleFrequencySoundTransformation extends AbstractFrequencySoundTr
 	}
 
 	@Override
-	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length, boolean soundDetected) {
-		return this.transformFrequencies (fs, offset, powOf2NearestLength, length);
-	}
-	
-	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length){
-		return this.transformFrequencies (fs, offset, powOf2NearestLength);
-	}
-
-	public Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength){
-		return this.transformFrequencies (fs, offset);
-	}
-
-	public Spectrum transformFrequencies (Spectrum fs, int offset){
-		return this.transformFrequencies (fs);
-	}
-	
-	public Spectrum transformFrequencies (Spectrum fs){
-		return fs;
+	public double getLowThreshold (final double defaultValue) {
+		return defaultValue;
 	}
 
 	@Override
-	public Sound initSound (Sound input) {
-		long [] newdata = new long [input.getSamples ().length];
-		return new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
-	}
-
-	@Override
-	public int getOffsetFromASimpleLoop (int i, double step) {
+	public int getOffsetFromASimpleLoop (final int i, final double step) {
 		return 0;
 	}
 
 	@Override
-	public double getLowThreshold (double defaultValue) {
-		return defaultValue;
+	public Sound initSound (final Sound input) {
+		final long [] newdata = new long [input.getSamples ().length];
+		return new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
+	}
+
+	public Spectrum transformFrequencies (final Spectrum fs){
+		return fs;
+	}
+
+	public Spectrum transformFrequencies (final Spectrum fs, final int offset){
+		return this.transformFrequencies (fs);
+	}
+
+	public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength){
+		return this.transformFrequencies (fs, offset);
+	}
+
+	public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length){
+		return this.transformFrequencies (fs, offset, powOf2NearestLength);
+	}
+
+	@Override
+	public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length, final boolean soundDetected) {
+		return this.transformFrequencies (fs, offset, powOf2NearestLength, length);
 	}
 }

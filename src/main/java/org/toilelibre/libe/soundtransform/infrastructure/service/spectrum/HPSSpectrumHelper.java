@@ -6,27 +6,13 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelpe
 
 public class HPSSpectrumHelper implements SpectrumHelper {
 
-	public static int freqFromSampleRate (int freq, int sqr2length, int sampleRate) {
+	public static int freqFromSampleRate (final int freq, final int sqr2length, final int sampleRate) {
 		return (int) (freq * 2.0 * sampleRate / sqr2length);
 	}
 
-	/**
-	 * Find the f0 (fundamental frequency) using the Harmonic Product Spectrum
-	 * 
-	 * @param fs
-	 *            spectrum at a specific time
-	 * @param hpsfactor
-	 *            number of times to multiply the frequencies together
-	 * @return a fundamental frequency (in Hz)
-	 */
-	public int f0 (Spectrum fs, int hpsfactor) {
-		return HPSSpectrumHelper.freqFromSampleRate (this.getMaxIndex (HPSSpectrumHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * 2 / hpsfactor,
-		        fs.getSampleRate ());
-	}
-
-	private static Spectrum hps (Spectrum fs, int factor) {
-		int max = fs.getState ().length / factor;
-		Complex [] result = new Complex [max];
+	private static Spectrum hps (final Spectrum fs, final int factor) {
+		final int max = fs.getState ().length / factor;
+		final Complex [] result = new Complex [max];
 		for (int i = 0; i < max; i++) {
 			double val = fs.getState () [i].abs ();
 			for (int j = 1; j < factor; j++) {
@@ -39,12 +25,28 @@ public class HPSSpectrumHelper implements SpectrumHelper {
 		return new Spectrum (result, fs.getSampleRate () / factor, fs.getNbBytes ());
 	}
 
-	
-	public int getMaxIndex (Spectrum fs, int low, int high) {
+	/**
+	 * Find the f0 (fundamental frequency) using the Harmonic Product Spectrum
+	 *
+	 * @param fs
+	 *            spectrum at a specific time
+	 * @param hpsfactor
+	 *            number of times to multiply the frequencies together
+	 * @return a fundamental frequency (in Hz)
+	 */
+	@Override
+    public int f0 (final Spectrum fs, final int hpsfactor) {
+		return HPSSpectrumHelper.freqFromSampleRate (this.getMaxIndex (HPSSpectrumHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * 2 / hpsfactor,
+		        fs.getSampleRate ());
+	}
+
+
+	@Override
+    public int getMaxIndex (final Spectrum fs, final int low, final int high) {
 		double max = 0;
 		int maxIndex = 0;
-		int reallow = low == 0 ? 1 : low;
-		int realhigh = Math.min (high, fs.getState ().length);
+		final int reallow = low == 0 ? 1 : low;
+		final int realhigh = Math.min (high, fs.getState ().length);
 		for (int i = reallow; i < realhigh; i++) {
 			if (max < fs.getState () [i].abs () &&
 					fs.getState () [i].abs () > Math.pow (256, fs.getNbBytes ()) + 1) {

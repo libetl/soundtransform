@@ -10,19 +10,20 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum2Ceps
 public class NaiveSpectrum2CepstrumHelper implements Spectrum2CepstrumHelper {
 
 
-	public Spectrum spectrumToCepstrum (Spectrum fs) {
+	@Override
+    public Spectrum spectrumToCepstrum (final Spectrum fs) {
 		for (int i = 0; i < fs.getState ().length; i++) {
-			Complex c = fs.getState () [i];
-			double log = Math.log (Math.pow (c.abs (), 2));
+			final Complex c = fs.getState () [i];
+			final double log = Math.log (Math.pow (c.abs (), 2));
 			fs.getState () [i] = new Complex (log);
 		}
-		FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
+		final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 
-		Spectrum fscep = new Spectrum (fastFourierTransformer.transform (fs.getState (), TransformType.FORWARD), 
+		final Spectrum fscep = new Spectrum (fastFourierTransformer.transform (fs.getState (), TransformType.FORWARD),
 				fs.getSampleRate (), fs.getNbBytes ());
 		for (int i = 0; i < fscep.getState ().length; i++) {
-			Complex c = fscep.getState () [i];
-			double sqr = Math.pow (c.abs (), 2);
+			final Complex c = fscep.getState () [i];
+			final double sqr = Math.pow (c.abs (), 2);
 			fscep.getState () [i] = new Complex (sqr);
 		}
 		for (int i = 0; i < 50; i++) {

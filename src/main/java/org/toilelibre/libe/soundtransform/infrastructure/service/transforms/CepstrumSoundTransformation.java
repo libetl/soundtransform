@@ -13,8 +13,8 @@ public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformat
 	private int	       index;
 	private int	       length;
 	private static int	shortSoundLength	= 9000;
-	private Spectrum2CepstrumHelper spectrum2CepstrumHelper;
-	private SpectrumHelper spectrumHelper;
+	private final Spectrum2CepstrumHelper spectrum2CepstrumHelper;
+	private final SpectrumHelper spectrumHelper;
 
 	public CepstrumSoundTransformation () {
 		this.threshold = 100;
@@ -22,26 +22,17 @@ public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformat
 		this.spectrumHelper = new org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.HPSSpectrumHelper ();
 	}
 
-	public CepstrumSoundTransformation (double threshold) {
+	public CepstrumSoundTransformation (final double threshold) {
 		this ();
 		this.threshold = threshold;
 	}
 
-	@Override
-	public Sound initSound (Sound input) {
-		this.loudestfreqs = new int [(int) (input.getSamples ().length / threshold) + 1];
-		this.index = 0;
-		this.length = input.getSamples ().length;
-		if (this.length < CepstrumSoundTransformation.shortSoundLength) {
-			this.loudestfreqs = new int [1];
-		} else {
-			this.loudestfreqs = new int [(int) (input.getSamples ().length / threshold) + 1];
-		}
-		return super.initSound (input);
+	public int [] getLoudestFreqs () {
+		return this.loudestfreqs;
 	}
 
 	@Override
-	public double getLowThreshold (double defaultValue) {
+	public double getLowThreshold (final double defaultValue) {
 		if (this.length < CepstrumSoundTransformation.shortSoundLength) {
 			return this.length;
 		}
@@ -49,23 +40,32 @@ public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformat
 	}
 
 	@Override
-	public int getWindowLength (double freqmax) {
+	public int getWindowLength (final double freqmax) {
 		if (this.length < CepstrumSoundTransformation.shortSoundLength) {
 			return (int) Math.pow (2, Math.ceil (Math.log (this.length) / Math.log (2)));
 		}
 		return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
 	}
 
-	public int [] getLoudestFreqs () {
-		return loudestfreqs;
+	@Override
+	public Sound initSound (final Sound input) {
+		this.loudestfreqs = new int [(int) (input.getSamples ().length / this.threshold) + 1];
+		this.index = 0;
+		this.length = input.getSamples ().length;
+		if (this.length < CepstrumSoundTransformation.shortSoundLength) {
+			this.loudestfreqs = new int [1];
+		} else {
+			this.loudestfreqs = new int [(int) (input.getSamples ().length / this.threshold) + 1];
+		}
+		return super.initSound (input);
 	}
 
 	@Override
-	public Spectrum transformFrequencies (Spectrum fs) {
+	public Spectrum transformFrequencies (final Spectrum fs) {
 
-		Spectrum fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
+		final Spectrum fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
 
-		this.loudestfreqs [index] = this.spectrumHelper.getMaxIndex (fscep, 0, fs.getSampleRate ());
+		this.loudestfreqs [this.index] = this.spectrumHelper.getMaxIndex (fscep, 0, fs.getSampleRate ());
 		this.index++;
 
 		return fscep;

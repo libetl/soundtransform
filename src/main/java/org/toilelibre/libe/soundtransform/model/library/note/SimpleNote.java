@@ -5,14 +5,14 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTem
 
 public class SimpleNote implements Note {
 
-	private Sound []	 attack;
-	private Sound []	 decay;
-	private Sound []	 sustain;
-	private Sound []	 release;
-	private int	         frequency;
+	private final Sound []	 attack;
+	private final Sound []	 decay;
+	private final Sound []	 sustain;
+	private final Sound []	 release;
+	private final int	         frequency;
 	private final String	fileName;
 
-	public SimpleNote (String fileName, Sound [] channels, int frequency, int attack, int decay, int sustain, int release) {
+	public SimpleNote (final String fileName, final Sound [] channels, final int frequency, final int attack, final int decay, final int sustain, final int release) {
 		this.frequency = frequency;
 		this.attack = new Sound [channels.length];
 		this.decay = new Sound [channels.length];
@@ -27,20 +27,7 @@ public class SimpleNote implements Note {
 		}
 	}
 
-	private float getRatio (Sound [] subsound) {
-		float lengthOfSubsound = 1.0f * subsound [0].getSamples ().length / subsound [0].getSampleRate();
-		float lengthOfSound =  (1.0f * this.attack [0].getSamples ().length / this.attack [0].getSampleRate() + 
-				1.0f * this.decay [0].getSamples ().length / this.decay [0].getSampleRate() + 
-		        1.0f * this.sustain [0].getSamples ().length / this.sustain [0].getSampleRate() + 
-		        1.0f * this.release [0].getSamples ().length / this.release [0].getSampleRate());
-		return lengthOfSubsound * 1.0f / lengthOfSound;
-	}
-
-	private float getPercent (int frequency2) {
-		return (float) (frequency2 * 100.0 / this.frequency);
-	}
-
-	private Sound get (Sound [] adsr, int channelnum) {
+	private Sound get (final Sound [] adsr, final int channelnum) {
 		if (adsr.length == 0) {
 			return new Sound (new long [0], 0, 0, 0);
 		}
@@ -51,23 +38,13 @@ public class SimpleNote implements Note {
 	}
 
 	@Override
-	public Sound getAttack (int frequency, int channelnum, float length) {
-		return new SoundPitchAndTempoService ().callTransform (this.get (this.attack, channelnum), this.getPercent (frequency), (float) (this.getRatio (this.attack) * length));
+	public Sound getAttack (final int frequency, final int channelnum, final float length) {
+		return new SoundPitchAndTempoService ().callTransform (this.get (this.attack, channelnum), this.getPercent (frequency), this.getRatio (this.attack) * length);
 	}
 
 	@Override
-	public Sound getDecay (int frequency, int channelnum, float length) {
-		return new SoundPitchAndTempoService ().callTransform (this.get (this.decay, channelnum), this.getPercent (frequency), (float) (this.getRatio (this.decay) * length));
-	}
-
-	@Override
-	public Sound getSustain (int frequency, int channelnum, float length) {
-		return new SoundPitchAndTempoService ().callTransform (this.get (this.sustain, channelnum), this.getPercent (frequency), (float) (this.getRatio (this.sustain) * length));
-	}
-
-	@Override
-	public Sound getRelease (int frequency, int channelnum, float length) {
-		return new SoundPitchAndTempoService ().callTransform (this.get (this.release, channelnum), this.getPercent (frequency), (float) (this.getRatio (this.release) * length));
+	public Sound getDecay (final int frequency, final int channelnum, final float length) {
+		return new SoundPitchAndTempoService ().callTransform (this.get (this.decay, channelnum), this.getPercent (frequency), this.getRatio (this.decay) * length);
 	}
 
 	@Override
@@ -78,6 +55,29 @@ public class SimpleNote implements Note {
 	@Override
 	public String getName () {
 		return this.fileName;
+	}
+
+	private float getPercent (final int frequency2) {
+		return (float) (frequency2 * 100.0 / this.frequency);
+	}
+
+	private float getRatio (final Sound [] subsound) {
+		final float lengthOfSubsound = 1.0f * subsound [0].getSamples ().length / subsound [0].getSampleRate();
+		final float lengthOfSound =  1.0f * this.attack [0].getSamples ().length / this.attack [0].getSampleRate() +
+				1.0f * this.decay [0].getSamples ().length / this.decay [0].getSampleRate() +
+		        1.0f * this.sustain [0].getSamples ().length / this.sustain [0].getSampleRate() +
+		        1.0f * this.release [0].getSamples ().length / this.release [0].getSampleRate();
+		return lengthOfSubsound * 1.0f / lengthOfSound;
+	}
+
+	@Override
+	public Sound getRelease (final int frequency, final int channelnum, final float length) {
+		return new SoundPitchAndTempoService ().callTransform (this.get (this.release, channelnum), this.getPercent (frequency), this.getRatio (this.release) * length);
+	}
+
+	@Override
+	public Sound getSustain (final int frequency, final int channelnum, final float length) {
+		return new SoundPitchAndTempoService ().callTransform (this.get (this.sustain, channelnum), this.getPercent (frequency), this.getRatio (this.sustain) * length);
 	}
 
 }

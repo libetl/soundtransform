@@ -9,8 +9,8 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 public class PlaySound extends Action {
 
 
-	public void play (Sound[] channels) throws PlaySoundException {
-		PlaySoundService ps = new org.toilelibre.libe.soundtransform.infrastructure.service.appender.PlaySoundClipImpl ();
+	public void play (final Sound[] channels) throws PlaySoundException {
+		final PlaySoundService ps = new org.toilelibre.libe.soundtransform.infrastructure.service.appender.PlaySoundClipImpl ();
 		ps.play (channels);
 	}
 }

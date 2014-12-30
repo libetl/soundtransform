@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 
 public final class TransformAudioInputStreamUsingSoundTransform extends Action {
 
-	public AudioInputStream transformAudioStream (AudioInputStream ais, SoundTransformation... sts) throws IOException {
+	public AudioInputStream transformAudioStream (final AudioInputStream ais, final SoundTransformation... sts) throws IOException {
 		return this.transformSound.transformAudioStream (ais, sts);
 	}
 

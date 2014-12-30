@@ -1,7 +1,7 @@
 package org.toilelibre.libe.soundtransform.model.converted.spectrum;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
@@ -10,43 +10,43 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
 
 	private Observer []	           observers;
 
-	private FourierTransformHelper	fourierTransformHelper;
+	private final FourierTransformHelper	fourierTransformHelper;
 
 	public AbstractFrequencySoundTransformation () {
 		this.fourierTransformHelper = new org.toilelibre.libe.soundtransform.infrastructure.service.fourier.CommonsMath3FourierTransformHelper ();
 	}
 
-	public abstract Sound initSound (Sound input);
-
-	public abstract Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length, boolean soundDetected);
+	public abstract double getLowThreshold (double defaultValue);
 
 	public abstract int getOffsetFromASimpleLoop (int i, double step);
 
-	public abstract double getLowThreshold (double defaultValue);
-
-	public int getWindowLength (double freqmax) {
+	public int getWindowLength (final double freqmax) {
 		return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
 	}
 
-	@Override
-	public void setObservers (Observer [] observers1) {
-		this.observers = observers1;
-	}
+	public abstract Sound initSound (Sound input);
 
 	@Override
-	public void log (LogEvent logEvent) {
+	public void log (final LogEvent logEvent) {
 		if (this.observers == null) {
 			return;
 		}
-		for (Observer transformObserver : this.observers) {
+		for (final Observer transformObserver : this.observers) {
 			transformObserver.notify (logEvent);
 		}
 	}
 
 	@Override
-	public Sound transform (Sound sound) {
-		Sound output = this.fourierTransformHelper.transform (this, sound);
+	public void setObservers (final Observer [] observers1) {
+		this.observers = observers1;
+	}
+
+	@Override
+	public Sound transform (final Sound sound) {
+		final Sound output = this.fourierTransformHelper.transform (this, sound);
 		return output;
 	}
+
+	public abstract Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length, boolean soundDetected);
 
 }

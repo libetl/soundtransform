@@ -1,34 +1,39 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class ToStringSoundTransformation implements SoundTransformation {
 
-	private int	         length;
-	private int	         height;
+	private final int	         length;
+	private final int	         height;
 	private StringBuffer	sb	= new StringBuffer ();
 
-	public ToStringSoundTransformation (int length, int height) {
+	public ToStringSoundTransformation (final int length, final int height) {
 		this.length = length;
 		this.height = height;
 	}
 
+	public String toString (final Sound sound) {
+		this.transform (sound);
+		return this.sb.toString ();
+	}
+
 	@Override
-	public Sound transform (Sound input) {
-		double compression = input.getSamples ().length / this.length;
+	public Sound transform (final Sound input) {
+		final double compression = input.getSamples ().length / this.length;
 		this.sb = new StringBuffer ();
 
-		float lastSample = input.getSamples ().length;
-		long maxMagn = (long) Math.pow (256, input.getNbBytesPerSample ()) / 2;
-		int step = (int) lastSample / this.length;
-		int [] valuesOnPlot = new int [this.length];
+		final float lastSample = input.getSamples ().length;
+		final long maxMagn = (long) Math.pow (256, input.getNbBytesPerSample ()) / 2;
+		final int step = (int) lastSample / this.length;
+		final int [] valuesOnPlot = new int [this.length];
 		int maxPlotValue = 0;
 		double minValuePlotted = -1;
 		for (int i = 0; i < valuesOnPlot.length; i++) {
 			double maxValue = 0;
 			for (int j = 0; j < step; j++) {
-				int x = i * step + j;
+				final int x = i * step + j;
 				if (x < input.getSamples ().length && maxValue < input.getSamples () [x]) {
 					maxValue = input.getSamples () [x];
 				}
@@ -36,43 +41,38 @@ public class ToStringSoundTransformation implements SoundTransformation {
 			if (minValuePlotted == -1 || minValuePlotted > maxValue) {
 				minValuePlotted = maxValue;
 			}
-			valuesOnPlot [i] = (int) (maxValue * height / (maxMagn));
+			valuesOnPlot [i] = (int) (maxValue * this.height / maxMagn);
 			if (maxPlotValue < valuesOnPlot [i] && i > 0) {
 				maxPlotValue = valuesOnPlot [i];
 			}
 		}
 		for (int i = 0; i < valuesOnPlot.length; i++) {
-			valuesOnPlot [i] -= minValuePlotted * height / maxMagn;
+			valuesOnPlot [i] -= minValuePlotted * this.height / maxMagn;
 		}
-		for (int j = height; j >= 0; j--) {
-			if (j == height) {
-				sb.append ("^ " + maxMagn + " (magnitude)\n");
+		for (int j = this.height; j >= 0; j--) {
+			if (j == this.height) {
+				this.sb.append ("^ " + maxMagn + " (magnitude)\n");
 				continue;
 			} else {
-				sb.append ("|");
+				this.sb.append ("|");
 			}
 			for (int i = 0; i < this.length; i++) {
 				if (valuesOnPlot [i] == j) {
-					sb.append ("_");
+					this.sb.append ("_");
 				} else if (valuesOnPlot [i] > j) {
-					sb.append ("#");
+					this.sb.append ("#");
 				} else {
-					sb.append (" ");
+					this.sb.append (" ");
 				}
 			}
-			sb.append ("\n");
+			this.sb.append ("\n");
 		}
-		sb.append ("L");
+		this.sb.append ("L");
 		for (int i = 0; i < this.length; i++) {
-			sb.append ("-");
+			this.sb.append ("-");
 		}
-		sb.append ("> " + (int) (this.length * compression / input.getSampleRate ()) + "s (time)\n");
+		this.sb.append ("> " + (int) (this.length * compression / input.getSampleRate ()) + "s (time)\n");
 
 		return input;
-	}
-
-	public String toString (Sound sound) {
-		this.transform (sound);
-		return this.sb.toString ();
 	}
 }

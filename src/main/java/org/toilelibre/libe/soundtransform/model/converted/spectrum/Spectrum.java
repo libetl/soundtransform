@@ -4,34 +4,35 @@ import org.apache.commons.math3.complex.Complex;
 
 public class Spectrum {
 
-	private Complex []	state;
-	private int	       sampleRate;
+	private final Complex []	state;
+	private final int	       sampleRate;
 	private int        nbBytes;
 
-	public Spectrum (Complex [] state, int sampleRate, int nbBytes) {
+	public Spectrum (final Complex [] state, final int sampleRate, final int nbBytes) {
 		super ();
 		this.state = state;
 		this.sampleRate = sampleRate;
 		this.nbBytes = nbBytes;
 	}
 
-	public Complex [] getState () {
-		return state;
+	public int getNbBytes () {
+		return this.nbBytes;
 	}
 
 	public int getSampleRate () {
-		return sampleRate;
-	}
-	
-	public int getNbBytes () {
-		return nbBytes;
+		return this.sampleRate;
 	}
 
-	public void setNbBytes (int nbBytes) {
+	public Complex [] getState () {
+		return this.state;
+	}
+
+	public void setNbBytes (final int nbBytes) {
 		this.nbBytes = nbBytes;
 	}
 
-	public String toString () {
+	@Override
+    public String toString () {
 		return new Spectrum2StringService ().convert (this);
 	}
 }
