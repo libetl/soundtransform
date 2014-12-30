@@ -12,6 +12,12 @@ import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
 
 public class AddNoteService {
 
+    //The constructor is private, this class is used
+    //when the sound library is loaded
+    private AddNoteService (){
+        
+    }
+
     public static void addNote (final Range range, final String fileName) {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         try {
