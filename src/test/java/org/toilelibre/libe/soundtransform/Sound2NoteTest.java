@@ -23,7 +23,7 @@ public class Sound2NoteTest {
 
 	@Test
 	public void run () throws UnsupportedAudioFileException, IOException {
-		@SuppressWarnings ("serial")
+		
         final
 		Map<String, Integer> frequenciesPerSound = new HashMap<String, Integer> () {
 			/**
