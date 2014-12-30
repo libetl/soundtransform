@@ -18,40 +18,40 @@ public class SoundGenerateTest {
 
 	@Test
 	public void generateA440HzSound () {
-		int length = 4000;
-		int soundfreq = 440;
-		int sampleInBytes = 2;
+		final int length = 4000;
+		final int soundfreq = 440;
+		final int sampleInBytes = 2;
 
-		int samplerate = 44100;
-		long [] signal = new long [length];
+		final int samplerate = 44100;
+		final long [] signal = new long [length];
 		for (int j = 0; j < length; j++) {
 			signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
 		}
-		Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
+		final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
 
-		AudioInputStream ais = new TransformSoundService ().toStream (new Sound [] { s }, new AudioFormat (samplerate, sampleInBytes * 8, 1, true, false));
-		File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+		final AudioInputStream ais = new TransformSoundService ().toStream (new Sound [] { s }, new AudioFormat (samplerate, sampleInBytes * 8, 1, true, false));
+		final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
 		try {
 			AudioSystem.write (ais, AudioFileFormat.Type.WAVE, fDest);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 		}
 	}
-	
+
 
 	@Test
 	public void seeHps () {
-		int length = 10000;
-		int soundfreq = 440;
-		int sampleInBytes = 2;
+		final int length = 10000;
+		final int soundfreq = 440;
+		final int sampleInBytes = 2;
 
-		int samplerate = 44100;
-		long [] signal = new long [length];
+		final int samplerate = 44100;
+		final long [] signal = new long [length];
 		for (int j = 0; j < length; j++) {
 			signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
 		}
-		Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
-		SoundTransformation st = new SimpleFrequencySoundTransformation ();
+		final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
+		final SoundTransformation st = new SimpleFrequencySoundTransformation ();
 		st.transform (s);
 
 	}

@@ -21,9 +21,9 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
 		final long [] newdata = output.getSamples ();
 		final double [] transformeddata = new double [maxlength];
 		final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
-	    long maxValue = 0;
-	    long minValue = Long.MAX_VALUE;
 		for (int i = 0; i < data.length; i += threshold) {
+		    long maxValue = 0;
+		    long minValue = Long.MAX_VALUE;
 			final int length = Math.min (maxlength, data.length - i);
 			for (int j = i; j < i + length; j++) {
 				if (j - i < threshold){
@@ -39,9 +39,10 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
 				transformeddata [j - i] = data [j];
 			}
 			Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
+
 			final Spectrum fs = new Spectrum (complexArray, (int) freqmax, sound.getNbBytesPerSample ());
 			final Spectrum result = st.transformFrequencies (fs, i, maxlength, length,
-					Math.abs (maxValue - minValue) > Math.pow (256, sound.getNbBytesPerSample ()) / 5);
+					Math.abs (maxValue - minValue) > Math.pow (256, sound.getNbBytesPerSample ()) / 8);
 			if (result == null) {
 				continue;
 			}

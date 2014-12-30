@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.PrintlnTransformObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.EqualizerSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.LinearRegressionSoundTransformation;
@@ -20,34 +21,32 @@ import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.library.Library;
-import org.toilelibre.libe.soundtransform.infrastructure.service.observer.PrintlnTransformObserver;
 
 public class WavTest {
 
-	private ClassLoader	classLoader	= Thread.currentThread ().getContextClassLoader ();
-	private File	    input	    = new File (classLoader.getResource ("before.wav").getFile ());
+	private final ClassLoader	classLoader	= Thread.currentThread ().getContextClassLoader ();
+	private final File	    input	    = new File (this.classLoader.getResource ("before.wav").getFile ());
 	// private File input = new File ("D:/Mes Soirées 80's-Spécial Discothèques/CD 1/08 Captain Sensible-Wot.mp3");
-	private File	    output	    = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+	private final File	    output	    = new File (new File (this.classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
 	@Test
 	public void test8bits () {
 		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new EightBitsSoundTransformation (25));
-		} catch (UnsupportedAudioFileException e) {
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new EightBitsSoundTransformation (25));
+		} catch (final UnsupportedAudioFileException e) {
 			e.printStackTrace ();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace ();
 		}
 	}
 
 	@Test
-	public void testRemoveLowFreqs () {
+	public void testFreqNoOp () {
 		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new EqualizerSoundTransformation (new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000,
-			        16000, 18000, 22050 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 }));
-		} catch (UnsupportedAudioFileException e) {
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new SimpleFrequencySoundTransformation ());
+		} catch (final UnsupportedAudioFileException e) {
 			e.printStackTrace ();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace ();
 		}
 	}
@@ -56,54 +55,10 @@ public class WavTest {
 	public void testLinearReg () {
 		// will remove the high freqs and smooth the signal
 		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new LinearRegressionSoundTransformation (25));
-		} catch (UnsupportedAudioFileException e) {
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new LinearRegressionSoundTransformation (25));
+		} catch (final UnsupportedAudioFileException e) {
 			e.printStackTrace ();
-		} catch (IOException e) {
-			e.printStackTrace ();
-		}
-	}
-
-	@Test
-	public void testReverse () {
-		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new ReverseSoundTransformation ());
-		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace ();
-		} catch (IOException e) {
-			e.printStackTrace ();
-		}
-	}
-
-	@Test
-	public void testPitch () {
-		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new PitchSoundTransformation (100));
-		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace ();
-		} catch (IOException e) {
-			e.printStackTrace ();
-		}
-	}
-
-	@Test
-	public void testNormalize () {
-		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new NormalizeSoundTransformation ());
-		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace ();
-		} catch (IOException e) {
-			e.printStackTrace ();
-		}
-	}
-
-	@Test
-	public void testFreqNoOp () {
-		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new SimpleFrequencySoundTransformation ());
-		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace ();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace ();
 		}
 	}
@@ -111,34 +66,32 @@ public class WavTest {
 	@Test
 	public void testNoOp () {
 		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new NoOpSoundTransformation ());
-		} catch (UnsupportedAudioFileException e) {
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new NoOpSoundTransformation ());
+		} catch (final UnsupportedAudioFileException e) {
 			e.printStackTrace ();
-		} catch (IOException e) {
-			e.printStackTrace ();
-		}
-	}
-
-	//@Test
-	public void testSlowdown () {
-		// WARN : quite long
-		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new SlowdownSoundTransformation (200, 1.2f));
-		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace ();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace ();
 		}
 	}
 
-	//@Test
-	public void testSpeedUp () {
-		// WARN : quite long
+	@Test
+	public void testNormalize () {
 		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new SpeedUpSoundTransformation (200, 1.5f));
-		} catch (UnsupportedAudioFileException e) {
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new NormalizeSoundTransformation ());
+		} catch (final UnsupportedAudioFileException e) {
 			e.printStackTrace ();
-		} catch (IOException e) {
+		} catch (final IOException e) {
+			e.printStackTrace ();
+		}
+	}
+
+	@Test
+	public void testPitch () {
+		try {
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new PitchSoundTransformation (100));
+		} catch (final UnsupportedAudioFileException e) {
+			e.printStackTrace ();
+		} catch (final IOException e) {
 			e.printStackTrace ();
 		}
 	}
@@ -147,10 +100,33 @@ public class WavTest {
 	public void testPurify () {
 		// WARN : quite long
 		try {
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new PurifySoundTransformation ());
-		} catch (UnsupportedAudioFileException e) {
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new PurifySoundTransformation ());
+		} catch (final UnsupportedAudioFileException e) {
 			e.printStackTrace ();
-		} catch (IOException e) {
+		} catch (final IOException e) {
+			e.printStackTrace ();
+		}
+	}
+
+	@Test
+	public void testRemoveLowFreqs () {
+		try {
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new EqualizerSoundTransformation (new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000,
+			        16000, 18000, 22050 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 }));
+		} catch (final UnsupportedAudioFileException e) {
+			e.printStackTrace ();
+		} catch (final IOException e) {
+			e.printStackTrace ();
+		}
+	}
+
+	@Test
+	public void testReverse () {
+		try {
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new ReverseSoundTransformation ());
+		} catch (final UnsupportedAudioFileException e) {
+			e.printStackTrace ();
+		} catch (final IOException e) {
 			e.printStackTrace ();
 		}
 	}
@@ -160,12 +136,36 @@ public class WavTest {
 		// WARN : quite long
 		try {
 			System.out.println ("Loading packs");
-			Library packsList = Library.getInstance ();
+			final Library packsList = Library.getInstance ();
 
-			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (input, output, new ShapeSoundTransformation (packsList.defaultPack, "simple_piano"));
-		} catch (UnsupportedAudioFileException e) {
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new ShapeSoundTransformation (packsList.defaultPack, "simple_piano"));
+		} catch (final UnsupportedAudioFileException e) {
 			e.printStackTrace ();
-		} catch (IOException e) {
+		} catch (final IOException e) {
+			e.printStackTrace ();
+		}
+	}
+
+	//@Test
+	public void testSlowdown () {
+		// WARN : quite long
+		try {
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new SlowdownSoundTransformation (200, 1.2f));
+		} catch (final UnsupportedAudioFileException e) {
+			e.printStackTrace ();
+		} catch (final IOException e) {
+			e.printStackTrace ();
+		}
+	}
+
+	//@Test
+	public void testSpeedUp () {
+		// WARN : quite long
+		try {
+			new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new SpeedUpSoundTransformation (200, 1.5f));
+		} catch (final UnsupportedAudioFileException e) {
+			e.printStackTrace ();
+		} catch (final IOException e) {
 			e.printStackTrace ();
 		}
 	}
