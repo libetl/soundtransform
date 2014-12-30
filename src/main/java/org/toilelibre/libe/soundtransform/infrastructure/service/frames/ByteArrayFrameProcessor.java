@@ -24,13 +24,10 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
             final int currentChannel = !bigEndian ? j / (frame.length / sound.length) : sound.length - 1 - j / (frame.length / sound.length);
             final int numByte = j % (frame.length / sound.length);
             if (fromIndex <= toIndex) {
-                // double oldValue = value [currentChannel];
                 value [currentChannel] += (frame [cursor] + (pcmSigned ? -Byte.MIN_VALUE : 0)) * Math.pow (256, numByte);
-                // this.log(new LogEvent (LogLevel.PARANOIAC, "Building Sample #" + position + ", channel " + currentChannel + ", numByte : " + numByte + ", value : " + String.format("%.0f", oldValue) + " + ((" + (frame [cursor] + " +  " + (pcmSigned ? -Byte.MIN_VALUE : 0)) + ") * 256^" + numByte + ") = " + String.format("%.0f", value [currentChannel])));
             }
 
         }
-        // this.log(new LogEvent (LogLevel.PARANOIAC, "Sample #" + position + " values : " + Arrays.toString (value)));
 
         for (int i = 0; i < sound.length; i++) {
             sound [i].getSamples () [position] = value [i] - neutral;
@@ -49,7 +46,6 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
     public byte [] framesToByteArray (final Sound [] channels, final int sampleSize, final boolean bigEndian, final boolean pcmSigned) {
         final int length = channels.length * sampleSize * channels [0].getSamples ().length;
         final byte [] data = new byte [length];
-        // this.log(new LogEvent (LogLevel.PARANOIAC, "SampleSize : " + sampleSize + ", channelsLength : " + channels.length));
 
         double value = 0;
         double dividedValue = 0;
@@ -61,12 +57,10 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
             final int currentFrame = i / (sampleSize * channels.length);
             if (numByte == 0 && channels [currentChannel].getSamples ().length > currentFrame) {
                 value = channels [currentChannel].getSamples () [currentFrame] + neutral;
-                // this.log(new LogEvent (LogLevel.PARANOIAC, "Sample #" + currentFrame + ", channel : " + currentChannel + ", value : " + String.format("%.0f", value)));
-            }
+                }
             dividedValue = value / 256;
             byteValueSigned = (byte) (value + (pcmSigned ? Byte.MIN_VALUE : 0));
-            // this.log(new LogEvent (LogLevel.PARANOIAC, "Sample #" + currentFrame + ", channel : " + currentChannel + ", numByte : " + numByte + ", byteValue : " + byteValueSigned));
-
+            
             data [i + (!bigEndian ? 0 : sampleSize - 2 * numByte - 1)] = byteValueSigned;
             value = dividedValue;
         }

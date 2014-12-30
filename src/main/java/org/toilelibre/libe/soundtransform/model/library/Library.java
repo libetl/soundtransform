@@ -40,14 +40,6 @@ public class Library {
                                             AddNoteService.addNotes (this, "g-piano1.wav", "g-piano2.wav", "g-piano3.wav", "g-piano4.wav", "g-piano5.wav", "g-piano6.wav");
                                         }
                                     });
-                                    /*
-                                     * this.put ("piano_low", new Range () { {
-                                     * PacksList.this.addNote (this,
-                                     * "piano_low.wav"); } }); this.put
-                                     * ("piano_soft", new Range () { {
-                                     * PacksList.this.addNote (this,
-                                     * "piano_a.wav"); } });
-                                     */
                                     this.put ("chord_piano", new Range () {
                                         {
                                             AddNoteService.addNote (this, "g-piano3.wav", 329);
