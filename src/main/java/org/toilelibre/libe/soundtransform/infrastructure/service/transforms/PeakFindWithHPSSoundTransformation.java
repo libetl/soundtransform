@@ -93,7 +93,7 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
     }
 
     @Override
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length, final boolean soundDetected) {
+    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
         final int percent = (int) Math.floor(100.0 * (offset / this.threshold) /  (this.soundLength / this.threshold));
         if (percent > Math.floor(100.0 * ((offset - this.threshold) / this.threshold) /  (this.soundLength / this.threshold))){
@@ -102,7 +102,7 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
         }
         int f0 = 0;
 
-        if (soundDetected){
+        if (soundLevelInDB > 30){
             final int [] peaks = new int [10];
             for (int i = 1; i <= 10; i++) {
                 peaks [i - 1] = this.spectrumHelper.f0 (fs, i);

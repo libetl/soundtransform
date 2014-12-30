@@ -45,7 +45,7 @@ public class SimpleFrequencySoundTransformation extends AbstractFrequencySoundTr
     }
 
     @Override
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length, final boolean soundDetected) {
+    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevel) {
         return this.transformFrequencies (fs, offset, powOf2NearestLength, length);
     }
 }

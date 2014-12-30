@@ -47,6 +47,6 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
         return output;
     }
 
-    public abstract Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length, boolean soundDetected);
+    public abstract Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length, float soundLevelInDB);
 
 }
