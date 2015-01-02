@@ -17,7 +17,7 @@ public class TestPlaySound {
     private final File        input        = new File (this.classLoader.getResource ("before.wav").getFile ());
 
     @Test
-    public void playBeforeWav () throws UnsupportedAudioFileException, IOException, PlaySoundException{
+    public void playBeforeWav () throws PlaySoundException, UnsupportedAudioFileException, IOException{
         final PlaySoundService ps = new PlaySoundClipImpl ();
         final ConvertAudioFileService convertAudioFileService = new ConvertAudioFileService ();
         final AudioInputStream ais = convertAudioFileService.callConverter (this.input);
@@ -27,6 +27,11 @@ public class TestPlaySound {
             if (!"No line matching interface Clip is supported.".equals(iae.getMessage())){
                 throw iae;
             }
+        }catch (final PlaySoundException e){
+        	//javax.sound.sampled.LineUnavailableException for some JDK versions
+        	if (!javax.sound.sampled.LineUnavailableException.class.equals(e.getCause().getClass())){
+        		throw e;
+        	}
         }
     }
 }
