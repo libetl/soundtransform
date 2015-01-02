@@ -112,7 +112,7 @@ public class WavTest {
     public void testRemoveLowFreqs () {
         try {
             new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new EqualizerSoundTransformation (new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000,
-                    16000, 18000, 22050 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 }));
+                    16000, 18000, 24000 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 }));
         } catch (final UnsupportedAudioFileException e) {
             e.printStackTrace ();
         } catch (final IOException e) {
