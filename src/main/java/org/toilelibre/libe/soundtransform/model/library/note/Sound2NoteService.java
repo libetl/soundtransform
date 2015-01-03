@@ -4,6 +4,10 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class Sound2NoteService {
 
+	private Sound2NoteService (){
+		
+	}
+	
     public static Note convert (final String fileName, final Sound [] channels) {
         return Sound2NoteService.convert (fileName, channels, Sound2NoteService.frequencyHelper.findFrequency (channels [0]));
     }

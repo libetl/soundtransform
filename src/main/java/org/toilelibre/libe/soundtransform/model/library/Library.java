@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.library.pack.Range;
 
 public class Library {
-
+	
     public static void addPack (final String name, final Pack p) {
         Library.getInstance ().packs.put (name, p);
     }

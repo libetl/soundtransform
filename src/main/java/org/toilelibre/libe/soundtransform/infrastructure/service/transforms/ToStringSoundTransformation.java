@@ -7,7 +7,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
 
     private final int             length;
     private final int             height;
-    private StringBuffer    sb    = new StringBuffer ();
+    private StringBuilder         sb    = new StringBuilder ();
 
     public ToStringSoundTransformation (final int length, final int height) {
         this.length = length;
@@ -22,7 +22,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
     @Override
     public Sound transform (final Sound input) {
         final double compression = input.getSamples ().length / this.length;
-        this.sb = new StringBuffer ();
+        this.sb = new StringBuilder ();
 
         final float lastSample = input.getSamples ().length;
         final long maxMagn = (long) Math.pow (256, input.getNbBytesPerSample ()) / 2;

@@ -19,7 +19,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper {
      */
     @Override
     public String fsToString (final Spectrum fs, final int low, final int high, final int compression, final int height) {
-        final StringBuffer sb = new StringBuffer ();
+        final StringBuilder sb = new StringBuilder ();
         final float lastFrequency = fs.getState ().length < high ? fs.getState ().length : (float) high;
         final int length = (int) lastFrequency / compression;
         final int maxIndex = new HPSSpectrumHelper ().getMaxIndex (fs, low, high);
@@ -70,14 +70,15 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper {
             sb.append ("-");
         }
         sb.append ("> " + HPSSpectrumHelper.freqFromSampleRate (length * compression, (int) lastFrequency * 2, (int) lastFrequency * 2) + "Hz (freq)\n");
-        for (int i = 0; i < length; i++) {
+        int i = 0;
+        while (i < length) {
             sb.append (" ");
             if (i == maxIndex / compression) {
                 final int foundFreq = HPSSpectrumHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * 2, (int) lastFrequency * 2);
                 sb.append ("^" + foundFreq + "Hz");
                 i += (foundFreq == 0 ? 1 : Math.log10 (foundFreq)) + 2;
             }
-
+            i++;
         }
         return sb.toString ();
     }
