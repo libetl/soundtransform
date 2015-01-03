@@ -1,6 +1,5 @@
 package org.toilelibre.libe.soundtransform.model.converted.spectrum;
 
-
 public interface SpectrumToStringHelper {
 
     public abstract String fsToString (Spectrum fs);

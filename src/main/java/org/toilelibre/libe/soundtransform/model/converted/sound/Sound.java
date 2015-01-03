@@ -4,10 +4,10 @@ import java.util.Arrays;
 
 public class Sound {
 
-    private final long []    samples;
-    private final int        nbBytesPerSample;
-    private final int        sampleRate;
-    private final int        channelNum;
+    private final long [] samples;
+    private final int     nbBytesPerSample;
+    private final int     sampleRate;
+    private final int     channelNum;
 
     public Sound (final long [] samples, final int nbBytesPerSample, final int sampleRate, final int channelNum) {
         super ();

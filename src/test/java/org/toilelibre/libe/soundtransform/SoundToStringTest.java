@@ -22,7 +22,7 @@ public class SoundToStringTest {
         try {
             final AudioInputStream ais = new ConvertAudioFileService ().callConverter (input);
             final Sound s = new TransformSoundService ().fromInputStream (ais) [0];
-            new SimpleFrequencySoundTransformation (){
+            new SimpleFrequencySoundTransformation () {
 
                 @Override
                 public Spectrum transformFrequencies (final Spectrum fs) {
@@ -37,7 +37,6 @@ public class SoundToStringTest {
             e.printStackTrace ();
         }
     }
-
 
     @Test
     public void testToString () {

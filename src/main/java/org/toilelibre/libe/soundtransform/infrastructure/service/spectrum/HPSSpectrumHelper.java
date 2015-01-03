@@ -13,9 +13,9 @@ public class HPSSpectrumHelper implements SpectrumHelper {
     private static Spectrum hps (final Spectrum fs, final int factor) {
         final int max = fs.getState ().length / factor;
         final Complex [] result = new Complex [max];
-        for (int i = 0; i < max; i++) {
+        for (int i = 0 ; i < max ; i++) {
             double val = fs.getState () [i].abs ();
-            for (int j = 1; j < factor; j++) {
+            for (int j = 1 ; j < factor ; j++) {
                 if (i * factor < fs.getSampleRate () / 2 && i * factor < fs.getState ().length) {
                     val *= fs.getState () [i * factor].abs ();
                 }
@@ -36,10 +36,9 @@ public class HPSSpectrumHelper implements SpectrumHelper {
      */
     @Override
     public int f0 (final Spectrum fs, final int hpsfactor) {
-        return HPSSpectrumHelper.freqFromSampleRate (this.getMaxIndex (HPSSpectrumHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * 2 / hpsfactor,
-                fs.getSampleRate ());
+        return HPSSpectrumHelper.freqFromSampleRate (this.getMaxIndex (HPSSpectrumHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor),
+                fs.getState ().length * 2 / hpsfactor, fs.getSampleRate ());
     }
-
 
     @Override
     public int getMaxIndex (final Spectrum fs, final int low, final int high) {
@@ -47,9 +46,8 @@ public class HPSSpectrumHelper implements SpectrumHelper {
         int maxIndex = 0;
         final int reallow = low == 0 ? 1 : low;
         final int realhigh = Math.min (high, fs.getState ().length);
-        for (int i = reallow; i < realhigh; i++) {
-            if (max < fs.getState () [i].abs () &&
-                    fs.getState () [i].abs () > Math.pow (256, fs.getNbBytes ()) + 1) {
+        for (int i = reallow ; i < realhigh ; i++) {
+            if (max < fs.getState () [i].abs () && fs.getState () [i].abs () > Math.pow (256, fs.getNbBytes ()) + 1) {
                 max = fs.getState () [i].abs ();
                 maxIndex = i;
             }

@@ -23,9 +23,8 @@ public class Sound2NoteTest {
 
     @Test
     public void run () throws UnsupportedAudioFileException, IOException {
-        
-        final
-        Map<String, Integer> frequenciesPerSound = new HashMap<String, Integer> () {
+
+        final Map<String, Integer> frequenciesPerSound = new HashMap<String, Integer> () {
             /**
              *
              */
@@ -71,7 +70,7 @@ public class Sound2NoteTest {
         final Sound f51 = pitcher.transform (f4 [0]);
         final Sound f52 = pitcher.transform (f4 [1]);
 
-        final Note n = Sound2NoteService.convert ("Piano4-E.wav", new Sound [] {f51, f52});
+        final Note n = Sound2NoteService.convert ("Piano4-E.wav", new Sound [] { f51, f52 });
         System.out.println ("e' 4 : " + n.getFrequency () + "Hz, should be around 664Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 664 - 10 && n.getFrequency () < 664 + 10);
     }
@@ -110,7 +109,7 @@ public class Sound2NoteTest {
 
         final int samplerate = 44100;
         final long [] signal = new long [length];
-        for (int j = 0; j < length; j++) {
+        for (int j = 0 ; j < length ; j++) {
             signal [j] = (long) (Math.sin (j * 440 * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, 2, samplerate, 1);
@@ -127,10 +126,10 @@ public class Sound2NoteTest {
         final int [] notes = new int [] { 261, 293, 329, 349, 392, 440, 493 };
         final String [] notesTitle = new String [] { "C4", "D4", "E4", "F4", "G4", "A4", "B4" };
 
-        for (int i = 0; i < notes.length; i++) {
+        for (int i = 0 ; i < notes.length ; i++) {
             final int samplerate = 11025;
             final long [] signal = new long [length];
-            for (int j = 0; j < length; j++) {
+            for (int j = 0 ; j < length ; j++) {
                 signal [j] = (long) (Math.sin (j * notes [i] * 2 * Math.PI / samplerate) * 32768.0);
             }
             final Sound s = new Sound (signal, 2, samplerate, 1);

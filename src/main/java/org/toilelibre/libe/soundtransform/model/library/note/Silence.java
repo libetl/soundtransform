@@ -5,8 +5,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 public class Silence implements Note {
 
     private static final int SAMPLE_RATE = 48000;
+
     private Sound generateSilence (final int frequency, final float lengthInSeconds) {
-        final int nbSamples = (int)(lengthInSeconds * lengthInSeconds);
+        final int nbSamples = (int) (lengthInSeconds * lengthInSeconds);
         return new Sound (new long [nbSamples], 2, Silence.SAMPLE_RATE, 1);
     }
 

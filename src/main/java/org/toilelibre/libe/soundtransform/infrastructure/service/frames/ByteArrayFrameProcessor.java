@@ -14,10 +14,11 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
      * boolean, long)
      */
     @Override
-    public void byteArrayToFrame (final byte [] frame, final Sound [] sound, final int position, final boolean bigEndian, final boolean pcmSigned, final long neutral) {
+    public void byteArrayToFrame (final byte [] frame, final Sound [] sound, final int position, final boolean bigEndian, final boolean pcmSigned,
+            final long neutral) {
         final long [] value = new long [sound.length];
         final int destination = bigEndian ? 0 : frame.length - 1;
-        for (int j = 0; j < frame.length; j++) {
+        for (int j = 0 ; j < frame.length ; j++) {
             final int cursor = bigEndian ? frame.length - j - 1 : j;
             final int fromIndex = cursor < destination ? cursor : destination;
             final int toIndex = cursor < destination ? destination : cursor;
@@ -29,7 +30,7 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
 
         }
 
-        for (int i = 0; i < sound.length; i++) {
+        for (int i = 0 ; i < sound.length ; i++) {
             sound [i].getSamples () [position] = value [i] - neutral;
         }
     }
@@ -51,16 +52,16 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
         double dividedValue = 0;
         byte byteValueSigned = 0;
         final long neutral = pcmSigned ? this.getNeutral (sampleSize) : 0;
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0 ; i < data.length ; i++) {
             final int numByte = i % sampleSize;
             final int currentChannel = i / sampleSize % channels.length;
             final int currentFrame = i / (sampleSize * channels.length);
             if (numByte == 0 && channels [currentChannel].getSamples ().length > currentFrame) {
                 value = channels [currentChannel].getSamples () [currentFrame] + neutral;
-                }
+            }
             dividedValue = value / 256;
             byteValueSigned = (byte) (value + (pcmSigned ? Byte.MIN_VALUE : 0));
-            
+
             data [i + (!bigEndian ? 0 : sampleSize - 2 * numByte - 1)] = byteValueSigned;
             value = dividedValue;
         }
@@ -76,7 +77,7 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
     @Override
     public long getNeutral (final int sampleSize) {
         long neutral = 0;
-        for (int i = 1; i <= sampleSize; i++) {
+        for (int i = 1 ; i <= sampleSize ; i++) {
             neutral += Math.pow (Byte.MAX_VALUE - Byte.MIN_VALUE, i) / 2;
         }
         return neutral;

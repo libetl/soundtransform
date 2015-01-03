@@ -4,9 +4,9 @@ import org.apache.commons.math3.complex.Complex;
 
 public class Spectrum {
 
-    private final Complex []    state;
-    private final int           sampleRate;
-    private int        nbBytes;
+    private final Complex [] state;
+    private final int        sampleRate;
+    private int              nbBytes;
 
     public Spectrum (final Complex [] state, final int sampleRate, final int nbBytes) {
         super ();

@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.model.converted.sound;
 
 public class SoundPitchAndTempoService {
 
-    private final SoundPitchAndTempoHelper    helper;
+    private final SoundPitchAndTempoHelper helper;
 
     public SoundPitchAndTempoService () {
         this.helper = new org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundPitchAndTempoHelper ();

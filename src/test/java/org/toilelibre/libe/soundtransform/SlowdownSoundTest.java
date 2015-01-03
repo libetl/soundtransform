@@ -15,7 +15,7 @@ public class SlowdownSoundTest {
     @Test
     public void testSlowdown () {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-        final File input  = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
+        final File input = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
         try {

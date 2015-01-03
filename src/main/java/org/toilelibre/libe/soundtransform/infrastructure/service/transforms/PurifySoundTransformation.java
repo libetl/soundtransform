@@ -24,15 +24,15 @@ public class PurifySoundTransformation extends SimpleFrequencySoundTransformatio
         final Complex [] newAmpl = new Complex [powOf2NearestLength];
         int max = 0;
         double maxValue = 0;
-        for (int j = 0; j < length; j++) {
+        for (int j = 0 ; j < length ; j++) {
             final double tmp = Math.sqrt (Math.pow (fs.getState () [j].getReal (), 2) + Math.pow (fs.getState () [j].getImaginary (), 2));
             if (tmp > maxValue && j > 100 && j < fs.getSampleRate () / 2) {
                 max = j;
                 maxValue = tmp;
             }
         }
-        for (int j = 0; j < powOf2NearestLength; j++) {
-            newAmpl [j] = fs.getState () [j].multiply (Math.exp (- Math.pow (j - max, 2) / 100));
+        for (int j = 0 ; j < powOf2NearestLength ; j++) {
+            newAmpl [j] = fs.getState () [j].multiply (Math.exp (-Math.pow (j - max, 2) / 100));
         }
         return new Spectrum (newAmpl, fs.getSampleRate (), fs.getNbBytes ());
     }

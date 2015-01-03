@@ -4,6 +4,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 /**
  * Simple proxy to avoid useless parameters in the overriden method
+ *
  * @author lionel
  *
  */
@@ -28,19 +29,19 @@ public class SimpleFrequencySoundTransformation extends AbstractFrequencySoundTr
         return new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
     }
 
-    public Spectrum transformFrequencies (final Spectrum fs){
+    public Spectrum transformFrequencies (final Spectrum fs) {
         return fs;
     }
 
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset){
+    public Spectrum transformFrequencies (final Spectrum fs, final int offset) {
         return this.transformFrequencies (fs);
     }
 
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength){
+    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength) {
         return this.transformFrequencies (fs, offset);
     }
 
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length){
+    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length) {
         return this.transformFrequencies (fs, offset, powOf2NearestLength);
     }
 

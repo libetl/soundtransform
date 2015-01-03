@@ -8,13 +8,13 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelpe
 
 public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformation {
 
-    private double       threshold;
-    private int []       loudestfreqs;
-    private int           index;
-    private int           length;
-    private static int    shortSoundLength    = 9000;
+    private double                        threshold;
+    private int []                        loudestfreqs;
+    private int                           index;
+    private int                           length;
+    private static int                    shortSoundLength = 9000;
     private final Spectrum2CepstrumHelper spectrum2CepstrumHelper;
-    private final SpectrumHelper spectrumHelper;
+    private final SpectrumHelper          spectrumHelper;
 
     public CepstrumSoundTransformation () {
         this.threshold = 100;

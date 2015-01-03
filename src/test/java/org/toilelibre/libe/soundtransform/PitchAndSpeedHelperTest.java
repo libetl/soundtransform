@@ -36,7 +36,8 @@ public class PitchAndSpeedHelperTest {
         e4 [1] = helper.pitchAndSetLength (e3 [1], 200, 1);
 
         final AudioInputStream ais2 = ts.toStream (e4, ais.getFormat ());
-        final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+        final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent ()
+                + "/after.wav");
 
         try {
             AudioSystem.write (ais2, AudioFileFormat.Type.WAVE, fDest);

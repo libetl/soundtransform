@@ -12,12 +12,6 @@ import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
 
 public class AddNoteService {
 
-    //The constructor is private, this class is used
-    //when the sound library is loaded
-    private AddNoteService (){
-        
-    }
-
     public static void addNote (final Range range, final String fileName) {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         try {
@@ -28,7 +22,8 @@ public class AddNoteService {
             }
             final String completeFileName = completeURL.getFile ();
             final File file = new File (completeFileName);
-            final Note n = Sound2NoteService.convert (fileName, new TransformInputStreamService ().fromInputStream (new ConvertAudioFileService ().callConverter (file)));
+            final Note n = Sound2NoteService.convert (fileName,
+                    new TransformInputStreamService ().fromInputStream (new ConvertAudioFileService ().callConverter (file)));
             range.put (n.getFrequency (), n);
         } catch (final UnsupportedAudioFileException e) {
         } catch (final IllegalArgumentException e) {
@@ -48,7 +43,8 @@ public class AddNoteService {
             }
             final String completeFileName = completeURL.getFile ();
             final File file = new File (completeFileName);
-            final Note n = Sound2NoteService.convert (fileName, new TransformInputStreamService ().fromInputStream (new ConvertAudioFileService ().callConverter (file)), frequency);
+            final Note n = Sound2NoteService.convert (fileName,
+                    new TransformInputStreamService ().fromInputStream (new ConvertAudioFileService ().callConverter (file)), frequency);
             range.put (n.getFrequency (), n);
         } catch (final UnsupportedAudioFileException e) {
         } catch (final IllegalArgumentException e) {
@@ -62,5 +58,11 @@ public class AddNoteService {
         for (final String fileName : fileNames) {
             AddNoteService.addNote (range, fileName);
         }
+    }
+
+    // The constructor is private, this class is used
+    // when the sound library is loaded
+    private AddNoteService () {
+
     }
 }

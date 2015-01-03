@@ -22,11 +22,11 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class TransformSoundService implements LogAware {
 
-    Observer []                            observers    = new Observer [0];
+    Observer []                               observers = new Observer [0];
 
-    private final TransformInputStreamService    transformInputStreamService;
+    private final TransformInputStreamService transformInputStreamService;
     private final CallTransformService        callTransformService;
-    private final ConvertAudioFileService        convertAudioFileService;
+    private final ConvertAudioFileService     convertAudioFileService;
 
     public TransformSoundService (final Observer... observers) {
         this.setObservers (observers);
@@ -45,7 +45,8 @@ public class TransformSoundService implements LogAware {
         return this.transformInputStreamService.fromInputStream (ais);
     }
 
-    public Sound [] fromInputStream (final InputStream ais, final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned) throws IOException {
+    public Sound [] fromInputStream (final InputStream ais, final int channels, final long frameLength, final int sampleSize, final double sampleRate,
+            final boolean bigEndian, final boolean pcmSigned) throws IOException {
         return this.transformInputStreamService.fromInputStream (ais, channels, frameLength, sampleSize, sampleRate, bigEndian, pcmSigned);
     }
 

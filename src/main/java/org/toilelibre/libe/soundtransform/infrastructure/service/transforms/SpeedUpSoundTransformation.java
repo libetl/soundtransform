@@ -9,10 +9,10 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 //WARN : long execution time soundtransform
 public class SpeedUpSoundTransformation extends SimpleFrequencySoundTransformation {
 
-    private final float    factor;
-    private Sound    sound;
-    private final int      threshold;
-    private float    writeIfGreaterEqThanFactor;
+    private final float factor;
+    private Sound       sound;
+    private final int   threshold;
+    private float       writeIfGreaterEqThanFactor;
 
     public SpeedUpSoundTransformation (final int threshold, final float factor) {
         this.factor = factor;
@@ -41,9 +41,11 @@ public class SpeedUpSoundTransformation extends SimpleFrequencySoundTransformati
     public Spectrum transformFrequencies (final Spectrum fs, final int offset) {
         final int total = (int) (this.sound.getSamples ().length / this.factor);
         final int logStep = total / 100 - total / 100 % this.threshold;
-        //This if helps to only log some of all iterations to avoid being too verbose
+        // This if helps to only log some of all iterations to avoid being too
+        // verbose
         if (total / 100 != 0 && logStep != 0 && offset % logStep == 0) {
-            this.log (new LogEvent (LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #" + offset + "/" + (int) (this.sound.getSamples ().length * this.factor)));
+            this.log (new LogEvent (LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #" + offset + "/"
+                    + (int) (this.sound.getSamples ().length * this.factor)));
         }
         if (this.writeIfGreaterEqThanFactor >= this.factor) {
             this.writeIfGreaterEqThanFactor -= this.factor;

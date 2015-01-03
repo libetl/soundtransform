@@ -7,9 +7,10 @@ public class LogEvent {
     public enum LogLevel {
         PARANOIAC, VERBOSE, INFO, WARN, ERROR
     }
-    private final LogLevel    level;
 
-    private final String     msg;
+    private final LogLevel level;
+
+    private final String   msg;
 
     public LogEvent (final LogLevel level1, final String msg1) {
         this.level = level1;

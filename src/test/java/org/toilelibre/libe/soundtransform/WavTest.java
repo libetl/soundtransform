@@ -24,10 +24,11 @@ import org.toilelibre.libe.soundtransform.model.library.Library;
 
 public class WavTest {
 
-    private final ClassLoader    classLoader    = Thread.currentThread ().getContextClassLoader ();
-    private final File        input        = new File (this.classLoader.getResource ("before.wav").getFile ());
-    // private File input = new File ("D:/Mes Soirées 80's-Spécial Discothèques/CD 1/08 Captain Sensible-Wot.mp3");
-    private final File        output        = new File (new File (this.classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+    private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+    private final File        input       = new File (this.classLoader.getResource ("before.wav").getFile ());
+    // private File input = new File
+    // ("D:/Mes Soirées 80's-Spécial Discothèques/CD 1/08 Captain Sensible-Wot.mp3");
+    private final File        output      = new File (new File (this.classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
     @Test
     public void test8bits () {
@@ -96,7 +97,7 @@ public class WavTest {
         }
     }
 
-    //@Test
+    // @Test
     public void testPurify () {
         // WARN : quite long
         try {
@@ -111,8 +112,9 @@ public class WavTest {
     @Test
     public void testRemoveLowFreqs () {
         try {
-            new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new EqualizerSoundTransformation (new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000,
-                    16000, 18000, 24000 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 }));
+            new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new EqualizerSoundTransformation (
+                    new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 24000 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1,
+                            1 }));
         } catch (final UnsupportedAudioFileException e) {
             e.printStackTrace ();
         } catch (final IOException e) {
@@ -138,7 +140,8 @@ public class WavTest {
             System.out.println ("Loading packs");
             final Library packsList = Library.getInstance ();
 
-            new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new ShapeSoundTransformation (packsList.defaultPack, "simple_piano"));
+            new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new ShapeSoundTransformation (
+                    packsList.defaultPack, "simple_piano"));
         } catch (final UnsupportedAudioFileException e) {
             e.printStackTrace ();
         } catch (final IOException e) {
@@ -146,7 +149,7 @@ public class WavTest {
         }
     }
 
-    //@Test
+    // @Test
     public void testSlowdown () {
         // WARN : quite long
         try {
@@ -158,7 +161,7 @@ public class WavTest {
         }
     }
 
-    //@Test
+    // @Test
     public void testSpeedUp () {
         // WARN : quite long
         try {

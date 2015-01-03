@@ -11,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class CallTransformService implements LogAware {
 
-    Observer []    observers    = new Observer [0];
+    Observer [] observers = new Observer [0];
 
     public CallTransformService (final Observer... observers) {
         this.setObservers (observers);
@@ -41,8 +41,9 @@ public class CallTransformService implements LogAware {
         Sound [] output = Arrays.copyOf (input, input.length);
         int transformNumber = 0;
         for (final SoundTransformation st : sts) {
-            for (int i = 0; i < input.length; i++) {
-                this.notifyAll ("Transform " + (transformNumber + 1) + "/" + sts.length + " (" + st.getClass ().getSimpleName () + "), channel " + (i + 1) + "/" + input.length);
+            for (int i = 0 ; i < input.length ; i++) {
+                this.notifyAll ("Transform " + (transformNumber + 1) + "/" + sts.length + " (" + st.getClass ().getSimpleName () + "), channel " + (i + 1)
+                        + "/" + input.length);
                 if (st instanceof LogAware) {
                     ((LogAware) st).setObservers (this.observers);
                 }

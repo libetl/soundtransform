@@ -14,7 +14,8 @@ public final class ConvertFromInputStream extends Action {
         return this.transformSound.fromInputStream (ais);
     }
 
-    public Sound [] fromInputStream (final InputStream ais, final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned) throws IOException {
+    public Sound [] fromInputStream (final InputStream ais, final int channels, final long frameLength, final int sampleSize, final double sampleRate,
+            final boolean bigEndian, final boolean pcmSigned) throws IOException {
         return this.transformSound.fromInputStream (ais, channels, frameLength, sampleSize, sampleRate, bigEndian, pcmSigned);
     }
 }

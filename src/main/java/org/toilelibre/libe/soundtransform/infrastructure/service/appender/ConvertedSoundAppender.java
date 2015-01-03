@@ -53,7 +53,7 @@ public class ConvertedSoundAppender implements SoundAppender {
         final long [] newsamples = new long [sound.getSamples ().length];
         final long oldMax = (long) (Math.pow (256, sound.getNbBytesPerSample ()) / 2);
         final long newMax = (long) (Math.pow (256, newNbBytesPerSample) / 2);
-        for (int j = 0; j < sound.getSamples ().length; j++) {
+        for (int j = 0 ; j < sound.getSamples ().length ; j++) {
             newsamples [j] = (long) (sound.getSamples () [j] * 1.0 * newMax / oldMax);
         }
         return new Sound (newsamples, newNbBytesPerSample, sound.getSampleRate (), sound.getChannelNum ());
@@ -72,7 +72,7 @@ public class ConvertedSoundAppender implements SoundAppender {
         float appendIfGreaterThanOrEqualsRatio = 0;
         int indexResult = 0;
         final long [] result = new long [(int) Math.ceil (sound.getSamples ().length / ratio)];
-        for (int i = 0; i < sound.getSamples ().length; i++) {
+        for (int i = 0 ; i < sound.getSamples ().length ; i++) {
             if (appendIfGreaterThanOrEqualsRatio >= ratio) {
                 appendIfGreaterThanOrEqualsRatio -= ratio;
                 result [indexResult++] = sound.getSamples () [i];
@@ -104,14 +104,14 @@ public class ConvertedSoundAppender implements SoundAppender {
         float appendWhileLessThanOrEqualsRatio = 0;
         int indexResult = 0;
         final long [] result = new long [(int) Math.ceil (sound.getSamples ().length * (ratio + 1))];
-        for (int i = 0; i < sound.getSamples ().length; i++) {
+        for (int i = 0 ; i < sound.getSamples ().length ; i++) {
             while (appendWhileLessThanOrEqualsRatio <= ratio) {
                 result [indexResult++] = sound.getSamples () [i];
                 appendWhileLessThanOrEqualsRatio++;
             }
             appendWhileLessThanOrEqualsRatio -= ratio;
         }
-        return new Sound ( indexResult == 0 ? new long [0] : Arrays.copyOfRange (result, 0, indexResult - 1), sound.getNbBytesPerSample (), (int) (sound.getSampleRate () * ratio),
-                sound.getChannelNum ());
+        return new Sound (indexResult == 0 ? new long [0] : Arrays.copyOfRange (result, 0, indexResult - 1), sound.getNbBytesPerSample (),
+                (int) (sound.getSampleRate () * ratio), sound.getChannelNum ());
     }
 }

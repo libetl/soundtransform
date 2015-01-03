@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class PrintlnTransformObserver implements Observer {
 
-    private boolean    paranoiac;
+    private boolean paranoiac;
 
     public PrintlnTransformObserver () {
 

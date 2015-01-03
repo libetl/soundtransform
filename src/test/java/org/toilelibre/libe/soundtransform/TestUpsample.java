@@ -26,7 +26,7 @@ public class TestUpsample {
             final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
             final Sound [] inputSounds = new TransformSoundService ().fromInputStream (new ConvertAudioFileService ().callConverter (input));
             final Sound [] outputSounds = new Sound [inputSounds.length];
-            for (int i = 0; i < inputSounds.length; i++) {
+            for (int i = 0 ; i < inputSounds.length ; i++) {
                 Sound tmp = new ConvertedSoundAppender ().changeNbBytesPerSample (inputSounds [i], 2);
                 tmp = new ConvertedSoundAppender ().resizeToSampleRate (tmp, 44100);
                 outputSounds [i] = tmp;
@@ -52,8 +52,9 @@ public class TestUpsample {
             final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
             final Sound [] inputSounds = new TransformSoundService ().fromInputStream (new ConvertAudioFileService ().callConverter (input));
             final Sound [] outputSounds = new Sound [inputSounds.length];
-            for (int i = 0; i < inputSounds.length; i++) {
-                //Sound tmp = SoundAppender.changeNbBytesPerSample (inputSounds [i], 2);
+            for (int i = 0 ; i < inputSounds.length ; i++) {
+                // Sound tmp = SoundAppender.changeNbBytesPerSample (inputSounds
+                // [i], 2);
                 final Sound tmp = new ConvertedSoundAppender ().resizeToSampleRate (inputSounds [i], 44100);
                 outputSounds [i] = tmp;
             }

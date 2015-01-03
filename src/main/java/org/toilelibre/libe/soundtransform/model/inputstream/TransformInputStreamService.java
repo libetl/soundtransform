@@ -16,15 +16,16 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class TransformInputStreamService implements LogAware {
 
-    Observer []       observers    = new Observer [0];
-    FrameProcessor    frameProcessor;
+    Observer []    observers = new Observer [0];
+    FrameProcessor frameProcessor;
 
     public TransformInputStreamService (final Observer... observers) {
         this.setObservers (observers);
         this.frameProcessor = new org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor ();
     }
 
-    public Sound [] byteArrayToFrames (final byte [] byteArray, final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned) throws IOException {
+    public Sound [] byteArrayToFrames (final byte [] byteArray, final int channels, final long frameLength, final int sampleSize, final double sampleRate,
+            final boolean bigEndian, final boolean pcmSigned) throws IOException {
         this.notifyAll ("[Test] byteArray -> ByteArrayInputStream");
 
         final ByteArrayInputStream bais = new ByteArrayInputStream (byteArray);
@@ -42,14 +43,15 @@ public class TransformInputStreamService implements LogAware {
         return this.fromInputStream (ais, channels, frameLength, sampleSize, sampleRate, bigEndian, pcmSigned);
     }
 
-    public Sound [] fromInputStream (final InputStream ais, final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned) throws IOException {
+    public Sound [] fromInputStream (final InputStream ais, final int channels, final long frameLength, final int sampleSize, final double sampleRate,
+            final boolean bigEndian, final boolean pcmSigned) throws IOException {
         this.notifyAll ("Converting input into java object");
         final Sound [] ret = new Sound [channels];
         final long neutral = pcmSigned ? this.frameProcessor.getNeutral (sampleSize) : 0;
-        for (int channel = 0; channel < channels; channel++) {
+        for (int channel = 0 ; channel < channels ; channel++) {
             ret [channel] = new Sound (new long [(int) frameLength], sampleSize, (int) sampleRate, channel);
         }
-        for (int position = 0; position < frameLength; position++) {
+        for (int position = 0 ; position < frameLength ; position++) {
             final byte [] frame = new byte [sampleSize * channels];
             ais.read (frame);
             this.frameProcessor.byteArrayToFrame (frame, ret, position, bigEndian, pcmSigned, neutral);
@@ -81,7 +83,8 @@ public class TransformInputStreamService implements LogAware {
     public AudioInputStream toStream (final Sound [] channels, final AudioFormat audioFormat) {
 
         final int length = audioFormat.getFrameSize () * channels [0].getSamples ().length;
-        final byte [] data = this.frameProcessor.framesToByteArray (channels, audioFormat.getFrameSize () / channels.length, audioFormat.isBigEndian (), audioFormat.getEncoding () == Encoding.PCM_SIGNED);
+        final byte [] data = this.frameProcessor.framesToByteArray (channels, audioFormat.getFrameSize () / channels.length, audioFormat.isBigEndian (),
+                audioFormat.getEncoding () == Encoding.PCM_SIGNED);
         this.notifyAll ("Creating output file");
         // now save the file
         final ByteArrayInputStream bais = new ByteArrayInputStream (data);

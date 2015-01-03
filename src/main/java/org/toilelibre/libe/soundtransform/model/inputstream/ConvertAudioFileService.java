@@ -8,7 +8,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class ConvertAudioFileService {
 
-    private final AudioFileHelper    audioFileHelper;
+    private final AudioFileHelper audioFileHelper;
 
     public ConvertAudioFileService () {
         this.audioFileHelper = new org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.JavazoomAudioFileHelper ();

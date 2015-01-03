@@ -16,7 +16,7 @@ public class Pcm2FrameTest {
     public void testReversibleData () throws IOException {
         final RandomDataGenerator rdg = new RandomDataGenerator ();
         final byte [] data = new byte [256];
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0 ; i < data.length ; i++) {
             data [i] = (byte) rdg.nextInt (Byte.MIN_VALUE, Byte.MAX_VALUE);
         }
         System.out.println (Arrays.toString (data));

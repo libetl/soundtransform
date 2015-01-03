@@ -15,7 +15,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 
     public int computeMagnitude (final Spectrum fs) {
         double sum = 0;
-        for (int i = 0; i < fs.getState ().length; i++) {
+        for (int i = 0 ; i < fs.getState ().length ; i++) {
             sum += fs.getState () [i].abs ();
         }
         return (int) (sum / fs.getState ().length);
@@ -23,12 +23,12 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 
     @Override
     public int findDecay (final Sound channel1, final int attack) {
-        final int threshold = 100; //Has to be accurate
+        final int threshold = 100; // Has to be accurate
         final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int decayIndex = attack;
 
         final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation () {
-            int    arraylength    = 0;
+            int arraylength = 0;
 
             @Override
             public double getLowThreshold (final double defaultValue) {
@@ -67,7 +67,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
         int releaseIndexFromReversed = 0;
 
         final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation () {
-            int    arraylength    = 0;
+            int arraylength = 0;
 
             @Override
             public double getLowThreshold (final double defaultValue) {
@@ -100,12 +100,12 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 
     @Override
     public int findSustain (final Sound channel1, final int decay) {
-        final int threshold = 100; //Has to be accurate
+        final int threshold = 100; // Has to be accurate
         final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int sustainIndex = decay;
 
         final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation () {
-            int    arraylength    = 0;
+            int arraylength = 0;
 
             @Override
             public double getLowThreshold (final double defaultValue) {

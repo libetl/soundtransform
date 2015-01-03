@@ -38,7 +38,7 @@ public class PlaySoundClipImpl implements PlaySoundService {
                     } else if (type == LineEvent.Type.CLOSE) {
                     } else if (type == LineEvent.Type.START) {
                     } else if (type == LineEvent.Type.STOP) {
-                        synchronized (clip){
+                        synchronized (clip) {
                             clip.close ();
                             clip.notify ();
                         }
@@ -49,7 +49,7 @@ public class PlaySoundClipImpl implements PlaySoundService {
             });
             clip.open (ais);
             clip.start ();
-            synchronized (clip){
+            synchronized (clip) {
                 clip.wait ();
             }
             return clip;
@@ -65,7 +65,7 @@ public class PlaySoundClipImpl implements PlaySoundService {
     @Override
     public Object play (final Sound [] channels) throws PlaySoundException {
         final AudioInputStream ais = new ExportSoundToInputStream ().toStream (channels,
-                new AudioFormat (channels[0].getSampleRate (), channels[0].getNbBytesPerSample () * 8, channels.length, true, false));
+                new AudioFormat (channels [0].getSampleRate (), channels [0].getNbBytesPerSample () * 8, channels.length, true, false));
 
         return this.play (ais);
     }
@@ -76,10 +76,10 @@ public class PlaySoundClipImpl implements PlaySoundService {
         final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
         final long [] sampleArray = new long [complexArray.length];
         int i = 0;
-        for (final Complex c : complexArray){
+        for (final Complex c : complexArray) {
             sampleArray [i++] = (long) c.getReal ();
         }
-        return this.play (new Sound [] {new Sound (sampleArray, spectrum.getNbBytes (), spectrum.getSampleRate (), 0)});
+        return this.play (new Sound [] { new Sound (sampleArray, spectrum.getNbBytes (), spectrum.getSampleRate (), 0) });
     }
 
 }

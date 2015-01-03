@@ -5,17 +5,26 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToStr
 
 public class GraphSpectrumToStringHelper implements SpectrumToStringHelper {
 
-
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.SpectrumToStringH#fsToString(org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum)
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.
+     * SpectrumToStringH
+     * #fsToString(org.toilelibre.libe.soundtransform.model.converted
+     * .spectrum.Spectrum)
      */
     @Override
     public String fsToString (final Spectrum fs) {
         return this.fsToString (fs, 0, fs.getSampleRate () / 2, 20, 20);
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.SpectrumToStringH#fsToString(org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum, int, int, int, int)
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.
+     * SpectrumToStringH
+     * #fsToString(org.toilelibre.libe.soundtransform.model.converted
+     * .spectrum.Spectrum, int, int, int, int)
      */
     @Override
     public String fsToString (final Spectrum fs, final int low, final int high, final int compression, final int height) {
@@ -28,9 +37,9 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper {
         final int [] valuesOnPlot = new int [length];
         int maxPlotValue = 0;
         double minValuePlotted = -1;
-        for (int i = 0; i < valuesOnPlot.length; i++) {
+        for (int i = 0 ; i < valuesOnPlot.length ; i++) {
             double maxValue = 0;
-            for (int j = 0; j < step; j++) {
+            for (int j = 0 ; j < step ; j++) {
                 final int x = i * step + j + low;
                 if (x < fs.getState ().length && maxValue < fs.getState () [x].abs ()) {
                     maxValue = 20.0 * Math.log10 (fs.getState () [x].abs ());
@@ -44,17 +53,17 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper {
                 maxPlotValue = valuesOnPlot [i];
             }
         }
-        for (int i = 0; i < valuesOnPlot.length; i++) {
+        for (int i = 0 ; i < valuesOnPlot.length ; i++) {
             valuesOnPlot [i] -= minValuePlotted * height / maxMagn;
         }
-        for (int j = height; j >= 0; j--) {
+        for (int j = height ; j >= 0 ; j--) {
             if (j == height) {
                 sb.append ("^ " + maxMagn + " (magnitude)\n");
                 continue;
             } else {
                 sb.append ("|");
             }
-            for (int i = 0; i < length; i++) {
+            for (int i = 0 ; i < length ; i++) {
                 if (valuesOnPlot [i] == j) {
                     sb.append ("_");
                 } else if (valuesOnPlot [i] > j) {
@@ -66,7 +75,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper {
             sb.append ("\n");
         }
         sb.append ("L");
-        for (int i = 0; i < length; i++) {
+        for (int i = 0 ; i < length ; i++) {
             sb.append ("-");
         }
         sb.append ("> " + HPSSpectrumHelper.freqFromSampleRate (length * compression, (int) lastFrequency * 2, (int) lastFrequency * 2) + "Hz (freq)\n");

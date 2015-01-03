@@ -24,20 +24,21 @@ public class SoundGenerateTest {
 
         final int samplerate = 44100;
         final long [] signal = new long [length];
-        for (int j = 0; j < length; j++) {
+        for (int j = 0 ; j < length ; j++) {
             signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
 
-        final AudioInputStream ais = new TransformSoundService ().toStream (new Sound [] { s }, new AudioFormat (samplerate, sampleInBytes * 8, 1, true, false));
-        final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+        final AudioInputStream ais = new TransformSoundService ()
+        .toStream (new Sound [] { s }, new AudioFormat (samplerate, sampleInBytes * 8, 1, true, false));
+        final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent ()
+                + "/after.wav");
 
         try {
             AudioSystem.write (ais, AudioFileFormat.Type.WAVE, fDest);
         } catch (final IOException e) {
         }
     }
-
 
     @Test
     public void seeHps () {
@@ -47,7 +48,7 @@ public class SoundGenerateTest {
 
         final int samplerate = 44100;
         final long [] signal = new long [length];
-        for (int j = 0; j < length; j++) {
+        for (int j = 0 ; j < length ; j++) {
             signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);

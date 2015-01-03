@@ -17,10 +17,11 @@ public class JavazoomAudioFileHelper implements AudioFileHelper {
     public AudioInputStream getAudioInputStream (final File inputFile) throws UnsupportedAudioFileException, IOException {
         File readFile = inputFile;
         if (inputFile.getName ().toLowerCase ().endsWith (".mp3")) {
-            final File tempFile =  File.createTempFile("soundtransform", ".wav");
+            final File tempFile = File.createTempFile ("soundtransform", ".wav");
             final AudioInputStream ais = new javazoom.spi.mpeg.sampled.file.MpegAudioFileReader ().getAudioInputStream (inputFile);
             final AudioFormat cdFormat = new AudioFormat (44100, 16, 2, true, false);
-            final javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream decodedais = new javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream (cdFormat, ais);
+            final javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream decodedais = new javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream (
+                    cdFormat, ais);
             AudioSystem.write (decodedais, AudioFileFormat.Type.WAVE, tempFile);
             readFile = tempFile;
         }

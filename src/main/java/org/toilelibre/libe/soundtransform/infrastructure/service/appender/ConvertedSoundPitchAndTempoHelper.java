@@ -17,7 +17,7 @@ public class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelp
         if (percent < 98 || percent > 102) {
             result = pitcher.transform (result);
         }
-        final double factor = sound.getSamples ().length == 0 ? 0 : 1.0 * lengthInSeconds * sound.getSampleRate() / result.getSamples ().length;
+        final double factor = sound.getSamples ().length == 0 ? 0 : 1.0 * lengthInSeconds * sound.getSampleRate () / result.getSamples ().length;
         if (factor == 0) {
             return result;
         } else if (factor < 0.98 || factor > 1.02) {
