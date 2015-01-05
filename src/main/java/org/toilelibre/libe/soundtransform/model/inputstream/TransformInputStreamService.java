@@ -1,14 +1,12 @@
 package org.toilelibre.libe.soundtransform.model.inputstream;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioFormat.Encoding;
-import javax.sound.sampled.AudioInputStream;
-
+import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
@@ -16,78 +14,69 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class TransformInputStreamService implements LogAware {
 
-    Observer []    observers = new Observer [0];
-    FrameProcessor frameProcessor;
+	public enum TransformInputStreamServiceErrorCode implements ErrorCode {
+		COULD_NOT_READ_STREAM ("Could not read stream");
 
-    public TransformInputStreamService (final Observer... observers) {
-        this.setObservers (observers);
-        this.frameProcessor = new org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor ();
-    }
+		private String	messageFormat;
 
-    public Sound [] byteArrayToFrames (final byte [] byteArray, final int channels, final long frameLength, final int sampleSize, final double sampleRate,
-            final boolean bigEndian, final boolean pcmSigned) throws IOException {
-        this.notifyAll ("[Test] byteArray -> ByteArrayInputStream");
+		TransformInputStreamServiceErrorCode (final String mF) {
+			this.messageFormat = mF;
+		}
 
-        final ByteArrayInputStream bais = new ByteArrayInputStream (byteArray);
-        return this.fromInputStream (bais, channels, frameLength, sampleSize, sampleRate, bigEndian, pcmSigned);
-    }
+		@Override
+		public String getMessageFormat () {
+			return this.messageFormat;
+		}
+	}
 
-    public Sound [] fromInputStream (final AudioInputStream ais) throws IOException {
-        final int channels = ais.getFormat ().getChannels ();
-        final long frameLength = ais.getFrameLength ();
-        final int sampleSize = ais.getFormat ().getFrameSize () / channels;
-        final double sampleRate = ais.getFormat ().getSampleRate ();
-        final boolean bigEndian = ais.getFormat ().isBigEndian ();
-        final boolean pcmSigned = ais.getFormat ().getEncoding () == Encoding.PCM_SIGNED;
+	private Observer []	            observers	= new Observer [0];
+	private final FrameProcessor	frameProcessor;
+	private final AudioFormatParser	audioFormatParser;
 
-        return this.fromInputStream (ais, channels, frameLength, sampleSize, sampleRate, bigEndian, pcmSigned);
-    }
+	public TransformInputStreamService (final Observer... observers) {
+		this.setObservers (observers);
+		this.frameProcessor = new org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor ();
+		this.audioFormatParser = new org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.AudioFormatParser ();
+	}
 
-    public Sound [] fromInputStream (final InputStream ais, final int channels, final long frameLength, final int sampleSize, final double sampleRate,
-            final boolean bigEndian, final boolean pcmSigned) throws IOException {
-        this.notifyAll ("Converting input into java object");
-        final Sound [] ret = new Sound [channels];
-        final long neutral = pcmSigned ? this.frameProcessor.getNeutral (sampleSize) : 0;
-        for (int channel = 0 ; channel < channels ; channel++) {
-            ret [channel] = new Sound (new long [(int) frameLength], sampleSize, (int) sampleRate, channel);
-        }
-        for (int position = 0 ; position < frameLength ; position++) {
-            final byte [] frame = new byte [sampleSize * channels];
-            ais.read (frame);
-            this.frameProcessor.byteArrayToFrame (frame, ret, position, bigEndian, pcmSigned, neutral);
-        }
-        this.notifyAll ("Convert done");
-        return ret;
-    }
+	public Sound [] byteArrayToFrames (final byte [] byteArray, final InputStreamInfo isInfo) throws SoundTransformException {
+		this.notifyAll ("[Test] byteArray -> ByteArrayInputStream");
 
-    @Override
-    public void log (final LogEvent event) {
-        for (final Observer to : this.observers) {
-            to.notify (event);
-        }
+		final ByteArrayInputStream bais = new ByteArrayInputStream (byteArray);
+		return this.fromInputStream (bais, isInfo);
+	}
 
-    }
+	public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {
+		return this.fromInputStream (ais, this.audioFormatParser.getInputStreamInfo (ais));
+	}
 
-    private void notifyAll (final String s) {
-        this.log (new LogEvent (LogLevel.INFO, s));
-    }
+	public Sound [] fromInputStream (final InputStream ais, final InputStreamInfo isInfo) throws SoundTransformException {
+		this.notifyAll ("Converting input into java object");
+		final Sound [] ret = this.frameProcessor.fromInputStream (ais, isInfo);
+		return ret;
+	}
 
-    @Override
-    public void setObservers (final Observer [] observers2) {
-        this.observers = observers2;
-        for (final Observer observer : observers2) {
-            this.notifyAll ("Adding observer " + observer.getClass ().getSimpleName ());
-        }
-    }
+	@Override
+	public void log (final LogEvent event) {
+		for (final Observer to : this.observers) {
+			to.notify (event);
+		}
 
-    public AudioInputStream toStream (final Sound [] channels, final AudioFormat audioFormat) {
+	}
 
-        final int length = audioFormat.getFrameSize () * channels [0].getSamples ().length;
-        final byte [] data = this.frameProcessor.framesToByteArray (channels, audioFormat.getFrameSize () / channels.length, audioFormat.isBigEndian (),
-                audioFormat.getEncoding () == Encoding.PCM_SIGNED);
-        this.notifyAll ("Creating output file");
-        // now save the file
-        final ByteArrayInputStream bais = new ByteArrayInputStream (data);
-        return new AudioInputStream (bais, audioFormat, length / audioFormat.getFrameSize ());
-    }
+	private void notifyAll (final String s) {
+		this.log (new LogEvent (LogLevel.INFO, s));
+	}
+
+	@Override
+	public void setObservers (final Observer [] observers2) {
+		this.observers = observers2;
+		for (final Observer observer : observers2) {
+			this.notifyAll ("Adding observer " + observer.getClass ().getSimpleName ());
+		}
+	}
+
+	public byte [] soundToByteArray (final Sound [] channels, final InputStreamInfo inputStreamInfo) {
+		return this.frameProcessor.framesToByteArray (channels, inputStreamInfo.getSampleSize (), inputStreamInfo.isBigEndian (), inputStreamInfo.isPcmSigned ());
+	}
 }

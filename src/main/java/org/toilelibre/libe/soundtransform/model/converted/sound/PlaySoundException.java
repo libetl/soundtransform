@@ -1,26 +1,31 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
-import java.io.IOException;
+import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-import javax.sound.sampled.LineUnavailableException;
+public class PlaySoundException extends SoundTransformException {
 
-public class PlaySoundException extends Exception {
-
-    /**
+	/**
      *
      */
-    private static final long serialVersionUID = -4904836048288493711L;
+	private static final long	serialVersionUID	= -4904836048288493711L;
 
-    public PlaySoundException (final InterruptedException e) {
-        super (e);
-    }
+	public enum PlaySoundErrorCode implements ErrorCode {
+		COULD_NOT_PLAY_SOUND ("Could not play a sound");
+		private final String	messageFormat;
 
-    public PlaySoundException (final IOException e) {
-        super (e);
-    }
+		PlaySoundErrorCode (final String mF) {
+			this.messageFormat = mF;
+		}
 
-    public PlaySoundException (final LineUnavailableException lineUnavailableException) {
-        super (lineUnavailableException);
-    }
+		@Override
+		public String getMessageFormat () {
+			return this.messageFormat;
+		}
+	}
+
+	public PlaySoundException (final Exception e) {
+		super (PlaySoundErrorCode.COULD_NOT_PLAY_SOUND, e);
+	}
 
 }
