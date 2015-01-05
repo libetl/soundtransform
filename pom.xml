@@ -36,30 +36,30 @@
     </plugins>
   </build>
   <dependencies>
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  		<version>4.11</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.apache.commons</groupId>
-  		<artifactId>commons-math3</artifactId>
-  		<version>3.3</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>com.googlecode.soundlibs</groupId>
-  		<artifactId>tritonus-share</artifactId>
-  		<version>0.3.7-2</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>com.googlecode.soundlibs</groupId>
-  		<artifactId>mp3spi</artifactId>
-  		<version>1.9.5-1</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>com.googlecode.soundlibs</groupId>
-  		<artifactId>jlayer</artifactId>
-  		<version>1.0.1-1</version>
-  	</dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.11</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-math3</artifactId>
+          <version>3.3</version>
+      </dependency>
+      <dependency>
+          <groupId>com.googlecode.soundlibs</groupId>
+          <artifactId>tritonus-share</artifactId>
+          <version>0.3.7-2</version>
+      </dependency>
+      <dependency>
+          <groupId>com.googlecode.soundlibs</groupId>
+          <artifactId>mp3spi</artifactId>
+          <version>1.9.5-1</version>
+      </dependency>
+      <dependency>
+          <groupId>com.googlecode.soundlibs</groupId>
+          <artifactId>jlayer</artifactId>
+          <version>1.0.1-1</version>
+      </dependency>
   </dependencies>
 </project>

@@ -9,9 +9,9 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public interface PlaySoundService {
 
-	Object play (InputStream ais) throws PlaySoundException;
+    Object play (InputStream ais) throws PlaySoundException;
 
-	Object play (Sound [] channels) throws SoundTransformException;
+    Object play (Sound [] channels) throws SoundTransformException;
 
-	Object play (Spectrum spectrum) throws SoundTransformException;
+    Object play (Spectrum spectrum) throws SoundTransformException;
 }

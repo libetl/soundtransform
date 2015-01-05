@@ -13,32 +13,32 @@ import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileServ
 
 public class SoundToStringTest {
 
-	@Test
-	public void testFsToString () throws SoundTransformException {
-		final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-		final File input = new File (classLoader.getResource ("before.wav").getFile ());
+    @Test
+    public void testFsToString () throws SoundTransformException {
+        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+        final File input = new File (classLoader.getResource ("before.wav").getFile ());
 
-		final InputStream ais = new ConvertAudioFileService ().callConverter (input);
-		final Sound s = new TransformSoundService ().fromInputStream (ais) [0];
-		new SimpleFrequencySoundTransformation () {
+        final InputStream ais = new ConvertAudioFileService ().callConverter (input);
+        final Sound s = new TransformSoundService ().fromInputStream (ais) [0];
+        new SimpleFrequencySoundTransformation () {
 
-			@Override
-			public Spectrum transformFrequencies (final Spectrum fs) {
-				System.out.println (fs);
-				return super.transformFrequencies (fs);
-			}
+            @Override
+            public Spectrum transformFrequencies (final Spectrum fs) {
+                System.out.println (fs);
+                return super.transformFrequencies (fs);
+            }
 
-		}.transform (s);
+        }.transform (s);
 
-	}
+    }
 
-	@Test
-	public void testToString () throws SoundTransformException {
-		final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-		final File input = new File (classLoader.getResource ("before.wav").getFile ());
+    @Test
+    public void testToString () throws SoundTransformException {
+        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+        final File input = new File (classLoader.getResource ("before.wav").getFile ());
 
-		final InputStream ais = new ConvertAudioFileService ().callConverter (input);
-		System.out.println (new TransformSoundService ().fromInputStream (ais) [0]);
+        final InputStream ais = new ConvertAudioFileService ().callConverter (input);
+        System.out.println (new TransformSoundService ().fromInputStream (ais) [0]);
 
-	}
+    }
 }

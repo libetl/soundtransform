@@ -22,91 +22,91 @@ import org.toilelibre.libe.soundtransform.model.library.Library;
 
 public class WavTest {
 
-	private final ClassLoader	classLoader	= Thread.currentThread ().getContextClassLoader ();
-	private final File	      input	        = new File (this.classLoader.getResource ("before.wav").getFile ());
-	// private File input = new File
-	// ("D:/Mes Soirées 80's-Spécial Discothèques/CD 1/08 Captain Sensible-Wot.mp3");
-	private final File	      output	    = new File (new File (this.classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+    private final ClassLoader    classLoader    = Thread.currentThread ().getContextClassLoader ();
+    private final File          input            = new File (this.classLoader.getResource ("before.wav").getFile ());
+    // private File input = new File
+    // ("D:/Mes Soirées 80's-Spécial Discothèques/CD 1/08 Captain Sensible-Wot.mp3");
+    private final File          output        = new File (new File (this.classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-	@Test
-	public void test8bits () throws SoundTransformException {
-		new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new EightBitsSoundTransformation (25));
+    @Test
+    public void test8bits () throws SoundTransformException {
+        new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new EightBitsSoundTransformation (25));
 
-	}
+    }
 
-	@Test
-	public void testFreqNoOp () throws SoundTransformException {
-		new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new SimpleFrequencySoundTransformation ());
+    @Test
+    public void testFreqNoOp () throws SoundTransformException {
+        new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new SimpleFrequencySoundTransformation ());
 
-	}
+    }
 
-	@Test
-	public void testLinearReg () throws SoundTransformException {
-		// will remove the high freqs and smooth the signal
-		new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new LinearRegressionSoundTransformation (25));
+    @Test
+    public void testLinearReg () throws SoundTransformException {
+        // will remove the high freqs and smooth the signal
+        new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new LinearRegressionSoundTransformation (25));
 
-	}
+    }
 
-	@Test
-	public void testNoOp () throws SoundTransformException {
-		new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new NoOpSoundTransformation ());
+    @Test
+    public void testNoOp () throws SoundTransformException {
+        new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new NoOpSoundTransformation ());
 
-	}
+    }
 
-	@Test
-	public void testNormalize () throws SoundTransformException {
-		new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new NormalizeSoundTransformation ());
+    @Test
+    public void testNormalize () throws SoundTransformException {
+        new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new NormalizeSoundTransformation ());
 
-	}
+    }
 
-	@Test
-	public void testPitch () throws SoundTransformException {
-		new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new PitchSoundTransformation (100));
+    @Test
+    public void testPitch () throws SoundTransformException {
+        new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new PitchSoundTransformation (100));
 
-	}
+    }
 
-	// @Test
-	public void testPurify () throws SoundTransformException {
-		// WARN : quite long
-		new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new PurifySoundTransformation ());
+    // @Test
+    public void testPurify () throws SoundTransformException {
+        // WARN : quite long
+        new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new PurifySoundTransformation ());
 
-	}
+    }
 
-	@Test
-	public void testRemoveLowFreqs () throws SoundTransformException {
-		new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new EqualizerSoundTransformation (new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000,
-		        14000, 16000, 18000, 24000 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 }));
+    @Test
+    public void testRemoveLowFreqs () throws SoundTransformException {
+        new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new EqualizerSoundTransformation (new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000,
+                14000, 16000, 18000, 24000 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 }));
 
-	}
+    }
 
-	@Test
-	public void testReverse () throws SoundTransformException {
-		new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new ReverseSoundTransformation ());
+    @Test
+    public void testReverse () throws SoundTransformException {
+        new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new ReverseSoundTransformation ());
 
-	}
+    }
 
-	@Test
-	public void testShape () throws SoundTransformException {
-		// WARN : quite long
-		System.out.println ("Loading packs");
-		@SuppressWarnings ("unused")
-		final Library packsList = Library.getInstance ();
+    @Test
+    public void testShape () throws SoundTransformException {
+        // WARN : quite long
+        System.out.println ("Loading packs");
+        @SuppressWarnings ("unused")
+        final Library packsList = Library.getInstance ();
 
-		new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new ShapeSoundTransformation (Library.defaultPack, "simple_piano"));
+        new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new ShapeSoundTransformation (Library.defaultPack, "simple_piano"));
 
-	}
+    }
 
-	// @Test
-	public void testSlowdown () throws SoundTransformException {
-		// WARN : quite long
-		new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new SlowdownSoundTransformation (200, 1.2f));
+    // @Test
+    public void testSlowdown () throws SoundTransformException {
+        // WARN : quite long
+        new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new SlowdownSoundTransformation (200, 1.2f));
 
-	}
+    }
 
-	// @Test
-	public void testSpeedUp () throws SoundTransformException {
-		// WARN : quite long
-		new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new SpeedUpSoundTransformation (200, 1.5f));
+    // @Test
+    public void testSpeedUp () throws SoundTransformException {
+        // WARN : quite long
+        new TransformSoundService (new PrintlnTransformObserver ()).transformFile (this.input, this.output, new SpeedUpSoundTransformation (200, 1.5f));
 
-	}
+    }
 }

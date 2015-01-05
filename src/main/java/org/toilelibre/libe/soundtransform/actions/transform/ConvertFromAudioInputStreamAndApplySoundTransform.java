@@ -9,8 +9,8 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public final class ConvertFromAudioInputStreamAndApplySoundTransform extends Action {
 
-	public Sound [] convertAndApply (final InputStream ais, final SoundTransformation transform) throws SoundTransformException {
-		return this.transformSound.convertAndApply (ais, transform);
-	}
+    public Sound [] convertAndApply (final InputStream ais, final SoundTransformation transform) throws SoundTransformException {
+        return this.transformSound.convertAndApply (ais, transform);
+    }
 
 }

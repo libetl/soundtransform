@@ -18,43 +18,43 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public class TestUpsample {
 
-	@Test
-	public void testTransform11025Hz2BitsMonoSoundInto44100Hz2BitsMonoSound () throws SoundTransformException, IOException {
+    @Test
+    public void testTransform11025Hz2BitsMonoSoundInto44100Hz2BitsMonoSound () throws SoundTransformException, IOException {
 
-		final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-		final File input = new File (classLoader.getResource ("notes/Piano2-D.wav").getFile ());
-		final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-		final Sound [] inputSounds = new TransformSoundService ().fromInputStream (new ConvertAudioFileService ().callConverter (input));
-		final Sound [] outputSounds = new Sound [inputSounds.length];
-		for (int i = 0; i < inputSounds.length; i++) {
-			Sound tmp = new ConvertedSoundAppender ().changeNbBytesPerSample (inputSounds [i], 2);
-			tmp = new ConvertedSoundAppender ().resizeToSampleRate (tmp, 44100);
-			outputSounds [i] = tmp;
-		}
+        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+        final File input = new File (classLoader.getResource ("notes/Piano2-D.wav").getFile ());
+        final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+        final Sound [] inputSounds = new TransformSoundService ().fromInputStream (new ConvertAudioFileService ().callConverter (input));
+        final Sound [] outputSounds = new Sound [inputSounds.length];
+        for (int i = 0; i < inputSounds.length; i++) {
+            Sound tmp = new ConvertedSoundAppender ().changeNbBytesPerSample (inputSounds [i], 2);
+            tmp = new ConvertedSoundAppender ().resizeToSampleRate (tmp, 44100);
+            outputSounds [i] = tmp;
+        }
 
-		final InputStream ais = new TransformSoundService ().toStream (outputSounds, new InputStreamInfo (outputSounds.length, outputSounds [0].getSamples ().length, 2, 44100, false, true));
-		AudioSystem.write ((AudioInputStream) ais, AudioFileFormat.Type.WAVE, output);
+        final InputStream ais = new TransformSoundService ().toStream (outputSounds, new InputStreamInfo (outputSounds.length, outputSounds [0].getSamples ().length, 2, 44100, false, true));
+        AudioSystem.write ((AudioInputStream) ais, AudioFileFormat.Type.WAVE, output);
 
-	}
+    }
 
-	@Test
-	public void testTransform8363Hz1BitMonoSoundInto44100Hz2BitsMonoSound () throws SoundTransformException, IOException {
+    @Test
+    public void testTransform8363Hz1BitMonoSoundInto44100Hz2BitsMonoSound () throws SoundTransformException, IOException {
 
-		final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-		final File input = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
-		final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-		final Sound [] inputSounds = new TransformSoundService ().fromInputStream (new ConvertAudioFileService ().callConverter (input));
-		final Sound [] outputSounds = new Sound [inputSounds.length];
-		for (int i = 0; i < inputSounds.length; i++) {
-			// Sound tmp = SoundAppender.changeNbBytesPerSample (inputSounds
-			// [i], 2);
-			final Sound tmp = new ConvertedSoundAppender ().resizeToSampleRate (inputSounds [i], 44100);
-			outputSounds [i] = tmp;
-		}
+        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+        final File input = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
+        final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+        final Sound [] inputSounds = new TransformSoundService ().fromInputStream (new ConvertAudioFileService ().callConverter (input));
+        final Sound [] outputSounds = new Sound [inputSounds.length];
+        for (int i = 0; i < inputSounds.length; i++) {
+            // Sound tmp = SoundAppender.changeNbBytesPerSample (inputSounds
+            // [i], 2);
+            final Sound tmp = new ConvertedSoundAppender ().resizeToSampleRate (inputSounds [i], 44100);
+            outputSounds [i] = tmp;
+        }
 
-		final InputStream ais = new TransformSoundService ().toStream (outputSounds, new InputStreamInfo (outputSounds.length, outputSounds [0].getSamples ().length, 2, 44100, false, true));
+        final InputStream ais = new TransformSoundService ().toStream (outputSounds, new InputStreamInfo (outputSounds.length, outputSounds [0].getSamples ().length, 2, 44100, false, true));
 
-		AudioSystem.write ((AudioInputStream) ais, AudioFileFormat.Type.WAVE, output);
+        AudioSystem.write ((AudioInputStream) ais, AudioFileFormat.Type.WAVE, output);
 
-	}
+    }
 }

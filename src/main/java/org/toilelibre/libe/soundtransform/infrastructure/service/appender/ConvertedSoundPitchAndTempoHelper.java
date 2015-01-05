@@ -8,28 +8,28 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTem
 
 public class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelper {
 
-	@Override
-	public Sound pitchAndSetLength (final Sound sound, final float percent, final float lengthInSeconds) {
+    @Override
+    public Sound pitchAndSetLength (final Sound sound, final float percent, final float lengthInSeconds) {
 
-		Sound result = sound;
+        Sound result = sound;
 
-		final PitchSoundTransformation pitcher = new PitchSoundTransformation (percent);
-		if (percent < 98 || percent > 102) {
-			result = pitcher.transform (result);
-		}
-		final double factor = sound.getSamples ().length == 0 ? 0 : 1.0 * lengthInSeconds * sound.getSampleRate () / result.getSamples ().length;
-		if (factor == 0) {
-			return result;
-		} else if (factor < 0.98 || factor > 1.02) {
-			if (factor < 0.98) {
-				final SpeedUpSoundTransformation speedup = new SpeedUpSoundTransformation (100, (float) (1 / factor));
-				result = speedup.transform (result);
+        final PitchSoundTransformation pitcher = new PitchSoundTransformation (percent);
+        if (percent < 98 || percent > 102) {
+            result = pitcher.transform (result);
+        }
+        final double factor = sound.getSamples ().length == 0 ? 0 : 1.0 * lengthInSeconds * sound.getSampleRate () / result.getSamples ().length;
+        if (factor == 0) {
+            return result;
+        } else if (factor < 0.98 || factor > 1.02) {
+            if (factor < 0.98) {
+                final SpeedUpSoundTransformation speedup = new SpeedUpSoundTransformation (100, (float) (1 / factor));
+                result = speedup.transform (result);
 
-			} else if (factor > 1.02) {
-				final SlowdownSoundTransformation slowdown = new SlowdownSoundTransformation (100, (float) factor);
-				result = slowdown.transform (result);
-			}
-		}
-		return result;
-	}
+            } else if (factor > 1.02) {
+                final SlowdownSoundTransformation slowdown = new SlowdownSoundTransformation (100, (float) factor);
+                result = slowdown.transform (result);
+            }
+        }
+        return result;
+    }
 }
