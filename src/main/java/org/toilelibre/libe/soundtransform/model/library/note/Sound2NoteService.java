@@ -1,14 +1,15 @@
 package org.toilelibre.libe.soundtransform.model.library.note;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 public class Sound2NoteService {
 
-    public static Note convert (final String fileName, final Sound [] channels) {
+    public static Note convert (final String fileName, final Sound [] channels) throws SoundTransformException {
         return Sound2NoteService.convert (fileName, channels, Sound2NoteService.frequencyHelper.findFrequency (channels [0]));
     }
 
-    public static Note convert (final String fileName, final Sound [] channels, final int frequency) {
+    public static Note convert (final String fileName, final Sound [] channels, final int frequency) throws SoundTransformException {
         final Sound channel1 = channels [0];
 
         final int attack = 0;

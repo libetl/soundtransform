@@ -9,6 +9,7 @@ import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 
 public class MagnitudeADSRHelper implements ADSRHelper {
@@ -22,7 +23,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
     }
 
     @Override
-    public int findDecay (final Sound channel1, final int attack) {
+    public int findDecay (final Sound channel1, final int attack) throws SoundTransformException {
         final int threshold = 100; // Has to be accurate
         final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int decayIndex = attack;
@@ -60,7 +61,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
     }
 
     @Override
-    public int findRelease (final Sound channel1) {
+    public int findRelease (final Sound channel1) throws SoundTransformException {
         final int threshold = 100;
         final Sound reversed = new ReverseSoundTransformation ().transform (channel1);
         final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
@@ -99,7 +100,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
     }
 
     @Override
-    public int findSustain (final Sound channel1, final int decay) {
+    public int findSustain (final Sound channel1, final int decay) throws SoundTransformException {
         final int threshold = 100; // Has to be accurate
         final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int sustainIndex = decay;

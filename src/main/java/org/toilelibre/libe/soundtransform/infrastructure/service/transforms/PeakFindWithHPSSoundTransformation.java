@@ -1,8 +1,6 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
@@ -14,7 +12,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTransformation {
 
     private double                 threshold;
-    private List<Integer>         loudestfreqs;
+    private int []         loudestfreqs;
     private boolean                 note;
     private int                     fsLimit;
     private int                     windowLength;
@@ -62,7 +60,7 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
         return rightEdge == leftEdge ? sum : sum / (rightEdge - leftEdge);
     }
 
-    public List<Integer> getLoudestFreqs () {
+    public int [] getLoudestFreqs () {
         return this.loudestfreqs;
     }
 
@@ -81,7 +79,7 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
 
     @Override
     public Sound initSound (final Sound input) {
-        this.loudestfreqs = new ArrayList<Integer> ();
+        this.loudestfreqs = new int [(int) (input.getSamples ().length /  this.threshold) + 1];
         if (this.note) {
             this.threshold = input.getSamples ().length;
             this.fsLimit = input.getSamples ().length;
@@ -110,7 +108,7 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
             f0 = this.bestCandidate (peaks);
         }
 
-        this.loudestfreqs.add (f0);
+        this.loudestfreqs [(int) (offset / this.threshold)] = f0;
         return fs;
     }
 }

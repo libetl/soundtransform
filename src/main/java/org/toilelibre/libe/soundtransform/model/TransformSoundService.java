@@ -15,7 +15,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class TransformSoundService implements LogAware {
+public class TransformSoundService implements LogAware<TransformSoundService> {
 
     Observer []                                  observers    = new Observer [0];
 
@@ -57,11 +57,12 @@ public class TransformSoundService implements LogAware {
     }
 
     @Override
-    public void setObservers (final Observer [] observers2) {
+    public TransformSoundService setObservers (final Observer... observers2) {
         this.observers = observers2;
         for (final Observer observer : observers2) {
             this.notifyAll ("Adding observer " + observer.getClass ().getSimpleName ());
         }
+        return this;
     }
 
     public InputStream toStream (final Sound [] channels, final InputStreamInfo inputStreamInfo) throws SoundTransformException {

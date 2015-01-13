@@ -103,7 +103,7 @@ public class Sound2NoteTest {
     }
 
     @Test
-    public void shouldRecognizeAPure440Note () {
+    public void shouldRecognizeAPure440Note () throws SoundTransformException {
         final int length = 10000;
 
         final int samplerate = 44100;
@@ -120,7 +120,7 @@ public class Sound2NoteTest {
     }
 
     @Test
-    public void shouldRecognizeSimpleNotes () {
+    public void shouldRecognizeSimpleNotes () throws SoundTransformException {
         final int length = 2000;
         final int [] notes = new int [] { 261, 293, 329, 349, 392, 440, 493 };
         final String [] notesTitle = new String [] { "C4", "D4", "E4", "F4", "G4", "A4", "B4" };

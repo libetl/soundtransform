@@ -41,7 +41,7 @@ public class SoundGenerateTest {
     }
 
     @Test
-    public void seeHps () {
+    public void seeHps () throws SoundTransformException {
         final int length = 10000;
         final int soundfreq = 440;
         final int sampleInBytes = 2;

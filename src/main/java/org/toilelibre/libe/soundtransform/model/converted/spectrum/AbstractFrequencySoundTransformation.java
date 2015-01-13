@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public abstract class AbstractFrequencySoundTransformation implements SoundTransformation, LogAware {
+public abstract class AbstractFrequencySoundTransformation implements SoundTransformation, LogAware<AbstractFrequencySoundTransformation> {
 
     private Observer []                     observers;
 
@@ -37,8 +37,9 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
     }
 
     @Override
-    public void setObservers (final Observer [] observers1) {
+    public AbstractFrequencySoundTransformation setObservers (final Observer... observers1) {
         this.observers = observers1;
+        return this;
     }
 
     @Override

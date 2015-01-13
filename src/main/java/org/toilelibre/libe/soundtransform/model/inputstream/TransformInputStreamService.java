@@ -12,7 +12,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class TransformInputStreamService implements LogAware {
+public class TransformInputStreamService implements LogAware<TransformInputStreamService> {
 
     public enum TransformInputStreamServiceErrorCode implements ErrorCode {
         COULD_NOT_READ_STREAM ("Could not read stream");
@@ -69,11 +69,12 @@ public class TransformInputStreamService implements LogAware {
     }
 
     @Override
-    public void setObservers (final Observer [] observers2) {
+    public TransformInputStreamService setObservers (final Observer... observers2) {
         this.observers = observers2;
         for (final Observer observer : observers2) {
             this.notifyAll ("Adding observer " + observer.getClass ().getSimpleName ());
         }
+        return this;
     }
 
     public byte [] soundToByteArray (final Sound [] channels, final InputStreamInfo inputStreamInfo) {
