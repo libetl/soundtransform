@@ -79,11 +79,12 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
 
     @Override
     public Sound initSound (final Sound input) {
-        this.loudestfreqs = new int [(int) (input.getSamples ().length /  this.threshold) + 1];
         if (this.note) {
             this.threshold = input.getSamples ().length;
             this.fsLimit = input.getSamples ().length;
+            this.loudestfreqs = new int [1];
         } else {
+            this.loudestfreqs = new int [(int) (input.getSamples ().length /  this.threshold) + 1];
             this.fsLimit = input.getSampleRate ();
         }
         this.soundLength = input.getSamples ().length;
