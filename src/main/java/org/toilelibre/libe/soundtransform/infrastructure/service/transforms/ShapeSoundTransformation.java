@@ -92,7 +92,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
                 Note note = this.findNote (lastFreq, sampleRate, i, lastBegining);
                 this.soundAppender.appendNote (builtSound, note, lastFreq, threshold * lastBegining, channelNum, lengthInSeconds);
                 lastBegining = i;
-                lastFreq = freqs [i] ;
+                lastFreq = freqs [i];
             }
         }
         
