@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
+import org.toilelibre.libe.soundtransform.model.library.note.Note;
 
 public class ConvertedSoundAppender implements SoundAppender {
 
@@ -113,5 +114,20 @@ public class ConvertedSoundAppender implements SoundAppender {
         }
         return new Sound (indexResult == 0 ? new long [0] : Arrays.copyOfRange (result, 0, indexResult - 1), sound.getNbBytesPerSample (), (int) (sound.getSampleRate () * ratio),
                 sound.getChannelNum ());
+    }
+
+	@Override
+    public void appendNote (Sound sound, Note note, double lastFreq, int indexInSound, int channelNum, float lengthInSeconds) {
+
+        if (lengthInSeconds < 0.6) {
+            final Sound sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds * 2);
+            this.append (sound, indexInSound, sustain);
+        } else {
+            final Sound attack = note.getAttack ((int) lastFreq, channelNum, lengthInSeconds);
+            final Sound decay = note.getDecay ((int) lastFreq, channelNum, lengthInSeconds);
+            final Sound sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds);
+            final Sound release = note.getRelease ((int) lastFreq, channelNum, lengthInSeconds);
+            this.append (sound, indexInSound, attack, decay, sustain, release);
+        }
     }
 }

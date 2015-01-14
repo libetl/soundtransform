@@ -33,18 +33,18 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
     private final Pack            pack;
     private final String        instrument;
     private final SoundAppender    soundAppender;
+    private final Silence silence;
     private int []   freqs;
 
     public ShapeSoundTransformation (final Pack pack, final String instrument) {
+        this.silence = new Silence ();
         this.pack = pack;
         this.instrument = instrument;
         this.soundAppender = new org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundAppender ();
     }
     
     public ShapeSoundTransformation (final Pack pack, final String instrument, int[] freqs) {
-        this.pack = pack;
-        this.instrument = instrument;
-        this.soundAppender = new org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundAppender ();
+        this (pack, instrument);
         this.freqs = freqs;
     }
 
@@ -76,13 +76,12 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
 
 	public Sound transform (int length, int threshold, int nbBytesPerSample, int sampleRate, int channelNum) throws SoundTransformException {
         final Sound builtSound = new Sound (new long [length], nbBytesPerSample, sampleRate, channelNum);
-        final Note silence = new Silence ();
         double lastFreq = freqs [0];
         int lastBegining = 0;
         int countZeros = 0;
         for (int i = 0; i < freqs.length; i++) {
             final float lengthInSeconds = (i - lastBegining < 1 ? freqs [i] * threshold : (i - 1 - lastBegining) * threshold * 1.0f) / sampleRate;
-            final boolean freqChanged = Math.abs (freqs [i] - lastFreq) > freqs [i] / 100 && lengthInSeconds > 0.5;
+            final boolean freqChanged = Math.abs (freqs [i] - lastFreq) > freqs [i] / 100;
             if (freqChanged && freqs [i]  == 0) {
                 countZeros++;
             } else {
@@ -90,25 +89,8 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
             }
             if (i == freqs.length - 1 || freqChanged && (lastFreq == 0 || freqs [i]  == 0 && countZeros >= 3)) {
                 countZeros = 0;
-                Note note = silence;
-                if (lastFreq > 50 && Math.abs (sampleRate - lastFreq) > 100) {
-                    this.log (new LogEvent (LogLevel.VERBOSE, "Note between " + lastBegining + "/" + freqs.length + " and " + i + "/" + freqs.length));
-                    if (!this.pack.containsKey (this.instrument)){
-                    	throw new SoundTransformException (ShapeSoundTransformationErrorCode.NOT_AN_INSTRUMENT, 
-                    			new NullPointerException (), this.instrument);
-                    }
-                    note = this.pack.get (this.instrument).getNearestNote ((int) lastFreq);
-                }
-                if (lengthInSeconds < 0.6) {
-                    final Sound sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds * 2);
-                    this.soundAppender.append (builtSound, threshold * lastBegining, sustain);
-                } else {
-                    final Sound attack = note.getAttack ((int) lastFreq, channelNum, lengthInSeconds);
-                    final Sound decay = note.getDecay ((int) lastFreq, channelNum, lengthInSeconds);
-                    final Sound sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds);
-                    final Sound release = note.getRelease ((int) lastFreq, channelNum, lengthInSeconds);
-                    this.soundAppender.append (builtSound, threshold * lastBegining, attack, decay, sustain, release);
-                }
+                Note note = this.findNote (lastFreq, sampleRate, i, lastBegining);
+                this.soundAppender.appendNote (builtSound, note, lastFreq, threshold * lastBegining, channelNum, lengthInSeconds);
                 lastBegining = i;
                 lastFreq = freqs [i] ;
             }
@@ -117,7 +99,20 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
         return builtSound;
     }
 
-	private void getLoudestFreqs (Sound sound, int threshold) {
+	private Note findNote (double lastFreq, int sampleRate, int i, int lastBegining) throws SoundTransformException {
+        Note note = silence;
+        if (lastFreq > 50 && Math.abs (sampleRate - lastFreq) > 100) {
+            this.log (new LogEvent (LogLevel.VERBOSE, "Note (" + lastFreq + "Hz) between " + lastBegining + "/" + freqs.length + " and " + i + "/" + freqs.length));
+            if (!this.pack.containsKey (this.instrument)){
+                throw new SoundTransformException (ShapeSoundTransformationErrorCode.NOT_AN_INSTRUMENT, 
+                        new NullPointerException (), this.instrument);
+            }
+            note = this.pack.get (this.instrument).getNearestNote ((int) lastFreq);
+        }
+        return note;
+    }
+
+    private void getLoudestFreqs (Sound sound, int threshold) {
         final PeakFindWithHPSSoundTransformation peak = new PeakFindWithHPSSoundTransformation (threshold, -1);
         peak.setObservers (this.observers);
         peak.transform (sound);
