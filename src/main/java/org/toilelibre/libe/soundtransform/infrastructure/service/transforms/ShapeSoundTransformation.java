@@ -95,7 +95,8 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
                 lastFreq = freqs [i] ;
             }
         }
-
+        
+        this.freqs = null;
         return builtSound;
     }
 
