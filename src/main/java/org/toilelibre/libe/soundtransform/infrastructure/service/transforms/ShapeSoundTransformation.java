@@ -69,7 +69,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
         this.log (new LogEvent (LogLevel.VERBOSE, "Finding loudest frequencies"));
 
         if (this.freqs == null){
-        	this.getLoudestFreqs (sound, threshold);
+            this.freqs = this.getLoudestFreqs (sound, threshold);
         }
         return this.transform (sound.getSamples ().length, threshold, sound.getNbBytesPerSample (), sound.getSampleRate (), channelNum);
     }
@@ -113,11 +113,11 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
         return note;
     }
 
-    private void getLoudestFreqs (Sound sound, int threshold) {
+    private int [] getLoudestFreqs (Sound sound, int threshold) {
         final PeakFindWithHPSSoundTransformation peak = new PeakFindWithHPSSoundTransformation (threshold, -1);
         peak.setObservers (this.observers);
         peak.transform (sound);
-        freqs = peak.getLoudestFreqs ();
+        return peak.getLoudestFreqs ();
     }
 
 }
