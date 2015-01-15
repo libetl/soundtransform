@@ -30,8 +30,8 @@ public class TransformSoundService implements LogAware<TransformSoundService> {
 
     public TransformSoundService (final Observer... observers) {
         this.setObservers (observers);
-        this.transformInputStreamService = $.create (TransformInputStreamService.class, (Object[])observers);
-        this.callTransformService = $.create (CallTransformService.class, (Object[])observers);
+        this.transformInputStreamService = $.create (TransformInputStreamService.class, (Object []) observers);
+        this.callTransformService = $.create (CallTransformService.class, (Object []) observers);
         this.convertAudioFileService = $.create (ConvertAudioFileService.class);
     }
 
