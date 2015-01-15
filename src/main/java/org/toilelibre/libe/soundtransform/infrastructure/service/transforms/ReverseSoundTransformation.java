@@ -5,7 +5,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class ReverseSoundTransformation implements SoundTransformation {
 
-    private static Sound reverse (final Sound sound) {
+    private Sound reverse (final Sound sound) {
         final long [] data = sound.getSamples ();
         final long [] newdata = new long [sound.getSamples ().length];
         // this is the raw audio data -- no header
@@ -22,6 +22,6 @@ public class ReverseSoundTransformation implements SoundTransformation {
 
     @Override
     public Sound transform (final Sound input) {
-        return ReverseSoundTransformation.reverse (input);
+        return this.reverse (input);
     }
 }

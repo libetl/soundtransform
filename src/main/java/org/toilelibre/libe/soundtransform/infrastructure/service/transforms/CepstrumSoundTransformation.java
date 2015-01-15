@@ -14,7 +14,7 @@ public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformat
     private int []                                    loudestfreqs;
     private int                                       index;
     private int                                       length;
-    private static int                                shortSoundLength = 9000;
+    private static final int                          SHORT_SOUND_LENGTH = 9000;
     private final Spectrum2CepstrumHelper<Complex []> spectrum2CepstrumHelper;
     private final SpectrumHelper<Complex []>          spectrumHelper;
 
@@ -38,7 +38,7 @@ public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformat
 
     @Override
     public double getLowThreshold (final double defaultValue) {
-        if (this.length < CepstrumSoundTransformation.shortSoundLength) {
+        if (this.length < CepstrumSoundTransformation.SHORT_SOUND_LENGTH) {
             return this.length;
         }
         return this.threshold;
@@ -46,7 +46,7 @@ public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformat
 
     @Override
     public int getWindowLength (final double freqmax) {
-        if (this.length < CepstrumSoundTransformation.shortSoundLength) {
+        if (this.length < CepstrumSoundTransformation.SHORT_SOUND_LENGTH) {
             return (int) Math.pow (2, Math.ceil (Math.log (this.length) / Math.log (2)));
         }
         return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
@@ -57,7 +57,7 @@ public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformat
         this.loudestfreqs = new int [(int) (input.getSamples ().length / this.threshold) + 1];
         this.index = 0;
         this.length = input.getSamples ().length;
-        if (this.length < CepstrumSoundTransformation.shortSoundLength) {
+        if (this.length < CepstrumSoundTransformation.SHORT_SOUND_LENGTH) {
             this.loudestfreqs = new int [1];
         } else {
             this.loudestfreqs = new int [(int) (input.getSamples ().length / this.threshold) + 1];

@@ -4,7 +4,7 @@ import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 
 public class NoOpSoundTransformation implements SoundTransformation {
 
-    private static Sound noop (final Sound sound) {
+    private Sound noop (final Sound sound) {
         final long [] data = sound.getSamples ();
 
         // normalized result in newdata
@@ -22,6 +22,6 @@ public class NoOpSoundTransformation implements SoundTransformation {
 
     @Override
     public Sound transform (final Sound input) {
-        return NoOpSoundTransformation.noop (input);
+        return this.noop (input);
     }
 }

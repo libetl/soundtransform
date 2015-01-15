@@ -5,7 +5,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class NormalizeSoundTransformation implements SoundTransformation {
 
-    private static Sound normalize (final Sound sound) {
+    private Sound normalize (final Sound sound) {
         final long [] data = sound.getSamples ();
         final long [] newdata = new long [sound.getSamples ().length];
         // this is the raw audio data -- no header
@@ -35,6 +35,6 @@ public class NormalizeSoundTransformation implements SoundTransformation {
 
     @Override
     public Sound transform (final Sound input) {
-        return NormalizeSoundTransformation.normalize (input);
+        return this.normalize (input);
     }
 }
