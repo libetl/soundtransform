@@ -10,8 +10,12 @@ import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileServ
 import org.toilelibre.libe.soundtransform.model.inputstream.TransformInputStreamService;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
 import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
+import org.toilelibre.libe.soundtransform.model.observer.LogAware;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class AddNoteService {
+public class AddNoteService implements LogAware<AddNoteService> {
 
     enum AddNoteErrorCode implements ErrorCode {
         FILE_NOT_FOUND ("%1s not found"), COULD_NOT_BE_PARSED ("%1s could not be parsed as an ADSR note"), NOT_READABLE ("%1s could not be read"), NOT_SUPPORTED ("%1s is not yet a supported sound file"), ;
@@ -28,6 +32,8 @@ public class AddNoteService {
         }
 
     }
+
+    private Observer [] observers = new Observer [0];
 
     public AddNoteService () {
 
@@ -55,7 +61,7 @@ public class AddNoteService {
         try {
             final java.net.URL completeURL = classLoader.getResource ("notes/" + fileName);
             if (completeURL == null) {
-                System.err.println (fileName + " not found");
+                this.log (new LogEvent (LogLevel.ERROR, fileName + " not found"));
                 return;
             }
             final String completeFileName = completeURL.getFile ();
@@ -72,5 +78,18 @@ public class AddNoteService {
         for (final String fileName : fileNames) {
             this.addNote (range, fileName);
         }
+    }
+
+    @Override
+    public void log (LogEvent event) {
+        for (Observer observer : this.observers) {
+            observer.notify (event);
+        }
+    }
+
+    @Override
+    public AddNoteService setObservers (Observer... observers) {
+        this.observers = observers;
+        return this;
     }
 }
