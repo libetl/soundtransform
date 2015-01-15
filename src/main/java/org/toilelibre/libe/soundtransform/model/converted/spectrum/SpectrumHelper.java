@@ -1,6 +1,5 @@
 package org.toilelibre.libe.soundtransform.model.converted.spectrum;
 
-import org.apache.commons.math3.complex.Complex;
 
 public interface SpectrumHelper<T> {
 
@@ -10,6 +9,6 @@ public interface SpectrumHelper<T> {
 
     int freqFromSampleRate (int freq, int sqr2length, int sampleRate);
 
-    Spectrum<Complex []> hps (Spectrum<Complex []> fs, int factor);
+    Spectrum<T> hps (Spectrum<T> fs, int factor);
 
 }
