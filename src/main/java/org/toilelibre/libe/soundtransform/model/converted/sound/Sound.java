@@ -37,7 +37,7 @@ public class Sound {
 
     @Override
     public String toString () {
-        return new SoundToStringService ($.select (Sound2StringHelper.class)).convert (this);
+        return $.create (SoundToStringService.class).convert (this);
     }
 
     public Sound toSubSound (final int beginning, final int end) {

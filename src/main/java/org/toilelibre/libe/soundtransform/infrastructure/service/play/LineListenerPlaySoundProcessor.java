@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.appender;
+package org.toilelibre.libe.soundtransform.infrastructure.service.play;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,16 +16,16 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.libe.soundtransform.actions.transform.ExportSoundToInputStream;
-import org.toilelibre.libe.soundtransform.model.PlaySoundService;
+import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
-public class PlaySoundClipImpl implements PlaySoundService {
+public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
 
-    public PlaySoundClipImpl () {
+    public LineListenerPlaySoundProcessor () {
 
     }
 

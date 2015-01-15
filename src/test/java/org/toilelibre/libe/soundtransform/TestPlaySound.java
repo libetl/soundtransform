@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.InputStream;
 
 import org.junit.Test;
+import org.toilelibre.libe.soundtransform.infrastructure.service.play.LineListenerPlaySoundProcessor;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
-import org.toilelibre.libe.soundtransform.infrastructure.service.appender.PlaySoundClipImpl;
-import org.toilelibre.libe.soundtransform.model.PlaySoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
+import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 public class TestPlaySound {
     private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
@@ -17,7 +17,7 @@ public class TestPlaySound {
 
     @Test
     public void playBeforeWav () throws SoundTransformException {
-        final PlaySoundService ps = new PlaySoundClipImpl ();
+        final PlaySoundProcessor ps = new LineListenerPlaySoundProcessor ();
         final ConvertAudioFileService convertAudioFileService = $.create (ConvertAudioFileService.class);
         final InputStream ais = convertAudioFileService.callConverter (this.input);
         try {

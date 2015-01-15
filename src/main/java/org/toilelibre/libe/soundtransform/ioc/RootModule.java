@@ -2,18 +2,18 @@ package org.toilelibre.libe.soundtransform.ioc;
 
 import org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundAppender;
 import org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundPitchAndTempoHelper;
-import org.toilelibre.libe.soundtransform.infrastructure.service.appender.PlaySoundClipImpl;
 import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.JavazoomAudioFileHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.WavAudioFormatParser;
 import org.toilelibre.libe.soundtransform.infrastructure.service.fourier.CommonsMath3FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor;
+import org.toilelibre.libe.soundtransform.infrastructure.service.play.LineListenerPlaySoundProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.CallHPSFrequencyHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.MagnitudeADSRHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.sound2string.GraphSound2StringHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.GraphSpectrumToStringHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.HPSSpectrumHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.NaiveSpectrum2CepstrumHelper;
-import org.toilelibre.libe.soundtransform.model.PlaySoundService;
+import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound2StringHelper;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
@@ -33,7 +33,7 @@ public class RootModule extends BinderModule {
 
     @Override
     protected void declare () {
-        super.bind (PlaySoundService.class).to (new PlaySoundClipImpl ());
+        super.bind (PlaySoundProcessor.class).to (new LineListenerPlaySoundProcessor ());
         super.bind (Sound2StringHelper.class).to (new GraphSound2StringHelper ());
         super.bind (SoundAppender.class).to (new ConvertedSoundAppender ());
         super.bind (SoundPitchAndTempoHelper.class).to (new ConvertedSoundPitchAndTempoHelper ());

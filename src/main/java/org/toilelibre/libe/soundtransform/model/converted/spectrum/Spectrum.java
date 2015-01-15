@@ -34,6 +34,6 @@ public class Spectrum {
 
     @Override
     public String toString () {
-        return new Spectrum2StringService ($.select (SpectrumToStringHelper.class)).convert (this);
+        return $.create (Spectrum2StringService.class).convert (this);
     }
 }

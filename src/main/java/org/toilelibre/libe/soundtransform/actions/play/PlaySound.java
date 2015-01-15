@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 public class PlaySound extends Action {
 
     public void play (final Sound [] channels) throws SoundTransformException {
-        final PlaySoundService ps = $.select (PlaySoundService.class);
+        final PlaySoundService ps = $.create (PlaySoundService.class);
         ps.play (channels);
     }
 }
