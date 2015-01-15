@@ -4,7 +4,7 @@ public class SoundTransformRuntimeException extends RuntimeException {
     enum RuntimeErrorCode implements ErrorCode {
         RUNTIME_ERROR ("Runtime error");
 
-        private String    messageFormat;
+        private String messageFormat;
 
         RuntimeErrorCode (final String mF) {
             this.messageFormat = mF;
@@ -20,11 +20,12 @@ public class SoundTransformRuntimeException extends RuntimeException {
     /**
      *
      */
-    private static final long    serialVersionUID    = 2154130846010299931L;
-    private final ErrorCode      errorCode;
-    private final Object []      args;
+    private static final long serialVersionUID = 2154130846010299931L;
+    private final ErrorCode   errorCode;
+    private final Object []   args;
 
-    public SoundTransformRuntimeException (final ErrorCode errorCode, final Exception cause, final Object... args) {
+    public SoundTransformRuntimeException (final ErrorCode errorCode,
+            final Exception cause, final Object... args) {
         super (cause);
         this.errorCode = errorCode;
         this.args = args;

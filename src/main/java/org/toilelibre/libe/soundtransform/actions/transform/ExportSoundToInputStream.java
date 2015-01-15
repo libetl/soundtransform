@@ -9,7 +9,9 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public final class ExportSoundToInputStream extends Action {
 
-    public InputStream toStream (final Sound [] channels, final InputStreamInfo inputStreamInfo) throws SoundTransformException {
+    public InputStream toStream (final Sound [] channels,
+            final InputStreamInfo inputStreamInfo)
+            throws SoundTransformException {
         return this.transformSound.toStream (channels, inputStreamInfo);
     }
 }

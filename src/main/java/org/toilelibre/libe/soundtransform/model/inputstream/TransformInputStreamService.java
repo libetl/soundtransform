@@ -3,7 +3,6 @@ package org.toilelibre.libe.soundtransform.model.inputstream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -12,12 +11,13 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class TransformInputStreamService implements LogAware<TransformInputStreamService> {
+public class TransformInputStreamService implements
+        LogAware<TransformInputStreamService> {
 
     public enum TransformInputStreamServiceErrorCode implements ErrorCode {
         COULD_NOT_READ_STREAM ("Could not read stream");
 
-        private String    messageFormat;
+        private String messageFormat;
 
         TransformInputStreamServiceErrorCode (final String mF) {
             this.messageFormat = mF;
@@ -29,28 +29,38 @@ public class TransformInputStreamService implements LogAware<TransformInputStrea
         }
     }
 
-    private Observer []                observers    = new Observer [0];
+    private Observer []             observers = new Observer [0];
     private final FrameProcessor    frameProcessor;
-    private final AudioFormatParser    audioFormatParser;
+    private final AudioFormatParser audioFormatParser;
 
-    public TransformInputStreamService (final Observer... observers) {
-        this.setObservers (observers);
-        this.frameProcessor = new org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor ();
-        this.audioFormatParser = new org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.AudioFormatParser ();
+    public TransformInputStreamService (FrameProcessor processor1,
+            AudioFormatParser parser1) {
+        this (processor1, parser1, new Observer [0]);
     }
 
-    public Sound [] byteArrayToFrames (final byte [] byteArray, final InputStreamInfo isInfo) throws SoundTransformException {
+    public TransformInputStreamService (FrameProcessor processor1,
+            AudioFormatParser parser1, final Observer... observers) {
+        this.setObservers (observers);
+        this.frameProcessor = processor1;
+        this.audioFormatParser = parser1;
+    }
+
+    public Sound [] byteArrayToFrames (final byte [] byteArray,
+            final InputStreamInfo isInfo) throws SoundTransformException {
         this.notifyAll ("[Test] byteArray -> ByteArrayInputStream");
 
         final ByteArrayInputStream bais = new ByteArrayInputStream (byteArray);
         return this.fromInputStream (bais, isInfo);
     }
 
-    public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {
-        return this.fromInputStream (ais, this.audioFormatParser.getInputStreamInfo (ais));
+    public Sound [] fromInputStream (final InputStream ais)
+            throws SoundTransformException {
+        return this.fromInputStream (ais,
+                this.audioFormatParser.getInputStreamInfo (ais));
     }
 
-    public Sound [] fromInputStream (final InputStream ais, final InputStreamInfo isInfo) throws SoundTransformException {
+    public Sound [] fromInputStream (final InputStream ais,
+            final InputStreamInfo isInfo) throws SoundTransformException {
         this.notifyAll ("Converting input into java object");
         final Sound [] ret = this.frameProcessor.fromInputStream (ais, isInfo);
         return ret;
@@ -69,15 +79,20 @@ public class TransformInputStreamService implements LogAware<TransformInputStrea
     }
 
     @Override
-    public TransformInputStreamService setObservers (final Observer... observers2) {
+    public TransformInputStreamService setObservers (
+            final Observer... observers2) {
         this.observers = observers2;
         for (final Observer observer : observers2) {
-            this.notifyAll ("Adding observer " + observer.getClass ().getSimpleName ());
+            this.notifyAll ("Adding observer "
+                    + observer.getClass ().getSimpleName ());
         }
         return this;
     }
 
-    public byte [] soundToByteArray (final Sound [] channels, final InputStreamInfo inputStreamInfo) {
-        return this.frameProcessor.framesToByteArray (channels, inputStreamInfo.getSampleSize (), inputStreamInfo.isBigEndian (), inputStreamInfo.isPcmSigned ());
+    public byte [] soundToByteArray (final Sound [] channels,
+            final InputStreamInfo inputStreamInfo) {
+        return this.frameProcessor.framesToByteArray (channels,
+                inputStreamInfo.getSampleSize (),
+                inputStreamInfo.isBigEndian (), inputStreamInfo.isPcmSigned ());
     }
 }

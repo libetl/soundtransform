@@ -9,5 +9,6 @@ public interface AudioFormatParser {
 
     public abstract InputStreamInfo fromAudioFormat (Object audioFormat1, long l);
 
-    public abstract InputStreamInfo getInputStreamInfo (InputStream ais) throws SoundTransformException;
+    public abstract InputStreamInfo getInputStreamInfo (InputStream ais)
+            throws SoundTransformException;
 }

@@ -1,12 +1,15 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 
 import org.apache.commons.math3.complex.Complex;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
-public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTransformation {
+public class GaussianEqualizerSoundTransformation extends
+        SimpleFrequencySoundTransformation {
 
-    public GaussianEqualizerSoundTransformation () {
+    public GaussianEqualizerSoundTransformation (FourierTransformHelper helper1) {
+        super (helper1);
     }
 
     private Complex function (final double x) {
@@ -14,13 +17,15 @@ public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTr
     }
 
     @Override
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length) {
+    public Spectrum transformFrequencies (final Spectrum fs, final int offset,
+            final int powOf2NearestLength, final int length) {
         final Complex [] newAmpl = new Complex [powOf2NearestLength];
-        for (double j = 0; j < length; j++) {
+        for (double j = 0 ; j < length ; j++) {
             final double freq = j * fs.getSampleRate () / fs.getState ().length;
-            newAmpl [(int) j] = fs.getState () [(int) j].multiply (this.function (freq));
+            newAmpl [(int) j] = fs.getState () [(int) j].multiply (this
+                    .function (freq));
         }
-        for (int j = length; j < powOf2NearestLength; j++) {
+        for (int j = length ; j < powOf2NearestLength ; j++) {
             newAmpl [j] = new Complex (0, 0);
         }
         return new Spectrum (newAmpl, fs.getSampleRate (), fs.getNbBytes ());

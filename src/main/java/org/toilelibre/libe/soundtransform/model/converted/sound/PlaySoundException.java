@@ -8,11 +8,11 @@ public class PlaySoundException extends SoundTransformException {
     /**
      *
      */
-    private static final long    serialVersionUID    = -4904836048288493711L;
+    private static final long serialVersionUID = -4904836048288493711L;
 
     public enum PlaySoundErrorCode implements ErrorCode {
         COULD_NOT_PLAY_SOUND ("Could not play a sound");
-        private final String    messageFormat;
+        private final String messageFormat;
 
         PlaySoundErrorCode (final String mF) {
             this.messageFormat = mF;

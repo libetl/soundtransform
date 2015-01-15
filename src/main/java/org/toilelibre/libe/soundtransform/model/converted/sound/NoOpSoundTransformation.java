@@ -10,11 +10,12 @@ public class NoOpSoundTransformation implements SoundTransformation {
         // normalized result in newdata
         final long [] newdata = new long [data.length];
 
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0 ; i < data.length ; i++) {
             newdata [i] = data [i];
         }
 
-        return new Sound (newdata, sound.getNbBytesPerSample (), sound.getSampleRate (), sound.getChannelNum ());
+        return new Sound (newdata, sound.getNbBytesPerSample (),
+                sound.getSampleRate (), sound.getChannelNum ());
     }
 
     public NoOpSoundTransformation () {

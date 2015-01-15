@@ -21,13 +21,14 @@ public class NormalizeSoundTransformation implements SoundTransformation {
         // now find the result, with scaling:
         final double maxValue = Math.pow (256, sound.getNbBytesPerSample ()) - 1;
         final double ratio = maxValue / max;
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0 ; i < data.length ; i++) {
             final double rescaled = data [i] * ratio;
             newdata [i] = (long) Math.floor (rescaled);
         }
 
         // normalized result in newdata
-        return new Sound (newdata, sound.getNbBytesPerSample (), sound.getSampleRate (), sound.getChannelNum ());
+        return new Sound (newdata, sound.getNbBytesPerSample (),
+                sound.getSampleRate (), sound.getChannelNum ());
     }
 
     public NormalizeSoundTransformation () {

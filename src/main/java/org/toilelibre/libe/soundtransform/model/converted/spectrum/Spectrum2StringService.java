@@ -2,10 +2,10 @@ package org.toilelibre.libe.soundtransform.model.converted.spectrum;
 
 public class Spectrum2StringService {
 
-    private final SpectrumToStringHelper    spectrumHelper;
+    private final SpectrumToStringHelper spectrumHelper;
 
-    public Spectrum2StringService () {
-        this.spectrumHelper = new org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.GraphSpectrumToStringHelper ();
+    public Spectrum2StringService (SpectrumToStringHelper helper1) {
+        this.spectrumHelper = helper1;
     }
 
     public String convert (final Spectrum spectrum) {

@@ -2,14 +2,17 @@ package org.toilelibre.libe.soundtransform.model.converted.sound;
 
 import java.util.Arrays;
 
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+
 public class Sound {
 
-    private final long []    samples;
-    private final int      nbBytesPerSample;
-    private final int      sampleRate;
-    private final int      channelNum;
+    private final long [] samples;
+    private final int     nbBytesPerSample;
+    private final int     sampleRate;
+    private final int     channelNum;
 
-    public Sound (final long [] samples, final int nbBytesPerSample, final int sampleRate, final int channelNum) {
+    public Sound (final long [] samples, final int nbBytesPerSample,
+            final int sampleRate, final int channelNum) {
         super ();
         this.samples = samples;
         this.nbBytesPerSample = nbBytesPerSample;
@@ -35,11 +38,14 @@ public class Sound {
 
     @Override
     public String toString () {
-        return new SoundToStringService ().convert (this);
+        return new SoundToStringService ($.select (Sound2StringHelper.class))
+                .convert (this);
     }
 
     public Sound toSubSound (final int beginning, final int end) {
-        final long [] newsamples = beginning < end ? Arrays.copyOfRange (this.samples, beginning, end) : new long [0];
-        return new Sound (newsamples, this.nbBytesPerSample, this.sampleRate, this.channelNum);
+        final long [] newsamples = beginning < end ? Arrays.copyOfRange (
+                this.samples, beginning, end) : new long [0];
+        return new Sound (newsamples, this.nbBytesPerSample, this.sampleRate,
+                this.channelNum);
     }
 }

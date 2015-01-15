@@ -8,7 +8,8 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public final class TransformAudioInputStreamUsingSoundTransform extends Action {
 
-    public InputStream transformAudioStream (final InputStream ais, final SoundTransformation... sts) throws SoundTransformException {
+    public InputStream transformAudioStream (final InputStream ais,
+            final SoundTransformation... sts) throws SoundTransformException {
         return this.transformSound.transformAudioStream (ais, sts);
     }
 

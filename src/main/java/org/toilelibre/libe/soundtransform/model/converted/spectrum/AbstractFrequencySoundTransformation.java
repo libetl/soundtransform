@@ -6,14 +6,15 @@ import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public abstract class AbstractFrequencySoundTransformation implements SoundTransformation, LogAware<AbstractFrequencySoundTransformation> {
+public abstract class AbstractFrequencySoundTransformation implements
+        SoundTransformation, LogAware<AbstractFrequencySoundTransformation> {
 
-    private Observer []                     observers;
+    private Observer []                  observers;
 
-    private final FourierTransformHelper    fourierTransformHelper;
+    private final FourierTransformHelper fourierTransformHelper;
 
-    public AbstractFrequencySoundTransformation () {
-        this.fourierTransformHelper = new org.toilelibre.libe.soundtransform.infrastructure.service.fourier.CommonsMath3FourierTransformHelper ();
+    public AbstractFrequencySoundTransformation (FourierTransformHelper helper1) {
+        this.fourierTransformHelper = helper1;
     }
 
     public abstract double getLowThreshold (double defaultValue);
@@ -21,7 +22,8 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
     public abstract int getOffsetFromASimpleLoop (int i, double step);
 
     public int getWindowLength (final double freqmax) {
-        return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
+        return (int) Math
+                .pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
     }
 
     public abstract Sound initSound (Sound input);
@@ -37,17 +39,20 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
     }
 
     @Override
-    public AbstractFrequencySoundTransformation setObservers (final Observer... observers1) {
+    public AbstractFrequencySoundTransformation setObservers (
+            final Observer... observers1) {
         this.observers = observers1;
         return this;
     }
 
     @Override
     public Sound transform (final Sound sound) {
-        final Sound output = this.fourierTransformHelper.transform (this, sound);
+        final Sound output = this.fourierTransformHelper
+                .transform (this, sound);
         return output;
     }
 
-    public abstract Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length, float soundLevelInDB);
+    public abstract Spectrum transformFrequencies (Spectrum fs, int offset,
+            int powOf2NearestLength, int length, float soundLevelInDB);
 
 }

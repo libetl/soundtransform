@@ -11,7 +11,7 @@ public interface FrameProcessor {
     public enum FrameProcessorErrorCode implements ErrorCode {
         WRONG_TYPE ("incorrect stream type");
 
-        private final String    messageFormat;
+        private final String messageFormat;
 
         FrameProcessorErrorCode (final String mF) {
             this.messageFormat = mF;
@@ -23,10 +23,13 @@ public interface FrameProcessor {
         }
     }
 
-    public abstract void byteArrayToFrame (byte [] frame, Sound [] sound, int position, boolean bigEndian, boolean pcmSigned, long neutral);
+    public abstract void byteArrayToFrame (byte [] frame, Sound [] sound,
+            int position, boolean bigEndian, boolean pcmSigned, long neutral);
 
-    public abstract byte [] framesToByteArray (Sound [] channels, int sampleSize, boolean bigEndian, boolean pcmSigned);
+    public abstract byte [] framesToByteArray (Sound [] channels,
+            int sampleSize, boolean bigEndian, boolean pcmSigned);
 
-    public abstract Sound [] fromInputStream (InputStream ais, InputStreamInfo isInfo) throws SoundTransformException;
+    public abstract Sound [] fromInputStream (InputStream ais,
+            InputStreamInfo isInfo) throws SoundTransformException;
 
 }

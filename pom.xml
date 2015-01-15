@@ -61,5 +61,10 @@
           <artifactId>jlayer</artifactId>
           <version>1.0.1-1</version>
       </dependency>
+      <dependency>
+          <groupId>se.jbee</groupId>
+          <artifactId>silk-di</artifactId>
+          <version>0.6</version>
+	</dependency>
   </dependencies>
 </project>

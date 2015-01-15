@@ -1,11 +1,14 @@
 package org.toilelibre.libe.soundtransform;
 
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+
 import java.io.File;
 import java.io.InputStream;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -15,12 +18,17 @@ public class SoundToStringTest {
 
     @Test
     public void testFsToString () throws SoundTransformException {
-        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-        final File input = new File (classLoader.getResource ("before.wav").getFile ());
+        final ClassLoader classLoader = Thread.currentThread ()
+                .getContextClassLoader ();
+        final File input = new File (classLoader.getResource ("before.wav")
+                .getFile ());
 
-        final InputStream ais = new ConvertAudioFileService ().callConverter (input);
-        final Sound s = new TransformSoundService ().fromInputStream (ais) [0];
-        new SimpleFrequencySoundTransformation () {
+        final InputStream ais = $.create (ConvertAudioFileService.class)
+                .callConverter (input);
+        final Sound s = $.create (TransformSoundService.class).fromInputStream (
+                ais) [0];
+        new SimpleFrequencySoundTransformation (
+                $.select (FourierTransformHelper.class)) {
 
             @Override
             public Spectrum transformFrequencies (final Spectrum fs) {
@@ -34,11 +42,15 @@ public class SoundToStringTest {
 
     @Test
     public void testToString () throws SoundTransformException {
-        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-        final File input = new File (classLoader.getResource ("before.wav").getFile ());
+        final ClassLoader classLoader = Thread.currentThread ()
+                .getContextClassLoader ();
+        final File input = new File (classLoader.getResource ("before.wav")
+                .getFile ());
 
-        final InputStream ais = new ConvertAudioFileService ().callConverter (input);
-        System.out.println (new TransformSoundService ().fromInputStream (ais) [0]);
+        final InputStream ais = $.create (ConvertAudioFileService.class)
+                .callConverter (input);
+        System.out.println ($.create (TransformSoundService.class)
+                .fromInputStream (ais) [0]);
 
     }
 }
