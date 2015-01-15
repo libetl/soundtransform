@@ -75,4 +75,8 @@ public class TransformInputStreamService implements LogAware<TransformInputStrea
     public byte [] soundToByteArray (final Sound [] channels, final InputStreamInfo inputStreamInfo) {
         return this.frameProcessor.framesToByteArray (channels, inputStreamInfo.getSampleSize (), inputStreamInfo.isBigEndian (), inputStreamInfo.isPcmSigned ());
     }
+
+    public InputStreamInfo getInputStreamInfo (InputStream ais) throws SoundTransformException {
+        return this.audioFormatParser.getInputStreamInfo (ais);
+    }
 }

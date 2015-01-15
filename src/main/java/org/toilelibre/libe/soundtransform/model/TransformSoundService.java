@@ -92,4 +92,8 @@ public class TransformSoundService implements LogAware<TransformSoundService> {
         this.notifyAll ("Wrote output");
         this.notifyAll ("output : " + aisi2.toString ());
     }
+
+    public InputStreamInfo getInputStreamInfo (InputStream ais) throws SoundTransformException {
+        return this.transformInputStreamService.getInputStreamInfo (ais);
+    }
 }
