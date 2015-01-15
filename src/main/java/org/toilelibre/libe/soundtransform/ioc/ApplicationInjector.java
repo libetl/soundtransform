@@ -16,6 +16,10 @@ import se.jbee.inject.Injector;
 import se.jbee.inject.bootstrap.Bootstrap;
 
 public class ApplicationInjector {
+    private ApplicationInjector () {
+
+    }
+
     public enum ApplicationInjectorErrorCode implements ErrorCode {
 
         INSTANTIATION_FAILED ("Instantiation failed");
@@ -84,6 +88,11 @@ public class ApplicationInjector {
     }
 
     public static class $ {
+
+        private $ () {
+
+        }
+
         public static <T> T select (Class<T> type) {
             return ApplicationInjector.getBean (type);
         }
