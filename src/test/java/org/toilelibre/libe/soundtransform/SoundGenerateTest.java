@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
+import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
@@ -55,7 +56,8 @@ public class SoundGenerateTest {
             signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
-        final SoundTransformation st = new SimpleFrequencySoundTransformation ($.select (FourierTransformHelper.class));
+        @SuppressWarnings ("unchecked")
+        final SoundTransformation st = new SimpleFrequencySoundTransformation<Complex []> ($.select (FourierTransformHelper.class));
         st.transform (s);
 
     }

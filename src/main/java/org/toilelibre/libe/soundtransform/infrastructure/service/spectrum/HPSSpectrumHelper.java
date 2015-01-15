@@ -4,13 +4,19 @@ import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 
-public class HPSSpectrumHelper implements SpectrumHelper {
+public class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
 
-    public static int freqFromSampleRate (final int freq, final int sqr2length, final int sampleRate) {
+    public HPSSpectrumHelper () {
+
+    }
+
+    @Override
+    public int freqFromSampleRate (final int freq, final int sqr2length, final int sampleRate) {
         return (int) (freq * 2.0 * sampleRate / sqr2length);
     }
 
-    private static Spectrum hps (final Spectrum fs, final int factor) {
+    @Override
+    public Spectrum<Complex []> hps (final Spectrum<Complex []> fs, final int factor) {
         final int max = fs.getState ().length / factor;
         final Complex [] result = new Complex [max];
         for (int i = 0 ; i < max ; i++) {
@@ -22,7 +28,7 @@ public class HPSSpectrumHelper implements SpectrumHelper {
             }
             result [i] = new Complex (val);
         }
-        return new Spectrum (result, fs.getSampleRate () / factor, fs.getNbBytes ());
+        return new Spectrum<Complex []> (result, fs.getSampleRate () / factor, fs.getNbBytes ());
     }
 
     /**
@@ -35,12 +41,12 @@ public class HPSSpectrumHelper implements SpectrumHelper {
      * @return a fundamental frequency (in Hz)
      */
     @Override
-    public int f0 (final Spectrum fs, final int hpsfactor) {
-        return HPSSpectrumHelper.freqFromSampleRate (this.getMaxIndex (HPSSpectrumHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * 2 / hpsfactor, fs.getSampleRate ());
+    public int f0 (final Spectrum<Complex []> fs, final int hpsfactor) {
+        return this.freqFromSampleRate (this.getMaxIndex (this.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * 2 / hpsfactor, fs.getSampleRate ());
     }
 
     @Override
-    public int getMaxIndex (final Spectrum fs, final int low, final int high) {
+    public int getMaxIndex (final Spectrum<Complex []> fs, final int low, final int high) {
         double max = 0;
         int maxIndex = 0;
         final int reallow = low == 0 ? 1 : low;

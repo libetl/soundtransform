@@ -1,9 +1,15 @@
 package org.toilelibre.libe.soundtransform.model.converted.spectrum;
 
-public interface SpectrumHelper {
+import org.apache.commons.math3.complex.Complex;
 
-    int f0 (Spectrum fs, int i);
+public interface SpectrumHelper<T> {
 
-    int getMaxIndex (Spectrum fscep, int i, int sampleRate);
+    int f0 (Spectrum<T> fs, int i);
+
+    int getMaxIndex (Spectrum<T> fscep, int i, int sampleRate);
+
+    int freqFromSampleRate (int freq, int sqr2length, int sampleRate);
+
+    Spectrum<Complex []> hps (Spectrum<Complex []> fs, int factor);
 
 }

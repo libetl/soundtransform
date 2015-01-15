@@ -5,6 +5,7 @@ import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import java.io.File;
 import java.io.InputStream;
 
+import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -16,6 +17,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileServ
 
 public class SoundToStringTest {
 
+    @SuppressWarnings ("unchecked")
     @Test
     public void testFsToString () throws SoundTransformException {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
@@ -23,10 +25,10 @@ public class SoundToStringTest {
 
         final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
         final Sound s = $.create (TransformSoundService.class).fromInputStream (ais) [0];
-        new SimpleFrequencySoundTransformation ($.select (FourierTransformHelper.class)) {
+        new SimpleFrequencySoundTransformation<Complex []> ($.select (FourierTransformHelper.class)) {
 
             @Override
-            public Spectrum transformFrequencies (final Spectrum fs) {
+            public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
                 System.out.println (fs);
                 return super.transformFrequencies (fs);
             }

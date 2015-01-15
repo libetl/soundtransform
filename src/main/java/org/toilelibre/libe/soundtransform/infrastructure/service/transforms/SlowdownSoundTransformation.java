@@ -12,7 +12,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 //WARN : long execution time soundtransform
-public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformation {
+public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
     private final float factor;
     private Sound       sound;
@@ -20,7 +20,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     private float       writeIfGreaterEqThan1;
     private int         additionalFrames;
 
-    public SlowdownSoundTransformation (FourierTransformHelper helper1, final int threshold, final float factor) {
+    public SlowdownSoundTransformation (FourierTransformHelper<Complex []> helper1, final int threshold, final float factor) {
         super (helper1);
         this.factor = factor;
         this.threshold = threshold;
@@ -46,7 +46,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     }
 
     @Override
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset) {
+    public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset) {
         final int total = (int) (this.sound.getSamples ().length * this.factor);
         final int logStep = total / 100 - total / 100 % this.threshold;
         // This if helps to only log some of all iterations to avoid being too

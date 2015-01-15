@@ -23,7 +23,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
-public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
+public class LineListenerPlaySoundProcessor implements PlaySoundProcessor<Complex []> {
 
     public LineListenerPlaySoundProcessor () {
 
@@ -80,7 +80,7 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
     }
 
     @Override
-    public Object play (final Spectrum spectrum) throws SoundTransformException {
+    public Object play (final Spectrum<Complex []> spectrum) throws SoundTransformException {
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
         final long [] sampleArray = new long [complexArray.length];

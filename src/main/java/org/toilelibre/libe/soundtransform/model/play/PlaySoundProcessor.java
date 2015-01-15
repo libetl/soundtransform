@@ -7,11 +7,11 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-public interface PlaySoundProcessor {
+public interface PlaySoundProcessor<T> {
 
     Object play (InputStream ais) throws PlaySoundException;
 
     Object play (Sound [] channels) throws SoundTransformException;
 
-    Object play (Spectrum spectrum) throws SoundTransformException;
+    Object play (Spectrum<T> spectrum) throws SoundTransformException;
 }

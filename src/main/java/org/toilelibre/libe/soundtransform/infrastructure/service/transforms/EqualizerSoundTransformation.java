@@ -7,19 +7,19 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransf
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
-public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation {
+public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
     private final double [] ranges;
     private final double [] amplification;
 
-    public EqualizerSoundTransformation (FourierTransformHelper helper1, final double [] ranges1, final double [] amplification1) {
+    public EqualizerSoundTransformation (FourierTransformHelper<Complex []> helper1, final double [] ranges1, final double [] amplification1) {
         super (helper1);
         this.ranges = ranges1;
         this.amplification = amplification1;
     }
 
     @Override
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length) {
+    public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset, final int powOf2NearestLength, final int length) {
         final SplineInterpolator reg = new SplineInterpolator ();
 
         final PolynomialSplineFunction psf = reg.interpolate (this.ranges, this.amplification);
@@ -31,6 +31,6 @@ public class EqualizerSoundTransformation extends SimpleFrequencySoundTransforma
         for (int j = length ; j < powOf2NearestLength ; j++) {
             newAmpl [j] = new Complex (0, 0);
         }
-        return new Spectrum (newAmpl, fs.getSampleRate (), fs.getNbBytes ());
+        return new Spectrum<Complex []> (newAmpl, fs.getSampleRate (), fs.getNbBytes ());
     }
 }

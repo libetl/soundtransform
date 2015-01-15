@@ -101,4 +101,5 @@ public class ApplicationInjector {
             return ApplicationInjector.instantiate (type, additionalParameters);
         }
     }
+
 }

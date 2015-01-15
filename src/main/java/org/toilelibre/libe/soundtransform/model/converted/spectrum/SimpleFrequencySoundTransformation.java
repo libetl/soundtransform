@@ -8,9 +8,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
  * @author lionel
  *
  */
-public class SimpleFrequencySoundTransformation extends AbstractFrequencySoundTransformation {
+public class SimpleFrequencySoundTransformation<T> extends AbstractFrequencySoundTransformation<T> {
 
-    public SimpleFrequencySoundTransformation (FourierTransformHelper helper1) {
+    public SimpleFrequencySoundTransformation (FourierTransformHelper<T> helper1) {
         super (helper1);
     }
 
@@ -30,24 +30,24 @@ public class SimpleFrequencySoundTransformation extends AbstractFrequencySoundTr
         return new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
     }
 
-    public Spectrum transformFrequencies (final Spectrum fs) {
+    public Spectrum<T> transformFrequencies (final Spectrum<T> fs) {
         return fs;
     }
 
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset) {
+    public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset) {
         return this.transformFrequencies (fs);
     }
 
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength) {
+    public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength) {
         return this.transformFrequencies (fs, offset);
     }
 
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length) {
+    public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length) {
         return this.transformFrequencies (fs, offset, powOf2NearestLength);
     }
 
     @Override
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevel) {
+    public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevel) {
         return this.transformFrequencies (fs, offset, powOf2NearestLength, length);
     }
 }

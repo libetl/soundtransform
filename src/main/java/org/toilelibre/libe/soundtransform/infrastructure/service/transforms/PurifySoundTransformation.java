@@ -5,9 +5,9 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransf
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
-public class PurifySoundTransformation extends SimpleFrequencySoundTransformation {
+public class PurifySoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
-    public PurifySoundTransformation (FourierTransformHelper helper1) {
+    public PurifySoundTransformation (FourierTransformHelper<Complex []> helper1) {
         super (helper1);
     }
 
@@ -22,7 +22,7 @@ public class PurifySoundTransformation extends SimpleFrequencySoundTransformatio
     }
 
     @Override
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length) {
+    public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset, final int powOf2NearestLength, final int length) {
         final Complex [] newAmpl = new Complex [powOf2NearestLength];
         int max = 0;
         double maxValue = 0;
@@ -36,7 +36,7 @@ public class PurifySoundTransformation extends SimpleFrequencySoundTransformatio
         for (int j = 0 ; j < powOf2NearestLength ; j++) {
             newAmpl [j] = fs.getState () [j].multiply (Math.exp (-Math.pow (j - max, 2) / 100));
         }
-        return new Spectrum (newAmpl, fs.getSampleRate (), fs.getNbBytes ());
+        return new Spectrum<Complex []> (newAmpl, fs.getSampleRate (), fs.getNbBytes ());
     }
 
 }

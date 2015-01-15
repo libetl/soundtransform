@@ -9,10 +9,10 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.AbstractFrequ
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
-public class CommonsMath3FourierTransformHelper implements FourierTransformHelper {
+public class CommonsMath3FourierTransformHelper implements FourierTransformHelper<Complex []> {
 
     @Override
-    public Sound transform (final AbstractFrequencySoundTransformation st, final Sound sound) {
+    public Sound transform (final AbstractFrequencySoundTransformation<Complex []> st, final Sound sound) {
         final Sound output = st.initSound (sound);
         final double freqmax = sound.getSampleRate ();
         final double threshold = st.getLowThreshold (freqmax);
@@ -41,8 +41,8 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
             }
             Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
 
-            final Spectrum fs = new Spectrum (complexArray, (int) freqmax, sound.getNbBytesPerSample ());
-            final Spectrum result = st.transformFrequencies (fs, i, maxlength, length, (float) (10.0f * Math.log10 (Math.abs (maxValue - minValue))));
+            final Spectrum<Complex []> fs = new Spectrum<Complex []> (complexArray, (int) freqmax, sound.getNbBytesPerSample ());
+            final Spectrum<Complex []> result = st.transformFrequencies (fs, i, maxlength, length, (float) (10.0f * Math.log10 (Math.abs (maxValue - minValue))));
             if (result == null) {
                 continue;
             }

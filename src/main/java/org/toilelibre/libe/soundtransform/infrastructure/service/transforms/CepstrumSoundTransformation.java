@@ -1,5 +1,6 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 
+import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
@@ -7,24 +8,24 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum2CepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 
-public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformation {
+public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
-    private double                        threshold;
-    private int []                        loudestfreqs;
-    private int                           index;
-    private int                           length;
-    private static int                    shortSoundLength = 9000;
-    private final Spectrum2CepstrumHelper spectrum2CepstrumHelper;
-    private final SpectrumHelper          spectrumHelper;
+    private double                                    threshold;
+    private int []                                    loudestfreqs;
+    private int                                       index;
+    private int                                       length;
+    private static int                                shortSoundLength = 9000;
+    private final Spectrum2CepstrumHelper<Complex []> spectrum2CepstrumHelper;
+    private final SpectrumHelper<Complex []>          spectrumHelper;
 
-    public CepstrumSoundTransformation (FourierTransformHelper helper1, Spectrum2CepstrumHelper helper2, SpectrumHelper helper3) {
+    public CepstrumSoundTransformation (FourierTransformHelper<Complex []> helper1, Spectrum2CepstrumHelper<Complex []> helper2, SpectrumHelper<Complex []> helper3) {
         super (helper1);
         this.threshold = 100;
         this.spectrum2CepstrumHelper = helper2;
         this.spectrumHelper = helper3;
     }
 
-    public CepstrumSoundTransformation (FourierTransformHelper helper1, Spectrum2CepstrumHelper helper2, SpectrumHelper helper3, final double threshold) {
+    public CepstrumSoundTransformation (FourierTransformHelper<Complex []> helper1, Spectrum2CepstrumHelper<Complex []> helper2, SpectrumHelper<Complex []> helper3, final double threshold) {
         super (helper1);
         this.threshold = threshold;
         this.spectrum2CepstrumHelper = helper2;
@@ -65,9 +66,9 @@ public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformat
     }
 
     @Override
-    public Spectrum transformFrequencies (final Spectrum fs) {
+    public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
 
-        final Spectrum fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
+        final Spectrum<Complex []> fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
 
         this.loudestfreqs [this.index] = this.spectrumHelper.getMaxIndex (fscep, 0, fs.getSampleRate ());
         this.index++;

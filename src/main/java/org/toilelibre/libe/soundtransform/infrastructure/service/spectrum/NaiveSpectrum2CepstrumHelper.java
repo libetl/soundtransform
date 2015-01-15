@@ -7,10 +7,10 @@ import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum2CepstrumHelper;
 
-public class NaiveSpectrum2CepstrumHelper implements Spectrum2CepstrumHelper {
+public class NaiveSpectrum2CepstrumHelper implements Spectrum2CepstrumHelper<Complex []> {
 
     @Override
-    public Spectrum spectrumToCepstrum (final Spectrum fs) {
+    public Spectrum<Complex []> spectrumToCepstrum (final Spectrum<Complex []> fs) {
         for (int i = 0 ; i < fs.getState ().length ; i++) {
             final Complex c = fs.getState () [i];
             final double log = Math.log (Math.pow (c.abs (), 2));
@@ -18,7 +18,7 @@ public class NaiveSpectrum2CepstrumHelper implements Spectrum2CepstrumHelper {
         }
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 
-        final Spectrum fscep = new Spectrum (fastFourierTransformer.transform (fs.getState (), TransformType.FORWARD), fs.getSampleRate (), fs.getNbBytes ());
+        final Spectrum<Complex []> fscep = new Spectrum<Complex []> (fastFourierTransformer.transform (fs.getState (), TransformType.FORWARD), fs.getSampleRate (), fs.getNbBytes ());
         for (int i = 0 ; i < fscep.getState ().length ; i++) {
             final Complex c = fscep.getState () [i];
             final double sqr = Math.pow (c.abs (), 2);

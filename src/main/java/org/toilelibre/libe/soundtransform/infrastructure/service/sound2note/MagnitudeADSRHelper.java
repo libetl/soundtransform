@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.sound2note;
 
 import java.util.Arrays;
 
+import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.exception.NonMonotonicSequenceException;
 import org.apache.commons.math3.util.MathArrays;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
@@ -16,7 +17,7 @@ import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 
 public class MagnitudeADSRHelper implements ADSRHelper {
 
-    public int computeMagnitude (final Spectrum fs) {
+    public int computeMagnitude (final Spectrum<Complex []> fs) {
         double sum = 0;
         for (int i = 0 ; i < fs.getState ().length ; i++) {
             sum += fs.getState () [i].abs ();
@@ -30,7 +31,8 @@ public class MagnitudeADSRHelper implements ADSRHelper {
         final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int decayIndex = attack;
 
-        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation ($.select (FourierTransformHelper.class)) {
+        @SuppressWarnings ("unchecked")
+        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation<Complex []> ($.select (FourierTransformHelper.class)) {
             int arraylength = 0;
 
             @Override
@@ -45,7 +47,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
             }
 
             @Override
-            public Spectrum transformFrequencies (final Spectrum fs) {
+            public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
                 magnitude [this.arraylength++] = MagnitudeADSRHelper.this.computeMagnitude (fs);
                 return super.transformFrequencies (fs);
             }
@@ -69,7 +71,8 @@ public class MagnitudeADSRHelper implements ADSRHelper {
         final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int releaseIndexFromReversed = 0;
 
-        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation ($.select (FourierTransformHelper.class)) {
+        @SuppressWarnings ("unchecked")
+        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation<Complex []> ($.select (FourierTransformHelper.class)) {
             int arraylength = 0;
 
             @Override
@@ -84,7 +87,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
             }
 
             @Override
-            public Spectrum transformFrequencies (final Spectrum fs) {
+            public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
                 magnitude [this.arraylength++] = MagnitudeADSRHelper.this.computeMagnitude (fs);
                 return super.transformFrequencies (fs);
             }
@@ -107,7 +110,8 @@ public class MagnitudeADSRHelper implements ADSRHelper {
         final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int sustainIndex = decay;
 
-        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation ($.select (FourierTransformHelper.class)) {
+        @SuppressWarnings ("unchecked")
+        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation<Complex []> ($.select (FourierTransformHelper.class)) {
             int arraylength = 0;
 
             @Override
@@ -122,7 +126,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
             }
 
             @Override
-            public Spectrum transformFrequencies (final Spectrum fs) {
+            public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
                 magnitude [this.arraylength++] = MagnitudeADSRHelper.this.computeMagnitude (fs);
                 return super.transformFrequencies (fs);
             }

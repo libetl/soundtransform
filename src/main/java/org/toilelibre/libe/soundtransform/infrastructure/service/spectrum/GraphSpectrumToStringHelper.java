@@ -1,11 +1,12 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.spectrum;
 
+import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToStringHelper;
 
-public class GraphSpectrumToStringHelper implements SpectrumToStringHelper {
+public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Complex []> {
 
     /*
      * (non-Javadoc)
@@ -16,7 +17,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper {
      * .spectrum.Spectrum)
      */
     @Override
-    public String fsToString (final Spectrum fs) {
+    public String fsToString (final Spectrum<Complex []> fs) {
         return this.fsToString (fs, 0, fs.getSampleRate () / 2, 20, 20);
     }
 
@@ -29,11 +30,13 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper {
      * .spectrum.Spectrum, int, int, int, int)
      */
     @Override
-    public String fsToString (final Spectrum fs, final int low, final int high, final int compression, final int height) {
+    public String fsToString (final Spectrum<Complex []> fs, final int low, final int high, final int compression, final int height) {
+        @SuppressWarnings ("unchecked")
+        SpectrumHelper<Complex []> spectrumHelper = $.select (SpectrumHelper.class);
         final StringBuilder sb = new StringBuilder ();
         final float lastFrequency = fs.getState ().length < high ? fs.getState ().length : (float) high;
         final int length = (int) lastFrequency / compression;
-        final int maxIndex = $.select (SpectrumHelper.class).getMaxIndex (fs, low, high);
+        final int maxIndex = spectrumHelper.getMaxIndex (fs, low, high);
         final long maxMagn = (int) (20.0 * Math.log10 (fs.getState () [maxIndex].abs ()));
         final int step = (int) lastFrequency / length;
         final int [] valuesOnPlot = new int [length];
@@ -80,12 +83,12 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper {
         for (int i = 0 ; i < length ; i++) {
             sb.append ("-");
         }
-        sb.append ("> " + HPSSpectrumHelper.freqFromSampleRate (length * compression, (int) lastFrequency * 2, (int) lastFrequency * 2) + "Hz (freq)\n");
+        sb.append ("> " + spectrumHelper.freqFromSampleRate (length * compression, (int) lastFrequency * 2, (int) lastFrequency * 2) + "Hz (freq)\n");
         int i = 0;
         while (i < length) {
             sb.append (" ");
             if (i == maxIndex / compression) {
-                final int foundFreq = HPSSpectrumHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * 2, (int) lastFrequency * 2);
+                final int foundFreq = spectrumHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * 2, (int) lastFrequency * 2);
                 sb.append ("^" + foundFreq + "Hz");
                 i += (foundFreq == 0 ? 1 : Math.log10 (foundFreq)) + 2;
             }

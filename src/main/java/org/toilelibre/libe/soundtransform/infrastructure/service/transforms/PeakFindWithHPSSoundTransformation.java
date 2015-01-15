@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 
 import java.util.Arrays;
 
+import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
@@ -10,22 +11,22 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelpe
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTransformation {
+public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
-    private double               threshold;
-    private int []               loudestfreqs;
-    private boolean              note;
-    private int                  fsLimit;
-    private int                  windowLength;
-    private int                  soundLength;
-    private final SpectrumHelper spectrumHelper;
+    private double                           threshold;
+    private int []                           loudestfreqs;
+    private boolean                          note;
+    private int                              fsLimit;
+    private int                              windowLength;
+    private int                              soundLength;
+    private final SpectrumHelper<Complex []> spectrumHelper;
 
-    private PeakFindWithHPSSoundTransformation (FourierTransformHelper helper1, SpectrumHelper helper2) {
+    private PeakFindWithHPSSoundTransformation (FourierTransformHelper<Complex []> helper1, SpectrumHelper<Complex []> helper2) {
         super (helper1);
         this.spectrumHelper = helper2;
     }
 
-    public PeakFindWithHPSSoundTransformation (FourierTransformHelper helper1, SpectrumHelper helper2, final boolean note) {
+    public PeakFindWithHPSSoundTransformation (FourierTransformHelper<Complex []> helper1, SpectrumHelper<Complex []> helper2, final boolean note) {
         this (helper1, helper2);
         this.note = note;
         this.threshold = 100;
@@ -33,13 +34,13 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
         this.soundLength = -1;
     }
 
-    public PeakFindWithHPSSoundTransformation (FourierTransformHelper helper1, SpectrumHelper helper2, final double threshold) {
+    public PeakFindWithHPSSoundTransformation (FourierTransformHelper<Complex []> helper1, SpectrumHelper<Complex []> helper2, final double threshold) {
         this (helper1, helper2);
         this.threshold = threshold;
         this.windowLength = -1;
     }
 
-    public PeakFindWithHPSSoundTransformation (FourierTransformHelper helper1, SpectrumHelper helper2, final double threshold, final int windowLength) {
+    public PeakFindWithHPSSoundTransformation (FourierTransformHelper<Complex []> helper1, SpectrumHelper<Complex []> helper2, final double threshold, final int windowLength) {
         this (helper1, helper2);
         this.threshold = threshold;
         this.windowLength = windowLength;
@@ -94,7 +95,7 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
     }
 
     @Override
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
+    public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
         final int percent = (int) Math.floor (100.0 * (offset / this.threshold) / (this.soundLength / this.threshold));
         if (percent > Math.floor (100.0 * ((offset - this.threshold) / this.threshold) / (this.soundLength / this.threshold))) {

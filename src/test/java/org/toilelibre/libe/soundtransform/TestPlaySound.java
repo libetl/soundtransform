@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform;
 import java.io.File;
 import java.io.InputStream;
 
+import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.play.LineListenerPlaySoundProcessor;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
@@ -17,7 +18,7 @@ public class TestPlaySound {
 
     @Test
     public void playBeforeWav () throws SoundTransformException {
-        final PlaySoundProcessor ps = new LineListenerPlaySoundProcessor ();
+        final PlaySoundProcessor<Complex []> ps = new LineListenerPlaySoundProcessor ();
         final ConvertAudioFileService convertAudioFileService = $.create (ConvertAudioFileService.class);
         final InputStream ais = convertAudioFileService.callConverter (this.input);
         try {

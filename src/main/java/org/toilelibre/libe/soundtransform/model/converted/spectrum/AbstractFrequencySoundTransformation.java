@@ -6,13 +6,13 @@ import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public abstract class AbstractFrequencySoundTransformation implements SoundTransformation, LogAware<AbstractFrequencySoundTransformation> {
+public abstract class AbstractFrequencySoundTransformation<T> implements SoundTransformation, LogAware<AbstractFrequencySoundTransformation<T>> {
 
-    private Observer []                  observers;
+    private Observer []                     observers;
 
-    private final FourierTransformHelper fourierTransformHelper;
+    private final FourierTransformHelper<T> fourierTransformHelper;
 
-    public AbstractFrequencySoundTransformation (FourierTransformHelper helper1) {
+    public AbstractFrequencySoundTransformation (FourierTransformHelper<T> helper1) {
         this.fourierTransformHelper = helper1;
     }
 
@@ -37,7 +37,7 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
     }
 
     @Override
-    public AbstractFrequencySoundTransformation setObservers (final Observer... observers1) {
+    public AbstractFrequencySoundTransformation<T> setObservers (final Observer... observers1) {
         this.observers = observers1;
         return this;
     }
@@ -48,6 +48,6 @@ public abstract class AbstractFrequencySoundTransformation implements SoundTrans
         return output;
     }
 
-    public abstract Spectrum transformFrequencies (Spectrum fs, int offset, int powOf2NearestLength, int length, float soundLevelInDB);
+    public abstract Spectrum<T> transformFrequencies (Spectrum<T> fs, int offset, int powOf2NearestLength, int length, float soundLevelInDB);
 
 }
