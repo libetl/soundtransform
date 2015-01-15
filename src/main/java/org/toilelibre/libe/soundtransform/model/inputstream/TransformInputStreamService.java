@@ -1,6 +1,5 @@
 package org.toilelibre.libe.soundtransform.model.inputstream;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -40,13 +39,6 @@ public class TransformInputStreamService implements LogAware<TransformInputStrea
         this.setObservers (observers);
         this.frameProcessor = processor1;
         this.audioFormatParser = parser1;
-    }
-
-    public Sound [] byteArrayToFrames (final byte [] byteArray, final InputStreamInfo isInfo) throws SoundTransformException {
-        this.notifyAll ("[Test] byteArray -> ByteArrayInputStream");
-
-        final ByteArrayInputStream bais = new ByteArrayInputStream (byteArray);
-        return this.fromInputStream (bais, isInfo);
     }
 
     public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {

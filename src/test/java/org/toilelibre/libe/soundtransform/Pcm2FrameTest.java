@@ -1,6 +1,9 @@
 package org.toilelibre.libe.soundtransform;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Arrays;
+
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Test;
@@ -22,7 +25,8 @@ public class Pcm2FrameTest {
         }
         System.out.println (Arrays.toString (data));
         final TransformInputStreamService ts = $.create (TransformInputStreamService.class, new PrintlnTransformObserver (true));
-        final Sound [] channels = ts.byteArrayToFrames (data, new InputStreamInfo (2, data.length / 4, 2, 44100.0, false, true));
+        final InputStream bais = new ByteArrayInputStream (data);
+        final Sound [] channels = ts.fromInputStream (bais, new InputStreamInfo (2, data.length / 4, 2, 44100.0, false, true));
 
         final byte [] out = new ByteArrayFrameProcessor ().framesToByteArray (channels, 2, false, true);
         System.out.println (Arrays.toString (out));
