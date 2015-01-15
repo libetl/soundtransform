@@ -1,6 +1,8 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.spectrum;
 
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToStringHelper;
 
 public class GraphSpectrumToStringHelper implements SpectrumToStringHelper {
@@ -31,7 +33,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper {
         final StringBuilder sb = new StringBuilder ();
         final float lastFrequency = fs.getState ().length < high ? fs.getState ().length : (float) high;
         final int length = (int) lastFrequency / compression;
-        final int maxIndex = new HPSSpectrumHelper ().getMaxIndex (fs, low, high);
+        final int maxIndex = $.select (SpectrumHelper.class).getMaxIndex (fs, low, high);
         final long maxMagn = (int) (20.0 * Math.log10 (fs.getState () [maxIndex].abs ()));
         final int step = (int) lastFrequency / length;
         final int [] valuesOnPlot = new int [length];

@@ -42,7 +42,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
         this.silence = new Silence ();
         this.pack = pack;
         this.instrument = instrument;
-        this.soundAppender = new org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundAppender ();
+        this.soundAppender = $.select (SoundAppender.class);
     }
 
     public ShapeSoundTransformation (final Pack pack, final String instrument, int [] freqs) {
