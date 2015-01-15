@@ -13,6 +13,9 @@ public class CallTransformService implements LogAware<CallTransformService> {
 
     Observer [] observers = new Observer [0];
 
+    public CallTransformService () {
+    }
+
     public CallTransformService (final Observer... observers) {
         this.setObservers (observers);
     }

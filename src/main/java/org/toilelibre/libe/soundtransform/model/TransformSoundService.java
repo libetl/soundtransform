@@ -18,7 +18,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class TransformSoundService implements LogAware<TransformSoundService> {
 
-    Observer []                               observers = new Observer [0];
+    private Observer []                       observers = new Observer [0];
 
     private final TransformInputStreamService transformInputStreamService;
     private final CallTransformService        callTransformService;
@@ -30,8 +30,8 @@ public class TransformSoundService implements LogAware<TransformSoundService> {
 
     public TransformSoundService (final Observer... observers) {
         this.setObservers (observers);
-        this.transformInputStreamService = $.create (TransformInputStreamService.class, (Object []) observers);
-        this.callTransformService = $.create (CallTransformService.class, (Object []) observers);
+        this.transformInputStreamService = $.create (TransformInputStreamService.class, new Object [] { observers });
+        this.callTransformService = $.create (CallTransformService.class, new Object [] { observers });
         this.convertAudioFileService = $.create (ConvertAudioFileService.class);
     }
 
