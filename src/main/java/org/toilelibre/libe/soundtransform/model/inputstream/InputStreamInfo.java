@@ -10,9 +10,7 @@ public class InputStreamInfo {
     private final boolean bigEndian;
     private final boolean pcmSigned;
 
-    public InputStreamInfo (final int channels, final long frameLength,
-            final int sampleSize, final double sampleRate,
-            final boolean bigEndian, final boolean pcmSigned) {
+    public InputStreamInfo (final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned) {
         super ();
         this.channels = channels;
         this.frameLength = frameLength;
@@ -48,12 +46,7 @@ public class InputStreamInfo {
 
     @Override
     public String toString () {
-        return String.format (Locale.ENGLISH,
-                "%1s %6.1f Hz, %1d bit, %1s, %1d bytes/frame, %6s",
-                this.isPcmSigned () ? "PCM_SIGNED" : "PCM_UNSIGNED",
-                this.getSampleRate (), this.getSampleSize () * 8,
-                this.getChannels () == 1 ? "mono" : "stereo",
-                this.getSampleSize () * this.getChannels (),
+        return String.format (Locale.ENGLISH, "%1s %6.1f Hz, %1d bit, %1s, %1d bytes/frame, %6s", this.isPcmSigned () ? "PCM_SIGNED" : "PCM_UNSIGNED", this.getSampleRate (), this.getSampleSize () * 8, this.getChannels () == 1 ? "mono" : "stereo", this.getSampleSize () * this.getChannels (),
                 this.isBigEndian () ? "big-endian" : "little-endian");
     }
 }

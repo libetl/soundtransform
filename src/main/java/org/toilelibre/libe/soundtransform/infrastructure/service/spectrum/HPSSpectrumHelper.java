@@ -6,8 +6,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelpe
 
 public class HPSSpectrumHelper implements SpectrumHelper {
 
-    public static int freqFromSampleRate (final int freq, final int sqr2length,
-            final int sampleRate) {
+    public static int freqFromSampleRate (final int freq, final int sqr2length, final int sampleRate) {
         return (int) (freq * 2.0 * sampleRate / sqr2length);
     }
 
@@ -17,15 +16,13 @@ public class HPSSpectrumHelper implements SpectrumHelper {
         for (int i = 0 ; i < max ; i++) {
             double val = fs.getState () [i].abs ();
             for (int j = 1 ; j < factor ; j++) {
-                if (i * factor < fs.getSampleRate () / 2
-                        && i * factor < fs.getState ().length) {
+                if (i * factor < fs.getSampleRate () / 2 && i * factor < fs.getState ().length) {
                     val *= fs.getState () [i * factor].abs ();
                 }
             }
             result [i] = new Complex (val);
         }
-        return new Spectrum (result, fs.getSampleRate () / factor,
-                fs.getNbBytes ());
+        return new Spectrum (result, fs.getSampleRate () / factor, fs.getNbBytes ());
     }
 
     /**
@@ -39,10 +36,7 @@ public class HPSSpectrumHelper implements SpectrumHelper {
      */
     @Override
     public int f0 (final Spectrum fs, final int hpsfactor) {
-        return HPSSpectrumHelper.freqFromSampleRate (
-                this.getMaxIndex (HPSSpectrumHelper.hps (fs, hpsfactor), 0,
-                        fs.getState ().length / hpsfactor),
-                fs.getState ().length * 2 / hpsfactor, fs.getSampleRate ());
+        return HPSSpectrumHelper.freqFromSampleRate (this.getMaxIndex (HPSSpectrumHelper.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * 2 / hpsfactor, fs.getSampleRate ());
     }
 
     @Override
@@ -52,9 +46,7 @@ public class HPSSpectrumHelper implements SpectrumHelper {
         final int reallow = low == 0 ? 1 : low;
         final int realhigh = Math.min (high, fs.getState ().length);
         for (int i = reallow ; i < realhigh ; i++) {
-            if (max < fs.getState () [i].abs ()
-                    && fs.getState () [i].abs () > Math.pow (256,
-                            fs.getNbBytes ()) + 1) {
+            if (max < fs.getState () [i].abs () && fs.getState () [i].abs () > Math.pow (256, fs.getNbBytes ()) + 1) {
                 max = fs.getState () [i].abs ();
                 maxIndex = i;
             }

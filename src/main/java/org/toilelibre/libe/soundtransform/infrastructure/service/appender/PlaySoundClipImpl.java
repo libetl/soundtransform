@@ -25,12 +25,15 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public class PlaySoundClipImpl implements PlaySoundService {
 
+    public PlaySoundClipImpl () {
+
+    }
+
     @Override
     public Object play (final InputStream ais) throws PlaySoundException {
         try {
             if (!(ais instanceof AudioInputStream)) {
-                throw new PlaySoundException (new IllegalArgumentException (""
-                        + ais));
+                throw new PlaySoundException (new IllegalArgumentException ("" + ais));
             }
             final Line.Info linfo = new Line.Info (Clip.class);
             final Line line = AudioSystem.getLine (linfo);
@@ -70,29 +73,25 @@ public class PlaySoundClipImpl implements PlaySoundService {
 
     @Override
     public Object play (final Sound [] channels) throws SoundTransformException {
-        final InputStream ais = new ExportSoundToInputStream ().toStream (
-                channels,
-                new InputStreamInfo (channels.length, channels [0]
-                        .getSamples ().length, channels [0]
-                        .getNbBytesPerSample () * 8, channels [0]
-                        .getSampleRate (), true, false));
 
+        if (channels.length == 0) {
+            return new Object ();
+        }
+
+        final InputStream ais = new ExportSoundToInputStream ().toStream (channels, new InputStreamInfo (channels.length, channels [0].getSamples ().length, channels [0].getNbBytesPerSample () * 8, channels [0].getSampleRate (), true, false));
         return this.play (ais);
     }
 
     @Override
     public Object play (final Spectrum spectrum) throws SoundTransformException {
-        final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (
-                DftNormalization.STANDARD);
-        final Complex [] complexArray = fastFourierTransformer.transform (
-                spectrum.getState (), TransformType.INVERSE);
+        final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
+        final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
         final long [] sampleArray = new long [complexArray.length];
         int i = 0;
         for (final Complex c : complexArray) {
             sampleArray [i++] = (long) c.getReal ();
         }
-        return this.play (new Sound [] { new Sound (sampleArray, spectrum
-                .getNbBytes (), spectrum.getSampleRate (), 0) });
+        return this.play (new Sound [] { new Sound (sampleArray, spectrum.getNbBytes (), spectrum.getSampleRate (), 0) });
     }
 
 }

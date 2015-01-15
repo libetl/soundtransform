@@ -35,37 +35,28 @@ public class ApplicationInjector {
     private static Injector injector = Bootstrap.injector (RootModule.class);
 
     public static <T> T getBean (Class<T> type) {
-        return ApplicationInjector.injector.resolve (Dependency
-                .<T> dependency (type));
+        return ApplicationInjector.injector.resolve (Dependency.<T> dependency (type));
     }
 
     @SuppressWarnings ("unchecked")
-    public static <T> T instantiate (Class<T> type,
-            Object... additionalParameters) {
+    public static <T> T instantiate (Class<T> type, Object... additionalParameters) {
         List<String> warnings = new LinkedList<String> ();
         for (Constructor<?> constructor : type.getDeclaredConstructors ()) {
             Class<?> [] ptypes = constructor.getParameterTypes ();
             Object [] newInstanceParams = new Object [ptypes.length];
             for (int i = 0 ; i < ptypes.length ; i++) {
                 try {
-                    newInstanceParams [i] = ApplicationInjector
-                            .getBean (ptypes [i]);
+                    newInstanceParams [i] = ApplicationInjector.getBean (ptypes [i]);
                 } catch (NoSuchResourceException nsre) {
-                    warnings.add ("Could not find a bean named " + ptypes [i] == null ? null
-                            : ptypes.getClass () + " (" + nsre.getMessage ()
-                                    + ")");
+                    warnings.add ("Could not find a bean named " + ptypes [i] == null ? null : ptypes.getClass () + " (" + nsre.getMessage () + ")");
                 }
             }
             int additionalParamCounter = 0;
             for (int i = 0 ; i < newInstanceParams.length ; i++) {
                 if (newInstanceParams [i] == null) {
                     if (additionalParamCounter < additionalParameters.length) {
-                        if (ptypes [i].isArray ()
-                                && !additionalParameters [additionalParamCounter]
-                                        .getClass ().isArray ()) {
-                            newInstanceParams [i] = Array
-                                    .fill (additionalParameters [additionalParamCounter],
-                                            1);
+                        if (ptypes [i].isArray () && !additionalParameters [additionalParamCounter].getClass ().isArray ()) {
+                            newInstanceParams [i] = Array.fill (additionalParameters [additionalParamCounter], 1);
                         } else {
                             newInstanceParams [i] = additionalParameters [additionalParamCounter];
                         }
@@ -80,22 +71,16 @@ public class ApplicationInjector {
             try {
                 return (T) constructor.newInstance (newInstanceParams);
             } catch (InstantiationException e) {
-                warnings.add ("Constructor " + constructor
-                        + " could not instantiate");
+                warnings.add ("Constructor " + constructor + " could not instantiate");
             } catch (IllegalAccessException e) {
-                warnings.add ("Constructor " + constructor
-                        + " is not accessible");
+                warnings.add ("Constructor " + constructor + " is not accessible");
             } catch (IllegalArgumentException e) {
-                warnings.add ("Constructor " + constructor
-                        + " had an illegal argument");
+                warnings.add ("Constructor " + constructor + " had an illegal argument");
             } catch (InvocationTargetException e) {
-                warnings.add ("Constructor " + constructor
-                        + " could not call a method");
+                warnings.add ("Constructor " + constructor + " could not call a method");
             }
         }
-        throw new SoundTransformRuntimeException (new SoundTransformException (
-                ApplicationInjectorErrorCode.INSTANTIATION_FAILED,
-                new NullPointerException (warnings.toString ())));
+        throw new SoundTransformRuntimeException (new SoundTransformException (ApplicationInjectorErrorCode.INSTANTIATION_FAILED, new NullPointerException (warnings.toString ())));
     }
 
     public static class $ {
@@ -103,8 +88,7 @@ public class ApplicationInjector {
             return ApplicationInjector.getBean (type);
         }
 
-        public static <T> T create (Class<T> type,
-                Object... additionalParameters) {
+        public static <T> T create (Class<T> type, Object... additionalParameters) {
             return ApplicationInjector.instantiate (type, additionalParameters);
         }
     }

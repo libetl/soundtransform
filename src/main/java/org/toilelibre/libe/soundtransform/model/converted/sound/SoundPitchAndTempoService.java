@@ -8,8 +8,7 @@ public class SoundPitchAndTempoService {
         this.helper = helper1;
     }
 
-    public Sound callTransform (final Sound sound, final float percent,
-            final float lengthInSeconds) {
+    public Sound callTransform (final Sound sound, final float percent, final float lengthInSeconds) {
         return this.helper.pitchAndSetLength (sound, percent, lengthInSeconds);
     }
 }

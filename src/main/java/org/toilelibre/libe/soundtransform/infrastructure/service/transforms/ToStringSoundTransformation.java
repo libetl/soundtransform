@@ -25,8 +25,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
         this.sb = new StringBuilder ();
 
         final float lastSample = input.getSamples ().length;
-        final long maxMagn = (long) Math
-                .pow (256, input.getNbBytesPerSample ()) / 2;
+        final long maxMagn = (long) Math.pow (256, input.getNbBytesPerSample ()) / 2;
         final int step = (int) lastSample / this.length;
         final int [] valuesOnPlot = new int [this.length];
         int maxPlotValue = 0;
@@ -35,8 +34,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
             double maxValue = 0;
             for (int j = 0 ; j < step ; j++) {
                 final int x = i * step + j;
-                if (x < input.getSamples ().length
-                        && maxValue < input.getSamples () [x]) {
+                if (x < input.getSamples ().length && maxValue < input.getSamples () [x]) {
                     maxValue = input.getSamples () [x];
                 }
             }
@@ -73,9 +71,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
         for (int i = 0 ; i < this.length ; i++) {
             this.sb.append ("-");
         }
-        this.sb.append ("> "
-                + (int) (this.length * compression / input.getSampleRate ())
-                + "s (time)\n");
+        this.sb.append ("> " + (int) (this.length * compression / input.getSampleRate ()) + "s (time)\n");
 
         return input;
     }

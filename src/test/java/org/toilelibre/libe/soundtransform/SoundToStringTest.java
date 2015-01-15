@@ -18,17 +18,12 @@ public class SoundToStringTest {
 
     @Test
     public void testFsToString () throws SoundTransformException {
-        final ClassLoader classLoader = Thread.currentThread ()
-                .getContextClassLoader ();
-        final File input = new File (classLoader.getResource ("before.wav")
-                .getFile ());
+        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+        final File input = new File (classLoader.getResource ("before.wav").getFile ());
 
-        final InputStream ais = $.create (ConvertAudioFileService.class)
-                .callConverter (input);
-        final Sound s = $.create (TransformSoundService.class).fromInputStream (
-                ais) [0];
-        new SimpleFrequencySoundTransformation (
-                $.select (FourierTransformHelper.class)) {
+        final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
+        final Sound s = $.create (TransformSoundService.class).fromInputStream (ais) [0];
+        new SimpleFrequencySoundTransformation ($.select (FourierTransformHelper.class)) {
 
             @Override
             public Spectrum transformFrequencies (final Spectrum fs) {
@@ -42,15 +37,11 @@ public class SoundToStringTest {
 
     @Test
     public void testToString () throws SoundTransformException {
-        final ClassLoader classLoader = Thread.currentThread ()
-                .getContextClassLoader ();
-        final File input = new File (classLoader.getResource ("before.wav")
-                .getFile ());
+        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+        final File input = new File (classLoader.getResource ("before.wav").getFile ());
 
-        final InputStream ais = $.create (ConvertAudioFileService.class)
-                .callConverter (input);
-        System.out.println ($.create (TransformSoundService.class)
-                .fromInputStream (ais) [0]);
+        final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
+        System.out.println ($.create (TransformSoundService.class).fromInputStream (ais) [0]);
 
     }
 }

@@ -8,8 +8,7 @@ public class SoundTransformException extends Exception {
     private final ErrorCode   errorCode;
     private final Object []   args;
 
-    public SoundTransformException (final ErrorCode errorCode,
-            final Exception cause, final Object... args) {
+    public SoundTransformException (final ErrorCode errorCode, final Exception cause, final Object... args) {
         super (cause);
         this.errorCode = errorCode;
         this.args = args;

@@ -26,39 +26,28 @@ public class TransformSoundService implements LogAware<TransformSoundService> {
     private final CallTransformService        callTransformService;
     private final ConvertAudioFileService     convertAudioFileService;
 
-    public TransformSoundService (FrameProcessor processor,
-            AudioFileHelper helper, AudioFormatParser parser) {
+    public TransformSoundService (FrameProcessor processor, AudioFileHelper helper, AudioFormatParser parser) {
         this (processor, helper, parser, new Observer [0]);
     }
 
-    public TransformSoundService (FrameProcessor processor,
-            AudioFileHelper helper, AudioFormatParser parser,
-            final Observer... observers) {
+    public TransformSoundService (FrameProcessor processor, AudioFileHelper helper, AudioFormatParser parser, final Observer... observers) {
         this.setObservers (observers);
-        this.transformInputStreamService = new TransformInputStreamService (
-                processor, parser, observers);
+        this.transformInputStreamService = new TransformInputStreamService (processor, parser, observers);
         this.callTransformService = new CallTransformService (observers);
-        this.convertAudioFileService = new ConvertAudioFileService (helper,
-                parser);
+        this.convertAudioFileService = new ConvertAudioFileService (helper, parser);
     }
 
-    public Sound [] convertAndApply (final InputStream ais,
-            final SoundTransformation... transforms)
-            throws SoundTransformException {
-        final Sound [] in = this.transformInputStreamService
-                .fromInputStream (ais);
-        final Sound [] out = this.callTransformService.transformAudioStream (
-                in, transforms);
+    public Sound [] convertAndApply (final InputStream ais, final SoundTransformation... transforms) throws SoundTransformException {
+        final Sound [] in = this.transformInputStreamService.fromInputStream (ais);
+        final Sound [] out = this.callTransformService.transformAudioStream (in, transforms);
         return out;
     }
 
-    public Sound [] fromInputStream (final InputStream ais)
-            throws SoundTransformException {
+    public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {
         return this.transformInputStreamService.fromInputStream (ais);
     }
 
-    public Sound [] fromInputStream (final InputStream ais,
-            final InputStreamInfo isInfo) throws SoundTransformException {
+    public Sound [] fromInputStream (final InputStream ais, final InputStreamInfo isInfo) throws SoundTransformException {
         return this.transformInputStreamService.fromInputStream (ais, isInfo);
     }
 
@@ -78,41 +67,29 @@ public class TransformSoundService implements LogAware<TransformSoundService> {
     public TransformSoundService setObservers (final Observer... observers2) {
         this.observers = observers2;
         for (final Observer observer : observers2) {
-            this.notifyAll ("Adding observer "
-                    + observer.getClass ().getSimpleName ());
+            this.notifyAll ("Adding observer " + observer.getClass ().getSimpleName ());
         }
         return this;
     }
 
-    public InputStream toStream (final Sound [] channels,
-            final InputStreamInfo inputStreamInfo)
-            throws SoundTransformException {
+    public InputStream toStream (final Sound [] channels, final InputStreamInfo inputStreamInfo) throws SoundTransformException {
         this.notifyAll ("Creating output file");
-        final byte [] byteArray = this.transformInputStreamService
-                .soundToByteArray (channels, inputStreamInfo);
-        return this.convertAudioFileService.toStream (byteArray,
-                inputStreamInfo);
+        final byte [] byteArray = this.transformInputStreamService.soundToByteArray (channels, inputStreamInfo);
+        return this.convertAudioFileService.toStream (byteArray, inputStreamInfo);
     }
 
-    public InputStream transformAudioStream (final InputStream ais,
-            final SoundTransformation... transforms)
-            throws SoundTransformException {
-        return this.toStream (this.convertAndApply (ais, transforms),
-                this.convertAudioFileService.callAudioFormatParser (ais));
+    public InputStream transformAudioStream (final InputStream ais, final SoundTransformation... transforms) throws SoundTransformException {
+        return this.toStream (this.convertAndApply (ais, transforms), this.convertAudioFileService.callAudioFormatParser (ais));
     }
 
-    public void transformFile (final File fOrigin, final File fDest,
-            final SoundTransformation... sts) throws SoundTransformException {
+    public void transformFile (final File fOrigin, final File fDest, final SoundTransformation... sts) throws SoundTransformException {
         final File file = fOrigin;
-        final InputStream ais1 = this.convertAudioFileService
-                .callConverter (file);
-        final InputStreamInfo aisi1 = this.convertAudioFileService
-                .callAudioFormatParser (ais1);
+        final InputStream ais1 = this.convertAudioFileService.callConverter (file);
+        final InputStreamInfo aisi1 = this.convertAudioFileService.callAudioFormatParser (ais1);
         this.notifyAll ("input : " + aisi1.toString ());
         InputStream ais2 = ais1;
         ais2 = this.transformAudioStream (ais1, sts);
-        final InputStreamInfo aisi2 = this.convertAudioFileService
-                .callAudioFormatParser (ais2);
+        final InputStreamInfo aisi2 = this.convertAudioFileService.callAudioFormatParser (ais2);
         this.convertAudioFileService.writeInputStream (ais2, fDest);
         this.notifyAll ("Wrote output");
         this.notifyAll ("output : " + aisi2.toString ());

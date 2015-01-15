@@ -8,8 +8,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
  * @author lionel
  *
  */
-public class SimpleFrequencySoundTransformation extends
-        AbstractFrequencySoundTransformation {
+public class SimpleFrequencySoundTransformation extends AbstractFrequencySoundTransformation {
 
     public SimpleFrequencySoundTransformation (FourierTransformHelper helper1) {
         super (helper1);
@@ -28,8 +27,7 @@ public class SimpleFrequencySoundTransformation extends
     @Override
     public Sound initSound (final Sound input) {
         final long [] newdata = new long [input.getSamples ().length];
-        return new Sound (newdata, input.getNbBytesPerSample (),
-                input.getSampleRate (), input.getChannelNum ());
+        return new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
     }
 
     public Spectrum transformFrequencies (final Spectrum fs) {
@@ -40,21 +38,16 @@ public class SimpleFrequencySoundTransformation extends
         return this.transformFrequencies (fs);
     }
 
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset,
-            final int powOf2NearestLength) {
+    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength) {
         return this.transformFrequencies (fs, offset);
     }
 
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset,
-            final int powOf2NearestLength, final int length) {
+    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length) {
         return this.transformFrequencies (fs, offset, powOf2NearestLength);
     }
 
     @Override
-    public Spectrum transformFrequencies (final Spectrum fs, final int offset,
-            final int powOf2NearestLength, final int length,
-            final float soundLevel) {
-        return this.transformFrequencies (fs, offset, powOf2NearestLength,
-                length);
+    public Spectrum transformFrequencies (final Spectrum fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevel) {
+        return this.transformFrequencies (fs, offset, powOf2NearestLength, length);
     }
 }

@@ -30,20 +30,15 @@ public class TestDetectNotes {
             t [i] = (int) (value + Math.random () * tenpercent - tenpercent / 2);
         }
 
-        new ShapeSoundTransformation (Library.defaultPack, "simple_piano", t)
-                .setObservers (new PrintlnTransformObserver (),
-                        new Observer () {
+        new ShapeSoundTransformation (Library.defaultPack, "simple_piano", t).setObservers (new PrintlnTransformObserver (), new Observer () {
 
-                            @Override
-                            public void notify (LogEvent logEvent) {
-                                messages.add (logEvent.toString ());
-                            }
-                        }).transform (200000, 100, 2, 44100, 1);
-        Assert.assertTrue (messages.get (0).endsWith (
-                " between 200/2000 and 602/2000"));
-        Assert.assertTrue (messages.get (1).endsWith (
-                " between 800/2000 and 1002/2000"));
-        Assert.assertTrue (messages.get (2).endsWith (
-                " between 1100/2000 and 1602/2000"));
+            @Override
+            public void notify (LogEvent logEvent) {
+                messages.add (logEvent.toString ());
+            }
+        }).transform (200000, 100, 2, 44100, 1);
+        Assert.assertTrue (messages.get (0).endsWith (" between 200/2000 and 602/2000"));
+        Assert.assertTrue (messages.get (1).endsWith (" between 800/2000 and 1002/2000"));
+        Assert.assertTrue (messages.get (2).endsWith (" between 1100/2000 and 1602/2000"));
     }
 }

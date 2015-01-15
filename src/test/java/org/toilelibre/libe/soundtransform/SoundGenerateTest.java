@@ -30,24 +30,15 @@ public class SoundGenerateTest {
         final int samplerate = 44100;
         final long [] signal = new long [length];
         for (int j = 0 ; j < length ; j++) {
-            signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI
-                    / samplerate) * 32768.0);
+            signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
 
-        final InputStream ais = $.create (TransformSoundService.class)
-                .toStream (
-                        new Sound [] { s },
-                        new InputStreamInfo (1, s.getSamples ().length,
-                                sampleInBytes * 8, samplerate, false, true));
-        final File fDest = new File (
-                new File (Thread.currentThread ().getContextClassLoader ()
-                        .getResource ("before.wav").getFile ()).getParent ()
-                        + "/after.wav");
+        final InputStream ais = $.create (TransformSoundService.class).toStream (new Sound [] { s }, new InputStreamInfo (1, s.getSamples ().length, sampleInBytes * 8, samplerate, false, true));
+        final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
         try {
-            AudioSystem.write ((AudioInputStream) ais,
-                    AudioFileFormat.Type.WAVE, fDest);
+            AudioSystem.write ((AudioInputStream) ais, AudioFileFormat.Type.WAVE, fDest);
         } catch (final IOException e) {
         }
     }
@@ -61,12 +52,10 @@ public class SoundGenerateTest {
         final int samplerate = 44100;
         final long [] signal = new long [length];
         for (int j = 0 ; j < length ; j++) {
-            signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI
-                    / samplerate) * 32768.0);
+            signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
-        final SoundTransformation st = new SimpleFrequencySoundTransformation (
-                $.select (FourierTransformHelper.class));
+        final SoundTransformation st = new SimpleFrequencySoundTransformation ($.select (FourierTransformHelper.class));
         st.transform (s);
 
     }

@@ -12,8 +12,7 @@ public class CallHPSFrequencyHelper implements FrequencyHelper {
         double sum = 0;
         int nb = 0;
 
-        final PeakFindWithHPSSoundTransformation peak = $.create (
-                PeakFindWithHPSSoundTransformation.class, true);
+        final PeakFindWithHPSSoundTransformation peak = $.create (PeakFindWithHPSSoundTransformation.class, true);
         peak.transform (channel1);
         final int [] magnitude = peak.getLoudestFreqs ();
 

@@ -23,13 +23,10 @@ public interface FrameProcessor {
         }
     }
 
-    public abstract void byteArrayToFrame (byte [] frame, Sound [] sound,
-            int position, boolean bigEndian, boolean pcmSigned, long neutral);
+    public abstract void byteArrayToFrame (byte [] frame, Sound [] sound, int position, boolean bigEndian, boolean pcmSigned, long neutral);
 
-    public abstract byte [] framesToByteArray (Sound [] channels,
-            int sampleSize, boolean bigEndian, boolean pcmSigned);
+    public abstract byte [] framesToByteArray (Sound [] channels, int sampleSize, boolean bigEndian, boolean pcmSigned);
 
-    public abstract Sound [] fromInputStream (InputStream ais,
-            InputStreamInfo isInfo) throws SoundTransformException;
+    public abstract Sound [] fromInputStream (InputStream ais, InputStreamInfo isInfo) throws SoundTransformException;
 
 }

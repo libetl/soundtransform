@@ -38,27 +38,18 @@ public class Library {
                 {
                     this.put ("simple_piano", new Range () {
                         {
-                            $.create (AddNoteService.class).addNotes (this,
-                                    "Piano1-C.wav", "Piano3-E.wav",
-                                    "Piano5-G.wav", "Piano7-B.wav",
-                                    "Piano2-D.wav", "Piano4-F.wav",
-                                    "Piano6-A.wav", "Piano8-C.wav");
+                            $.create (AddNoteService.class).addNotes (this, "Piano1-C.wav", "Piano3-E.wav", "Piano5-G.wav", "Piano7-B.wav", "Piano2-D.wav", "Piano4-F.wav", "Piano6-A.wav", "Piano8-C.wav");
                         }
                     });
                     this.put ("g-piano", new Range () {
                         {
-                            $.create (AddNoteService.class).addNotes (this,
-                                    "g-piano1.wav", "g-piano2.wav",
-                                    "g-piano3.wav", "g-piano4.wav",
-                                    "g-piano5.wav", "g-piano6.wav");
+                            $.create (AddNoteService.class).addNotes (this, "g-piano1.wav", "g-piano2.wav", "g-piano3.wav", "g-piano4.wav", "g-piano5.wav", "g-piano6.wav");
                         }
                     });
                     this.put ("chord_piano", new Range () {
                         {
-                            $.create (AddNoteService.class).addNote (this,
-                                    "g-piano3.wav", 329);
-                            $.create (AddNoteService.class).addNote (this,
-                                    "g-piano4.wav", 293);
+                            $.create (AddNoteService.class).addNote (this, "g-piano3.wav", 329);
+                            $.create (AddNoteService.class).addNote (this, "g-piano4.wav", 293);
                         }
                     });
                 }

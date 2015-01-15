@@ -21,15 +21,10 @@ public class Pcm2FrameTest {
             data [i] = (byte) rdg.nextInt (Byte.MIN_VALUE, Byte.MAX_VALUE);
         }
         System.out.println (Arrays.toString (data));
-        final TransformInputStreamService ts = $.create (
-                TransformInputStreamService.class,
-                new PrintlnTransformObserver (true));
-        final Sound [] channels = ts.byteArrayToFrames (data,
-                new InputStreamInfo (2, data.length / 4, 2, 44100.0, false,
-                        true));
+        final TransformInputStreamService ts = $.create (TransformInputStreamService.class, new PrintlnTransformObserver (true));
+        final Sound [] channels = ts.byteArrayToFrames (data, new InputStreamInfo (2, data.length / 4, 2, 44100.0, false, true));
 
-        final byte [] out = new ByteArrayFrameProcessor ().framesToByteArray (
-                channels, 2, false, true);
+        final byte [] out = new ByteArrayFrameProcessor ().framesToByteArray (channels, 2, false, true);
         System.out.println (Arrays.toString (out));
     }
 }

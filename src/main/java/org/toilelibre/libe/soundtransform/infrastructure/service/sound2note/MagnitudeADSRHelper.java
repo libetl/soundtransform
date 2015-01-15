@@ -25,15 +25,12 @@ public class MagnitudeADSRHelper implements ADSRHelper {
     }
 
     @Override
-    public int findDecay (final Sound channel1, final int attack)
-            throws SoundTransformException {
+    public int findDecay (final Sound channel1, final int attack) throws SoundTransformException {
         final int threshold = 100; // Has to be accurate
-        final double [] magnitude = new double [channel1.getSamples ().length
-                / threshold + 1];
+        final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int decayIndex = attack;
 
-        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation (
-                $.select (FourierTransformHelper.class)) {
+        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation ($.select (FourierTransformHelper.class)) {
             int arraylength = 0;
 
             @Override
@@ -49,8 +46,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 
             @Override
             public Spectrum transformFrequencies (final Spectrum fs) {
-                magnitude [this.arraylength++] = MagnitudeADSRHelper.this
-                        .computeMagnitude (fs);
+                magnitude [this.arraylength++] = MagnitudeADSRHelper.this.computeMagnitude (fs);
                 return super.transformFrequencies (fs);
             }
 
@@ -59,9 +55,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
         magnitudeTransform.transform (channel1);
 
         try {
-            MathArrays.checkOrder (
-                    Arrays.copyOfRange (magnitude, attack, magnitude.length),
-                    MathArrays.OrderDirection.INCREASING, true);
+            MathArrays.checkOrder (Arrays.copyOfRange (magnitude, attack, magnitude.length), MathArrays.OrderDirection.INCREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
             decayIndex = (nmse.getIndex () - 1) * threshold;
         }
@@ -69,17 +63,13 @@ public class MagnitudeADSRHelper implements ADSRHelper {
     }
 
     @Override
-    public int findRelease (final Sound channel1)
-            throws SoundTransformException {
+    public int findRelease (final Sound channel1) throws SoundTransformException {
         final int threshold = 100;
-        final Sound reversed = new ReverseSoundTransformation ()
-                .transform (channel1);
-        final double [] magnitude = new double [channel1.getSamples ().length
-                / threshold + 1];
+        final Sound reversed = new ReverseSoundTransformation ().transform (channel1);
+        final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int releaseIndexFromReversed = 0;
 
-        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation (
-                $.select (FourierTransformHelper.class)) {
+        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation ($.select (FourierTransformHelper.class)) {
             int arraylength = 0;
 
             @Override
@@ -95,8 +85,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 
             @Override
             public Spectrum transformFrequencies (final Spectrum fs) {
-                magnitude [this.arraylength++] = MagnitudeADSRHelper.this
-                        .computeMagnitude (fs);
+                magnitude [this.arraylength++] = MagnitudeADSRHelper.this.computeMagnitude (fs);
                 return super.transformFrequencies (fs);
             }
 
@@ -105,8 +94,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
         magnitudeTransform.transform (reversed);
 
         try {
-            MathArrays.checkOrder (magnitude,
-                    MathArrays.OrderDirection.INCREASING, true);
+            MathArrays.checkOrder (magnitude, MathArrays.OrderDirection.INCREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
             releaseIndexFromReversed = (nmse.getIndex () - 1) * threshold;
         }
@@ -114,15 +102,12 @@ public class MagnitudeADSRHelper implements ADSRHelper {
     }
 
     @Override
-    public int findSustain (final Sound channel1, final int decay)
-            throws SoundTransformException {
+    public int findSustain (final Sound channel1, final int decay) throws SoundTransformException {
         final int threshold = 100; // Has to be accurate
-        final double [] magnitude = new double [channel1.getSamples ().length
-                / threshold + 1];
+        final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int sustainIndex = decay;
 
-        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation (
-                $.select (FourierTransformHelper.class)) {
+        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation ($.select (FourierTransformHelper.class)) {
             int arraylength = 0;
 
             @Override
@@ -138,8 +123,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 
             @Override
             public Spectrum transformFrequencies (final Spectrum fs) {
-                magnitude [this.arraylength++] = MagnitudeADSRHelper.this
-                        .computeMagnitude (fs);
+                magnitude [this.arraylength++] = MagnitudeADSRHelper.this.computeMagnitude (fs);
                 return super.transformFrequencies (fs);
             }
 
@@ -148,9 +132,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
         magnitudeTransform.transform (channel1);
 
         try {
-            MathArrays.checkOrder (Arrays.copyOfRange (magnitude, decay
-                    / threshold, magnitude.length),
-                    MathArrays.OrderDirection.DECREASING, true);
+            MathArrays.checkOrder (Arrays.copyOfRange (magnitude, decay / threshold, magnitude.length), MathArrays.OrderDirection.DECREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
             sustainIndex = (nmse.getIndex () - 1) * threshold;
         }

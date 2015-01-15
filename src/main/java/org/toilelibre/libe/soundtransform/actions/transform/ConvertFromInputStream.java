@@ -9,13 +9,11 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public final class ConvertFromInputStream extends Action {
 
-    public Sound [] fromInputStream (final InputStream ais)
-            throws SoundTransformException {
+    public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {
         return this.transformSound.fromInputStream (ais);
     }
 
-    public Sound [] fromInputStream (final InputStream ais,
-            final InputStreamInfo isInfo) throws SoundTransformException {
+    public Sound [] fromInputStream (final InputStream ais, final InputStreamInfo isInfo) throws SoundTransformException {
         return this.transformSound.fromInputStream (ais, isInfo);
     }
 }

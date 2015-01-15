@@ -24,8 +24,7 @@ public class SoundTransformRuntimeException extends RuntimeException {
     private final ErrorCode   errorCode;
     private final Object []   args;
 
-    public SoundTransformRuntimeException (final ErrorCode errorCode,
-            final Exception cause, final Object... args) {
+    public SoundTransformRuntimeException (final ErrorCode errorCode, final Exception cause, final Object... args) {
         super (cause);
         this.errorCode = errorCode;
         this.args = args;

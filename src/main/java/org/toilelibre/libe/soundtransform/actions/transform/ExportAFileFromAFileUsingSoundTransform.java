@@ -8,8 +8,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public final class ExportAFileFromAFileUsingSoundTransform extends Action {
 
-    public void transformFile (final File fOrigin, final File fDest,
-            final SoundTransformation... sts) throws SoundTransformException {
+    public void transformFile (final File fOrigin, final File fDest, final SoundTransformation... sts) throws SoundTransformException {
         this.transformSound.transformFile (fOrigin, fDest, sts);
     }
 

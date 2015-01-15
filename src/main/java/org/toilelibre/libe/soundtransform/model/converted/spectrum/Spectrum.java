@@ -9,8 +9,7 @@ public class Spectrum {
     private final int        sampleRate;
     private int              nbBytes;
 
-    public Spectrum (final Complex [] state, final int sampleRate,
-            final int nbBytes) {
+    public Spectrum (final Complex [] state, final int sampleRate, final int nbBytes) {
         super ();
         this.state = state;
         this.sampleRate = sampleRate;
@@ -35,7 +34,6 @@ public class Spectrum {
 
     @Override
     public String toString () {
-        return new Spectrum2StringService (
-                $.select (SpectrumToStringHelper.class)).convert (this);
+        return new Spectrum2StringService ($.select (SpectrumToStringHelper.class)).convert (this);
     }
 }
