@@ -43,10 +43,7 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
                 @Override
                 public void update (final LineEvent event) {
                     final LineEvent.Type type = event.getType ();
-                    if (type == LineEvent.Type.OPEN) {
-                    } else if (type == LineEvent.Type.CLOSE) {
-                    } else if (type == LineEvent.Type.START) {
-                    } else if (type == LineEvent.Type.STOP) {
+                    if (type == LineEvent.Type.STOP) {
                         synchronized (clip) {
                             clip.close ();
                             clip.notify ();
