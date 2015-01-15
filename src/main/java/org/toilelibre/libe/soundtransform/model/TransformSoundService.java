@@ -3,14 +3,12 @@ package org.toilelibre.libe.soundtransform.model;
 import java.io.File;
 import java.io.InputStream;
 
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.CallTransformService;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
-import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
-import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 import org.toilelibre.libe.soundtransform.model.inputstream.TransformInputStreamService;
 import org.toilelibre.libe.soundtransform.model.observer.LogAware;
@@ -26,15 +24,15 @@ public class TransformSoundService implements LogAware<TransformSoundService> {
     private final CallTransformService        callTransformService;
     private final ConvertAudioFileService     convertAudioFileService;
 
-    public TransformSoundService (FrameProcessor processor, AudioFileHelper helper, AudioFormatParser parser) {
-        this (processor, helper, parser, new Observer [0]);
+    public TransformSoundService () {
+        this (new Observer [0]);
     }
 
-    public TransformSoundService (FrameProcessor processor, AudioFileHelper helper, AudioFormatParser parser, final Observer... observers) {
+    public TransformSoundService (final Observer... observers) {
         this.setObservers (observers);
-        this.transformInputStreamService = new TransformInputStreamService (processor, parser, observers);
-        this.callTransformService = new CallTransformService (observers);
-        this.convertAudioFileService = new ConvertAudioFileService (helper, parser);
+        this.transformInputStreamService = $.create (TransformInputStreamService.class, (Object[])observers);
+        this.callTransformService = $.create (CallTransformService.class, (Object[])observers);
+        this.convertAudioFileService = $.create (ConvertAudioFileService.class);
     }
 
     public Sound [] convertAndApply (final InputStream ais, final SoundTransformation... transforms) throws SoundTransformException {
