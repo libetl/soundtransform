@@ -17,7 +17,7 @@ public class TestDetectNotes {
     @Test
     public void test1 () throws SoundTransformException {
         final int value = 200;
-        final int tenpercent = value * 10 / 100 - 1;
+        final int tenpercent = (int) (value * 2 / 100 - 1);
         final List<String> messages = new LinkedList<String> ();
         final int [] t = new int [2000];
         for (int i = 200 ; i < 600 ; i++) {
@@ -37,8 +37,8 @@ public class TestDetectNotes {
                 messages.add (logEvent.toString ());
             }
         }).transform (200000, 100, 2, 44100, 1);
-        Assert.assertTrue (messages.get (0).endsWith (" between 200/2000 and 602/2000"));
-        Assert.assertTrue (messages.get (1).endsWith (" between 800/2000 and 1002/2000"));
-        Assert.assertTrue (messages.get (2).endsWith (" between 1100/2000 and 1602/2000"));
+        Assert.assertTrue (messages.get (0).endsWith (" between 200/2000 and 600/2000"));
+        Assert.assertTrue (messages.get (1).endsWith (" between 800/2000 and 1000/2000"));
+        Assert.assertTrue (messages.get (2).endsWith (" between 1100/2000 and 1600/2000"));
     }
 }
