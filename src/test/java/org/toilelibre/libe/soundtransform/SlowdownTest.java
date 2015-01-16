@@ -1,11 +1,10 @@
 package org.toilelibre.libe.soundtransform;
 
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
-
 import java.util.Arrays;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.SlowdownSoundTransformation;
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class SlowdownTest {

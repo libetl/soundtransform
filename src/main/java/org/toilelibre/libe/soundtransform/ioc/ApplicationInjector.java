@@ -16,8 +16,19 @@ import se.jbee.inject.Injector;
 import se.jbee.inject.bootstrap.Bootstrap;
 
 public class ApplicationInjector {
-    private ApplicationInjector () {
+    public static class $ {
 
+        public static <T> T create (final Class<T> type, final Object... additionalParameters) {
+            return ApplicationInjector.instantiate (type, additionalParameters);
+        }
+
+        public static <T> T select (final Class<T> type) {
+            return ApplicationInjector.getBean (type);
+        }
+
+        private $ () {
+
+        }
     }
 
     public enum ApplicationInjectorErrorCode implements ErrorCode {
@@ -36,22 +47,20 @@ public class ApplicationInjector {
         }
     }
 
-    private static Injector injector = Bootstrap.injector (RootModule.class);
-
-    public static <T> T getBean (Class<T> type) {
+    public static <T> T getBean (final Class<T> type) {
         return ApplicationInjector.injector.resolve (Dependency.<T> dependency (type));
     }
 
     @SuppressWarnings ("unchecked")
-    public static <T> T instantiate (Class<T> type, Object... additionalParameters) {
-        List<String> warnings = new LinkedList<String> ();
-        for (Constructor<?> constructor : type.getDeclaredConstructors ()) {
-            Class<?> [] ptypes = constructor.getParameterTypes ();
-            Object [] newInstanceParams = new Object [ptypes.length];
+    public static <T> T instantiate (final Class<T> type, final Object... additionalParameters) {
+        final List<String> warnings = new LinkedList<String> ();
+        for (final Constructor<?> constructor : type.getDeclaredConstructors ()) {
+            final Class<?> [] ptypes = constructor.getParameterTypes ();
+            final Object [] newInstanceParams = new Object [ptypes.length];
             for (int i = 0 ; i < ptypes.length ; i++) {
                 try {
                     newInstanceParams [i] = ApplicationInjector.getBean (ptypes [i]);
-                } catch (NoSuchResourceException nsre) {
+                } catch (final NoSuchResourceException nsre) {
                     warnings.add ("Could not find a bean named " + ptypes [i] == null ? null : ptypes.getClass () + " (" + nsre.getMessage () + ")");
                 }
             }
@@ -74,32 +83,23 @@ public class ApplicationInjector {
             }
             try {
                 return (T) constructor.newInstance (newInstanceParams);
-            } catch (InstantiationException e) {
+            } catch (final InstantiationException e) {
                 warnings.add ("Constructor " + constructor + " could not instantiate");
-            } catch (IllegalAccessException e) {
+            } catch (final IllegalAccessException e) {
                 warnings.add ("Constructor " + constructor + " is not accessible");
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 warnings.add ("Constructor " + constructor + " had an illegal argument");
-            } catch (InvocationTargetException e) {
+            } catch (final InvocationTargetException e) {
                 warnings.add ("Constructor " + constructor + " could not call a method");
             }
         }
         throw new SoundTransformRuntimeException (new SoundTransformException (ApplicationInjectorErrorCode.INSTANTIATION_FAILED, new NullPointerException (warnings.toString ())));
     }
 
-    public static class $ {
+    private static Injector injector = Bootstrap.injector (RootModule.class);
 
-        private $ () {
+    private ApplicationInjector () {
 
-        }
-
-        public static <T> T select (Class<T> type) {
-            return ApplicationInjector.getBean (type);
-        }
-
-        public static <T> T create (Class<T> type, Object... additionalParameters) {
-            return ApplicationInjector.instantiate (type, additionalParameters);
-        }
     }
 
 }

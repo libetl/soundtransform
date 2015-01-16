@@ -57,7 +57,7 @@ public class JavazoomAudioFileHelper implements AudioFileHelper {
         if (!(audioFormat1 instanceof AudioFormat)) {
             throw new SoundTransformException (AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ, new IllegalArgumentException ("" + audioFormat1));
         }
-        AudioFormat audioFormat = (AudioFormat) audioFormat1;
+        final AudioFormat audioFormat = (AudioFormat) audioFormat1;
         final ByteArrayInputStream bais = new ByteArrayInputStream (byteArray);
         return new AudioInputStream (bais, audioFormat, byteArray.length / audioFormat.getFrameSize ());
     }

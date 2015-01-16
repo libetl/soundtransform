@@ -10,7 +10,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.
      * SpectrumToStringH
      * #fsToString(org.toilelibre.libe.soundtransform.model.converted
@@ -23,7 +23,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.
      * SpectrumToStringH
      * #fsToString(org.toilelibre.libe.soundtransform.model.converted
@@ -32,7 +32,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
     @Override
     public String fsToString (final Spectrum<Complex []> fs, final int low, final int high, final int compression, final int height) {
         @SuppressWarnings ("unchecked")
-        SpectrumHelper<Complex []> spectrumHelper = $.select (SpectrumHelper.class);
+        final SpectrumHelper<Complex []> spectrumHelper = $.select (SpectrumHelper.class);
         final StringBuilder sb = new StringBuilder ();
         final float lastFrequency = fs.getState ().length < high ? fs.getState ().length : (float) high;
         final int length = (int) lastFrequency / compression;

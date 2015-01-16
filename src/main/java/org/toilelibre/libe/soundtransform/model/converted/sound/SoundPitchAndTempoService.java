@@ -4,7 +4,7 @@ public class SoundPitchAndTempoService {
 
     private final SoundPitchAndTempoHelper helper;
 
-    public SoundPitchAndTempoService (SoundPitchAndTempoHelper helper1) {
+    public SoundPitchAndTempoService (final SoundPitchAndTempoHelper helper1) {
         this.helper = helper1;
     }
 

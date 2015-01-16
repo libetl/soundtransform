@@ -9,10 +9,10 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundAppender;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.PrintlnTransformObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.ShapeSoundTransformation;
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;

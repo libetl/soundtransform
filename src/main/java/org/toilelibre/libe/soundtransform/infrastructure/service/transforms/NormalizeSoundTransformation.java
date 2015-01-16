@@ -5,6 +5,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class NormalizeSoundTransformation implements SoundTransformation {
 
+    public NormalizeSoundTransformation () {
+    }
+
     private Sound normalize (final Sound sound) {
         final long [] data = sound.getSamples ();
         final long [] newdata = new long [sound.getSamples ().length];
@@ -28,9 +31,6 @@ public class NormalizeSoundTransformation implements SoundTransformation {
 
         // normalized result in newdata
         return new Sound (newdata, sound.getNbBytesPerSample (), sound.getSampleRate (), sound.getChannelNum ());
-    }
-
-    public NormalizeSoundTransformation () {
     }
 
     @Override

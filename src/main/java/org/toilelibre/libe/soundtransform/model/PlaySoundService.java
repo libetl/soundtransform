@@ -6,13 +6,13 @@ import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 public class PlaySoundService<T> {
 
-    private PlaySoundProcessor<T> processor;
+    private final PlaySoundProcessor<T> processor;
 
-    public PlaySoundService (PlaySoundProcessor<T> processor) {
+    public PlaySoundService (final PlaySoundProcessor<T> processor) {
         this.processor = processor;
     }
 
-    public void play (Sound [] channels) throws SoundTransformException {
+    public void play (final Sound [] channels) throws SoundTransformException {
         this.processor.play (channels);
     }
 

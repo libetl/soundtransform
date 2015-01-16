@@ -16,10 +16,10 @@ public class TestDetectNotes {
 
     @Test
     public void test1 () throws SoundTransformException {
-        int value = 200;
-        int tenpercent = value * 10 / 100 - 1;
+        final int value = 200;
+        final int tenpercent = value * 10 / 100 - 1;
         final List<String> messages = new LinkedList<String> ();
-        int [] t = new int [2000];
+        final int [] t = new int [2000];
         for (int i = 200 ; i < 600 ; i++) {
             t [i] = (int) (value + Math.random () * tenpercent - tenpercent / 2);
         }
@@ -33,7 +33,7 @@ public class TestDetectNotes {
         new ShapeSoundTransformation (Library.defaultPack, "simple_piano", t).setObservers (new PrintlnTransformObserver (), new Observer () {
 
             @Override
-            public void notify (LogEvent logEvent) {
+            public void notify (final LogEvent logEvent) {
                 messages.add (logEvent.toString ());
             }
         }).transform (200000, 100, 2, 44100, 1);

@@ -10,9 +10,38 @@ public class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
 
     }
 
+    /**
+     * Find the f0 (fundamental frequency) using the Harmonic Product Spectrum
+     *
+     * @param fs
+     *            spectrum at a specific time
+     * @param hpsfactor
+     *            number of times to multiply the frequencies together
+     * @return a fundamental frequency (in Hz)
+     */
+    @Override
+    public int f0 (final Spectrum<Complex []> fs, final int hpsfactor) {
+        return this.freqFromSampleRate (this.getMaxIndex (this.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * 2 / hpsfactor, fs.getSampleRate ());
+    }
+
     @Override
     public int freqFromSampleRate (final int freq, final int sqr2length, final int sampleRate) {
         return (int) (freq * 2.0 * sampleRate / sqr2length);
+    }
+
+    @Override
+    public int getMaxIndex (final Spectrum<Complex []> fs, final int low, final int high) {
+        double max = 0;
+        int maxIndex = 0;
+        final int reallow = low == 0 ? 1 : low;
+        final int realhigh = Math.min (high, fs.getState ().length);
+        for (int i = reallow ; i < realhigh ; i++) {
+            if (max < fs.getState () [i].abs () && fs.getState () [i].abs () > Math.pow (256, fs.getNbBytes ()) + 1) {
+                max = fs.getState () [i].abs ();
+                maxIndex = i;
+            }
+        }
+        return maxIndex;
     }
 
     @Override
@@ -29,34 +58,5 @@ public class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
             result [i] = new Complex (val);
         }
         return new Spectrum<Complex []> (result, fs.getSampleRate () / factor, fs.getNbBytes ());
-    }
-
-    /**
-     * Find the f0 (fundamental frequency) using the Harmonic Product Spectrum
-     *
-     * @param fs
-     *            spectrum at a specific time
-     * @param hpsfactor
-     *            number of times to multiply the frequencies together
-     * @return a fundamental frequency (in Hz)
-     */
-    @Override
-    public int f0 (final Spectrum<Complex []> fs, final int hpsfactor) {
-        return this.freqFromSampleRate (this.getMaxIndex (this.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * 2 / hpsfactor, fs.getSampleRate ());
-    }
-
-    @Override
-    public int getMaxIndex (final Spectrum<Complex []> fs, final int low, final int high) {
-        double max = 0;
-        int maxIndex = 0;
-        final int reallow = low == 0 ? 1 : low;
-        final int realhigh = Math.min (high, fs.getState ().length);
-        for (int i = reallow ; i < realhigh ; i++) {
-            if (max < fs.getState () [i].abs () && fs.getState () [i].abs () > Math.pow (256, fs.getNbBytes ()) + 1) {
-                max = fs.getState () [i].abs ();
-                maxIndex = i;
-            }
-        }
-        return maxIndex;
     }
 }

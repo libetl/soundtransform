@@ -28,7 +28,7 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
         this.spectrumHelper = $.select (SpectrumHelper.class);
     }
 
-    public PeakFindWithHPSSoundTransformation (FourierTransformHelper<Complex []> helper1, SpectrumHelper<Complex []> helper2, final boolean note) {
+    public PeakFindWithHPSSoundTransformation (final FourierTransformHelper<Complex []> helper1, final SpectrumHelper<Complex []> helper2, final boolean note) {
         this ();
         this.note = note;
         this.threshold = 100;
@@ -36,13 +36,13 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
         this.soundLength = -1;
     }
 
-    public PeakFindWithHPSSoundTransformation (FourierTransformHelper<Complex []> helper1, SpectrumHelper<Complex []> helper2, final double threshold) {
+    public PeakFindWithHPSSoundTransformation (final FourierTransformHelper<Complex []> helper1, final SpectrumHelper<Complex []> helper2, final double threshold) {
         this ();
         this.threshold = threshold;
         this.windowLength = -1;
     }
 
-    public PeakFindWithHPSSoundTransformation (FourierTransformHelper<Complex []> helper1, SpectrumHelper<Complex []> helper2, final double threshold, final int windowLength) {
+    public PeakFindWithHPSSoundTransformation (final FourierTransformHelper<Complex []> helper1, final SpectrumHelper<Complex []> helper2, final double threshold, final int windowLength) {
         this ();
         this.threshold = threshold;
         this.windowLength = windowLength;

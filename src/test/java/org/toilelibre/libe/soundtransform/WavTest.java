@@ -3,7 +3,6 @@ package org.toilelibre.libe.soundtransform;
 import java.io.File;
 
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.PrintlnTransformObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.EqualizerSoundTransformation;
@@ -15,6 +14,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.Reve
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.ShapeSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.SlowdownSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.SpeedUpSoundTransformation;
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;

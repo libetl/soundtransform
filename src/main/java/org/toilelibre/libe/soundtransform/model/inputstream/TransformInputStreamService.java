@@ -31,11 +31,11 @@ public class TransformInputStreamService implements LogAware<TransformInputStrea
     private final FrameProcessor    frameProcessor;
     private final AudioFormatParser audioFormatParser;
 
-    public TransformInputStreamService (FrameProcessor processor1, AudioFormatParser parser1) {
+    public TransformInputStreamService (final FrameProcessor processor1, final AudioFormatParser parser1) {
         this (processor1, parser1, new Observer [0]);
     }
 
-    public TransformInputStreamService (FrameProcessor processor1, AudioFormatParser parser1, final Observer... observers) {
+    public TransformInputStreamService (final FrameProcessor processor1, final AudioFormatParser parser1, final Observer... observers) {
         this.setObservers (observers);
         this.frameProcessor = processor1;
         this.audioFormatParser = parser1;
@@ -49,6 +49,10 @@ public class TransformInputStreamService implements LogAware<TransformInputStrea
         this.notifyAll ("Converting input into java object");
         final Sound [] ret = this.frameProcessor.fromInputStream (ais, isInfo);
         return ret;
+    }
+
+    public InputStreamInfo getInputStreamInfo (final InputStream ais) throws SoundTransformException {
+        return this.audioFormatParser.getInputStreamInfo (ais);
     }
 
     @Override
@@ -74,9 +78,5 @@ public class TransformInputStreamService implements LogAware<TransformInputStrea
 
     public byte [] soundToByteArray (final Sound [] channels, final InputStreamInfo inputStreamInfo) {
         return this.frameProcessor.framesToByteArray (channels, inputStreamInfo.getSampleSize (), inputStreamInfo.isBigEndian (), inputStreamInfo.isPcmSigned ());
-    }
-
-    public InputStreamInfo getInputStreamInfo (InputStream ais) throws SoundTransformException {
-        return this.audioFormatParser.getInputStreamInfo (ais);
     }
 }

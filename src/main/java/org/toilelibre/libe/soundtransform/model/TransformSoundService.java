@@ -49,6 +49,10 @@ public class TransformSoundService implements LogAware<TransformSoundService> {
         return this.transformInputStreamService.fromInputStream (ais, isInfo);
     }
 
+    public InputStreamInfo getInputStreamInfo (final InputStream ais) throws SoundTransformException {
+        return this.transformInputStreamService.getInputStreamInfo (ais);
+    }
+
     @Override
     public void log (final LogEvent event) {
         for (final Observer to : this.observers) {
@@ -91,9 +95,5 @@ public class TransformSoundService implements LogAware<TransformSoundService> {
         this.convertAudioFileService.writeInputStream (ais2, fDest);
         this.notifyAll ("Wrote output");
         this.notifyAll ("output : " + aisi2.toString ());
-    }
-
-    public InputStreamInfo getInputStreamInfo (InputStream ais) throws SoundTransformException {
-        return this.transformInputStreamService.getInputStreamInfo (ais);
     }
 }

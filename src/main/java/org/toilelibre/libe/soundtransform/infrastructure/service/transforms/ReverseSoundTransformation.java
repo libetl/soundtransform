@@ -5,6 +5,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class ReverseSoundTransformation implements SoundTransformation {
 
+    public ReverseSoundTransformation () {
+    }
+
     private Sound reverse (final Sound sound) {
         final long [] data = sound.getSamples ();
         final long [] newdata = new long [sound.getSamples ().length];
@@ -15,9 +18,6 @@ public class ReverseSoundTransformation implements SoundTransformation {
         }
         // normalized result in newdata
         return new Sound (newdata, sound.getNbBytesPerSample (), sound.getSampleRate (), sound.getChannelNum ());
-    }
-
-    public ReverseSoundTransformation () {
     }
 
     @Override

@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public class GetInputStreamInfo extends Action {
 
-    public InputStreamInfo getInputStreamInfo (InputStream ais) throws SoundTransformException{
+    public InputStreamInfo getInputStreamInfo (final InputStream ais) throws SoundTransformException {
         return this.transformSound.getInputStreamInfo (ais);
     }
 }

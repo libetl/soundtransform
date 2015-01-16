@@ -16,22 +16,22 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public class BlackBoxTest {
     private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-    private File              input       = new File (this.classLoader.getResource ("before.wav").getFile ());
-    private File              gPiano3     = new File (this.classLoader.getResource ("notes/g-piano3.wav").getFile ());
+    private final File        input       = new File (this.classLoader.getResource ("before.wav").getFile ());
+    private final File        gPiano3     = new File (this.classLoader.getResource ("notes/g-piano3.wav").getFile ());
     private final File        output      = new File (new File (this.classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-
-    @Test
-    public void callTransformFromOutside () throws SoundTransformException {
-        new ExportAFileFromAFileUsingSoundTransform ().transformFile (input, output, new EightBitsSoundTransformation (25));
-    }
 
     @Test
     public void callPlaySoundFromOutside () throws SoundTransformException {
         new PlaySound ().play (new Sound [0]);
     }
-    
+
+    @Test
+    public void callTransformFromOutside () throws SoundTransformException {
+        new ExportAFileFromAFileUsingSoundTransform ().transformFile (this.input, this.output, new EightBitsSoundTransformation (25));
+    }
+
     @Test
     public void getInputStreamInfo () throws SoundTransformException, UnsupportedAudioFileException, IOException {
-        System.out.println (new GetInputStreamInfo ().getInputStreamInfo (AudioSystem.getAudioInputStream (gPiano3)));
+        System.out.println (new GetInputStreamInfo ().getInputStreamInfo (AudioSystem.getAudioInputStream (this.gPiano3)));
     }
 }

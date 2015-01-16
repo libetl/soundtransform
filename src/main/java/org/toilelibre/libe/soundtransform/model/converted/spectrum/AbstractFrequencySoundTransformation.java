@@ -12,7 +12,7 @@ public abstract class AbstractFrequencySoundTransformation<T> implements SoundTr
 
     private final FourierTransformHelper<T> fourierTransformHelper;
 
-    public AbstractFrequencySoundTransformation (FourierTransformHelper<T> helper1) {
+    public AbstractFrequencySoundTransformation (final FourierTransformHelper<T> helper1) {
         this.fourierTransformHelper = helper1;
     }
 

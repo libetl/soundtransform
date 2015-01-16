@@ -8,7 +8,7 @@ public class GraphSound2StringHelper implements Sound2StringHelper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.infrastructure.service.sound2string
      * .Sound2StringHelper

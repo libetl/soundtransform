@@ -5,6 +5,12 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class PitchSoundTransformation implements SoundTransformation {
 
+    private float percent = 20;
+
+    public PitchSoundTransformation (final float percent) {
+        this.percent = percent;
+    }
+
     private Sound pitch (final Sound sound, final float percent) {
         final float total = 100;
         if (percent == total) {
@@ -22,12 +28,6 @@ public class PitchSoundTransformation implements SoundTransformation {
             }
         }
         return new Sound (ret, sound.getNbBytesPerSample (), sound.getSampleRate (), sound.getChannelNum ());
-    }
-
-    private float percent = 20;
-
-    public PitchSoundTransformation (final float percent) {
-        this.percent = percent;
     }
 
     @Override

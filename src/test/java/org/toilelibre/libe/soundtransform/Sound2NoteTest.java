@@ -1,6 +1,5 @@
 package org.toilelibre.libe.soundtransform;
 
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
@@ -9,6 +8,7 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.PitchSoundTransformation;
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;

@@ -4,11 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
 
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.PrintlnTransformObserver;
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;

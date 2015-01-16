@@ -5,11 +5,6 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public class PlaySoundException extends SoundTransformException {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -4904836048288493711L;
-
     public enum PlaySoundErrorCode implements ErrorCode {
         COULD_NOT_PLAY_SOUND ("Could not play a sound");
         private final String messageFormat;
@@ -23,6 +18,11 @@ public class PlaySoundException extends SoundTransformException {
             return this.messageFormat;
         }
     }
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = -4904836048288493711L;
 
     public PlaySoundException (final Exception e) {
         super (PlaySoundErrorCode.COULD_NOT_PLAY_SOUND, e);

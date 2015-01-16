@@ -10,7 +10,7 @@ public class ConvertAudioFileService {
     private final AudioFileHelper   audioFileHelper;
     private final AudioFormatParser audioFormatParser;
 
-    public ConvertAudioFileService (AudioFileHelper helper1, AudioFormatParser parser1) {
+    public ConvertAudioFileService (final AudioFileHelper helper1, final AudioFormatParser parser1) {
         this.audioFileHelper = helper1;
         this.audioFormatParser = parser1;
     }

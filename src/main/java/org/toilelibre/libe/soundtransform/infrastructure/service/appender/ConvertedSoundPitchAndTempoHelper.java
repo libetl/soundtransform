@@ -1,9 +1,9 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.appender;
 
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.PitchSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.SlowdownSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.SpeedUpSoundTransformation;
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
 

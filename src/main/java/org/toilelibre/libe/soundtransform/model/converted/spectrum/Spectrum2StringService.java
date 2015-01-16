@@ -4,7 +4,7 @@ public class Spectrum2StringService<T> {
 
     private final SpectrumToStringHelper<T> spectrumHelper;
 
-    public Spectrum2StringService (SpectrumToStringHelper<T> helper1) {
+    public Spectrum2StringService (final SpectrumToStringHelper<T> helper1) {
         this.spectrumHelper = helper1;
     }
 

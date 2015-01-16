@@ -13,7 +13,6 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.sound2string.Gr
 import org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.GraphSpectrumToStringHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.HPSSpectrumHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.NaiveSpectrum2CepstrumHelper;
-import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound2StringHelper;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
@@ -26,6 +25,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
+import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 import se.jbee.inject.bind.BinderModule;
 

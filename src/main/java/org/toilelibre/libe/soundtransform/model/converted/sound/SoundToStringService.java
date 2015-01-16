@@ -4,7 +4,7 @@ public class SoundToStringService {
 
     private final Sound2StringHelper helper;
 
-    public SoundToStringService (Sound2StringHelper helper1) {
+    public SoundToStringService (final Sound2StringHelper helper1) {
         this.helper = helper1;
     }
 

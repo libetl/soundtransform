@@ -81,14 +81,14 @@ public class AddNoteService implements LogAware<AddNoteService> {
     }
 
     @Override
-    public void log (LogEvent event) {
-        for (Observer observer : this.observers) {
+    public void log (final LogEvent event) {
+        for (final Observer observer : this.observers) {
             observer.notify (event);
         }
     }
 
     @Override
-    public AddNoteService setObservers (Observer... observers) {
+    public AddNoteService setObservers (final Observer... observers) {
         this.observers = observers;
         return this;
     }

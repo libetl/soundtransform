@@ -5,11 +5,11 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public class Sound2NoteService {
 
-    private ADSRHelper      adsrHelper;
+    private final ADSRHelper      adsrHelper;
 
-    private FrequencyHelper frequencyHelper;
+    private final FrequencyHelper frequencyHelper;
 
-    public Sound2NoteService (ADSRHelper helper1, FrequencyHelper helper2) {
+    public Sound2NoteService (final ADSRHelper helper1, final FrequencyHelper helper2) {
         this.adsrHelper = helper1;
         this.frequencyHelper = helper2;
     }
