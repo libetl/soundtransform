@@ -1,7 +1,5 @@
 package org.toilelibre.libe.soundtransform;
 
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,10 +10,10 @@ import javax.sound.sampled.AudioSystem;
 
 import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
@@ -56,8 +54,7 @@ public class SoundGenerateTest {
             signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
-        @SuppressWarnings ("unchecked")
-        final SoundTransformation st = new SimpleFrequencySoundTransformation<Complex []> ($.select (FourierTransformHelper.class));
+        final SoundTransformation st = new SimpleFrequencySoundTransformation<Complex []> ();
         st.transform (s);
 
     }

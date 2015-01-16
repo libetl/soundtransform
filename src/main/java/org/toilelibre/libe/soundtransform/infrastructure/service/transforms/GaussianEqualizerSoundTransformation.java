@@ -1,14 +1,13 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 
 import org.apache.commons.math3.complex.Complex;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
-    public GaussianEqualizerSoundTransformation (FourierTransformHelper<Complex []> helper1) {
-        super (helper1);
+    public GaussianEqualizerSoundTransformation () {
+        super ();
     }
 
     private Complex function (final double x) {

@@ -3,7 +3,6 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.complex.Complex;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
@@ -12,8 +11,8 @@ public class EqualizerSoundTransformation extends SimpleFrequencySoundTransforma
     private final double [] ranges;
     private final double [] amplification;
 
-    public EqualizerSoundTransformation (FourierTransformHelper<Complex []> helper1, final double [] ranges1, final double [] amplification1) {
-        super (helper1);
+    public EqualizerSoundTransformation (final double [] ranges1, final double [] amplification1) {
+        super ();
         this.ranges = ranges1;
         this.amplification = amplification1;
     }

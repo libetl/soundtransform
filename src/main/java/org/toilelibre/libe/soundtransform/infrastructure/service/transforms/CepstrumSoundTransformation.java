@@ -1,8 +1,8 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 
 import org.apache.commons.math3.complex.Complex;
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum2CepstrumHelper;
@@ -18,18 +18,17 @@ public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformat
     private final Spectrum2CepstrumHelper<Complex []> spectrum2CepstrumHelper;
     private final SpectrumHelper<Complex []>          spectrumHelper;
 
-    public CepstrumSoundTransformation (FourierTransformHelper<Complex []> helper1, Spectrum2CepstrumHelper<Complex []> helper2, SpectrumHelper<Complex []> helper3) {
-        super (helper1);
+    @SuppressWarnings ("unchecked")
+    public CepstrumSoundTransformation () {
+        super ();
         this.threshold = 100;
-        this.spectrum2CepstrumHelper = helper2;
-        this.spectrumHelper = helper3;
+        this.spectrum2CepstrumHelper = $.select (Spectrum2CepstrumHelper.class);
+        this.spectrumHelper = $.select (SpectrumHelper.class);
     }
 
-    public CepstrumSoundTransformation (FourierTransformHelper<Complex []> helper1, Spectrum2CepstrumHelper<Complex []> helper2, SpectrumHelper<Complex []> helper3, final double threshold) {
-        super (helper1);
+    public CepstrumSoundTransformation (final double threshold) {
+        this ();
         this.threshold = threshold;
-        this.spectrum2CepstrumHelper = helper2;
-        this.spectrumHelper = helper3;
     }
 
     public int [] getLoudestFreqs () {

@@ -1,5 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.spectrum;
 
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 /**
@@ -10,8 +11,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
  */
 public class SimpleFrequencySoundTransformation<T> extends AbstractFrequencySoundTransformation<T> {
 
-    public SimpleFrequencySoundTransformation (FourierTransformHelper<T> helper1) {
-        super (helper1);
+    @SuppressWarnings ("unchecked")
+    public SimpleFrequencySoundTransformation () {
+        super ($.select (FourierTransformHelper.class));
     }
 
     @Override

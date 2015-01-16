@@ -5,7 +5,6 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
@@ -20,8 +19,8 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     private float       writeIfGreaterEqThan1;
     private int         additionalFrames;
 
-    public SlowdownSoundTransformation (FourierTransformHelper<Complex []> helper1, final int threshold, final float factor) {
-        super (helper1);
+    public SlowdownSoundTransformation (final int threshold, final float factor) {
+        super ();
         this.factor = factor;
         this.threshold = threshold;
         this.writeIfGreaterEqThan1 = 0;

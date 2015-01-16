@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
 import java.util.Arrays;
 
 import org.apache.commons.math3.complex.Complex;
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
@@ -21,13 +22,14 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
     private int                              soundLength;
     private final SpectrumHelper<Complex []> spectrumHelper;
 
-    private PeakFindWithHPSSoundTransformation (FourierTransformHelper<Complex []> helper1, SpectrumHelper<Complex []> helper2) {
-        super (helper1);
-        this.spectrumHelper = helper2;
+    @SuppressWarnings ("unchecked")
+    private PeakFindWithHPSSoundTransformation () {
+        super ();
+        this.spectrumHelper = $.select (SpectrumHelper.class);
     }
 
     public PeakFindWithHPSSoundTransformation (FourierTransformHelper<Complex []> helper1, SpectrumHelper<Complex []> helper2, final boolean note) {
-        this (helper1, helper2);
+        this ();
         this.note = note;
         this.threshold = 100;
         this.windowLength = -1;
@@ -35,13 +37,13 @@ public class PeakFindWithHPSSoundTransformation extends SimpleFrequencySoundTran
     }
 
     public PeakFindWithHPSSoundTransformation (FourierTransformHelper<Complex []> helper1, SpectrumHelper<Complex []> helper2, final double threshold) {
-        this (helper1, helper2);
+        this ();
         this.threshold = threshold;
         this.windowLength = -1;
     }
 
     public PeakFindWithHPSSoundTransformation (FourierTransformHelper<Complex []> helper1, SpectrumHelper<Complex []> helper2, final double threshold, final int windowLength) {
-        this (helper1, helper2);
+        this ();
         this.threshold = threshold;
         this.windowLength = windowLength;
     }
