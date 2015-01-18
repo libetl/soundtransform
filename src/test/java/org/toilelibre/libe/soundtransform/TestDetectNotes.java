@@ -17,7 +17,7 @@ public class TestDetectNotes {
     @Test
     public void test1 () throws SoundTransformException {
         final int value = 200;
-        final int twopercents = (int) (value * 2.0 / 100 - 1);
+        final int twopercents = (int) (value * 5.0 / 100 - 1);
         final List<String> messages = new LinkedList<String> ();
         final int [] t = new int [2000];
         for (int i = 200 ; i < 600 ; i++) {

@@ -95,8 +95,8 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
             if (i == this.freqs.length - 1 || newNote) {
                 int endOfNoteIndex = i == this.freqs.length - 1 ? i : i - 3;
                 final float lengthInSeconds = (endOfNoteIndex - lastBegining < 1 ? this.freqs [i] * threshold : (endOfNoteIndex - 1 - lastBegining) * threshold * 1.0f) / sampleRate;
-                final Note note = this.findNote (freqs [endOfNoteIndex - 1], sampleRate, endOfNoteIndex, lastBegining);
-                this.soundAppender.appendNote (builtSound, note, freqs [endOfNoteIndex - 1], threshold * lastBegining, channelNum, lengthInSeconds);
+                final Note note = this.findNote (freqs [endOfNoteIndex], sampleRate, endOfNoteIndex, lastBegining);
+                this.soundAppender.appendNote (builtSound, note, freqs [endOfNoteIndex], threshold * lastBegining, channelNum, lengthInSeconds);
                 lastBegining = endOfNoteIndex;
                 lastFreq = freqs [endOfNoteIndex];
             }
@@ -107,7 +107,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
     }
 
     private boolean freqHasChanged (int freq1, int freq2) {
-        return Math.abs (freq1 - freq2) > freq1 * 2.0 / 100;
+        return Math.abs (freq1 - freq2) > freq1 * 5.0 / 100;
     }
 
     @Override
