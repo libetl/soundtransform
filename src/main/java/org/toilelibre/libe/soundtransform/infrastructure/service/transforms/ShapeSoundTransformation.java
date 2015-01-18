@@ -87,9 +87,9 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
         int lastBegining = 0;
         int lastFreq = this.freqs [0];
         for (int i = 3 ; i < this.freqs.length ; i++) {
-            final boolean freqChanged = this.freqHasChanged (lastFreq, this.freqs [i]);
-            final boolean freqChangedBefore = this.freqHasChanged (lastFreq, this.freqs [i - 1]);
-            final boolean freqChangedBeforeBefore = this.freqHasChanged (lastFreq, this.freqs [i - 2]);
+            final boolean freqChanged = this.freqHasChanged (this.freqs [i - 1], this.freqs [i]);
+            final boolean freqChangedBefore = this.freqHasChanged (this.freqs [i - 2], this.freqs [i - 1]);
+            final boolean freqChangedBeforeBefore = this.freqHasChanged (this.freqs [i - 3], this.freqs [i - 2]);
             final boolean freqChangedBeforeBeforeBefore = this.freqHasChanged (lastFreq, this.freqs [i - 3]);
             final boolean newNote = !freqChanged && !freqChangedBefore && !freqChangedBeforeBefore && freqChangedBeforeBeforeBefore;
             if (i == this.freqs.length - 1 || newNote) {
@@ -98,7 +98,7 @@ public class ShapeSoundTransformation implements SoundTransformation, LogAware<S
                 final Note note = this.findNote (freqs [endOfNoteIndex - 1], sampleRate, endOfNoteIndex, lastBegining);
                 this.soundAppender.appendNote (builtSound, note, freqs [endOfNoteIndex - 1], threshold * lastBegining, channelNum, lengthInSeconds);
                 lastBegining = endOfNoteIndex;
-                lastFreq = freqs [endOfNoteIndex - 1];
+                lastFreq = freqs [endOfNoteIndex];
             }
         }
 

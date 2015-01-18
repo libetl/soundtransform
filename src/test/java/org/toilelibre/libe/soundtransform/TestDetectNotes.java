@@ -17,17 +17,17 @@ public class TestDetectNotes {
     @Test
     public void test1 () throws SoundTransformException {
         final int value = 200;
-        final int tenpercent = (int) (value * 2 / 100 - 1);
+        final int twopercents = (int) (value * 2.0 / 100 - 1);
         final List<String> messages = new LinkedList<String> ();
         final int [] t = new int [2000];
         for (int i = 200 ; i < 600 ; i++) {
-            t [i] = (int) (value + Math.random () * tenpercent - tenpercent / 2);
+            t [i] = (int) (value + Math.random () * twopercents - twopercents / 2);
         }
         for (int i = 800 ; i < 1000 ; i++) {
-            t [i] = (int) (value + Math.random () * tenpercent - tenpercent / 2);
+            t [i] = (int) (value + Math.random () * twopercents - twopercents / 2);
         }
         for (int i = 1100 ; i < 1600 ; i++) {
-            t [i] = (int) (value + Math.random () * tenpercent - tenpercent / 2);
+            t [i] = (int) (value + Math.random () * twopercents - twopercents / 2);
         }
 
         new ShapeSoundTransformation (Library.defaultPack, "simple_piano", t).setObservers (new PrintlnTransformObserver (), new Observer () {
