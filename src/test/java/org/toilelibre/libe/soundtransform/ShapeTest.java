@@ -36,7 +36,7 @@ public class ShapeTest {
     public void testShapeASimplePianoNoteAsAChordNote () throws SoundTransformException {
 
         try {
-            System.out.println ("Loading packs");
+            new Slf4jObserver ().notify ("Loading packs");
             @SuppressWarnings ("unused")
             final Library packsList = Library.getInstance ();
             final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
@@ -47,7 +47,7 @@ public class ShapeTest {
             AudioSystem.write ((AudioInputStream) outputStream, AudioFileFormat.Type.WAVE, output);
 
             final int frequency = $.create (Sound2NoteService.class).convert ("output chord_note", $.create (TransformSoundService.class, new Slf4jObserver ()).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (output))).getFrequency ();
-            System.out.println ("Output chord note should be around 387Hz, but is " + frequency + "Hz");
+            new Slf4jObserver ().notify ("Output chord note should be around 387Hz, but is " + frequency + "Hz");
         } catch (final IOException e) {
             e.printStackTrace ();
         }
@@ -57,7 +57,7 @@ public class ShapeTest {
     public void testShapeASimplePianoNoteAsAChordNoteSameFrequency () throws SoundTransformException {
 
         try {
-            System.out.println ("Loading packs");
+            new Slf4jObserver ().notify ("Loading packs");
             @SuppressWarnings ("unused")
             final Library packsList = Library.getInstance ();
             final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
@@ -68,7 +68,7 @@ public class ShapeTest {
             AudioSystem.write ((AudioInputStream) outputStream, AudioFileFormat.Type.WAVE, output);
 
             final int frequency = $.create (Sound2NoteService.class).convert ("output chord_note", $.create (TransformSoundService.class, new Slf4jObserver ()).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (output))).getFrequency ();
-            System.out.println ("Output chord note should be around 332Hz, but is " + frequency + "Hz");
+            new Slf4jObserver ().notify ("Output chord note should be around 332Hz, but is " + frequency + "Hz");
         } catch (final IOException e) {
             e.printStackTrace ();
         }

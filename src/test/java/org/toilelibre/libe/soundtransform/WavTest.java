@@ -89,7 +89,7 @@ public class WavTest {
     @Test
     public void testShape () throws SoundTransformException {
         // WARN : quite long
-        System.out.println ("Loading packs");
+        new Slf4jObserver ().notify ("Loading packs");
         @SuppressWarnings ("unused")
         final Library packsList = Library.getInstance ();
 

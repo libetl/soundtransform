@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.PitchSoundTransformation;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
@@ -40,7 +41,7 @@ public class Sound2NoteTest {
                 this.put ("Piano8-C.wav", 524);// OK
             }
         };
-        System.out.println ("Loading Packs");
+        new Slf4jObserver ().notify ("Loading Packs");
         Library.getInstance ();
         final Pack pack = Library.defaultPack;
         for (final String instrument : pack.keySet ()) {
@@ -48,9 +49,9 @@ public class Sound2NoteTest {
                 final Note n = pack.get (instrument).get (noteKey);
                 if (frequenciesPerSound.get (n.getName ()) != null) {
                     org.junit.Assert.assertEquals (frequenciesPerSound.get (n.getName ()).intValue (), n.getFrequency ());
-                    System.out.println ("f0 (" + n.getName () + ") = " + n.getFrequency ());
+                    new Slf4jObserver ().notify ("f0 (" + n.getName () + ") = " + n.getFrequency ());
                 } else {
-                    System.out.println ("Did not find " + n.getName ());
+                    new Slf4jObserver ().notify ("Did not find " + n.getName ());
                 }
             }
         }
@@ -71,7 +72,7 @@ public class Sound2NoteTest {
         final Sound f52 = pitcher.transform (f4 [1]);
 
         final Note n = $.create (Sound2NoteService.class).convert ("Piano4-E.wav", new Sound [] { f51, f52 });
-        System.out.println ("e' 4 : " + n.getFrequency () + "Hz, should be around 664Hz");
+        new Slf4jObserver ().notify ("e' 4 : " + n.getFrequency () + "Hz, should be around 664Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 664 - 10 && n.getFrequency () < 664 + 10);
     }
 
@@ -85,7 +86,7 @@ public class Sound2NoteTest {
         final TransformSoundService ts = $.create (TransformSoundService.class);
 
         final Note n = $.create (Sound2NoteService.class).convert ("Piano1-C.wav", ts.fromInputStream (ais));
-        System.out.println ("c' 1-line octave : " + n.getFrequency () + "Hz, should be around 261Hz");
+        new Slf4jObserver ().notify ("c' 1-line octave : " + n.getFrequency () + "Hz, should be around 261Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 261 - 10 && n.getFrequency () < 261 + 10);
     }
 
@@ -99,7 +100,7 @@ public class Sound2NoteTest {
         final TransformSoundService ts = $.create (TransformSoundService.class);
 
         final Note n = $.create (Sound2NoteService.class).convert ("Piano4-F.wav", ts.fromInputStream (ais));
-        System.out.println ("f' 4 : " + n.getFrequency () + "Hz, should be around 349Hz");
+        new Slf4jObserver ().notify ("f' 4 : " + n.getFrequency () + "Hz, should be around 349Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 349 - 10 && n.getFrequency () < 349 + 10);
     }
 
@@ -115,9 +116,9 @@ public class Sound2NoteTest {
         final Sound s = new Sound (signal, 2, samplerate, 1);
         final Note n = $.create (Sound2NoteService.class).convert ("Sample A4 (440 Hz) Sound", new Sound [] { s });
 
-        System.out.println ("Sample A4 (440Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
+        new Slf4jObserver ().notify ("Sample A4 (440Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 440 - 10 && n.getFrequency () < 440 + 10);
-        System.out.println ("...acceptable");
+        new Slf4jObserver ().notify ("...acceptable");
     }
 
     @Test
@@ -135,9 +136,9 @@ public class Sound2NoteTest {
             final Sound s = new Sound (signal, 2, samplerate, 1);
             final Note n = $.create (Sound2NoteService.class).convert ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound", new Sound [] { s });
 
-            System.out.println ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
+            new Slf4jObserver ().notify ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
             org.junit.Assert.assertTrue (n.getFrequency () > notes [i] - 10 && n.getFrequency () < notes [i] + 10);
-            System.out.println ("...acceptable");
+            new Slf4jObserver ().notify ("...acceptable");
         }
     }
 

@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -26,7 +27,7 @@ public class SoundToStringTest {
 
             @Override
             public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
-                System.out.println (fs);
+                new Slf4jObserver ().notify (fs.toString ());
                 return super.transformFrequencies (fs);
             }
 
@@ -40,7 +41,7 @@ public class SoundToStringTest {
         final File input = new File (classLoader.getResource ("before.wav").getFile ());
 
         final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
-        System.out.println ($.create (TransformSoundService.class).fromInputStream (ais) [0]);
+         new Slf4jObserver ().notify ($.create (TransformSoundService.class).fromInputStream (ais) [0].toString ());
 
     }
 }

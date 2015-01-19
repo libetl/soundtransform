@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
 import org.toilelibre.libe.soundtransform.actions.transform.ExportAFileFromAFileUsingSoundTransform;
 import org.toilelibre.libe.soundtransform.actions.transform.GetInputStreamInfo;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -32,6 +33,6 @@ public class BlackBoxTest {
 
     @Test
     public void getInputStreamInfo () throws SoundTransformException, UnsupportedAudioFileException, IOException {
-        System.out.println (new GetInputStreamInfo ().getInputStreamInfo (AudioSystem.getAudioInputStream (this.gPiano3)));
+        new Slf4jObserver ().notify (new GetInputStreamInfo ().getInputStreamInfo (AudioSystem.getAudioInputStream (this.gPiano3)).toString ());
     }
 }

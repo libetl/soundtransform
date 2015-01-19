@@ -24,12 +24,12 @@ public class Pcm2FrameTest {
         for (int i = 0 ; i < data.length ; i++) {
             data [i] = (byte) rdg.nextInt (Byte.MIN_VALUE, Byte.MAX_VALUE);
         }
-        System.out.println (Arrays.toString (data));
+        new Slf4jObserver ().notify (Arrays.toString (data));
         final TransformInputStreamService ts = $.create (TransformInputStreamService.class, new Slf4jObserver (LogLevel.PARANOIAC));
         final InputStream bais = new ByteArrayInputStream (data);
         final Sound [] channels = ts.fromInputStream (bais, new InputStreamInfo (2, data.length / 4, 2, 44100.0, false, true));
 
         final byte [] out = new ByteArrayFrameProcessor ().framesToByteArray (channels, 2, false, true);
-        System.out.println (Arrays.toString (out));
+        new Slf4jObserver ().notify (Arrays.toString (out));
     }
 }
