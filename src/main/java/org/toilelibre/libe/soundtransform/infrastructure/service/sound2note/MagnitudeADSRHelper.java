@@ -2,138 +2,65 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.sound2note;
 
 import java.util.Arrays;
 
-import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.exception.NonMonotonicSequenceException;
 import org.apache.commons.math3.util.MathArrays;
+import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.ADSREnveloppeSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.ReverseSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 
 public class MagnitudeADSRHelper implements ADSRHelper {
 
-    public int computeMagnitude (final Spectrum<Complex []> fs) {
-        double sum = 0;
-        for (int i = 0 ; i < fs.getState ().length ; i++) {
-            sum += fs.getState () [i].abs ();
-        }
-        return (int) (sum / fs.getState ().length);
-    }
+    private static final int ACCURATE_THRESHOLD_FOR_ADSR_HELPER = 100;
+    
+    private double [] getMagnitudeArray (Sound sound, int threshold) {
 
+        ADSREnveloppeSoundTransformation soundTransform = new ADSREnveloppeSoundTransformation (threshold);
+        soundTransform.transform (sound);
+        return soundTransform.getMagnitude ();
+    }
+    
     @Override
     public int findDecay (final Sound channel1, final int attack) throws SoundTransformException {
-        final int threshold = 100; // Has to be accurate
-        final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int decayIndex = attack;
 
-        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation<Complex []> () {
-            int arraylength = 0;
-
-            @Override
-            public double getLowThreshold (final double defaultValue) {
-                return threshold;
-            }
-
-            @Override
-            public Sound initSound (final Sound input) {
-                this.arraylength = 0;
-                return super.initSound (input);
-            }
-
-            @Override
-            public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
-                magnitude [this.arraylength++] = MagnitudeADSRHelper.this.computeMagnitude (fs);
-                return super.transformFrequencies (fs);
-            }
-
-        };
-
-        magnitudeTransform.transform (channel1);
+        final double [] magnitude = this.getMagnitudeArray (channel1, MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER);
 
         try {
             MathArrays.checkOrder (Arrays.copyOfRange (magnitude, attack, magnitude.length), MathArrays.OrderDirection.INCREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
-            decayIndex = (nmse.getIndex () - 1) * threshold;
+            decayIndex = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER;
         }
         return decayIndex;
     }
 
     @Override
     public int findRelease (final Sound channel1) throws SoundTransformException {
-        final int threshold = 100;
         final Sound reversed = new ReverseSoundTransformation ().transform (channel1);
-        final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int releaseIndexFromReversed = 0;
 
-        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation<Complex []> () {
-            int arraylength = 0;
 
-            @Override
-            public double getLowThreshold (final double defaultValue) {
-                return threshold;
-            }
-
-            @Override
-            public Sound initSound (final Sound input) {
-                this.arraylength = 0;
-                return super.initSound (input);
-            }
-
-            @Override
-            public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
-                magnitude [this.arraylength++] = MagnitudeADSRHelper.this.computeMagnitude (fs);
-                return super.transformFrequencies (fs);
-            }
-
-        };
-
-        magnitudeTransform.transform (reversed);
+        final double [] magnitude = this.getMagnitudeArray (reversed, MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER);
 
         try {
             MathArrays.checkOrder (magnitude, MathArrays.OrderDirection.INCREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
-            releaseIndexFromReversed = (nmse.getIndex () - 1) * threshold;
+            releaseIndexFromReversed = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER;
         }
         return channel1.getSamples ().length - releaseIndexFromReversed;
     }
 
     @Override
     public int findSustain (final Sound channel1, final int decay) throws SoundTransformException {
-        final int threshold = 100; // Has to be accurate
-        final double [] magnitude = new double [channel1.getSamples ().length / threshold + 1];
         int sustainIndex = decay;
 
-        final SoundTransformation magnitudeTransform = new SimpleFrequencySoundTransformation<Complex []> () {
-            int arraylength = 0;
-
-            @Override
-            public double getLowThreshold (final double defaultValue) {
-                return threshold;
-            }
-
-            @Override
-            public Sound initSound (final Sound input) {
-                this.arraylength = 0;
-                return super.initSound (input);
-            }
-
-            @Override
-            public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
-                magnitude [this.arraylength++] = MagnitudeADSRHelper.this.computeMagnitude (fs);
-                return super.transformFrequencies (fs);
-            }
-
-        };
-
-        magnitudeTransform.transform (channel1);
+        final double [] magnitude = this.getMagnitudeArray (channel1, MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER);
 
         try {
-            MathArrays.checkOrder (Arrays.copyOfRange (magnitude, decay / threshold, magnitude.length), MathArrays.OrderDirection.DECREASING, true);
+            MathArrays.checkOrder (Arrays.copyOfRange (magnitude, decay / MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER, magnitude.length), MathArrays.OrderDirection.DECREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
-            sustainIndex = (nmse.getIndex () - 1) * threshold;
+            sustainIndex = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER;
         }
         return sustainIndex;
     }
