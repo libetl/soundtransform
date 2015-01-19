@@ -29,7 +29,9 @@ public class Slf4jObserver implements Observer {
 
     //shortcut for notify with level "info"
     public void notify (final String msg) {
-        this.notify (new LogEvent (LogEvent.LogLevel.INFO, msg));
+        String className = this.getCallerClassName ();
+        Logger logger = LoggerFactory.getLogger (className);
+        this.log (logger, new LogEvent (LogEvent.LogLevel.INFO, msg));
     }
 
     private void log (Logger logger, LogEvent logEvent) {
