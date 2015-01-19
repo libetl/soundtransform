@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform;
 import java.io.File;
 
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.infrastructure.service.observer.PrintlnTransformObserver;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.EqualizerSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.LinearRegressionSoundTransformation;
@@ -31,58 +31,58 @@ public class WavTest {
 
     @Test
     public void test8bits () throws SoundTransformException {
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (this.input, this.output, new EightBitsSoundTransformation (25));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, new EightBitsSoundTransformation (25));
 
     }
 
     @Test
     public void testFreqNoOp () throws SoundTransformException {
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (this.input, this.output, $.create (SimpleFrequencySoundTransformation.class));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, $.create (SimpleFrequencySoundTransformation.class));
 
     }
 
     @Test
     public void testLinearReg () throws SoundTransformException {
         // will remove the high freqs and smooth the signal
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (this.input, this.output, new LinearRegressionSoundTransformation (25));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, new LinearRegressionSoundTransformation (25));
 
     }
 
     @Test
     public void testNoOp () throws SoundTransformException {
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (this.input, this.output, new NoOpSoundTransformation ());
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, new NoOpSoundTransformation ());
 
     }
 
     @Test
     public void testNormalize () throws SoundTransformException {
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (this.input, this.output, new NormalizeSoundTransformation ());
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, new NormalizeSoundTransformation ());
 
     }
 
     @Test
     public void testPitch () throws SoundTransformException {
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (this.input, this.output, new PitchSoundTransformation (100));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, new PitchSoundTransformation (100));
 
     }
 
     // @Test
     public void testPurify () throws SoundTransformException {
         // WARN : quite long
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (this.input, this.output, $.create (PurifySoundTransformation.class));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, $.create (PurifySoundTransformation.class));
 
     }
 
     @Test
     public void testRemoveLowFreqs () throws SoundTransformException {
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (this.input, this.output,
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output,
                 $.create (EqualizerSoundTransformation.class, new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 24000 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 }));
 
     }
 
     @Test
     public void testReverse () throws SoundTransformException {
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (this.input, this.output, new ReverseSoundTransformation ());
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, new ReverseSoundTransformation ());
 
     }
 
@@ -93,21 +93,21 @@ public class WavTest {
         @SuppressWarnings ("unused")
         final Library packsList = Library.getInstance ();
 
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (this.input, this.output, new ShapeSoundTransformation (Library.defaultPack, "simple_piano"));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, new ShapeSoundTransformation (Library.defaultPack, "simple_piano"));
 
     }
 
     // @Test
     public void testSlowdown () throws SoundTransformException {
         // WARN : quite long
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (this.input, this.output, $.create (SlowdownSoundTransformation.class, 200, 1.2f));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, $.create (SlowdownSoundTransformation.class, 200, 1.2f));
 
     }
 
     // @Test
     public void testSpeedUp () throws SoundTransformException {
         // WARN : quite long
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (this.input, this.output, $.create (SpeedUpSoundTransformation.class, 200, 1.5f));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, $.create (SpeedUpSoundTransformation.class, 200, 1.5f));
 
     }
 }

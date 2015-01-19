@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform;
 import java.io.File;
 
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.infrastructure.service.observer.PrintlnTransformObserver;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.SlowdownSoundTransformation;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
@@ -17,7 +17,7 @@ public class SlowdownSoundTest {
         final File input = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformFile (input, output, $.create (SlowdownSoundTransformation.class, 200, 2.5f));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (input, output, $.create (SlowdownSoundTransformation.class, 200, 2.5f));
 
     }
 }

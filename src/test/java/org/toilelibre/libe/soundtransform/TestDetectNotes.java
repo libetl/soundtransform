@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.infrastructure.service.observer.PrintlnTransformObserver;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.ShapeSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.Library;
@@ -30,7 +30,7 @@ public class TestDetectNotes {
             t [i] = (int) (value + Math.random () * twopercents - twopercents / 2);
         }
 
-        new ShapeSoundTransformation (Library.defaultPack, "simple_piano", t).setObservers (new PrintlnTransformObserver (), new Observer () {
+        new ShapeSoundTransformation (Library.defaultPack, "simple_piano", t).setObservers (new Slf4jObserver (), new Observer () {
 
             @Override
             public void notify (final LogEvent logEvent) {

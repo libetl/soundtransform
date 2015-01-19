@@ -10,7 +10,7 @@ import javax.sound.sampled.AudioSystem;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundAppender;
-import org.toilelibre.libe.soundtransform.infrastructure.service.observer.PrintlnTransformObserver;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.ShapeSoundTransformation;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.TransformSoundService;
@@ -42,11 +42,11 @@ public class ShapeTest {
             final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
             final File input = new File (classLoader.getResource ("notes/Piano5-G.wav").getFile ());
             final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-            final InputStream outputStream = $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformAudioStream ($.create (ConvertAudioFileService.class).callConverter (input), new ShapeSoundTransformation (Library.defaultPack, "chord_piano"));
+            final InputStream outputStream = $.create (TransformSoundService.class, new Slf4jObserver ()).transformAudioStream ($.create (ConvertAudioFileService.class).callConverter (input), new ShapeSoundTransformation (Library.defaultPack, "chord_piano"));
 
             AudioSystem.write ((AudioInputStream) outputStream, AudioFileFormat.Type.WAVE, output);
 
-            final int frequency = $.create (Sound2NoteService.class).convert ("output chord_note", $.create (TransformSoundService.class, new PrintlnTransformObserver ()).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (output))).getFrequency ();
+            final int frequency = $.create (Sound2NoteService.class).convert ("output chord_note", $.create (TransformSoundService.class, new Slf4jObserver ()).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (output))).getFrequency ();
             System.out.println ("Output chord note should be around 387Hz, but is " + frequency + "Hz");
         } catch (final IOException e) {
             e.printStackTrace ();
@@ -63,11 +63,11 @@ public class ShapeTest {
             final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
             final File input = new File (classLoader.getResource ("notes/Piano3-E.wav").getFile ());
             final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-            final InputStream outputStream = $.create (TransformSoundService.class, new PrintlnTransformObserver ()).transformAudioStream ($.create (ConvertAudioFileService.class).callConverter (input), new ShapeSoundTransformation (Library.defaultPack, "chord_piano"));
+            final InputStream outputStream = $.create (TransformSoundService.class, new Slf4jObserver ()).transformAudioStream ($.create (ConvertAudioFileService.class).callConverter (input), new ShapeSoundTransformation (Library.defaultPack, "chord_piano"));
 
             AudioSystem.write ((AudioInputStream) outputStream, AudioFileFormat.Type.WAVE, output);
 
-            final int frequency = $.create (Sound2NoteService.class).convert ("output chord_note", $.create (TransformSoundService.class, new PrintlnTransformObserver ()).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (output))).getFrequency ();
+            final int frequency = $.create (Sound2NoteService.class).convert ("output chord_note", $.create (TransformSoundService.class, new Slf4jObserver ()).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (output))).getFrequency ();
             System.out.println ("Output chord note should be around 332Hz, but is " + frequency + "Hz");
         } catch (final IOException e) {
             e.printStackTrace ();
