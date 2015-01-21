@@ -2,13 +2,17 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.observer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class Slf4jObserver implements Observer {
 
-    private LogLevel threshold;
+    private static final String OBSERVER_CLASSNAME = Slf4jObserver.class.getName ();
+    private static final String LOGAWARE_CLASSNAME = AbstractLogAware.class.getName ();
+
+    private final LogLevel      threshold;
 
     public Slf4jObserver () {
         this.threshold = LogLevel.PARANOIAC;
@@ -18,20 +22,13 @@ public class Slf4jObserver implements Observer {
         this.threshold = threshold1;
     }
 
-    @Override
-    public void notify (final LogEvent logEvent) {
-        String className = this.getCallerClassName ();
-        Logger logger = LoggerFactory.getLogger (className);
-        if (logEvent.getLevel ().ordinal () >= this.threshold.ordinal ()) {
-            this.log (logger, logEvent);
+    private String getCallerClassName () {
+        int i = 1;
+        final StackTraceElement [] stackTrace = Thread.currentThread ().getStackTrace ();
+        while ((i < stackTrace.length) && (stackTrace [i].getClassName ().equals (Slf4jObserver.OBSERVER_CLASSNAME) || stackTrace [i].getClassName ().equals (Slf4jObserver.LOGAWARE_CLASSNAME))) {
+            i++;
         }
-    }
-
-    //shortcut for notify with level "info"
-    public void notify (final String msg) {
-        String className = this.getCallerClassName ();
-        Logger logger = LoggerFactory.getLogger (className);
-        this.log (logger, new LogEvent (LogEvent.LogLevel.INFO, msg));
+        return stackTrace [i].getClassName ();
     }
 
     private void log (Logger logger, LogEvent logEvent) {
@@ -56,8 +53,20 @@ public class Slf4jObserver implements Observer {
         }
     }
 
-    private String getCallerClassName () {
-        return Thread.currentThread ().getStackTrace () [3].getClassName ();
+    @Override
+    public void notify (final LogEvent logEvent) {
+        final String className = this.getCallerClassName ();
+        final Logger logger = LoggerFactory.getLogger (className);
+        if (logEvent.getLevel ().ordinal () >= this.threshold.ordinal ()) {
+            this.log (logger, logEvent);
+        }
+    }
+
+    // shortcut for notify with level "info"
+    public void notify (final String msg) {
+        final String className = this.getCallerClassName ();
+        final Logger logger = LoggerFactory.getLogger (className);
+        this.log (logger, new LogEvent (LogEvent.LogLevel.INFO, msg));
     }
 
 }

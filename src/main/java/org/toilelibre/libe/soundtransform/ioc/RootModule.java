@@ -6,6 +6,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.Jav
 import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.WavAudioFormatParser;
 import org.toilelibre.libe.soundtransform.infrastructure.service.fourier.CommonsMath3FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor;
+import org.toilelibre.libe.soundtransform.infrastructure.service.pack.GsonPackConfigParser;
 import org.toilelibre.libe.soundtransform.infrastructure.service.play.LineListenerPlaySoundProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.CallHPSFrequencyHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.MagnitudeADSRHelper;
@@ -23,8 +24,10 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToStr
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
+import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
+import org.toilelibre.libe.soundtransform.model.library.pack.PackConfigParser;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 import se.jbee.inject.bind.BinderModule;
@@ -46,6 +49,8 @@ public class RootModule extends BinderModule {
         super.bind (FrameProcessor.class).to (new ByteArrayFrameProcessor ());
         super.bind (ADSRHelper.class).to (new MagnitudeADSRHelper ());
         super.bind (FrequencyHelper.class).to (new CallHPSFrequencyHelper ());
+        super.bind (PackConfigParser.class).to (new GsonPackConfigParser ());
+        super.bind (Library.class).to (new Library ());
     }
 
 }

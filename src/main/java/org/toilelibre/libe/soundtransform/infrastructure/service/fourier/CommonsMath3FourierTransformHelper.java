@@ -25,8 +25,8 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
             long maxValue = 0;
             long minValue = Long.MAX_VALUE;
             final int length = Math.min (maxlength, data.length - i);
-            for (int j = i ; j < i + length ; j++) {
-                if (j - i < threshold) {
+            for (int j = i ; j < (i + length) ; j++) {
+                if ((j - i) < threshold) {
                     // maxValue and minValue are used to detect if the current
                     // transformed sample
                     // is a sound or not
@@ -49,7 +49,7 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
             complexArray = fastFourierTransformer.transform (result.getState (), TransformType.INVERSE);
             final int k = st.getOffsetFromASimpleLoop (i, freqmax);
             for (int j = 0 ; j < freqmax ; j++) {
-                if (i + j + k < newdata.length && newdata [i + j + k] == 0) {
+                if (((i + j + k) < newdata.length) && (newdata [i + j + k] == 0)) {
                     newdata [i + j + k] = (long) Math.floor (complexArray [j].getReal ());
                 }
             }

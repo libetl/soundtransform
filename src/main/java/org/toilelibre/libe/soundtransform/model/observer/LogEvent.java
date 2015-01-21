@@ -15,12 +15,12 @@ public class LogEvent {
         this.msg = msg1;
     }
 
-    public String getMsg () {
-        return msg;
-    }
-
     public LogLevel getLevel () {
         return this.level;
+    }
+
+    public String getMsg () {
+        return this.msg;
     }
 
     @Override

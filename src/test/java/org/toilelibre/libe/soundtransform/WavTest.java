@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
@@ -15,11 +16,12 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.Shap
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.SlowdownSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.SpeedUpSoundTransformation;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
-import org.toilelibre.libe.soundtransform.model.TransformSoundService;
+import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.Library;
+import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 
 public class WavTest {
 
@@ -75,8 +77,7 @@ public class WavTest {
 
     @Test
     public void testRemoveLowFreqs () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output,
-                $.create (EqualizerSoundTransformation.class, new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 24000 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 }));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, $.create (EqualizerSoundTransformation.class, new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 24000 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 }));
 
     }
 
@@ -87,13 +88,12 @@ public class WavTest {
     }
 
     @Test
-    public void testShape () throws SoundTransformException {
+    public void testShape () throws SoundTransformException, FileNotFoundException {
         // WARN : quite long
-        new Slf4jObserver ().notify ("Loading packs");
-        @SuppressWarnings ("unused")
-        final Library packsList = Library.getInstance ();
-
-        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, new ShapeSoundTransformation (Library.defaultPack, "simple_piano"));
+        new Slf4jObserver ().notify ("Loading default pack");
+        final Library library = $.select (Library.class);
+        $.create (ImportPackService.class).setObservers (new Slf4jObserver ()).importPack (library, "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, new ShapeSoundTransformation (library.getPack ("default"), "simple_piano"));
 
     }
 

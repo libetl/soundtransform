@@ -13,14 +13,7 @@ import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 public class MagnitudeADSRHelper implements ADSRHelper {
 
     private static final int ACCURATE_THRESHOLD_FOR_ADSR_HELPER = 100;
-    
-    private double [] getMagnitudeArray (Sound sound, int threshold) {
 
-        ADSREnveloppeSoundTransformation soundTransform = new ADSREnveloppeSoundTransformation (threshold);
-        soundTransform.transform (sound);
-        return soundTransform.getMagnitude ();
-    }
-    
     @Override
     public int findDecay (final Sound channel1, final int attack) throws SoundTransformException {
         int decayIndex = attack;
@@ -39,7 +32,6 @@ public class MagnitudeADSRHelper implements ADSRHelper {
     public int findRelease (final Sound channel1) throws SoundTransformException {
         final Sound reversed = new ReverseSoundTransformation ().transform (channel1);
         int releaseIndexFromReversed = 0;
-
 
         final double [] magnitude = this.getMagnitudeArray (reversed, MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER);
 
@@ -63,5 +55,12 @@ public class MagnitudeADSRHelper implements ADSRHelper {
             sustainIndex = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER;
         }
         return sustainIndex;
+    }
+
+    private double [] getMagnitudeArray (Sound sound, int threshold) {
+
+        final ADSREnveloppeSoundTransformation soundTransform = new ADSREnveloppeSoundTransformation (threshold);
+        soundTransform.transform (sound);
+        return soundTransform.getMagnitude ();
     }
 }

@@ -14,7 +14,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.appender.Conver
 import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.WavAudioFormatParser;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
-import org.toilelibre.libe.soundtransform.model.TransformSoundService;
+import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -48,6 +48,6 @@ public class PitchAndSpeedHelperTest {
         }
         final Note n = $.create (Sound2NoteService.class).convert ("e4", e4);
         new Slf4jObserver ().notify ("e' 4 : " + n.getFrequency () + "Hz, should be around 658Hz");
-        org.junit.Assert.assertTrue (n.getFrequency () > 658 - 10 && n.getFrequency () < 658 + 10);
+        org.junit.Assert.assertTrue ((n.getFrequency () > (658 - 10)) && (n.getFrequency () < (658 + 10)));
     }
 }

@@ -1,0 +1,27 @@
+{
+  "simple_piano" : 
+    {
+  	      -1 : "notes/Piano1-C.wav",
+  	      -2 : "notes/Piano3-E.wav",
+  	      -3 : "notes/Piano5-G.wav",
+  	      -4 : "notes/Piano7-B.wav",
+  	      -5 : "notes/Piano2-D.wav",
+  	      -6 : "notes/Piano4-F.wav",
+  	      -7 : "notes/Piano6-A.wav",
+  	      -8 : "notes/Piano8-C.wav"
+    },
+  "g-piano" :
+    {
+        -1 : "notes/g-piano1.wav",
+  	    -2 : "notes/g-piano2.wav",
+  	    -3 : "notes/g-piano3.wav",
+  	    -4 : "notes/g-piano4.wav",
+  	    -5 : "notes/g-piano5.wav",
+  	    -6 : "notes/g-piano6.wav"
+    },
+  "chord_piano" :
+    {
+        329 : "notes/g-piano3.wav",
+        293 : "notes/g-piano4.wav"
+    }
+}

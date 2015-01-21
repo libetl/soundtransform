@@ -6,35 +6,13 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequen
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class ADSREnveloppeSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
-    private int       arraylength = 0;
-    private double    threshold;
-    private double [] magnitude;
+    private int          arraylength = 0;
+    private final double threshold;
+    private double []    magnitude;
 
     public ADSREnveloppeSoundTransformation (double threshold1) {
         super ();
         this.threshold = threshold1;
-    }
-
-    @Override
-    public double getLowThreshold (final double defaultValue) {
-        return this.threshold;
-    }
-
-    public double [] getMagnitude () {
-        return magnitude;
-    }
-
-    @Override
-    public Sound initSound (final Sound input) {
-        this.arraylength = 0;
-        this.magnitude = new double [(int) (input.getSamples ().length / this.threshold + 1)];
-        return super.initSound (input);
-    }
-
-    @Override
-    public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
-        this.magnitude [this.arraylength++] = this.computeMagnitude (fs);
-        return super.transformFrequencies (fs);
     }
 
     public int computeMagnitude (final Spectrum<Complex []> fs) {
@@ -43,5 +21,27 @@ public class ADSREnveloppeSoundTransformation extends SimpleFrequencySoundTransf
             sum += fs.getState () [i].abs ();
         }
         return (int) (sum / fs.getState ().length);
+    }
+
+    @Override
+    public double getLowThreshold (final double defaultValue) {
+        return this.threshold;
+    }
+
+    public double [] getMagnitude () {
+        return this.magnitude;
+    }
+
+    @Override
+    public Sound initSound (final Sound input) {
+        this.arraylength = 0;
+        this.magnitude = new double [(int) ((input.getSamples ().length / this.threshold) + 1)];
+        return super.initSound (input);
+    }
+
+    @Override
+    public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
+        this.magnitude [this.arraylength++] = this.computeMagnitude (fs);
+        return super.transformFrequencies (fs);
     }
 }

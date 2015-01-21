@@ -61,7 +61,7 @@ public class ApplicationInjector {
                 try {
                     newInstanceParams [i] = ApplicationInjector.getBean (ptypes [i]);
                 } catch (final NoSuchResourceException nsre) {
-                    warnings.add ("Could not find a bean named " + ptypes [i] == null ? null : ptypes.getClass () + " (" + nsre.getMessage () + ")");
+                    warnings.add (("Could not find a bean named " + ptypes [i]) == null ? null : ptypes.getClass () + " (" + nsre.getMessage () + ")");
                 }
             }
             int additionalParamCounter = 0;

@@ -11,8 +11,8 @@ import javax.sound.sampled.AudioSystem;
 import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
-import org.toilelibre.libe.soundtransform.model.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -29,7 +29,7 @@ public class SoundGenerateTest {
         final int samplerate = 44100;
         final long [] signal = new long [length];
         for (int j = 0 ; j < length ; j++) {
-            signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
+            signal [j] = (long) (Math.sin ((j * soundfreq * 2 * Math.PI) / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
 
@@ -51,7 +51,7 @@ public class SoundGenerateTest {
         final int samplerate = 44100;
         final long [] signal = new long [length];
         for (int j = 0 ; j < length ; j++) {
-            signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
+            signal [j] = (long) (Math.sin ((j * soundfreq * 2 * Math.PI) / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
         final SoundTransformation st = new SimpleFrequencySoundTransformation<Complex []> ();

@@ -1,6 +1,5 @@
-package org.toilelibre.libe.soundtransform.model;
+package org.toilelibre.libe.soundtransform.model.converted.sound;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
