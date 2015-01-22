@@ -5,7 +5,7 @@
 	<artifactId>soundtransform</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>soundtransform</name>
-	<description>Test program to try shaping a sound with an instrument.</description>
+	<description>Library to shape a sound with an instrument.</description>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
@@ -73,6 +73,7 @@
 			<groupId>com.googlecode.soundlibs</groupId>
 			<artifactId>tritonus-share</artifactId>
 			<version>0.3.7-2</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.soundlibs</groupId>

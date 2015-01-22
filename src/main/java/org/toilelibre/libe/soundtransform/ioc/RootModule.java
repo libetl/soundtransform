@@ -2,12 +2,12 @@ package org.toilelibre.libe.soundtransform.ioc;
 
 import org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundAppender;
 import org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundPitchAndTempoHelper;
-import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.JavazoomAudioFileHelper;
-import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.WavAudioFormatParser;
+import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android.AndroidAudioFileHelper;
+import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android.NoOpFormatParser;
 import org.toilelibre.libe.soundtransform.infrastructure.service.fourier.CommonsMath3FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.pack.GsonPackConfigParser;
-import org.toilelibre.libe.soundtransform.infrastructure.service.play.LineListenerPlaySoundProcessor;
+import org.toilelibre.libe.soundtransform.infrastructure.service.play.android.AndroidPlaySoundProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.CallHPSFrequencyHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.MagnitudeADSRHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.sound2string.GraphSound2StringHelper;
@@ -36,7 +36,7 @@ public class RootModule extends BinderModule {
 
     @Override
     protected void declare () {
-        super.bind (PlaySoundProcessor.class).to (new LineListenerPlaySoundProcessor ());
+        super.bind (PlaySoundProcessor.class).to (new AndroidPlaySoundProcessor ());
         super.bind (Sound2StringHelper.class).to (new GraphSound2StringHelper ());
         super.bind (SoundAppender.class).to (new ConvertedSoundAppender ());
         super.bind (SoundPitchAndTempoHelper.class).to (new ConvertedSoundPitchAndTempoHelper ());
@@ -44,8 +44,8 @@ public class RootModule extends BinderModule {
         super.bind (Spectrum2CepstrumHelper.class).to (new NaiveSpectrum2CepstrumHelper ());
         super.bind (SpectrumHelper.class).to (new HPSSpectrumHelper ());
         super.bind (SpectrumToStringHelper.class).to (new GraphSpectrumToStringHelper ());
-        super.bind (AudioFileHelper.class).to (new JavazoomAudioFileHelper ());
-        super.bind (AudioFormatParser.class).to (new WavAudioFormatParser ());
+        super.bind (AudioFileHelper.class).to (new AndroidAudioFileHelper ());
+        super.bind (AudioFormatParser.class).to (new NoOpFormatParser ());
         super.bind (FrameProcessor.class).to (new ByteArrayFrameProcessor ());
         super.bind (ADSRHelper.class).to (new MagnitudeADSRHelper ());
         super.bind (FrequencyHelper.class).to (new CallHPSFrequencyHelper ());

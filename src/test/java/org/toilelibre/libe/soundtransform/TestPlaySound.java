@@ -5,7 +5,7 @@ import java.io.InputStream;
 
 import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.infrastructure.service.play.LineListenerPlaySoundProcessor;
+import org.toilelibre.libe.soundtransform.infrastructure.service.play.javax.LineListenerPlaySoundProcessor;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;

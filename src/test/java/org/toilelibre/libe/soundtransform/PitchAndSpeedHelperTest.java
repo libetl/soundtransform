@@ -11,7 +11,7 @@ import javax.sound.sampled.AudioSystem;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundPitchAndTempoHelper;
-import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.WavAudioFormatParser;
+import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.javax.WavAudioFormatParser;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;

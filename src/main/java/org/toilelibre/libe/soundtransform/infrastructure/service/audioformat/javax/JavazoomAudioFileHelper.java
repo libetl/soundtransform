@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat;
+package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.javax;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

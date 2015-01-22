@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform;
 import javax.sound.sampled.AudioFormat;
 
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.WavAudioFormatParser;
+import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.javax.WavAudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public class AudioFormatParserTest {

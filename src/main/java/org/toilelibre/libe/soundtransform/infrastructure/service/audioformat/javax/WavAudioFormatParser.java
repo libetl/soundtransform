@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat;
+package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.javax;
 
 import java.io.InputStream;
 
@@ -7,10 +7,11 @@ import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.AudioInputStream;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor.FrameProcessorErrorCode;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
-public class WavAudioFormatParser implements org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser {
+public class WavAudioFormatParser implements AudioFormatParser {
 
     @Override
     public Object audioFormatfromInputStreamInfo (final InputStreamInfo info) {
