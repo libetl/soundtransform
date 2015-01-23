@@ -101,7 +101,14 @@ public class AudioInputStream extends FileInputStream {
         int sampleSize = this.byteArrayToInt (shortBuffer) / 8;
         this.read (buffer);
         string = new String (buffer);
-        if (!"data".equals (string) && !"LIST".equals (string)){
+        if ("LIST".equals (string)){
+            this.read (buffer);
+            int soundInfoSize = this.byteArrayToInt (buffer);
+            this.skip (soundInfoSize);
+            this.read (buffer);
+            string = new String (buffer);
+        }
+        if (!"data".equals (string)){
             throw new SoundTransformRuntimeException (new SoundTransformException (
                     AudioInputStreamErrorCode.NO_DATA_SEPARATOR, 
                     new IllegalArgumentException ()));
