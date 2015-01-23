@@ -17,13 +17,12 @@ import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileServ
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
 import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
-import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 
 public class Sound2NoteTest {
 
     @Test
-    public void run () throws SoundTransformException {
+    public void run () {
 
         final Map<String, Integer> frequenciesPerSound = new HashMap<String, Integer> () {
             /**
@@ -43,7 +42,6 @@ public class Sound2NoteTest {
             }
         };
         new Slf4jObserver ().notify ("Loading Packs");
-        $.create (ImportPackService.class).setObservers (new Slf4jObserver ()).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
         final Pack pack = $.select (Library.class).getPack ("default");
         for (final String instrument : pack.keySet ()) {
             for (final Integer noteKey : pack.get (instrument).keySet ()) {
