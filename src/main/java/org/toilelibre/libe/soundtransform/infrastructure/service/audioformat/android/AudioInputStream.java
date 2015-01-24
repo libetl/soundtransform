@@ -114,7 +114,7 @@ public class AudioInputStream extends FileInputStream {
                     new IllegalArgumentException ()));
         }
         int dataSize = this.readInt ();
-        this.info = new InputStreamInfo (channels, dataSize / (frameSize * 8), sampleSize, sampleRate, false, true);
+        this.info = new InputStreamInfo (channels, dataSize / (frameSize), sampleSize, sampleRate, false, true);
     }
 
 
