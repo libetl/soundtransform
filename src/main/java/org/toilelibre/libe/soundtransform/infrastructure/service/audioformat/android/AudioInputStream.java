@@ -30,6 +30,8 @@ public class AudioInputStream extends FileInputStream {
         }
     }
     
+    private byte [] intBuffer    = new byte [4];
+    private byte [] shortBuffer  = new byte [2];
     private InputStreamInfo info;
     
     public AudioInputStream (File file) throws IOException {
@@ -42,79 +44,76 @@ public class AudioInputStream extends FileInputStream {
         return this.info;
     }
 
+    private String readFourChars () throws IOException{
+        this.read (intBuffer);
+        return new String (intBuffer);
+    }
+
+    private int readShort () throws IOException{
+        this.read (shortBuffer);
+        return this.byteArrayToInt (shortBuffer);
+    }
+    private int readInt () throws IOException{
+        this.read (intBuffer);
+        return this.byteArrayToInt (intBuffer);
+    }
+    
     private int byteArrayToInt(byte[] b)
     {
         int i = 0;
         for (int j = 0 ; j < b.length ; j++){
-           i+= (b [j]) * Math.pow (256, j); 
+           i+= (b [j]) << j * 8; 
         }
         return i;
     }
 
     private void findMetadata () throws IOException {
-        byte [] buffer = new byte [4];
-        byte [] shortBuffer = new byte [2];
-        this.read (buffer);
-        String string = new String (buffer);
+        String string = this.readFourChars ();
         if (!"RIFF".equals (string)){
             throw new SoundTransformRuntimeException (new SoundTransformException (
                     AudioInputStreamErrorCode.NO_MAGIC_NUMBER, 
                     new IllegalArgumentException ()));
         }
-        this.read (buffer);
-        //int fileSize = 
-                this.byteArrayToInt (buffer);
-        this.read (buffer);
-        string = new String (buffer);
+        //file size
+        this.readInt ();
+        string = this.readFourChars ();
         if (!"WAVE".equals (string)){
             throw new SoundTransformRuntimeException (new SoundTransformException (
                     AudioInputStreamErrorCode.NO_WAVE_HEADER, 
                     new IllegalArgumentException ()));
         }
-        this.read (buffer);
-        string = new String (buffer);
+        string = this.readFourChars ();
         if (!"fmt ".equals (string)){
             throw new SoundTransformRuntimeException (new SoundTransformException (
                     AudioInputStreamErrorCode.NO_WAVE_HEADER, 
                     new IllegalArgumentException ()));
         }
-        this.read (buffer);
-        //int sizeOfChunk = 
-                this.byteArrayToInt (buffer);
-        this.read (shortBuffer);
-        int typeOfEncoding = this.byteArrayToInt (shortBuffer);
+        //size of chunk
+        this.readInt ();
+        int typeOfEncoding = this.readShort ();
         if (typeOfEncoding != 1){
             throw new SoundTransformRuntimeException (new SoundTransformException (
                     AudioInputStreamErrorCode.NON_PCM_WAV, 
                     new IllegalArgumentException ()));
         }
-        this.read (shortBuffer);
-        int channels = this.byteArrayToInt (shortBuffer);
-        this.read (buffer);
-        int sampleRate = (this.byteArrayToInt (buffer) + 65536) % 65536;
-        this.read (buffer);
-        //int byteRate = 
-                this.byteArrayToInt (buffer);
-        this.read (shortBuffer);
-        int frameSize = this.byteArrayToInt (shortBuffer);
-        this.read (shortBuffer);
-        int sampleSize = this.byteArrayToInt (shortBuffer) / 8;
-        this.read (buffer);
-        string = new String (buffer);
+        int channels = this.readShort ();
+        int sampleRate = (this.readInt () + 65536) % 65536;
+        //byterate
+        this.readInt ();
+        int frameSize =  this.readShort ();
+        int sampleSize = this.readShort () / 8;
+        string = this.readFourChars ();
         if ("LIST".equals (string)){
-            this.read (buffer);
-            int soundInfoSize = this.byteArrayToInt (buffer);
+            int soundInfoSize = this.readInt ();
             this.skip (soundInfoSize);
-            this.read (buffer);
-            string = new String (buffer);
+            string = this.readFourChars ();
         }
         if (!"data".equals (string)){
             throw new SoundTransformRuntimeException (new SoundTransformException (
                     AudioInputStreamErrorCode.NO_DATA_SEPARATOR, 
                     new IllegalArgumentException ()));
         }
-        this.read (buffer);
-        int dataSize = this.byteArrayToInt (buffer);
+        int dataSize = this.readInt ();
         this.info = new InputStreamInfo (channels, dataSize / (frameSize * 8), sampleSize, sampleRate, false, true);
     }
 
