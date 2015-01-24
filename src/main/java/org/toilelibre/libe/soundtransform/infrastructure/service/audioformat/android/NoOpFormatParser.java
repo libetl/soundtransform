@@ -3,9 +3,10 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.an
 import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
-public class NoOpFormatParser implements org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser {
+public class NoOpFormatParser implements AudioFormatParser {
 
     @Override
     public Object audioFormatfromInputStreamInfo (final InputStreamInfo info) {
@@ -19,6 +20,6 @@ public class NoOpFormatParser implements org.toilelibre.libe.soundtransform.mode
 
     @Override
     public InputStreamInfo getInputStreamInfo (final InputStream is) throws SoundTransformException {
-        return ((AudioInputStream)is).getInfo ();
+        return ((HasInputStreamInfo) is).getInfo ();
     }
 }
