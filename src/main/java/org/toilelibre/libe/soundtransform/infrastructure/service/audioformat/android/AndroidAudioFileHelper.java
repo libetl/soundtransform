@@ -2,7 +2,6 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.an
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -38,10 +37,16 @@ public class AndroidAudioFileHelper implements AudioFileHelper {
         }
         ByteArrayWithAudioFormatInputStream audioInputStream = (ByteArrayWithAudioFormatInputStream) ais;
         try {
-            FileOutputStream outputStream = new FileOutputStream (fDest);
+            WavOutputStream outputStream = new WavOutputStream (fDest);
             new AndroidWavHelper ().writeMetadata (audioInputStream, outputStream);
+            outputStream.write (audioInputStream.getAllContent ());
+            outputStream.flush ();
+            audioInputStream.close ();
+            outputStream.close ();
         } catch (FileNotFoundException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CREATE_AN_OUTPUT_FILE, e);
+        } catch (IOException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, fDest.getName ());
         }
     }
 }

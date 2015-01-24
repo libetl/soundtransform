@@ -17,4 +17,8 @@ public class ByteArrayWithAudioFormatInputStream extends ByteArrayInputStream im
         return this.info;
     }
 
+    public byte[] getAllContent () {
+        return this.buf;
+    }
+
 }
