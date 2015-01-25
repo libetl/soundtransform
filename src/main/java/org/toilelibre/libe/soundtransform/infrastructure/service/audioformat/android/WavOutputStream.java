@@ -12,20 +12,19 @@ public class WavOutputStream extends FileOutputStream {
     }
 
     private byte [] intToByteArray (int n) {
-        byte [] b = new byte [4];
+        final byte [] b = new byte [4];
         int k = n;
-        for (int i = 0 ; i < b.length ; i++){
+        for (int i = 0 ; i < b.length ; i++) {
             b [i] = (byte) (k % 256);
             k >>= 8;
         }
         return b;
     }
 
-
     private byte [] shortToByteArray (int i) {
-        return new byte[]{(byte)(i & 0xff),(byte)((i >>> 8) & 0xff)};
+        return new byte [] { (byte) (i & 0xff), (byte) ((i >>> 8) & 0xff) };
     }
-    
+
     public void writeInt (int i) throws IOException {
         this.write (this.intToByteArray (i));
     }

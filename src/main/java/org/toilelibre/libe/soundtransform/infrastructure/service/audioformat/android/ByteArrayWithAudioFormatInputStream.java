@@ -13,12 +13,13 @@ public class ByteArrayWithAudioFormatInputStream extends ByteArrayInputStream im
         this.info = info1;
     }
 
-    public InputStreamInfo getInfo () {
-        return this.info;
+    public byte [] getAllContent () {
+        return this.buf;
     }
 
-    public byte[] getAllContent () {
-        return this.buf;
+    @Override
+    public InputStreamInfo getInfo () {
+        return this.info;
     }
 
 }
