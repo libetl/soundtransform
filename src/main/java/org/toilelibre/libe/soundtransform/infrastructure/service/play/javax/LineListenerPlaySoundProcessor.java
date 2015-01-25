@@ -15,7 +15,8 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
-import org.toilelibre.libe.soundtransform.actions.transform.ExportSoundToInputStream;
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -74,8 +75,7 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor<Comple
         if (channels.length == 0) {
             return new Object ();
         }
-
-        final InputStream ais = new ExportSoundToInputStream ().toStream (channels, new InputStreamInfo (channels.length, channels [0].getSamples ().length, channels [0].getNbBytesPerSample () * 8, channels [0].getSampleRate (), true, false));
+        final InputStream ais = $.create (TransformSoundService.class).toStream (channels, new InputStreamInfo (channels.length, channels [0].getSamples ().length, channels [0].getNbBytesPerSample () * 8, channels [0].getSampleRate (), true, false));
         return this.play (ais);
     }
 
