@@ -21,6 +21,7 @@ public interface AudioFormatParser {
             return this.messageFormat;
         }
     }
+
     public abstract Object audioFormatfromInputStreamInfo (InputStreamInfo info);
 
     public abstract InputStreamInfo fromAudioFormat (Object audioFormat1, long l);

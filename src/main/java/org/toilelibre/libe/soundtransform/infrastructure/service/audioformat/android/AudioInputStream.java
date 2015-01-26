@@ -17,7 +17,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
     public AudioInputStream (File f) throws IOException {
         super (new FileInputStream (f));
     }
-    
+
     public AudioInputStream (InputStream is) throws IOException {
         super (is);
     }

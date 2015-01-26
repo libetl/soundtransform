@@ -24,7 +24,7 @@ public class PitchAndSpeedHelperTest {
         final URL fileURL = classLoader.getResource ("notes/Piano3-E.wav");
         final File input = new File (fileURL.getFile ());
 
-        final InputStream ais = (InputStream) $.create (ConvertAudioFileService.class).callConverter (input);
+        final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
         final TransformSoundService ts = $.create (TransformSoundService.class);
 
         final Sound [] e3 = ts.fromInputStream (ais);

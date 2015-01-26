@@ -21,12 +21,12 @@ public class NoOpFormatParser implements AudioFormatParser {
 
     @Override
     public InputStreamInfo getInputStreamInfo (final InputStream is) throws SoundTransformException {
-        if (is instanceof HasInputStreamInfo){
+        if (is instanceof HasInputStreamInfo) {
             return ((HasInputStreamInfo) is).getInfo ();
         }
         try {
             return new AndroidWavHelper ().readMetadata (new AudioInputStream (is));
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new SoundTransformException (AudioFormatParserErrorCode.READ_ERROR, e);
         }
     }

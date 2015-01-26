@@ -34,7 +34,7 @@ public class TestPlaySound {
                 throw e;
             }
         } catch (final RuntimeException e) {
-            if (!"Stub!".equals (e.getMessage ())){
+            if (!"Stub!".equals (e.getMessage ())) {
                 throw e;
             }
         }
