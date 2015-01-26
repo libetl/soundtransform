@@ -5,7 +5,6 @@ import java.io.InputStream;
 
 import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.infrastructure.service.play.javax.LineListenerPlaySoundProcessor;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -18,7 +17,8 @@ public class TestPlaySound {
 
     @Test
     public void playBeforeWav () throws SoundTransformException {
-        final PlaySoundProcessor<Complex []> ps = new LineListenerPlaySoundProcessor ();
+        @SuppressWarnings ("unchecked")
+        final PlaySoundProcessor<Complex []> ps = $.select (PlaySoundProcessor.class);
         final ConvertAudioFileService convertAudioFileService = $.create (ConvertAudioFileService.class);
         final InputStream ais = convertAudioFileService.callConverter (this.input);
         try {
@@ -31,6 +31,10 @@ public class TestPlaySound {
             // javax.sound.sampled.LineUnavailableException for some JDK
             // versions
             if (!javax.sound.sampled.LineUnavailableException.class.equals (e.getCause ().getClass ())) {
+                throw e;
+            }
+        } catch (final RuntimeException e) {
+            if (!"Stub!".equals (e.getMessage ())){
                 throw e;
             }
         }

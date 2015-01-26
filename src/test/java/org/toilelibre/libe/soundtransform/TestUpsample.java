@@ -4,10 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundAppender;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
@@ -34,7 +30,7 @@ public class TestUpsample {
         }
 
         final InputStream ais = $.create (TransformSoundService.class).toStream (outputSounds, new InputStreamInfo (outputSounds.length, outputSounds [0].getSamples ().length, 2, 44100, false, true));
-        AudioSystem.write ((AudioInputStream) ais, AudioFileFormat.Type.WAVE, output);
+        $.create (ConvertAudioFileService.class).writeInputStream (ais, output);
 
     }
 
@@ -55,7 +51,6 @@ public class TestUpsample {
 
         final InputStream ais = $.create (TransformSoundService.class).toStream (outputSounds, new InputStreamInfo (outputSounds.length, outputSounds [0].getSamples ().length, 2, 44100, false, true));
 
-        AudioSystem.write ((AudioInputStream) ais, AudioFileFormat.Type.WAVE, output);
-
+        $.create (ConvertAudioFileService.class).writeInputStream (ais, output);
     }
 }

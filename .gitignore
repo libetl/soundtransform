@@ -4,7 +4,7 @@
 /.settings/
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-
+/lint.xml
 # Package Files #
 #*.jar
 *.war

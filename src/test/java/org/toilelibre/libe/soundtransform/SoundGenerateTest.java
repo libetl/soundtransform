@@ -1,12 +1,7 @@
 package org.toilelibre.libe.soundtransform;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 
 import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
@@ -16,6 +11,7 @@ import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public class SoundGenerateTest {
@@ -36,10 +32,7 @@ public class SoundGenerateTest {
         final InputStream ais = $.create (TransformSoundService.class).toStream (new Sound [] { s }, new InputStreamInfo (1, s.getSamples ().length, sampleInBytes * 8, samplerate, false, true));
         final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        try {
-            AudioSystem.write ((AudioInputStream) ais, AudioFileFormat.Type.WAVE, fDest);
-        } catch (final IOException e) {
-        }
+        $.create (ConvertAudioFileService.class).writeInputStream (ais, fDest);
     }
 
     @Test

@@ -1,10 +1,8 @@
 package org.toilelibre.libe.soundtransform;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
@@ -32,7 +30,8 @@ public class BlackBoxTest {
     }
 
     @Test
-    public void getInputStreamInfo () throws SoundTransformException, UnsupportedAudioFileException, IOException {
-        new Slf4jObserver ().notify (new GetInputStreamInfo ().getInputStreamInfo (AudioSystem.getAudioInputStream (this.gPiano3)).toString ());
+    public void getInputStreamInfo () throws SoundTransformException, IOException {
+        new Slf4jObserver ().notify (new GetInputStreamInfo ().getInputStreamInfo (
+                new FileInputStream (this.gPiano3)).toString ());
     }
 }

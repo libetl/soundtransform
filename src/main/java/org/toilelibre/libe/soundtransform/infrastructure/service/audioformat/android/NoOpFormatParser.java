@@ -1,5 +1,6 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -20,6 +21,13 @@ public class NoOpFormatParser implements AudioFormatParser {
 
     @Override
     public InputStreamInfo getInputStreamInfo (final InputStream is) throws SoundTransformException {
-        return ((HasInputStreamInfo) is).getInfo ();
+        if (is instanceof HasInputStreamInfo){
+            return ((HasInputStreamInfo) is).getInfo ();
+        }
+        try {
+            return new AndroidWavHelper ().readMetadata (new AudioInputStream (is));
+        } catch (IOException e) {
+            throw new SoundTransformException (AudioFormatParserErrorCode.READ_ERROR, e);
+        }
     }
 }

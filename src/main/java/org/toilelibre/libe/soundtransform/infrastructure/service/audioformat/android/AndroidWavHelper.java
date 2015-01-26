@@ -44,7 +44,7 @@ public class AndroidWavHelper {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_MAGIC_NUMBER, new IllegalArgumentException ()));
         }
         // file size
-        final int fileSize = ais.readInt ();
+        final int fileSize = ais.readInt2 ();
         string = ais.readFourChars ();
         if (!AndroidWavHelper.WAVE.equals (string)) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_WAVE_HEADER, new IllegalArgumentException ()));
@@ -54,28 +54,28 @@ public class AndroidWavHelper {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_WAVE_HEADER, new IllegalArgumentException ()));
         }
         // size of chunk
-        final int chunkSize = ais.readInt ();
-        final int typeOfEncoding = ais.readShort ();
+        final int chunkSize = ais.readInt2 ();
+        final int typeOfEncoding = ais.readShort2 ();
         if (typeOfEncoding != 1) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NON_PCM_WAV, new IllegalArgumentException ()));
         }
-        final int channels = ais.readShort ();
-        final int sampleRate = (ais.readInt () + 65536) % 65536;
+        final int channels = ais.readShort2 ();
+        final int sampleRate = (ais.readInt2 () + 65536) % 65536;
         // byterate
-        final int byterate = ais.readInt ();
-        final int frameSize = ais.readShort ();
-        final int sampleSize = ais.readShort () / 8;
+        final int byterate = ais.readInt2 ();
+        final int frameSize = ais.readShort2 ();
+        final int sampleSize = ais.readShort2 () / 8;
         string = ais.readFourChars ();
         int soundInfoSize = 0;
         if (AndroidWavHelper.LIST.equals (string)) {
-            soundInfoSize = ais.readInt ();
+            soundInfoSize = ais.readInt2 ();
             ais.skip (soundInfoSize);
             string = ais.readFourChars ();
         }
         if (!AndroidWavHelper.DATA.equals (string)) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_DATA_SEPARATOR, new IllegalArgumentException ()));
         }
-        final int dataSize = ais.readInt ();
+        final int dataSize = ais.readInt2 ();
         return new InputStreamInfo (channels, dataSize / (frameSize), sampleSize, sampleRate, false, true);
     }
 
