@@ -46,11 +46,11 @@ public class WavAudioFormatParser implements AudioFormatParser {
             return this.fromAudioFormat (ais.getFormat (), ais.getFrameLength ());
         }
         try {
-            AudioFileFormat aff = AudioSystem.getAudioFileFormat (is);
+            final AudioFileFormat aff = AudioSystem.getAudioFileFormat (is);
             return this.fromAudioFormat (aff.getFormat (), aff.getFrameLength ());
-        } catch (UnsupportedAudioFileException e) {
+        } catch (final UnsupportedAudioFileException e) {
             throw new SoundTransformException (FrameProcessorErrorCode.WRONG_TYPE, e, is);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new SoundTransformException (FrameProcessorErrorCode.WRONG_TYPE, e, is);
         }
     }
