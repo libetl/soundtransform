@@ -17,7 +17,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 public class JavazoomAudioFileHelper implements AudioFileHelper {
 
     @Override
-    public AudioInputStream getAudioInputStream (final File inputFile) throws SoundTransformException {
+    public InputStream getAudioInputStream (final File inputFile) throws SoundTransformException {
         File readFile = inputFile;
         if (inputFile.getName ().toLowerCase ().endsWith (".mp3")) {
             File tempFile;
