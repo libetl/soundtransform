@@ -16,6 +16,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.Shap
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.SlowdownSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.SpeedUpSoundTransformation;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
@@ -23,7 +24,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 
-public class WavTest {
+public class WavTest extends SoundTransformTest {
 
     private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
     private final File        input       = new File (this.classLoader.getResource ("before.wav").getFile ());

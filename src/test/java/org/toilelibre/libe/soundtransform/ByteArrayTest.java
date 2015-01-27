@@ -3,8 +3,10 @@ package org.toilelibre.libe.soundtransform;
 import java.util.Arrays;
 
 import org.junit.Test;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 
-public class ByteArrayTest {
+public class ByteArrayTest extends SoundTransformTest {
 
     byte [] array1 = { 42, -127, 23, 0 };
 
@@ -31,8 +33,8 @@ public class ByteArrayTest {
         int i = this.byteArrayToInt (this.array1);
         i -= 320;
         final byte [] array2 = this.intToByteArray (i);
-        System.out.println (Arrays.toString (this.array1));
-        System.out.println (i);
-        System.out.println (Arrays.toString (array2));
+        new Slf4jObserver ().notify (Arrays.toString (this.array1));
+        new Slf4jObserver ().notify ("" + i);
+        new Slf4jObserver ().notify (Arrays.toString (array2));
     }
 }

@@ -9,13 +9,14 @@ import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 import org.toilelibre.libe.soundtransform.model.inputstream.TransformInputStreamService;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-public class Pcm2FrameTest {
+public class Pcm2FrameTest extends SoundTransformTest {
 
     @Test
     public void testReversibleData () throws SoundTransformException {

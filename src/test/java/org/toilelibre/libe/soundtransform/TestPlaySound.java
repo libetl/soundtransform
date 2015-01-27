@@ -6,12 +6,13 @@ import java.io.InputStream;
 import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
-public class TestPlaySound {
+public class TestPlaySound extends SoundTransformTest {
     private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
     private final File        input       = new File (this.classLoader.getResource ("before.wav").getFile ());
 

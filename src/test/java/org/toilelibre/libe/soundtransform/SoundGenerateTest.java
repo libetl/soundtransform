@@ -6,6 +6,7 @@ import java.io.InputStream;
 import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -14,7 +15,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
-public class SoundGenerateTest {
+public class SoundGenerateTest extends SoundTransformTest {
 
     @Test
     public void generateA440HzSound () throws SoundTransformException {

@@ -14,6 +14,10 @@ public class SoundTransformException extends Exception {
         this.args = args;
     }
 
+    public ErrorCode getErrorCode (){
+        return this.errorCode;
+    }
+    
     @Override
     public String getMessage () {
         return String.format (this.errorCode.getMessageFormat (), this.args);

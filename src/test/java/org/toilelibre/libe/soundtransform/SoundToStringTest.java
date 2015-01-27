@@ -7,6 +7,7 @@ import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
@@ -14,7 +15,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
 
-public class SoundToStringTest {
+public class SoundToStringTest extends SoundTransformTest {
 
     @Test
     public void testFsToString () throws SoundTransformException {

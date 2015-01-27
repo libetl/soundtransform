@@ -8,6 +8,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.appender.Conver
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.ShapeSoundTransformation;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -16,7 +17,7 @@ import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 
-public class ShapeTest {
+public class ShapeTest extends SoundTransformTest {
 
     @Test
     public void testAppendSoundsWithDifferentNbBytes () throws SoundTransformException {

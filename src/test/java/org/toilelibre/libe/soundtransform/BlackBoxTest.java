@@ -1,5 +1,6 @@
 package org.toilelibre.libe.soundtransform;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,10 +11,11 @@ import org.toilelibre.libe.soundtransform.actions.transform.ExportAFileFromAFile
 import org.toilelibre.libe.soundtransform.actions.transform.GetInputStreamInfo;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.EightBitsSoundTransformation;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-public class BlackBoxTest {
+public class BlackBoxTest extends SoundTransformTest {
     private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
     private final File        input       = new File (this.classLoader.getResource ("before.wav").getFile ());
     private final File        gPiano3     = new File (this.classLoader.getResource ("notes/g-piano3.wav").getFile ());
@@ -31,6 +33,6 @@ public class BlackBoxTest {
 
     @Test
     public void getInputStreamInfo () throws SoundTransformException, IOException {
-        new Slf4jObserver ().notify (new GetInputStreamInfo ().getInputStreamInfo (new FileInputStream (this.gPiano3)).toString ());
+        new Slf4jObserver ().notify (new GetInputStreamInfo ().getInputStreamInfo (new BufferedInputStream (new FileInputStream (this.gPiano3))).toString ());
     }
 }

@@ -7,13 +7,14 @@ import java.io.InputStream;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundAppender;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
-public class TestUpsample {
+public class TestUpsample extends SoundTransformTest {
 
     @Test
     public void testTransform11025Hz2BitsMonoSoundInto44100Hz2BitsMonoSound () throws SoundTransformException, IOException {

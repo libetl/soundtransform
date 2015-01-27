@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.PitchSoundTransformation;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -20,7 +21,7 @@ import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 
-public class Sound2NoteTest {
+public class Sound2NoteTest extends SoundTransformTest {
 
     @Test
     public void run () throws SoundTransformException {

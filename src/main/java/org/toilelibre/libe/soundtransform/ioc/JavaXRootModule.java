@@ -7,14 +7,22 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
-public class TestRootModule extends RootModule {
+public class JavaXRootModule extends ImplAgnosticRootModule {
 
     @Override
-    protected void declare () {
-        super.declare ();
-        super.bind (PlaySoundProcessor.class).to (new LineListenerPlaySoundProcessor ());
-        super.bind (AudioFileHelper.class).to (new JavazoomAudioFileHelper ());
-        super.bind (AudioFormatParser.class).to (new WavAudioFormatParser ());
+    protected AudioFileHelper provideAudioFileHelper () {
+        return new JavazoomAudioFileHelper ();
+    }
+
+    @Override
+    protected AudioFormatParser provideAudioFormatParser () {
+        return new WavAudioFormatParser ();
+    }
+
+    @SuppressWarnings ("unchecked")
+    @Override
+    protected PlaySoundProcessor<?> providePlaySoundProcessor () {
+        return new LineListenerPlaySoundProcessor ();
     }
 
 }

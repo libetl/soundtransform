@@ -1,10 +1,14 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.javax;
 
+import java.io.IOException;
 import java.io.InputStream;
 
+import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
@@ -37,10 +41,17 @@ public class WavAudioFormatParser implements AudioFormatParser {
 
     @Override
     public InputStreamInfo getInputStreamInfo (final InputStream is) throws SoundTransformException {
-        if (!(is instanceof AudioInputStream)) {
-            throw new SoundTransformException (FrameProcessorErrorCode.WRONG_TYPE, new IllegalArgumentException (), is);
+        if (is instanceof AudioInputStream) {
+            final AudioInputStream ais = (AudioInputStream) is;
+            return this.fromAudioFormat (ais.getFormat (), ais.getFrameLength ());
         }
-        final AudioInputStream ais = (AudioInputStream) is;
-        return this.fromAudioFormat (ais.getFormat (), ais.getFrameLength ());
+        try {
+            AudioFileFormat aff = AudioSystem.getAudioFileFormat (is);
+            return this.fromAudioFormat (aff.getFormat (), aff.getFrameLength ());
+        } catch (UnsupportedAudioFileException e) {
+            throw new SoundTransformException (FrameProcessorErrorCode.WRONG_TYPE, e, is);
+        } catch (IOException e) {
+            throw new SoundTransformException (FrameProcessorErrorCode.WRONG_TYPE, e, is);
+        }
     }
 }

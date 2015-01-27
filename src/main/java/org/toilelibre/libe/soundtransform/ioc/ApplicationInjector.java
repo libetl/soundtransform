@@ -96,7 +96,7 @@ public class ApplicationInjector {
         throw new SoundTransformRuntimeException (new SoundTransformException (ApplicationInjectorErrorCode.INSTANTIATION_FAILED, new NullPointerException (warnings.toString ())));
     }
 
-    private static Injector injector = Bootstrap.injector (RootModule.class);
+    static Injector injector = Bootstrap.injector (AndroidRootModule.class);
 
     private ApplicationInjector () {
 

@@ -6,10 +6,11 @@ import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.SlowdownSoundTransformation;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-public class SlowdownSoundTest {
+public class SlowdownSoundTest extends SoundTransformTest {
 
     @Test
     public void testSlowdown () throws SoundTransformException {

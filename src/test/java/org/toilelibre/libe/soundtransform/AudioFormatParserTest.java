@@ -2,10 +2,11 @@ package org.toilelibre.libe.soundtransform;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
-public class AudioFormatParserTest {
+public class AudioFormatParserTest extends SoundTransformTest {
 
     @Test
     public void testAudioFormatToIsi () {
