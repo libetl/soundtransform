@@ -44,7 +44,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
         if (completeURL == null) {
             this.log (new LogEvent (LogLevel.WARN, fileName + " not a classpath resource"));
             try {
-                completeURL = new File (fileName).toURL ();
+                completeURL = new File (fileName).toURI ().toURL ();
             } catch (MalformedURLException e) {
                 this.log (new LogEvent (LogLevel.ERROR, fileName + " not a filesystem file (" + e + ")"));
             }
