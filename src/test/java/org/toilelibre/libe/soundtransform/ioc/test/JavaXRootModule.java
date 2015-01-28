@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform.ioc.javax;
+package org.toilelibre.libe.soundtransform.ioc.test;
 
 import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.javax.JavazoomAudioFileHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.javax.WavAudioFormatParser;
