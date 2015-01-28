@@ -79,12 +79,13 @@ public class AndroidWavHelper {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_DATA_SEPARATOR, new IllegalArgumentException ()));
         }
         final int dataSize = ais.readInt2 ();
-        return new InputStreamInfo (channels, dataSize / (frameSize), sampleSize, sampleRate, false, true);
+        return new InputStreamInfo (channels, dataSize / (frameSize), sampleSize, sampleRate, false, true, list);
     }
 
     public void writeMetadata (ByteArrayWithAudioFormatInputStream audioInputStream, WavOutputStream outputStream) throws IOException {
         final InputStreamInfo info = audioInputStream.getInfo ();
-        final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + (info.getFrameLength () * info.getSampleSize () * info.getChannels ()));
+        final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + info.getSoundInfo ().length () +
+                                    (info.getFrameLength () * info.getSampleSize () * info.getChannels ()));
         final int chunkSize = AndroidWavHelper.INFO_CHUNK_SIZE;
         final int typeOfEncoding = 1;
         final int channels = info.getChannels ();
@@ -104,6 +105,11 @@ public class AndroidWavHelper {
         outputStream.writeInt (byterate);
         outputStream.writeShortInt (frameSize);
         outputStream.writeShortInt (sampleSize);
+        if (info.getSoundInfo () != null){
+            outputStream.write (AndroidWavHelper.LIST.getBytes ());
+            outputStream.writeInt (info.getSoundInfo ().length ());
+            outputStream.write (info.getSoundInfo ().getBytes ());
+        }
         outputStream.write (AndroidWavHelper.DATA.getBytes ());
         outputStream.writeInt (dataSize);
     }

@@ -9,6 +9,7 @@ public class InputStreamInfo {
     private final double  sampleRate;
     private final boolean bigEndian;
     private final boolean pcmSigned;
+    private final String  soundInfo;
 
     public InputStreamInfo (final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned) {
         super ();
@@ -18,6 +19,18 @@ public class InputStreamInfo {
         this.sampleRate = sampleRate;
         this.bigEndian = bigEndian;
         this.pcmSigned = pcmSigned;
+        this.soundInfo = null;
+    }
+    
+    public InputStreamInfo (final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned, String soundInfo) {
+        super ();
+        this.channels = channels;
+        this.frameLength = frameLength;
+        this.sampleSize = sampleSize;
+        this.sampleRate = sampleRate;
+        this.bigEndian = bigEndian;
+        this.pcmSigned = pcmSigned;
+        this.soundInfo = soundInfo;
     }
 
     public int getChannels () {
@@ -42,6 +55,10 @@ public class InputStreamInfo {
 
     public boolean isPcmSigned () {
         return this.pcmSigned;
+    }
+
+    public String getSoundInfo () {
+        return soundInfo;
     }
 
     @Override
