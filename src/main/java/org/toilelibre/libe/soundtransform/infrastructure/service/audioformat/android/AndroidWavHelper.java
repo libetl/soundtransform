@@ -92,7 +92,7 @@ public class AndroidWavHelper {
         final int sampleRate = (int) info.getSampleRate ();
         final int byterate = (int) info.getSampleRate () * info.getSampleSize ();
         final int frameSize = info.getSampleSize () / info.getChannels ();
-        final int sampleSize = info.getSampleSize ();
+        final int sampleSize = info.getSampleSize () * 8;
         final int dataSize = (int) info.getFrameLength () * info.getSampleSize ();
         outputStream.write (AndroidWavHelper.RIFF.getBytes ());
         outputStream.writeInt (fileSize);
