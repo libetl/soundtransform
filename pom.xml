@@ -5,7 +5,7 @@
 	<artifactId>soundtransform</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>soundtransform</name>
-	<packaging>apk</packaging>
+	<packaging>aar</packaging>
 	<description>Library to shape a sound with an instrument.</description>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
