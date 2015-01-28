@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.model.library.pack;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
@@ -37,12 +38,27 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
 
     }
 
-    public void addNote (final Range range, final String fileName) throws SoundTransformException {
+
+    private URL getURL (String fileName) {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+        URL completeURL = classLoader.getResource (fileName);
+        if (completeURL == null) {
+            this.log (new LogEvent (LogLevel.WARN, fileName + " not a classpath resource"));
+            try {
+                completeURL = new File (fileName).toURL ();
+            } catch (MalformedURLException e) {
+                this.log (new LogEvent (LogLevel.ERROR, fileName + " not a filesystem file (" + e + ")"));
+            }
+        }
+        return completeURL;
+    }
+    
+    public void addNote (final Range range, final String fileName) throws SoundTransformException {
+        final URL completeURL = this.getURL (fileName);
         try {
-            final java.net.URL completeURL = classLoader.getResource (fileName);
             if (completeURL == null) {
-                throw new SoundTransformException (AddNoteErrorCode.FILE_NOT_FOUND, new FileNotFoundException (fileName), fileName);
+                this.log (new LogEvent (LogLevel.ERROR, fileName + " not found"));
+                return;
             }
             final String completeFileName = completeURL.getFile ();
             final File file = new File (completeFileName);
@@ -55,16 +71,8 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
     }
 
     public void addNote (final Range range, final String fileName, final int frequency) throws SoundTransformException {
-        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+        final URL completeURL = this.getURL (fileName);
         try {
-            java.net.URL completeURL = classLoader.getResource (fileName);
-            if (completeURL == null) {
-                try {
-                    completeURL = new File (fileName).toURL ();
-                } catch (MalformedURLException e) {
-                    throw new SoundTransformException (AddNoteErrorCode.FILE_NOT_FOUND, e, fileName);
-                }
-            }
             if (completeURL == null) {
                 this.log (new LogEvent (LogLevel.ERROR, fileName + " not found"));
                 return;
