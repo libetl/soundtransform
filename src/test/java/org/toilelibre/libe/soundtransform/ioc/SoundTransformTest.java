@@ -1,7 +1,7 @@
 package org.toilelibre.libe.soundtransform.ioc;
 
 import org.junit.BeforeClass;
-import org.toilelibre.libe.soundtransform.ioc.test.JavaXRootModule;
+import org.toilelibre.libe.soundtransform.ioc.javax.JavaXRootModule;
 
 import se.jbee.inject.bootstrap.Bootstrap;
 
