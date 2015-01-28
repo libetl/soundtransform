@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.model.library.pack;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
@@ -56,7 +57,14 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
     public void addNote (final Range range, final String fileName, final int frequency) throws SoundTransformException {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         try {
-            final java.net.URL completeURL = classLoader.getResource (fileName);
+            java.net.URL completeURL = classLoader.getResource (fileName);
+            if (completeURL == null) {
+                try {
+                    completeURL = new File (fileName).toURL ();
+                } catch (MalformedURLException e) {
+                    throw new SoundTransformException (AddNoteErrorCode.FILE_NOT_FOUND, e, fileName);
+                }
+            }
             if (completeURL == null) {
                 this.log (new LogEvent (LogLevel.ERROR, fileName + " not found"));
                 return;
