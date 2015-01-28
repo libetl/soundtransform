@@ -67,9 +67,12 @@ public class AndroidWavHelper {
         final int sampleSize = ais.readShort2 () / 8;
         string = ais.readFourChars ();
         int soundInfoSize = 0;
+        String list = null;
         if (AndroidWavHelper.LIST.equals (string)) {
             soundInfoSize = ais.readInt2 ();
-            ais.skip (soundInfoSize);
+            byte [] listByte = new byte [soundInfoSize];
+            ais.read (listByte);
+            list = new String (listByte);
             string = ais.readFourChars ();
         }
         if (!AndroidWavHelper.DATA.equals (string)) {

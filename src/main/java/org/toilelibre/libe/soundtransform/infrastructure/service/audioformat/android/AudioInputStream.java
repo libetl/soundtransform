@@ -22,12 +22,12 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
         super (is);
     }
 
-    private int byteArrayToInt (byte [] b) {
-        int i = 0;
-        for (int j = 0 ; j < b.length ; j++) {
-            i += (b [j]) << (j * 8);
-        }
-        return i;
+    private int byteArrayToInt (byte [] bytes) {
+        return bytes[3] << 24 | (bytes[2] & 0xFF) << 16 | (bytes[1] & 0xFF) << 8 | (bytes[0] & 0xFF);
+    }
+    
+    private int byteArrayToShort (byte [] bytes) {
+        return (bytes[1] & 0xFF) << 8 | (bytes[0] & 0xFF);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
 
     short readShort2 () throws IOException {
         this.read (this.shortBuffer);
-        return (short) this.byteArrayToInt (this.shortBuffer);
+        return (short) this.byteArrayToShort (this.shortBuffer);
     }
 
     void setInfo (InputStreamInfo info) {
