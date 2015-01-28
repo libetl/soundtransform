@@ -1,7 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.library.pack;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
