@@ -11,6 +11,36 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class CommonsMath3FourierTransformHelper implements FourierTransformHelper<Complex []> {
 
+    private Spectrum<Complex []> forwardPartOfTheSound (Sound sound, double [] transformeddata) {
+        final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
+        final Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
+        return new Spectrum<Complex []> (complexArray, sound.getSampleRate (), sound.getNbBytesPerSample ());
+    }
+
+    @Override
+    public Sound reverse (Spectrum<Complex []> spectrum) {
+        return this.reverse (spectrum, null);
+    }
+
+    public Sound reverse (Spectrum<Complex []> spectrum, long [] output) {
+        return this.reverse (spectrum, output, 0, 0);
+    }
+
+    public Sound reverse (Spectrum<Complex []> spectrum, long [] output, int startOffset, int offsetFromASimpleLoop) {
+        final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
+        final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
+        if (output == null) {
+            output = new long [complexArray.length];
+        }
+        for (int i = 0 ; i < complexArray.length ; i++) {
+            final int index = i + startOffset + offsetFromASimpleLoop;
+            if (((index) < output.length) && (output [index] == 0)) {
+                output [index] = (long) Math.floor (complexArray [i].getReal ());
+            }
+        }
+        return new Sound (output, spectrum.getNbBytes (), spectrum.getSampleRate (), 0);
+    }
+
     @Override
     public Sound transform (final AbstractFrequencySoundTransformation<Complex []> st, final Sound sound) {
         final Sound output = st.initSound (sound);
@@ -23,7 +53,7 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
         final double [] transformeddata = new double [maxlength];
         for (int i = 0 ; i < data.length ; i += threshold) {
             final int iterationLength = Math.min (maxlength, data.length - i);
-            double amplitude = this.writeTransformedDataAndReturnAmplitude (transformeddata, data, i, (int) threshold, iterationLength, maxlength);
+            final double amplitude = this.writeTransformedDataAndReturnAmplitude (transformeddata, data, i, (int) threshold, iterationLength, maxlength);
             final Spectrum<Complex []> spectrum = this.forwardPartOfTheSound (sound, transformeddata);
             final Spectrum<Complex []> result = st.transformFrequencies (spectrum, i, maxlength, iterationLength, (float) (10.0f * Math.log10 (amplitude)));
             if (result == null) {
@@ -53,34 +83,5 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
             transformeddata [j - i] = data [j];
         }
         return Math.abs (maxValue - minValue);
-    }
-
-    private Spectrum<Complex []> forwardPartOfTheSound (Sound sound, double [] transformeddata) {
-        final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
-        Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
-        return new Spectrum<Complex []> (complexArray, (int) sound.getSampleRate (), sound.getNbBytesPerSample ());
-    }
-
-    public Sound reverse (Spectrum<Complex []> spectrum) {
-        return this.reverse (spectrum, null);
-    }
-
-    public Sound reverse (Spectrum<Complex []> spectrum, long [] output) {
-        return this.reverse (spectrum, output, 0, 0);
-    }
-
-    public Sound reverse (Spectrum<Complex []> spectrum, long [] output, int startOffset, int offsetFromASimpleLoop) {
-        final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
-        final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
-        if (output == null) {
-            output = new long [complexArray.length];
-        }
-        for (int i = 0 ; i < complexArray.length ; i++) {
-            int index = i + startOffset + offsetFromASimpleLoop;
-            if (((index) < output.length) && (output [index] == 0)) {
-                output [index] = (long) Math.floor (complexArray [i].getReal ());
-            }
-        }
-        return new Sound (output, spectrum.getNbBytes (), spectrum.getSampleRate (), 0);
     }
 }

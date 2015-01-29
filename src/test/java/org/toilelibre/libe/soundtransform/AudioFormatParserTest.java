@@ -10,7 +10,7 @@ public class AudioFormatParserTest extends SoundTransformTest {
 
     @Test
     public void testAudioFormatToIsi () {
-        final InputStreamInfo audioFormat = new InputStreamInfo (2, 0, 2, 44100.0f, true, false);
+        final InputStreamInfo audioFormat = new InputStreamInfo (2, 0, 2, 44100.0f, false, true);
         final Object isi2 = $.select (AudioFormatParser.class).audioFormatfromInputStreamInfo (audioFormat);
         assert isi2 != null;
     }

@@ -31,9 +31,17 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
         this.convertAudioFileService = $.create (ConvertAudioFileService.class);
     }
 
+    public Sound [] apply (final Sound [] in, final SoundTransformation... transforms) throws SoundTransformException {
+        return this.callTransformService.transformAudioStream (in, transforms);
+    }
+
     public Sound [] convertAndApply (final InputStream ais, final SoundTransformation... transforms) throws SoundTransformException {
         final Sound [] in = this.transformInputStreamService.fromInputStream (ais);
         return this.callTransformService.transformAudioStream (in, transforms);
+    }
+
+    public InputStream fromFile (File fOrigin) throws SoundTransformException {
+        return this.convertAudioFileService.callConverter (fOrigin);
     }
 
     public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {
@@ -46,6 +54,10 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
 
     public InputStreamInfo getInputStreamInfo (final InputStream ais) throws SoundTransformException {
         return this.transformInputStreamService.getInputStreamInfo (ais);
+    }
+
+    public InputStreamInfo getInputStreamInfo (Sound [] sounds) {
+        return InputStreamInfo.of (sounds);
     }
 
     public InputStream toStream (final Sound [] channels, final InputStreamInfo inputStreamInfo) throws SoundTransformException {
@@ -68,5 +80,10 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
         this.convertAudioFileService.writeInputStream (ais2, fDest);
         this.log (new LogEvent (LogLevel.INFO, "Wrote output"));
         this.log (new LogEvent (LogLevel.INFO, "output : " + aisi2.toString ()));
+    }
+
+    public void writeFile (InputStream is, File fDest) throws SoundTransformException {
+        this.convertAudioFileService.writeInputStream (is, fDest);
+
     }
 }

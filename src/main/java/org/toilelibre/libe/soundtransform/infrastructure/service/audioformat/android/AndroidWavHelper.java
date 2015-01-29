@@ -64,13 +64,13 @@ public class AndroidWavHelper {
         // byterate
         final int byterate = ais.readInt2 ();
         final int frameSize = ais.readShort2 ();
-        final int sampleSize = ais.readShort2 () / 8;
+        final int sampleSize = ais.readShort2 ();
         string = ais.readFourChars ();
         int soundInfoSize = 0;
         String list = null;
         if (AndroidWavHelper.LIST.equals (string)) {
             soundInfoSize = ais.readInt2 ();
-            byte [] listByte = new byte [soundInfoSize];
+            final byte [] listByte = new byte [soundInfoSize];
             ais.read (listByte);
             list = new String (listByte);
             string = ais.readFourChars ();
@@ -79,7 +79,7 @@ public class AndroidWavHelper {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_DATA_SEPARATOR, new IllegalArgumentException ()));
         }
         final int dataSize = ais.readInt2 ();
-        return new InputStreamInfo (channels, dataSize / (frameSize), sampleSize, sampleRate, false, true, list);
+        return new InputStreamInfo (channels, dataSize / (frameSize), sampleSize / 8, sampleRate, false, true, list);
     }
 
     public void writeMetadata (ByteArrayWithAudioFormatInputStream audioInputStream, WavOutputStream outputStream) throws IOException {

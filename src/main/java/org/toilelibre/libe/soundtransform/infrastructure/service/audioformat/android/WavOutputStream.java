@@ -14,7 +14,7 @@ public class WavOutputStream extends FileOutputStream {
     private byte [] intToByteArray (int n) {
         final byte [] b = new byte [4];
         for (int i = 0 ; i < b.length ; i++) {
-            b [i] = (byte) (n >> i * 8);
+            b [i] = (byte) (n >> (i * 8));
         }
         return b;
     }

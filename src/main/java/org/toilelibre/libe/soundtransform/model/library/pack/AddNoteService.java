@@ -37,20 +37,6 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
 
     }
 
-    private URL getURL (String fileName) {
-        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-        URL completeURL = classLoader.getResource (fileName);
-        if (completeURL == null) {
-            this.log (new LogEvent (LogLevel.WARN, fileName + " not a classpath resource"));
-            try {
-                completeURL = new File (fileName).toURI ().toURL ();
-            } catch (MalformedURLException e) {
-                this.log (new LogEvent (LogLevel.ERROR, fileName + " not a filesystem file (" + e + ")"));
-            }
-        }
-        return completeURL;
-    }
-
     public void addNote (final Range range, final String fileName) throws SoundTransformException {
         final URL completeURL = this.getURL (fileName);
         try {
@@ -89,5 +75,19 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
         for (final String fileName : fileNames) {
             this.addNote (range, fileName);
         }
+    }
+
+    private URL getURL (String fileName) {
+        final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+        URL completeURL = classLoader.getResource (fileName);
+        if (completeURL == null) {
+            this.log (new LogEvent (LogLevel.WARN, fileName + " not a classpath resource"));
+            try {
+                completeURL = new File (fileName).toURI ().toURL ();
+            } catch (final MalformedURLException e) {
+                this.log (new LogEvent (LogLevel.ERROR, fileName + " not a filesystem file (" + e + ")"));
+            }
+        }
+        return completeURL;
     }
 }

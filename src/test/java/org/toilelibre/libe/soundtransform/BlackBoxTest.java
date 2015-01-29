@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
-import org.toilelibre.libe.soundtransform.actions.transform.ExportAFileFromAFileUsingSoundTransform;
+import org.toilelibre.libe.soundtransform.actions.transform.ExportAFile;
 import org.toilelibre.libe.soundtransform.actions.transform.GetInputStreamInfo;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.EightBitsSoundTransformation;
@@ -28,7 +28,7 @@ public class BlackBoxTest extends SoundTransformTest {
 
     @Test
     public void callTransformFromOutside () throws SoundTransformException {
-        new ExportAFileFromAFileUsingSoundTransform ().transformFile (this.input, this.output, new EightBitsSoundTransformation (25));
+        new ExportAFile ().transformFile (this.input, this.output, new EightBitsSoundTransformation (25));
     }
 
     @Test

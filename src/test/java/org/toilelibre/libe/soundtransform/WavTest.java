@@ -1,7 +1,6 @@
 package org.toilelibre.libe.soundtransform;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
@@ -28,8 +27,7 @@ public class WavTest extends SoundTransformTest {
 
     private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
     private final File        input       = new File (this.classLoader.getResource ("before.wav").getFile ());
-    // private File input = new File
-    // ("D:/Mes Soirées 80's-Spécial Discothèques/CD 1/08 Captain Sensible-Wot.mp3");
+
     private final File        output      = new File (new File (this.classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
     @Test
@@ -89,7 +87,7 @@ public class WavTest extends SoundTransformTest {
     }
 
     @Test
-    public void testShape () throws SoundTransformException, FileNotFoundException {
+    public void testShape () throws SoundTransformException {
         // WARN : quite long
         new Slf4jObserver ().notify ("Loading default pack");
         final Library library = $.select (Library.class);
@@ -98,7 +96,7 @@ public class WavTest extends SoundTransformTest {
 
     }
 
-    // @Test
+    @Test
     public void testSlowdown () throws SoundTransformException {
         // WARN : quite long
         $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, $.create (SlowdownSoundTransformation.class, 200, 1.2f));
