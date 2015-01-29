@@ -84,7 +84,8 @@ public class AndroidWavHelper {
 
     public void writeMetadata (ByteArrayWithAudioFormatInputStream audioInputStream, WavOutputStream outputStream) throws IOException {
         final InputStreamInfo info = audioInputStream.getInfo ();
-        final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + info.getSoundInfo ().length () +
+        final int soundInfoSize = info.getSoundInfo () == null ? 0 : info.getSoundInfo ().length ();
+        final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + soundInfoSize +
                                     (info.getFrameLength () * info.getSampleSize () * info.getChannels ()));
         final int chunkSize = AndroidWavHelper.INFO_CHUNK_SIZE;
         final int typeOfEncoding = 1;
