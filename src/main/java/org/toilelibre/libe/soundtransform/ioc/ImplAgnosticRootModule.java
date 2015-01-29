@@ -55,6 +55,6 @@ public abstract class ImplAgnosticRootModule extends BinderModule {
 
     protected abstract AudioFormatParser provideAudioFormatParser ();
 
-    protected abstract <T> PlaySoundProcessor<T> providePlaySoundProcessor ();
+    protected abstract PlaySoundProcessor providePlaySoundProcessor ();
 
 }

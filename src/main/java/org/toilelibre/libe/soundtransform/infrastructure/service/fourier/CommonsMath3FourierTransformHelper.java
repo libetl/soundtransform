@@ -14,46 +14,73 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
     @Override
     public Sound transform (final AbstractFrequencySoundTransformation<Complex []> st, final Sound sound) {
         final Sound output = st.initSound (sound);
-        final double freqmax = sound.getSampleRate ();
-        final double threshold = st.getLowThreshold (freqmax);
-        final int maxlength = st.getWindowLength (freqmax);
+        final double sampleRate = sound.getSampleRate ();
+        final double threshold = st.getLowThreshold (sampleRate);
+        final int maxlength = st.getWindowLength (sampleRate);
         final long [] data = sound.getSamples ();
         final long [] newdata = output.getSamples ();
+        // double [] is mandatory to pass it to the common math method
         final double [] transformeddata = new double [maxlength];
-        final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         for (int i = 0 ; i < data.length ; i += threshold) {
-            long maxValue = 0;
-            long minValue = Long.MAX_VALUE;
-            final int length = Math.min (maxlength, data.length - i);
-            for (int j = i ; j < (i + length) ; j++) {
-                if ((j - i) < threshold) {
-                    // maxValue and minValue are used to detect if the current
-                    // transformed sample
-                    // is a sound or not
-                    if (maxValue < data [j]) {
-                        maxValue = data [j];
-                    }
-                    if (minValue > data [j]) {
-                        minValue = data [j];
-                    }
-                }
-                transformeddata [j - i] = data [j];
-            }
-            Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
-
-            final Spectrum<Complex []> fs = new Spectrum<Complex []> (complexArray, (int) freqmax, sound.getNbBytesPerSample ());
-            final Spectrum<Complex []> result = st.transformFrequencies (fs, i, maxlength, length, (float) (10.0f * Math.log10 (Math.abs (maxValue - minValue))));
+            final int iterationLength = Math.min (maxlength, data.length - i);
+            double amplitude = this.writeTransformedDataAndReturnAmplitude (transformeddata, data, i, (int) threshold, iterationLength, maxlength);
+            final Spectrum<Complex []> spectrum = this.forwardPartOfTheSound (sound, transformeddata);
+            final Spectrum<Complex []> result = st.transformFrequencies (spectrum, i, maxlength, iterationLength, (float) (10.0f * Math.log10 (amplitude)));
             if (result == null) {
                 continue;
             }
-            complexArray = fastFourierTransformer.transform (result.getState (), TransformType.INVERSE);
-            final int k = st.getOffsetFromASimpleLoop (i, freqmax);
-            for (int j = 0 ; j < freqmax ; j++) {
-                if (((i + j + k) < newdata.length) && (newdata [i + j + k] == 0)) {
-                    newdata [i + j + k] = (long) Math.floor (complexArray [j].getReal ());
-                }
-            }
+            final int j = st.getOffsetFromASimpleLoop (i, sampleRate);
+            this.reverse (result, newdata, i, j);
         }
         return output;
+    }
+
+    private double writeTransformedDataAndReturnAmplitude (double [] transformeddata, long [] data, int i, int threshold, int iterationLength, int maxlength) {
+        long maxValue = 0;
+        long minValue = Long.MAX_VALUE;
+        for (int j = i ; j < (i + iterationLength) ; j++) {
+            if ((j - i) < threshold) {
+                // maxValue and minValue are used to detect if the current
+                // transformed sample
+                // is a sound or not
+                if (maxValue < data [j]) {
+                    maxValue = data [j];
+                }
+                if (minValue > data [j]) {
+                    minValue = data [j];
+                }
+            }
+            transformeddata [j - i] = data [j];
+        }
+        return Math.abs (maxValue - minValue);
+    }
+
+    private Spectrum<Complex []> forwardPartOfTheSound (Sound sound, double [] transformeddata) {
+        final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
+        Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
+        return new Spectrum<Complex []> (complexArray, (int) sound.getSampleRate (), sound.getNbBytesPerSample ());
+    }
+
+    public Sound reverse (Spectrum<Complex []> spectrum) {
+        return this.reverse (spectrum, null);
+    }
+
+    public Sound reverse (Spectrum<Complex []> spectrum, long [] output) {
+        return this.reverse (spectrum, output, 0, 0);
+    }
+
+    public Sound reverse (Spectrum<Complex []> spectrum, long [] output, int startOffset, int offsetFromASimpleLoop) {
+        final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
+        final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
+        if (output == null) {
+            output = new long [complexArray.length];
+        }
+        for (int i = 0 ; i < complexArray.length ; i++) {
+            int index = i + startOffset + offsetFromASimpleLoop;
+            if (((index) < output.length) && (output [index] == 0)) {
+                output [index] = (long) Math.floor (complexArray [i].getReal ());
+            }
+        }
+        return new Sound (output, spectrum.getNbBytes (), spectrum.getSampleRate (), 0);
     }
 }

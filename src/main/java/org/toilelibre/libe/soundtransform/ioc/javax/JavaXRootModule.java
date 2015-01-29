@@ -20,9 +20,8 @@ public class JavaXRootModule extends ImplAgnosticRootModule {
         return new WavAudioFormatParser ();
     }
 
-    @SuppressWarnings ("unchecked")
     @Override
-    protected PlaySoundProcessor<?> providePlaySoundProcessor () {
+    protected PlaySoundProcessor providePlaySoundProcessor () {
         return new LineListenerPlaySoundProcessor ();
     }
 

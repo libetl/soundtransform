@@ -29,34 +29,33 @@ public class JavazoomAudioFileHelper implements AudioFileHelper {
             }
             AudioInputStream ais;
             try {
-                    Object mpegInstance = Class.forName ("javazoom.spi.mpeg.sampled.file.MpegAudioFileReader").newInstance ();
-                    ais = (AudioInputStream) mpegInstance.getClass ().getDeclaredMethod ("getAudioInputStream", InputStream.class).invoke (mpegInstance, inputFile);
-                    final AudioFormat cdFormat = new AudioFormat (44100, 16, 2, true, false);
-                    final AudioInputStream decodedais = (AudioInputStream)Class.forName (
-                            "javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream").getConstructor (AudioFormat.class, AudioInputStream.class).newInstance (cdFormat, ais);
-                    AudioSystem.write (decodedais, AudioFileFormat.Type.WAVE, tempFile);
-                    readFile = tempFile;
-                    return AudioSystem.getAudioInputStream (readFile);
-                } catch (InstantiationException e) {
-                    throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
-                } catch (IllegalAccessException e) {
-                    throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
-                } catch (ClassNotFoundException e) {
-                    throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
-                } catch (IllegalArgumentException e) {
-                    throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
-                } catch (InvocationTargetException e) {
-                    throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
-                } catch (NoSuchMethodException e) {
-                    throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
-                } catch (SecurityException e) {
-                    throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
-                } catch (final IOException e) {
-                    throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
-                } catch (UnsupportedAudioFileException e) {
-                    throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
-                }
-            
+                Object mpegInstance = Class.forName ("javazoom.spi.mpeg.sampled.file.MpegAudioFileReader").newInstance ();
+                ais = (AudioInputStream) mpegInstance.getClass ().getDeclaredMethod ("getAudioInputStream", InputStream.class).invoke (mpegInstance, inputFile);
+                final AudioFormat cdFormat = new AudioFormat (44100, 16, 2, true, false);
+                final AudioInputStream decodedais = (AudioInputStream) Class.forName ("javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream").getConstructor (AudioFormat.class, AudioInputStream.class).newInstance (cdFormat, ais);
+                AudioSystem.write (decodedais, AudioFileFormat.Type.WAVE, tempFile);
+                readFile = tempFile;
+                return AudioSystem.getAudioInputStream (readFile);
+            } catch (InstantiationException e) {
+                throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
+            } catch (IllegalAccessException e) {
+                throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
+            } catch (ClassNotFoundException e) {
+                throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
+            } catch (IllegalArgumentException e) {
+                throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
+            } catch (InvocationTargetException e) {
+                throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
+            } catch (NoSuchMethodException e) {
+                throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
+            } catch (SecurityException e) {
+                throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
+            } catch (final IOException e) {
+                throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
+            } catch (UnsupportedAudioFileException e) {
+                throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
+            }
+
         }
         try {
             return AudioSystem.getAudioInputStream (readFile);

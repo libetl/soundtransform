@@ -37,7 +37,6 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
 
     }
 
-
     private URL getURL (String fileName) {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         URL completeURL = classLoader.getResource (fileName);
@@ -51,7 +50,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
         }
         return completeURL;
     }
-    
+
     public void addNote (final Range range, final String fileName) throws SoundTransformException {
         final URL completeURL = this.getURL (fileName);
         try {

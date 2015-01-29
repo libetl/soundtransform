@@ -13,7 +13,7 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
      * FrameProcessor#byteArrayToFrame(byte[],
      * org.toilelibre.libe.soundtransform.model.sound.Sound[], int, boolean,
@@ -42,7 +42,7 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
      * FrameProcessor
      * #framesToByteArray(org.toilelibre.libe.soundtransform.model.
@@ -65,7 +65,7 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
                 value = channels [currentChannel].getSamples () [currentFrame] + neutral;
                 rightShift = 0;
             }
-            byteValueSigned = (byte) ((((int)value) >> (rightShift * 8) & 0xFF) + (pcmSigned ? Byte.MIN_VALUE : 0));
+            byteValueSigned = (byte) ((((int) value) >> (rightShift * 8) & 0xFF) + (pcmSigned ? Byte.MIN_VALUE : 0));
 
             data [i + (!bigEndian ? 0 : sampleSize - (2 * numByte) - 1)] = byteValueSigned;
             rightShift++;
@@ -97,7 +97,7 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
      * FrameProcessor#getNeutral(int)
      */

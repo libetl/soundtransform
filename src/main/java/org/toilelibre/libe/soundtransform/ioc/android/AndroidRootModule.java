@@ -20,9 +20,8 @@ public class AndroidRootModule extends ImplAgnosticRootModule {
         return new NoOpFormatParser ();
     }
 
-    @SuppressWarnings ("unchecked")
     @Override
-    protected PlaySoundProcessor<?> providePlaySoundProcessor () {
+    protected PlaySoundProcessor providePlaySoundProcessor () {
         return new AndroidPlaySoundProcessor ();
     }
 

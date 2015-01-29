@@ -23,11 +23,11 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
     }
 
     private int byteArrayToInt (byte [] bytes) {
-        return bytes[3] << 24 | (bytes[2] & 0xFF) << 16 | (bytes[1] & 0xFF) << 8 | (bytes[0] & 0xFF);
+        return bytes [3] << 24 | (bytes [2] & 0xFF) << 16 | (bytes [1] & 0xFF) << 8 | (bytes [0] & 0xFF);
     }
-    
+
     private int byteArrayToShort (byte [] bytes) {
-        return (bytes[1] & 0xFF) << 8 | (bytes[0] & 0xFF);
+        return (bytes [1] & 0xFF) << 8 | (bytes [0] & 0xFF);
     }
 
     @Override

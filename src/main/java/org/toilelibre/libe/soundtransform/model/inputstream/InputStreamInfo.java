@@ -21,7 +21,7 @@ public class InputStreamInfo {
         this.pcmSigned = pcmSigned;
         this.soundInfo = null;
     }
-    
+
     public InputStreamInfo (final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned, String soundInfo) {
         super ();
         this.channels = channels;
