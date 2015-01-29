@@ -16,7 +16,7 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void simpleLifeCycle () throws SoundTransformException {
-        FluentClient.go ().withClasspathResource ("before.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("after.wav").convertIntoSound ();
+        FluentClient.go ().withClasspathResource ("before.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("after.wav");
     }
 
 }
