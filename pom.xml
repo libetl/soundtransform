@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>soundtransform</name>
 	<packaging>aar</packaging>
-	<description>Library to shape a sound with an instrument.</description>
+	<description>Library to shape a voice with an instrument.</description>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
