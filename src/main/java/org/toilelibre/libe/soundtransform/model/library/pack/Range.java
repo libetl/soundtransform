@@ -14,8 +14,8 @@ public class Range extends HashMap<Integer, Note> {
     public Note getNearestNote (final int frequency) {
         int nearest = Integer.MIN_VALUE;
         for (final Integer i : this.keySet ()) {
-            if (Math.abs (frequency - i.intValue ()) < Math.abs (frequency - nearest)) {
-                nearest = i.intValue ();
+            if (Math.abs (frequency - i) < Math.abs (frequency - nearest)) {
+                nearest = i;
             }
         }
         return this.get (new Integer (nearest));

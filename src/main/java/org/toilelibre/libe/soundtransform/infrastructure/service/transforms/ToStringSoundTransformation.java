@@ -51,7 +51,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
         }
         for (int j = this.height ; j >= 0 ; j--) {
             if (j == this.height) {
-                this.sb.append ("^ " + maxMagn + " (magnitude)\n");
+                this.sb.append ("^ ").append (new Long (maxMagn)).append (" (magnitude)\n");
                 continue;
             } else {
                 this.sb.append ("|");
@@ -71,7 +71,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
         for (int i = 0 ; i < this.length ; i++) {
             this.sb.append ("-");
         }
-        this.sb.append ("> " + (int) ((this.length * compression) / input.getSampleRate ()) + "s (time)\n");
+        this.sb.append ("> ").append (new Integer ((int) ((this.length * compression) / input.getSampleRate ()))).append ("s (time)\n");
 
         return input;
     }

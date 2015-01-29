@@ -46,8 +46,7 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
 
     public Sound [] fromInputStream (final InputStream ais, final InputStreamInfo isInfo) throws SoundTransformException {
         this.log (new LogEvent (LogLevel.INFO, "Converting input into java object"));
-        final Sound [] ret = this.frameProcessor.fromInputStream (ais, isInfo);
-        return ret;
+        return this.frameProcessor.fromInputStream (ais, isInfo);
     }
 
     public InputStreamInfo getInputStreamInfo (final InputStream ais) throws SoundTransformException {

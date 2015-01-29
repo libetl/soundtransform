@@ -28,10 +28,9 @@ public class WavAudioFormatParser implements AudioFormatParser {
     }
 
     @Override
-    public InputStreamInfo fromAudioFormat (final Object audioFormat1, final long l) {
+    public InputStreamInfo fromAudioFormat (final Object audioFormat1, final long frameLength) {
         final AudioFormat audioFormat = (AudioFormat) audioFormat1;
         final int channels = audioFormat.getChannels ();
-        final long frameLength = l;
         final int sampleSize = audioFormat.getFrameSize () / channels;
         final double sampleRate = audioFormat.getSampleRate ();
         final boolean bigEndian = audioFormat.isBigEndian ();

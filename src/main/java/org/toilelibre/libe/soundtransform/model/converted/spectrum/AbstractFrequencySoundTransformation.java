@@ -24,8 +24,7 @@ public abstract class AbstractFrequencySoundTransformation<T> extends AbstractLo
 
     @Override
     public Sound transform (final Sound sound) {
-        final Sound output = this.fourierTransformHelper.transform (this, sound);
-        return output;
+        return this.fourierTransformHelper.transform (this, sound);
     }
 
     public abstract Spectrum<T> transformFrequencies (Spectrum<T> fs, int offset, int powOf2NearestLength, int length, float soundLevelInDB);

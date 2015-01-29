@@ -33,8 +33,7 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
 
     public Sound [] convertAndApply (final InputStream ais, final SoundTransformation... transforms) throws SoundTransformException {
         final Sound [] in = this.transformInputStreamService.fromInputStream (ais);
-        final Sound [] out = this.callTransformService.transformAudioStream (in, transforms);
-        return out;
+        return this.callTransformService.transformAudioStream (in, transforms);
     }
 
     public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {
@@ -60,8 +59,7 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
     }
 
     public void transformFile (final File fOrigin, final File fDest, final SoundTransformation... sts) throws SoundTransformException {
-        final File file = fOrigin;
-        final InputStream ais1 = this.convertAudioFileService.callConverter (file);
+        final InputStream ais1 = this.convertAudioFileService.callConverter (fOrigin);
         final InputStreamInfo aisi1 = this.convertAudioFileService.callAudioFormatParser (ais1);
         this.log (new LogEvent (LogLevel.INFO, "input : " + aisi1.toString ()));
         InputStream ais2 = ais1;

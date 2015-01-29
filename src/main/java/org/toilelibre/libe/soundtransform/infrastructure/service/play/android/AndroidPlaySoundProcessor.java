@@ -15,6 +15,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundExcepti
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
@@ -55,6 +56,8 @@ public class AndroidPlaySoundProcessor implements PlaySoundProcessor<Complex []>
                     try {
                         Thread.sleep (1000);
                     } catch (final InterruptedException e) {
+                        throw new SoundTransformRuntimeException(
+                                new PlaySoundException (new SoundTransformException (PlaySoundErrorCode.COULD_NOT_PLAY_SOUND, e)));
                     }
                 }
                 audioTrack.stop ();

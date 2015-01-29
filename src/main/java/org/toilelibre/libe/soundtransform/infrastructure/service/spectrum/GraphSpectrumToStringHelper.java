@@ -63,7 +63,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
         }
         for (int j = height ; j >= 0 ; j--) {
             if (j == height) {
-                sb.append ("^ " + maxMagn + " (magnitude)\n");
+                sb.append ("^ ").append (new Long (maxMagn)).append (" (magnitude)\n");
                 continue;
             } else {
                 sb.append ("|");
@@ -83,13 +83,13 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
         for (int i = 0 ; i < length ; i++) {
             sb.append ("-");
         }
-        sb.append ("> " + spectrumHelper.freqFromSampleRate (length * compression, (int) lastFrequency * 2, (int) lastFrequency * 2) + "Hz (freq)\n");
+        sb.append ("> ").append (spectrumHelper.freqFromSampleRate (length * compression, (int) lastFrequency * 2, (int) lastFrequency * 2)).append ("Hz (freq)\n");
         int i = 0;
         while (i < length) {
             sb.append (" ");
             if (i == (maxIndex / compression)) {
                 final int foundFreq = spectrumHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * 2, (int) lastFrequency * 2);
-                sb.append ("^" + foundFreq + "Hz");
+                sb.append ("^").append (new Integer (foundFreq)).append ("Hz");
                 i += (foundFreq == 0 ? 1 : Math.log10 (foundFreq)) + 2;
             }
             i++;

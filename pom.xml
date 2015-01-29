@@ -45,10 +45,6 @@
 					</sign>
 					<resourceDirectory>${basedir}/src/main/gen</resourceDirectory>
 					<androidManifestFile>${basedir}/AndroidManifest.xml</androidManifestFile>
-					<excludes>
-						<exclude>javax.*</exclude>
-						<exclude>*.javax</exclude>
-					</excludes>
 					<excludeJarResources>
 						<excludeJarResource>.*\.jar$</excludeJarResource>
 					</excludeJarResources>
