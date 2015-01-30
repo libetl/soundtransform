@@ -42,4 +42,9 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClient.go ().withRawInputStream (is, isi).importToSound ().exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
+    //Plays the sound three times, therefore too long time consuming test
+    //@Test
+    public void playIt () throws SoundTransformException {
+        FluentClient.go ().withClasspathResource ("before.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
+    }
 }
