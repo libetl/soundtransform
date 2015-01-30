@@ -5,7 +5,7 @@ public class AbstractLogAware<T extends AbstractLogAware<T>> implements LogAware
     protected Observer [] observers;
 
     @Override
-    public void log (LogEvent event) {
+    public void log (final LogEvent event) {
         if (this.observers == null) {
             return;
         }
@@ -16,7 +16,7 @@ public class AbstractLogAware<T extends AbstractLogAware<T>> implements LogAware
 
     @Override
     @SuppressWarnings ("unchecked")
-    public T setObservers (Observer... observers1) {
+    public T setObservers (final Observer... observers1) {
         this.observers = observers1;
         return (T) this;
     }

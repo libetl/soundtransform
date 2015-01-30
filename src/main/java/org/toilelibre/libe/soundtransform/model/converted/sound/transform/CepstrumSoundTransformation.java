@@ -1,6 +1,5 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
+package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
@@ -8,15 +7,15 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum2CepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 
-public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
+public class CepstrumSoundTransformation<T> extends SimpleFrequencySoundTransformation<T> {
 
-    private double                                    threshold;
-    private int []                                    loudestfreqs;
-    private int                                       index;
-    private int                                       length;
-    private static final int                          SHORT_SOUND_LENGTH = 9000;
-    private final Spectrum2CepstrumHelper<Complex []> spectrum2CepstrumHelper;
-    private final SpectrumHelper<Complex []>          spectrumHelper;
+    private double                           threshold;
+    private int []                           loudestfreqs;
+    private int                              index;
+    private int                              length;
+    private static final int                 SHORT_SOUND_LENGTH = 9000;
+    private final Spectrum2CepstrumHelper<T> spectrum2CepstrumHelper;
+    private final SpectrumHelper<T>          spectrumHelper;
 
     @SuppressWarnings ("unchecked")
     public CepstrumSoundTransformation () {
@@ -65,9 +64,9 @@ public class CepstrumSoundTransformation extends SimpleFrequencySoundTransformat
     }
 
     @Override
-    public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
+    public Spectrum<T> transformFrequencies (final Spectrum<T> fs) {
 
-        final Spectrum<Complex []> fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
+        final Spectrum<T> fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
 
         this.loudestfreqs [this.index] = this.spectrumHelper.getMaxIndex (fscep, 0, fs.getSampleRate ());
         this.index++;

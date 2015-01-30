@@ -13,7 +13,7 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
      * FrameProcessor#byteArrayToFrame(byte[],
      * org.toilelibre.libe.soundtransform.model.sound.Sound[], int, boolean,
@@ -27,10 +27,10 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
             final int cursor = bigEndian ? frame.length - j - 1 : j;
             final int fromIndex = cursor < destination ? cursor : destination;
             final int toIndex = cursor < destination ? destination : cursor;
-            final int currentChannel = !bigEndian ? j / (frame.length / sound.length) : sound.length - 1 - (j / (frame.length / sound.length));
+            final int currentChannel = !bigEndian ? j / (frame.length / sound.length) : sound.length - 1 - j / (frame.length / sound.length);
             final int numByte = j % (frame.length / sound.length);
             if (fromIndex <= toIndex) {
-                value [currentChannel] += (frame [cursor] + (pcmSigned ? -Byte.MIN_VALUE : 0)) << (8 * numByte);
+                value [currentChannel] += frame [cursor] + (pcmSigned ? -Byte.MIN_VALUE : 0) << 8 * numByte;
             }
 
         }
@@ -42,7 +42,7 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
      * FrameProcessor
      * #framesToByteArray(org.toilelibre.libe.soundtransform.model.
@@ -59,15 +59,15 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
         final long neutral = pcmSigned ? this.getNeutral (sampleSize) : 0;
         for (int i = 0 ; i < data.length ; i++) {
             final int numByte = i % sampleSize;
-            final int currentChannel = (i / sampleSize) % channels.length;
+            final int currentChannel = i / sampleSize % channels.length;
             final int currentFrame = i / (sampleSize * channels.length);
-            if ((numByte == 0) && (channels [currentChannel].getSamples ().length > currentFrame)) {
+            if (numByte == 0 && channels [currentChannel].getSamples ().length > currentFrame) {
                 value = channels [currentChannel].getSamples () [currentFrame] + neutral;
                 rightShift = 0;
             }
-            byteValueSigned = (byte) (((((int) value) >> (rightShift * 8)) & 0xFF) + (pcmSigned ? Byte.MIN_VALUE : 0));
+            byteValueSigned = (byte) (((int) value >> rightShift * 8 & 0xFF) + (pcmSigned ? Byte.MIN_VALUE : 0));
 
-            data [i + (!bigEndian ? 0 : sampleSize - (2 * numByte) - 1)] = byteValueSigned;
+            data [i + (!bigEndian ? 0 : sampleSize - 2 * numByte - 1)] = byteValueSigned;
             rightShift++;
         }
         return data;
@@ -97,7 +97,7 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
      * FrameProcessor#getNeutral(int)
      */

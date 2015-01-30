@@ -1,14 +1,14 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.sound2string;
 
-import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.ToStringSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound2StringHelper;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ToStringSoundTransformation;
 
 public class GraphSound2StringHelper implements Sound2StringHelper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.infrastructure.service.sound2string
      * .Sound2StringHelper

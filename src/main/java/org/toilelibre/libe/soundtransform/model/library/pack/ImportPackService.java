@@ -37,20 +37,20 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         this.packConfigParser = $.select (PackConfigParser.class);
     }
 
-    public void importPack (Library library, String title, InputStream inputStream) throws SoundTransformException {
+    public void importPack (final Library library, final String title, final InputStream inputStream) throws SoundTransformException {
         final Scanner scanner = new Scanner (inputStream);
         final String content = scanner.useDelimiter ("\\Z").next ();
         scanner.close ();
         this.importPack (library, title, content);
     }
 
-    public void importPack (Library library, String title, String jsonContent) throws SoundTransformException {
+    public void importPack (final Library library, final String title, final String jsonContent) throws SoundTransformException {
         final Map<String, Map<String, String>> map = this.packConfigParser.parse (jsonContent);
         final Pack pack = this.mapToPack (map);
         library.addPack (title, pack);
     }
 
-    private Pack mapToPack (Map<String, Map<String, String>> map) throws SoundTransformException {
+    private Pack mapToPack (final Map<String, Map<String, String>> map) throws SoundTransformException {
         final Pack pack = new Pack ();
         for (final String instrument : map.keySet ()) {
             final Range range = new Range ();

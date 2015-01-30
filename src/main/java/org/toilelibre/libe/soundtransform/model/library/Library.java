@@ -17,7 +17,7 @@ public class Library {
         this.packs.put (name, p);
     }
 
-    public Pack getPack (String name) {
+    public Pack getPack (final String name) {
         return this.packs.get (name);
     }
 

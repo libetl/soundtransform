@@ -40,7 +40,7 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
         return this.callTransformService.transformAudioStream (in, transforms);
     }
 
-    public InputStream fromFile (File fOrigin) throws SoundTransformException {
+    public InputStream fromFile (final File fOrigin) throws SoundTransformException {
         return this.convertAudioFileService.callConverter (fOrigin);
     }
 
@@ -56,7 +56,7 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
         return this.transformInputStreamService.getInputStreamInfo (ais);
     }
 
-    public InputStreamInfo getInputStreamInfo (Sound [] sounds) {
+    public InputStreamInfo getInputStreamInfo (final Sound [] sounds) {
         return InputStreamInfo.of (sounds);
     }
 
@@ -82,12 +82,12 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
         this.log (new LogEvent (LogLevel.INFO, "output : " + aisi2.toString ()));
     }
 
-    public void writeFile (InputStream is, File fDest) throws SoundTransformException {
-        this.convertAudioFileService.writeInputStream (is, fDest);
-
+    public InputStream transformRawInputStream (final InputStream ais, final InputStreamInfo isi) throws SoundTransformException {
+        return this.convertAudioFileService.toStream (ais, isi);
     }
 
-    public InputStream transformRawInputStream (InputStream ais, InputStreamInfo isi) throws SoundTransformException {
-        return this.convertAudioFileService.toStream (ais, isi);
+    public void writeFile (final InputStream is, final File fDest) throws SoundTransformException {
+        this.convertAudioFileService.writeInputStream (is, fDest);
+
     }
 }

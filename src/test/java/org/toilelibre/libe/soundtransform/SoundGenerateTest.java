@@ -26,7 +26,7 @@ public class SoundGenerateTest extends SoundTransformTest {
         final int samplerate = 44100;
         final long [] signal = new long [length];
         for (int j = 0 ; j < length ; j++) {
-            signal [j] = (long) (Math.sin ((j * soundfreq * 2 * Math.PI) / samplerate) * 32768.0);
+            signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
 
@@ -45,7 +45,7 @@ public class SoundGenerateTest extends SoundTransformTest {
         final int samplerate = 44100;
         final long [] signal = new long [length];
         for (int j = 0 ; j < length ; j++) {
-            signal [j] = (long) (Math.sin ((j * soundfreq * 2 * Math.PI) / samplerate) * 32768.0);
+            signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
         final SoundTransformation st = new SimpleFrequencySoundTransformation<Complex []> ();

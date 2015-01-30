@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 import org.apache.commons.math3.exception.NonMonotonicSequenceException;
 import org.apache.commons.math3.util.MathArrays;
-import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.ADSREnveloppeSoundTransformation;
-import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.ReverseSoundTransformation;
+import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.ADSREnveloppeSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReverseSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 
@@ -57,7 +57,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
         return sustainIndex;
     }
 
-    private double [] getMagnitudeArray (Sound sound, int threshold) {
+    private double [] getMagnitudeArray (final Sound sound, final int threshold) {
 
         final ADSREnveloppeSoundTransformation soundTransform = new ADSREnveloppeSoundTransformation (threshold);
         soundTransform.transform (sound);

@@ -6,6 +6,8 @@ import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 public interface FluentClientSoundImported {
+    FluentClientReady andAfterStart () throws SoundTransformException;
+
     FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException;
 
     FluentClientWithFile exportToClasspathResource (String resource) throws SoundTransformException;
@@ -15,8 +17,6 @@ public interface FluentClientSoundImported {
     FluentClientWithFile exportToFile (File file1) throws SoundTransformException;
 
     FluentClientWithInputStream exportToStream () throws SoundTransformException;
-
-    FluentClientReady andAfterStart () throws SoundTransformException;
 
     FluentClientSoundImported playIt () throws SoundTransformException;
 

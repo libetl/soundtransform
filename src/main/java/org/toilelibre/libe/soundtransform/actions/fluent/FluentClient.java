@@ -13,6 +13,7 @@ import org.toilelibre.libe.soundtransform.actions.transform.InputStreamToAudioIn
 import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
@@ -42,7 +43,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     private Sound []    sounds;
     private InputStream audioInputStream;
     private String      sameDirectoryAsClasspathResource;
-
+    private int []      freqs;
     private File        file;
 
     private FluentClient () {
@@ -56,7 +57,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
-    public FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException {
+    public FluentClientSoundImported apply (final SoundTransformation st) throws SoundTransformException {
         final Sound sounds1 [] = new ApplySoundTransform ().apply (this.sounds, st);
         this.cleanData ();
         this.sounds = sounds1;
@@ -67,22 +68,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.sounds = null;
         this.audioInputStream = null;
         this.file = null;
-    }
-
-    @Override
-    public FluentClient playIt () throws SoundTransformException {
-        if (this.sounds != null) {
-            new PlaySound ().play (this.sounds);
-        } else if (this.audioInputStream != null) {
-            new PlaySound ().play (this.audioInputStream);
-        } else if (this.file != null) {
-            File f = this.file;
-            this.importToStream ();
-            new PlaySound ().play (this.audioInputStream);
-            this.cleanData ();
-            this.file = f;
-        }
-        return this;
+        this.freqs = null;
     }
 
     @Override
@@ -91,23 +77,23 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
-    public FluentClientWithFile exportToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException {
-        return this.exportToStream ().writeToClasspathResourceWithSiblingResource (resource, siblingResource);
-    }
-
-    @Override
-    public FluentClientWithFile exportToClasspathResource (String resource) throws SoundTransformException {
+    public FluentClientWithFile exportToClasspathResource (final String resource) throws SoundTransformException {
         return this.exportToStream ().writeToClasspathResource (resource);
     }
 
     @Override
-    public FluentClientWithFile exportToFile (File file1) throws SoundTransformException {
+    public FluentClientWithFile exportToClasspathResourceWithSiblingResource (final String resource, final String siblingResource) throws SoundTransformException {
+        return this.exportToStream ().writeToClasspathResourceWithSiblingResource (resource, siblingResource);
+    }
+
+    @Override
+    public FluentClientWithFile exportToFile (final File file1) throws SoundTransformException {
         return this.exportToStream ().writeToFile (file1);
     }
 
     @Override
     public FluentClientWithInputStream exportToStream () throws SoundTransformException {
-        InputStreamInfo currentInfo = new GetInputStreamInfo ().getInputStreamInfo (this.sounds);
+        final InputStreamInfo currentInfo = new GetInputStreamInfo ().getInputStreamInfo (this.sounds);
         if (currentInfo == null) {
             throw new SoundTransformException (FluentClientErrorCode.INPUT_STREAM_INFO_UNAVAILABLE, new NullPointerException ());
         }
@@ -142,14 +128,38 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
-    public FluentClientWithInputStream withAudioInputStream (InputStream ais) throws SoundTransformException {
+    public FluentClient playIt () throws SoundTransformException {
+        if (this.sounds != null) {
+            new PlaySound ().play (this.sounds);
+        } else if (this.audioInputStream != null) {
+            new PlaySound ().play (this.audioInputStream);
+        } else if (this.file != null) {
+            final File f = this.file;
+            this.importToStream ();
+            new PlaySound ().play (this.audioInputStream);
+            this.cleanData ();
+            this.file = f;
+        }
+        return this;
+    }
+
+    @Override
+    public FluentClientSoundImported shapeIntoSound (final String packName, final String instrumentName, final InputStreamInfo isi) throws SoundTransformException {
+        final Sound sound = new ShapeSoundTransformation (packName, instrumentName, this.freqs, (int) isi.getFrameLength (), isi.getSampleSize (), (int) isi.getSampleRate ()).transform (100);
+        this.cleanData ();
+        this.sounds = new Sound [] { sound };
+        return this;
+    }
+
+    @Override
+    public FluentClientWithInputStream withAudioInputStream (final InputStream ais) throws SoundTransformException {
         this.cleanData ();
         this.audioInputStream = ais;
         return this;
     }
 
     @Override
-    public FluentClientWithFile withClasspathResource (String resource) throws SoundTransformException {
+    public FluentClientWithFile withClasspathResource (final String resource) throws SoundTransformException {
         this.cleanData ();
         final URL url = Thread.currentThread ().getContextClassLoader ().getResource (resource);
         this.file = new File (url.getFile ());
@@ -158,34 +168,35 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
-    public FluentClientWithFile withFile (File file1) throws SoundTransformException {
+    public FluentClientWithFile withFile (final File file1) throws SoundTransformException {
         this.cleanData ();
         this.file = file1;
         return this;
     }
 
     @Override
-    public FluentClientWithFreqs withFreqs (int[] freqs) throws SoundTransformException {
+    public FluentClientWithFreqs withFreqs (final int [] freqs1) throws SoundTransformException {
         this.cleanData ();
+        this.freqs = freqs1;
         return this;
     }
 
     @Override
-    public FluentClientWithInputStream withRawInputStream (InputStream is, InputStreamInfo isInfo) throws SoundTransformException {
+    public FluentClientWithInputStream withRawInputStream (final InputStream is, final InputStreamInfo isInfo) throws SoundTransformException {
         this.cleanData ();
         this.audioInputStream = new InputStreamToAudioInputStream ().transformRawInputStream (is, isInfo);
         return this;
     }
 
     @Override
-    public FluentClientSoundImported withSounds (Sound [] sounds1) {
+    public FluentClientSoundImported withSounds (final Sound [] sounds1) {
         this.cleanData ();
         this.sounds = sounds1;
         return this;
     }
 
     @Override
-    public FluentClientWithFile writeToClasspathResource (String resource) throws SoundTransformException {
+    public FluentClientWithFile writeToClasspathResource (final String resource) throws SoundTransformException {
         if (this.sameDirectoryAsClasspathResource == null) {
             throw new SoundTransformException (FluentClientErrorCode.CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE, new IllegalAccessException ());
         }
@@ -193,8 +204,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
-    public FluentClientWithFile writeToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException {
-        InputStream is = this.audioInputStream;
+    public FluentClientWithFile writeToClasspathResourceWithSiblingResource (final String resource, final String siblingResource) throws SoundTransformException {
+        final InputStream is = this.audioInputStream;
         this.withClasspathResource (siblingResource);
         this.cleanData ();
         this.audioInputStream = is;
@@ -202,18 +213,12 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
-    public FluentClientWithFile writeToFile (File file1) throws SoundTransformException {
+    public FluentClientWithFile writeToFile (final File file1) throws SoundTransformException {
         if (this.audioInputStream != null) {
             new ExportAFile ().writeFile (this.audioInputStream, file1);
         }
         this.cleanData ();
         this.file = file1;
-        return this;
-    }
-
-    @Override
-    public FluentClientSoundImported shapeIntoSound (String packName, String instrumentName) throws SoundTransformException {
-        //TODO
         return this;
     }
 }

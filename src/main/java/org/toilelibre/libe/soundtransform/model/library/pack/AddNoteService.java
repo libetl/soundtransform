@@ -77,7 +77,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
         }
     }
 
-    private URL getURL (String fileName) {
+    private URL getURL (final String fileName) {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         URL completeURL = classLoader.getResource (fileName);
         if (completeURL == null) {

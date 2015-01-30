@@ -79,6 +79,22 @@ public class JavazoomAudioFileHelper implements AudioFileHelper {
     }
 
     @Override
+    public InputStream toStream (final InputStream is, final Object audioFormat1) throws SoundTransformException {
+        if (!(audioFormat1 instanceof AudioFormat)) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ, new IllegalArgumentException ("" + audioFormat1));
+        }
+        final AudioFormat audioFormat = (AudioFormat) audioFormat1;
+        byte [] byteArray;
+        try {
+            byteArray = new WriteInputStreamToBuffer ().write (is);
+        } catch (final IOException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e);
+        }
+        final ByteArrayInputStream bais = new ByteArrayInputStream (byteArray);
+        return new AudioInputStream (bais, audioFormat, byteArray.length / audioFormat.getFrameSize ());
+    }
+
+    @Override
     public void writeInputStream (final InputStream ais, final File fDest) throws SoundTransformException {
         if (!(ais instanceof AudioInputStream)) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, new IllegalArgumentException ("" + ais), ais);
@@ -88,21 +104,5 @@ public class JavazoomAudioFileHelper implements AudioFileHelper {
         } catch (final IOException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, fDest.getName ());
         }
-    }
-
-    @Override
-    public InputStream toStream (final InputStream is, final Object audioFormat1) throws SoundTransformException {
-        if (!(audioFormat1 instanceof AudioFormat)) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ, new IllegalArgumentException ("" + audioFormat1));
-        }
-        final AudioFormat audioFormat = (AudioFormat) audioFormat1;
-        byte [] byteArray;
-        try {
-            byteArray = new WriteInputStreamToBuffer ().write (is);
-        } catch (IOException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e);
-        }
-        final ByteArrayInputStream bais = new ByteArrayInputStream (byteArray);
-        return new AudioInputStream (bais, audioFormat, byteArray.length / audioFormat.getFrameSize ());
     }
 }

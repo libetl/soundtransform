@@ -1,6 +1,5 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
+package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -8,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 //WARN : long execution time soundtransform
-public class SpeedUpSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
+public class SpeedUpSoundTransformation<T> extends SimpleFrequencySoundTransformation<T> {
 
     private final float factor;
     private Sound       sound;
@@ -29,7 +28,7 @@ public class SpeedUpSoundTransformation extends SimpleFrequencySoundTransformati
 
     @Override
     public int getOffsetFromASimpleLoop (final int i, final double step) {
-        return (int) ((-i * (this.factor - 1)) / this.factor);
+        return (int) (-i * (this.factor - 1) / this.factor);
     }
 
     @Override
@@ -40,12 +39,12 @@ public class SpeedUpSoundTransformation extends SimpleFrequencySoundTransformati
     }
 
     @Override
-    public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset) {
+    public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset) {
         final int total = (int) (this.sound.getSamples ().length / this.factor);
-        final int logStep = (total / 100) - ((total / 100) % this.threshold);
+        final int logStep = total / 100 - total / 100 % this.threshold;
         // This if helps to only log some of all iterations to avoid being too
         // verbose
-        if (((total / 100) != 0) && (logStep != 0) && ((offset % logStep) == 0)) {
+        if (total / 100 != 0 && logStep != 0 && offset % logStep == 0) {
             this.log (new LogEvent (LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #" + offset + "/" + (int) (this.sound.getSamples ().length * this.factor)));
         }
         if (this.writeIfGreaterEqThanFactor >= this.factor) {

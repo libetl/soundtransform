@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
+package org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms;
 
 import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
@@ -11,14 +11,14 @@ public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTr
     }
 
     private Complex function (final double x) {
-        return new Complex (1 - (Math.exp (-Math.pow (x - 3500, 2) / 1000) / 2));
+        return new Complex (1 - Math.exp (-Math.pow (x - 3500, 2) / 1000) / 2);
     }
 
     @Override
     public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset, final int powOf2NearestLength, final int length) {
         final Complex [] newAmpl = new Complex [powOf2NearestLength];
         for (double j = 0 ; j < length ; j++) {
-            final double freq = (j * fs.getSampleRate ()) / fs.getState ().length;
+            final double freq = j * fs.getSampleRate () / fs.getState ().length;
             newAmpl [(int) j] = fs.getState () [(int) j].multiply (this.function (freq));
         }
         for (int j = length ; j < powOf2NearestLength ; j++) {

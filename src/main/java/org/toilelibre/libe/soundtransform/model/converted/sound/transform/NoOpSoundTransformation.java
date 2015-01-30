@@ -1,8 +1,9 @@
-package org.toilelibre.libe.soundtransform.model.converted.sound;
+package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.util.Arrays;
 
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class NoOpSoundTransformation implements SoundTransformation {
 

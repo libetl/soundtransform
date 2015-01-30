@@ -14,20 +14,20 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
     private final byte []   shortBuffer = new byte [2];
     private InputStreamInfo info;
 
-    public AudioInputStream (File f) throws IOException {
+    public AudioInputStream (final File f) throws IOException {
         super (new FileInputStream (f));
     }
 
-    public AudioInputStream (InputStream is) throws IOException {
+    public AudioInputStream (final InputStream is) throws IOException {
         super (is);
     }
 
-    private int byteArrayToInt (byte [] bytes) {
-        return (bytes [3] << 24) | ((bytes [2] & 0xFF) << 16) | ((bytes [1] & 0xFF) << 8) | (bytes [0] & 0xFF);
+    private int byteArrayToInt (final byte [] bytes) {
+        return bytes [3] << 24 | (bytes [2] & 0xFF) << 16 | (bytes [1] & 0xFF) << 8 | bytes [0] & 0xFF;
     }
 
-    private int byteArrayToShort (byte [] bytes) {
-        return ((bytes [1] & 0xFF) << 8) | (bytes [0] & 0xFF);
+    private int byteArrayToShort (final byte [] bytes) {
+        return (bytes [1] & 0xFF) << 8 | bytes [0] & 0xFF;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
         return (short) this.byteArrayToShort (this.shortBuffer);
     }
 
-    void setInfo (InputStreamInfo info) {
+    void setInfo (final InputStreamInfo info) {
         this.info = info;
     }
 

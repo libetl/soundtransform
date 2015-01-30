@@ -10,9 +10,9 @@ import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
 import org.toilelibre.libe.soundtransform.actions.transform.ExportAFile;
 import org.toilelibre.libe.soundtransform.actions.transform.GetInputStreamInfo;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
-import org.toilelibre.libe.soundtransform.infrastructure.service.transforms.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 public class BlackBoxTest extends SoundTransformTest {

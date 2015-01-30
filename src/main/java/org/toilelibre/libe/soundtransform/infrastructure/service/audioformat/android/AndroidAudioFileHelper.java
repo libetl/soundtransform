@@ -32,14 +32,14 @@ public class AndroidAudioFileHelper implements AudioFileHelper {
     }
 
     @Override
-    public InputStream toStream (InputStream is, Object audioFormat1) throws SoundTransformException {
+    public InputStream toStream (final InputStream is, final Object audioFormat1) throws SoundTransformException {
         if (!(audioFormat1 instanceof InputStreamInfo)) {
             throw new SoundTransformException (AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ, new IllegalArgumentException ());
         }
-        InputStreamInfo isi = (InputStreamInfo) audioFormat1;
+        final InputStreamInfo isi = (InputStreamInfo) audioFormat1;
         try {
             return new ByteArrayWithAudioFormatInputStream (new WriteInputStreamToBuffer ().write (is), isi);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e);
         }
     }

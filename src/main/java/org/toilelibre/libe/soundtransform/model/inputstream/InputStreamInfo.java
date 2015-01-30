@@ -5,7 +5,7 @@ import java.util.Locale;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class InputStreamInfo {
-    public static InputStreamInfo of (Sound [] channels) {
+    public static InputStreamInfo of (final Sound [] channels) {
         return new InputStreamInfo (channels.length, channels [0].getSamples ().length, channels [0].getNbBytesPerSample (), channels [0].getSampleRate (), false, true);
     }
 
@@ -29,7 +29,7 @@ public class InputStreamInfo {
         this.soundInfo = null;
     }
 
-    public InputStreamInfo (final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned, String soundInfo) {
+    public InputStreamInfo (final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned, final String soundInfo) {
         super ();
         this.channels = channels;
         this.frameLength = frameLength;

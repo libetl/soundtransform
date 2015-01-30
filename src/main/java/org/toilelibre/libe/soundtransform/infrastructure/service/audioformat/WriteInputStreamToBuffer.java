@@ -10,11 +10,11 @@ public class WriteInputStreamToBuffer {
 
     }
 
-    public byte [] write (InputStream is) throws IOException {
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream ();
+    public byte [] write (final InputStream is) throws IOException {
+        final ByteArrayOutputStream buffer = new ByteArrayOutputStream ();
 
         int nRead;
-        byte [] data = new byte [16384];
+        final byte [] data = new byte [16384];
         while ((nRead = is.read (data, 0, data.length)) != -1) {
             buffer.write (data, 0, nRead);
         }

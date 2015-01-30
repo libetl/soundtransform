@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public final class ToInputStream extends Action {
 
-    public InputStream toStream (File fOrigin) throws SoundTransformException {
+    public InputStream toStream (final File fOrigin) throws SoundTransformException {
         return this.transformSound.fromFile (fOrigin);
     }
 

@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
+package org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms;
 
 import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -10,7 +10,7 @@ public class ADSREnveloppeSoundTransformation extends SimpleFrequencySoundTransf
     private final double threshold;
     private double []    magnitude;
 
-    public ADSREnveloppeSoundTransformation (double threshold1) {
+    public ADSREnveloppeSoundTransformation (final double threshold1) {
         super ();
         this.threshold = threshold1;
     }
@@ -35,7 +35,7 @@ public class ADSREnveloppeSoundTransformation extends SimpleFrequencySoundTransf
     @Override
     public Sound initSound (final Sound input) {
         this.arraylength = 0;
-        this.magnitude = new double [(int) ((input.getSamples ().length / this.threshold) + 1)];
+        this.magnitude = new double [(int) (input.getSamples ().length / this.threshold + 1)];
         return super.initSound (input);
     }
 

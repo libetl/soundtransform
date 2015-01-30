@@ -13,7 +13,7 @@ public final class ExportAFile extends Action {
         this.transformSound.transformFile (fOrigin, fDest, sts);
     }
 
-    public void writeFile (InputStream is, File fDest) throws SoundTransformException {
+    public void writeFile (final InputStream is, final File fDest) throws SoundTransformException {
         this.transformSound.writeFile (is, fDest);
     }
 }

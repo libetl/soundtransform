@@ -38,7 +38,7 @@ public class AndroidWavHelper {
     }
 
     @SuppressWarnings ("unused")
-    public InputStreamInfo readMetadata (AudioInputStream ais) throws IOException {
+    public InputStreamInfo readMetadata (final AudioInputStream ais) throws IOException {
         String string = ais.readFourChars ();
         if (!AndroidWavHelper.RIFF.equals (string)) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_MAGIC_NUMBER, new IllegalArgumentException ()));
@@ -79,13 +79,13 @@ public class AndroidWavHelper {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_DATA_SEPARATOR, new IllegalArgumentException ()));
         }
         final int dataSize = ais.readInt2 ();
-        return new InputStreamInfo (channels, dataSize / (frameSize), sampleSize / 8, sampleRate, false, true, list);
+        return new InputStreamInfo (channels, dataSize / frameSize, sampleSize / 8, sampleRate, false, true, list);
     }
 
-    public void writeMetadata (ByteArrayWithAudioFormatInputStream audioInputStream, WavOutputStream outputStream) throws IOException {
+    public void writeMetadata (final ByteArrayWithAudioFormatInputStream audioInputStream, final WavOutputStream outputStream) throws IOException {
         final InputStreamInfo info = audioInputStream.getInfo ();
         final int soundInfoSize = info.getSoundInfo () == null ? 0 : info.getSoundInfo ().length ();
-        final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + soundInfoSize + (info.getFrameLength () * info.getSampleSize () * info.getChannels ()));
+        final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + soundInfoSize + info.getFrameLength () * info.getSampleSize () * info.getChannels ());
         final int chunkSize = AndroidWavHelper.INFO_CHUNK_SIZE;
         final int typeOfEncoding = 1;
         final int channels = info.getChannels ();

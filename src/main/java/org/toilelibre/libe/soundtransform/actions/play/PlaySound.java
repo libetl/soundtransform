@@ -8,11 +8,11 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public class PlaySound extends Action {
 
-    public void play (final Sound [] channels) throws SoundTransformException {
-        this.playSound.play (channels);
-    }
-
     public void play (final InputStream is) throws SoundTransformException {
         this.playSound.play (is);
+    }
+
+    public void play (final Sound [] channels) throws SoundTransformException {
+        this.playSound.play (channels);
     }
 }

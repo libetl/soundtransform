@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.transforms;
+package org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms;
 
 import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
@@ -27,7 +27,7 @@ public class PurifySoundTransformation extends SimpleFrequencySoundTransformatio
         double maxValue = 0;
         for (int j = 0 ; j < length ; j++) {
             final double tmp = Math.sqrt (Math.pow (fs.getState () [j].getReal (), 2) + Math.pow (fs.getState () [j].getImaginary (), 2));
-            if ((tmp > maxValue) && (j > 100) && (j < (fs.getSampleRate () / 2))) {
+            if (tmp > maxValue && j > 100 && j < fs.getSampleRate () / 2) {
                 max = j;
                 maxValue = tmp;
             }

@@ -8,7 +8,7 @@ public class ByteArrayWithAudioFormatInputStream extends ByteArrayInputStream im
 
     private final InputStreamInfo info;
 
-    public ByteArrayWithAudioFormatInputStream (byte [] buf, InputStreamInfo info1) {
+    public ByteArrayWithAudioFormatInputStream (final byte [] buf, final InputStreamInfo info1) {
         super (buf);
         this.info = info1;
     }
