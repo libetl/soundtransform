@@ -18,8 +18,8 @@ public class PlaySoundService<T> {
         this.processor = processor;
     }
 
-    public void play (final InputStream is) throws SoundTransformException {
-        this.processor.play (is);
+    public Object play (final InputStream is) throws SoundTransformException {
+        return this.processor.play (is);
     }
 
     public Object play (final Sound [] channels) throws SoundTransformException {

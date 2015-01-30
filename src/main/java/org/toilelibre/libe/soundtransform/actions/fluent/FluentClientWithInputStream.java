@@ -9,7 +9,12 @@ public interface FluentClientWithInputStream {
 
     FluentClientWithFile writeToClasspathResource (String resource) throws SoundTransformException;
 
+    FluentClientWithFile writeToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException;
+
     FluentClientWithFile writeToFile (File file) throws SoundTransformException;
 
     FluentClientReady andAfterGo () throws SoundTransformException;
+
+    FluentClientWithInputStream playIt () throws SoundTransformException;
+
 }

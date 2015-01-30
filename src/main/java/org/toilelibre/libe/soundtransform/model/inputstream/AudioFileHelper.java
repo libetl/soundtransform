@@ -27,7 +27,9 @@ public interface AudioFileHelper {
 
     public InputStream getAudioInputStream (File inputFile) throws SoundTransformException;
 
-    public InputStream toStream (byte [] byteArray, Object audioFormat) throws SoundTransformException;
-
     public void writeInputStream (InputStream ais2, File fDest) throws SoundTransformException;
+
+    public InputStream toStream (InputStream is, Object audioFormat) throws SoundTransformException;
+
+    public InputStream toStream (byte [] byteArray, Object audioFormatfromInputStreamInfo) throws SoundTransformException;
 }

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
+import org.junit.Assert;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
@@ -32,5 +33,6 @@ public class Pcm2FrameTest extends SoundTransformTest {
 
         final byte [] out = new ByteArrayFrameProcessor ().framesToByteArray (channels, 2, false, true);
         new Slf4jObserver ().notify (Arrays.toString (out));
+        Assert.assertArrayEquals (data, out);
     }
 }

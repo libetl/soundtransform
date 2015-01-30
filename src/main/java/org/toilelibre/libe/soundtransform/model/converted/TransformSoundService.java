@@ -86,4 +86,8 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
         this.convertAudioFileService.writeInputStream (is, fDest);
 
     }
+
+    public InputStream transformRawInputStream (InputStream ais, InputStreamInfo isi) throws SoundTransformException {
+        return this.convertAudioFileService.toStream (ais, isi);
+    }
 }
