@@ -20,8 +20,8 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile {
     public enum FluentClientErrorCode implements ErrorCode {
 
-        INPUT_STREAM_NOT_READY ("Input Stream not ready"), INPUT_STREAM_INFO_UNAVAILABLE ("Input Stream info not available"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), 
-        CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE ("This client did not read a classpath resouce at the start");
+        INPUT_STREAM_NOT_READY ("Input Stream not ready"), INPUT_STREAM_INFO_UNAVAILABLE ("Input Stream info not available"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE (
+                "This client did not read a classpath resouce at the start");
 
         private final String messageFormat;
 
@@ -194,7 +194,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.audioInputStream = is;
         return this.writeToFile (new File (this.sameDirectoryAsClasspathResource + "/" + resource));
     }
-    
+
     @Override
     public FluentClientWithFile writeToFile (File file1) throws SoundTransformException {
         if (this.audioInputStream != null) {

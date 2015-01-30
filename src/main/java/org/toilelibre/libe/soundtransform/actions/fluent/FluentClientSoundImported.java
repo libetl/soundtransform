@@ -9,7 +9,7 @@ public interface FluentClientSoundImported {
     FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException;
 
     FluentClientWithFile exportToClasspathResource (String resource) throws SoundTransformException;
-    
+
     FluentClientWithFile exportToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException;
 
     FluentClientWithFile exportToFile (File file1) throws SoundTransformException;
