@@ -35,7 +35,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         }
     }
 
-    public static FluentClientReady go () {
+    public static FluentClientReady start () {
         return new FluentClient ();
     }
 
@@ -50,7 +50,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
-    public FluentClientReady andAfterGo () throws SoundTransformException {
+    public FluentClientReady andAfterStart () throws SoundTransformException {
         this.cleanData ();
         return this;
     }

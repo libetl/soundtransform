@@ -16,17 +16,17 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void backAndForth () throws SoundTransformException {
-        FluentClient.go ().withClasspathResource ("before.wav").convertIntoSound ().apply (new NoOpSoundTransformation ()).exportToClasspathResource ("before.wav").convertIntoSound ();
+        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new NoOpSoundTransformation ()).exportToClasspathResource ("before.wav").convertIntoSound ();
     }
 
     @Test
     public void simpleLifeCycle () throws SoundTransformException {
-        FluentClient.go ().withClasspathResource ("before.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("after.wav");
+        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("after.wav");
     }
 
     @Test
     public void twoTimesInOneInstruction () throws SoundTransformException {
-        FluentClient.go ().withClasspathResource ("before.wav").convertIntoSound ().andAfterGo ().withClasspathResource ("before.wav").convertIntoSound ();
+        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().andAfterStart ().withClasspathResource ("before.wav").convertIntoSound ();
     }
 
     @Test
@@ -39,12 +39,12 @@ public class FluentClientTest extends SoundTransformTest {
         final InputStream is = new ByteArrayInputStream (data);
         InputStreamInfo isi = new InputStreamInfo (1, 32768, 2, 8000, false, true);
 
-        FluentClient.go ().withRawInputStream (is, isi).importToSound ().exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        FluentClient.start ().withRawInputStream (is, isi).importToSound ().exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     //Plays the sound three times, therefore too long time consuming test
     //@Test
     public void playIt () throws SoundTransformException {
-        FluentClient.go ().withClasspathResource ("before.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
+        FluentClient.start ().withClasspathResource ("before.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
     }
 }

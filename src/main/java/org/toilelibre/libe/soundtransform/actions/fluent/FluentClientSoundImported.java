@@ -16,7 +16,7 @@ public interface FluentClientSoundImported {
 
     FluentClientWithInputStream exportToStream () throws SoundTransformException;
 
-    FluentClientReady andAfterGo () throws SoundTransformException;
+    FluentClientReady andAfterStart () throws SoundTransformException;
 
     FluentClientSoundImported playIt () throws SoundTransformException;
 

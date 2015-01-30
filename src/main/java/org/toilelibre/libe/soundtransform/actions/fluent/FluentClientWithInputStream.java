@@ -13,7 +13,7 @@ public interface FluentClientWithInputStream {
 
     FluentClientWithFile writeToFile (File file) throws SoundTransformException;
 
-    FluentClientReady andAfterGo () throws SoundTransformException;
+    FluentClientReady andAfterStart () throws SoundTransformException;
 
     FluentClientWithInputStream playIt () throws SoundTransformException;
 

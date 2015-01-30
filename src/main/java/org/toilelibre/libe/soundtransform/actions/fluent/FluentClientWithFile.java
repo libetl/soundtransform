@@ -7,7 +7,7 @@ public interface FluentClientWithFile {
 
     FluentClientWithInputStream importToStream () throws SoundTransformException;
 
-    FluentClientReady andAfterGo () throws SoundTransformException;
+    FluentClientReady andAfterStart () throws SoundTransformException;
 
     FluentClientWithFile playIt () throws SoundTransformException;
 }
