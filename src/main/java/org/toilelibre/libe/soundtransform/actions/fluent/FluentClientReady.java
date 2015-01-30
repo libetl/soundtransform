@@ -17,4 +17,6 @@ public interface FluentClientReady {
     FluentClientWithInputStream withRawInputStream (InputStream is, InputStreamInfo isInfo) throws SoundTransformException;
 
     FluentClientSoundImported withSounds (Sound [] sounds);
+
+    FluentClientWithFreqs withFreqs (int [] freqs) throws SoundTransformException;
 }

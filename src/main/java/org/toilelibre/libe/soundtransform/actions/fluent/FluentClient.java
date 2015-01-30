@@ -17,7 +17,7 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
-public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile {
+public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs {
     public enum FluentClientErrorCode implements ErrorCode {
 
         INPUT_STREAM_NOT_READY ("Input Stream not ready"), INPUT_STREAM_INFO_UNAVAILABLE ("Input Stream info not available"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE (
@@ -165,6 +165,12 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
+    public FluentClientWithFreqs withFreqs (int[] freqs) throws SoundTransformException {
+        this.cleanData ();
+        return this;
+    }
+
+    @Override
     public FluentClientWithInputStream withRawInputStream (InputStream is, InputStreamInfo isInfo) throws SoundTransformException {
         this.cleanData ();
         this.audioInputStream = new InputStreamToAudioInputStream ().transformRawInputStream (is, isInfo);
@@ -202,6 +208,12 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         }
         this.cleanData ();
         this.file = file1;
+        return this;
+    }
+
+    @Override
+    public FluentClientSoundImported shapeIntoSound (String packName, String instrumentName) throws SoundTransformException {
+        //TODO
         return this;
     }
 }

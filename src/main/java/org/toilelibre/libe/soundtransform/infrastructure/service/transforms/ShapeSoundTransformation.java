@@ -6,6 +6,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
 import org.toilelibre.libe.soundtransform.model.library.note.Silence;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
@@ -36,15 +37,15 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
     private final Silence       silence;
     private int []              freqs;
 
-    public ShapeSoundTransformation (final Pack pack, final String instrument) {
+    public ShapeSoundTransformation (final String packName, final String instrument) {
         this.silence = new Silence ();
-        this.pack = pack;
+        this.pack = $.select (Library.class).getPack (packName);
         this.instrument = instrument;
         this.soundAppender = $.select (SoundAppender.class);
     }
 
-    public ShapeSoundTransformation (final Pack pack, final String instrument, final int [] freqs) {
-        this (pack, instrument);
+    public ShapeSoundTransformation (final String packName, final String instrument, final int [] freqs) {
+        this (packName, instrument);
         this.freqs = freqs;
     }
 
