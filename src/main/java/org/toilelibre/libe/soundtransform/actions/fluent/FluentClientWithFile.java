@@ -6,4 +6,6 @@ public interface FluentClientWithFile {
     FluentClientSoundImported convertIntoSound () throws SoundTransformException;
 
     FluentClientWithInputStream importToStream () throws SoundTransformException;
+
+    FluentClientReady andAfterGo () throws SoundTransformException;
 }

@@ -50,6 +50,12 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
+    public FluentClientReady andAfterGo () throws SoundTransformException {
+        this.cleanData ();
+        return this;
+    }
+
+    @Override
     public FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException {
         final Sound sounds1 [] = new ApplySoundTransform ().apply (this.sounds, st);
         this.cleanData ();
@@ -151,6 +157,13 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.cleanData ();
         this.rawInputStream = is;
         this.info = isInfo;
+        return this;
+    }
+
+    @Override
+    public FluentClientSoundImported withSounds (Sound [] sounds1) {
+        this.cleanData ();
+        this.sounds = sounds1;
         return this;
     }
 

@@ -10,4 +10,6 @@ public interface FluentClientWithInputStream {
     FluentClientWithFile writeToClasspathResource (String resource) throws SoundTransformException;
 
     FluentClientWithFile writeToFile (File file) throws SoundTransformException;
+
+    FluentClientReady andAfterGo () throws SoundTransformException;
 }

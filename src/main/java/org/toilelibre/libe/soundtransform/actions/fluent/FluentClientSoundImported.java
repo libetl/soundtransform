@@ -13,4 +13,6 @@ public interface FluentClientSoundImported {
     FluentClientWithFile exportToFile (File file1) throws SoundTransformException;
 
     FluentClientWithInputStream exportToStream () throws SoundTransformException;
+
+    FluentClientReady andAfterGo () throws SoundTransformException;
 }
