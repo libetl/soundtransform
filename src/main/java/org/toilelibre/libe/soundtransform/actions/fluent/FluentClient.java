@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.toilelibre.libe.soundtransform.actions.notes.ImportAPackIntoTheLibrary;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
 import org.toilelibre.libe.soundtransform.actions.transform.ApplySoundTransform;
 import org.toilelibre.libe.soundtransform.actions.transform.ConvertFromInputStream;
@@ -148,6 +149,18 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         final Sound sound = new ShapeSoundTransformation (packName, instrumentName, this.freqs, (int) isi.getFrameLength (), isi.getSampleSize (), (int) isi.getSampleRate ()).transform (100);
         this.cleanData ();
         this.sounds = new Sound [] { sound };
+        return this;
+    }
+
+    @Override
+    public FluentClient withAPack (final String packName, final InputStream jsonStream) throws SoundTransformException {
+        new ImportAPackIntoTheLibrary ().importAPack (packName, jsonStream);
+        return this;
+    }
+
+    @Override
+    public FluentClient withAPack (final String packName, final String jsonContent) throws SoundTransformException {
+        new ImportAPackIntoTheLibrary ().importAPack (packName, jsonContent);
         return this;
     }
 

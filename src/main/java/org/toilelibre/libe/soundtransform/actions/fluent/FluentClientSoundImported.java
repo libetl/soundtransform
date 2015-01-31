@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.actions.fluent;
 
 import java.io.File;
+import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -19,5 +20,9 @@ public interface FluentClientSoundImported {
     FluentClientWithInputStream exportToStream () throws SoundTransformException;
 
     FluentClientSoundImported playIt () throws SoundTransformException;
+
+    FluentClientSoundImported withAPack (String packName, InputStream jsonStream) throws SoundTransformException;
+
+    FluentClientSoundImported withAPack (String packName, String jsonContent) throws SoundTransformException;
 
 }

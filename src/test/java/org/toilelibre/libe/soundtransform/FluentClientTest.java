@@ -6,15 +6,11 @@ import java.io.InputStream;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
-import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
-import org.toilelibre.libe.soundtransform.model.library.Library;
-import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 
 public class FluentClientTest extends SoundTransformTest {
 
@@ -48,11 +44,6 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
-    public void twoTimesInOneInstruction () throws SoundTransformException {
-        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().andAfterStart ().withClasspathResource ("before.wav").convertIntoSound ();
-    }
-
-    @Test
     public void testImportHPSFreqs () throws SoundTransformException {
         final int [] freqs = new int [(int) Math.random () * 2000 + 4000];
         int i = 0;
@@ -63,8 +54,13 @@ public class FluentClientTest extends SoundTransformTest {
                 freqs [i++] = currentFreq;
             }
         }
-        $.create (ImportPackService.class).setObservers (new Slf4jObserver ()).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));    
+        final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json");
         final InputStreamInfo isi = new InputStreamInfo (1, freqs.length * 100, 2, 48000, false, true);
-        FluentClient.start ().withFreqs (freqs).shapeIntoSound ("default", "simple_piano", isi).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        FluentClient.start ().withAPack ("default", packInputStream).withFreqs (freqs).shapeIntoSound ("default", "simple_piano", isi).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+    }
+
+    @Test
+    public void twoTimesInOneInstruction () throws SoundTransformException {
+        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().andAfterStart ().withClasspathResource ("before.wav").convertIntoSound ();
     }
 }
