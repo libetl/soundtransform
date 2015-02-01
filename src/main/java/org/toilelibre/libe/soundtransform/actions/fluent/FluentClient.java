@@ -167,9 +167,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     public FluentClientSoundImported shapeIntoSound (final String packName, final String instrumentName, final InputStreamInfo isi) throws SoundTransformException {
-        final Sound sound = new ShapeSoundTransformation (packName, instrumentName, this.freqs, (int) isi.getFrameLength (), isi.getSampleSize (), (int) isi.getSampleRate ()).transform (100);
+        final SoundTransformation soundTransformation = new ShapeSoundTransformation (packName, instrumentName, this.freqs, (int) isi.getFrameLength (), isi.getSampleSize (), (int) isi.getSampleRate ());
         this.cleanData ();
-        this.sounds = new Sound [] { sound };
+        this.sounds = new ApplySoundTransform ().apply (new Sound [] { new Sound (new long [0], 0, 0, 0) }, soundTransformation);
         return this;
     }
 
