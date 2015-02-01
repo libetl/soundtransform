@@ -151,7 +151,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
             new PlaySound ().play (this.audioInputStream);
         } else if (this.spectrums != null) {
             final Spectrum<?> [] savedSpectrums = this.spectrums;
-            this.convertIntoSound ();
+            this.extractSound ();
             new PlaySound ().play (this.sounds);
             this.cleanData ();
             this.spectrums = savedSpectrums;
