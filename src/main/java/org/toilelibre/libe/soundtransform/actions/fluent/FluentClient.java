@@ -15,15 +15,17 @@ import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpectrumToSoundSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
-public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs {
+public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithSpectrum {
     public enum FluentClientErrorCode implements ErrorCode {
 
         INPUT_STREAM_NOT_READY ("Input Stream not ready"), INPUT_STREAM_INFO_UNAVAILABLE ("Input Stream info not available"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE (
-                "This client did not read a classpath resouce at the start");
+                "This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
 
         private final String messageFormat;
 
@@ -46,6 +48,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     private String      sameDirectoryAsClasspathResource;
     private int []      freqs;
     private File        file;
+    private Spectrum<?> spectrum;
 
     private FluentClient () {
 
@@ -70,6 +73,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.audioInputStream = null;
         this.file = null;
         this.freqs = null;
+        this.spectrum = null;
     }
 
     @Override
@@ -105,6 +109,17 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
+    public FluentClientSoundImported extractSound () throws SoundTransformException {
+        if (this.spectrum == null) {
+            throw new SoundTransformException (FluentClientErrorCode.NO_SPECTRUM_IN_INPUT, new IllegalArgumentException ());
+        }
+        final Sound sounds1 [] = new ApplySoundTransform ().apply (new Sound [] { new Sound (null, this.spectrum.getNbBytes (), this.spectrum.getSampleRate (), 0) }, new SpectrumToSoundSoundTransformation (this.spectrum));
+        this.cleanData ();
+        this.sounds = sounds1;
+        return this;
+    }
+
+    @Override
     public FluentClientSoundImported importToSound () throws SoundTransformException {
         Sound [] sounds1;
         if (this.audioInputStream != null) {
@@ -134,6 +149,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
             new PlaySound ().play (this.sounds);
         } else if (this.audioInputStream != null) {
             new PlaySound ().play (this.audioInputStream);
+        } else if (this.spectrum != null) {
+            new PlaySound ().play (this.spectrum);
         } else if (this.file != null) {
             final File f = this.file;
             this.importToStream ();
@@ -150,6 +167,31 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.cleanData ();
         this.sounds = new Sound [] { sound };
         return this;
+    }
+
+    @Override
+    public File stopWithFile () {
+        return this.file;
+    }
+
+    @Override
+    public int [] stopWithFreqs () {
+        return this.freqs;
+    }
+
+    @Override
+    public InputStream stopWithInputStream () {
+        return this.audioInputStream;
+    }
+
+    @Override
+    public Sound [] stopWithSounds () {
+        return this.sounds;
+    }
+
+    @Override
+    public Spectrum<?> stopWithSpectrum () {
+        return this.spectrum;
     }
 
     @Override
@@ -205,6 +247,13 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public FluentClientSoundImported withSounds (final Sound [] sounds1) {
         this.cleanData ();
         this.sounds = sounds1;
+        return this;
+    }
+
+    @Override
+    public FluentClientWithSpectrum withSpectrum (final Spectrum<?> spectrum) throws SoundTransformException {
+        this.cleanData ();
+        this.spectrum = spectrum;
         return this;
     }
 

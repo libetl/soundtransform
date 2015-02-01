@@ -11,6 +11,8 @@ public interface FluentClientWithInputStream extends FluentClientCommon {
 
     FluentClientWithInputStream playIt () throws SoundTransformException;
 
+    InputStream stopWithInputStream ();
+
     FluentClientWithInputStream withAPack (String packName, InputStream jsonStream) throws SoundTransformException;
 
     FluentClientWithInputStream withAPack (String packName, String jsonContent) throws SoundTransformException;
@@ -20,5 +22,4 @@ public interface FluentClientWithInputStream extends FluentClientCommon {
     FluentClientWithFile writeToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException;
 
     FluentClientWithFile writeToFile (File file) throws SoundTransformException;
-
 }

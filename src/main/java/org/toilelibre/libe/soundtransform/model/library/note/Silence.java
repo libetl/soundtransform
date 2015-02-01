@@ -8,7 +8,7 @@ public class Silence implements Note {
 
     private Sound generateSilence (final float lengthInSeconds) {
         final int nbSamples = (int) (lengthInSeconds * lengthInSeconds);
-        return new Sound (new long [nbSamples], 2, Silence.SAMPLE_RATE, 1);
+        return new Sound (new long [nbSamples], 2, Silence.SAMPLE_RATE, 0);
     }
 
     @Override

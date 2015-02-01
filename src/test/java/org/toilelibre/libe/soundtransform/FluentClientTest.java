@@ -2,13 +2,18 @@ package org.toilelibre.libe.soundtransform;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
@@ -41,6 +46,23 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void simpleLifeCycle () throws SoundTransformException {
         FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("after.wav");
+    }
+
+    @Test
+    public void spectrumTest () throws SoundTransformException {
+        final Sound [] sounds = FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().stopWithSounds ();
+        final List<Spectrum<Object>> spectrums = new ArrayList<Spectrum<Object>> ();
+        new SimpleFrequencySoundTransformation<Object> () {
+
+            @Override
+            public Spectrum<Object> transformFrequencies (final Spectrum<Object> fs) {
+                spectrums.add (fs);
+                return super.transformFrequencies (fs);
+            }
+        }.transform (sounds [0]);
+
+        final Sound [] onlyFirstSpectrumInSound = FluentClient.start ().withSpectrum (spectrums.get (0)).extractSound ().stopWithSounds ();
+        org.junit.Assert.assertNotNull (onlyFirstSpectrumInSound [0]);
     }
 
     @Test

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 public interface FluentClientSoundImported extends FluentClientCommon {
@@ -20,8 +21,9 @@ public interface FluentClientSoundImported extends FluentClientCommon {
 
     FluentClientSoundImported playIt () throws SoundTransformException;
 
+    Sound [] stopWithSounds ();
+
     FluentClientSoundImported withAPack (String packName, InputStream jsonStream) throws SoundTransformException;
 
     FluentClientSoundImported withAPack (String packName, String jsonContent) throws SoundTransformException;
-
 }

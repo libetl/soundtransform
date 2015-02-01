@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
@@ -24,4 +25,6 @@ public interface FluentClientReady {
     FluentClientWithInputStream withRawInputStream (InputStream is, InputStreamInfo isInfo) throws SoundTransformException;
 
     FluentClientSoundImported withSounds (Sound [] sounds);
+
+    FluentClientWithSpectrum withSpectrum (Spectrum<?> spectrum) throws SoundTransformException;
 }

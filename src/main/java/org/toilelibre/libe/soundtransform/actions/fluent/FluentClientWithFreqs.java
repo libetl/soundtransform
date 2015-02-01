@@ -9,6 +9,8 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
 
     FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, InputStreamInfo isi) throws SoundTransformException;
 
+    int [] stopWithFreqs ();
+
     FluentClientWithFreqs withAPack (String packName, InputStream jsonStream) throws SoundTransformException;
 
     FluentClientWithFreqs withAPack (String packName, String jsonContent) throws SoundTransformException;
