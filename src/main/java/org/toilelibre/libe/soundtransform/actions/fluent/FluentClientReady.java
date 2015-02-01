@@ -26,5 +26,5 @@ public interface FluentClientReady {
 
     FluentClientSoundImported withSounds (Sound [] sounds);
 
-    FluentClientWithSpectrum withSpectrum (Spectrum<?> spectrum) throws SoundTransformException;
+    FluentClientWithSpectrums withSpectrums (Spectrum<?> [] spectrums) throws SoundTransformException;
 }

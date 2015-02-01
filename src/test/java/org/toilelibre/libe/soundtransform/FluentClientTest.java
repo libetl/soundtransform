@@ -2,18 +2,13 @@ package org.toilelibre.libe.soundtransform;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
@@ -50,28 +45,16 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void spectrumTest () throws SoundTransformException {
-        final Sound [] sounds = FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().stopWithSounds ();
-        final List<Spectrum<Object>> spectrums = new ArrayList<Spectrum<Object>> ();
-        new SimpleFrequencySoundTransformation<Object> () {
-
-            @Override
-            public Spectrum<Object> transformFrequencies (final Spectrum<Object> fs) {
-                spectrums.add (fs);
-                return super.transformFrequencies (fs);
-            }
-        }.transform (sounds [0]);
-
-        final Sound [] onlyFirstSpectrumInSound = FluentClient.start ().withSpectrum (spectrums.get (0)).extractSound ().stopWithSounds ();
-        org.junit.Assert.assertNotNull (onlyFirstSpectrumInSound [0]);
+        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().splitIntoSpectrums (0).extractSound ().stopWithSounds ();
     }
 
     @Test
     public void testImportHPSFreqs () throws SoundTransformException {
-        final int [] freqs = new int [(int) Math.random () * 2000 + 4000];
+        final int [] freqs = new int [((int) Math.random () * 2000) + 4000];
         int i = 0;
         while (i < freqs.length) {
-            final int length = Math.min ((int) (Math.random () * 200 + 400), freqs.length - i);
-            final int currentFreq = (int) (Math.random () * 150 + 160);
+            final int length = Math.min ((int) ((Math.random () * 200) + 400), freqs.length - i);
+            final int currentFreq = (int) ((Math.random () * 150) + 160);
             for (int j = 0 ; j < length ; j++) {
                 freqs [i++] = currentFreq;
             }
