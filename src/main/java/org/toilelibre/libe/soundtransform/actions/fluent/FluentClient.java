@@ -2,7 +2,6 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 
 import java.io.File;
 import java.io.InputStream;
-import java.net.URL;
 
 import org.toilelibre.libe.soundtransform.actions.notes.ImportAPackIntoTheLibrary;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
@@ -230,8 +229,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     @Override
     public FluentClientWithFile withClasspathResource (final String resource) throws SoundTransformException {
         this.cleanData ();
-        final URL url = Thread.currentThread ().getContextClassLoader ().getResource (resource);
-        this.file = new File (url.getFile ());
+        this.file = new File (Thread.currentThread ().getContextClassLoader ().getResource (resource).getFile ());
         this.sameDirectoryAsClasspathResource = this.file.getParent ();
         return this;
     }
