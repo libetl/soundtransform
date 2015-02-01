@@ -6,8 +6,7 @@ import java.io.InputStream;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-public interface FluentClientSoundImported {
-    FluentClientReady andAfterStart () throws SoundTransformException;
+public interface FluentClientSoundImported extends FluentClientCommon {
 
     FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException;
 

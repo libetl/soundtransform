@@ -8,6 +8,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public interface FluentClientReady {
+
     FluentClientReady withAPack (String packName, InputStream jsonStream) throws SoundTransformException;
 
     FluentClientReady withAPack (String packName, String jsonContent) throws SoundTransformException;
