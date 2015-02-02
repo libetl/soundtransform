@@ -15,17 +15,17 @@ public interface FluentClientReady {
 
     FluentClientReady withAPack (String packName, String jsonContent) throws SoundTransformException;
 
-    FluentClientWithInputStream withAudioInputStream (InputStream is) throws SoundTransformException;
+    FluentClientWithInputStream withAudioInputStream (InputStream is);
 
     FluentClientWithFile withClasspathResource (String resource) throws SoundTransformException;
 
-    FluentClientWithFile withFile (File file) throws SoundTransformException;
+    FluentClientWithFile withFile (File file);
 
-    FluentClientWithFreqs withFreqs (int [] freqs) throws SoundTransformException;
+    FluentClientWithFreqs withFreqs (int [] freqs);
 
     FluentClientWithInputStream withRawInputStream (InputStream is, InputStreamInfo isInfo) throws SoundTransformException;
 
     FluentClientSoundImported withSounds (Sound [] sounds);
 
-    FluentClientWithSpectrums withSpectrums (List<Spectrum<?> []> spectrums) throws SoundTransformException;
+    FluentClientWithSpectrums withSpectrums (List<Spectrum<?> []> spectrums);
 }
