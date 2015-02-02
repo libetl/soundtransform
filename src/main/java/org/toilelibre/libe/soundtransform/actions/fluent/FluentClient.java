@@ -175,9 +175,12 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     /**
-     * Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically<br/>
-     * Caution : the original sound will be lost, and it will be impossible to revert this conversion.<br/> 
-     * When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with
+     * Will invoke a soundtransform to find the loudest frequencies of the
+     * sound, chronologically<br/>
+     * Caution : the original sound will be lost, and it will be impossible to
+     * revert this conversion.<br/>
+     * When shaped into a sound, the new sound will only sounds like the
+     * instrument you shaped the freqs with
      *
      * @return the client, with a loudest frequencies integer array
      * @throws SoundTransformException

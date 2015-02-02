@@ -33,7 +33,9 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientWithFile exportToClasspathResource (String resource) throws SoundTransformException;
 
     /**
-     * Shortcut for exportToStream ().writeToClasspathResourceWithSiblingResource (resource, siblingResource)
+     * Shortcut for exportToStream
+     * ().writeToClasspathResourceWithSiblingResource (resource,
+     * siblingResource)
      *
      * @param resource
      *            a resource that may or may not exist in the classpath
@@ -68,9 +70,11 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientWithInputStream exportToStream () throws SoundTransformException;
 
     /**
-     * Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically
-     * Caution : the original sound will be lost, and it will be impossible to revert this conversion.
-     * When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with
+     * Will invoke a soundtransform to find the loudest frequencies of the
+     * sound, chronologically Caution : the original sound will be lost, and it
+     * will be impossible to revert this conversion. When shaped into a sound,
+     * the new sound will only sounds like the instrument you shaped the freqs
+     * with
      *
      * @return the client, with a loudest frequencies integer array
      * @throws SoundTransformException

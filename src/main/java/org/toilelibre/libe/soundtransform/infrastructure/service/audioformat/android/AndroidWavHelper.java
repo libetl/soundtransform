@@ -37,7 +37,6 @@ public class AndroidWavHelper {
 
     }
 
-    @SuppressWarnings ("unused")
     public InputStreamInfo readMetadata (final AudioInputStream ais) throws IOException {
         String string = ais.readFourChars ();
         if (!AndroidWavHelper.RIFF.equals (string)) {

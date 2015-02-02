@@ -9,10 +9,10 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class SoundToSpectrumsSoundTransformation<T> extends SimpleFrequencySoundTransformation<T> {
 
-    private int                  threshold;
-    private int                  channel;
+    private int                        threshold;
+    private int                        channel;
     private final List<Spectrum<?> []> spectrums;
-    private int                  index;
+    private int                        index;
 
     public SoundToSpectrumsSoundTransformation () {
         super ();
