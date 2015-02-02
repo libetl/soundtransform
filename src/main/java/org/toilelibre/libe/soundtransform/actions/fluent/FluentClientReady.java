@@ -23,13 +23,6 @@ public interface FluentClientReady {
 
     FluentClientWithFreqs withFreqs (int [] freqs) throws SoundTransformException;
 
-    /**
-     * bou
-     * @param is
-     * @param isInfo
-     * @return
-     * @throws SoundTransformException
-     */
     FluentClientWithInputStream withRawInputStream (InputStream is, InputStreamInfo isInfo) throws SoundTransformException;
 
     FluentClientSoundImported withSounds (Sound [] sounds);
