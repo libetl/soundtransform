@@ -11,7 +11,7 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
     /**
      * Uses the current imported sound and converts it into an InputStream,
      * ready to be written to a file (or to be read again)
-     * 
+     *
      * @return the client, with an inputStream
      * @throws SoundTransformException
      *             if the metadata format object is invalid, or if the sound
@@ -22,7 +22,7 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
     /**
      * Plays the current audio data and (if needed) convert it temporarily to a
      * sound
-     * 
+     *
      * @return the client, in its current state.
      * @throws SoundTransformException
      *             could not play the current audio data
@@ -31,7 +31,7 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
 
     /**
      * Stops the client pipeline and returns the obtained spectrums
-     * 
+     *
      * @return a list of spectrums for each channel
      */
     List<Spectrum<?> []> stopWithSpectrums ();
@@ -39,7 +39,7 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
      * pattern must be followed in the jsonStream to enable the import.
-     * 
+     *
      * @param packName
      *            the name of the pack
      * @param jsonStream
@@ -55,10 +55,10 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
      * Tells the client to work with a pack. Reads the whole inputStream. A
      * pattern must be followed in the jsonStream to enable the import.<br/>
      * Here is the format allowed in the file
-     * 
+     *
      * <pre>
      * {
-     *   "instrumentName" : 
+     *   "instrumentName" :
      *   {
      *     -1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
      *    192 : "/data/mypackage.myapp/knownFrequencyFile.wav",
@@ -67,11 +67,11 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
      *   ...
      * }
      * </pre>
-     * 
+     *
      * Do not assign the same frequency for two notes in the same instrument. If
      * several notes must have their frequencies detected by the soundtransform
      * lib, set different negative values (-1, -2, -3, ...)
-     * 
+     *
      * @param packName
      *            the name of the pack
      * @param jsonContent

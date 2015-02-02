@@ -43,7 +43,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /**
      * Startup the client
-     * 
+     *
      * @return the client, ready to start
      */
     public static FluentClientReady start () {
@@ -75,7 +75,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     /**
      * Apply one transform and continue with the current imported sound
      * @param st the SoundTransformation to apply
-     * @return the client with a sound imported 
+     * @return the client with a sound imported
      * @throws SoundTransformException if the transform does not work
      */
     public FluentClientSoundImported apply (final SoundTransformation st) throws SoundTransformException {
@@ -96,7 +96,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     @Override
     /**
      * Shortcut for importToStream ().importToSound () : Conversion from a File to a Sound
-     * @return the client, with a sound imported      
+     * @return the client, with a sound imported
      * @throws SoundTransformException if one of the two import fails
      */
     public FluentClientSoundImported convertIntoSound () throws SoundTransformException {
@@ -107,7 +107,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     /**
      * Shortcut for exportToStream ().writeToClasspathResource (resource) : Conversion from a Sound to a File
      * @param resource a resource that can be found in the classpath
-     * @return the client, with a file written 
+     * @return the client, with a file written
      * @throws SoundTransformException if one of the two operations fails
      */
     public FluentClientWithFile exportToClasspathResource (final String resource) throws SoundTransformException {
@@ -119,7 +119,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Shortcut for exportToStream ().writeToClasspathResourceWithSiblingResource (resource, siblingResource)
      * @param resource a resource that may or may not exist in the classpath
      * @param siblingResource a resource that can be found in the classpath.
-     * @return the client, with a file written 
+     * @return the client, with a file written
      * @throws SoundTransformException if one of the two operations fails
      */
     public FluentClientWithFile exportToClasspathResourceWithSiblingResource (final String resource, final String siblingResource) throws SoundTransformException {
@@ -130,7 +130,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     /**
      * Shortcut for exportToStream ().writeToFile (file)
      * @param file1 the destination file
-     * @return the client, with a file written 
+     * @return the client, with a file written
      * @throws SoundTransformException if one of the two operations fails
      */
     public FluentClientWithFile exportToFile (final File file1) throws SoundTransformException {
@@ -157,11 +157,11 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     @Override
     /**
      * Uses the current available spectrums objects to convert them into a sound (with one or more channels)
-     * @return the client, with a sound imported 
+     * @return the client, with a sound imported
      * @throws SoundTransformException if the spectrums are in an invalid format, or if the transform to sound does not work
      */
     public FluentClientSoundImported extractSound () throws SoundTransformException {
-        if ((this.spectrums == null) || (this.spectrums.size () == 0) || this.spectrums.get (0).length == 0) {
+        if (this.spectrums == null || this.spectrums.size () == 0 || this.spectrums.get (0).length == 0) {
             throw new SoundTransformException (FluentClientErrorCode.NO_SPECTRUM_IN_INPUT, new IllegalArgumentException ());
         }
         final Sound [] input = new Sound [this.spectrums.size ()];
@@ -174,10 +174,28 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
+    /**
+     * Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically<br/>
+     * Caution : the original sound will be lost, and it will be impossible to revert this conversion.<br/> 
+     * When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with
+     *
+     * @return the client, with a loudest frequencies integer array
+     * @throws SoundTransformException
+     *             if the convert fails
+     */
+    @Override
+    public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException {
+        final PeakFindWithHPSSoundTransformation<?> peakFind = new PeakFindWithHPSSoundTransformation<Object> (100);
+        new ApplySoundTransform ().apply (this.sounds, peakFind);
+        this.cleanData ();
+        this.freqs = peakFind.getLoudestFreqs ();
+        return this;
+    }
+
     @Override
     /**
      * Uses the current input stream object to convert it into a sound (with one or more channels)
-     * @return the client, with a sound imported 
+     * @return the client, with a sound imported
      * @throws SoundTransformException the inputStream is invalid, or the convert did not work
      */
     public FluentClientSoundImported importToSound () throws SoundTransformException {
@@ -241,7 +259,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @param packName reference to an existing imported pack (must be invoked before the shapeIntoSound method by using withAPack)
      * @param instrumentName the name of the instrument that will map the freqs object
      * @param isi the wanted format for the future sound
-     * @return the client, with a sound imported 
+     * @return the client, with a sound imported
      * @throws SoundTransformException could not call the soundtransform to shape the freqs
      */
     public FluentClientSoundImported shapeIntoSound (final String packName, final String instrumentName, final InputStreamInfo isi) throws SoundTransformException {
@@ -316,7 +334,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * enable the import.
      * @param packName the name of the pack
      * @param jsonStream the input stream
-     * @return the client, in its current state. 
+     * @return the client, in its current state.
      * @throws SoundTransformException the input stream cannot be read, or the json format is not correct, or some sound files are missing
      */
     public FluentClient withAPack (final String packName, final InputStream jsonStream) throws SoundTransformException {
@@ -331,7 +349,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Here is the format allowed in the file
      * <pre>
      * {
-     *   "instrumentName" : 
+     *   "instrumentName" :
      *   {
      *     -1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
      *    192 : "/data/mypackage.myapp/knownFrequencyFile.wav",
@@ -344,7 +362,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * detected by the soundtransform lib, set different negative values (-1, -2, -3, ...)
      * @param packName the name of the pack
      * @param jsonContent a string containing the definition of the pack
-     * @return the client, in its current state. 
+     * @return the client, in its current state.
      * @throws SoundTransformException the json content is invalid, the json format is not correct, or some sound files are missing
      */
     public FluentClient withAPack (final String packName, final String jsonContent) throws SoundTransformException {
@@ -405,7 +423,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     /**
-     * Tells the client to work first with a byte array InputStream or any readable DataInputStream. 
+     * Tells the client to work first with a byte array InputStream or any readable DataInputStream.
      * It will be read and transformed into an AudioInputStream<br/>
      * The passed inputStream must not contain any metadata piece of information.
      * @param is the input stream
@@ -489,24 +507,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         }
         this.cleanData ();
         this.file = file1;
-        return this;
-    }
-
-    /**
-     * Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically
-     * Caution : the origin sound will be lost, and it will be impossible to revert this conversion.
-     * When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with
-     * 
-     * @return the client, with a loudest frequencies integer array
-     * @throws SoundTransformException
-     *             if the convert fails
-     */
-    @Override
-    public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException {
-        PeakFindWithHPSSoundTransformation<?> peakFind = new PeakFindWithHPSSoundTransformation<Object> (100);
-        new ApplySoundTransform ().apply (this.sounds, peakFind);
-        this.cleanData ();
-        this.freqs = peakFind.getLoudestFreqs ();
         return this;
     }
 

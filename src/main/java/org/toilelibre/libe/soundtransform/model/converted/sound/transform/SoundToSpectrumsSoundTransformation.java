@@ -11,7 +11,7 @@ public class SoundToSpectrumsSoundTransformation<T> extends SimpleFrequencySound
 
     private int                  threshold;
     private int                  channel;
-    private List<Spectrum<?> []> spectrums;
+    private final List<Spectrum<?> []> spectrums;
     private int                  index;
 
     public SoundToSpectrumsSoundTransformation () {
@@ -37,7 +37,7 @@ public class SoundToSpectrumsSoundTransformation<T> extends SimpleFrequencySound
             roundedSize *= 2;
         }
         this.threshold = roundedSize;
-        int spectrumsSize = (int) Math.ceil (input.getSamples ().length * 1.0 / roundedSize);
+        final int spectrumsSize = (int) Math.ceil (input.getSamples ().length * 1.0 / roundedSize);
         this.spectrums.add (new Spectrum [spectrumsSize]);
         return super.initSound (input);
     }

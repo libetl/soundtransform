@@ -43,8 +43,7 @@ public class AndroidWavHelper {
         if (!AndroidWavHelper.RIFF.equals (string)) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_MAGIC_NUMBER, new IllegalArgumentException ()));
         }
-        // file size
-        final int fileSize = ais.readInt2 ();
+        ais.readInt2 ();
         string = ais.readFourChars ();
         if (!AndroidWavHelper.WAVE.equals (string)) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_WAVE_HEADER, new IllegalArgumentException ()));
@@ -53,16 +52,14 @@ public class AndroidWavHelper {
         if (!AndroidWavHelper.FMT_.equals (string)) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_WAVE_HEADER, new IllegalArgumentException ()));
         }
-        // size of chunk
-        final int chunkSize = ais.readInt2 ();
+        ais.readInt2 ();
         final int typeOfEncoding = ais.readShort2 ();
         if (typeOfEncoding != 1) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NON_PCM_WAV, new IllegalArgumentException ()));
         }
         final int channels = ais.readShort2 ();
         final int sampleRate = (ais.readInt2 () + 65536) % 65536;
-        // byterate
-        final int byterate = ais.readInt2 ();
+        ais.readInt2 ();
         final int frameSize = ais.readShort2 ();
         final int sampleSize = ais.readShort2 ();
         string = ais.readFourChars ();
@@ -85,7 +82,7 @@ public class AndroidWavHelper {
     public void writeMetadata (final ByteArrayWithAudioFormatInputStream audioInputStream, final WavOutputStream outputStream) throws IOException {
         final InputStreamInfo info = audioInputStream.getInfo ();
         final int soundInfoSize = info.getSoundInfo () == null ? 0 : info.getSoundInfo ().length ();
-        final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + soundInfoSize + (info.getFrameLength () * info.getSampleSize () * info.getChannels ()));
+        final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + soundInfoSize + info.getFrameLength () * info.getSampleSize () * info.getChannels ());
         final int chunkSize = AndroidWavHelper.INFO_CHUNK_SIZE;
         final int typeOfEncoding = 1;
         final int channels = info.getChannels ();

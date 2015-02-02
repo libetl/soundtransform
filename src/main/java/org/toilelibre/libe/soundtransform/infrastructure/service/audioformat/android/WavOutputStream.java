@@ -14,13 +14,13 @@ public class WavOutputStream extends FileOutputStream {
     private byte [] intToByteArray (final int n) {
         final byte [] b = new byte [4];
         for (int i = 0 ; i < b.length ; i++) {
-            b [i] = (byte) (n >> (i * 8));
+            b [i] = (byte) (n >> i * 8);
         }
         return b;
     }
 
     private byte [] shortToByteArray (final int i) {
-        return new byte [] { (byte) (i & 0xff), (byte) ((i >> 8) & 0xff) };
+        return new byte [] { (byte) (i & 0xff), (byte) (i >> 8 & 0xff) };
     }
 
     public void writeInt (final int i) throws IOException {

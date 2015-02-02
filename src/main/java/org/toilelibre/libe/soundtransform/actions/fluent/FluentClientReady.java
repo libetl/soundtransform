@@ -14,7 +14,7 @@ public interface FluentClientReady {
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
      * pattern must be followed in the jsonStream to enable the import.
-     * 
+     *
      * @param packName
      *            the name of the pack
      * @param jsonStream
@@ -30,10 +30,10 @@ public interface FluentClientReady {
      * Tells the client to work with a pack. Reads the whole inputStream. A
      * pattern must be followed in the jsonStream to enable the import.<br/>
      * Here is the format allowed in the file
-     * 
+     *
      * <pre>
      * {
-     *   "instrumentName" : 
+     *   "instrumentName" :
      *   {
      *     -1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
      *    192 : "/data/mypackage.myapp/knownFrequencyFile.wav",
@@ -42,11 +42,11 @@ public interface FluentClientReady {
      *   ...
      * }
      * </pre>
-     * 
+     *
      * Do not assign the same frequency for two notes in the same instrument. If
      * several notes must have their frequencies detected by the soundtransform
      * lib, set different negative values (-1, -2, -3, ...)
-     * 
+     *
      * @param packName
      *            the name of the pack
      * @param jsonContent
@@ -63,7 +63,7 @@ public interface FluentClientReady {
      * yet<br/>
      * The passed inputStream must own a format metadata object. Therefore it
      * must be an AudioInputStream.
-     * 
+     *
      * @param is
      *            the input stream
      * @return the client, with an input stream
@@ -73,7 +73,7 @@ public interface FluentClientReady {
     /**
      * Tells the client to work first with a classpath resource. It will be
      * converted in a File
-     * 
+     *
      * @param resource
      *            a classpath resource that must exist
      * @return the client, with a file
@@ -84,7 +84,7 @@ public interface FluentClientReady {
 
     /**
      * Tells the client to work first with a file. It will not be read yet
-     * 
+     *
      * @param file
      *            source file
      * @return the client, with a file
@@ -94,7 +94,7 @@ public interface FluentClientReady {
     /**
      * Tells the client to work first with a loudest frequencies integer array.
      * It will not be used yet
-     * 
+     *
      * @param freqs
      *            the loudest frequencies integer array
      * @return the client, with a loudest frequencies integer array
@@ -107,7 +107,7 @@ public interface FluentClientReady {
      * AudioInputStream<br/>
      * The passed inputStream must not contain any metadata piece of
      * information.
-     * 
+     *
      * @param is
      *            the input stream
      * @param isInfo
@@ -121,7 +121,7 @@ public interface FluentClientReady {
 
     /**
      * Tells the client to work first with a sound object
-     * 
+     *
      * @param sounds
      *            the sound object
      * @return the client, with an imported sound
@@ -132,7 +132,7 @@ public interface FluentClientReady {
      * Tells the client to work first with a spectrum formatted sound.<br/>
      * The spectrums inside must be in a list (each item must correspond to a
      * channel) The spectrums are ordered in an array in chronological order
-     * 
+     *
      * @param spectrums
      *            the spectrums
      * @return the client, with the spectrums

@@ -10,7 +10,7 @@ public interface FluentClientWithFile extends FluentClientCommon {
     /**
      * Shortcut for importToStream ().importToSound () : Conversion from a File
      * to a Sound
-     * 
+     *
      * @return the client, with a sound imported
      * @throws SoundTransformException
      *             if one of the two import fails
@@ -20,7 +20,7 @@ public interface FluentClientWithFile extends FluentClientCommon {
     /**
      * Opens the current file and convert it into an InputStream, ready to be
      * read (or to be written to a file)
-     * 
+     *
      * @return the client, with an inputStream
      * @throws SoundTransformException
      *             the current file is not valid, or the conversion did not work
@@ -29,7 +29,7 @@ public interface FluentClientWithFile extends FluentClientCommon {
 
     /**
      * Plays the current audio data and convert it temporarily into a sound
-     * 
+     *
      * @return the client, with a file
      * @throws SoundTransformException
      *             could not play the current audio data
@@ -38,7 +38,7 @@ public interface FluentClientWithFile extends FluentClientCommon {
 
     /**
      * Stops the client pipeline and returns the obtained file
-     * 
+     *
      * @return a file
      */
     File stopWithFile ();
@@ -46,7 +46,7 @@ public interface FluentClientWithFile extends FluentClientCommon {
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
      * pattern must be followed in the jsonStream to enable the import.
-     * 
+     *
      * @param packName
      *            the name of the pack
      * @param jsonStream
@@ -62,10 +62,10 @@ public interface FluentClientWithFile extends FluentClientCommon {
      * Tells the client to work with a pack. Reads the whole inputStream. A
      * pattern must be followed in the jsonStream to enable the import.<br/>
      * Here is the format allowed in the file
-     * 
+     *
      * <pre>
      * {
-     *   "instrumentName" : 
+     *   "instrumentName" :
      *   {
      *     -1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
      *    192 : "/data/mypackage.myapp/knownFrequencyFile.wav",
@@ -74,11 +74,11 @@ public interface FluentClientWithFile extends FluentClientCommon {
      *   ...
      * }
      * </pre>
-     * 
+     *
      * Do not assign the same frequency for two notes in the same instrument. If
      * several notes must have their frequencies detected by the soundtransform
      * lib, set different negative values (-1, -2, -3, ...)
-     * 
+     *
      * @param packName
      *            the name of the pack
      * @param jsonContent

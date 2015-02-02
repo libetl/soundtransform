@@ -10,7 +10,7 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
     /**
      * Shapes these loudest frequencies array into a sound and set the converted
      * sound in the pipeline
-     * 
+     *
      * @param packName
      *            reference to an existing imported pack (must be invoked before
      *            the shapeIntoSound method by using withAPack)
@@ -26,7 +26,7 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
 
     /**
      * Stops the client pipeline and returns the obtained loudest frequencies
-     * 
+     *
      * @return loudest frequencies array
      */
     int [] stopWithFreqs ();
@@ -34,7 +34,7 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
      * pattern must be followed in the jsonStream to enable the import.
-     * 
+     *
      * @param packName
      *            the name of the pack
      * @param jsonStream
@@ -50,10 +50,10 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      * Tells the client to work with a pack. Reads the whole inputStream. A
      * pattern must be followed in the jsonStream to enable the import.<br/>
      * Here is the format allowed in the file
-     * 
+     *
      * <pre>
      * {
-     *   "instrumentName" : 
+     *   "instrumentName" :
      *   {
      *     -1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
      *    192 : "/data/mypackage.myapp/knownFrequencyFile.wav",
@@ -62,11 +62,11 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *   ...
      * }
      * </pre>
-     * 
+     *
      * Do not assign the same frequency for two notes in the same instrument. If
      * several notes must have their frequencies detected by the soundtransform
      * lib, set different negative values (-1, -2, -3, ...)
-     * 
+     *
      * @param packName
      *            the name of the pack
      * @param jsonContent
