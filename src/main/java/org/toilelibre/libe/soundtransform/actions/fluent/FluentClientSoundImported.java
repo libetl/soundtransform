@@ -70,6 +70,17 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientWithInputStream exportToStream () throws SoundTransformException;
 
     /**
+     * Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically
+     * Caution : the origin sound will be lost, and it will be impossible to revert this conversion.
+     * When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with
+     * 
+     * @return the client, with a loudest frequencies integer array
+     * @throws SoundTransformException
+     *             if the convert fails
+     */
+    FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException;
+    
+    /**
      * Plays the current audio data
      * 
      * @return the client, with a sound

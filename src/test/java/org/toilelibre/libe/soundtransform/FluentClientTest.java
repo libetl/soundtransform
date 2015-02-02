@@ -47,6 +47,14 @@ public class FluentClientTest extends SoundTransformTest {
     public void spectrumTest () throws SoundTransformException {
         FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().splitIntoSpectrums ().extractSound ().stopWithSounds ();
     }
+    
+    //Exactly the same code run as WavTest.testShape
+    //@Test
+    public void shapeASoundTest () throws SoundTransformException {
+        final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json");
+        final InputStreamInfo isi = new InputStreamInfo (1, 770164, 2, 48000, false, true);
+        FluentClient.start ().withAPack ("default", packInputStream).withClasspathResource ("before.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", isi);
+    }
 
     @Test
     public void testImportHPSFreqs () throws SoundTransformException {

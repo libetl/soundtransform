@@ -14,6 +14,7 @@ import org.toilelibre.libe.soundtransform.actions.transform.InputStreamToAudioIn
 import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundToSpectrumsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpectrumsToSoundSoundTransformation;
@@ -490,4 +491,23 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.file = file1;
         return this;
     }
+
+    /**
+     * Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically
+     * Caution : the origin sound will be lost, and it will be impossible to revert this conversion.
+     * When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with
+     * 
+     * @return the client, with a loudest frequencies integer array
+     * @throws SoundTransformException
+     *             if the convert fails
+     */
+    @Override
+    public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException {
+        PeakFindWithHPSSoundTransformation<?> peakFind = new PeakFindWithHPSSoundTransformation<Object> (100);
+        new ApplySoundTransform ().apply (this.sounds, peakFind);
+        this.cleanData ();
+        this.freqs = peakFind.getLoudestFreqs ();
+        return this;
+    }
+
 }
