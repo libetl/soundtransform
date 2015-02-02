@@ -42,6 +42,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /**
      * Startup the client
+     * 
      * @return the client, ready to start
      */
     public static FluentClientReady start () {
@@ -127,7 +128,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     @Override
     /**
      * Shortcut for exportToStream ().writeToFile (file)
-     * @param file the destination file
+     * @param file1 the destination file
      * @return the client, with a file written 
      * @throws SoundTransformException if one of the two operations fails
      */
@@ -237,6 +238,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     /**
      * Shapes these loudest frequencies array into a sound and set the converted sound in the pipeline
      * @param packName reference to an existing imported pack (must be invoked before the shapeIntoSound method by using withAPack)
+     * @param instrumentName the name of the instrument that will map the freqs object
+     * @param isi the wanted format for the future sound
      * @return the client, with a sound imported 
      * @throws SoundTransformException could not call the soundtransform to shape the freqs
      */
@@ -312,6 +315,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * enable the import.
      * @param packName the name of the pack
      * @param jsonStream the input stream
+     * @return the client, in its current state. 
      * @throws SoundTransformException the input stream cannot be read, or the json format is not correct, or some sound files are missing
      */
     public FluentClient withAPack (final String packName, final InputStream jsonStream) throws SoundTransformException {
@@ -363,6 +367,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     @Override
     /**
      * Tells the client to work first with a classpath resource. It will be converted in a File
+     * @param resource a classpath resource that must exist
      * @return the client, with a file
      * @throws SoundTransformException the classpath resource was not found
      */
@@ -376,6 +381,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     @Override
     /**
      * Tells the client to work first with a file. It will not be read yet
+     * @param file source file
      * @return the client, with a file
      */
     public FluentClientWithFile withFile (final File file1) {
