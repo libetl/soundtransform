@@ -9,11 +9,14 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class SoundToSpectrumsSoundTransformation<T> extends SimpleFrequencySoundTransformation<T> {
 
-    private int               threshold;
-    private List<Spectrum<T>> spectrums;
+    private int                  threshold;
+    private int                  channel;
+    private List<Spectrum<?> []> spectrums;
+    private int                  index;
 
     public SoundToSpectrumsSoundTransformation () {
         super ();
+        this.spectrums = new ArrayList<Spectrum<?> []> ();
     }
 
     @Override
@@ -21,24 +24,27 @@ public class SoundToSpectrumsSoundTransformation<T> extends SimpleFrequencySound
         return this.threshold;
     }
 
-    public Spectrum<?> [] getSpectrums () {
-        return this.spectrums.toArray (new Spectrum [this.spectrums.size ()]);
+    public List<Spectrum<?> []> getSpectrums () {
+        return this.spectrums;
     }
 
     @Override
     public Sound initSound (final Sound input) {
+        this.index = 0;
+        this.channel = input.getChannelNum ();
         int roundedSize = 2;
         while (input.getSampleRate () > roundedSize) {
             roundedSize *= 2;
         }
         this.threshold = roundedSize;
-        this.spectrums = new ArrayList<Spectrum<T>> ();
+        int spectrumsSize = (int) Math.ceil (input.getSamples ().length * 1.0 / roundedSize);
+        this.spectrums.add (new Spectrum [spectrumsSize]);
         return super.initSound (input);
     }
 
     @Override
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs) {
-        this.spectrums.add (fs);
+        this.spectrums.get (this.channel) [this.index++] = fs;
         return fs;
     }
 }

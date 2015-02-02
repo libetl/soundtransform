@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -26,5 +27,5 @@ public interface FluentClientReady {
 
     FluentClientSoundImported withSounds (Sound [] sounds);
 
-    FluentClientWithSpectrums withSpectrums (Spectrum<?> [] spectrums) throws SoundTransformException;
+    FluentClientWithSpectrums withSpectrums (List<Spectrum<?> []> spectrums) throws SoundTransformException;
 }

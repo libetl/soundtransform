@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.actions.fluent;
 
 import java.io.InputStream;
+import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -11,7 +12,7 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
 
     FluentClientWithSpectrums playIt () throws SoundTransformException;
 
-    Spectrum<?> [] stopWithSpectrums ();
+    List<Spectrum<?> []> stopWithSpectrums ();
 
     FluentClientWithSpectrums withAPack (String packName, InputStream jsonStream) throws SoundTransformException;
 

@@ -45,7 +45,7 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void spectrumTest () throws SoundTransformException {
-        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().splitIntoSpectrums (0).extractSound ().stopWithSounds ();
+        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().splitIntoSpectrums ().extractSound ().stopWithSounds ();
     }
 
     @Test

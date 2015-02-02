@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 import org.toilelibre.libe.soundtransform.actions.notes.ImportAPackIntoTheLibrary;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
@@ -43,12 +44,12 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return new FluentClient ();
     }
 
-    private Sound []       sounds;
-    private InputStream    audioInputStream;
-    private String         sameDirectoryAsClasspathResource;
-    private int []         freqs;
-    private File           file;
-    private Spectrum<?> [] spectrums;
+    private Sound []             sounds;
+    private InputStream          audioInputStream;
+    private String               sameDirectoryAsClasspathResource;
+    private int []               freqs;
+    private File                 file;
+    private List<Spectrum<?> []> spectrums;
 
     private FluentClient () {
 
@@ -110,10 +111,14 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     public FluentClientSoundImported extractSound () throws SoundTransformException {
-        if ((this.spectrums == null) || (this.spectrums.length == 0)) {
+        if ((this.spectrums == null) || (this.spectrums.size () == 0) || this.spectrums.get (0).length == 0) {
             throw new SoundTransformException (FluentClientErrorCode.NO_SPECTRUM_IN_INPUT, new IllegalArgumentException ());
         }
-        final Sound sounds1 [] = new ApplySoundTransform ().apply (new Sound [] { new Sound (null, this.spectrums [0].getNbBytes (), this.spectrums [0].getSampleRate (), 0) }, new SpectrumsToSoundSoundTransformation (this.spectrums));
+        final Sound [] input = new Sound [this.spectrums.size ()];
+        for (int i = 0 ; i < input.length ; i++) {
+            input [i] = new Sound (null, this.spectrums.get (0) [0].getNbBytes (), this.spectrums.get (0) [0].getSampleRate (), i);
+        }
+        final Sound [] sounds1 = new ApplySoundTransform ().apply (input, new SpectrumsToSoundSoundTransformation (this.spectrums));
         this.cleanData ();
         this.sounds = sounds1;
         return this;
@@ -150,7 +155,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         } else if (this.audioInputStream != null) {
             new PlaySound ().play (this.audioInputStream);
         } else if (this.spectrums != null) {
-            final Spectrum<?> [] savedSpectrums = this.spectrums;
+            final List<Spectrum<?> []> savedSpectrums = this.spectrums;
             this.extractSound ();
             new PlaySound ().play (this.sounds);
             this.cleanData ();
@@ -174,7 +179,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
-    public FluentClientWithSpectrums splitIntoSpectrums (int channelNum) throws SoundTransformException {
+    public FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException {
         final SoundToSpectrumsSoundTransformation<?> sound2Spectrums = new SoundToSpectrumsSoundTransformation<Object> ();
         new ApplySoundTransform ().apply (this.sounds, sound2Spectrums);
         this.cleanData ();
@@ -203,7 +208,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
-    public Spectrum<?> [] stopWithSpectrums () {
+    public List<Spectrum<?> []> stopWithSpectrums () {
         return this.spectrums;
     }
 
@@ -263,7 +268,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     @Override
-    public FluentClientWithSpectrums withSpectrums (final Spectrum<?> [] spectrums) throws SoundTransformException {
+    public FluentClientWithSpectrums withSpectrums (final List<Spectrum<?> []> spectrums) throws SoundTransformException {
         this.cleanData ();
         this.spectrums = spectrums;
         return this;

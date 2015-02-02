@@ -21,7 +21,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
 
     FluentClientSoundImported playIt () throws SoundTransformException;
 
-    FluentClientWithSpectrums splitIntoSpectrums (int channelNum) throws SoundTransformException;
+    FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException;
 
     Sound [] stopWithSounds ();
 
