@@ -18,6 +18,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     private final int   threshold;
     private float       writeIfGreaterEqThan1;
     private int         additionalFrames;
+    private int         windowLength;
 
     public SlowdownSoundTransformation (final int threshold, final float factor) {
         super ();
@@ -25,6 +26,19 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
         this.threshold = threshold;
         this.writeIfGreaterEqThan1 = 0;
         this.additionalFrames = 0;
+    }
+    
+    public SlowdownSoundTransformation (final int threshold, final float factor, final int windowLength) {
+        this (threshold, factor);
+        this.windowLength = windowLength;
+    }
+
+    @Override
+    public int getWindowLength (double freqmax) {
+        if (this.windowLength == 0){
+            return super.getWindowLength (freqmax);
+        }
+        return this.windowLength;
     }
 
     @Override
@@ -53,27 +67,32 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
         if (total / 100 != 0 && logStep != 0 && offset % logStep == 0) {
             this.log (new LogEvent (LogLevel.VERBOSE, "SlowdownSoundTransformation : Iteration #" + offset + "/" + (int) (this.sound.getSamples ().length / this.factor)));
         }
-        final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
-        Complex [] complexArray = fs.getState ();
         final float remaining = (float) (this.factor - Math.floor (this.factor));
         final int padding = (int) Math.floor (this.writeIfGreaterEqThan1 + remaining);
         final int loops = (int) (this.factor + padding - 1);
         this.additionalFrames += loops;
-        for (int p = 0 ; p < loops ; p++) {
-            complexArray = fastFourierTransformer.transform (complexArray, TransformType.INVERSE);
-
-            for (int j = 0 ; j < fs.getSampleRate () ; j++) {
-                if (offset + p * fs.getSampleRate () + j < this.sound.getSamples ().length && this.sound.getSamples () [offset + p * fs.getSampleRate () + j] == 0) {
-                    this.sound.getSamples () [offset + p * fs.getSampleRate () + j] = (long) Math.floor (complexArray [j].getReal ());
-                }
-            }
-        }
+        this.copySpectrumXtimes (fs, loops, offset);
         if (padding == 1) {
             this.writeIfGreaterEqThan1 -= 1;
         } else {
             this.writeIfGreaterEqThan1 += remaining;
         }
         return fs;
+    }
+
+    private void copySpectrumXtimes (Spectrum<Complex []> fs, int loops, int offset) {
+        Complex [] complexArray = fs.getState ();
+        final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
+        for (int p = 0 ; p < loops ; p++) {
+            complexArray = fastFourierTransformer.transform (complexArray, TransformType.INVERSE);
+
+            for (int j = 0 ; j < this.getWindowLength (0) ; j++) {
+                if (offset + p * fs.getSampleRate () + j < this.sound.getSamples ().length) {
+                    this.sound.getSamples () [offset + p * this.getWindowLength (0) + j] = (long) Math.floor (complexArray [j].getReal ());
+                }
+            }
+        }
+        
     }
 
 }
