@@ -80,15 +80,16 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
         return fs;
     }
 
+
     private void copySpectrumXtimes (Spectrum<Complex []> fs, int loops, int offset) {
         Complex [] complexArray = fs.getState ();
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         for (int p = 0 ; p < loops ; p++) {
             complexArray = fastFourierTransformer.transform (complexArray, TransformType.INVERSE);
 
-            for (int j = 0 ; j < this.getWindowLength (0) ; j++) {
-                if (offset + p * fs.getSampleRate () + j < this.sound.getSamples ().length) {
-                    this.sound.getSamples () [offset + p * this.getWindowLength (0) + j] = (long) Math.floor (complexArray [j].getReal ());
+            for (int j = 0 ; j < fs.getSampleRate () ; j++) {
+                if (offset + p * fs.getSampleRate () + j < this.sound.getSamples ().length && this.sound.getSamples () [offset + p * fs.getSampleRate () + j] == 0) {
+                    this.sound.getSamples () [offset + p * fs.getSampleRate () + j] = (long) Math.floor (complexArray [j].getReal ());
                 }
             }
         }

@@ -18,7 +18,7 @@ public class SlowdownSoundTest extends SoundTransformTest {
         final File input = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (input, output, $.create (SlowdownSoundTransformation.class, 10, 2.5f, 512));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (input, output, $.create (SlowdownSoundTransformation.class, 10, 2.5f));
 
     }
 }
