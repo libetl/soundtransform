@@ -73,7 +73,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         complexArray = fastFourierTransformer.transform (complexArray, TransformType.INVERSE);
         for (int i = start ; i < end ; i++) {
-            if (i < this.sound.getSamples ().length) {
+            if (i < this.sound.getSamples ().length && i - start < complexArray.length) {
                 this.sound.getSamples () [i] = (long) complexArray [i - start].getReal ();
             }
         }

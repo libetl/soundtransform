@@ -99,7 +99,7 @@ public class WavTest extends SoundTransformTest {
     @Test
     public void testSlowdown () throws SoundTransformException {
         // WARN : quite long
-        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, $.create (SlowdownSoundTransformation.class, 200, 1.2f));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, $.create (SlowdownSoundTransformation.class, 200, 1.2f, 512));
 
     }
 
