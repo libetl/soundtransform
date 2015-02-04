@@ -23,18 +23,18 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
     }
 
     public Sound reverse (final Spectrum<Complex []> spectrum, final long [] output) {
-        return this.reverse (spectrum, output, 0, 0);
+        return this.reverse (spectrum, output, 0);
     }
 
-    public Sound reverse (final Spectrum<Complex []> spectrum, long [] output, final int startOffset, final int offsetFromASimpleLoop) {
+    public Sound reverse (final Spectrum<Complex []> spectrum, long [] output, final int startOffset) {
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
         if (output == null) {
             output = new long [complexArray.length];
         }
         for (int i = 0 ; i < complexArray.length ; i++) {
-            final int index = i + startOffset + offsetFromASimpleLoop;
-            if (index < output.length && output [index] == 0) {
+            final int index = i + startOffset;
+            if ((index < output.length) && (output [index] == 0)) {
                 output [index] = (long) Math.floor (complexArray [i].getReal ());
             }
         }
@@ -59,8 +59,7 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
             if (result == null) {
                 continue;
             }
-            final int j = st.getOffsetFromASimpleLoop (i, sampleRate);
-            this.reverse (result, newdata, i, j);
+            this.reverse (result, newdata, i + st.getOffsetFromASimpleLoop (i, sampleRate));
         }
         return output;
     }
@@ -68,8 +67,8 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
     private double writeTransformedDataAndReturnAmplitude (final double [] transformeddata, final long [] data, final int i, final int threshold, final int iterationLength, final int maxlength) {
         long maxValue = 0;
         long minValue = Long.MAX_VALUE;
-        for (int j = i ; j < i + iterationLength ; j++) {
-            if (j - i < threshold) {
+        for (int j = i ; j < (i + iterationLength) ; j++) {
+            if ((j - i) < threshold) {
                 // maxValue and minValue are used to detect if the current
                 // transformed sample
                 // is a sound or not

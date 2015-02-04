@@ -15,10 +15,10 @@ public class SlowdownSoundTest extends SoundTransformTest {
     @Test
     public void testSlowdown () throws SoundTransformException {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-        final File input = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
+        final File input = new File (classLoader.getResource ("before.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (input, output, $.create (SlowdownSoundTransformation.class, 10, 2.5f));
+        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (input, output, $.create (SlowdownSoundTransformation.class, 1024, 2.5f, 2048));
 
     }
 }

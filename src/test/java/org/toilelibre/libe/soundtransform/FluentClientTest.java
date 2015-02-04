@@ -38,8 +38,8 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClient.start ().withRawInputStream (is, isi).importToSound ().exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
-    //Exactly the same code run as WavTest.testShape
-    //@Test
+    // Exactly the same code run as WavTest.testShape
+    // @Test
     public void shapeASoundTest () throws SoundTransformException {
         final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json");
         final InputStreamInfo isi = new InputStreamInfo (1, 770164, 2, 48000, false, true);
@@ -58,11 +58,11 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void testImportHPSFreqs () throws SoundTransformException {
-        final int [] freqs = new int [(int) Math.random () * 2000 + 4000];
+        final int [] freqs = new int [((int) Math.random () * 2000) + 4000];
         int i = 0;
         while (i < freqs.length) {
-            final int length = Math.min ((int) (Math.random () * 200 + 400), freqs.length - i);
-            final int currentFreq = (int) (Math.random () * 150 + 160);
+            final int length = Math.min ((int) ((Math.random () * 200) + 400), freqs.length - i);
+            final int currentFreq = (int) ((Math.random () * 150) + 160);
             for (int j = 0 ; j < length ; j++) {
                 freqs [i++] = currentFreq;
             }
