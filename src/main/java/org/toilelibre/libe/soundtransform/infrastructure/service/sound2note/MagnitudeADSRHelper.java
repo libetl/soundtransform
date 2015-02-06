@@ -1,7 +1,5 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.sound2note;
 
-import java.util.Arrays;
-
 import org.apache.commons.math3.exception.NonMonotonicSequenceException;
 import org.apache.commons.math3.util.MathArrays;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.ADSREnveloppeSoundTransformation;
@@ -20,8 +18,10 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 
         final double [] magnitude = this.getMagnitudeArray (channel1, MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER);
 
+        final double [] decayArray = new double [magnitude.length - attack];
+        System.arraycopy (magnitude, attack, decayArray, 0, magnitude.length - attack);
         try {
-            MathArrays.checkOrder (Arrays.copyOfRange (magnitude, attack, magnitude.length), MathArrays.OrderDirection.INCREASING, true);
+            MathArrays.checkOrder (decayArray, MathArrays.OrderDirection.INCREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
             decayIndex = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER;
         }
@@ -49,8 +49,11 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 
         final double [] magnitude = this.getMagnitudeArray (channel1, MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER);
 
+        int start = decay / MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER;
+        final double [] sustainArray = new double [magnitude.length - start];
+        System.arraycopy (magnitude, start, sustainArray, 0, magnitude.length - start);
         try {
-            MathArrays.checkOrder (Arrays.copyOfRange (magnitude, decay / MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER, magnitude.length), MathArrays.OrderDirection.DECREASING, true);
+            MathArrays.checkOrder (sustainArray, MathArrays.OrderDirection.DECREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
             sustainIndex = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER;
         }

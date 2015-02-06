@@ -1,7 +1,5 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.appender;
 
-import java.util.Arrays;
-
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
@@ -126,6 +124,11 @@ public class ConvertedSoundAppender implements SoundAppender {
             }
             appendWhileLessThanOrEqualsRatio -= ratio;
         }
-        return new Sound (indexResult == 0 ? new long [0] : Arrays.copyOfRange (result, 0, indexResult - 1), sound.getNbBytesPerSample (), (int) (sound.getSampleRate () * ratio), sound.getChannelNum ());
+        long [] outputLongArray = new long [0];
+        if (indexResult > 0){
+            outputLongArray = new long [indexResult];
+            System.arraycopy (result, 0, outputLongArray, 0, indexResult);
+        }
+        return new Sound (outputLongArray, sound.getNbBytesPerSample (), (int) (sound.getSampleRate () * ratio), sound.getChannelNum ());
     }
 }

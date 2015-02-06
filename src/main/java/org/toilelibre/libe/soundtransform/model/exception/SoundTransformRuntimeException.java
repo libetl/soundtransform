@@ -40,4 +40,8 @@ public class SoundTransformRuntimeException extends RuntimeException {
     public String getMessage () {
         return String.format (this.errorCode.getMessageFormat (), this.args);
     }
+
+    public ErrorCode getErrorCode () {
+        return this.errorCode;
+    }
 }

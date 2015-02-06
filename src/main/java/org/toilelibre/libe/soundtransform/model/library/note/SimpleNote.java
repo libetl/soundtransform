@@ -21,13 +21,24 @@ public class SimpleNote implements Note {
         this.release = new Sound [channels.length];
         this.fileName = fileName;
         for (int i = 0 ; i < channels.length ; i++) {
-            this.attack [i] = channels [i].toSubSound (attack, decay);
-            this.decay [i] = channels [i].toSubSound (decay, sustain);
-            this.sustain [i] = channels [i].toSubSound (sustain, release);
-            this.release [i] = channels [i].toSubSound (release, channels [i].getSamples ().length - 1);
+            this.attack [i] = this.soundToSubSound (channels [i], attack, decay);
+            this.decay [i] = this.soundToSubSound (channels [i], decay, sustain);
+            this.sustain [i] = this.soundToSubSound (channels [i], sustain, release);
+            this.release [i] = this.soundToSubSound (channels [i], release, channels [i].getSamples ().length - 1);
         }
     }
 
+
+    private Sound soundToSubSound (final Sound input, final int beginning, final int end) {
+        long [] newsamples = new long [0];
+        if (beginning < end){
+            newsamples = new long [end - beginning];
+            System.arraycopy (input.getSamples (), beginning, newsamples, 0, end - beginning);
+        }
+        return new Sound (newsamples, input.getNbBytesPerSample (), 
+                input.getSampleRate (), input.getChannelNum ());
+    }
+    
     private Sound get (final Sound [] adsr, final int channelnum) {
         if (adsr.length == 0) {
             return new Sound (new long [0], 0, 0, 0);

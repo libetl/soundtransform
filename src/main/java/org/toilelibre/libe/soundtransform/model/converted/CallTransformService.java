@@ -1,7 +1,5 @@
 package org.toilelibre.libe.soundtransform.model.converted;
 
-import java.util.Arrays;
-
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
@@ -20,7 +18,7 @@ public class CallTransformService extends AbstractLogAware<CallTransformService>
     }
 
     public Sound [] transformAudioStream (final Sound [] input, final SoundTransformation... sts) throws SoundTransformException {
-        Sound [] output = Arrays.copyOf (input, input.length);
+        Sound [] output = new Sound [input.length];
         int transformNumber = 0;
         for (final SoundTransformation st : sts) {
             for (int i = 0 ; i < input.length ; i++) {
@@ -28,7 +26,7 @@ public class CallTransformService extends AbstractLogAware<CallTransformService>
                 if (st instanceof LogAware) {
                     ((LogAware<?>) st).setObservers (this.observers);
                 }
-                output [i] = st.transform (output [i]);
+                output [i] = st.transform (output [i] == null ? input [i] : output [i]);
             }
             transformNumber++;
         }

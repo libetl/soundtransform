@@ -1,7 +1,5 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import java.util.Arrays;
-
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
@@ -14,7 +12,9 @@ public class NoOpSoundTransformation implements SoundTransformation {
         final long [] data = sound.getSamples ();
 
         // same array in newdata
-        final long [] newdata = Arrays.copyOf (data, data.length);
+        final long [] newdata = new long [data.length];
+        
+        System.arraycopy (data, 0, newdata, 0, data.length);
 
         return new Sound (newdata, sound.getNbBytesPerSample (), sound.getSampleRate (), sound.getChannelNum ());
     }
