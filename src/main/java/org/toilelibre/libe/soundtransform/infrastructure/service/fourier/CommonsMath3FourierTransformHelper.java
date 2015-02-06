@@ -26,9 +26,10 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
         return this.reverse (spectrum, output, 0);
     }
 
-    public Sound reverse (final Spectrum<Complex []> spectrum, long [] output, final int startOffset) {
+    public Sound reverse (final Spectrum<Complex []> spectrum, long [] output1, final int startOffset) {
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
+        long [] output = output1;
         if (output == null) {
             output = new long [complexArray.length];
         }
