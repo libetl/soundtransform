@@ -53,7 +53,7 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
         final double [] transformeddata = new double [maxlength];
         for (int i = 0 ; i < data.length ; i += threshold) {
             final int iterationLength = Math.min (maxlength, data.length - i);
-            final double amplitude = this.writeTransformedDataAndReturnAmplitude (transformeddata, data, i, (int) threshold, iterationLength, maxlength);
+            final double amplitude = this.writeTransformedDataAndReturnAmplitude (transformeddata, data, i, (int) threshold, iterationLength);
             final Spectrum<Complex []> spectrum = this.forwardPartOfTheSound (sound, transformeddata);
             final Spectrum<Complex []> result = st.transformFrequencies (spectrum, i, maxlength, iterationLength, (float) (10.0f * Math.log10 (amplitude)));
             if (result == null) {
@@ -64,7 +64,7 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
         return output;
     }
 
-    private double writeTransformedDataAndReturnAmplitude (final double [] transformeddata, final long [] data, final int i, final int threshold, final int iterationLength, final int maxlength) {
+    private double writeTransformedDataAndReturnAmplitude (final double [] transformeddata, final long [] data, final int i, final int threshold, final int iterationLength) {
         long maxValue = 0;
         long minValue = Long.MAX_VALUE;
         for (int j = i ; j < i + iterationLength ; j++) {
