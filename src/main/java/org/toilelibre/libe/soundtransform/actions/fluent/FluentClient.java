@@ -84,7 +84,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException if the transform does not work
      */
     public FluentClientSoundImported apply (final SoundTransformation st) throws SoundTransformException {
-        final Sound sounds1 [] = new ApplySoundTransform (this.getObservers ()).apply (this.sounds, st);
+        final Sound [] sounds1 = new ApplySoundTransform (this.getObservers ()).apply (this.sounds, st);
         this.cleanData ();
         this.sounds = sounds1;
         return this;
