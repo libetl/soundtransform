@@ -1,6 +1,5 @@
 package org.toilelibre.libe.soundtransform.actions.fluent;
 
-import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 public interface FluentClientCommon {
 
@@ -10,6 +9,6 @@ public interface FluentClientCommon {
      *
      * @return the client, ready to start
      */
-    FluentClientReady andAfterStart () throws SoundTransformException;
+    FluentClientReady andAfterStart ();
 
 }

@@ -4,8 +4,13 @@ import org.toilelibre.libe.soundtransform.actions.Action;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public final class ApplySoundTransform extends Action {
+
+    public ApplySoundTransform (Observer... observers) {
+        super (observers);
+    }
 
     public Sound [] apply (final Sound [] sounds, final SoundTransformation transform) throws SoundTransformException {
         return this.transformSound.apply (sounds, transform);

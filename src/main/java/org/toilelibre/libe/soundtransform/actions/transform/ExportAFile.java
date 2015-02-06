@@ -6,8 +6,13 @@ import java.io.InputStream;
 import org.toilelibre.libe.soundtransform.actions.Action;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public final class ExportAFile extends Action {
+
+    public ExportAFile (Observer... observers) {
+        super (observers);
+    }
 
     public void transformFile (final File fOrigin, final File fDest, final SoundTransformation... sts) throws SoundTransformException {
         this.transformSound.transformFile (fOrigin, fDest, sts);

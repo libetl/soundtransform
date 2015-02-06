@@ -8,9 +8,22 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public interface FluentClientReady {
 
+
+    /**
+     * Tells the client to add an observer that will be notified of different kind of updates
+     * from the library. It is ok to call withAnObserver several times.<br/>
+     * If the andAfterStart method is called, the subscribed observers are removed
+     *
+     * @param observers
+     *            one or more observer(s)
+     * @return the client, ready to start
+     */
+    FluentClientReady withAnObserver (Observer... observers);
+    
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
      * pattern must be followed in the jsonStream to enable the import.

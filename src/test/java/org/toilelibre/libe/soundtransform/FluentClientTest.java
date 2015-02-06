@@ -6,6 +6,7 @@ import java.io.InputStream;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
@@ -16,13 +17,13 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void backAndForth () throws SoundTransformException {
-        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new NoOpSoundTransformation ()).exportToClasspathResource ("before.wav").convertIntoSound ();
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().apply (new NoOpSoundTransformation ()).exportToClasspathResource ("before.wav").convertIntoSound ();
     }
 
     // Plays the sound three times, therefore too long time consuming test
     // @Test
     public void playIt () throws SoundTransformException {
-        FluentClient.start ().withClasspathResource ("before.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
     }
 
     @Test
@@ -35,7 +36,7 @@ public class FluentClientTest extends SoundTransformTest {
         final InputStream is = new ByteArrayInputStream (data);
         final InputStreamInfo isi = new InputStreamInfo (1, 32768, 2, 8000, false, true);
 
-        FluentClient.start ().withRawInputStream (is, isi).importToSound ().exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withRawInputStream (is, isi).importToSound ().exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     // Exactly the same code run as WavTest.testShape
@@ -43,17 +44,17 @@ public class FluentClientTest extends SoundTransformTest {
     public void shapeASoundTest () throws SoundTransformException {
         final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json");
         final InputStreamInfo isi = new InputStreamInfo (1, 770164, 2, 48000, false, true);
-        FluentClient.start ().withAPack ("default", packInputStream).withClasspathResource ("before.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", isi);
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withAPack ("default", packInputStream).withClasspathResource ("before.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", isi);
     }
 
     @Test
     public void simpleLifeCycle () throws SoundTransformException {
-        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("after.wav");
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("after.wav");
     }
 
     @Test
     public void spectrumTest () throws SoundTransformException {
-        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().splitIntoSpectrums ().extractSound ().stopWithSounds ();
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().splitIntoSpectrums ().extractSound ().stopWithSounds ();
     }
 
     @Test
@@ -69,11 +70,11 @@ public class FluentClientTest extends SoundTransformTest {
         }
         final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json");
         final InputStreamInfo isi = new InputStreamInfo (1, freqs.length * 100, 2, 48000, false, true);
-        FluentClient.start ().withAPack ("default", packInputStream).withFreqs (freqs).shapeIntoSound ("default", "simple_piano", isi).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withAPack ("default", packInputStream).withFreqs (freqs).shapeIntoSound ("default", "simple_piano", isi).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     @Test
     public void twoTimesInOneInstruction () throws SoundTransformException {
-        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().andAfterStart ().withClasspathResource ("before.wav").convertIntoSound ();
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().andAfterStart ().withClasspathResource ("before.wav").convertIntoSound ();
     }
 }

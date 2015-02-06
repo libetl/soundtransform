@@ -6,11 +6,12 @@ import org.toilelibre.libe.soundtransform.actions.Action;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.Library;
+import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class ImportAPackIntoTheLibrary extends Action {
 
-    public ImportAPackIntoTheLibrary () {
-
+    public ImportAPackIntoTheLibrary (Observer... observers) {
+        super (observers);
     }
 
     public void importAPack (final String title, final InputStream jsonStream) throws SoundTransformException {
