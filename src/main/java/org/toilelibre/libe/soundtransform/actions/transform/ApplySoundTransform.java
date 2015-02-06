@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public final class ApplySoundTransform extends Action {
 
-    public ApplySoundTransform (Observer... observers) {
+    public ApplySoundTransform (final Observer... observers) {
         super (observers);
     }
 

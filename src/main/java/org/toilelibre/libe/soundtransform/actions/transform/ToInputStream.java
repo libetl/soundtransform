@@ -11,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public final class ToInputStream extends Action {
 
-    public ToInputStream (Observer... observers) {
+    public ToInputStream (final Observer... observers) {
         super (observers);
     }
 

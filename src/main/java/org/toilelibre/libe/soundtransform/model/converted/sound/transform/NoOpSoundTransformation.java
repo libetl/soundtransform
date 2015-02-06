@@ -13,7 +13,7 @@ public class NoOpSoundTransformation implements SoundTransformation {
 
         // same array in newdata
         final long [] newdata = new long [data.length];
-        
+
         System.arraycopy (data, 0, newdata, 0, data.length);
 
         return new Sound (newdata, sound.getNbBytesPerSample (), sound.getSampleRate (), sound.getChannelNum ());

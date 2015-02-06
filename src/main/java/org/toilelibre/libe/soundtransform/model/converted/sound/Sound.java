@@ -21,7 +21,7 @@ public class Sound implements Cloneable {
         }
 
     }
-    
+
     private final long [] samples;
     private final int     nbBytesPerSample;
     private final int     sampleRate;
@@ -33,6 +33,15 @@ public class Sound implements Cloneable {
         this.nbBytesPerSample = nbBytesPerSample;
         this.sampleRate = sampleRate;
         this.channelNum = channelNum;
+    }
+
+    @Override
+    public Sound clone () {
+        try {
+            return (Sound) super.clone ();
+        } catch (final CloneNotSupportedException e) {
+            throw new SoundTransformRuntimeException (SoundErrorCode.CLONE_FAILED, e);
+        }
     }
 
     public int getChannelNum () {
@@ -49,14 +58,6 @@ public class Sound implements Cloneable {
 
     public long [] getSamples () {
         return this.samples;
-    }
-    
-    public Sound clone (){
-        try {
-            return (Sound) super.clone ();
-        } catch (CloneNotSupportedException e) {
-            throw new SoundTransformRuntimeException (SoundErrorCode.CLONE_FAILED, e);
-        }
     }
 
     @Override

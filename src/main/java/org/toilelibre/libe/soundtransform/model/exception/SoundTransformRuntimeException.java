@@ -36,12 +36,12 @@ public class SoundTransformRuntimeException extends RuntimeException {
         this.args = new Object [0];
     }
 
+    public ErrorCode getErrorCode () {
+        return this.errorCode;
+    }
+
     @Override
     public String getMessage () {
         return String.format (this.errorCode.getMessageFormat (), this.args);
-    }
-
-    public ErrorCode getErrorCode () {
-        return this.errorCode;
     }
 }

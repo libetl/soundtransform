@@ -28,17 +28,6 @@ public class SimpleNote implements Note {
         }
     }
 
-
-    private Sound soundToSubSound (final Sound input, final int beginning, final int end) {
-        long [] newsamples = new long [0];
-        if (beginning < end){
-            newsamples = new long [end - beginning];
-            System.arraycopy (input.getSamples (), beginning, newsamples, 0, end - beginning);
-        }
-        return new Sound (newsamples, input.getNbBytesPerSample (), 
-                input.getSampleRate (), input.getChannelNum ());
-    }
-    
     private Sound get (final Sound [] adsr, final int channelnum) {
         if (adsr.length == 0) {
             return new Sound (new long [0], 0, 0, 0);
@@ -70,14 +59,14 @@ public class SimpleNote implements Note {
     }
 
     private float getPercent (final int frequency2) {
-        return (float) ((frequency2 * 100.0) / this.frequency);
+        return (float) (frequency2 * 100.0 / this.frequency);
     }
 
     private float getRatio (final Sound [] subsound) {
-        final float lengthOfSubsound = (1.0f * subsound [0].getSamples ().length) / subsound [0].getSampleRate ();
-        final float lengthOfSound = ((1.0f * this.attack [0].getSamples ().length) / this.attack [0].getSampleRate ()) + ((1.0f * this.decay [0].getSamples ().length) / this.decay [0].getSampleRate ()) + ((1.0f * this.sustain [0].getSamples ().length) / this.sustain [0].getSampleRate ())
-                + ((1.0f * this.release [0].getSamples ().length) / this.release [0].getSampleRate ());
-        return (lengthOfSubsound * 1.0f) / lengthOfSound;
+        final float lengthOfSubsound = 1.0f * subsound [0].getSamples ().length / subsound [0].getSampleRate ();
+        final float lengthOfSound = 1.0f * this.attack [0].getSamples ().length / this.attack [0].getSampleRate () + 1.0f * this.decay [0].getSamples ().length / this.decay [0].getSampleRate () + 1.0f * this.sustain [0].getSamples ().length / this.sustain [0].getSampleRate ()
+                + 1.0f * this.release [0].getSamples ().length / this.release [0].getSampleRate ();
+        return lengthOfSubsound * 1.0f / lengthOfSound;
     }
 
     @Override
@@ -88,6 +77,15 @@ public class SimpleNote implements Note {
     @Override
     public Sound getSustain (final int frequency, final int channelnum, final float length) {
         return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.sustain, channelnum), this.getPercent (frequency), this.getRatio (this.sustain) * length);
+    }
+
+    private Sound soundToSubSound (final Sound input, final int beginning, final int end) {
+        long [] newsamples = new long [0];
+        if (beginning < end) {
+            newsamples = new long [end - beginning];
+            System.arraycopy (input.getSamples (), beginning, newsamples, 0, end - beginning);
+        }
+        return new Sound (newsamples, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
     }
 
 }

@@ -24,7 +24,7 @@ public class EqualizerSoundTransformation extends SimpleFrequencySoundTransforma
         final PolynomialSplineFunction psf = reg.interpolate (this.ranges, this.amplification);
         final Complex [] newAmpl = new Complex [powOf2NearestLength];
         for (double j = 0 ; j < length ; j++) {
-            final double freq = (j * fs.getSampleRate ()) / fs.getState ().length;
+            final double freq = j * fs.getSampleRate () / fs.getState ().length;
             newAmpl [(int) j] = fs.getState () [(int) j].multiply (psf.value (freq / 2));
         }
         for (int j = length ; j < powOf2NearestLength ; j++) {

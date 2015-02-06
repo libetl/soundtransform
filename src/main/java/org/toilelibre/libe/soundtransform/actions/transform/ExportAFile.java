@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public final class ExportAFile extends Action {
 
-    public ExportAFile (Observer... observers) {
+    public ExportAFile (final Observer... observers) {
         super (observers);
     }
 

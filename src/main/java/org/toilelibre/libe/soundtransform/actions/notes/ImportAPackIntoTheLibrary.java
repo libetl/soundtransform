@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class ImportAPackIntoTheLibrary extends Action {
 
-    public ImportAPackIntoTheLibrary (Observer... observers) {
+    public ImportAPackIntoTheLibrary (final Observer... observers) {
         super (observers);
     }
 

@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class GetInputStreamInfo extends Action {
 
-    public GetInputStreamInfo (Observer... observers) {
+    public GetInputStreamInfo (final Observer... observers) {
         super (observers);
     }
 

@@ -1,6 +1,5 @@
 package org.toilelibre.libe.soundtransform.actions.fluent;
 
-
 public interface FluentClientCommon {
 
     /**

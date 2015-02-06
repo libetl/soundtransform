@@ -17,11 +17,11 @@ public class PitchSoundTransformation implements SoundTransformation {
             return new Sound (sound.getSamples (), sound.getNbBytesPerSample (), sound.getSampleRate (), sound.getChannelNum ());
         }
         final float nbSamples = sound.getSamples ().length;
-        final float nbFiltered = Math.abs ((total * nbSamples) / percent);
+        final float nbFiltered = Math.abs (total * nbSamples / percent);
         final float incr = nbSamples / nbFiltered;
         final long [] data = sound.getSamples ();
         final long [] ret = new long [(int) nbFiltered];
-        for (float i = 0 ; i < (incr * nbFiltered) ; i += incr) {
+        for (float i = 0 ; i < incr * nbFiltered ; i += incr) {
             final int j = (int) (i / incr);
             if (j < ret.length) {
                 ret [j] = data [(int) i];

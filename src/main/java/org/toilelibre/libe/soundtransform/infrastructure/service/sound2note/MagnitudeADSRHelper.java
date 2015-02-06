@@ -49,7 +49,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
 
         final double [] magnitude = this.getMagnitudeArray (channel1, MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER);
 
-        int start = decay / MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER;
+        final int start = decay / MagnitudeADSRHelper.ACCURATE_THRESHOLD_FOR_ADSR_HELPER;
         final double [] sustainArray = new double [magnitude.length - start];
         System.arraycopy (magnitude, start, sustainArray, 0, magnitude.length - start);
         try {

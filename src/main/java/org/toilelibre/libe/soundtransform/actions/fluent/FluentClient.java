@@ -76,14 +76,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    private void cleanObservers () {
-        this.observers = new LinkedList<Observer> ();        
-    }
-    
-    private Observer [] getObservers () {
-        return this.observers.toArray (new Observer [this.observers.size ()]);
-    }
-
     @Override
     /**
      * Apply one transform and continue with the current imported sound
@@ -104,6 +96,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.file = null;
         this.freqs = null;
         this.spectrums = null;
+    }
+
+    private void cleanObservers () {
+        this.observers = new LinkedList<Observer> ();
     }
 
     @Override
@@ -174,7 +170,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException if the spectrums are in an invalid format, or if the transform to sound does not work
      */
     public FluentClientSoundImported extractSound () throws SoundTransformException {
-        if ((this.spectrums == null) || (this.spectrums.size () == 0) || (this.spectrums.get (0).length == 0)) {
+        if (this.spectrums == null || this.spectrums.size () == 0 || this.spectrums.get (0).length == 0) {
             throw new SoundTransformException (FluentClientErrorCode.NO_SPECTRUM_IN_INPUT, new IllegalArgumentException ());
         }
         final Sound [] input = new Sound [this.spectrums.size ()];
@@ -206,6 +202,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.cleanData ();
         this.freqs = peakFind.getLoudestFreqs ();
         return this;
+    }
+
+    private Observer [] getObservers () {
+        return this.observers.toArray (new Observer [this.observers.size ()]);
     }
 
     @Override
@@ -354,11 +354,11 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *            one or more observer(s)
      * @return the client, ready to start
      */
-    public FluentClientReady withAnObserver (Observer... observers1) {
-        this.observers.addAll (Arrays.<Observer>asList (observers1));
+    public FluentClientReady withAnObserver (final Observer... observers1) {
+        this.observers.addAll (Arrays.<Observer> asList (observers1));
         return this;
     }
-    
+
     @Override
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A pattern must be followed in the jsonStream to
