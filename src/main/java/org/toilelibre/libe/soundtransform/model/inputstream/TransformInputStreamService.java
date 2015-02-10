@@ -13,7 +13,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 public class TransformInputStreamService extends AbstractLogAware<TransformInputStreamService> {
 
     public enum TransformInputStreamServiceErrorCode implements ErrorCode {
-        COULD_NOT_READ_STREAM ("Could not read stream");
+        COULD_NOT_READ_STREAM ("Could not read stream"), COULD_NOT_CLOSE_STREAM ("Could not close stream");
 
         private String messageFormat;
 

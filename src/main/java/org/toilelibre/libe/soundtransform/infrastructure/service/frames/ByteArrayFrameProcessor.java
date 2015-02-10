@@ -92,6 +92,11 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
             }
             this.byteArrayToFrame (frame, ret, position, isInfo.isBigEndian (), isInfo.isPcmSigned (), neutral);
         }
+        try {
+            ais.close ();
+        } catch (IOException e) {
+            throw new SoundTransformException (TransformInputStreamServiceErrorCode.COULD_NOT_CLOSE_STREAM, e);
+        }
         return ret;
     }
 
