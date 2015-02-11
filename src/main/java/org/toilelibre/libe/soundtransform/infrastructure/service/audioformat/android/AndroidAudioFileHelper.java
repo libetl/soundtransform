@@ -1,6 +1,8 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,11 +13,28 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public class AndroidAudioFileHelper implements AudioFileHelper {
-
+    
+    public ByteArrayInputStream convertFileToBaos(final File inputFile) throws SoundTransformException {
+        byte [] byteArray = new byte [(int)inputFile.length ()];
+        FileInputStream fileInputStream;
+        try {
+            fileInputStream = new FileInputStream(inputFile);
+            fileInputStream.read (byteArray);
+            fileInputStream.close ();
+        } catch (FileNotFoundException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
+        } catch (IOException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
+        }
+        
+        return new ByteArrayInputStream (byteArray);
+    }
+    
     @Override
     public InputStream getAudioInputStream (final File inputFile) throws SoundTransformException {
+        
         try {
-            final AudioInputStream ais = new AudioInputStream (inputFile);
+            final AudioInputStream ais = new AudioInputStream (this.convertFileToBaos (inputFile));
             ais.setInfo (new AndroidWavHelper ().readMetadata (ais));
             return ais;
         } catch (final IOException e) {
