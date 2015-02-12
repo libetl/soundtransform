@@ -23,7 +23,7 @@ public class LogEvent {
     }
 
     private String getDateInIso8601Format () {
-        return new SimpleDateFormat ("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US).format (this.date);
+        return new SimpleDateFormat ("yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Locale.US).format (this.date);
     }
 
     public EventCode getEventCode () {
