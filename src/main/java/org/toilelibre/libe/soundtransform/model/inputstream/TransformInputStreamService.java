@@ -29,7 +29,7 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
     }
 
     public enum TransformInputStreamServiceEventCode implements EventCode {
-        CONVERT_INTO_JAVA_OBJECT (LogLevel.INFO, "Converting input into java object");
+        CONVERT_INTO_JAVA_OBJECT (LogLevel.INFO, "Converting input into java object"), CONVERT_DONE (LogLevel.INFO, "Done converting the input stream");
 
         private String   messageFormat;
         private LogLevel logLevel;
@@ -69,7 +69,9 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
 
     public Sound [] fromInputStream (final InputStream ais, final InputStreamInfo isInfo) throws SoundTransformException {
         this.log (new LogEvent (TransformInputStreamServiceEventCode.CONVERT_INTO_JAVA_OBJECT));
-        return this.frameProcessor.fromInputStream (ais, isInfo);
+        final Sound [] result = this.frameProcessor.fromInputStream (ais, isInfo);
+        this.log (new LogEvent (TransformInputStreamServiceEventCode.CONVERT_DONE));
+        return result;
     }
 
     public InputStreamInfo getInputStreamInfo (final InputStream ais) throws SoundTransformException {
