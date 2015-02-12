@@ -18,8 +18,8 @@ public class SpeedUpSoundTransformation<T> extends SimpleFrequencySoundTransform
         private final LogLevel logLevel;
 
         SpeedUpSoundTransformationEventCode (final LogLevel ll, final String mF) {
-            this.messageFormat = mF;
             this.logLevel = ll;
+            this.messageFormat = mF;
         }
 
         @Override
