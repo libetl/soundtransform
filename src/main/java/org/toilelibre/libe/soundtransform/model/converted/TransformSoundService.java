@@ -10,11 +10,35 @@ import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileServ
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 import org.toilelibre.libe.soundtransform.model.inputstream.TransformInputStreamService;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class TransformSoundService extends AbstractLogAware<TransformSoundService> {
+
+    public enum TransformSoundServiceEventCode implements EventCode {
+
+        CREATING_OUTPUT_FILE (LogLevel.INFO, "Creating output file"), INPUT_IS_THIS_INPUTSTREAM (LogLevel.INFO, "input : %1s"), OUTPUT_IS_THIS_INPUTSTREAM (LogLevel.INFO, "output : %1s"), WROTE_OUTPUT (LogLevel.INFO, "Wrote output");
+
+        private final String   messageFormat;
+        private final LogLevel logLevel;
+
+        TransformSoundServiceEventCode (final LogLevel ll, final String mF) {
+            this.messageFormat = mF;
+            this.logLevel = ll;
+        }
+
+        @Override
+        public LogLevel getLevel () {
+            return this.logLevel;
+        }
+
+        @Override
+        public String getMessageFormat () {
+            return this.messageFormat;
+        }
+    }
 
     private final TransformInputStreamService transformInputStreamService;
     private final CallTransformService        callTransformService;
@@ -61,7 +85,7 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
     }
 
     public InputStream toStream (final Sound [] channels, final InputStreamInfo inputStreamInfo) throws SoundTransformException {
-        this.log (new LogEvent (LogLevel.INFO, "Creating output file"));
+        this.log (new LogEvent (TransformSoundServiceEventCode.CREATING_OUTPUT_FILE));
         final byte [] byteArray = this.transformInputStreamService.soundToByteArray (channels, inputStreamInfo);
         return this.convertAudioFileService.toStream (byteArray, inputStreamInfo);
     }
@@ -73,13 +97,13 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
     public void transformFile (final File fOrigin, final File fDest, final SoundTransformation... sts) throws SoundTransformException {
         final InputStream ais1 = this.convertAudioFileService.callConverter (fOrigin);
         final InputStreamInfo aisi1 = this.convertAudioFileService.callAudioFormatParser (ais1);
-        this.log (new LogEvent (LogLevel.INFO, "input : " + aisi1.toString ()));
+        this.log (new LogEvent (TransformSoundServiceEventCode.INPUT_IS_THIS_INPUTSTREAM, aisi1.toString ()));
         InputStream ais2 = ais1;
         ais2 = this.transformAudioStream (ais1, sts);
         final InputStreamInfo aisi2 = this.convertAudioFileService.callAudioFormatParser (ais2);
         this.convertAudioFileService.writeInputStream (ais2, fDest);
-        this.log (new LogEvent (LogLevel.INFO, "Wrote output"));
-        this.log (new LogEvent (LogLevel.INFO, "output : " + aisi2.toString ()));
+        this.log (new LogEvent (TransformSoundServiceEventCode.WROTE_OUTPUT));
+        this.log (new LogEvent (TransformSoundServiceEventCode.OUTPUT_IS_THIS_INPUTSTREAM, aisi2.toString ()));
     }
 
     public InputStream transformRawInputStream (final InputStream ais, final InputStreamInfo isi) throws SoundTransformException {

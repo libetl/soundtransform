@@ -78,20 +78,21 @@ public class ApplicationInjector {
                     additionalParamCounter++;
                 }
             }
+            final String warningPrefix = "Constructor " + constructor;
             if (additionalParamCounter != additionalParameters.length) {
-                warnings.add ("Constructor " + constructor + " did not match");
+                warnings.add (warningPrefix + " did not match");
                 continue;
             }
             try {
                 return (T) constructor.newInstance (newInstanceParams);
             } catch (final InstantiationException e) {
-                warnings.add ("Constructor " + constructor + " could not instantiate");
+                warnings.add (warningPrefix + " could not instantiate");
             } catch (final IllegalAccessException e) {
-                warnings.add ("Constructor " + constructor + " is not accessible");
+                warnings.add (warningPrefix + " is not accessible");
             } catch (final IllegalArgumentException e) {
-                warnings.add ("Constructor " + constructor + " had an illegal argument");
+                warnings.add (warningPrefix + " had an illegal argument");
             } catch (final InvocationTargetException e) {
-                warnings.add ("Constructor " + constructor + " could not call a method");
+                warnings.add (warningPrefix + " could not call a method");
             }
         }
         throw new SoundTransformRuntimeException (new SoundTransformException (ApplicationInjectorErrorCode.INSTANTIATION_FAILED, new NullPointerException (warnings.toString ())));

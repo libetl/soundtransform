@@ -6,6 +6,7 @@ import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.observer.TextLogEvent;
 
 public class Slf4jObserver implements Observer {
 
@@ -66,7 +67,7 @@ public class Slf4jObserver implements Observer {
     public void notify (final String msg) {
         final String className = this.getCallerClassName ();
         final Logger logger = LoggerFactory.getLogger (className);
-        this.log (logger, new LogEvent (LogEvent.LogLevel.INFO, msg));
+        this.log (logger, new TextLogEvent (msg));
     }
 
 }

@@ -7,10 +7,34 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
+import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundTransformation<T> {
+
+    public enum PeakFindWithHPSSoundTransformationEventCode implements EventCode {
+
+        ITERATION_IN_PROGRESS (LogLevel.VERBOSE, "Iteration #%1d/%2d, %3d%%");
+
+        private final String   messageFormat;
+        private final LogLevel logLevel;
+
+        PeakFindWithHPSSoundTransformationEventCode (final LogLevel ll, final String mF) {
+            this.messageFormat = mF;
+            this.logLevel = ll;
+        }
+
+        @Override
+        public LogLevel getLevel () {
+            return this.logLevel;
+        }
+
+        @Override
+        public String getMessageFormat () {
+            return this.messageFormat;
+        }
+    }
 
     private double                  threshold;
     private int []                  loudestfreqs;
@@ -18,6 +42,7 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
     private int                     fsLimit;
     private int                     windowLength;
     private int                     soundLength;
+
     private final SpectrumHelper<T> spectrumHelper;
 
     @SuppressWarnings ("unchecked")
@@ -99,7 +124,7 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
 
         final int percent = (int) Math.floor (100.0 * (offset / this.threshold) / (this.soundLength / this.threshold));
         if (percent > Math.floor (100.0 * ((offset - this.threshold) / this.threshold) / (this.soundLength / this.threshold))) {
-            this.log (new LogEvent (LogLevel.VERBOSE, "Iteration " + (int) (offset / this.threshold) + " / " + (int) Math.ceil (this.soundLength / this.threshold) + ", " + percent + "%"));
+            this.log (new LogEvent (PeakFindWithHPSSoundTransformationEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.threshold), (int) Math.ceil (this.soundLength / this.threshold), percent));
         }
         int f0 = 0;
 

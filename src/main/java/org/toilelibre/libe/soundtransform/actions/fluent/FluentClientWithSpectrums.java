@@ -52,20 +52,12 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
     FluentClientWithSpectrums withAPack (String packName, InputStream jsonStream) throws SoundTransformException;
 
     /**
-     * Tells the client to work with a pack. Reads the whole string content. A pattern must be followed in the jsonContent to
-     * enable the import.<br/>
-     * 
-     * Here is the format allowed in the file
-     * {
-     *   "instrumentName" :
-     *   {
-     *     -1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
-     *    192 : "/data/mypackage.myapp/knownFrequencyFile.wav",
-     *    ...
-     *   },
-     *   ...
-     * }
-     * </pre>
+     * Tells the client to work with a pack. Reads the whole string content. A
+     * pattern must be followed in the jsonContent to enable the import.<br/>
+     *
+     * Here is the format allowed in the file { "instrumentName" : { -1 :
+     * "/data/mypackage.myapp/unknownFrequencyFile.wav", 192 :
+     * "/data/mypackage.myapp/knownFrequencyFile.wav", ... }, ... } </pre>
      *
      * Do not assign the same frequency for two notes in the same instrument. If
      * several notes must have their frequencies detected by the soundtransform

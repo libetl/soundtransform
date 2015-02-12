@@ -6,6 +6,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
@@ -19,6 +20,28 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
 
         TransformInputStreamServiceErrorCode (final String mF) {
             this.messageFormat = mF;
+        }
+
+        @Override
+        public String getMessageFormat () {
+            return this.messageFormat;
+        }
+    }
+
+    public enum TransformInputStreamServiceEventCode implements EventCode {
+        CONVERT_INTO_JAVA_OBJECT (LogLevel.INFO, "Converting input into java object");
+
+        private String   messageFormat;
+        private LogLevel logLevel;
+
+        TransformInputStreamServiceEventCode (final LogLevel ll, final String mF) {
+            this.logLevel = ll;
+            this.messageFormat = mF;
+        }
+
+        @Override
+        public LogLevel getLevel () {
+            return this.logLevel;
         }
 
         @Override
@@ -45,7 +68,7 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
     }
 
     public Sound [] fromInputStream (final InputStream ais, final InputStreamInfo isInfo) throws SoundTransformException {
-        this.log (new LogEvent (LogLevel.INFO, "Converting input into java object"));
+        this.log (new LogEvent (TransformInputStreamServiceEventCode.CONVERT_INTO_JAVA_OBJECT));
         return this.frameProcessor.fromInputStream (ais, isInfo);
     }
 

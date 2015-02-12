@@ -94,7 +94,7 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
         }
         try {
             ais.close ();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new SoundTransformException (TransformInputStreamServiceErrorCode.COULD_NOT_CLOSE_STREAM, e);
         }
         return ret;

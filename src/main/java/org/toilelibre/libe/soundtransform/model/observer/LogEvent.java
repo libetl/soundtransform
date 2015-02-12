@@ -1,30 +1,45 @@
 package org.toilelibre.libe.soundtransform.model.observer;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class LogEvent {
 
     public enum LogLevel {
         PARANOIAC, VERBOSE, INFO, WARN, ERROR
     }
 
-    private final LogLevel level;
+    private final EventCode eventCode;
 
-    private final String   msg;
+    private final Date      date;
 
-    public LogEvent (final LogLevel level1, final String msg1) {
-        this.level = level1;
-        this.msg = msg1;
+    private final Object [] params;
+
+    public LogEvent (final EventCode eventCode, final Object... params1) {
+        this.eventCode = eventCode;
+        this.date = new Date ();
+        this.params = params1;
+    }
+
+    private String getDateInIso8601Format () {
+        return new SimpleDateFormat ("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US).format (this.date);
+    }
+
+    public EventCode getEventCode () {
+        return this.eventCode;
     }
 
     public LogLevel getLevel () {
-        return this.level;
+        return this.eventCode.getLevel ();
     }
 
     public String getMsg () {
-        return this.msg;
+        return String.format (this.eventCode.getMessageFormat (), this.params);
     }
 
     @Override
     public String toString () {
-        return "LogEvent [" + this.level + "] " + this.msg;
+        return this.getDateInIso8601Format () + " [" + this.eventCode.getLevel () + "," + this.eventCode.name () + "] " + this.getMsg ();
     }
 }

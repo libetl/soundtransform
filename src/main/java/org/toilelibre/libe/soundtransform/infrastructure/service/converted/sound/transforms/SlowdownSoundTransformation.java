@@ -9,6 +9,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequen
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
@@ -23,6 +24,29 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
 
         SlowdownSoundTransformationErrorCode (final String mF) {
             this.messageFormat = mF;
+        }
+
+        @Override
+        public String getMessageFormat () {
+            return this.messageFormat;
+        }
+    }
+
+    public enum SlowdownSoundTransformationEventCode implements EventCode {
+
+        ITERATION_IN_PROGRESS (LogLevel.VERBOSE, "SlowdownSoundTransformation : Iteration #%1d/%2d");
+
+        private final String   messageFormat;
+        private final LogLevel logLevel;
+
+        SlowdownSoundTransformationEventCode (final LogLevel ll, final String mF) {
+            this.messageFormat = mF;
+            this.logLevel = ll;
+        }
+
+        @Override
+        public LogLevel getLevel () {
+            return this.logLevel;
         }
 
         @Override
@@ -112,7 +136,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
         // This if helps to only log some of all iterations to avoid being too
         // verbose
         if (total / 100 != 0 && logStep != 0 && offset % logStep == 0) {
-            this.log (new LogEvent (LogLevel.VERBOSE, "SlowdownSoundTransformation : Iteration #" + offset + "/" + (int) (this.sound.getSamples ().length / this.factor)));
+            this.log (new LogEvent (SlowdownSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamples ().length / this.factor)));
         }
         final float remaining = (float) (this.factor - Math.floor (this.factor));
         final int padding = (int) Math.floor (this.writeIfGreaterEqThan1 + remaining);

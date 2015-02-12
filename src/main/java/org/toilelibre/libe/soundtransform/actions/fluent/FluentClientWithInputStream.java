@@ -49,9 +49,9 @@ public interface FluentClientWithInputStream extends FluentClientCommon {
     FluentClientWithInputStream withAPack (String packName, InputStream jsonStream) throws SoundTransformException;
 
     /**
-     * Tells the client to work with a pack. Reads the whole string content. A pattern must be followed in the jsonContent to
-     * enable the import.<br/>
-     * 
+     * Tells the client to work with a pack. Reads the whole string content. A
+     * pattern must be followed in the jsonContent to enable the import.<br/>
+     *
      * Here is the format allowed in the file
      *
      * <pre>
