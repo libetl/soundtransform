@@ -15,7 +15,7 @@ public class Sound2NoteService {
     }
 
     public Note convert (final String fileName, final Sound [] channels) throws SoundTransformException {
-        return this.convert (fileName, channels, this.frequencyHelper.findFrequency (channels [0]));
+        return this.convert (fileName, channels, this.frequencyHelper.findFrequency (channels));
     }
 
     public Note convert (final String fileName, final Sound [] channels, final int frequency) throws SoundTransformException {

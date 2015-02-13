@@ -42,6 +42,7 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
     private int                     fsLimit;
     private int                     windowLength;
     private int                     soundLength;
+    private float                   detectedNoteVolume;
 
     private final SpectrumHelper<T> spectrumHelper;
 
@@ -92,6 +93,10 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
         return this.loudestfreqs;
     }
 
+    public float getDetectedNoteVolume () {
+        return this.detectedNoteVolume;
+    }
+    
     @Override
     public double getLowThreshold (final double defaultValue) {
         return this.threshold;
@@ -137,6 +142,9 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
             f0 = this.bestCandidate (peaks);
         }
 
+        if (this.note){
+          this.detectedNoteVolume = soundLevelInDB;
+        }
         this.loudestfreqs [(int) (offset / this.threshold)] = f0;
         return fs;
     }
