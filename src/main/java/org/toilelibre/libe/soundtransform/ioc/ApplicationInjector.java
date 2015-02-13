@@ -34,7 +34,7 @@ public class ApplicationInjector {
 
     public enum ApplicationInjectorErrorCode implements ErrorCode {
 
-        INSTANTIATION_FAILED ("Instantiation failed");
+        INSTANTIATION_FAILED ("Instantiation failed (seen warnings list : %1s)");
 
         private final String messageFormat;
 
@@ -92,10 +92,13 @@ public class ApplicationInjector {
             } catch (final IllegalArgumentException e) {
                 warnings.add (warningPrefix + " had an illegal argument");
             } catch (final InvocationTargetException e) {
+                if (e.getCause () instanceof SoundTransformException){
+                    warnings.add (warningPrefix + " threw an ErrorCode : " + ((SoundTransformException) e.getCause ()).getErrorCode ().name());
+                }
                 warnings.add (warningPrefix + " could not call a method");
             }
         }
-        throw new SoundTransformRuntimeException (new SoundTransformException (ApplicationInjectorErrorCode.INSTANTIATION_FAILED, new NullPointerException (warnings.toString ())));
+        throw new SoundTransformRuntimeException (new SoundTransformException (ApplicationInjectorErrorCode.INSTANTIATION_FAILED, new NullPointerException (), warnings.toString ()));
     }
 
     static Injector injector = Bootstrap.injector (AndroidRootModule.class);
