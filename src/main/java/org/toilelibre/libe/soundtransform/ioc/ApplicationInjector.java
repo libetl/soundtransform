@@ -92,8 +92,8 @@ public class ApplicationInjector {
             } catch (final IllegalArgumentException e) {
                 warnings.add (warningPrefix + " had an illegal argument");
             } catch (final InvocationTargetException e) {
-                if (e.getCause () instanceof SoundTransformException){
-                    warnings.add (warningPrefix + " threw an ErrorCode : " + ((SoundTransformException) e.getCause ()).getErrorCode ().name());
+                if (e.getCause () instanceof SoundTransformException) {
+                    warnings.add (warningPrefix + " threw an ErrorCode : " + ((SoundTransformException) e.getCause ()).getErrorCode ().name ());
                 }
                 warnings.add (warningPrefix + " could not call a method");
             }

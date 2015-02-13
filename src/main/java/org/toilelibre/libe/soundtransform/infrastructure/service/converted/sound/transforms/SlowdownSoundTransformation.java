@@ -89,7 +89,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
         if (this.windowLength < 2 * this.threshold) {
             throw new SoundTransformException (SlowdownSoundTransformationErrorCode.WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_THRESHOLD, new IllegalArgumentException (), this.windowLength, this.threshold);
         }
-        if ((this.windowLength & -this.windowLength) != this.windowLength){
+        if ((this.windowLength & -this.windowLength) != this.windowLength) {
             throw new SoundTransformException (SlowdownSoundTransformationErrorCode.WINDOW_LENGTH_IS_NOT_A_POWER_OF_2, new IllegalArgumentException (), this.windowLength);
         }
     }
