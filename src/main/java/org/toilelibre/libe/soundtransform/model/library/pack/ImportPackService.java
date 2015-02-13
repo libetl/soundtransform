@@ -56,9 +56,13 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
 
     private final AddNoteService   addNoteService;
     private final PackConfigParser packConfigParser;
-    private Observer []            observers;
 
     public ImportPackService () {
+        this (null);
+    }
+    
+    public ImportPackService (final Observer [] observers1) {
+        this.observers = observers1;
         this.addNoteService = $.create (AddNoteService.class).setObservers (this.observers);
         this.packConfigParser = $.select (PackConfigParser.class);
     }

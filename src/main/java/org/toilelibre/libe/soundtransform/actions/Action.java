@@ -14,6 +14,6 @@ public abstract class Action {
     public Action (final org.toilelibre.libe.soundtransform.model.observer.Observer... observers) {
         this.transformSound = $.create (TransformSoundService.class, new Object [] { observers });
         this.playSound = $.create (PlaySoundService.class);
-        this.importPackService = $.create (ImportPackService.class);
+        this.importPackService = $.create (ImportPackService.class, new Object [] { observers });
     }
 }
