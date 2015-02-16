@@ -16,11 +16,6 @@ public class PurifySoundTransformation extends SimpleFrequencySoundTransformatio
     }
 
     @Override
-    public int getWindowLength (final double freqmax) {
-        return super.getWindowLength (freqmax);
-    }
-
-    @Override
     public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset, final int powOf2NearestLength, final int length) {
         final Complex [] newAmpl = new Complex [powOf2NearestLength];
         int max = 0;
