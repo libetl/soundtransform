@@ -7,9 +7,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 
 public class MixSoundTransformation implements SoundTransformation {
 
-    private SoundAppender soundAppender;
-    private Sound [] otherSounds;
-    
+    private final SoundAppender soundAppender;
+    private final Sound []      otherSounds;
+
     public MixSoundTransformation (final Sound... otherSounds1) {
         this.soundAppender = $.select (SoundAppender.class);
         this.otherSounds = otherSounds1;
@@ -17,28 +17,26 @@ public class MixSoundTransformation implements SoundTransformation {
 
     private Sound mix (final Sound firstSound, final Sound... sounds) {
         int maxlength = 0;
-        Sound [] ajustedSounds = new Sound [sounds.length + 1];
+        final Sound [] ajustedSounds = new Sound [sounds.length + 1];
         ajustedSounds [0] = sounds [0];
-        for (int i = 1 ; i < sounds.length ; i++){
-            ajustedSounds [i] = 
-                    this.soundAppender.changeNbBytesPerSample (
-                            this.soundAppender.resizeToSampleRate (sounds [i - 1], firstSound.getSampleRate ()), firstSound.getNbBytesPerSample ());
+        for (int i = 1 ; i < sounds.length ; i++) {
+            ajustedSounds [i] = this.soundAppender.changeNbBytesPerSample (this.soundAppender.resizeToSampleRate (sounds [i - 1], firstSound.getSampleRate ()), firstSound.getNbBytesPerSample ());
         }
 
-        for (Sound sound : ajustedSounds){
+        for (final Sound sound : ajustedSounds) {
             maxlength = Math.max (maxlength, sound.getSamples ().length);
         }
-        
+
         final long [] newdata = new long [maxlength];
 
         // find the max:
         double max = 0;
         for (int i = 0 ; i < maxlength ; i++) {
             long element = 0;
-            for (Sound sound : ajustedSounds){
-                if (sound.getSamples ().length > i){
-                  element += Math.abs (sound.getSamples () [i]);
-                  newdata [i] = sound.getSamples () [i];
+            for (final Sound sound : ajustedSounds) {
+                if (sound.getSamples ().length > i) {
+                    element += Math.abs (sound.getSamples () [i]);
+                    newdata [i] = sound.getSamples () [i];
                 }
             }
             max = Math.max (element, max);
