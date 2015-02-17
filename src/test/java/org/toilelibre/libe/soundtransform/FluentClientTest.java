@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -55,6 +56,12 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void spectrumTest () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().splitIntoSpectrums ().extractSound ().stopWithSounds ();
+    }
+
+    @Test
+    public void mixTest () throws SoundTransformException {
+        Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/Piano3-E.wav").convertIntoSound ().stopWithSounds ();
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().mixWith (sounds2).exportToClasspathResource ("after.wav");
     }
 
     @Test
