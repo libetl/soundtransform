@@ -107,6 +107,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
+    /**
+     * Reset the state of the FluentClient
+     */
     private void cleanData () {
         this.sounds = null;
         this.audioInputStream = null;
@@ -115,6 +118,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.spectrums = null;
     }
 
+    /**
+     * Reset the list of the subscribed observers
+     */
     private void cleanObservers () {
         this.observers = new LinkedList<Observer> ();
     }
