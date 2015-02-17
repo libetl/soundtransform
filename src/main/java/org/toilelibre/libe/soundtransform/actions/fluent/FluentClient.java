@@ -16,6 +16,7 @@ import org.toilelibre.libe.soundtransform.actions.transform.InputStreamToAudioIn
 import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundToSpectrumsSoundTransformation;
@@ -204,6 +205,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
+    /**
+     * Transforms the observers list into an array returns that
+     * @return an array of observers
+     */
     private Observer [] getObservers () {
         return this.observers.toArray (new Observer [this.observers.size ()]);
     }
@@ -240,6 +245,16 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.cleanData ();
         this.audioInputStream = inputStream;
         return this;
+    }
+
+    @Override
+    /**
+     * Combines the current sound with another sound. The operation is not reversible
+     * @return the client, with a sound imported
+     * @throws SoundTransformException if the sound is null or if there is a problem with the mix
+     */
+    public FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException {
+        return this.apply (new MixSoundTransformation (Arrays.<Sound []>asList (sound)));
     }
 
     @Override
