@@ -6,6 +6,7 @@ import java.io.InputStream;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public interface FluentClientSoundImported extends FluentClientCommon {
 
@@ -19,6 +20,17 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      *             if the transform does not work
      */
     FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException;
+
+    /**
+     * Changes the current imported sound to fit the expected format
+     *
+     * @param inputStreamInfo
+     *            only the sampleSize and the sampleRate pieces of data will be
+     *            used
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     */
+    FluentClientSoundImported changeFormat (InputStreamInfo inputStreamInfo) throws SoundTransformException;
 
     /**
      * Shortcut for exportToStream ().writeToClasspathResource (resource) :

@@ -9,6 +9,7 @@ import java.util.List;
 import org.toilelibre.libe.soundtransform.actions.notes.ImportAPackIntoTheLibrary;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
 import org.toilelibre.libe.soundtransform.actions.transform.ApplySoundTransform;
+import org.toilelibre.libe.soundtransform.actions.transform.ChangeSoundFormat;
 import org.toilelibre.libe.soundtransform.actions.transform.ConvertFromInputStream;
 import org.toilelibre.libe.soundtransform.actions.transform.ExportAFile;
 import org.toilelibre.libe.soundtransform.actions.transform.GetInputStreamInfo;
@@ -88,6 +89,21 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         final Sound [] sounds1 = new ApplySoundTransform (this.getObservers ()).apply (this.sounds, st);
         this.cleanData ();
         this.sounds = sounds1;
+        return this;
+    }
+
+    /**
+     * Changes the current imported sound to fit the expected format
+     *
+     * @param inputStreamInfo
+     *            only the sampleSize and the sampleRate pieces of data will be
+     *            used
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     */
+    @Override
+    public FluentClientSoundImported changeFormat (InputStreamInfo inputStreamInfo) throws SoundTransformException {
+        this.sounds = new ChangeSoundFormat (this.getObservers ()).changeFormat (this.sounds, inputStreamInfo);
         return this;
     }
 
