@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.model.library.note;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoService;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 public class SimpleNote implements Note {
 
@@ -39,12 +40,12 @@ public class SimpleNote implements Note {
     }
 
     @Override
-    public Sound getAttack (final int frequency, final int channelnum, final float length) {
+    public Sound getAttack (final int frequency, final int channelnum, final float length) throws SoundTransformException {
         return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.attack, channelnum), this.getPercent (frequency), this.getRatio (this.attack) * length);
     }
 
     @Override
-    public Sound getDecay (final int frequency, final int channelnum, final float length) {
+    public Sound getDecay (final int frequency, final int channelnum, final float length) throws SoundTransformException {
         return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.decay, channelnum), this.getPercent (frequency), this.getRatio (this.decay) * length);
     }
 
@@ -59,23 +60,23 @@ public class SimpleNote implements Note {
     }
 
     private float getPercent (final int frequency2) {
-        return (float) (frequency2 * 100.0 / this.frequency);
+        return (float) ((frequency2 * 100.0) / this.frequency);
     }
 
     private float getRatio (final Sound [] subsound) {
-        final float lengthOfSubsound = 1.0f * subsound [0].getSamples ().length / subsound [0].getSampleRate ();
-        final float lengthOfSound = 1.0f * this.attack [0].getSamples ().length / this.attack [0].getSampleRate () + 1.0f * this.decay [0].getSamples ().length / this.decay [0].getSampleRate () + 1.0f * this.sustain [0].getSamples ().length / this.sustain [0].getSampleRate () + 1.0f
-                * this.release [0].getSamples ().length / this.release [0].getSampleRate ();
-        return lengthOfSubsound * 1.0f / lengthOfSound;
+        final float lengthOfSubsound = (1.0f * subsound [0].getSamples ().length) / subsound [0].getSampleRate ();
+        final float lengthOfSound = ((1.0f * this.attack [0].getSamples ().length) / this.attack [0].getSampleRate ()) + ((1.0f * this.decay [0].getSamples ().length) / this.decay [0].getSampleRate ()) + ((1.0f * this.sustain [0].getSamples ().length) / this.sustain [0].getSampleRate ())
+                + ((1.0f * this.release [0].getSamples ().length) / this.release [0].getSampleRate ());
+        return (lengthOfSubsound * 1.0f) / lengthOfSound;
     }
 
     @Override
-    public Sound getRelease (final int frequency, final int channelnum, final float length) {
+    public Sound getRelease (final int frequency, final int channelnum, final float length) throws SoundTransformException {
         return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.release, channelnum), this.getPercent (frequency), this.getRatio (this.release) * length);
     }
 
     @Override
-    public Sound getSustain (final int frequency, final int channelnum, final float length) {
+    public Sound getSustain (final int frequency, final int channelnum, final float length) throws SoundTransformException {
         return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.sustain, channelnum), this.getPercent (frequency), this.getRatio (this.sustain) * length);
     }
 

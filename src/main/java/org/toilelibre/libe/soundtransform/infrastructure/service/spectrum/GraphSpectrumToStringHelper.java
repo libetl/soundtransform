@@ -45,21 +45,21 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
         for (int i = 0 ; i < valuesOnPlot.length ; i++) {
             double maxValue = 0;
             for (int j = 0 ; j < step ; j++) {
-                final int x = i * step + j + low;
-                if (x < fs.getState ().length && maxValue < fs.getState () [x].abs ()) {
+                final int x = (i * step) + j + low;
+                if ((x < fs.getState ().length) && (maxValue < fs.getState () [x].abs ())) {
                     maxValue = 20.0 * Math.log10 (fs.getState () [x].abs ());
                 }
             }
-            if (minValuePlotted == -1 || minValuePlotted > maxValue) {
+            if ((minValuePlotted == -1) || (minValuePlotted > maxValue)) {
                 minValuePlotted = maxValue;
             }
-            valuesOnPlot [i] = (int) (maxValue * height / maxMagn);
-            if (maxPlotValue < valuesOnPlot [i] && i > 0) {
+            valuesOnPlot [i] = (int) ((maxValue * height) / maxMagn);
+            if ((maxPlotValue < valuesOnPlot [i]) && (i > 0)) {
                 maxPlotValue = valuesOnPlot [i];
             }
         }
         for (int i = 0 ; i < valuesOnPlot.length ; i++) {
-            valuesOnPlot [i] -= minValuePlotted * height / maxMagn;
+            valuesOnPlot [i] -= (minValuePlotted * height) / maxMagn;
         }
         for (int j = height ; j >= 0 ; j--) {
             if (j == height) {
@@ -87,7 +87,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
         int i = 0;
         while (i < length) {
             sb.append (" ");
-            if (i == maxIndex / compression) {
+            if (i == (maxIndex / compression)) {
                 final int foundFreq = spectrumHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * 2, (int) lastFrequency * 2);
                 sb.append ("^").append (new Integer (foundFreq)).append ("Hz");
                 i += (foundFreq == 0 ? 1 : Math.log10 (foundFreq)) + 2;

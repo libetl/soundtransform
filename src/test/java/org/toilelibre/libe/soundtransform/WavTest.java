@@ -53,18 +53,18 @@ public class WavTest extends SoundTransformTest {
     }
 
     @Test
+    public void testMix () throws SoundTransformException {
+        final File input1 = new File (this.classLoader.getResource ("notes/g-piano3.wav").getFile ());
+        final File input2 = new File (this.classLoader.getResource ("notes/Piano3-E.wav").getFile ());
+        final TransformSoundService transform = $.create (TransformSoundService.class, new Slf4jObserver ());
+        final Sound [] sound2 = transform.fromInputStream (transform.fromFile (input2));
+        transform.transformFile (input1, this.output, new MixSoundTransformation (Arrays.<Sound []> asList (sound2)));
+    }
+
+    @Test
     public void testNoOp () throws SoundTransformException {
         $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, new NoOpSoundTransformation ());
 
-    }
-    
-    @Test
-    public void testMix () throws SoundTransformException{
-        final File input1 = new File (this.classLoader.getResource ("notes/g-piano3.wav").getFile ());
-        final File input2 = new File (this.classLoader.getResource ("notes/Piano3-E.wav").getFile ());
-        TransformSoundService transform = $.create (TransformSoundService.class, new Slf4jObserver ());
-        Sound [] sound2 = transform.fromInputStream (transform.fromFile (input2));
-        transform.transformFile (input1, output, new MixSoundTransformation (Arrays.<Sound[]>asList (sound2)));
     }
 
     @Test

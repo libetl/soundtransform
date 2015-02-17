@@ -9,10 +9,10 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 
 public class MixSoundTransformation implements SoundTransformation {
 
-    private final SoundAppender soundAppender;
+    private final SoundAppender  soundAppender;
     private final List<Sound []> otherSounds;
 
-    public MixSoundTransformation (final List<Sound[]> otherSounds1) {
+    public MixSoundTransformation (final List<Sound []> otherSounds1) {
         this.soundAppender = $.select (SoundAppender.class);
         this.otherSounds = otherSounds1;
     }
@@ -21,7 +21,7 @@ public class MixSoundTransformation implements SoundTransformation {
         int maxlength = 0;
         final Sound [] ajustedSounds = new Sound [sounds.length + 1];
         ajustedSounds [0] = firstSound;
-        for (int i = 1 ; i < sounds.length + 1; i++) {
+        for (int i = 1 ; i < (sounds.length + 1) ; i++) {
             ajustedSounds [i] = this.soundAppender.changeNbBytesPerSample (this.soundAppender.resizeToSampleRate (sounds [i - 1], firstSound.getSampleRate ()), firstSound.getNbBytesPerSample ());
         }
 
@@ -55,9 +55,9 @@ public class MixSoundTransformation implements SoundTransformation {
 
     @Override
     public Sound transform (final Sound input) {
-        Sound [] onlyOneChannelSounds = new Sound [this.otherSounds.size ()];
+        final Sound [] onlyOneChannelSounds = new Sound [this.otherSounds.size ()];
         int i = 0;
-        for (Sound [] sounds : this.otherSounds){
+        for (final Sound [] sounds : this.otherSounds) {
             if (sounds.length > input.getChannelNum ()) {
                 onlyOneChannelSounds [i++] = sounds [input.getChannelNum ()];
             }

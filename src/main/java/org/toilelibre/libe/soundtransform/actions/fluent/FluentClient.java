@@ -171,7 +171,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException if the spectrums are in an invalid format, or if the transform to sound does not work
      */
     public FluentClientSoundImported extractSound () throws SoundTransformException {
-        if (this.spectrums == null || this.spectrums.isEmpty () || this.spectrums.get (0).length == 0) {
+        if ((this.spectrums == null) || this.spectrums.isEmpty () || (this.spectrums.get (0).length == 0)) {
             throw new SoundTransformException (FluentClientErrorCode.NO_SPECTRUM_IN_INPUT, new IllegalArgumentException ());
         }
         final Sound [] input = new Sound [this.spectrums.size ()];
@@ -207,6 +207,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /**
      * Transforms the observers list into an array returns that
+     *
      * @return an array of observers
      */
     private Observer [] getObservers () {
@@ -254,7 +255,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException if the sound is null or if there is a problem with the mix
      */
     public FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException {
-        return this.apply (new MixSoundTransformation (Arrays.<Sound []>asList (sound)));
+        return this.apply (new MixSoundTransformation (Arrays.<Sound []> asList (sound)));
     }
 
     @Override

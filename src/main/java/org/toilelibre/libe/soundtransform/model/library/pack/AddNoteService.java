@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
@@ -57,7 +56,14 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
 
     }
 
-    public AddNoteService () {
+    private final Sound2NoteService           sound2NoteService;
+    private final TransformInputStreamService transformInputStreamService;
+    private final ConvertAudioFileService     convertAudioFileService;
+
+    public AddNoteService (Sound2NoteService sound2NoteService1, TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1) {
+        this.sound2NoteService = sound2NoteService1;
+        this.transformInputStreamService = transformInputStreamService1;
+        this.convertAudioFileService = convertAudioFileService1;
 
     }
 
@@ -70,7 +76,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
             }
             final String completeFileName = completeURL.getFile ();
             final File file = new File (completeFileName);
-            final Note n = $.create (Sound2NoteService.class).convert (fileName, $.create (TransformInputStreamService.class).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (file)));
+            final Note n = this.sound2NoteService.convert (fileName, this.transformInputStreamService.fromInputStream (this.convertAudioFileService.callConverter (file)));
             range.put (n.getFrequency (), n);
         } catch (final IllegalArgumentException e) {
             throw new SoundTransformException (AddNoteErrorCode.COULD_NOT_BE_PARSED, e, fileName);
@@ -87,7 +93,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
             }
             final String completeFileName = completeURL.getFile ();
             final File file = new File (completeFileName);
-            final Note n = $.create (Sound2NoteService.class).convert (fileName, $.create (TransformInputStreamService.class).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (file)), frequency);
+            final Note n = this.sound2NoteService.convert (fileName, this.transformInputStreamService.fromInputStream (this.convertAudioFileService.callConverter (file)), frequency);
             range.put (n.getFrequency (), n);
         } catch (final IllegalArgumentException e) {
             throw new SoundTransformException (AddNoteErrorCode.COULD_NOT_BE_PARSED, e, fileName);

@@ -59,11 +59,7 @@ public class ApplicationInjector {
             final Class<?> [] ptypes = constructor.getParameterTypes ();
             final Object [] newInstanceParams = new Object [ptypes.length];
             for (int i = 0 ; i < ptypes.length ; i++) {
-                try {
-                    newInstanceParams [i] = ApplicationInjector.getBean (ptypes [i]);
-                } catch (final NoSuchResourceException nsre) {
-                    warnings.add ("Could not find a bean named " + ptypes [i] == null ? null : ptypes.getClass () + " (" + nsre.getMessage () + ")");
-                }
+                newInstanceParams [i] = ApplicationInjector.tryToFindABeanForClass (ptypes [i], warnings);
             }
             int additionalParamCounter = 0;
             for (int i = 0 ; i < newInstanceParams.length ; i++) {
@@ -78,27 +74,50 @@ public class ApplicationInjector {
                     additionalParamCounter++;
                 }
             }
-            final String warningPrefix = "Constructor " + constructor;
             if (additionalParamCounter != additionalParameters.length) {
-                warnings.add (warningPrefix + " did not match");
+                warnings.add ("Argument number in constructor did not match");
                 continue;
             }
-            try {
-                return (T) constructor.newInstance (newInstanceParams);
-            } catch (final InstantiationException e) {
-                warnings.add (warningPrefix + " could not instantiate");
-            } catch (final IllegalAccessException e) {
-                warnings.add (warningPrefix + " is not accessible");
-            } catch (final IllegalArgumentException e) {
-                warnings.add (warningPrefix + " had an illegal argument");
-            } catch (final InvocationTargetException e) {
-                if (e.getCause () instanceof SoundTransformException) {
-                    warnings.add (warningPrefix + " threw an ErrorCode : " + ((SoundTransformException) e.getCause ()).getErrorCode ().name ());
-                }
-                warnings.add (warningPrefix + " could not call a method");
+            final T result = (T) ApplicationInjector.newInstance (constructor, newInstanceParams, warnings);
+            if (result != null) {
+                return result;
             }
         }
         throw new SoundTransformRuntimeException (new SoundTransformException (ApplicationInjectorErrorCode.INSTANTIATION_FAILED, new NullPointerException (), warnings.toString ()));
+    }
+
+    private static <T> T newInstance (Constructor<T> constructor, Object [] newInstanceParams, List<String> warnings) {
+        final String warningPrefix = "Constructor " + constructor;
+        try {
+            return constructor.newInstance (newInstanceParams);
+        } catch (final InstantiationException e) {
+            warnings.add (warningPrefix + " could not instantiate");
+        } catch (final IllegalAccessException e) {
+            warnings.add (warningPrefix + " is not accessible");
+        } catch (final IllegalArgumentException e) {
+            warnings.add (warningPrefix + " had an illegal argument");
+        } catch (final InvocationTargetException e) {
+            if (e.getCause () instanceof SoundTransformException) {
+                warnings.add (warningPrefix + " threw an ErrorCode : " + ((SoundTransformException) e.getCause ()).getErrorCode ().name ());
+            }
+            warnings.add (warningPrefix + " could not call a method");
+        }
+        return null;
+    }
+
+    private static Object tryToFindABeanForClass (Class<?> class1, List<String> warnings) {
+        try {
+            return ApplicationInjector.instantiate (class1);
+        } catch (final SoundTransformRuntimeException stre) {
+            warnings.add (stre.getMessage ());
+        }
+        try {
+            return ApplicationInjector.getBean (class1);
+        } catch (final NoSuchResourceException nsre) {
+            warnings.add (("Could not find a bean named " + class1) == null ? null : class1 + " (" + nsre.getMessage () + ")");
+            return null;
+        }
+
     }
 
     static Injector injector = Bootstrap.injector (AndroidRootModule.class);

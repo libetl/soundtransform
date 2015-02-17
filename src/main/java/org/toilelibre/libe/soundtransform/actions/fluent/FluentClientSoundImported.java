@@ -83,12 +83,15 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException;
 
     /**
-     * Combines the current sound with another sound. The operation is not reversible
+     * Combines the current sound with another sound. The operation is not
+     * reversible
+     *
      * @return the client, with a sound imported
-     * @throws SoundTransformException if the sound is null or if there is a problem with the mix
+     * @throws SoundTransformException
+     *             if the sound is null or if there is a problem with the mix
      */
     FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException;
-    
+
     /**
      * Plays the current audio data
      *

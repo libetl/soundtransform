@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.Library;
@@ -57,14 +56,14 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
     private final AddNoteService   addNoteService;
     private final PackConfigParser packConfigParser;
 
-    public ImportPackService () {
-        this (null);
+    public ImportPackService (AddNoteService addNoteService1, PackConfigParser packConfigParser1) {
+        this (addNoteService1, packConfigParser1, null);
     }
-    
-    public ImportPackService (final Observer [] observers1) {
+
+    public ImportPackService (AddNoteService addNoteService1, PackConfigParser packConfigParser1, final Observer [] observers1) {
         this.observers = observers1;
-        this.addNoteService = $.create (AddNoteService.class).setObservers (this.observers);
-        this.packConfigParser = $.select (PackConfigParser.class);
+        this.addNoteService = addNoteService1.setObservers (this.observers);
+        this.packConfigParser = packConfigParser1;
     }
 
     public void importPack (final Library library, final String title, final InputStream inputStream) throws SoundTransformException {
