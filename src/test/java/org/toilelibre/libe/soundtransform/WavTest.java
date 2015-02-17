@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.EqualizerSoundTransformation;
@@ -11,7 +12,9 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jO
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NormalizeSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransformation;
@@ -53,6 +56,15 @@ public class WavTest extends SoundTransformTest {
     public void testNoOp () throws SoundTransformException {
         $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (this.input, this.output, new NoOpSoundTransformation ());
 
+    }
+    
+    @Test
+    public void testMix () throws SoundTransformException{
+        final File input1 = new File (this.classLoader.getResource ("notes/g-piano3.wav").getFile ());
+        final File input2 = new File (this.classLoader.getResource ("notes/Piano3-E.wav").getFile ());
+        TransformSoundService transform = $.create (TransformSoundService.class, new Slf4jObserver ());
+        Sound [] sound2 = transform.fromInputStream (transform.fromFile (input2));
+        transform.transformFile (input1, output, new MixSoundTransformation (Arrays.<Sound[]>asList (sound2)));
     }
 
     @Test
