@@ -35,6 +35,13 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
+    public void readInputStreamInfo () throws SoundTransformException {
+        final InputStreamInfo isi = FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").importToStream ().stopWithInputStreamInfo ();
+        Assert.assertNotNull (isi);
+        new Slf4jObserver ().notify (isi.toString ());
+    }
+
+    @Test
     public void readRawInputStream () throws SoundTransformException {
         final RandomDataGenerator rdg = new RandomDataGenerator ();
         final byte [] data = new byte [65536];
@@ -58,13 +65,6 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void simpleLifeCycle () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("after.wav");
-    }
-
-    @Test
-    public void readInputStreamInfo () throws SoundTransformException {
-        InputStreamInfo isi = FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").importToStream ().stopWithInputStreamInfo ();
-        Assert.assertNotNull (isi);
-        new Slf4jObserver ().notify (isi.toString ());
     }
 
     @Test

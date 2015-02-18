@@ -9,13 +9,13 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 public interface FluentClientWithSpectrums extends FluentClientCommon {
 
     /**
-     * Uses the current imported sound and converts it into an InputStream,
-     * ready to be written to a file (or to be read again)
+     * Uses the current available spectrums objects to convert them into a sound
+     * (with one or more channels)
      *
-     * @return the client, with an inputStream
+     * @return the client, with a sound imported
      * @throws SoundTransformException
-     *             if the metadata format object is invalid, or if the sound
-     *             cannot be converted
+     *             if the spectrums are in an invalid format, or if the
+     *             transform to sound does not work
      */
     FluentClientSoundImported extractSound () throws SoundTransformException;
 
@@ -23,7 +23,7 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
      * Plays the current audio data and (if needed) convert it temporarily to a
      * sound
      *
-     * @return the client, in its current state.
+     * @return the client, with the spectrums list
      * @throws SoundTransformException
      *             could not play the current audio data
      */
