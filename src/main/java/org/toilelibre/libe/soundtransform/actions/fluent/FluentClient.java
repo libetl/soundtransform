@@ -366,6 +366,20 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     /**
+     * Stops the client pipeline and returns the obtained input stream info
+     * object
+     *
+     * @return an inputStreamInfo object
+     * @throws SoundTransformException
+     *             could not read the inputstreaminfo from the current
+     *             inputstream
+     */
+    public InputStreamInfo stopWithInputStreamInfo () throws SoundTransformException {
+        return new GetInputStreamInfo (this.getObservers ()).getInputStreamInfo (this.audioInputStream);
+    }
+
+    @Override
+    /**
      * Stops the client pipeline and returns the obtained sound
      * @return a sound value object
      */

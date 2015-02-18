@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
+import org.junit.Assert;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
@@ -57,6 +58,13 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void simpleLifeCycle () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("after.wav");
+    }
+
+    @Test
+    public void readInputStream () throws SoundTransformException {
+        InputStreamInfo isi = FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").importToStream ().stopWithInputStreamInfo ();
+        Assert.assertNotNull (isi);
+        new Slf4jObserver ().notify (isi.toString ());
     }
 
     @Test
