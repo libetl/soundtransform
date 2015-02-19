@@ -83,6 +83,11 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (100000, 200000).exportToClasspathResource ("after.wav");
     }
 
+    @Test (expected = SoundTransformException.class)
+    public void subsoundOutOfBound () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (-100000, 200000).exportToClasspathResource ("after.wav");
+    }
+
     @Test
     public void testImportHPSFreqs () throws SoundTransformException {
         final float [] freqs = new float [((int) Math.random () * 2000) + 4000];
