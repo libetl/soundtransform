@@ -111,10 +111,10 @@ public interface FluentClientReady {
      * It will not be used yet
      *
      * @param freqs
-     *            the loudest frequencies integer array
-     * @return the client, with a loudest frequencies integer array
+     *            the loudest frequencies float array
+     * @return the client, with a loudest frequencies float array
      */
-    FluentClientWithFreqs withFreqs (int [] freqs);
+    FluentClientWithFreqs withFreqs (float [] freqs);
 
     /**
      * Tells the client to work first with a byte array InputStream or any

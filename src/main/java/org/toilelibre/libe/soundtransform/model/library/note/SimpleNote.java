@@ -11,10 +11,10 @@ public class SimpleNote implements Note {
     private final Sound [] decay;
     private final Sound [] sustain;
     private final Sound [] release;
-    private final int      frequency;
+    private final float    frequency;
     private final String   fileName;
 
-    public SimpleNote (final String fileName, final Sound [] channels, final int frequency, final int attack, final int decay, final int sustain, final int release) {
+    public SimpleNote (final String fileName, final Sound [] channels, final float frequency, final int attack, final int decay, final int sustain, final int release) {
         this.frequency = frequency;
         this.attack = new Sound [channels.length];
         this.decay = new Sound [channels.length];
@@ -50,7 +50,7 @@ public class SimpleNote implements Note {
     }
 
     @Override
-    public int getFrequency () {
+    public float getFrequency () {
         return this.frequency;
     }
 

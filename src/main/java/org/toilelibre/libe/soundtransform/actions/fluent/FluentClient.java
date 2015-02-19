@@ -58,7 +58,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     private Sound []             sounds;
     private InputStream          audioInputStream;
     private String               sameDirectoryAsClasspathResource;
-    private int []               freqs;
+    private float []             freqs;
     private File                 file;
     private List<Spectrum<?> []> spectrums;
     private List<Observer>       observers;
@@ -214,7 +214,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * When shaped into a sound, the new sound will only sounds like the
      * instrument you shaped the freqs with
      *
-     * @return the client, with a loudest frequencies integer array
+     * @return the client, with a loudest frequencies float array
      * @throws SoundTransformException
      *             if the convert fails
      */
@@ -351,7 +351,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Stops the client pipeline and returns the obtained loudest frequencies
      * @return loudest frequencies array
      */
-    public int [] stopWithFreqs () {
+    public float [] stopWithFreqs () {
         return this.freqs;
     }
 
@@ -494,11 +494,11 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     /**
-     * Tells the client to work first with a loudest frequencies integer array. It will not be used yet
+     * Tells the client to work first with a loudest frequencies float array. It will not be used yet
      * @param freqs1 the loudest frequencies integer array
-     * @return the client, with a loudest frequencies integer array
+     * @return the client, with a loudest frequencies float array
      */
-    public FluentClientWithFreqs withFreqs (final int [] freqs1) {
+    public FluentClientWithFreqs withFreqs (final float [] freqs1) {
         this.cleanData ();
         this.freqs = freqs1;
         return this;

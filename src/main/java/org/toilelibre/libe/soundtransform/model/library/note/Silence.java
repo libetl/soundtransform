@@ -22,7 +22,7 @@ public class Silence implements Note {
     }
 
     @Override
-    public int getFrequency () {
+    public float getFrequency () {
         return 0;
     }
 

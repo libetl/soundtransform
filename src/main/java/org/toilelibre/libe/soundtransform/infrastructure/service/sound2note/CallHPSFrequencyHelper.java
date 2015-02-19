@@ -8,9 +8,9 @@ import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
 public class CallHPSFrequencyHelper implements FrequencyHelper {
 
     @Override
-    public int findFrequency (final Sound [] channels) {
+    public float findFrequency (final Sound [] channels) {
         final PeakFindWithHPSSoundTransformation<?> peak = $.create (PeakFindWithHPSSoundTransformation.class, true);
-        int value = 0;
+        float value = 0;
         float volume = 0;
         for (final Sound channel : channels) {
             peak.transform (channel);

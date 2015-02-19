@@ -47,10 +47,10 @@ public class Sound2NoteTest extends SoundTransformTest {
         $.create (ImportPackService.class).setObservers (new Slf4jObserver ()).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
         final Pack pack = $.select (Library.class).getPack ("default");
         for (final String instrument : pack.keySet ()) {
-            for (final Integer noteKey : pack.get (instrument).keySet ()) {
+            for (final Float noteKey : pack.get (instrument).keySet ()) {
                 final Note n = pack.get (instrument).get (noteKey);
                 if (frequenciesPerSound.get (n.getName ()) != null) {
-                    org.junit.Assert.assertEquals (frequenciesPerSound.get (n.getName ()).intValue (), n.getFrequency ());
+                    org.junit.Assert.assertEquals (frequenciesPerSound.get (n.getName ()).intValue (), n.getFrequency (), 0);
                     new Slf4jObserver ().notify ("f0 (" + n.getName () + ") = " + n.getFrequency ());
                 } else {
                     new Slf4jObserver ().notify ("Did not find " + n.getName ());

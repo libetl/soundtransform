@@ -59,7 +59,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
     private final String        instrument;
     private final SoundAppender soundAppender;
     private final Silence       silence;
-    private int []              freqs;
+    private float []            freqs;
     private int                 nbBytesPerSample;
     private int                 soundLength;
     private int                 sampleRate;
@@ -71,7 +71,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         this.soundAppender = $.select (SoundAppender.class);
     }
 
-    public ShapeSoundTransformation (final String packName, final String instrument, final int [] freqs, final int soundLength1, final int nbBytesPerSample1, final int sampleRate1) {
+    public ShapeSoundTransformation (final String packName, final String instrument, final float [] freqs, final int soundLength1, final int nbBytesPerSample1, final int sampleRate1) {
         this (packName, instrument);
         this.freqs = freqs;
         this.soundLength = soundLength1;
@@ -91,11 +91,11 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         return note;
     }
 
-    private boolean freqHasChanged (final int freq1, final int freq2) {
+    private boolean freqHasChanged (final float freq1, final float freq2) {
         return Math.abs (freq1 - freq2) > ((freq1 * 5.0) / 100);
     }
 
-    private int [] getLoudestFreqs (final Sound sound, final int threshold) {
+    private float [] getLoudestFreqs (final Sound sound, final int threshold) {
         final PeakFindWithHPSSoundTransformation<?> peak = $.create (PeakFindWithHPSSoundTransformation.class, threshold, -1);
         peak.setObservers (this.observers).transform (sound);
         return peak.getLoudestFreqs ();
@@ -108,7 +108,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
     public Sound transform (final int threshold, final int channelNum) throws SoundTransformException {
         final Sound builtSound = new Sound (new long [this.soundLength], this.nbBytesPerSample, this.sampleRate, channelNum);
         int lastBegining = 0;
-        int lastFreq = 0;
+        float lastFreq = 0;
         boolean firstNote = true;
         for (int i = 4 ; i < this.freqs.length ; i++) {
             final boolean freqChanged = this.freqHasChanged (this.freqs [i - 1], this.freqs [i]);

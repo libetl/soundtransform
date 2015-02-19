@@ -9,7 +9,7 @@ public interface Note {
 
     Sound getDecay (int frequency, int channelnum, float lengthInSeconds) throws SoundTransformException;
 
-    int getFrequency ();
+    float getFrequency ();
 
     String getName ();
 

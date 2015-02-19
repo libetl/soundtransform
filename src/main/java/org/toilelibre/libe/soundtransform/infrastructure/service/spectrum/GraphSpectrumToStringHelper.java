@@ -88,8 +88,8 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
         while (i < length) {
             sb.append (" ");
             if (i == (maxIndex / compression)) {
-                final int foundFreq = spectrumHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * 2, (int) lastFrequency * 2);
-                sb.append ("^").append (new Integer (foundFreq)).append ("Hz");
+                final float foundFreq = spectrumHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * 2, (int) lastFrequency * 2);
+                sb.append ("^").append (new Float (foundFreq)).append ("Hz");
                 i += (foundFreq == 0 ? 1 : Math.log10 (foundFreq)) + 2;
             }
             i++;

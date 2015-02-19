@@ -29,7 +29,7 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *
      * @return loudest frequencies array
      */
-    int [] stopWithFreqs ();
+    float [] stopWithFreqs ();
 
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
@@ -39,7 +39,7 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *            the name of the pack
      * @param jsonStream
      *            the input stream
-     * @return the client, with the loudest frequencies integer array
+     * @return the client, with the loudest frequencies float array
      * @throws SoundTransformException
      *             the input stream cannot be read, or the json format is not
      *             correct, or some sound files are missing
@@ -72,7 +72,7 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *            the name of the pack
      * @param jsonContent
      *            a string containing the definition of the pack
-     * @return the client, with the loudest frequencies integer array
+     * @return the client, with the loudest frequencies float array
      * @throws SoundTransformException
      *             the json content is invalid, the json format is not correct,
      *             or some sound files are missing

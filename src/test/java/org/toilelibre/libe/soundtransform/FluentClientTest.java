@@ -74,11 +74,11 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void testImportHPSFreqs () throws SoundTransformException {
-        final int [] freqs = new int [((int) Math.random () * 2000) + 4000];
+        final float [] freqs = new float [((int) Math.random () * 2000) + 4000];
         int i = 0;
         while (i < freqs.length) {
             final int length = Math.min ((int) ((Math.random () * 200) + 400), freqs.length - i);
-            final int currentFreq = (int) ((Math.random () * 150) + 160);
+            final float currentFreq = (float) (Math.random () * 150) + 160;
             for (int j = 0 ; j < length ; j++) {
                 freqs [i++] = currentFreq;
             }

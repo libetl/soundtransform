@@ -20,12 +20,12 @@ public class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
      * @return a fundamental frequency (in Hz)
      */
     @Override
-    public int f0 (final Spectrum<Complex []> fs, final int hpsfactor) {
+    public float f0 (final Spectrum<Complex []> fs, final int hpsfactor) {
         return this.freqFromSampleRate (this.getMaxIndex (this.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), (fs.getState ().length * 2) / hpsfactor, fs.getSampleRate ());
     }
 
     @Override
-    public int freqFromSampleRate (final int freq, final int sqr2length, final int sampleRate) {
+    public float freqFromSampleRate (final float freq, final int sqr2length, final int sampleRate) {
         return (int) ((freq * 2.0 * sampleRate) / sqr2length);
     }
 

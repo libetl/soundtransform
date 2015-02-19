@@ -37,7 +37,7 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
     }
 
     private double                  threshold;
-    private int []                  loudestfreqs;
+    private float []                loudestfreqs;
     private boolean                 note;
     private int                     fsLimit;
     private int                     windowLength;
@@ -72,7 +72,7 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
         this.windowLength = windowLength;
     }
 
-    private int bestCandidate (final int [] peaks) {
+    private float bestCandidate (final float [] peaks) {
         int leftEdge = 0;
         while ((leftEdge < peaks.length) && (peaks [leftEdge] <= 30)) {
             leftEdge++;
@@ -93,7 +93,7 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
         return this.detectedNoteVolume;
     }
 
-    public int [] getLoudestFreqs () {
+    public float [] getLoudestFreqs () {
         return this.loudestfreqs;
     }
 
@@ -115,9 +115,9 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
         if (this.note) {
             this.threshold = input.getSamples ().length;
             this.fsLimit = input.getSamples ().length;
-            this.loudestfreqs = new int [1];
+            this.loudestfreqs = new float [1];
         } else {
-            this.loudestfreqs = new int [(int) (input.getSamples ().length / this.threshold) + 1];
+            this.loudestfreqs = new float [(int) (input.getSamples ().length / this.threshold) + 1];
             this.fsLimit = input.getSampleRate ();
         }
         this.soundLength = input.getSamples ().length;
@@ -131,10 +131,10 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
         if (percent > Math.floor ((100.0 * ((offset - this.threshold) / this.threshold)) / (this.soundLength / this.threshold))) {
             this.log (new LogEvent (PeakFindWithHPSSoundTransformationEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.threshold), (int) Math.ceil (this.soundLength / this.threshold), percent));
         }
-        int f0 = 0;
+        float f0 = 0;
 
         if (soundLevelInDB > 30) {
-            final int [] peaks = new int [10];
+            final float [] peaks = new float [10];
             for (int i = 1 ; i <= 10 ; i++) {
                 peaks [i - 1] = this.spectrumHelper.f0 (fs, i);
             }
