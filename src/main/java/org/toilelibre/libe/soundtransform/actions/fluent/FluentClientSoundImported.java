@@ -11,6 +11,17 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 public interface FluentClientSoundImported extends FluentClientCommon {
 
     /**
+     * Append the sound passed in parameter to the current sound stored in the
+     * client
+     *
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     *             if the sound is null or if there is a problem with the
+     *             appending
+     */
+    FluentClientSoundImported append (Sound [] sound) throws SoundTransformException;
+
+    /**
      * Apply one transform and continue with the current imported sound
      *
      * @param st

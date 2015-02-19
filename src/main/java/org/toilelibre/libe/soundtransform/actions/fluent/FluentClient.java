@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.toilelibre.libe.soundtransform.actions.notes.ImportAPackIntoTheLibrary;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
+import org.toilelibre.libe.soundtransform.actions.transform.AppendSound;
 import org.toilelibre.libe.soundtransform.actions.transform.ApplySoundTransform;
 import org.toilelibre.libe.soundtransform.actions.transform.ChangeSoundFormat;
 import org.toilelibre.libe.soundtransform.actions.transform.ConvertFromInputStream;
@@ -76,6 +77,22 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public FluentClientReady andAfterStart () {
         this.cleanData ();
         this.cleanObservers ();
+        return this;
+    }
+
+    /**
+     * Append the sound passed in parameter to the current sound stored in the
+     * client
+     *
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     *             if the sound is null or if there is a problem with the
+     *             appending please ensure that both sounds have the same number
+     *             of channels
+     */
+    @Override
+    public FluentClientSoundImported append (Sound [] sounds1) throws SoundTransformException {
+        this.sounds = new AppendSound (this.getObservers ()).append (this.sounds, sounds1);
         return this;
     }
 

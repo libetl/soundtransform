@@ -41,6 +41,17 @@ public class ConvertedSoundAppender implements SoundAppender {
     }
 
     @Override
+    public Sound append (Sound sound1, Sound sound2) {
+        final Sound sound2Ajusted = this.resizeToSampleRate (this.changeNbBytesPerSample (sound2, sound1.getNbBytesPerSample ()), sound1.getSampleRate ());
+        final Sound result = new Sound (new long [sound1.getSamples ().length + sound2.getSamples ().length], sound1.getNbBytesPerSample (), sound1.getSampleRate (), sound1.getChannelNum ());
+
+        System.arraycopy (sound1.getSamples (), 0, result.getSamples (), 0, sound1.getSamples ().length);
+        System.arraycopy (sound2Ajusted.getSamples (), 0, result.getSamples (), sound1.getSamples ().length, sound2Ajusted.getSamples ().length);
+
+        return result;
+    }
+
+    @Override
     public void appendNote (final Sound sound, final Note note, final double lastFreq, final int indexInSound, final int channelNum, final float lengthInSeconds) throws SoundTransformException {
 
         if (lengthInSeconds < 0.6) {
@@ -59,7 +70,7 @@ public class ConvertedSoundAppender implements SoundAppender {
      * (non-Javadoc)
      *
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
-     * SoundAppenderI
+     * SoundAppender
      * #changeNbBytesPerSample(org.toilelibre.libe.soundtransform.model
      * .converted.sound.Sound, int)
      */
@@ -78,7 +89,7 @@ public class ConvertedSoundAppender implements SoundAppender {
      * (non-Javadoc)
      *
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
-     * SoundAppenderI
+     * SoundAppender
      * #downsampleWithRatio(org.toilelibre.libe.soundtransform.model
      * .converted.sound.Sound, float)
      */
@@ -101,7 +112,7 @@ public class ConvertedSoundAppender implements SoundAppender {
      * (non-Javadoc)
      *
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
-     * SoundAppenderI
+     * SoundAppender
      * #resizeToSampleRate(org.toilelibre.libe.soundtransform.model
      * .converted.sound.Sound, int)
      */
@@ -111,7 +122,10 @@ public class ConvertedSoundAppender implements SoundAppender {
         if (ratio > 1) {
             return this.upsampleWithRatio (sound, ratio);
         }
-        return this.downsampleWithRatio (sound, (float) (1.0 / ratio));
+        if (ratio < 1) {
+            return this.downsampleWithRatio (sound, (float) (1.0 / ratio));
+        }
+        return sound;
     }
 
     private Sound upsampleWithRatio (final Sound sound, final float ratio) {

@@ -9,6 +9,8 @@ public interface SoundAppender {
 
     public abstract int append (Sound origin, int usedarraylength, Sound otherSound);
 
+    public abstract Sound append (Sound sound, Sound sound2);
+
     public abstract void appendNote (Sound sound, Note note, double lastFreq, int indexInSound, int channelNum, float lengthInSeconds) throws SoundTransformException;
 
     public abstract Sound changeNbBytesPerSample (Sound sound, int newNbBytesPerSample);

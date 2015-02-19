@@ -23,9 +23,15 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
+    public void appendTest () throws SoundTransformException {
+        final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/g-piano4.wav").convertIntoSound ().stopWithSounds ();
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().append (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+    }
+    
+    @Test
     public void mixTest () throws SoundTransformException {
         final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/Piano3-E.wav").convertIntoSound ().stopWithSounds ();
-        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().mixWith (sounds2).exportToClasspathResource ("after.wav");
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().mixWith (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     // Plays the sound three times, therefore too long time consuming test

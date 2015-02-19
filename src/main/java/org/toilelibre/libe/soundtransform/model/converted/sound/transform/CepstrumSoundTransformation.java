@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelpe
 
 public class CepstrumSoundTransformation<T> extends SimpleFrequencySoundTransformation<T> {
 
-    private double                           threshold;
+    private final double                     threshold;
     private int []                           loudestfreqs;
     private int                              index;
     private int                              length;
@@ -17,17 +17,16 @@ public class CepstrumSoundTransformation<T> extends SimpleFrequencySoundTransfor
     private final Spectrum2CepstrumHelper<T> spectrum2CepstrumHelper;
     private final SpectrumHelper<T>          spectrumHelper;
 
-    @SuppressWarnings ("unchecked")
     public CepstrumSoundTransformation () {
-        super ();
-        this.threshold = 100;
-        this.spectrum2CepstrumHelper = $.select (Spectrum2CepstrumHelper.class);
-        this.spectrumHelper = $.select (SpectrumHelper.class);
+        this (100);
     }
 
+    @SuppressWarnings ("unchecked")
     public CepstrumSoundTransformation (final double threshold) {
-        this ();
+        super ();
         this.threshold = threshold;
+        this.spectrum2CepstrumHelper = $.select (Spectrum2CepstrumHelper.class);
+        this.spectrumHelper = $.select (SpectrumHelper.class);
     }
 
     public int [] getLoudestFreqs () {
