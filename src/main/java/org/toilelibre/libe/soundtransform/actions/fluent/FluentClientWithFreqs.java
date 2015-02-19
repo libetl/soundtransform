@@ -8,6 +8,20 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 public interface FluentClientWithFreqs extends FluentClientCommon {
 
     /**
+     * Changes the loudest frequencies array to become one octave lower
+     *
+     * @return the client, with a sound imported
+     */
+    FluentClientWithFreqs octaveDown ();
+
+    /**
+     * Changes the loudest frequencies array to become one octave upper
+     *
+     * @return the client, with a sound imported
+     */
+    FluentClientWithFreqs octaveUp ();
+
+    /**
      * Shapes these loudest frequencies array into a sound and set the converted
      * sound in the pipeline
      *

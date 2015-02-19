@@ -14,6 +14,7 @@ import org.toilelibre.libe.soundtransform.actions.transform.ConvertFromInputStre
 import org.toilelibre.libe.soundtransform.actions.transform.ExportAFile;
 import org.toilelibre.libe.soundtransform.actions.transform.GetInputStreamInfo;
 import org.toilelibre.libe.soundtransform.actions.transform.InputStreamToAudioInputStream;
+import org.toilelibre.libe.soundtransform.actions.transform.ShiftOctaveLoudestFreqs;
 import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -278,6 +279,28 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException {
         return this.apply (new MixSoundTransformation (Arrays.<Sound []> asList (sound)));
+    }
+
+    /**
+     * Changes the loudest frequencies array to become one octave lower
+     *
+     * @return the client, with a sound imported
+     */
+    @Override
+    public FluentClientWithFreqs octaveDown () {
+        this.freqs = new ShiftOctaveLoudestFreqs ().octaveDown (this.freqs);
+        return this;
+    }
+
+    /**
+     * Changes the loudest frequencies array to become one octave upper
+     *
+     * @return the client, with a sound imported
+     */
+    @Override
+    public FluentClientWithFreqs octaveUp () {
+        this.freqs = new ShiftOctaveLoudestFreqs ().octaveUp (this.freqs);
+        return this;
     }
 
     @Override
