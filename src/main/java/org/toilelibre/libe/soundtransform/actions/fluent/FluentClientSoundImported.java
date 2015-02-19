@@ -14,6 +14,8 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * Append the sound passed in parameter to the current sound stored in the
      * client
      *
+     * @param sound
+     *            the sound to append the current sound to
      * @return the client, with a sound imported
      * @throws SoundTransformException
      *             if the sound is null or if there is a problem with the
@@ -93,6 +95,19 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientWithInputStream exportToStream () throws SoundTransformException;
 
     /**
+     * Extract a part of the sound between the sample #start and the sample #end
+     *
+     * @param start
+     *            the first sample to extract
+     * @param end
+     *            the last sample to extract
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     *             if the index are out of bound
+     */
+    FluentClientSoundImported extractSubSound (int start, int end) throws SoundTransformException;
+
+    /**
      * Will invoke a soundtransform to find the loudest frequencies of the
      * sound, chronologically Caution : the original sound will be lost, and it
      * will be impossible to revert this conversion. When shaped into a sound,
@@ -109,6 +124,8 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * Combines the current sound with another sound. The operation is not
      * reversible
      *
+     * @param sound
+     *            the sound to mix the current sound with
      * @return the client, with a sound imported
      * @throws SoundTransformException
      *             if the sound is null or if there is a problem with the mix

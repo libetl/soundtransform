@@ -18,16 +18,16 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 public class FluentClientTest extends SoundTransformTest {
 
     @Test
-    public void backAndForth () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().apply (new NoOpSoundTransformation ()).exportToClasspathResource ("before.wav").convertIntoSound ();
-    }
-
-    @Test
     public void appendTest () throws SoundTransformException {
         final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/g-piano4.wav").convertIntoSound ().stopWithSounds ();
         FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().append (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
-    
+
+    @Test
+    public void backAndForth () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().apply (new NoOpSoundTransformation ()).exportToClasspathResource ("before.wav").convertIntoSound ();
+    }
+
     @Test
     public void mixTest () throws SoundTransformException {
         final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/Piano3-E.wav").convertIntoSound ().stopWithSounds ();
@@ -76,6 +76,11 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void spectrumTest () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().splitIntoSpectrums ().extractSound ().stopWithSounds ();
+    }
+
+    @Test
+    public void subsound () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (100000, 200000).exportToClasspathResource ("after.wav");
     }
 
     @Test

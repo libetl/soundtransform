@@ -24,6 +24,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFi
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundToSpectrumsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpectrumsToSoundSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SubSoundExtractSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -84,6 +85,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Append the sound passed in parameter to the current sound stored in the
      * client
      *
+     * @param sound
+     *            the sound to append the current sound to
      * @return the client, with a sound imported
      * @throws SoundTransformException
      *             if the sound is null or if there is a problem with the
@@ -225,6 +228,22 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     /**
+     * Extract a part of the sound between the sample #start and the sample #end
+     *
+     * @param start
+     *            the first sample to extract
+     * @param end
+     *            the last sample to extract
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     *             if the index are out of bound
+     */
+    @Override
+    public FluentClientSoundImported extractSubSound (int start, int end) throws SoundTransformException {
+        return this.apply (new SubSoundExtractSoundTransformation (start, end));
+    }
+
+    /**
      * Will invoke a soundtransform to find the loudest frequencies of the
      * sound, chronologically<br/>
      * Caution : the original sound will be lost, and it will be impossible to
@@ -291,6 +310,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     @Override
     /**
      * Combines the current sound with another sound. The operation is not reversible
+     * @param sound the sound to mix the current sound with
      * @return the client, with a sound imported
      * @throws SoundTransformException if the sound is null or if there is a problem with the mix
      */
