@@ -19,10 +19,11 @@ import org.toilelibre.libe.soundtransform.actions.transform.ShiftOctaveLoudestFr
 import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CutSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.LoopSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundCutSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundToSpectrumsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpectrumsToSoundSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SubSoundExtractSoundTransformation;
@@ -161,16 +162,16 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Splice a part of the sound between the sample #start and the sample #end
      *
      * @param start
-     *            the first sample to extract
+     *            the first sample to cut
      * @param end
-     *            the last sample to extract
+     *            the last sample to cut
      * @return the client, with a sound imported
      * @throws SoundTransformException
      *             if the indexs are out of bound
      */
     @Override
     public FluentClientSoundImported cutSubSound (final int start, final int end) throws SoundTransformException {
-        return this.apply (new SoundCutSoundTransformation (start, end));
+        return this.apply (new CutSoundTransformation (start, end));
     }
 
     @Override
@@ -322,6 +323,20 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.cleanData ();
         this.audioInputStream = inputStream;
         return this;
+    }
+
+    /**
+     * Extract a part of the sound between the sample #start and the sample #end
+     *
+     * @param length
+     *            the number of samples of the result sound
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     *             if the length is not positive
+     */
+    @Override
+    public FluentClientSoundImported loop (final int length) throws SoundTransformException {
+        return this.apply (new LoopSoundTransformation (length));
     }
 
     @Override

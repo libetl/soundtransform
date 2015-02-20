@@ -49,9 +49,9 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * Splice a part of the sound between the sample #start and the sample #end
      *
      * @param start
-     *            the first sample to extract
+     *            the first sample to cut
      * @param end
-     *            the last sample to extract
+     *            the last sample to cut
      * @return the client, with a sound imported
      * @throws SoundTransformException
      *             if the indexs are out of bound
@@ -132,6 +132,17 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      *             if the convert fails
      */
     FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException;
+
+    /**
+     * Extract a part of the sound between the sample #start and the sample #end
+     *
+     * @param length
+     *            the number of samples of the result sound
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     *             if the length is not positive
+     */
+    FluentClientSoundImported loop (int length) throws SoundTransformException;
 
     /**
      * Combines the current sound with another sound. The operation is not

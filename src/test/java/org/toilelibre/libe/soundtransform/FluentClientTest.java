@@ -39,6 +39,11 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
+    public void loop () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().loop (100000).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+    }
+
+    @Test
     public void mixTest () throws SoundTransformException {
         final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/Piano3-E.wav").convertIntoSound ().stopWithSounds ();
         FluentClient.start ().withAnObserver (new Slf4jObserver ()).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().mixWith (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");

@@ -5,7 +5,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-public class SoundCutSoundTransformation implements SoundTransformation {
+public class CutSoundTransformation implements SoundTransformation {
 
     enum SoundCutSoundTransformationErrorCode implements ErrorCode {
         INDEXS_OUT_OF_BOUND ("The specified indexs are out of bound (maximum : %1d -> %2d , actual : %3d -> %4d)");
@@ -26,7 +26,7 @@ public class SoundCutSoundTransformation implements SoundTransformation {
     private final int start;
     private final int end;
 
-    public SoundCutSoundTransformation (final int start1, final int end1) {
+    public CutSoundTransformation (final int start1, final int end1) {
         this.start = start1;
         this.end = end1;
     }
