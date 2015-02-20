@@ -56,11 +56,11 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
     private final AddNoteService   addNoteService;
     private final PackConfigParser packConfigParser;
 
-    public ImportPackService (AddNoteService addNoteService1, PackConfigParser packConfigParser1) {
+    public ImportPackService (final AddNoteService addNoteService1, final PackConfigParser packConfigParser1) {
         this (addNoteService1, packConfigParser1, null);
     }
 
-    public ImportPackService (AddNoteService addNoteService1, PackConfigParser packConfigParser1, final Observer [] observers1) {
+    public ImportPackService (final AddNoteService addNoteService1, final PackConfigParser packConfigParser1, final Observer [] observers1) {
         this.observers = observers1;
         this.addNoteService = addNoteService1.setObservers (this.observers);
         this.packConfigParser = packConfigParser1;

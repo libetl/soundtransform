@@ -45,11 +45,11 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
     private final ConvertAudioFileService     convertAudioFileService;
     private final ModifySoundService          modifySoundService;
 
-    public TransformSoundService (final TransformInputStreamService transformInputStreamService1, CallTransformService callTransformService1, ConvertAudioFileService convertAudioFileService1, ModifySoundService changeSoundFormatService1) {
+    public TransformSoundService (final TransformInputStreamService transformInputStreamService1, final CallTransformService callTransformService1, final ConvertAudioFileService convertAudioFileService1, final ModifySoundService changeSoundFormatService1) {
         this (transformInputStreamService1, callTransformService1, convertAudioFileService1, changeSoundFormatService1, new Observer [0]);
     }
 
-    public TransformSoundService (final TransformInputStreamService transformInputStreamService1, CallTransformService callTransformService1, ConvertAudioFileService convertAudioFileService1, ModifySoundService modifySoundService1, final Observer... observers) {
+    public TransformSoundService (final TransformInputStreamService transformInputStreamService1, final CallTransformService callTransformService1, final ConvertAudioFileService convertAudioFileService1, final ModifySoundService modifySoundService1, final Observer... observers) {
         this.transformInputStreamService = transformInputStreamService1.setObservers (observers);
         this.callTransformService = callTransformService1.setObservers (observers);
         this.convertAudioFileService = convertAudioFileService1;
@@ -57,7 +57,7 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
         this.setObservers (observers);
     }
 
-    public Sound [] append (Sound [] sounds1, Sound [] sounds2) throws SoundTransformException {
+    public Sound [] append (final Sound [] sounds1, final Sound [] sounds2) throws SoundTransformException {
         return this.modifySoundService.append (sounds1, sounds2);
     }
 
@@ -65,7 +65,7 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
         return this.callTransformService.transformAudioStream (in, transforms);
     }
 
-    public Sound [] changeSoundFormat (final Sound [] input, InputStreamInfo inputStreamInfo) throws SoundTransformException {
+    public Sound [] changeSoundFormat (final Sound [] input, final InputStreamInfo inputStreamInfo) throws SoundTransformException {
         return this.modifySoundService.changeFormat (input, inputStreamInfo);
     }
 

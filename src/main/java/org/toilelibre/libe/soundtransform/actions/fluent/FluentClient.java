@@ -22,6 +22,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundCutSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundToSpectrumsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpectrumsToSoundSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SubSoundExtractSoundTransformation;
@@ -94,7 +95,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             of channels
      */
     @Override
-    public FluentClientSoundImported append (Sound [] sounds1) throws SoundTransformException {
+    public FluentClientSoundImported append (final Sound [] sounds1) throws SoundTransformException {
         this.sounds = new AppendSound (this.getObservers ()).append (this.sounds, sounds1);
         return this;
     }
@@ -123,7 +124,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException
      */
     @Override
-    public FluentClientSoundImported changeFormat (InputStreamInfo inputStreamInfo) throws SoundTransformException {
+    public FluentClientSoundImported changeFormat (final InputStreamInfo inputStreamInfo) throws SoundTransformException {
         this.sounds = new ChangeSoundFormat (this.getObservers ()).changeFormat (this.sounds, inputStreamInfo);
         return this;
     }
@@ -154,6 +155,22 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientSoundImported convertIntoSound () throws SoundTransformException {
         return this.importToStream ().importToSound ();
+    }
+
+    /**
+     * Splice a part of the sound between the sample #start and the sample #end
+     *
+     * @param start
+     *            the first sample to extract
+     * @param end
+     *            the last sample to extract
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     *             if the indexs are out of bound
+     */
+    @Override
+    public FluentClientSoundImported cutSubSound (final int start, final int end) throws SoundTransformException {
+        return this.apply (new SoundCutSoundTransformation (start, end));
     }
 
     @Override
@@ -214,7 +231,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException if the spectrums are in an invalid format, or if the transform to sound does not work
      */
     public FluentClientSoundImported extractSound () throws SoundTransformException {
-        if ((this.spectrums == null) || this.spectrums.isEmpty () || (this.spectrums.get (0).length == 0)) {
+        if (this.spectrums == null || this.spectrums.isEmpty () || this.spectrums.get (0).length == 0) {
             throw new SoundTransformException (FluentClientErrorCode.NO_SPECTRUM_IN_INPUT, new IllegalArgumentException ());
         }
         final Sound [] input = new Sound [this.spectrums.size ()];
@@ -236,10 +253,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *            the last sample to extract
      * @return the client, with a sound imported
      * @throws SoundTransformException
-     *             if the index are out of bound
+     *             if the indexs are out of bound
      */
     @Override
-    public FluentClientSoundImported extractSubSound (int start, int end) throws SoundTransformException {
+    public FluentClientSoundImported extractSubSound (final int start, final int end) throws SoundTransformException {
         return this.apply (new SubSoundExtractSoundTransformation (start, end));
     }
 
@@ -314,7 +331,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @return the client, with a sound imported
      * @throws SoundTransformException if the sound is null or if there is a problem with the mix
      */
-    public FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException {
+    public FluentClientSoundImported mixWith (final Sound [] sound) throws SoundTransformException {
         return this.apply (new MixSoundTransformation (Arrays.<Sound []> asList (sound)));
     }
 

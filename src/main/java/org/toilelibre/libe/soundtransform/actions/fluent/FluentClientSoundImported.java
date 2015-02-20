@@ -46,6 +46,19 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientSoundImported changeFormat (InputStreamInfo inputStreamInfo) throws SoundTransformException;
 
     /**
+     * Splice a part of the sound between the sample #start and the sample #end
+     *
+     * @param start
+     *            the first sample to extract
+     * @param end
+     *            the last sample to extract
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     *             if the indexs are out of bound
+     */
+    FluentClientSoundImported cutSubSound (int start, int end) throws SoundTransformException;
+
+    /**
      * Shortcut for exportToStream ().writeToClasspathResource (resource) :
      * Conversion from a Sound to a File
      *
@@ -103,7 +116,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      *            the last sample to extract
      * @return the client, with a sound imported
      * @throws SoundTransformException
-     *             if the index are out of bound
+     *             if the indexs are out of bound
      */
     FluentClientSoundImported extractSubSound (int start, int end) throws SoundTransformException;
 

@@ -52,7 +52,7 @@ public class SpeedUpSoundTransformation<T> extends SimpleFrequencySoundTransform
 
     @Override
     public int getOffsetFromASimpleLoop (final int i, final double step) {
-        return (int) ((-i * (this.factor - 1)) / this.factor);
+        return (int) (-i * (this.factor - 1) / this.factor);
     }
 
     @Override
@@ -65,10 +65,10 @@ public class SpeedUpSoundTransformation<T> extends SimpleFrequencySoundTransform
     @Override
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset) {
         final int total = (int) (this.sound.getSamples ().length / this.factor);
-        final int logStep = (total / 100) - ((total / 100) % this.threshold);
+        final int logStep = total / 100 - total / 100 % this.threshold;
         // This if helps to only log some of all iterations to avoid being too
         // verbose
-        if (((total / 100) != 0) && (logStep != 0) && ((offset % logStep) == 0)) {
+        if (total / 100 != 0 && logStep != 0 && offset % logStep == 0) {
             this.log (new LogEvent (SpeedUpSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamples ().length * this.factor)));
         }
         if (this.writeIfGreaterEqThanFactor >= this.factor) {

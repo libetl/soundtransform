@@ -60,7 +60,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
     private final TransformInputStreamService transformInputStreamService;
     private final ConvertAudioFileService     convertAudioFileService;
 
-    public AddNoteService (Sound2NoteService sound2NoteService1, TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1) {
+    public AddNoteService (final Sound2NoteService sound2NoteService1, final TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1) {
         this.sound2NoteService = sound2NoteService1;
         this.transformInputStreamService = transformInputStreamService1;
         this.convertAudioFileService = convertAudioFileService1;

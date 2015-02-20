@@ -86,7 +86,7 @@ public class ApplicationInjector {
         throw new SoundTransformRuntimeException (new SoundTransformException (ApplicationInjectorErrorCode.INSTANTIATION_FAILED, new NullPointerException (), warnings.toString ()));
     }
 
-    private static <T> T newInstance (Constructor<T> constructor, Object [] newInstanceParams, List<String> warnings) {
+    private static <T> T newInstance (final Constructor<T> constructor, final Object [] newInstanceParams, final List<String> warnings) {
         final String warningPrefix = "Constructor " + constructor;
         try {
             return constructor.newInstance (newInstanceParams);
@@ -105,7 +105,7 @@ public class ApplicationInjector {
         return null;
     }
 
-    private static Object tryToFindABeanForClass (Class<?> class1, List<String> warnings) {
+    private static Object tryToFindABeanForClass (final Class<?> class1, final List<String> warnings) {
         try {
             return ApplicationInjector.instantiate (class1);
         } catch (final SoundTransformRuntimeException stre) {
@@ -114,7 +114,7 @@ public class ApplicationInjector {
         try {
             return ApplicationInjector.getBean (class1);
         } catch (final NoSuchResourceException nsre) {
-            warnings.add (("Could not find a bean named " + class1) == null ? null : class1 + " (" + nsre.getMessage () + ")");
+            warnings.add ("Could not find a bean named " + class1 == null ? null : class1 + " (" + nsre.getMessage () + ")");
             return null;
         }
 

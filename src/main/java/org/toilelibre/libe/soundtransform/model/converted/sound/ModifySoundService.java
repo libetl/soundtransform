@@ -23,11 +23,11 @@ public class ModifySoundService {
 
     private final SoundAppender soundAppender;
 
-    public ModifySoundService (SoundAppender soundAppender1) {
+    public ModifySoundService (final SoundAppender soundAppender1) {
         this.soundAppender = soundAppender1;
     }
 
-    public Sound [] append (Sound [] sounds1, Sound [] sounds2) throws SoundTransformException {
+    public Sound [] append (final Sound [] sounds1, final Sound [] sounds2) throws SoundTransformException {
         if (sounds1.length != sounds2.length) {
             throw new SoundTransformException (ModifySoundServiceErrorCode.DIFFERENT_NUMBER_OF_CHANNELS, new IllegalArgumentException (), sounds1.length, sounds2.length);
         }
@@ -39,11 +39,11 @@ public class ModifySoundService {
         return result;
     }
 
-    public Sound [] changeFormat (Sound [] input, InputStreamInfo inputStreamInfo) {
+    public Sound [] changeFormat (final Sound [] input, final InputStreamInfo inputStreamInfo) {
         return this.changeFormat (input, inputStreamInfo.getSampleSize (), (int) inputStreamInfo.getSampleRate ());
     }
 
-    private Sound [] changeFormat (Sound [] input, final int sampleSize, final int sampleRate) {
+    private Sound [] changeFormat (final Sound [] input, final int sampleSize, final int sampleRate) {
         final Sound [] result = new Sound [input.length];
         for (int i = 0 ; i < input.length ; i++) {
             result [i] = input [i];

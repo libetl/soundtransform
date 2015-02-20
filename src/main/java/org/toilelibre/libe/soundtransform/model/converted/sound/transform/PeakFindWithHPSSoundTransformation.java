@@ -74,11 +74,11 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
 
     private float bestCandidate (final float [] peaks) {
         int leftEdge = 0;
-        while ((leftEdge < peaks.length) && (peaks [leftEdge] <= 30)) {
+        while (leftEdge < peaks.length && peaks [leftEdge] <= 30) {
             leftEdge++;
         }
         int rightEdge = leftEdge;
-        while ((rightEdge < peaks.length) && ((Math.abs (((peaks [rightEdge] - peaks [leftEdge]) * 1.0) / peaks [rightEdge]) * 100.0) < 10)) {
+        while (rightEdge < peaks.length && Math.abs ((peaks [rightEdge] - peaks [leftEdge]) * 1.0 / peaks [rightEdge]) * 100.0 < 10) {
             rightEdge++;
         }
         int sum = 0;
@@ -127,8 +127,8 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
     @Override
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
-        final int percent = (int) Math.floor ((100.0 * (offset / this.threshold)) / (this.soundLength / this.threshold));
-        if (percent > Math.floor ((100.0 * ((offset - this.threshold) / this.threshold)) / (this.soundLength / this.threshold))) {
+        final int percent = (int) Math.floor (100.0 * (offset / this.threshold) / (this.soundLength / this.threshold));
+        if (percent > Math.floor (100.0 * ((offset - this.threshold) / this.threshold) / (this.soundLength / this.threshold))) {
             this.log (new LogEvent (PeakFindWithHPSSoundTransformationEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.threshold), (int) Math.ceil (this.soundLength / this.threshold), percent));
         }
         float f0 = 0;

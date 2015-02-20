@@ -21,7 +21,7 @@ public class MixSoundTransformation implements SoundTransformation {
         int maxlength = 0;
         final Sound [] ajustedSounds = new Sound [sounds.length + 1];
         ajustedSounds [0] = firstSound;
-        for (int i = 1 ; i < (sounds.length + 1) ; i++) {
+        for (int i = 1 ; i < sounds.length + 1 ; i++) {
             ajustedSounds [i] = this.soundAppender.changeNbBytesPerSample (this.soundAppender.resizeToSampleRate (sounds [i - 1], firstSound.getSampleRate ()), firstSound.getNbBytesPerSample ());
         }
 
