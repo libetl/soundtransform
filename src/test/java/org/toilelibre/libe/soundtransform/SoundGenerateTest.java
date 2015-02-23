@@ -14,6 +14,8 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequen
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.library.note.Note;
+import org.toilelibre.libe.soundtransform.model.library.note.PureNote;
 
 public class SoundGenerateTest extends SoundTransformTest {
 
@@ -30,7 +32,7 @@ public class SoundGenerateTest extends SoundTransformTest {
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
 
-        final InputStream ais = $.create (TransformSoundService.class).toStream (new Sound [] { s }, new InputStreamInfo (1, s.getSamples ().length, sampleInBytes * 8, samplerate, false, true));
+        final InputStream ais = $.create (TransformSoundService.class).toStream (new Sound [] { s }, new InputStreamInfo (1, s.getSamples ().length, sampleInBytes, samplerate, false, true));
         final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
         $.create (ConvertAudioFileService.class).writeInputStream (ais, fDest);
@@ -51,5 +53,15 @@ public class SoundGenerateTest extends SoundTransformTest {
         final SoundTransformation st = new SimpleFrequencySoundTransformation<Complex []> ();
         st.transform (s);
 
+    }
+
+    @Test
+    public void testWithPureNote () throws SoundTransformException {
+        final Note pureNote = new PureNote ();
+        final Sound s = pureNote.getAttack (440, 1, 8);
+        final InputStream ais = $.create (TransformSoundService.class).toStream (new Sound [] { s }, new InputStreamInfo (1, s.getSamples ().length, s.getNbBytesPerSample (), s.getSampleRate (), false, true));
+        final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+
+        $.create (ConvertAudioFileService.class).writeInputStream (ais, fDest);
     }
 }

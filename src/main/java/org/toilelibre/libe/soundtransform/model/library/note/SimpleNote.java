@@ -40,12 +40,12 @@ public class SimpleNote implements Note {
     }
 
     @Override
-    public Sound getAttack (final int frequency, final int channelnum, final float length) throws SoundTransformException {
+    public Sound getAttack (final float frequency, final int channelnum, final float length) throws SoundTransformException {
         return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.attack, channelnum), this.getPercent (frequency), this.getRatio (this.attack) * length);
     }
 
     @Override
-    public Sound getDecay (final int frequency, final int channelnum, final float length) throws SoundTransformException {
+    public Sound getDecay (final float frequency, final int channelnum, final float length) throws SoundTransformException {
         return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.decay, channelnum), this.getPercent (frequency), this.getRatio (this.decay) * length);
     }
 
@@ -59,7 +59,7 @@ public class SimpleNote implements Note {
         return this.fileName;
     }
 
-    private float getPercent (final int frequency2) {
+    private float getPercent (final float frequency2) {
         return (float) (frequency2 * 100.0 / this.frequency);
     }
 
@@ -71,12 +71,12 @@ public class SimpleNote implements Note {
     }
 
     @Override
-    public Sound getRelease (final int frequency, final int channelnum, final float length) throws SoundTransformException {
+    public Sound getRelease (final float frequency, final int channelnum, final float length) throws SoundTransformException {
         return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.release, channelnum), this.getPercent (frequency), this.getRatio (this.release) * length);
     }
 
     @Override
-    public Sound getSustain (final int frequency, final int channelnum, final float length) throws SoundTransformException {
+    public Sound getSustain (final float frequency, final int channelnum, final float length) throws SoundTransformException {
         return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.sustain, channelnum), this.getPercent (frequency), this.getRatio (this.sustain) * length);
     }
 
