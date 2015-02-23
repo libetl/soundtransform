@@ -23,5 +23,6 @@
     {
         329 : "notes/g-piano3.wav",
         293 : "notes/g-piano4.wav"
-    }
+    },
+  "org.toilelibre.libe.soundtransform.model.library.note.PureNote" : {}
 }
