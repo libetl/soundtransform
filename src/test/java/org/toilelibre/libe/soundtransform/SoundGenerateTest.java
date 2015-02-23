@@ -17,6 +17,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileServ
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
 import org.toilelibre.libe.soundtransform.model.library.note.PureNote;
+import org.toilelibre.libe.soundtransform.model.library.note.ComputedOrganNote;
 
 public class SoundGenerateTest extends SoundTransformTest {
 
@@ -59,6 +60,20 @@ public class SoundGenerateTest extends SoundTransformTest {
     @Test
     public void testWithPureNote () throws SoundTransformException {
         final Note pureNote = new PureNote ();
+        final SoundAppender soundAppender = $.select (SoundAppender.class);
+        Sound s = pureNote.getAttack (440, 1, 1);
+        s = soundAppender.append (s, pureNote.getDecay (440, 1, 1));
+        s = soundAppender.append (s, pureNote.getSustain (440, 1, 1));
+        s = soundAppender.append (s, pureNote.getRelease (440, 1, 1));
+        final InputStream ais = $.create (TransformSoundService.class).toStream (new Sound [] { s }, new InputStreamInfo (1, s.getSamples ().length, s.getNbBytesPerSample (), s.getSampleRate (), false, true));
+        final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+
+        $.create (ConvertAudioFileService.class).writeInputStream (ais, fDest);
+    }
+
+    @Test
+    public void testWithComputedOrganNote () throws SoundTransformException {
+        final Note pureNote = new ComputedOrganNote ();
         final SoundAppender soundAppender = $.select (SoundAppender.class);
         Sound s = pureNote.getAttack (440, 1, 1);
         s = soundAppender.append (s, pureNote.getDecay (440, 1, 1));
