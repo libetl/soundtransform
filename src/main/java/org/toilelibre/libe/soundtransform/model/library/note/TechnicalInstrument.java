@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.model.library.note;
 
 public enum TechnicalInstrument {
 
-    PureNote (new PureNote ()), ComputedOrganNote (new ComputedOrganNote ());
+    PureNote (new PureNote ()), ComputedOrganNote (new ComputedOrganNote ()), ComputedChordNote (new ComputedChordNote ());
 
     public static TechnicalInstrument of (String clazzName) {
         for (final TechnicalInstrument instrument : TechnicalInstrument.values ()) {

@@ -15,9 +15,10 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequen
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.library.note.ComputedChordNote;
+import org.toilelibre.libe.soundtransform.model.library.note.ComputedOrganNote;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
 import org.toilelibre.libe.soundtransform.model.library.note.PureNote;
-import org.toilelibre.libe.soundtransform.model.library.note.ComputedOrganNote;
 
 public class SoundGenerateTest extends SoundTransformTest {
 
@@ -30,7 +31,7 @@ public class SoundGenerateTest extends SoundTransformTest {
         final int samplerate = 44100;
         final long [] signal = new long [length];
         for (int j = 0 ; j < length ; j++) {
-            signal [j] = (long) (Math.sin ((j * soundfreq * 2 * Math.PI) / samplerate) * 32768.0);
+            signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
 
@@ -49,7 +50,7 @@ public class SoundGenerateTest extends SoundTransformTest {
         final int samplerate = 44100;
         final long [] signal = new long [length];
         for (int j = 0 ; j < length ; j++) {
-            signal [j] = (long) (Math.sin ((j * soundfreq * 2 * Math.PI) / samplerate) * 32768.0);
+            signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, sampleInBytes, samplerate, 1);
         final SoundTransformation st = new SimpleFrequencySoundTransformation<Complex []> ();
@@ -58,8 +59,22 @@ public class SoundGenerateTest extends SoundTransformTest {
     }
 
     @Test
-    public void testWithPureNote () throws SoundTransformException {
-        final Note pureNote = new PureNote ();
+    public void testWithChordNote () throws SoundTransformException {
+        final Note pureNote = new ComputedChordNote ();
+        final SoundAppender soundAppender = $.select (SoundAppender.class);
+        Sound s = pureNote.getAttack (270, 1, 2);
+        s = soundAppender.append (s, pureNote.getDecay (270, 1, 2));
+        s = soundAppender.append (s, pureNote.getSustain (270, 1, 2));
+        s = soundAppender.append (s, pureNote.getRelease (270, 1, 2));
+        final InputStream ais = $.create (TransformSoundService.class).toStream (new Sound [] { s }, new InputStreamInfo (1, s.getSamples ().length, s.getNbBytesPerSample (), s.getSampleRate (), false, true));
+        final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
+
+        $.create (ConvertAudioFileService.class).writeInputStream (ais, fDest);
+    }
+
+    @Test
+    public void testWithComputedOrganNote () throws SoundTransformException {
+        final Note pureNote = new ComputedOrganNote ();
         final SoundAppender soundAppender = $.select (SoundAppender.class);
         Sound s = pureNote.getAttack (440, 1, 1);
         s = soundAppender.append (s, pureNote.getDecay (440, 1, 1));
@@ -72,8 +87,8 @@ public class SoundGenerateTest extends SoundTransformTest {
     }
 
     @Test
-    public void testWithComputedOrganNote () throws SoundTransformException {
-        final Note pureNote = new ComputedOrganNote ();
+    public void testWithPureNote () throws SoundTransformException {
+        final Note pureNote = new PureNote ();
         final SoundAppender soundAppender = $.select (SoundAppender.class);
         Sound s = pureNote.getAttack (440, 1, 1);
         s = soundAppender.append (s, pureNote.getDecay (440, 1, 1));
