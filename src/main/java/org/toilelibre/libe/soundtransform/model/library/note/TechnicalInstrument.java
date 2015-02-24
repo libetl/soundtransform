@@ -2,9 +2,9 @@ package org.toilelibre.libe.soundtransform.model.library.note;
 
 public enum TechnicalInstrument {
 
-    PureNote (new PureNote ()), ComputedOrganNote (new ComputedOrganNote ()), ComputedChordNote (new ComputedChordNote ());
+    PURE_NOTE (new PureNote ()), COMPUTED_ORGAN_NOTE (new ComputedOrganNote ()), COMPUTED_CHORD_NOTE (new ComputedChordNote ());
 
-    public static TechnicalInstrument of (String clazzName) {
+    public static TechnicalInstrument of (final String clazzName) {
         for (final TechnicalInstrument instrument : TechnicalInstrument.values ()) {
             if (instrument.note.getName ().equals (clazzName)) {
                 return instrument;
@@ -15,7 +15,7 @@ public enum TechnicalInstrument {
 
     private Note note;
 
-    TechnicalInstrument (Note note1) {
+    TechnicalInstrument (final Note note1) {
         this.note = note1;
     }
 
