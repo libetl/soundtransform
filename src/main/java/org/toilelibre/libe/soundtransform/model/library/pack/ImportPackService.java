@@ -67,7 +67,7 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         this.packConfigParser = packConfigParser1;
     }
 
-    private Range fileNotes (Map<String, String> notes, String title, String instrument) throws SoundTransformException {
+    private Range fileNotes (final Map<String, String> notes, final String title, final String instrument) throws SoundTransformException {
         final Range range = new Range ();
         for (final String frequencyAsString : notes.keySet ()) {
             int frequency;
@@ -91,9 +91,12 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
             return this.technicalInstrument (title, instrument);
         }
         return this.fileNotes (notes, title, instrument);
-
     }
 
+    public Pack getAPack (final Library library, final String title) {
+        return library.getPack (title);
+    }
+    
     public void importPack (final Library library, final String title, final InputStream inputStream) throws SoundTransformException {
         final Scanner scanner = new Scanner (inputStream);
         final String content = scanner.useDelimiter ("\\Z").next ();
@@ -119,7 +122,7 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         return pack;
     }
 
-    private Range technicalInstrument (final String title, String instrument) {
+    private Range technicalInstrument (final String title, final String instrument) {
         final Range range = new Range ();
         final TechnicalInstrument technicalInstrument = TechnicalInstrument.of (instrument);
         if (technicalInstrument != null) {
@@ -132,7 +135,7 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
     }
 
     @Override
-    public ImportPackService setObservers (Observer... observers1) {
+    public ImportPackService setObservers (final Observer... observers1) {
         this.addNoteService.setObservers (observers1);
         return super.setObservers (observers1);
     }

@@ -31,6 +31,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithSpectrums {
@@ -429,6 +430,16 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
+    /**
+     * Stops the client pipeline and returns the pack whose title is in parameter
+     *
+     * @param title the title of the pack
+     * @return a pack object
+     */
+    public Pack stopWithAPack (final String title) {
+        return new ImportAPackIntoTheLibrary (this.getObservers ()).getPack (title);
+    }
+    
     @Override
     /**
      * Stops the client pipeline and returns the obtained file

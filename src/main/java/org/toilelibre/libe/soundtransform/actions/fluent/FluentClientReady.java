@@ -8,10 +8,19 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public interface FluentClientReady {
 
+    /**
+     * Stops the client pipeline and returns the pack whose title is in parameter
+     *
+     * @param title the title of the pack
+     * @return a pack object
+     */
+    Pack stopWithAPack (String title);
+    
     /**
      * Tells the client to add an observer that will be notified of different
      * kind of updates from the library. It is ok to call withAnObserver several

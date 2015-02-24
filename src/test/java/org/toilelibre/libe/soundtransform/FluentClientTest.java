@@ -14,6 +14,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightB
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class FluentClientTest extends SoundTransformTest {
@@ -39,6 +40,13 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (-100000, 200000).exportToClasspathResource ("after.wav");
     }
 
+    @Test
+    public void getDefaultPack () throws SoundTransformException {
+        final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json");
+        final Pack pack = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", packInputStream).stopWithAPack ("default");
+        Assert.assertNotNull (pack);
+    }
+    
     @Test
     public void loop () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().loop (100000).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
