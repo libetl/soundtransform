@@ -11,6 +11,7 @@ import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class SlowdownSoundTest extends SoundTransformTest {
 
@@ -20,7 +21,7 @@ public class SlowdownSoundTest extends SoundTransformTest {
         final File input = new File (classLoader.getResource ("before.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        $.create (TransformSoundService.class, new Slf4jObserver ()).transformFile (input, output, $.create (SlowdownSoundTransformation.class, 1024, 2.5f, 2048));
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (input, output, $.create (SlowdownSoundTransformation.class, 1024, 2.5f, 2048));
 
     }
 

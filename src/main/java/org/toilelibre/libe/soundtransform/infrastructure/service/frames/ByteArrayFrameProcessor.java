@@ -8,8 +8,10 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 import org.toilelibre.libe.soundtransform.model.inputstream.TransformInputStreamService.TransformInputStreamServiceErrorCode;
+import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
-public class ByteArrayFrameProcessor implements FrameProcessor {
+public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProcessor> implements FrameProcessor<AbstractLogAware<ByteArrayFrameProcessor>> {
 
     /*
      * (non-Javadoc)
@@ -75,29 +77,50 @@ public class ByteArrayFrameProcessor implements FrameProcessor {
 
     @Override
     public Sound [] fromInputStream (final InputStream ais, final InputStreamInfo isInfo) throws SoundTransformException {
-        final int channels = isInfo.getChannels ();
-        final int sampleSize = isInfo.getSampleSize ();
-        final int frameLength = (int) isInfo.getFrameLength ();
-        final Sound [] ret = new Sound [channels];
-        final long neutral = isInfo.isPcmSigned () ? this.getNeutral (sampleSize) : 0;
-        for (int channel = 0 ; channel < channels ; channel++) {
-            ret [channel] = new Sound (new long [frameLength], sampleSize, (int) isInfo.getSampleRate (), channel);
+        this.log (new LogEvent (FrameProcessorEventCode.SOUND_INIT));
+        final Sound [] ret = this.initSound (isInfo);
+        this.log (new LogEvent (FrameProcessorEventCode.READ_START));
+        this.writeSound (ais, isInfo, ret);
+        this.closeInputStream (ais);
+        this.log (new LogEvent (FrameProcessorEventCode.READ_END));
+        return ret;
+    }
+
+    private Sound [] initSound (final InputStreamInfo isInfo) {
+        final Sound [] ret = new Sound [isInfo.getChannels ()];
+        for (int channel = 0 ; channel < isInfo.getChannels () ; channel++) {
+            ret [channel] = new Sound (new long [(int) isInfo.getFrameLength ()], isInfo.getSampleSize (), (int) isInfo.getSampleRate (), channel);
         }
-        for (int position = 0 ; position < frameLength ; position++) {
-            final byte [] frame = new byte [sampleSize * channels];
+        return ret;
+    }
+
+    private void writeSound (final InputStream ais, final InputStreamInfo isInfo, final Sound [] result) throws SoundTransformException {
+        final long neutral = isInfo.isPcmSigned () ? this.getNeutral (isInfo.getSampleSize ()) : 0;
+        for (int position = 0 ; position < (int) isInfo.getFrameLength () ; position++) {
+            final byte [] frame = new byte [isInfo.getSampleSize () * isInfo.getChannels ()];
             try {
                 ais.read (frame);
             } catch (final IOException e) {
                 throw new SoundTransformException (TransformInputStreamServiceErrorCode.COULD_NOT_READ_STREAM, e);
             }
-            this.byteArrayToFrame (frame, ret, position, isInfo.isBigEndian (), isInfo.isPcmSigned (), neutral);
+            if (this.getPercent (position, isInfo.getFrameLength ()) != this.getPercent (position - 1, isInfo.getFrameLength ())) {
+                this.log (new LogEvent (FrameProcessorEventCode.BYTEARRAY_TO_FRAME_CONVERSION, position, isInfo.getFrameLength (), this.getPercent (position, isInfo.getFrameLength ())));
+            }
+            this.byteArrayToFrame (frame, result, position, isInfo.isBigEndian (), isInfo.isPcmSigned (), neutral);
         }
+    }
+
+    private int getPercent (int position, long length) {
+        return (int) Math.round (position * 100.0 / length);
+    }
+
+    private void closeInputStream (InputStream ais) throws SoundTransformException {
         try {
             ais.close ();
         } catch (final IOException e) {
             throw new SoundTransformException (TransformInputStreamServiceErrorCode.COULD_NOT_CLOSE_STREAM, e);
         }
-        return ret;
+
     }
 
     /*

@@ -124,11 +124,17 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         final TechnicalInstrument technicalInstrument = TechnicalInstrument.of (instrument);
         if (technicalInstrument != null) {
             this.log (new LogEvent (ImportPackServiceEventCode.READING_A_TECHNICAL_INSTRUMENT, title, instrument));
-            range.put (new Float (-1), technicalInstrument.getUniformNote ());
+            range.put (Float.valueOf (-1), technicalInstrument.getUniformNote ());
         }else {
             this.log (new LogEvent (ImportPackServiceEventCode.TECHNICAL_INSTRUMENT_DOES_NOT_EXIST, title, instrument));
         }
         return range;
+    }
+
+    @Override
+    public ImportPackService setObservers (Observer... observers1) {
+        this.addNoteService.setObservers (observers1);
+        return super.setObservers (observers1);
     }
 
 }

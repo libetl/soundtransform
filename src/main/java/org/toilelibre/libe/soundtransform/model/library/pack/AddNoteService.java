@@ -14,6 +14,7 @@ import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class AddNoteService extends AbstractLogAware<AddNoteService> {
 
@@ -61,10 +62,14 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
     private final ConvertAudioFileService     convertAudioFileService;
 
     public AddNoteService (final Sound2NoteService sound2NoteService1, final TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1) {
+        this (sound2NoteService1, transformInputStreamService1, convertAudioFileService1, new Observer [0]);
+    }
+    
+    public AddNoteService (final Sound2NoteService sound2NoteService1, final TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1, final Observer... observers1) {
         this.sound2NoteService = sound2NoteService1;
-        this.transformInputStreamService = transformInputStreamService1;
+        this.transformInputStreamService = transformInputStreamService1.setObservers (observers1);
         this.convertAudioFileService = convertAudioFileService1;
-
+        this.observers = observers1;
     }
 
     public void addNote (final Range range, final String fileName) throws SoundTransformException {
@@ -120,4 +125,11 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
         }
         return completeURL;
     }
+
+    @Override
+    public AddNoteService setObservers (Observer... observers1) {
+        this.transformInputStreamService.setObservers (observers1);
+        return super.setObservers (observers1);
+    }
+    
 }

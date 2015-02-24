@@ -50,17 +50,17 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
         }
     }
 
-    private final FrameProcessor    frameProcessor;
+    private final FrameProcessor<?>    frameProcessor;
     private final AudioFormatParser audioFormatParser;
 
-    public TransformInputStreamService (final FrameProcessor processor1, final AudioFormatParser parser1) {
+    public TransformInputStreamService (final FrameProcessor<?> processor1, final AudioFormatParser parser1) {
         this (processor1, parser1, new Observer [0]);
     }
 
-    public TransformInputStreamService (final FrameProcessor processor1, final AudioFormatParser parser1, final Observer... observers) {
-        this.setObservers (observers);
-        this.frameProcessor = processor1;
+    public TransformInputStreamService (final FrameProcessor<?> processor1, final AudioFormatParser parser1, final Observer... observers) {
+        this.frameProcessor = (FrameProcessor<?>) processor1.setObservers (observers);
         this.audioFormatParser = parser1;
+        this.setObservers (observers);
     }
 
     public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {
@@ -80,5 +80,12 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
 
     public byte [] soundToByteArray (final Sound [] channels, final InputStreamInfo inputStreamInfo) {
         return this.frameProcessor.framesToByteArray (channels, inputStreamInfo.getSampleSize (), inputStreamInfo.isBigEndian (), inputStreamInfo.isPcmSigned ());
+    }
+
+    @Override
+    public TransformInputStreamService setObservers (Observer... observers1) {
+        super.setObservers (observers1);
+        this.frameProcessor.setObservers (observers1);
+        return this;
     }
 }

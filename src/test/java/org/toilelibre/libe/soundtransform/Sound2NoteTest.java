@@ -20,6 +20,7 @@ import org.toilelibre.libe.soundtransform.model.library.note.Note;
 import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class Sound2NoteTest extends SoundTransformTest {
 
@@ -44,7 +45,7 @@ public class Sound2NoteTest extends SoundTransformTest {
             }
         };
         new Slf4jObserver ().notify ("Loading Packs");
-        $.create (ImportPackService.class).setObservers (new Slf4jObserver ()).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
+        $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
         final Pack pack = $.select (Library.class).getPack ("default");
         for (final String instrument : pack.keySet ()) {
             for (final Float noteKey : pack.get (instrument).keySet ()) {

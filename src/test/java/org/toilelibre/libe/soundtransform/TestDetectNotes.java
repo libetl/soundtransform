@@ -13,6 +13,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class TestDetectNotes extends SoundTransformTest {
@@ -32,7 +33,7 @@ public class TestDetectNotes extends SoundTransformTest {
         for (int i = 1100 ; i < 1600 ; i++) {
             t [i] = (float) (value + Math.random () * twopercents - twopercents / 2);
         }
-        $.create (ImportPackService.class).setObservers (new Slf4jObserver ()).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
+        $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
         new ShapeSoundTransformation ("default", "simple_piano", t, 200000, 2, 44100).setObservers (new Slf4jObserver (), new Observer () {
 
             @Override

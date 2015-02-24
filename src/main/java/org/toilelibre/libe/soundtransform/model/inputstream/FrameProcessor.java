@@ -5,9 +5,37 @@ import java.io.InputStream;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.observer.EventCode;
+import org.toilelibre.libe.soundtransform.model.observer.LogAware;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-public interface FrameProcessor {
+public interface FrameProcessor<T> extends LogAware<T> {
 
+    public enum FrameProcessorEventCode implements EventCode {
+        READ_START (LogLevel.INFO, "Starting to read the input stream"),
+        BYTEARRAY_TO_FRAME_CONVERSION (LogLevel.VERBOSE, "Converting a byte array into a sound frame (%1d/%2d, %3d%%)"),
+        READ_END (LogLevel.INFO, "Finished reading the input stream"), SOUND_INIT (LogLevel.INFO, "Converted sound allocation in memory")
+        ;
+
+        private final String messageFormat;
+        private final LogLevel logLevel;
+
+        FrameProcessorEventCode (final LogLevel ll, final String mF) {
+            this.logLevel = ll;
+            this.messageFormat = mF;
+        }
+
+        @Override
+        public String getMessageFormat () {
+            return this.messageFormat;
+        }
+
+        @Override
+        public LogLevel getLevel () {
+            return this.logLevel;
+        }
+    }
+    
     public enum FrameProcessorErrorCode implements ErrorCode {
         WRONG_TYPE ("incorrect stream type");
 
