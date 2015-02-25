@@ -6,6 +6,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ToStri
 
 public class GraphSound2StringHelper implements Sound2StringHelper {
 
+    private static final int ARBITRARY_LENGTH = 8000;
+    private static final int ARBITRARY_HEIGHT = 20;
+    
     /*
      * (non-Javadoc)
      *
@@ -16,6 +19,6 @@ public class GraphSound2StringHelper implements Sound2StringHelper {
      */
     @Override
     public String process (final Sound input) {
-        return new ToStringSoundTransformation (8000, 20).toString (input);
+        return new ToStringSoundTransformation (GraphSound2StringHelper.ARBITRARY_LENGTH, GraphSound2StringHelper.ARBITRARY_HEIGHT).toString (input);
     }
 }

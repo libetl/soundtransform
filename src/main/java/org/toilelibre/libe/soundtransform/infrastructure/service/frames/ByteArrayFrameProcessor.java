@@ -13,6 +13,9 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
 public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProcessor> implements FrameProcessor<AbstractLogAware<ByteArrayFrameProcessor>> {
 
+    private static final int MAX_BYTE_VALUE = 1 << 8;
+
+    private static final int A_HUNDRED = 100;
     /*
      * (non-Javadoc)
      *
@@ -32,7 +35,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
             final int currentChannel = !bigEndian ? j / (frame.length / sound.length) : sound.length - 1 - j / (frame.length / sound.length);
             final int numByte = j % (frame.length / sound.length);
             if (fromIndex <= toIndex) {
-                value [currentChannel] += frame [cursor] + (pcmSigned ? -Byte.MIN_VALUE : 0) << 8 * numByte;
+                value [currentChannel] += frame [cursor] + (pcmSigned ? -Byte.MIN_VALUE : 0) << Byte.SIZE * numByte;
             }
 
         }
@@ -76,7 +79,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
                 value = channels [currentChannel].getSampleAt (currentFrame) + neutral;
                 rightShift = 0;
             }
-            byteValueSigned = (byte) (((int) value >> rightShift * 8 & 0xFF) + (pcmSigned ? Byte.MIN_VALUE : 0));
+            byteValueSigned = (byte) (((int) value >> rightShift * Byte.SIZE  & MAX_BYTE_VALUE) + (pcmSigned ? Byte.MIN_VALUE : 0));
 
             data [i + (!bigEndian ? 0 : sampleSize - 2 * numByte - 1)] = byteValueSigned;
             rightShift++;
@@ -110,7 +113,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
     }
 
     private int getPercent (final int position, final long length) {
-        return (int) Math.round (position * 100.0 / length);
+        return (int) Math.round (position * ByteArrayFrameProcessor.A_HUNDRED / length);
     }
 
     private Sound [] initSound (final InputStreamInfo isInfo) {

@@ -6,13 +6,19 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class PurifySoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
+    private static final double DEFAULT_STEP_VALUE = 100;
+    private static final int    START_INDEX = 100;
+    private static final int    COEFFICIENT = 100;
+    private static final int    EXPONENT = 2;
+    
+
     public PurifySoundTransformation () {
         super ();
     }
 
     @Override
     public double getStep (final double defaultValue) {
-        return 100;
+        return PurifySoundTransformation.DEFAULT_STEP_VALUE;
     }
 
     @Override
@@ -21,14 +27,14 @@ public class PurifySoundTransformation extends SimpleFrequencySoundTransformatio
         int max = 0;
         double maxValue = 0;
         for (int j = 0 ; j < length ; j++) {
-            final double tmp = Math.sqrt (Math.pow (fs.getState () [j].getReal (), 2) + Math.pow (fs.getState () [j].getImaginary (), 2));
-            if (tmp > maxValue && j > 100 && j < fs.getSampleRate () / 2) {
+            final double tmp = Math.sqrt (Math.pow (fs.getState () [j].getReal (), PurifySoundTransformation.EXPONENT) + Math.pow (fs.getState () [j].getImaginary (), PurifySoundTransformation.EXPONENT));
+            if (tmp > maxValue && j > PurifySoundTransformation.START_INDEX && j < fs.getSampleRate () / PurifySoundTransformation.EXPONENT) {
                 max = j;
                 maxValue = tmp;
             }
         }
         for (int j = 0 ; j < powOf2NearestLength ; j++) {
-            newAmpl [j] = fs.getState () [j].multiply (Math.exp (-Math.pow (j - max, 2) / 100));
+            newAmpl [j] = fs.getState () [j].multiply (Math.exp (-Math.pow (j - max, PurifySoundTransformation.EXPONENT) / COEFFICIENT));
         }
         return new Spectrum<Complex []> (newAmpl, fs.getSampleRate (), fs.getNbBytes ());
     }

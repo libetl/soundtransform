@@ -7,20 +7,23 @@ import java.io.IOException;
 
 public class WavOutputStream extends FileOutputStream {
 
+    private final static int INTEGER_NUMBER_OF_BYTES = Integer.SIZE / Byte.SIZE;
+    private final static int BYTE_MAX_VALUE = 1 << Byte.SIZE;
+
     public WavOutputStream (final File file) throws FileNotFoundException {
         super (file);
     }
 
     private byte [] intToByteArray (final int n) {
-        final byte [] b = new byte [4];
+        final byte [] b = new byte [WavOutputStream.INTEGER_NUMBER_OF_BYTES];
         for (int i = 0 ; i < b.length ; i++) {
-            b [i] = (byte) (n >> i * 8);
+            b [i] = (byte) (n >> i * Byte.SIZE);
         }
         return b;
     }
 
     private byte [] shortToByteArray (final int i) {
-        return new byte [] { (byte) (i & 0xff), (byte) (i >> 8 & 0xff) };
+        return new byte [] { (byte) (i & BYTE_MAX_VALUE), (byte) (i >> Byte.SIZE & BYTE_MAX_VALUE) };
     }
 
     public void writeInt (final int i) throws IOException {

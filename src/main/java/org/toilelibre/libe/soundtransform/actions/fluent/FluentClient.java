@@ -35,6 +35,21 @@ import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithSpectrums {
+
+    private static final int     DEFAULT_STEP_VALUE = 100;
+    private Sound []             sounds;
+    private InputStream          audioInputStream;
+    private String               sameDirectoryAsClasspathResource;
+    private float []             freqs;
+    private File                 file;
+    private List<Spectrum<?> []> spectrums;
+    private List<Observer>       observers;
+    private int                  step;
+
+    private FluentClient () {
+        this.andAfterStart ();
+    }
+    
     public enum FluentClientErrorCode implements ErrorCode {
 
         INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE ("This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
@@ -60,18 +75,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return new FluentClient ();
     }
 
-    private Sound []             sounds;
-    private InputStream          audioInputStream;
-    private String               sameDirectoryAsClasspathResource;
-    private float []             freqs;
-    private File                 file;
-    private List<Spectrum<?> []> spectrums;
-    private List<Observer>       observers;
-
-    private FluentClient () {
-        this.andAfterStart ();
-    }
-
     @Override
     /**
      * Start over the client : reset the state and the value objects nested in the client
@@ -80,6 +83,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public FluentClientReady andAfterStart () {
         this.cleanData ();
         this.cleanObservers ();
+        this.step = FluentClient.    DEFAULT_STEP_VALUE;
         return this;
     }
 
@@ -272,7 +276,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException {
-        final PeakFindWithHPSSoundTransformation<?> peakFind = new PeakFindWithHPSSoundTransformation<Object> (100);
+        final PeakFindWithHPSSoundTransformation<?> peakFind = new PeakFindWithHPSSoundTransformation<Object> (this.step);
         new ApplySoundTransform (this.getObservers ()).apply (this.sounds, peakFind);
         this.cleanData ();
         this.freqs = peakFind.getLoudestFreqs ();

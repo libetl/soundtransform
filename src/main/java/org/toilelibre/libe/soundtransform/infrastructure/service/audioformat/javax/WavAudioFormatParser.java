@@ -20,11 +20,11 @@ public class WavAudioFormatParser implements AudioFormatParser {
     @Override
     public Object audioFormatfromInputStreamInfo (final InputStreamInfo info) {
         final int channels = info.getChannels ();
-        final int frameSize = info.getSampleSize () * 8;
+        final int sampleSizeInBits = info.getSampleSize () * Byte.SIZE;
         final double sampleRate = info.getSampleRate ();
         final boolean bigEndian = info.isBigEndian ();
         final boolean pcmSigned = info.isPcmSigned ();
-        return new AudioFormat ((float) sampleRate, frameSize, channels, pcmSigned, bigEndian);
+        return new AudioFormat ((float) sampleRate, sampleSizeInBits, channels, pcmSigned, bigEndian);
     }
 
     @Override

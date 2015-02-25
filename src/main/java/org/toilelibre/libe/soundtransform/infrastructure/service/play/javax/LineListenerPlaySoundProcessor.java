@@ -23,29 +23,7 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
     @Override
     public Object play (final InputStream ais) throws PlaySoundException {
         try {
-            if (!(ais instanceof AudioInputStream)) {
-                throw new PlaySoundException (new IllegalArgumentException ("" + ais));
-            }
-            final Line.Info linfo = new Line.Info (Clip.class);
-            final Line line = AudioSystem.getLine (linfo);
-            final Clip clip = (Clip) line;
-            clip.addLineListener (new LineListener () {
-
-                @Override
-                public void update (final LineEvent event) {
-                    final LineEvent.Type type = event.getType ();
-                    if (type == LineEvent.Type.STOP) {
-                        synchronized (clip) {
-                            clip.stop ();
-                            clip.close ();
-                            clip.notify ();
-                        }
-                    }
-
-                }
-
-            });
-            clip.open ((AudioInputStream) ais);
+            Clip clip = this.prepareClip (ais);
             clip.start ();
             synchronized (clip) {
                 while (clip.isOpen ()) {
@@ -53,11 +31,41 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
                 }
             }
             return clip;
+        } catch (final InterruptedException e) {
+            throw new PlaySoundException (e);
+        }
+    }
+
+    private Clip prepareClip (InputStream ais) throws PlaySoundException {
+        if (!(ais instanceof AudioInputStream)) {
+            throw new PlaySoundException (new IllegalArgumentException ("" + ais));
+        }
+        try {
+        final Line.Info linfo = new Line.Info (Clip.class);
+        final Line line = AudioSystem.getLine (linfo);
+        final Clip clip = (Clip) line;
+        clip.addLineListener (new LineListener () {
+
+            @Override
+            public void update (final LineEvent event) {
+                final LineEvent.Type type = event.getType ();
+                if (type == LineEvent.Type.STOP) {
+                    synchronized (clip) {
+                        clip.stop ();
+                        clip.close ();
+                        clip.notify ();
+                    }
+                }
+
+            }
+
+        });
+        clip.open ((AudioInputStream) ais);
+
+        return clip;
         } catch (final LineUnavailableException lineUnavailableException) {
             throw new PlaySoundException (lineUnavailableException);
         } catch (final IOException e) {
-            throw new PlaySoundException (e);
-        } catch (final InterruptedException e) {
             throw new PlaySoundException (e);
         }
     }

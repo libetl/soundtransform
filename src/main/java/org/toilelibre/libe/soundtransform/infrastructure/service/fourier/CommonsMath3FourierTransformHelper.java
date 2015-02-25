@@ -11,6 +11,8 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class CommonsMath3FourierTransformHelper implements FourierTransformHelper<Complex []> {
 
+    private static final float COEFFICIENT = 10.0f;
+
     private Spectrum<Complex []> forwardPartOfTheSound (final Sound sound, final double [] transformeddata) {
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         final Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
@@ -56,7 +58,7 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
             final int iterationLength = Math.min (maxlength, data.length - i);
             final double amplitude = this.writeTransformedDataAndReturnAmplitude (transformeddata, data, i, (int) step, iterationLength);
             final Spectrum<Complex []> spectrum = this.forwardPartOfTheSound (sound, transformeddata);
-            final Spectrum<Complex []> result = st.transformFrequencies (spectrum, i, maxlength, iterationLength, (float) (10.0f * Math.log10 (amplitude)));
+            final Spectrum<Complex []> result = st.transformFrequencies (spectrum, i, maxlength, iterationLength, (float) (COEFFICIENT * Math.log10 (amplitude)));
             if (result == null) {
                 continue;
             }

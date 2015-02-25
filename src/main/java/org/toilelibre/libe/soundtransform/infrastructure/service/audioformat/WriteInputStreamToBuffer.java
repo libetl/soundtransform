@@ -6,6 +6,8 @@ import java.io.InputStream;
 
 public class WriteInputStreamToBuffer {
 
+    private static final int ARBITRARY_ARRAY_LENGTH = 16384;
+
     public WriteInputStreamToBuffer () {
 
     }
@@ -14,7 +16,7 @@ public class WriteInputStreamToBuffer {
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream ();
 
         int nRead;
-        final byte [] data = new byte [16384];
+        final byte [] data = new byte [WriteInputStreamToBuffer.ARBITRARY_ARRAY_LENGTH];
         while ((nRead = is.read (data, 0, data.length)) != -1) {
             buffer.write (data, 0, nRead);
         }

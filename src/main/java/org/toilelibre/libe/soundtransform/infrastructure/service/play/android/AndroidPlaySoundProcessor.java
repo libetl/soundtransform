@@ -42,6 +42,8 @@ public class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySound
         }
     }
 
+    protected static final long ONE_SECOND = 1000;
+
     public AndroidPlaySoundProcessor () {
 
     }
@@ -72,7 +74,7 @@ public class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySound
                 while (lastFrame != audioTrack.getPlaybackHeadPosition ()) {
                     lastFrame = audioTrack.getPlaybackHeadPosition ();
                     try {
-                        Thread.sleep (1000);
+                        Thread.sleep (AndroidPlaySoundProcessor.ONE_SECOND);
                     } catch (final InterruptedException e) {
                         throw new SoundTransformRuntimeException (new PlaySoundException (new SoundTransformException (PlaySoundErrorCode.COULD_NOT_PLAY_SOUND, e)));
                     }

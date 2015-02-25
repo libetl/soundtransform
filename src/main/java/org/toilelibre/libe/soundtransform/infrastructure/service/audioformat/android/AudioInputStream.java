@@ -72,7 +72,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
 
     short readShort2 () throws IOException {
         final int i = this.read (this.shortBuffer);
-        if (i != 4) {
+        if (i != 2) {
             throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), 2, i);
         }
         return (short) this.byteArrayToShort (this.shortBuffer);

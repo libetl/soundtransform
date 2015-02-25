@@ -19,6 +19,10 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 
 public class JavazoomAudioFileHelper implements AudioFileHelper {
 
+    private static final int HIGH_SAMPLE_RATE = 48000;
+    private static final int TWO_BYTES_SAMPLE = 2 * Byte.SIZE;
+    private static final int STEREO = 2;
+
     @Override
     public InputStream getAudioInputStream (final File inputFile) throws SoundTransformException {
         File readFile = inputFile;
@@ -33,7 +37,9 @@ public class JavazoomAudioFileHelper implements AudioFileHelper {
             try {
                 final Object mpegInstance = Class.forName ("javazoom.spi.mpeg.sampled.file.MpegAudioFileReader").newInstance ();
                 ais = (AudioInputStream) mpegInstance.getClass ().getDeclaredMethod ("getAudioInputStream", InputStream.class).invoke (mpegInstance, inputFile);
-                final AudioFormat cdFormat = new AudioFormat (44100, 16, 2, true, false);
+                final AudioFormat cdFormat = new AudioFormat (JavazoomAudioFileHelper.HIGH_SAMPLE_RATE, 
+                        JavazoomAudioFileHelper.TWO_BYTES_SAMPLE, 
+                        JavazoomAudioFileHelper.STEREO, true, false);
                 final AudioInputStream decodedais = (AudioInputStream) Class.forName ("javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream").getConstructor (AudioFormat.class, AudioInputStream.class).newInstance (cdFormat, ais);
                 AudioSystem.write (decodedais, AudioFileFormat.Type.WAVE, tempFile);
                 readFile = tempFile;
