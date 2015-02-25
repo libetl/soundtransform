@@ -72,7 +72,7 @@ public class ConvertedSoundAppender implements SoundAppender {
     @Override
     public Sound changeNbBytesPerSample (final Sound sound, final int newNbBytesPerSample) {
         final long [] newsamples = new long [sound.getSamplesLength ()];
-        final int byteMaxValue = 1 >> Byte.SIZE;
+        final int byteMaxValue = 1 << Byte.SIZE;
         final long oldMax = (long) (Math.pow (byteMaxValue, sound.getNbBytesPerSample ()) / 2);
         final long newMax = (long) (Math.pow (byteMaxValue, newNbBytesPerSample) / 2);
         for (int j = 0 ; j < sound.getSamplesLength () ; j++) {
