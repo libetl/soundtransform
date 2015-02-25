@@ -35,7 +35,7 @@ public class ConvertedSoundAppender implements SoundAppender {
     public int append (final Sound origin, final int usedarraylength, final Sound otherSound) {
         final Sound resultBeforeResize = this.changeNbBytesPerSample (otherSound, origin.getNbBytesPerSample ());
         final Sound resultBeforeCopy = this.resizeToSampleRate (resultBeforeResize, origin.getSampleRate ());
-        final int lastIndex = Math.min (origin.getSamples ().length, usedarraylength + resultBeforeCopy.getSamples ().length);
+        final int lastIndex = Math.min (origin.getSamplesLength (), usedarraylength + resultBeforeCopy.getSamplesLength ());
         System.arraycopy (resultBeforeCopy.getSamples (), 0, origin.getSamples (), usedarraylength, lastIndex - usedarraylength);
         return lastIndex;
     }
@@ -43,10 +43,10 @@ public class ConvertedSoundAppender implements SoundAppender {
     @Override
     public Sound append (final Sound sound1, final Sound sound2) {
         final Sound sound2Ajusted = this.resizeToSampleRate (this.changeNbBytesPerSample (sound2, sound1.getNbBytesPerSample ()), sound1.getSampleRate ());
-        final Sound result = new Sound (new long [sound1.getSamples ().length + sound2.getSamples ().length], sound1.getNbBytesPerSample (), sound1.getSampleRate (), sound1.getChannelNum ());
+        final Sound result = new Sound (new long [sound1.getSamplesLength () + sound2.getSamplesLength ()], sound1.getNbBytesPerSample (), sound1.getSampleRate (), sound1.getChannelNum ());
 
-        System.arraycopy (sound1.getSamples (), 0, result.getSamples (), 0, sound1.getSamples ().length);
-        System.arraycopy (sound2Ajusted.getSamples (), 0, result.getSamples (), sound1.getSamples ().length, sound2Ajusted.getSamples ().length);
+        System.arraycopy (sound1.getSamples (), 0, result.getSamples (), 0, sound1.getSamplesLength ());
+        System.arraycopy (sound2Ajusted.getSamples (), 0, result.getSamples (), sound1.getSamplesLength (), sound2Ajusted.getSamplesLength ());
 
         return result;
     }
@@ -54,16 +54,11 @@ public class ConvertedSoundAppender implements SoundAppender {
     @Override
     public void appendNote (final Sound sound, final Note note, final double lastFreq, final int indexInSound, final int channelNum, final float lengthInSeconds) throws SoundTransformException {
 
-        if (lengthInSeconds < 0.6) {
-            final Sound sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds * 2);
-            this.append (sound, indexInSound, sustain);
-        } else {
-            final Sound attack = note.getAttack ((int) lastFreq, channelNum, lengthInSeconds);
-            final Sound decay = note.getDecay ((int) lastFreq, channelNum, lengthInSeconds);
-            final Sound sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds);
-            final Sound release = note.getRelease ((int) lastFreq, channelNum, lengthInSeconds);
-            this.append (sound, indexInSound, attack, decay, sustain, release);
-        }
+        final Sound attack = note.getAttack ((int) lastFreq, channelNum, lengthInSeconds);
+        final Sound decay = note.getDecay ((int) lastFreq, channelNum, lengthInSeconds);
+        final Sound sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds);
+        final Sound release = note.getRelease ((int) lastFreq, channelNum, lengthInSeconds);
+        this.append (sound, indexInSound, attack, decay, sustain, release);
     }
 
     /*
@@ -76,11 +71,11 @@ public class ConvertedSoundAppender implements SoundAppender {
      */
     @Override
     public Sound changeNbBytesPerSample (final Sound sound, final int newNbBytesPerSample) {
-        final long [] newsamples = new long [sound.getSamples ().length];
+        final long [] newsamples = new long [sound.getSamplesLength ()];
         final long oldMax = (long) (Math.pow (256, sound.getNbBytesPerSample ()) / 2);
         final long newMax = (long) (Math.pow (256, newNbBytesPerSample) / 2);
-        for (int j = 0 ; j < sound.getSamples ().length ; j++) {
-            newsamples [j] = (long) (sound.getSamples () [j] * 1.0 * newMax / oldMax);
+        for (int j = 0 ; j < sound.getSamplesLength () ; j++) {
+            newsamples [j] = (long) (sound.getSampleAt (j) * 1.0 * newMax / oldMax);
         }
         return new Sound (newsamples, newNbBytesPerSample, sound.getSampleRate (), sound.getChannelNum ());
     }
@@ -97,11 +92,11 @@ public class ConvertedSoundAppender implements SoundAppender {
     public Sound downsampleWithRatio (final Sound sound, final float ratio) {
         float appendIfGreaterThanOrEqualsRatio = 0;
         int indexResult = 0;
-        final long [] result = new long [(int) Math.ceil (sound.getSamples ().length / ratio)];
-        for (int i = 0 ; i < sound.getSamples ().length ; i++) {
+        final long [] result = new long [(int) Math.ceil (sound.getSamplesLength () / ratio)];
+        for (int i = 0 ; i < sound.getSamplesLength () ; i++) {
             if (appendIfGreaterThanOrEqualsRatio >= ratio) {
                 appendIfGreaterThanOrEqualsRatio -= ratio;
-                result [indexResult++] = sound.getSamples () [i];
+                result [indexResult++] = sound.getSampleAt (i);
             }
             appendIfGreaterThanOrEqualsRatio += 1.0;
         }
@@ -131,10 +126,10 @@ public class ConvertedSoundAppender implements SoundAppender {
     private Sound upsampleWithRatio (final Sound sound, final float ratio) {
         float appendWhileLessThanOrEqualsRatio = 0;
         int indexResult = 0;
-        final long [] result = new long [(int) Math.ceil (sound.getSamples ().length * (ratio + 1))];
-        for (int i = 0 ; i < sound.getSamples ().length ; i++) {
+        final long [] result = new long [(int) Math.ceil (sound.getSamplesLength () * (ratio + 1))];
+        for (int i = 0 ; i < sound.getSamplesLength () ; i++) {
             while (appendWhileLessThanOrEqualsRatio <= ratio) {
-                result [indexResult++] = sound.getSamples () [i];
+                result [indexResult++] = sound.getSampleAt (i);
                 appendWhileLessThanOrEqualsRatio++;
             }
             appendWhileLessThanOrEqualsRatio -= ratio;

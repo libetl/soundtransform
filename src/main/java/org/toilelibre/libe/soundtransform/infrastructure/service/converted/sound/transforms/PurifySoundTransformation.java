@@ -11,7 +11,7 @@ public class PurifySoundTransformation extends SimpleFrequencySoundTransformatio
     }
 
     @Override
-    public double getLowThreshold (final double defaultValue) {
+    public double getStep (final double defaultValue) {
         return 100;
     }
 

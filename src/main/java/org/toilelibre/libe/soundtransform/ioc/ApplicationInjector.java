@@ -114,7 +114,7 @@ public class ApplicationInjector {
         try {
             return ApplicationInjector.getBean (class1);
         } catch (final NoSuchResourceException nsre) {
-            warnings.add ("Could not find a bean named " + class1 == null ? null : class1 + " (" + nsre.getMessage () + ")");
+            warnings.add ("Could not find a bean named " + class1 + " (" + nsre.getMessage () + ")");
             return null;
         }
 

@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelpe
 
 public class CepstrumSoundTransformation<T> extends SimpleFrequencySoundTransformation<T> {
 
-    private final double                     threshold;
+    private final double                     step;
     private int []                           loudestfreqs;
     private int                              index;
     private int                              length;
@@ -22,23 +22,23 @@ public class CepstrumSoundTransformation<T> extends SimpleFrequencySoundTransfor
     }
 
     @SuppressWarnings ("unchecked")
-    public CepstrumSoundTransformation (final double threshold) {
+    public CepstrumSoundTransformation (final double step1) {
         super ();
-        this.threshold = threshold;
+        this.step = step1;
         this.spectrum2CepstrumHelper = $.select (Spectrum2CepstrumHelper.class);
         this.spectrumHelper = $.select (SpectrumHelper.class);
     }
 
     public int [] getLoudestFreqs () {
-        return this.loudestfreqs;
+        return this.loudestfreqs.clone ();
     }
 
     @Override
-    public double getLowThreshold (final double defaultValue) {
+    public double getStep (final double defaultValue) {
         if (this.length < CepstrumSoundTransformation.SHORT_SOUND_LENGTH) {
             return this.length;
         }
-        return this.threshold;
+        return this.step;
     }
 
     @Override
@@ -51,13 +51,13 @@ public class CepstrumSoundTransformation<T> extends SimpleFrequencySoundTransfor
 
     @Override
     public Sound initSound (final Sound input) {
-        this.loudestfreqs = new int [(int) (input.getSamples ().length / this.threshold) + 1];
+        this.loudestfreqs = new int [(int) (input.getSamplesLength () / this.step) + 1];
         this.index = 0;
-        this.length = input.getSamples ().length;
+        this.length = input.getSamplesLength ();
         if (this.length < CepstrumSoundTransformation.SHORT_SOUND_LENGTH) {
             this.loudestfreqs = new int [1];
         } else {
-            this.loudestfreqs = new int [(int) (input.getSamples ().length / this.threshold) + 1];
+            this.loudestfreqs = new int [(int) (input.getSamplesLength () / this.step) + 1];
         }
         return super.initSound (input);
     }

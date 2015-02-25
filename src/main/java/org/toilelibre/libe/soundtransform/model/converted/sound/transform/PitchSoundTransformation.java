@@ -16,7 +16,7 @@ public class PitchSoundTransformation implements SoundTransformation {
         if (percent == total) {
             return new Sound (sound.getSamples (), sound.getNbBytesPerSample (), sound.getSampleRate (), sound.getChannelNum ());
         }
-        final float nbSamples = sound.getSamples ().length;
+        final float nbSamples = sound.getSamplesLength ();
         final float nbFiltered = Math.abs (total * nbSamples / percent);
         final float incr = nbSamples / nbFiltered;
         final long [] data = sound.getSamples ();

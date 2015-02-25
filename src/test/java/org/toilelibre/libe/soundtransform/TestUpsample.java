@@ -30,7 +30,7 @@ public class TestUpsample extends SoundTransformTest {
             outputSounds [i] = tmp;
         }
 
-        final InputStream ais = $.create (TransformSoundService.class).toStream (outputSounds, new InputStreamInfo (outputSounds.length, outputSounds [0].getSamples ().length, 2, 44100, false, true));
+        final InputStream ais = $.create (TransformSoundService.class).toStream (outputSounds, new InputStreamInfo (outputSounds.length, outputSounds [0].getSamplesLength (), 2, 44100, false, true));
         $.create (ConvertAudioFileService.class).writeInputStream (ais, output);
 
     }
@@ -50,7 +50,7 @@ public class TestUpsample extends SoundTransformTest {
             outputSounds [i] = tmp;
         }
 
-        final InputStream ais = $.create (TransformSoundService.class).toStream (outputSounds, new InputStreamInfo (outputSounds.length, outputSounds [0].getSamples ().length, 2, 44100, false, true));
+        final InputStream ais = $.create (TransformSoundService.class).toStream (outputSounds, new InputStreamInfo (outputSounds.length, outputSounds [0].getSamplesLength (), 2, 44100, false, true));
 
         $.create (ConvertAudioFileService.class).writeInputStream (ais, output);
     }

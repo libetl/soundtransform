@@ -56,11 +56,12 @@ public class Slf4jObserver implements Observer {
 
     @Override
     public void notify (final LogEvent logEvent) {
+        if (logEvent.getLevel ().ordinal () < this.threshold.ordinal ()) {
+            return;
+        }
         final String className = this.getCallerClassName ();
         final Logger logger = LoggerFactory.getLogger (className);
-        if (logEvent.getLevel ().ordinal () >= this.threshold.ordinal ()) {
-            this.log (logger, logEvent);
-        }
+        this.log (logger, logEvent);
     }
 
     // shortcut for notify with level "info"

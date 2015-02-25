@@ -17,7 +17,7 @@ public class SimpleFrequencySoundTransformation<T> extends AbstractFrequencySoun
     }
 
     @Override
-    public double getLowThreshold (final double defaultValue) {
+    public double getStep (final double defaultValue) {
         return defaultValue;
     }
 
@@ -28,7 +28,7 @@ public class SimpleFrequencySoundTransformation<T> extends AbstractFrequencySoun
 
     @Override
     public Sound initSound (final Sound input) {
-        final long [] newdata = new long [input.getSamples ().length];
+        final long [] newdata = new long [input.getSamplesLength ()];
         return new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
     }
 

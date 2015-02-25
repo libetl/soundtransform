@@ -42,7 +42,7 @@ public class SlowdownSoundTest extends SoundTransformTest {
             new SlowdownSoundTransformation (1025, 2.5f, 2048);
             Assert.fail ();
         } catch (final SoundTransformException ste) {
-            Assert.assertEquals (ste.getErrorCode (), SlowdownSoundTransformationErrorCode.WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_THRESHOLD);
+            Assert.assertEquals (ste.getErrorCode (), SlowdownSoundTransformationErrorCode.WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_STEP);
             throw ste;
         }
     }

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
@@ -20,6 +21,7 @@ import org.toilelibre.libe.soundtransform.model.library.note.Note;
 import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
+import org.toilelibre.libe.soundtransform.model.library.pack.Range;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class Sound2NoteTest extends SoundTransformTest {
@@ -47,9 +49,9 @@ public class Sound2NoteTest extends SoundTransformTest {
         new Slf4jObserver ().notify ("Loading Packs");
         $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
         final Pack pack = $.select (Library.class).getPack ("default");
-        for (final String instrument : pack.keySet ()) {
-            for (final Float noteKey : pack.get (instrument).keySet ()) {
-                final Note n = pack.get (instrument).get (noteKey);
+        for (final Entry<String, Range> packEntry : pack.entrySet ()) {
+            for (final Entry<Float, Note> noteEntry : packEntry.getValue ().entrySet ()) {
+                final Note n = noteEntry.getValue ();
                 if (frequenciesPerSound.get (n.getName ()) != null) {
                     org.junit.Assert.assertEquals (frequenciesPerSound.get (n.getName ()).intValue (), n.getFrequency (), 0);
                     new Slf4jObserver ().notify ("f0 (" + n.getName () + ") = " + n.getFrequency ());

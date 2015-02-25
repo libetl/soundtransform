@@ -13,8 +13,8 @@ public class EqualizerSoundTransformation extends SimpleFrequencySoundTransforma
 
     public EqualizerSoundTransformation (final double [] ranges1, final double [] amplification1) {
         super ();
-        this.ranges = ranges1;
-        this.amplification = amplification1;
+        this.ranges = ranges1.clone ();
+        this.amplification = amplification1.clone ();
     }
 
     @Override

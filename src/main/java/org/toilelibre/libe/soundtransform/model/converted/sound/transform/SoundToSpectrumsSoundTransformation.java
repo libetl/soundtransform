@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class SoundToSpectrumsSoundTransformation<T> extends SimpleFrequencySoundTransformation<T> {
 
-    private int                        threshold;
+    private int                        step;
     private int                        channel;
     private final List<Spectrum<?> []> spectrums;
     private int                        index;
@@ -20,8 +20,8 @@ public class SoundToSpectrumsSoundTransformation<T> extends SimpleFrequencySound
     }
 
     @Override
-    public double getLowThreshold (final double defaultValue) {
-        return this.threshold;
+    public double getStep (final double defaultValue) {
+        return this.step;
     }
 
     public List<Spectrum<?> []> getSpectrums () {
@@ -36,8 +36,8 @@ public class SoundToSpectrumsSoundTransformation<T> extends SimpleFrequencySound
         while (input.getSampleRate () > roundedSize) {
             roundedSize *= 2;
         }
-        this.threshold = roundedSize;
-        final int spectrumsSize = (int) Math.ceil (input.getSamples ().length * 1.0 / roundedSize);
+        this.step = roundedSize;
+        final int spectrumsSize = (int) Math.ceil (input.getSamplesLength () * 1.0 / roundedSize);
         this.spectrums.add (new Spectrum [spectrumsSize]);
         return super.initSound (input);
     }

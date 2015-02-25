@@ -38,7 +38,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
         }
 
         for (int i = 0 ; i < sound.length ; i++) {
-            sound [i].getSamples () [position] = value [i] - neutral;
+            sound [i].setSampleAt (position, value [i] - neutral);
         }
     }
 
@@ -52,7 +52,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
      */
     @Override
     public byte [] framesToByteArray (final Sound [] channels, final int sampleSize, final boolean bigEndian, final boolean pcmSigned) {
-        final int length = channels.length * sampleSize * channels [0].getSamples ().length;
+        final int length = channels.length * sampleSize * channels [0].getSamplesLength ();
         final byte [] data = new byte [length];
 
         double value = 0;
@@ -63,8 +63,8 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
             final int numByte = i % sampleSize;
             final int currentChannel = i / sampleSize % channels.length;
             final int currentFrame = i / (sampleSize * channels.length);
-            if (numByte == 0 && channels [currentChannel].getSamples ().length > currentFrame) {
-                value = channels [currentChannel].getSamples () [currentFrame] + neutral;
+            if (numByte == 0 && channels [currentChannel].getSamplesLength () > currentFrame) {
+                value = channels [currentChannel].getSampleAt (currentFrame) + neutral;
                 rightShift = 0;
             }
             byteValueSigned = (byte) (((int) value >> rightShift * 8 & 0xFF) + (pcmSigned ? Byte.MIN_VALUE : 0));
@@ -99,7 +99,8 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
         for (int position = 0 ; position < (int) isInfo.getFrameLength () ; position++) {
             final byte [] frame = new byte [isInfo.getSampleSize () * isInfo.getChannels ()];
             try {
-                ais.read (frame);
+                int readFrameSize = ais.read (frame);
+                this.log (new LogEvent (FrameProcessorEventCode.READ_FRAME_SIZE, readFrameSize));
             } catch (final IOException e) {
                 throw new SoundTransformException (TransformInputStreamServiceErrorCode.COULD_NOT_READ_STREAM, e);
             }

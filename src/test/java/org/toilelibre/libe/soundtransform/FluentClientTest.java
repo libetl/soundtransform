@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Random;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Assert;
@@ -114,11 +115,12 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void testImportHPSFreqs () throws SoundTransformException {
-        final float [] freqs = new float [(int) Math.random () * 2000 + 4000];
+        final Random random = new Random ();
+        final float [] freqs = new float [random.nextInt (2000) + 4000];
         int i = 0;
         while (i < freqs.length) {
-            final int length = Math.min ((int) (Math.random () * 200 + 400), freqs.length - i);
-            final float currentFreq = (float) (Math.random () * 150) + 160;
+            final int length = Math.min ((int) (random.nextInt (200) + 400), freqs.length - i);
+            final float currentFreq = (float) (random.nextInt (150) + 160);
             for (int j = 0 ; j < length ; j++) {
                 freqs [i++] = currentFreq;
             }

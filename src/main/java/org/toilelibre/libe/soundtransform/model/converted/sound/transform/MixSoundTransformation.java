@@ -26,7 +26,7 @@ public class MixSoundTransformation implements SoundTransformation {
         }
 
         for (final Sound sound : ajustedSounds) {
-            maxlength = Math.max (maxlength, sound.getSamples ().length);
+            maxlength = Math.max (maxlength, sound.getSamplesLength ());
         }
 
         final long [] newdata = new long [maxlength];
@@ -35,8 +35,8 @@ public class MixSoundTransformation implements SoundTransformation {
         double max = 0;
         for (int i = 0 ; i < maxlength ; i++) {
             for (final Sound sound : ajustedSounds) {
-                if (sound.getSamples ().length > i) {
-                    newdata [i] += sound.getSamples () [i];
+                if (sound.getSamplesLength () > i) {
+                    newdata [i] += sound.getSampleAt (i);
                 }
             }
             max = Math.max (newdata [i], max);

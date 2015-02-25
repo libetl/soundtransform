@@ -18,7 +18,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
 
     public enum SlowdownSoundTransformationErrorCode implements ErrorCode {
 
-        WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_THRESHOLD ("Window length is lower than twice the threshold (%1i < 2 * %2i)"), WINDOW_LENGTH_IS_NOT_A_POWER_OF_2 ("Window length is not a power of 2 (%1i)");
+        WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_STEP ("Window length is lower than twice the step value (%1i < 2 * %2i)"), WINDOW_LENGTH_IS_NOT_A_POWER_OF_2 ("Window length is not a power of 2 (%1i)");
 
         private final String messageFormat;
 
@@ -57,7 +57,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
 
     private final float factor;
     private Sound       sound;
-    private final int   threshold;
+    private final int   step;
     private float       writeIfGreaterEqThan1;
     private int         additionalFrames;
     private final int   windowLength;
@@ -65,20 +65,20 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     /**
      * WARN : can fail for various reasons
      *
-     * @param threshold
+     * @param step
      *            must be > that the f0 of the sound. Else it will not fail but
      *            will produce a bad sound
      * @param factor
      *            the slowdown factor
      * @param windowLength
-     *            must be a power of 2 and must be >= 2 * threshold
+     *            must be a power of 2 and must be >= 2 * step
      * @throws SoundTransformException
      *             if the constraint about the windowLength is not met
      */
-    public SlowdownSoundTransformation (final int threshold, final float factor, final int windowLength) throws SoundTransformException {
+    public SlowdownSoundTransformation (final int step1, final float factor, final int windowLength) throws SoundTransformException {
         super ();
         this.factor = factor;
-        this.threshold = threshold;
+        this.step = step1;
         this.writeIfGreaterEqThan1 = 0;
         this.additionalFrames = 0;
         this.windowLength = windowLength;
@@ -86,8 +86,8 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     }
 
     private void checkConstructor () throws SoundTransformException {
-        if (this.windowLength < 2 * this.threshold) {
-            throw new SoundTransformException (SlowdownSoundTransformationErrorCode.WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_THRESHOLD, new IllegalArgumentException (), this.windowLength, this.threshold);
+        if (this.windowLength < 2 * this.step) {
+            throw new SoundTransformException (SlowdownSoundTransformationErrorCode.WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_STEP, new IllegalArgumentException (), this.windowLength, this.step);
         }
         if ((this.windowLength & -this.windowLength) != this.windowLength) {
             throw new SoundTransformException (SlowdownSoundTransformationErrorCode.WINDOW_LENGTH_IS_NOT_A_POWER_OF_2, new IllegalArgumentException (), this.windowLength);
@@ -99,21 +99,21 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         complexArray = fastFourierTransformer.transform (complexArray, TransformType.INVERSE);
         for (int i = start ; i < end ; i++) {
-            if (i < this.sound.getSamples ().length && i - start < complexArray.length) {
-                this.sound.getSamples () [i] = (long) complexArray [i - start].getReal ();
+            if (i < this.sound.getSamplesLength () && i - start < complexArray.length) {
+                this.sound.setSampleAt (i, (long) complexArray [i - start].getReal ());
             }
         }
 
     }
 
     @Override
-    public double getLowThreshold (final double defaultValue) {
-        return this.threshold;
+    public double getStep (final double defaultValue) {
+        return this.step;
     }
 
     @Override
     public int getOffsetFromASimpleLoop (final int i, final double step) {
-        return this.additionalFrames * this.threshold;
+        return this.additionalFrames * this.step;
     }
 
     @Override
@@ -126,25 +126,25 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
 
     @Override
     public Sound initSound (final Sound input) {
-        final long [] newdata = new long [(int) (input.getSamples ().length * this.factor)];
+        final long [] newdata = new long [(int) (input.getSamplesLength () * this.factor)];
         this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
         return this.sound;
     }
 
     @Override
     public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset) {
-        final int total = (int) (this.sound.getSamples ().length * this.factor);
-        final int logStep = total / 100 - total / 100 % this.threshold;
+        final int total = (int) (this.sound.getSamplesLength () * this.factor);
+        final int logStep = total / 100 - total / 100 % this.step;
         // This if helps to only log some of all iterations to avoid being too
         // verbose
         if (total / 100 != 0 && logStep != 0 && offset % logStep == 0) {
-            this.log (new LogEvent (SlowdownSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamples ().length / this.factor)));
+            this.log (new LogEvent (SlowdownSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamplesLength () / this.factor)));
         }
         final float remaining = (float) (this.factor - Math.floor (this.factor));
         final int padding = (int) Math.floor (this.writeIfGreaterEqThan1 + remaining);
         final int loops = (int) (this.factor + padding - 1);
         this.additionalFrames += loops;
-        final int start = offset + Math.max (0, this.getOffsetFromASimpleLoop (0, 0) - loops * this.threshold);
+        final int start = offset + Math.max (0, this.getOffsetFromASimpleLoop (0, 0) - loops * this.step);
         final int end = offset + this.getOffsetFromASimpleLoop (0, 0);
         this.copyBeginingOfSpectrumToFillTheGaps (fs, start, end);
         if (padding == 1) {

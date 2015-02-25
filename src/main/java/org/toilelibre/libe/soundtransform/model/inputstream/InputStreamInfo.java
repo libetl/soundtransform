@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class InputStreamInfo {
     public static InputStreamInfo of (final Sound [] channels) {
-        return new InputStreamInfo (channels.length, channels [0].getSamples ().length, channels [0].getNbBytesPerSample (), channels [0].getSampleRate (), false, true);
+        return new InputStreamInfo (channels.length, channels [0].getSamplesLength (), channels [0].getNbBytesPerSample (), channels [0].getSampleRate (), false, true);
     }
 
     private final int     channels;

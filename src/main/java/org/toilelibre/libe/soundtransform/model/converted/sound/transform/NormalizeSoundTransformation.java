@@ -10,7 +10,7 @@ public class NormalizeSoundTransformation implements SoundTransformation {
 
     private Sound normalize (final Sound sound) {
         final long [] data = sound.getSamples ();
-        final long [] newdata = new long [sound.getSamples ().length];
+        final long [] newdata = new long [sound.getSamplesLength ()];
         // this is the raw audio data -- no header
 
         // find the max:

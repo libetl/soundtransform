@@ -1,7 +1,9 @@
 package org.toilelibre.libe.soundtransform.model.library.pack;
 
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
@@ -58,29 +60,29 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
     private final PackConfigParser packConfigParser;
 
     public ImportPackService (final AddNoteService addNoteService1, final PackConfigParser packConfigParser1) {
-        this (addNoteService1, packConfigParser1, null);
+        this (addNoteService1, packConfigParser1, new Observer [0]);
     }
 
-    public ImportPackService (final AddNoteService addNoteService1, final PackConfigParser packConfigParser1, final Observer [] observers1) {
-        this.observers = observers1;
+    public ImportPackService (final AddNoteService addNoteService1, final PackConfigParser packConfigParser1, final Observer... observers1) {
+        this.observers = observers1.clone ();
         this.addNoteService = addNoteService1.setObservers (this.observers);
         this.packConfigParser = packConfigParser1;
     }
 
     private Range fileNotes (final Map<String, String> notes, final String title, final String instrument) throws SoundTransformException {
         final Range range = new Range ();
-        for (final String frequencyAsString : notes.keySet ()) {
+        for (final Entry<String, String> notesEntry : notes.entrySet ()) {
             int frequency;
             try {
-                frequency = Integer.parseInt (frequencyAsString);
+                frequency = Integer.parseInt (notesEntry.getKey ());
             } catch (final NumberFormatException nfe) {
-                throw new SoundTransformException (ImportPackServiceErrorCode.EXPECTED_A_FREQUENCY, nfe, frequencyAsString);
+                throw new SoundTransformException (ImportPackServiceErrorCode.EXPECTED_A_FREQUENCY, nfe, notesEntry.getKey ());
             }
-            this.log (new LogEvent (ImportPackServiceEventCode.READING_A_NOTE, title, instrument, notes.get (frequencyAsString)));
+            this.log (new LogEvent (ImportPackServiceEventCode.READING_A_NOTE, title, instrument, notesEntry.getValue ()));
             if (frequency > 0) {
-                this.addNoteService.addNote (range, notes.get (frequencyAsString), frequency);
+                this.addNoteService.addNote (range, notesEntry.getValue (), frequency);
             } else {
-                this.addNoteService.addNote (range, notes.get (frequencyAsString));
+                this.addNoteService.addNote (range, notesEntry.getValue ());
             }
         }
         return range;
@@ -98,7 +100,7 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
     }
     
     public void importPack (final Library library, final String title, final InputStream inputStream) throws SoundTransformException {
-        final Scanner scanner = new Scanner (inputStream);
+        final Scanner scanner = new Scanner (inputStream, Charset.defaultCharset ().name ());
         final String content = scanner.useDelimiter ("\\Z").next ();
         scanner.close ();
         this.importPack (library, title, content);
@@ -114,10 +116,10 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
 
     private Pack mapToPack (final String title, final Map<String, Map<String, String>> map) throws SoundTransformException {
         final Pack pack = new Pack ();
-        for (final String instrument : map.keySet ()) {
-            this.log (new LogEvent (ImportPackServiceEventCode.STARTING_ANALYSIS_OF_AN_INSTRUMENT, title, instrument));
-            pack.put (instrument, this.fillInstrument (map.get (instrument), title, instrument));
-            this.log (new LogEvent (ImportPackServiceEventCode.FINISHED_ANALYSIS_OF_AN_INSTRUMENT, title, instrument));
+        for (final Entry<String, Map<String, String>> instrument : map.entrySet ()) {
+            this.log (new LogEvent (ImportPackServiceEventCode.STARTING_ANALYSIS_OF_AN_INSTRUMENT, title, instrument.getKey ()));
+            pack.put (instrument.getKey (), this.fillInstrument (instrument.getValue (), title, instrument.getKey ()));
+            this.log (new LogEvent (ImportPackServiceEventCode.FINISHED_ANALYSIS_OF_AN_INSTRUMENT, title, instrument.getKey ()));
         }
         return pack;
     }

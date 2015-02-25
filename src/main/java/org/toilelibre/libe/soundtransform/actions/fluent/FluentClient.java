@@ -37,7 +37,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithSpectrums {
     public enum FluentClientErrorCode implements ErrorCode {
 
-        INPUT_STREAM_NOT_READY ("Input Stream not ready"), INPUT_STREAM_INFO_UNAVAILABLE ("Input Stream info not available"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE (
+        INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE (
                 "This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
 
         private final String messageFormat;
@@ -168,7 +168,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *            the last sample to cut
      * @return the client, with a sound imported
      * @throws SoundTransformException
-     *             if the indexs are out of bound
+     *             if the indexes are out of bound
      */
     @Override
     public FluentClientSoundImported cutSubSound (final int start, final int end) throws SoundTransformException {
@@ -217,9 +217,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientWithInputStream exportToStream () throws SoundTransformException {
         final InputStreamInfo currentInfo = new GetInputStreamInfo (this.getObservers ()).getInputStreamInfo (this.sounds);
-        if (currentInfo == null) {
-            throw new SoundTransformException (FluentClientErrorCode.INPUT_STREAM_INFO_UNAVAILABLE, new NullPointerException ());
-        }
         final InputStream audioInputStream1 = new ToInputStream (this.getObservers ()).toStream (this.sounds, currentInfo);
         this.cleanData ();
         this.audioInputStream = audioInputStream1;
@@ -238,7 +235,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         }
         final Sound [] input = new Sound [this.spectrums.size ()];
         for (int i = 0 ; i < input.length ; i++) {
-            input [i] = new Sound (null, this.spectrums.get (0) [0].getNbBytes (), this.spectrums.get (0) [0].getSampleRate (), i);
+            input [i] = new Sound (new long [0], this.spectrums.get (0) [0].getNbBytes (), this.spectrums.get (0) [0].getSampleRate (), i);
         }
         final Sound [] sounds1 = new ApplySoundTransform (this.getObservers ()).apply (input, new SpectrumsToSoundSoundTransformation (this.spectrums));
         this.cleanData ();
@@ -255,7 +252,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *            the last sample to extract
      * @return the client, with a sound imported
      * @throws SoundTransformException
-     *             if the indexs are out of bound
+     *             if the indexes are out of bound
      */
     @Override
     public FluentClientSoundImported extractSubSound (final int start, final int end) throws SoundTransformException {
@@ -455,7 +452,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @return loudest frequencies array
      */
     public float [] stopWithFreqs () {
-        return this.freqs;
+        return this.freqs.clone ();
     }
 
     @Override
@@ -487,7 +484,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @return a sound value object
      */
     public Sound [] stopWithSounds () {
-        return this.sounds;
+        return this.sounds.clone ();
     }
 
     @Override
@@ -603,7 +600,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientWithFreqs withFreqs (final float [] freqs1) {
         this.cleanData ();
-        this.freqs = freqs1;
+        this.freqs = freqs1.clone ();
         return this;
     }
 
@@ -631,7 +628,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientSoundImported withSounds (final Sound [] sounds1) {
         this.cleanData ();
-        this.sounds = sounds1;
+        this.sounds = sounds1.clone ();
         return this;
     }
 

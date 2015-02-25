@@ -14,7 +14,7 @@ public class ByteArrayWithAudioFormatInputStream extends ByteArrayInputStream im
     }
 
     public byte [] getAllContent () {
-        return this.buf;
+        return this.buf.clone ();
     }
 
     @Override

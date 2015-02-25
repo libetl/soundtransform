@@ -38,7 +38,7 @@ public class SpectrumsToSoundSoundTransformation implements SoundTransformation 
             @SuppressWarnings ("unchecked")
             final Sound tmpSound = ((FourierTransformHelper<Object>) this.fourierHelper).reverse ((Spectrum<Object>) spectrum);
             this.appender.append (result, length, tmpSound);
-            length += tmpSound.getSamples ().length;
+            length += tmpSound.getSamplesLength ();
         }
         return result;
     }

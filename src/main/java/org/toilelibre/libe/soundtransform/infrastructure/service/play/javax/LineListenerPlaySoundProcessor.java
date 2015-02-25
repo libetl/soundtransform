@@ -36,6 +36,7 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
                     final LineEvent.Type type = event.getType ();
                     if (type == LineEvent.Type.STOP) {
                         synchronized (clip) {
+                            clip.stop ();
                             clip.close ();
                             clip.notify ();
                         }
@@ -47,7 +48,9 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
             clip.open ((AudioInputStream) ais);
             clip.start ();
             synchronized (clip) {
-                clip.wait ();
+                while (clip.isOpen ()){
+                  clip.wait ();
+                }
             }
             return clip;
         } catch (final LineUnavailableException lineUnavailableException) {

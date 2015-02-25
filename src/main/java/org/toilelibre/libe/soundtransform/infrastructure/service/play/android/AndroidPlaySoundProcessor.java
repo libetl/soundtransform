@@ -8,14 +8,40 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundExcepti
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException.PlaySoundErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
+import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.observer.EventCode;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 
-public class AndroidPlaySoundProcessor implements PlaySoundProcessor {
+public class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundProcessor> implements PlaySoundProcessor {
 
+    public enum AndroidPlaySoundProcessorEventCode implements EventCode {
+        READ_BYTEARRAY_SIZE (LogLevel.PARANOIAC, "Byte array size read : %1d");
+
+        private final String   messageFormat;
+        private final LogLevel logLevel;
+
+        AndroidPlaySoundProcessorEventCode (final LogLevel ll, final String mF) {
+            this.messageFormat = mF;
+            this.logLevel = ll;
+        }
+
+        @Override
+        public LogLevel getLevel () {
+            return this.logLevel;
+        }
+
+        @Override
+        public String getMessageFormat () {
+            return this.messageFormat;
+        }
+    }
+    
     public AndroidPlaySoundProcessor () {
 
     }
@@ -30,7 +56,8 @@ public class AndroidPlaySoundProcessor implements PlaySoundProcessor {
         final AudioTrack audioTrack = new AudioTrack (AudioManager.STREAM_MUSIC, (int) is.getInfo ().getSampleRate (), AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, (int) is.getInfo ().getFrameLength (), AudioTrack.MODE_STATIC);
         final byte [] baSoundByteArray = new byte [(int) is.getInfo ().getFrameLength () * is.getInfo ().getSampleSize ()];
         try {
-            ais.read (baSoundByteArray);
+            final int byteArraySize = ais.read (baSoundByteArray);
+            this.log (new LogEvent (AndroidPlaySoundProcessorEventCode.READ_BYTEARRAY_SIZE, byteArraySize));
         } catch (final IOException e1) {
             throw new PlaySoundException (new SoundTransformException (PlaySoundErrorCode.COULD_NOT_PLAY_SOUND, e1));
         }

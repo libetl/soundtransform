@@ -35,19 +35,19 @@ public class SpeedUpSoundTransformation<T> extends SimpleFrequencySoundTransform
 
     private final float factor;
     private Sound       sound;
-    private final int   threshold;
+    private final int   step;
     private float       writeIfGreaterEqThanFactor;
 
-    public SpeedUpSoundTransformation (final int threshold, final float factor) {
+    public SpeedUpSoundTransformation (final int step1, final float factor) {
         super ();
         this.factor = factor;
-        this.threshold = threshold;
+        this.step = step1;
         this.writeIfGreaterEqThanFactor = 0;
     }
 
     @Override
-    public double getLowThreshold (final double defaultValue) {
-        return this.threshold;
+    public double getStep (final double defaultValue) {
+        return this.step;
     }
 
     @Override
@@ -57,19 +57,19 @@ public class SpeedUpSoundTransformation<T> extends SimpleFrequencySoundTransform
 
     @Override
     public Sound initSound (final Sound input) {
-        final long [] newdata = new long [(int) (input.getSamples ().length / this.factor)];
+        final long [] newdata = new long [(int) (input.getSamplesLength () / this.factor)];
         this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
         return this.sound;
     }
 
     @Override
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset) {
-        final int total = (int) (this.sound.getSamples ().length / this.factor);
-        final int logStep = total / 100 - total / 100 % this.threshold;
+        final int total = (int) (this.sound.getSamplesLength () / this.factor);
+        final int logStep = total / 100 - total / 100 % this.step;
         // This if helps to only log some of all iterations to avoid being too
         // verbose
         if (total / 100 != 0 && logStep != 0 && offset % logStep == 0) {
-            this.log (new LogEvent (SpeedUpSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamples ().length * this.factor)));
+            this.log (new LogEvent (SpeedUpSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamplesLength () * this.factor)));
         }
         if (this.writeIfGreaterEqThanFactor >= this.factor) {
             this.writeIfGreaterEqThanFactor -= this.factor;

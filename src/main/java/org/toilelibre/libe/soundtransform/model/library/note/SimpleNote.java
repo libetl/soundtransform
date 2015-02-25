@@ -25,7 +25,7 @@ public class SimpleNote implements Note {
             this.attack [i] = this.soundToSubSound (channels [i], attack, decay);
             this.decay [i] = this.soundToSubSound (channels [i], decay, sustain);
             this.sustain [i] = this.soundToSubSound (channels [i], sustain, release);
-            this.release [i] = this.soundToSubSound (channels [i], release, channels [i].getSamples ().length - 1);
+            this.release [i] = this.soundToSubSound (channels [i], release, channels [i].getSamplesLength () - 1);
         }
     }
 
@@ -64,9 +64,9 @@ public class SimpleNote implements Note {
     }
 
     private float getRatio (final Sound [] subsound) {
-        final float lengthOfSubsound = 1.0f * subsound [0].getSamples ().length / subsound [0].getSampleRate ();
-        final float lengthOfSound = 1.0f * this.attack [0].getSamples ().length / this.attack [0].getSampleRate () + 1.0f * this.decay [0].getSamples ().length / this.decay [0].getSampleRate () + 1.0f * this.sustain [0].getSamples ().length / this.sustain [0].getSampleRate () + 1.0f
-                * this.release [0].getSamples ().length / this.release [0].getSampleRate ();
+        final float lengthOfSubsound = 1.0f * subsound [0].getSamplesLength () / subsound [0].getSampleRate ();
+        final float lengthOfSound = 1.0f * this.attack [0].getSamplesLength () / this.attack [0].getSampleRate () + 1.0f * this.decay [0].getSamplesLength () / this.decay [0].getSampleRate () + 1.0f * this.sustain [0].getSamplesLength () / this.sustain [0].getSampleRate () + 1.0f
+                * this.release [0].getSamplesLength () / this.release [0].getSampleRate ();
         return lengthOfSubsound * 1.0f / lengthOfSound;
     }
 

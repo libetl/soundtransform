@@ -21,10 +21,10 @@ public class ToStringSoundTransformation implements SoundTransformation {
 
     @Override
     public Sound transform (final Sound input) {
-        final double compression = input.getSamples ().length / this.length;
+        final double compression = input.getSamplesLength () * 1.0 / this.length;
         this.sb = new StringBuilder ();
 
-        final float lastSample = input.getSamples ().length;
+        final float lastSample = input.getSamplesLength ();
         final long maxMagn = (long) Math.pow (256, input.getNbBytesPerSample ()) / 2;
         final int step = (int) lastSample / this.length;
         final int [] valuesOnPlot = new int [this.length];
@@ -34,8 +34,8 @@ public class ToStringSoundTransformation implements SoundTransformation {
             double maxValue = 0;
             for (int j = 0 ; j < step ; j++) {
                 final int x = i * step + j;
-                if (x < input.getSamples ().length && maxValue < input.getSamples () [x]) {
-                    maxValue = input.getSamples () [x];
+                if (x < input.getSamplesLength () && maxValue < input.getSampleAt (x)) {
+                    maxValue = input.getSampleAt (x);
                 }
             }
             if (minValuePlotted == -1 || minValuePlotted > maxValue) {
@@ -51,7 +51,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
         }
         for (int j = this.height ; j >= 0 ; j--) {
             if (j == this.height) {
-                this.sb.append ("^ ").append (new Long (maxMagn)).append (" (magnitude)\n");
+                this.sb.append ("^ ").append (Long.valueOf (maxMagn)).append (" (magnitude)\n");
                 continue;
             } else {
                 this.sb.append ("|");
@@ -71,7 +71,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
         for (int i = 0 ; i < this.length ; i++) {
             this.sb.append ("-");
         }
-        this.sb.append ("> ").append (new Integer ((int) (this.length * compression / input.getSampleRate ()))).append ("s (time)\n");
+        this.sb.append ("> ").append (Integer.valueOf ((int) (this.length * compression / input.getSampleRate ()))).append ("s (time)\n");
 
         return input;
     }

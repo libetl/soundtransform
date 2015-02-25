@@ -36,7 +36,7 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
         }
     }
 
-    private double                  threshold;
+    private double                  step;
     private float []                loudestfreqs;
     private boolean                 note;
     private int                     fsLimit;
@@ -55,20 +55,20 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
     public PeakFindWithHPSSoundTransformation (final boolean note) {
         this ();
         this.note = note;
-        this.threshold = 100;
+        this.step = 100;
         this.windowLength = -1;
         this.soundLength = -1;
     }
 
-    public PeakFindWithHPSSoundTransformation (final double threshold) {
+    public PeakFindWithHPSSoundTransformation (final double step1) {
         this ();
-        this.threshold = threshold;
+        this.step = step1;
         this.windowLength = -1;
     }
 
-    public PeakFindWithHPSSoundTransformation (final double threshold, final int windowLength) {
+    public PeakFindWithHPSSoundTransformation (final double step1, final int windowLength) {
         this ();
-        this.threshold = threshold;
+        this.step = step1;
         this.windowLength = windowLength;
     }
 
@@ -86,7 +86,7 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
             sum += peaks [i];
         }
 
-        return rightEdge == leftEdge ? sum : sum / (rightEdge - leftEdge);
+        return rightEdge == leftEdge ? sum : sum * 1.0f / (rightEdge - leftEdge);
     }
 
     public float getDetectedNoteVolume () {
@@ -94,12 +94,12 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
     }
 
     public float [] getLoudestFreqs () {
-        return this.loudestfreqs;
+        return this.loudestfreqs.clone ();
     }
 
     @Override
-    public double getLowThreshold (final double defaultValue) {
-        return this.threshold;
+    public double getStep (final double defaultValue) {
+        return this.step;
     }
 
     @Override
@@ -113,23 +113,23 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
     @Override
     public Sound initSound (final Sound input) {
         if (this.note) {
-            this.threshold = input.getSamples ().length;
-            this.fsLimit = input.getSamples ().length;
+            this.step = input.getSamplesLength ();
+            this.fsLimit = input.getSamplesLength ();
             this.loudestfreqs = new float [1];
         } else {
-            this.loudestfreqs = new float [(int) (input.getSamples ().length / this.threshold) + 1];
+            this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
             this.fsLimit = input.getSampleRate ();
         }
-        this.soundLength = input.getSamples ().length;
+        this.soundLength = input.getSamplesLength ();
         return super.initSound (input);
     }
 
     @Override
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
-        final int percent = (int) Math.floor (100.0 * (offset / this.threshold) / (this.soundLength / this.threshold));
-        if (percent > Math.floor (100.0 * ((offset - this.threshold) / this.threshold) / (this.soundLength / this.threshold))) {
-            this.log (new LogEvent (PeakFindWithHPSSoundTransformationEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.threshold), (int) Math.ceil (this.soundLength / this.threshold), percent));
+        final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.soundLength / this.step));
+        if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.soundLength / this.step))) {
+            this.log (new LogEvent (PeakFindWithHPSSoundTransformationEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.soundLength / this.step), percent));
         }
         float f0 = 0;
 
@@ -145,7 +145,7 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
         if (this.note) {
             this.detectedNoteVolume = soundLevelInDB;
         }
-        this.loudestfreqs [(int) (offset / this.threshold)] = f0;
+        this.loudestfreqs [(int) (offset / this.step)] = f0;
         return fs;
     }
 }

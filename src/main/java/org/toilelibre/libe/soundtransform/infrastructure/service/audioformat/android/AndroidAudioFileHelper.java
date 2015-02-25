@@ -16,15 +16,22 @@ public class AndroidAudioFileHelper implements AudioFileHelper {
 
     public ByteArrayInputStream convertFileToBaos (final File inputFile) throws SoundTransformException {
         final byte [] byteArray = new byte [(int) inputFile.length ()];
-        FileInputStream fileInputStream;
+        FileInputStream fileInputStream = null;
         try {
             fileInputStream = new FileInputStream (inputFile);
             fileInputStream.read (byteArray);
-            fileInputStream.close ();
         } catch (final FileNotFoundException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
         } catch (final IOException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
+        } finally {
+            try {
+                if (fileInputStream != null){
+                    fileInputStream.close ();
+                }
+            } catch (IOException e) {
+                throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CLOSE, e);
+            }            
         }
 
         return new ByteArrayInputStream (byteArray);
@@ -69,17 +76,25 @@ public class AndroidAudioFileHelper implements AudioFileHelper {
             throw new SoundTransformException (AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ, new IllegalArgumentException ());
         }
         final ByteArrayWithAudioFormatInputStream audioInputStream = (ByteArrayWithAudioFormatInputStream) ais;
+        WavOutputStream outputStream = null;
         try {
-            final WavOutputStream outputStream = new WavOutputStream (fDest);
+            outputStream = new WavOutputStream (fDest);
             new AndroidWavHelper ().writeMetadata (audioInputStream, outputStream);
             outputStream.write (audioInputStream.getAllContent ());
             outputStream.flush ();
-            audioInputStream.close ();
-            outputStream.close ();
         } catch (final FileNotFoundException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CREATE_AN_OUTPUT_FILE, e);
         } catch (final IOException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, fDest.getName ());
+        } finally {
+            try {
+                if (outputStream != null){
+                    outputStream.close ();
+                }
+                audioInputStream.close ();
+            } catch (IOException e) {
+                throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CLOSE, e);
+            }            
         }
     }
 }

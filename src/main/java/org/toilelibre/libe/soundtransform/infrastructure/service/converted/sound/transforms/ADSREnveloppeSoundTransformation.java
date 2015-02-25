@@ -7,12 +7,12 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class ADSREnveloppeSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
     private int          arraylength = 0;
-    private final double threshold;
+    private final double step;
     private double []    magnitude;
 
-    public ADSREnveloppeSoundTransformation (final double threshold1) {
+    public ADSREnveloppeSoundTransformation (final double step1) {
         super ();
-        this.threshold = threshold1;
+        this.step = step1;
     }
 
     public int computeMagnitude (final Spectrum<Complex []> fs) {
@@ -24,18 +24,18 @@ public class ADSREnveloppeSoundTransformation extends SimpleFrequencySoundTransf
     }
 
     @Override
-    public double getLowThreshold (final double defaultValue) {
-        return this.threshold;
+    public double getStep (final double defaultValue) {
+        return this.step;
     }
 
     public double [] getMagnitude () {
-        return this.magnitude;
+        return this.magnitude.clone ();
     }
 
     @Override
     public Sound initSound (final Sound input) {
         this.arraylength = 0;
-        this.magnitude = new double [(int) (input.getSamples ().length / this.threshold + 1)];
+        this.magnitude = new double [(int) (input.getSamplesLength () / this.step + 1)];
         return super.initSound (input);
     }
 

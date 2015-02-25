@@ -11,7 +11,7 @@ public interface AudioFileHelper {
     public enum AudioFileHelperErrorCode implements ErrorCode {
 
         COULD_NOT_CONVERT ("%1s could not be converted"), COULD_NOT_CREATE_A_TEMP_FILE ("Could not create a temp file"), NO_SOURCE_INPUT_STREAM ("%1s did not provide any source input stream"), NO_DEST_INPUT_STREAM ("%1s did not provide any converted input stream"), WRONG_TYPE (
-                "%1s is of wrong type"), AUDIO_FORMAT_COULD_NOT_BE_READ ("Audio format object could not be read"), COULD_NOT_CREATE_AN_OUTPUT_FILE ("Could not create an output file");
+                "%1s is of wrong type"), AUDIO_FORMAT_COULD_NOT_BE_READ ("Audio format object could not be read"), COULD_NOT_CREATE_AN_OUTPUT_FILE ("Could not create an output file"), COULD_NOT_CLOSE ("Could not close the output stream");
 
         private final String messageFormat;
 

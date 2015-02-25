@@ -38,7 +38,7 @@ public class LoopSoundTransformation implements SoundTransformation {
         }
 
         for (int i = 0 ; i < this.length ; i++) {
-            result.getSamples () [i] = input.getSamples () [i % input.getSamples ().length];
+            result.setSampleAt (i, input.getSampleAt (i % input.getSamplesLength ()));
         }
         return result;
     }

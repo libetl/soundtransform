@@ -54,7 +54,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      *            the last sample to cut
      * @return the client, with a sound imported
      * @throws SoundTransformException
-     *             if the indexs are out of bound
+     *             if the indexes are out of bound
      */
     FluentClientSoundImported cutSubSound (int start, int end) throws SoundTransformException;
 
@@ -116,7 +116,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      *            the last sample to extract
      * @return the client, with a sound imported
      * @throws SoundTransformException
-     *             if the indexs are out of bound
+     *             if the indexes are out of bound
      */
     FluentClientSoundImported extractSubSound (int start, int end) throws SoundTransformException;
 

@@ -73,7 +73,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
 
     public ShapeSoundTransformation (final String packName, final String instrument, final float [] freqs, final int soundLength1, final int nbBytesPerSample1, final int sampleRate1) {
         this (packName, instrument);
-        this.freqs = freqs;
+        this.freqs = freqs.clone ();
         this.soundLength = soundLength1;
         this.nbBytesPerSample = nbBytesPerSample1;
         this.sampleRate = sampleRate1;
@@ -95,17 +95,17 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         return Math.abs (freq1 - freq2) > freq1 * 5.0 / 100;
     }
 
-    private float [] getLoudestFreqs (final Sound sound, final int threshold) {
-        final PeakFindWithHPSSoundTransformation<?> peak = $.create (PeakFindWithHPSSoundTransformation.class, threshold, -1);
+    private float [] getLoudestFreqs (final Sound sound, final int step) {
+        final PeakFindWithHPSSoundTransformation<?> peak = $.create (PeakFindWithHPSSoundTransformation.class, step, -1);
         peak.setObservers (this.observers).transform (sound);
         return peak.getLoudestFreqs ();
     }
 
-    public Sound transform (final int threshold) throws SoundTransformException {
-        return this.transform (threshold, 1);
+    public Sound transform (final int step) throws SoundTransformException {
+        return this.transform (step, 1);
     }
 
-    public Sound transform (final int threshold, final int channelNum) throws SoundTransformException {
+    public Sound transform (final int step, final int channelNum) throws SoundTransformException {
         final Sound builtSound = new Sound (new long [this.soundLength], this.nbBytesPerSample, this.sampleRate, channelNum);
         int lastBegining = 0;
         float lastFreq = 0;
@@ -119,9 +119,9 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
             final boolean newNote = !freqChanged && !freqChangedBefore && !freqChangedBeforeBefore && freqChangedBeforeBeforeBefore && (!freqChangedFromLastNote || firstNote);
             if (i == this.freqs.length - 1 || newNote) {
                 final int endOfNoteIndex = i == this.freqs.length - 1 ? i : i - 4;
-                final float lengthInSeconds = (endOfNoteIndex - lastBegining < 1 ? this.freqs [i] * threshold : (endOfNoteIndex - 1 - lastBegining) * threshold * 1.0f) / this.sampleRate;
+                final float lengthInSeconds = (endOfNoteIndex - lastBegining < 1 ? this.freqs [i] * step : (endOfNoteIndex - 1 - lastBegining) * step * 1.0f) / this.sampleRate;
                 final Note note = this.findNote (this.freqs [endOfNoteIndex], this.sampleRate, endOfNoteIndex + 1, lastBegining + 1);
-                this.soundAppender.appendNote (builtSound, note, this.freqs [endOfNoteIndex], threshold * lastBegining, channelNum, lengthInSeconds);
+                this.soundAppender.appendNote (builtSound, note, this.freqs [endOfNoteIndex], step * lastBegining, channelNum, lengthInSeconds);
                 lastBegining = endOfNoteIndex;
                 lastFreq = this.freqs [endOfNoteIndex];
                 firstNote = false;
@@ -137,19 +137,19 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         if (this.pack == null) {
             throw new SoundTransformException (ShapeSoundTransformationErrorCode.NO_PACK_IN_PARAMETER, new NullPointerException ());
         }
-        final int threshold = 100;
+        final int step = 100;
         int channelNum = 1;
 
         this.log (new LogEvent (ShapeSoundTransformationEventCode.FINDING_LOUDEST_FREQUENCIES));
 
         if (this.freqs == null) {
-            this.soundLength = sound.getSamples ().length;
+            this.soundLength = sound.getSamplesLength ();
             this.nbBytesPerSample = sound.getNbBytesPerSample ();
             this.sampleRate = sound.getSampleRate ();
-            this.freqs = this.getLoudestFreqs (sound, threshold);
+            this.freqs = this.getLoudestFreqs (sound, step);
             channelNum = sound.getChannelNum ();
         }
-        return this.transform (threshold, channelNum);
+        return this.transform (step, channelNum);
     }
 
 }
