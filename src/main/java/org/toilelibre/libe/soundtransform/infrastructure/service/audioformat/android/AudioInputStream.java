@@ -11,8 +11,6 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public class AudioInputStream extends DataInputStream implements HasInputStreamInfo {
-    static final String DEFAULT_CHARSET_NAME = "UTF-8";
-
     public enum AudioInputStreamErrorCode implements ErrorCode {
 
         WRONG_FORMAT_READ_VALUE ("Read value has an invalid format (expected : %1d bytes, got : %2d bytes)");
@@ -29,9 +27,18 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
         }
     }
 
-    private final byte []   intBuffer   = new byte [4];
-    private final byte []   shortBuffer = new byte [2];
-    private InputStreamInfo info;
+    static final String      DEFAULT_CHARSET_NAME = "UTF-8";
+    private static final int INTEGER_BYTE_NUMBER  = Integer.SIZE / Byte.SIZE;
+    private static final int SHORT_BYTE_NUMBER    = Short.SIZE / Byte.SIZE;
+    private static final int BYTE_MAX_VALUE       = 1 << (Byte.SIZE - 1);
+    private static final int FOURTH_BYTE          = Byte.SIZE * 3;
+    private static final int THIRD_BYTE           = Byte.SIZE * 2;
+
+    private static final int SECOND_BYTE          = Byte.SIZE * 1;
+
+    private final byte []    intBuffer            = new byte [AudioInputStream.INTEGER_BYTE_NUMBER];
+    private final byte []    shortBuffer          = new byte [AudioInputStream.SHORT_BYTE_NUMBER];
+    private InputStreamInfo  info;
 
     public AudioInputStream (final File f) throws IOException {
         super (new FileInputStream (f));
@@ -42,11 +49,11 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
     }
 
     private int byteArrayToInt (final byte [] bytes) {
-        return bytes [3] << 24 | (bytes [2] & 0xFF) << 16 | (bytes [1] & 0xFF) << 8 | bytes [0] & 0xFF;
+        return (bytes [3] << AudioInputStream.FOURTH_BYTE) | ((bytes [2] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.THIRD_BYTE) | ((bytes [1] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.SECOND_BYTE) | (bytes [0] & AudioInputStream.BYTE_MAX_VALUE);
     }
 
     private int byteArrayToShort (final byte [] bytes) {
-        return (bytes [1] & 0xFF) << 8 | bytes [0] & 0xFF;
+        return ((bytes [1] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.SECOND_BYTE) | (bytes [0] & AudioInputStream.BYTE_MAX_VALUE);
     }
 
     @Override
@@ -56,7 +63,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
 
     String readFourChars () throws IOException {
         final int i = this.read (this.intBuffer);
-        if (i != 4) {
+        if (i != AudioInputStream.INTEGER_BYTE_NUMBER) {
             throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), 4, i);
         }
         return new String (this.intBuffer, AudioInputStream.DEFAULT_CHARSET_NAME);
@@ -64,7 +71,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
 
     int readInt2 () throws IOException {
         final int i = this.read (this.intBuffer);
-        if (i != 4) {
+        if (i != AudioInputStream.INTEGER_BYTE_NUMBER) {
             throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), 4, i);
         }
         return this.byteArrayToInt (this.intBuffer);
@@ -72,7 +79,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
 
     short readShort2 () throws IOException {
         final int i = this.read (this.shortBuffer);
-        if (i != 2) {
+        if (i != AudioInputStream.SHORT_BYTE_NUMBER) {
             throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), 2, i);
         }
         return (short) this.byteArrayToShort (this.shortBuffer);
