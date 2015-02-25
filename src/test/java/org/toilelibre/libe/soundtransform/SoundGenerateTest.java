@@ -76,10 +76,10 @@ public class SoundGenerateTest extends SoundTransformTest {
     public void testWithComputedOrganNote () throws SoundTransformException {
         final Note pureNote = new ComputedOrganNote ();
         final SoundAppender soundAppender = $.select (SoundAppender.class);
-        Sound s = pureNote.getAttack (440, 1, 1);
-        s = soundAppender.append (s, pureNote.getDecay (440, 1, 1));
-        s = soundAppender.append (s, pureNote.getSustain (440, 1, 1));
-        s = soundAppender.append (s, pureNote.getRelease (440, 1, 1));
+        Sound s = pureNote.getAttack (150, 1, 1);
+        s = soundAppender.append (s, pureNote.getDecay (150, 1, 1));
+        s = soundAppender.append (s, pureNote.getSustain (150, 1, 1));
+        s = soundAppender.append (s, pureNote.getRelease (150, 1, 1));
         final InputStream ais = $.create (TransformSoundService.class).toStream (new Sound [] { s }, new InputStreamInfo (1, s.getSamplesLength (), s.getNbBytesPerSample (), s.getSampleRate (), false, true));
         final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
