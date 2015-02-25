@@ -29,7 +29,6 @@ public interface FrameProcessor<T> extends LogAware<T> {
     public enum FrameProcessorEventCode implements EventCode {
         READ_START (LogLevel.INFO, "Starting to read the input stream"), BYTEARRAY_TO_FRAME_CONVERSION (LogLevel.VERBOSE, "Converting a byte array into a sound frame (%1d/%2d, %3d%%)"), READ_END (LogLevel.INFO, "Finished reading the input stream"), SOUND_INIT (LogLevel.INFO,
                 "Converted sound allocation in memory"), READ_FRAME_SIZE (LogLevel.PARANOIAC, "Read frame size : %1d");
-        ;
 
         private final String   messageFormat;
         private final LogLevel logLevel;

@@ -11,8 +11,10 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.Wri
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
-public class AndroidAudioFileHelper implements AudioFileHelper {
+public class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHelper> implements AudioFileHelper {
 
     public ByteArrayInputStream convertFileToBaos (final File inputFile) throws SoundTransformException {
         final byte [] byteArray = new byte [(int) inputFile.length ()];
@@ -30,7 +32,7 @@ public class AndroidAudioFileHelper implements AudioFileHelper {
                     fileInputStream.close ();
                 }
             } catch (final IOException e) {
-                throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CLOSE, e);
+                this.log (new LogEvent (AudioFileHelperEventCode.COULD_NOT_CLOSE));
             }
         }
 
@@ -93,7 +95,7 @@ public class AndroidAudioFileHelper implements AudioFileHelper {
                 }
                 audioInputStream.close ();
             } catch (final IOException e) {
-                throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CLOSE, e);
+                this.log (new LogEvent (AudioFileHelperEventCode.COULD_NOT_CLOSE));
             }
         }
     }
