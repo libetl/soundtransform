@@ -36,20 +36,6 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithSpectrums {
 
-    private static final int     DEFAULT_STEP_VALUE = 100;
-    private Sound []             sounds;
-    private InputStream          audioInputStream;
-    private String               sameDirectoryAsClasspathResource;
-    private float []             freqs;
-    private File                 file;
-    private List<Spectrum<?> []> spectrums;
-    private List<Observer>       observers;
-    private int                  step;
-
-    private FluentClient () {
-        this.andAfterStart ();
-    }
-    
     public enum FluentClientErrorCode implements ErrorCode {
 
         INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE ("This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
@@ -75,6 +61,22 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return new FluentClient ();
     }
 
+    private static final int     DEFAULT_STEP_VALUE = 100;
+    private Sound []             sounds;
+    private InputStream          audioInputStream;
+    private String               sameDirectoryAsClasspathResource;
+    private float []             freqs;
+    private File                 file;
+    private List<Spectrum<?> []> spectrums;
+
+    private List<Observer>       observers;
+
+    private int                  step;
+
+    private FluentClient () {
+        this.andAfterStart ();
+    }
+
     @Override
     /**
      * Start over the client : reset the state and the value objects nested in the client
@@ -83,7 +85,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public FluentClientReady andAfterStart () {
         this.cleanData ();
         this.cleanObservers ();
-        this.step = FluentClient.    DEFAULT_STEP_VALUE;
+        this.step = FluentClient.DEFAULT_STEP_VALUE;
         return this;
     }
 
@@ -233,7 +235,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException if the spectrums are in an invalid format, or if the transform to sound does not work
      */
     public FluentClientSoundImported extractSound () throws SoundTransformException {
-        if (this.spectrums == null || this.spectrums.isEmpty () || this.spectrums.get (0).length == 0) {
+        if ((this.spectrums == null) || this.spectrums.isEmpty () || (this.spectrums.get (0).length == 0)) {
             throw new SoundTransformException (FluentClientErrorCode.NO_SPECTRUM_IN_INPUT, new IllegalArgumentException ());
         }
         final Sound [] input = new Sound [this.spectrums.size ()];

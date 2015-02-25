@@ -21,7 +21,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
 
     @Override
     public Sound transform (final Sound input) {
-        final double compression = input.getSamplesLength () * 1.0 / this.length;
+        final double compression = (input.getSamplesLength () * 1.0) / this.length;
         this.sb = new StringBuilder ();
 
         final float lastSample = input.getSamplesLength ();
@@ -33,21 +33,21 @@ public class ToStringSoundTransformation implements SoundTransformation {
         for (int i = 0 ; i < valuesOnPlot.length ; i++) {
             double maxValue = 0;
             for (int j = 0 ; j < step ; j++) {
-                final int x = i * step + j;
-                if (x < input.getSamplesLength () && maxValue < input.getSampleAt (x)) {
+                final int x = (i * step) + j;
+                if ((x < input.getSamplesLength ()) && (maxValue < input.getSampleAt (x))) {
                     maxValue = input.getSampleAt (x);
                 }
             }
-            if (minValuePlotted == -1 || minValuePlotted > maxValue) {
+            if ((minValuePlotted == -1) || (minValuePlotted > maxValue)) {
                 minValuePlotted = maxValue;
             }
-            valuesOnPlot [i] = (int) (maxValue * this.height / maxMagn);
-            if (maxPlotValue < valuesOnPlot [i] && i > 0) {
+            valuesOnPlot [i] = (int) ((maxValue * this.height) / maxMagn);
+            if ((maxPlotValue < valuesOnPlot [i]) && (i > 0)) {
                 maxPlotValue = valuesOnPlot [i];
             }
         }
         for (int i = 0 ; i < valuesOnPlot.length ; i++) {
-            valuesOnPlot [i] -= minValuePlotted * this.height / maxMagn;
+            valuesOnPlot [i] -= (minValuePlotted * this.height) / maxMagn;
         }
         for (int j = this.height ; j >= 0 ; j--) {
             if (j == this.height) {
@@ -71,7 +71,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
         for (int i = 0 ; i < this.length ; i++) {
             this.sb.append ("-");
         }
-        this.sb.append ("> ").append (Integer.valueOf ((int) (this.length * compression / input.getSampleRate ()))).append ("s (time)\n");
+        this.sb.append ("> ").append (Integer.valueOf ((int) ((this.length * compression) / input.getSampleRate ()))).append ("s (time)\n");
 
         return input;
     }

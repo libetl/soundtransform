@@ -19,7 +19,7 @@ public class LinearRegressionSoundTransformation implements SoundTransformation 
         final double [] x = new double [input.getSamplesLength () / this.step];
         final double [] y = new double [input.getSamplesLength () / this.step];
         for (int i = 0 ; i < input.getSamplesLength () ; i += this.step) {
-            if (i / this.step < x.length) {
+            if ((i / this.step) < x.length) {
                 x [i / this.step] = i;
                 y [i / this.step] = input.getSampleAt (i);
             }

@@ -8,7 +8,7 @@ public class GraphSound2StringHelper implements Sound2StringHelper {
 
     private static final int ARBITRARY_LENGTH = 8000;
     private static final int ARBITRARY_HEIGHT = 20;
-    
+
     /*
      * (non-Javadoc)
      *

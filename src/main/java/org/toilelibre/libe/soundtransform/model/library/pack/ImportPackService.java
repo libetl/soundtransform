@@ -16,8 +16,6 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class ImportPackService extends AbstractLogAware<ImportPackService> {
-    private static final String DEFAULT_CHARSET_NAME = "UTF-8";
-
     public enum ImportPackServiceErrorCode implements ErrorCode {
         EXPECTED_A_FREQUENCY ("%1s is not an Integer, could not know which frequency was expected");
 
@@ -36,7 +34,7 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
     public enum ImportPackServiceEventCode implements EventCode {
         STARTING_IMPORT (LogLevel.VERBOSE, "starting the import of a pack : %1s"), STARTING_ANALYSIS_OF_AN_INSTRUMENT (LogLevel.VERBOSE, "%1s, starting the analysis of an instrument : %2s"), READING_A_NOTE (LogLevel.VERBOSE, "%1s, instrument %2s, reading a note : %3s"), FINISHED_ANALYSIS_OF_AN_INSTRUMENT (
                 LogLevel.VERBOSE, "%1s, finished the analysis of an instrument : %2s"), FINISHED_IMPORT (LogLevel.VERBOSE, "finished the import of a pack : %1s"), READING_A_TECHNICAL_INSTRUMENT (LogLevel.VERBOSE, "%1s, reading a technical instrument : %2s"), TECHNICAL_INSTRUMENT_DOES_NOT_EXIST (
-                LogLevel.WARN, "%1s, the technical instrument : %2s does not exist");
+                        LogLevel.WARN, "%1s, the technical instrument : %2s does not exist");
 
         private final String   messageFormat;
         private final LogLevel logLevel;
@@ -56,6 +54,8 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
             return this.messageFormat;
         }
     }
+
+    private static final String    DEFAULT_CHARSET_NAME = "UTF-8";
 
     private final AddNoteService   addNoteService;
     private final PackConfigParser packConfigParser;

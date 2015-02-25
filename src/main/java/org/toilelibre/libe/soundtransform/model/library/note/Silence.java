@@ -13,12 +13,12 @@ public class Silence implements Note {
 
     @Override
     public Sound getAttack (final float frequency, final int channelnum, final float lengthInSeconds) {
-        return this.generateSilence (1.0f / 4 * lengthInSeconds);
+        return this.generateSilence ((1.0f / 4) * lengthInSeconds);
     }
 
     @Override
     public Sound getDecay (final float frequency, final int channelnum, final float lengthInSeconds) {
-        return this.generateSilence (1.0f / 4 * lengthInSeconds);
+        return this.generateSilence ((1.0f / 4) * lengthInSeconds);
     }
 
     @Override
@@ -33,12 +33,12 @@ public class Silence implements Note {
 
     @Override
     public Sound getRelease (final float frequency, final int channelnum, final float lengthInSeconds) {
-        return this.generateSilence (1.0f / 4 * lengthInSeconds);
+        return this.generateSilence ((1.0f / 4) * lengthInSeconds);
     }
 
     @Override
     public Sound getSustain (final float frequency, final int channelnum, final float lengthInSeconds) {
-        return this.generateSilence (1.0f / 4 * lengthInSeconds);
+        return this.generateSilence ((1.0f / 4) * lengthInSeconds);
     }
 
 }

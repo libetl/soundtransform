@@ -23,7 +23,7 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
     @Override
     public Object play (final InputStream ais) throws PlaySoundException {
         try {
-            Clip clip = this.prepareClip (ais);
+            final Clip clip = this.prepareClip (ais);
             clip.start ();
             synchronized (clip) {
                 while (clip.isOpen ()) {
@@ -41,28 +41,28 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
             throw new PlaySoundException (new IllegalArgumentException ("" + ais));
         }
         try {
-        final Line.Info linfo = new Line.Info (Clip.class);
-        final Line line = AudioSystem.getLine (linfo);
-        final Clip clip = (Clip) line;
-        clip.addLineListener (new LineListener () {
+            final Line.Info linfo = new Line.Info (Clip.class);
+            final Line line = AudioSystem.getLine (linfo);
+            final Clip clip = (Clip) line;
+            clip.addLineListener (new LineListener () {
 
-            @Override
-            public void update (final LineEvent event) {
-                final LineEvent.Type type = event.getType ();
-                if (type == LineEvent.Type.STOP) {
-                    synchronized (clip) {
-                        clip.stop ();
-                        clip.close ();
-                        clip.notify ();
+                @Override
+                public void update (final LineEvent event) {
+                    final LineEvent.Type type = event.getType ();
+                    if (type == LineEvent.Type.STOP) {
+                        synchronized (clip) {
+                            clip.stop ();
+                            clip.close ();
+                            clip.notify ();
+                        }
                     }
+
                 }
 
-            }
+            });
+            clip.open ((AudioInputStream) ais);
 
-        });
-        clip.open ((AudioInputStream) ais);
-
-        return clip;
+            return clip;
         } catch (final LineUnavailableException lineUnavailableException) {
             throw new PlaySoundException (lineUnavailableException);
         } catch (final IOException e) {

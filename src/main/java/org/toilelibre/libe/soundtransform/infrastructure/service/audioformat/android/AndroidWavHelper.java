@@ -50,14 +50,14 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
         }
     }
 
-    private static final String RIFF                 = "RIFF";
-    private static final String WAVE                 = "WAVE";
-    private static final String FMT_                 = "fmt ";
-    private static final String LIST                 = "LIST";
-    private static final String DATA                 = "data";
-    private static final int    INFO_METADATA_SIZE   = 44;
+    private static final String RIFF               = "RIFF";
+    private static final String WAVE               = "WAVE";
+    private static final String FMT_               = "fmt ";
+    private static final String LIST               = "LIST";
+    private static final String DATA               = "data";
+    private static final int    INFO_METADATA_SIZE = 44;
 
-    private static final int    INFO_CHUNK_SIZE      = 16;
+    private static final int    INFO_CHUNK_SIZE    = 16;
 
     public AndroidWavHelper () {
 
@@ -107,7 +107,7 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
     public void writeMetadata (final ByteArrayWithAudioFormatInputStream audioInputStream, final WavOutputStream outputStream) throws IOException {
         final InputStreamInfo info = audioInputStream.getInfo ();
         final int soundInfoSize = info.getSoundInfo () == null ? 0 : info.getSoundInfo ().length ();
-        final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + soundInfoSize + info.getFrameLength () * info.getSampleSize () * info.getChannels ());
+        final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + soundInfoSize + (info.getFrameLength () * info.getSampleSize () * info.getChannels ()));
         final int chunkSize = AndroidWavHelper.INFO_CHUNK_SIZE;
         final int typeOfEncoding = 1;
         final int channels = info.getChannels ();

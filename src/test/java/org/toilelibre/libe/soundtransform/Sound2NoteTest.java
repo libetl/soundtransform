@@ -78,7 +78,7 @@ public class Sound2NoteTest extends SoundTransformTest {
 
         final Note n = $.create (Sound2NoteService.class).convert ("Piano4-E.wav", new Sound [] { f51, f52 });
         new Slf4jObserver ().notify ("e' 4 : " + n.getFrequency () + "Hz, should be around 664Hz");
-        org.junit.Assert.assertTrue (n.getFrequency () > 664 - 10 && n.getFrequency () < 664 + 10);
+        org.junit.Assert.assertTrue ((n.getFrequency () > (664 - 10)) && (n.getFrequency () < (664 + 10)));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class Sound2NoteTest extends SoundTransformTest {
 
         final Note n = $.create (Sound2NoteService.class).convert ("Piano1-C.wav", ts.fromInputStream (ais));
         new Slf4jObserver ().notify ("c' 1-line octave : " + n.getFrequency () + "Hz, should be around 261Hz");
-        org.junit.Assert.assertTrue (n.getFrequency () > 261 - 10 && n.getFrequency () < 261 + 10);
+        org.junit.Assert.assertTrue ((n.getFrequency () > (261 - 10)) && (n.getFrequency () < (261 + 10)));
     }
 
     @Test
@@ -106,7 +106,7 @@ public class Sound2NoteTest extends SoundTransformTest {
 
         final Note n = $.create (Sound2NoteService.class).convert ("Piano4-F.wav", ts.fromInputStream (ais));
         new Slf4jObserver ().notify ("f' 4 : " + n.getFrequency () + "Hz, should be around 349Hz");
-        org.junit.Assert.assertTrue (n.getFrequency () > 349 - 10 && n.getFrequency () < 349 + 10);
+        org.junit.Assert.assertTrue ((n.getFrequency () > (349 - 10)) && (n.getFrequency () < (349 + 10)));
     }
 
     @Test
@@ -116,13 +116,13 @@ public class Sound2NoteTest extends SoundTransformTest {
         final int samplerate = 44100;
         final long [] signal = new long [length];
         for (int j = 0 ; j < length ; j++) {
-            signal [j] = (long) (Math.sin (j * 440 * 2 * Math.PI / samplerate) * 32768.0);
+            signal [j] = (long) (Math.sin ((j * 440 * 2 * Math.PI) / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, 2, samplerate, 1);
         final Note n = $.create (Sound2NoteService.class).convert ("Sample A4 (440 Hz) Sound", new Sound [] { s });
 
         new Slf4jObserver ().notify ("Sample A4 (440Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
-        org.junit.Assert.assertTrue (n.getFrequency () > 440 - 10 && n.getFrequency () < 440 + 10);
+        org.junit.Assert.assertTrue ((n.getFrequency () > (440 - 10)) && (n.getFrequency () < (440 + 10)));
         new Slf4jObserver ().notify ("...acceptable");
     }
 
@@ -136,13 +136,13 @@ public class Sound2NoteTest extends SoundTransformTest {
             final int samplerate = 11025;
             final long [] signal = new long [length];
             for (int j = 0 ; j < length ; j++) {
-                signal [j] = (long) (Math.sin (j * notes [i] * 2 * Math.PI / samplerate) * 32768.0);
+                signal [j] = (long) (Math.sin ((j * notes [i] * 2 * Math.PI) / samplerate) * 32768.0);
             }
             final Sound s = new Sound (signal, 2, samplerate, 1);
             final Note n = $.create (Sound2NoteService.class).convert ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound", new Sound [] { s });
 
             new Slf4jObserver ().notify ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
-            org.junit.Assert.assertTrue (n.getFrequency () > notes [i] - 10 && n.getFrequency () < notes [i] + 10);
+            org.junit.Assert.assertTrue ((n.getFrequency () > (notes [i] - 10)) && (n.getFrequency () < (notes [i] + 10)));
             new Slf4jObserver ().notify ("...acceptable");
         }
     }

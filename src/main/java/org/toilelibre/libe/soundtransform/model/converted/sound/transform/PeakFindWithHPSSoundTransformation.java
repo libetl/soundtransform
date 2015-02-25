@@ -74,11 +74,11 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
 
     private float bestCandidate (final float [] peaks) {
         int leftEdge = 0;
-        while (leftEdge < peaks.length && peaks [leftEdge] <= 30) {
+        while ((leftEdge < peaks.length) && (peaks [leftEdge] <= 30)) {
             leftEdge++;
         }
         int rightEdge = leftEdge;
-        while (rightEdge < peaks.length && Math.abs ((peaks [rightEdge] - peaks [leftEdge]) * 1.0 / peaks [rightEdge]) * 100.0 < 10) {
+        while ((rightEdge < peaks.length) && ((Math.abs (((peaks [rightEdge] - peaks [leftEdge]) * 1.0) / peaks [rightEdge]) * 100.0) < 10)) {
             rightEdge++;
         }
         int sum = 0;
@@ -86,7 +86,7 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
             sum += peaks [i];
         }
 
-        return rightEdge == leftEdge ? sum : sum * 1.0f / (rightEdge - leftEdge);
+        return rightEdge == leftEdge ? sum : (sum * 1.0f) / (rightEdge - leftEdge);
     }
 
     public float getDetectedNoteVolume () {
@@ -127,8 +127,8 @@ public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundT
     @Override
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
-        final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.soundLength / this.step));
-        if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.soundLength / this.step))) {
+        final int percent = (int) Math.floor ((100.0 * (offset / this.step)) / (this.soundLength / this.step));
+        if (percent > Math.floor ((100.0 * ((offset - this.step) / this.step)) / (this.soundLength / this.step))) {
             this.log (new LogEvent (PeakFindWithHPSSoundTransformationEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.soundLength / this.step), percent));
         }
         float f0 = 0;

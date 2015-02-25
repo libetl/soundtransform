@@ -76,7 +76,7 @@ public class ConvertedSoundAppender implements SoundAppender {
         final long oldMax = (long) (Math.pow (byteMaxValue, sound.getNbBytesPerSample ()) / 2);
         final long newMax = (long) (Math.pow (byteMaxValue, newNbBytesPerSample) / 2);
         for (int j = 0 ; j < sound.getSamplesLength () ; j++) {
-            newsamples [j] = (long) (sound.getSampleAt (j) * 1.0 * newMax / oldMax);
+            newsamples [j] = (long) ((sound.getSampleAt (j) * 1.0 * newMax) / oldMax);
         }
         return new Sound (newsamples, newNbBytesPerSample, sound.getSampleRate (), sound.getChannelNum ());
     }
@@ -114,7 +114,7 @@ public class ConvertedSoundAppender implements SoundAppender {
      */
     @Override
     public Sound resizeToSampleRate (final Sound sound, final int newfreq) {
-        final float ratio = (float) (newfreq * 1.0 / sound.getSampleRate ());
+        final float ratio = (float) ((newfreq * 1.0) / sound.getSampleRate ());
         if (ratio > 1) {
             return this.upsampleWithRatio (sound, ratio);
         }

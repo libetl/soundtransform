@@ -37,7 +37,7 @@ public class SoundToSpectrumsSoundTransformation<T> extends SimpleFrequencySound
             roundedSize *= 2;
         }
         this.step = roundedSize;
-        final int spectrumsSize = (int) Math.ceil (input.getSamplesLength () * 1.0 / roundedSize);
+        final int spectrumsSize = (int) Math.ceil ((input.getSamplesLength () * 1.0) / roundedSize);
         this.spectrums.add (new Spectrum [spectrumsSize]);
         return super.initSound (input);
     }

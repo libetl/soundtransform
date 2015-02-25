@@ -21,17 +21,17 @@ public class TestDetectNotes extends SoundTransformTest {
     @Test
     public void test1 () throws SoundTransformException {
         final int value = 200;
-        final int twopercents = (int) (value * 5.0 / 100 - 1);
+        final int twopercents = (int) (((value * 5.0) / 100) - 1);
         final List<String> messages = new LinkedList<String> ();
         final float [] t = new float [2000];
         for (int i = 200 ; i < 600 ; i++) {
-            t [i] = (float) (value + Math.random () * twopercents - twopercents / 2);
+            t [i] = (float) ((value + (Math.random () * twopercents)) - (twopercents / 2));
         }
         for (int i = 800 ; i < 1000 ; i++) {
-            t [i] = (float) (value + Math.random () * twopercents - twopercents / 2);
+            t [i] = (float) ((value + (Math.random () * twopercents)) - (twopercents / 2));
         }
         for (int i = 1100 ; i < 1600 ; i++) {
-            t [i] = (float) (value + Math.random () * twopercents - twopercents / 2);
+            t [i] = (float) ((value + (Math.random () * twopercents)) - (twopercents / 2));
         }
         $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
         new ShapeSoundTransformation ("default", "simple_piano", t, 200000, 2, 44100).setObservers (new Slf4jObserver (), new Observer () {
