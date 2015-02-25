@@ -5,7 +5,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class EightBitsSoundTransformation implements SoundTransformation {
 
-    private int step;
+    private final int step;
 
     public EightBitsSoundTransformation (final int step) {
         this.step = step;

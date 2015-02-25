@@ -26,12 +26,12 @@ public class AndroidAudioFileHelper implements AudioFileHelper {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
         } finally {
             try {
-                if (fileInputStream != null){
+                if (fileInputStream != null) {
                     fileInputStream.close ();
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CLOSE, e);
-            }            
+            }
         }
 
         return new ByteArrayInputStream (byteArray);
@@ -88,13 +88,13 @@ public class AndroidAudioFileHelper implements AudioFileHelper {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, fDest.getName ());
         } finally {
             try {
-                if (outputStream != null){
+                if (outputStream != null) {
                     outputStream.close ();
                 }
                 audioInputStream.close ();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CLOSE, e);
-            }            
+            }
         }
     }
 }

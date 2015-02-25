@@ -26,7 +26,7 @@ public abstract class FormulaNote implements Note {
     private long [] generateLongArray (final float frequency, final int nbSamples, final float sampleRate, final int maxVal, final float startAmplitude, final float endAmplitude) {
         final long [] signal = new long [nbSamples];
         for (int j = 0 ; j < nbSamples ; j++) {
-            final float coeff = (float) (((j * endAmplitude) + ((nbSamples - j) * startAmplitude)) / (1.0 * nbSamples));
+            final float coeff = (float) ((j * endAmplitude + (nbSamples - j) * startAmplitude) / (1.0 * nbSamples));
             signal [j] = (long) (this.applyFormula (j, frequency, sampleRate) * maxVal * coeff);
         }
 
@@ -40,12 +40,12 @@ public abstract class FormulaNote implements Note {
 
     @Override
     public Sound getAttack (final float frequency, final int channelnum, final float lengthInSeconds) {
-        return this.generatePureNote (frequency, (1.0f / 10) * lengthInSeconds, channelnum, 0, 1);
+        return this.generatePureNote (frequency, 1.0f / 10 * lengthInSeconds, channelnum, 0, 1);
     }
 
     @Override
     public Sound getDecay (final float frequency, final int channelnum, final float lengthInSeconds) {
-        return this.generatePureNote (frequency, (1.0f / 5) * lengthInSeconds, channelnum, 1, 0.8f);
+        return this.generatePureNote (frequency, 1.0f / 5 * lengthInSeconds, channelnum, 1, 0.8f);
     }
 
     @Override
@@ -58,12 +58,12 @@ public abstract class FormulaNote implements Note {
 
     @Override
     public Sound getRelease (final float frequency, final int channelnum, final float lengthInSeconds) {
-        return this.generatePureNote (frequency, (1.0f / 5) * lengthInSeconds, channelnum, 0.8f, 0);
+        return this.generatePureNote (frequency, 1.0f / 5 * lengthInSeconds, channelnum, 0.8f, 0);
     }
 
     @Override
     public Sound getSustain (final float frequency, final int channelnum, final float lengthInSeconds) {
-        return this.generatePureNote (frequency, (1.0f / 2) * lengthInSeconds, channelnum, 0.8f, 0.8f);
+        return this.generatePureNote (frequency, 1.0f / 2 * lengthInSeconds, channelnum, 0.8f, 0.8f);
     }
 
 }

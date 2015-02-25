@@ -35,7 +35,8 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
 
     public enum ImportPackServiceEventCode implements EventCode {
         STARTING_IMPORT (LogLevel.VERBOSE, "starting the import of a pack : %1s"), STARTING_ANALYSIS_OF_AN_INSTRUMENT (LogLevel.VERBOSE, "%1s, starting the analysis of an instrument : %2s"), READING_A_NOTE (LogLevel.VERBOSE, "%1s, instrument %2s, reading a note : %3s"), FINISHED_ANALYSIS_OF_AN_INSTRUMENT (
-                LogLevel.VERBOSE, "%1s, finished the analysis of an instrument : %2s"), FINISHED_IMPORT (LogLevel.VERBOSE, "finished the import of a pack : %1s"), READING_A_TECHNICAL_INSTRUMENT (LogLevel.VERBOSE, "%1s, reading a technical instrument : %2s"), TECHNICAL_INSTRUMENT_DOES_NOT_EXIST (LogLevel.WARN, "%1s, the technical instrument : %2s does not exist");
+                LogLevel.VERBOSE, "%1s, finished the analysis of an instrument : %2s"), FINISHED_IMPORT (LogLevel.VERBOSE, "finished the import of a pack : %1s"), READING_A_TECHNICAL_INSTRUMENT (LogLevel.VERBOSE, "%1s, reading a technical instrument : %2s"), TECHNICAL_INSTRUMENT_DOES_NOT_EXIST (
+                LogLevel.WARN, "%1s, the technical instrument : %2s does not exist");
 
         private final String   messageFormat;
         private final LogLevel logLevel;
@@ -98,7 +99,7 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
     public Pack getAPack (final Library library, final String title) {
         return library.getPack (title);
     }
-    
+
     public void importPack (final Library library, final String title, final InputStream inputStream) throws SoundTransformException {
         final Scanner scanner = new Scanner (inputStream, Charset.defaultCharset ().name ());
         final String content = scanner.useDelimiter ("\\Z").next ();
@@ -124,22 +125,22 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         return pack;
     }
 
+    @Override
+    public ImportPackService setObservers (final Observer... observers1) {
+        this.addNoteService.setObservers (observers1);
+        return super.setObservers (observers1);
+    }
+
     private Range technicalInstrument (final String title, final String instrument) {
         final Range range = new Range ();
         final TechnicalInstrument technicalInstrument = TechnicalInstrument.of (instrument);
         if (technicalInstrument != null) {
             this.log (new LogEvent (ImportPackServiceEventCode.READING_A_TECHNICAL_INSTRUMENT, title, instrument));
             range.put (Float.valueOf (-1), technicalInstrument.getUniformNote ());
-        }else {
+        } else {
             this.log (new LogEvent (ImportPackServiceEventCode.TECHNICAL_INSTRUMENT_DOES_NOT_EXIST, title, instrument));
         }
         return range;
-    }
-
-    @Override
-    public ImportPackService setObservers (final Observer... observers1) {
-        this.addNoteService.setObservers (observers1);
-        return super.setObservers (observers1);
     }
 
 }

@@ -64,7 +64,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
     public AddNoteService (final Sound2NoteService sound2NoteService1, final TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1) {
         this (sound2NoteService1, transformInputStreamService1, convertAudioFileService1, new Observer [0]);
     }
-    
+
     public AddNoteService (final Sound2NoteService sound2NoteService1, final TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1, final Observer... observers1) {
         this.sound2NoteService = sound2NoteService1;
         this.transformInputStreamService = transformInputStreamService1.setObservers (observers1);
@@ -127,9 +127,9 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
     }
 
     @Override
-    public AddNoteService setObservers (Observer... observers1) {
+    public AddNoteService setObservers (final Observer... observers1) {
         this.transformInputStreamService.setObservers (observers1);
         return super.setObservers (observers1);
     }
-    
+
 }

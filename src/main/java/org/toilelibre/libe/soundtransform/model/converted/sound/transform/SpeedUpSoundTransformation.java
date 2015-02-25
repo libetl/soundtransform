@@ -46,13 +46,13 @@ public class SpeedUpSoundTransformation<T> extends SimpleFrequencySoundTransform
     }
 
     @Override
-    public double getStep (final double defaultValue) {
-        return this.step;
+    public int getOffsetFromASimpleLoop (final int i, final double step) {
+        return (int) (-i * (this.factor - 1) / this.factor);
     }
 
     @Override
-    public int getOffsetFromASimpleLoop (final int i, final double step) {
-        return (int) (-i * (this.factor - 1) / this.factor);
+    public double getStep (final double defaultValue) {
+        return this.step;
     }
 
     @Override

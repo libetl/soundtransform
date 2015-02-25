@@ -41,7 +41,7 @@ public class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySound
             return this.messageFormat;
         }
     }
-    
+
     public AndroidPlaySoundProcessor () {
 
     }

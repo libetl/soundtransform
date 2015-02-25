@@ -48,8 +48,8 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
             clip.open ((AudioInputStream) ais);
             clip.start ();
             synchronized (clip) {
-                while (clip.isOpen ()){
-                  clip.wait ();
+                while (clip.isOpen ()) {
+                    clip.wait ();
                 }
             }
             return clip;

@@ -17,13 +17,13 @@ public class SimpleFrequencySoundTransformation<T> extends AbstractFrequencySoun
     }
 
     @Override
-    public double getStep (final double defaultValue) {
-        return defaultValue;
+    public int getOffsetFromASimpleLoop (final int i, final double step) {
+        return 0;
     }
 
     @Override
-    public int getOffsetFromASimpleLoop (final int i, final double step) {
-        return 0;
+    public double getStep (final double defaultValue) {
+        return defaultValue;
     }
 
     @Override

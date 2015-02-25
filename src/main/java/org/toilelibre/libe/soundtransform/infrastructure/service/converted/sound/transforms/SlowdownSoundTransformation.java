@@ -107,13 +107,13 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     }
 
     @Override
-    public double getStep (final double defaultValue) {
-        return this.step;
+    public int getOffsetFromASimpleLoop (final int i, final double step) {
+        return this.additionalFrames * this.step;
     }
 
     @Override
-    public int getOffsetFromASimpleLoop (final int i, final double step) {
-        return this.additionalFrames * this.step;
+    public double getStep (final double defaultValue) {
+        return this.step;
     }
 
     @Override

@@ -52,24 +52,24 @@ public class Sound implements Cloneable {
         return this.nbBytesPerSample;
     }
 
-    public int getSampleRate () {
-        return this.sampleRate;
-    }
-
     public long getSampleAt (final int i) {
         return this.samples [i];
     }
 
-    public void setSampleAt (final int i, final long value) {
-        this.samples [i] = value;
+    public int getSampleRate () {
+        return this.sampleRate;
     }
-    
+
     public long [] getSamples () {
         return this.samples;
     }
 
-    public int getSamplesLength (){
+    public int getSamplesLength () {
         return this.samples.length;
+    }
+
+    public void setSampleAt (final int i, final long value) {
+        this.samples [i] = value;
     }
 
     @Override

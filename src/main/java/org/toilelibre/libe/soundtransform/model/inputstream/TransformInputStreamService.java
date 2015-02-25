@@ -50,7 +50,7 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
         }
     }
 
-    private final FrameProcessor<?>    frameProcessor;
+    private final FrameProcessor<?> frameProcessor;
     private final AudioFormatParser audioFormatParser;
 
     public TransformInputStreamService (final FrameProcessor<?> processor1, final AudioFormatParser parser1) {
@@ -78,14 +78,14 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
         return this.audioFormatParser.getInputStreamInfo (ais);
     }
 
-    public byte [] soundToByteArray (final Sound [] channels, final InputStreamInfo inputStreamInfo) {
-        return this.frameProcessor.framesToByteArray (channels, inputStreamInfo.getSampleSize (), inputStreamInfo.isBigEndian (), inputStreamInfo.isPcmSigned ());
-    }
-
     @Override
-    public TransformInputStreamService setObservers (Observer... observers1) {
+    public TransformInputStreamService setObservers (final Observer... observers1) {
         super.setObservers (observers1);
         this.frameProcessor.setObservers (observers1);
         return this;
+    }
+
+    public byte [] soundToByteArray (final Sound [] channels, final InputStreamInfo inputStreamInfo) {
+        return this.frameProcessor.framesToByteArray (channels, inputStreamInfo.getSampleSize (), inputStreamInfo.isBigEndian (), inputStreamInfo.isPcmSigned ());
     }
 }

@@ -50,16 +50,16 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
             return this.messageFormat;
         }
     }
-    
-    private static final String RIFF               = "RIFF";
-    private static final String WAVE               = "WAVE";
-    private static final String FMT_               = "fmt ";
-    private static final String LIST               = "LIST";
-    private static final String DATA               = "data";
-    static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset ().name ();
-    private static final int    INFO_METADATA_SIZE = 44;
 
-    private static final int    INFO_CHUNK_SIZE    = 16;
+    private static final String RIFF                 = "RIFF";
+    private static final String WAVE                 = "WAVE";
+    private static final String FMT_                 = "fmt ";
+    private static final String LIST                 = "LIST";
+    private static final String DATA                 = "data";
+    static final String         DEFAULT_CHARSET_NAME = Charset.defaultCharset ().name ();
+    private static final int    INFO_METADATA_SIZE   = 44;
+
+    private static final int    INFO_CHUNK_SIZE      = 16;
 
     public AndroidWavHelper () {
 

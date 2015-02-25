@@ -26,6 +26,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
             return this.messageFormat;
         }
     }
+
     private final byte []   intBuffer   = new byte [4];
     private final byte []   shortBuffer = new byte [2];
     private InputStreamInfo info;
@@ -52,28 +53,25 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
     }
 
     String readFourChars () throws IOException {
-        int i = this.read (this.intBuffer);
-        if (i != 4){
-            throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, 
-                    new IllegalArgumentException (), 4, i);
+        final int i = this.read (this.intBuffer);
+        if (i != 4) {
+            throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), 4, i);
         }
         return new String (this.intBuffer, AndroidWavHelper.DEFAULT_CHARSET_NAME);
     }
 
     int readInt2 () throws IOException {
-        int i = this.read (this.intBuffer);
-        if (i != 4){
-            throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, 
-                    new IllegalArgumentException (), 4, i);
+        final int i = this.read (this.intBuffer);
+        if (i != 4) {
+            throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), 4, i);
         }
         return this.byteArrayToInt (this.intBuffer);
     }
 
     short readShort2 () throws IOException {
-        int i = this.read (this.shortBuffer);
-        if (i != 4){
-            throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, 
-                    new IllegalArgumentException (), 2, i);
+        final int i = this.read (this.shortBuffer);
+        if (i != 4) {
+            throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), 2, i);
         }
         return (short) this.byteArrayToShort (this.shortBuffer);
     }

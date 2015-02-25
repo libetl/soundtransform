@@ -47,7 +47,7 @@ public class FluentClientTest extends SoundTransformTest {
         final Pack pack = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", packInputStream).stopWithAPack ("default");
         Assert.assertNotNull (pack);
     }
-    
+
     @Test
     public void loop () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().loop (100000).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
@@ -119,8 +119,8 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] freqs = new float [random.nextInt (2000) + 4000];
         int i = 0;
         while (i < freqs.length) {
-            final int length = Math.min ((int) (random.nextInt (200) + 400), freqs.length - i);
-            final float currentFreq = (float) (random.nextInt (150) + 160);
+            final int length = Math.min (random.nextInt (200) + 400, freqs.length - i);
+            final float currentFreq = random.nextInt (150) + 160;
             for (int j = 0 ; j < length ; j++) {
                 freqs [i++] = currentFreq;
             }

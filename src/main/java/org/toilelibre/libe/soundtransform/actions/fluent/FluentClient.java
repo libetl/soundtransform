@@ -37,8 +37,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithSpectrums {
     public enum FluentClientErrorCode implements ErrorCode {
 
-        INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE (
-                "This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
+        INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE ("This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
 
         private final String messageFormat;
 
@@ -428,15 +427,18 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     /**
-     * Stops the client pipeline and returns the pack whose title is in parameter
+     * Stops the client pipeline and returns the pack whose title is in
+     * parameter
      *
-     * @param title the title of the pack
+     * @param title
+     *            the title of the pack
      * @return a pack object
      */
+    @Override
     public Pack stopWithAPack (final String title) {
         return new ImportAPackIntoTheLibrary (this.getObservers ()).getPack (title);
     }
-    
+
     @Override
     /**
      * Stops the client pipeline and returns the obtained file

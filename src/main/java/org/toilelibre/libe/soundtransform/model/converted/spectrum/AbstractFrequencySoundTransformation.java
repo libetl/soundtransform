@@ -12,9 +12,9 @@ public abstract class AbstractFrequencySoundTransformation<T> extends AbstractLo
         this.fourierTransformHelper = helper1;
     }
 
-    public abstract double getStep (double defaultValue);
-
     public abstract int getOffsetFromASimpleLoop (int i, double step);
+
+    public abstract double getStep (double defaultValue);
 
     public int getWindowLength (final double freqmax) {
         return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));

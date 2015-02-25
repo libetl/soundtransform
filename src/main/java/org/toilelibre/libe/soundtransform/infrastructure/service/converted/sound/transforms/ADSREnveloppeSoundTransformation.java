@@ -23,13 +23,13 @@ public class ADSREnveloppeSoundTransformation extends SimpleFrequencySoundTransf
         return (int) (sum / fs.getState ().length);
     }
 
+    public double [] getMagnitude () {
+        return this.magnitude.clone ();
+    }
+
     @Override
     public double getStep (final double defaultValue) {
         return this.step;
-    }
-
-    public double [] getMagnitude () {
-        return this.magnitude.clone ();
     }
 
     @Override

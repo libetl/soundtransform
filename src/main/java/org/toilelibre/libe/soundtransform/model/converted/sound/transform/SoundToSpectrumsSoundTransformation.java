@@ -19,13 +19,13 @@ public class SoundToSpectrumsSoundTransformation<T> extends SimpleFrequencySound
         this.spectrums = new ArrayList<Spectrum<?> []> ();
     }
 
+    public List<Spectrum<?> []> getSpectrums () {
+        return this.spectrums;
+    }
+
     @Override
     public double getStep (final double defaultValue) {
         return this.step;
-    }
-
-    public List<Spectrum<?> []> getSpectrums () {
-        return this.spectrums;
     }
 
     @Override
