@@ -13,7 +13,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
 public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProcessor> implements FrameProcessor<AbstractLogAware<ByteArrayFrameProcessor>> {
 
-    private static final int   NB_BYTE_VALUES = 1 << 8;
+    private static final int   NB_BYTE_VALUES = 1 << Byte.SIZE;
     private static final int   MAX_BYTE_VALUE = ByteArrayFrameProcessor.NB_BYTE_VALUES - 1;
     private static final float PERCENT        = 100.0f;
 

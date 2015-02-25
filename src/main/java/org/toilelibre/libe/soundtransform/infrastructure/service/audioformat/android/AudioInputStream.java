@@ -30,7 +30,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
     static final String      DEFAULT_CHARSET_NAME = "UTF-8";
     private static final int INTEGER_BYTE_NUMBER  = Integer.SIZE / Byte.SIZE;
     private static final int SHORT_BYTE_NUMBER    = Short.SIZE / Byte.SIZE;
-    private static final int BYTE_MAX_VALUE       = 1 << (Byte.SIZE - 1);
+    private static final int BYTE_MAX_VALUE       = (1 << Byte.SIZE) - 1;
     private static final int FOURTH_INDEX         = 3;
     private static final int FOURTH_BYTE          = Byte.SIZE * AudioInputStream.FOURTH_INDEX;
     private static final int THIRD_INDEX          = 2;

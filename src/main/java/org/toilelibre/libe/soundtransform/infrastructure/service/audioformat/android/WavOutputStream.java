@@ -8,7 +8,7 @@ import java.io.IOException;
 public class WavOutputStream extends FileOutputStream {
 
     private static final int INTEGER_NUMBER_OF_BYTES = Integer.SIZE / Byte.SIZE;
-    private static final int BYTE_MAX_VALUE          = 1 << Byte.SIZE;
+    private static final int BYTE_MAX_VALUE          = (1 << Byte.SIZE) - 1;
 
     public WavOutputStream (final File file) throws FileNotFoundException {
         super (file);
