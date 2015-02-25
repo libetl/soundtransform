@@ -57,8 +57,9 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
         for (int i = 0 ; i < data.length ; i += step) {
             final int iterationLength = Math.min (maxlength, data.length - i);
             final double amplitude = this.writeTransformedDataAndReturnAmplitude (transformeddata, data, i, (int) step, iterationLength);
+            final float volumeInDb = (float) (CommonsMath3FourierTransformHelper.COEFFICIENT * Math.log10 (amplitude));
             final Spectrum<Complex []> spectrum = this.forwardPartOfTheSound (sound, transformeddata);
-            final Spectrum<Complex []> result = st.transformFrequencies (spectrum, i, maxlength, iterationLength, (float) (COEFFICIENT * Math.log10 (amplitude)));
+            final Spectrum<Complex []> result = st.transformFrequencies (spectrum, i, maxlength, iterationLength, volumeInDb);
             if (result == null) {
                 continue;
             }

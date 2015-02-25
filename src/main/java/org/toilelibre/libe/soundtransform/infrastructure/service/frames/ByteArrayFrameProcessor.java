@@ -13,12 +13,13 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
 public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProcessor> implements FrameProcessor<AbstractLogAware<ByteArrayFrameProcessor>> {
 
-    private static final int MAX_BYTE_VALUE = 1 << 8;
-
-    private static final int A_HUNDRED = 100;
+    private static final int NB_BYTE_VALUES = 1 << 8;
+    private static final int MAX_BYTE_VALUE = ByteArrayFrameProcessor.NB_BYTE_VALUES - 1;
+    private static final float PERCENT = 100.0f;
+    
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
      * FrameProcessor#byteArrayToFrame(byte[],
      * org.toilelibre.libe.soundtransform.model.sound.Sound[], int, boolean,
@@ -41,22 +42,13 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
         }
 
         for (int i = 0 ; i < sound.length ; i++) {
-            sound [i].setSampleAt (position, value [i] - neutral);
+            sound [i].getSamples () [position] = value [i] - neutral;
         }
-    }
-
-    private void closeInputStream (final InputStream ais) throws SoundTransformException {
-        try {
-            ais.close ();
-        } catch (final IOException e) {
-            throw new SoundTransformException (TransformInputStreamServiceErrorCode.COULD_NOT_CLOSE_STREAM, e);
-        }
-
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
      * FrameProcessor
      * #framesToByteArray(org.toilelibre.libe.soundtransform.model.
@@ -64,7 +56,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
      */
     @Override
     public byte [] framesToByteArray (final Sound [] channels, final int sampleSize, final boolean bigEndian, final boolean pcmSigned) {
-        final int length = channels.length * sampleSize * channels [0].getSamplesLength ();
+        final int length = channels.length * sampleSize * channels [0].getSamples ().length;
         final byte [] data = new byte [length];
 
         double value = 0;
@@ -75,11 +67,11 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
             final int numByte = i % sampleSize;
             final int currentChannel = i / sampleSize % channels.length;
             final int currentFrame = i / (sampleSize * channels.length);
-            if (numByte == 0 && channels [currentChannel].getSamplesLength () > currentFrame) {
-                value = channels [currentChannel].getSampleAt (currentFrame) + neutral;
+            if (numByte == 0 && channels [currentChannel].getSamples ().length > currentFrame) {
+                value = channels [currentChannel].getSamples () [currentFrame] + neutral;
                 rightShift = 0;
             }
-            byteValueSigned = (byte) (((int) value >> rightShift * Byte.SIZE  & MAX_BYTE_VALUE) + (pcmSigned ? Byte.MIN_VALUE : 0));
+            byteValueSigned = (byte) (((int) value >> rightShift * Byte.SIZE & ByteArrayFrameProcessor.MAX_BYTE_VALUE) + (pcmSigned ? Byte.MIN_VALUE : 0));
 
             data [i + (!bigEndian ? 0 : sampleSize - 2 * numByte - 1)] = byteValueSigned;
             rightShift++;
@@ -98,24 +90,6 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
         return ret;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
-     * FrameProcessor#getNeutral(int)
-     */
-    private long getNeutral (final int sampleSize) {
-        long neutral = 0;
-        for (int i = 1 ; i <= sampleSize ; i++) {
-            neutral += Math.pow (Byte.MAX_VALUE - Byte.MIN_VALUE, i) / 2;
-        }
-        return neutral;
-    }
-
-    private int getPercent (final int position, final long length) {
-        return (int) Math.round (position * ByteArrayFrameProcessor.A_HUNDRED / length);
-    }
-
     private Sound [] initSound (final InputStreamInfo isInfo) {
         final Sound [] ret = new Sound [isInfo.getChannels ()];
         for (int channel = 0 ; channel < isInfo.getChannels () ; channel++) {
@@ -129,8 +103,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
         for (int position = 0 ; position < (int) isInfo.getFrameLength () ; position++) {
             final byte [] frame = new byte [isInfo.getSampleSize () * isInfo.getChannels ()];
             try {
-                final int readFrameSize = ais.read (frame);
-                this.log (new LogEvent (FrameProcessorEventCode.READ_FRAME_SIZE, readFrameSize));
+                ais.read (frame);
             } catch (final IOException e) {
                 throw new SoundTransformException (TransformInputStreamServiceErrorCode.COULD_NOT_READ_STREAM, e);
             }
@@ -139,6 +112,33 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
             }
             this.byteArrayToFrame (frame, result, position, isInfo.isBigEndian (), isInfo.isPcmSigned (), neutral);
         }
+    }
+
+    private int getPercent (int position, long length) {
+        return (int) Math.round (position * ByteArrayFrameProcessor.PERCENT / length);
+    }
+
+    private void closeInputStream (InputStream ais) throws SoundTransformException {
+        try {
+            ais.close ();
+        } catch (final IOException e) {
+            throw new SoundTransformException (TransformInputStreamServiceErrorCode.COULD_NOT_CLOSE_STREAM, e);
+        }
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
+     * FrameProcessor#getNeutral(int)
+     */
+    private long getNeutral (final int sampleSize) {
+        long neutral = 0;
+        for (int i = 1 ; i <= sampleSize ; i++) {
+            neutral += Math.pow (ByteArrayFrameProcessor.MAX_BYTE_VALUE, i) / 2;
+        }
+        return neutral;
     }
 
 }
