@@ -1,7 +1,6 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -56,7 +55,6 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
     private static final String FMT_                 = "fmt ";
     private static final String LIST                 = "LIST";
     private static final String DATA                 = "data";
-    static final String         DEFAULT_CHARSET_NAME = Charset.defaultCharset ().name ();
     private static final int    INFO_METADATA_SIZE   = 44;
 
     private static final int    INFO_CHUNK_SIZE      = 16;
@@ -96,7 +94,7 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
             soundInfoSize = ais.readInt2 ();
             final byte [] listByte = new byte [soundInfoSize];
             this.log (new LogEvent (AudioWavHelperEventCode.WAV_LIST_INFO_SIZE, ais.read (listByte)));
-            list = new String (listByte, AndroidWavHelper.DEFAULT_CHARSET_NAME);
+            list = new String (listByte, AudioInputStream.DEFAULT_CHARSET_NAME);
             string = ais.readFourChars ();
         }
         if (!AndroidWavHelper.DATA.equals (string)) {
@@ -118,10 +116,10 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
         final int frameSize = info.getSampleSize () / info.getChannels ();
         final int sampleSize = info.getSampleSize () * 8;
         final int dataSize = (int) info.getFrameLength () * info.getSampleSize ();
-        outputStream.write (AndroidWavHelper.RIFF.getBytes (AndroidWavHelper.DEFAULT_CHARSET_NAME));
+        outputStream.write (AndroidWavHelper.RIFF.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         outputStream.writeInt (fileSize);
-        outputStream.write (AndroidWavHelper.WAVE.getBytes (AndroidWavHelper.DEFAULT_CHARSET_NAME));
-        outputStream.write (AndroidWavHelper.FMT_.getBytes (AndroidWavHelper.DEFAULT_CHARSET_NAME));
+        outputStream.write (AndroidWavHelper.WAVE.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
+        outputStream.write (AndroidWavHelper.FMT_.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         outputStream.writeInt (chunkSize);
         outputStream.writeShortInt (typeOfEncoding);
         outputStream.writeShortInt (channels);
@@ -130,11 +128,11 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
         outputStream.writeShortInt (frameSize);
         outputStream.writeShortInt (sampleSize);
         if (info.getSoundInfo () != null) {
-            outputStream.write (AndroidWavHelper.LIST.getBytes (AndroidWavHelper.DEFAULT_CHARSET_NAME));
+            outputStream.write (AndroidWavHelper.LIST.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
             outputStream.writeInt (info.getSoundInfo ().length ());
-            outputStream.write (info.getSoundInfo ().getBytes (AndroidWavHelper.DEFAULT_CHARSET_NAME));
+            outputStream.write (info.getSoundInfo ().getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         }
-        outputStream.write (AndroidWavHelper.DATA.getBytes (AndroidWavHelper.DEFAULT_CHARSET_NAME));
+        outputStream.write (AndroidWavHelper.DATA.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         outputStream.writeInt (dataSize);
     }
 }

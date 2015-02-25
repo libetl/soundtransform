@@ -1,7 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.library.pack;
 
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -17,6 +16,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class ImportPackService extends AbstractLogAware<ImportPackService> {
+    private static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
     public enum ImportPackServiceErrorCode implements ErrorCode {
         EXPECTED_A_FREQUENCY ("%1s is not an Integer, could not know which frequency was expected");
@@ -101,7 +101,7 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
     }
 
     public void importPack (final Library library, final String title, final InputStream inputStream) throws SoundTransformException {
-        final Scanner scanner = new Scanner (inputStream, Charset.defaultCharset ().name ());
+        final Scanner scanner = new Scanner (inputStream, ImportPackService.DEFAULT_CHARSET_NAME);
         final String content = scanner.useDelimiter ("\\Z").next ();
         scanner.close ();
         this.importPack (library, title, content);

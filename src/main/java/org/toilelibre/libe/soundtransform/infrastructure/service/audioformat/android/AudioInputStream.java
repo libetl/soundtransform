@@ -11,6 +11,8 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public class AudioInputStream extends DataInputStream implements HasInputStreamInfo {
+    static final String DEFAULT_CHARSET_NAME = "UTF-8";
+
     public enum AudioInputStreamErrorCode implements ErrorCode {
 
         WRONG_FORMAT_READ_VALUE ("Read value has an invalid format (expected : %1d bytes, got : %2d bytes)");
@@ -57,7 +59,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
         if (i != 4) {
             throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), 4, i);
         }
-        return new String (this.intBuffer, AndroidWavHelper.DEFAULT_CHARSET_NAME);
+        return new String (this.intBuffer, AudioInputStream.DEFAULT_CHARSET_NAME);
     }
 
     int readInt2 () throws IOException {
