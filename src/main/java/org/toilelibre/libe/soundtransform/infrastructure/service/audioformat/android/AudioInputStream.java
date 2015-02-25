@@ -31,10 +31,13 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
     private static final int INTEGER_BYTE_NUMBER  = Integer.SIZE / Byte.SIZE;
     private static final int SHORT_BYTE_NUMBER    = Short.SIZE / Byte.SIZE;
     private static final int BYTE_MAX_VALUE       = 1 << (Byte.SIZE - 1);
-    private static final int FOURTH_BYTE          = Byte.SIZE * 3;
-    private static final int THIRD_BYTE           = Byte.SIZE * 2;
-
-    private static final int SECOND_BYTE          = Byte.SIZE * 1;
+    private static final int FOURTH_INDEX         = 3;
+    private static final int FOURTH_BYTE          = Byte.SIZE * AudioInputStream.FOURTH_INDEX;
+    private static final int THIRD_INDEX          = 2;
+    private static final int THIRD_BYTE           = Byte.SIZE * AudioInputStream.THIRD_INDEX;
+    private static final int SECOND_INDEX         = 1;
+    private static final int SECOND_BYTE          = Byte.SIZE * AudioInputStream.SECOND_INDEX;
+    private static final int FIRST_INDEX          = 0;
 
     private final byte []    intBuffer            = new byte [AudioInputStream.INTEGER_BYTE_NUMBER];
     private final byte []    shortBuffer          = new byte [AudioInputStream.SHORT_BYTE_NUMBER];
@@ -49,11 +52,12 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
     }
 
     private int byteArrayToInt (final byte [] bytes) {
-        return (bytes [3] << AudioInputStream.FOURTH_BYTE) | ((bytes [2] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.THIRD_BYTE) | ((bytes [1] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.SECOND_BYTE) | (bytes [0] & AudioInputStream.BYTE_MAX_VALUE);
+        return (bytes [AudioInputStream.FOURTH_INDEX] << AudioInputStream.FOURTH_BYTE) | ((bytes [AudioInputStream.THIRD_INDEX] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.THIRD_BYTE)
+                | ((bytes [AudioInputStream.SECOND_INDEX] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.SECOND_BYTE) | (bytes [AudioInputStream.FIRST_INDEX] & AudioInputStream.BYTE_MAX_VALUE);
     }
 
     private int byteArrayToShort (final byte [] bytes) {
-        return ((bytes [1] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.SECOND_BYTE) | (bytes [0] & AudioInputStream.BYTE_MAX_VALUE);
+        return ((bytes [AudioInputStream.SECOND_INDEX] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.SECOND_BYTE) | (bytes [AudioInputStream.FIRST_INDEX] & AudioInputStream.BYTE_MAX_VALUE);
     }
 
     @Override
@@ -64,7 +68,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
     String readFourChars () throws IOException {
         final int i = this.read (this.intBuffer);
         if (i != AudioInputStream.INTEGER_BYTE_NUMBER) {
-            throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), 4, i);
+            throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), AudioInputStream.INTEGER_BYTE_NUMBER, i);
         }
         return new String (this.intBuffer, AudioInputStream.DEFAULT_CHARSET_NAME);
     }
@@ -72,7 +76,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
     int readInt2 () throws IOException {
         final int i = this.read (this.intBuffer);
         if (i != AudioInputStream.INTEGER_BYTE_NUMBER) {
-            throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), 4, i);
+            throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), AudioInputStream.INTEGER_BYTE_NUMBER, i);
         }
         return this.byteArrayToInt (this.intBuffer);
     }
@@ -80,7 +84,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
     short readShort2 () throws IOException {
         final int i = this.read (this.shortBuffer);
         if (i != AudioInputStream.SHORT_BYTE_NUMBER) {
-            throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), 2, i);
+            throw new SoundTransformRuntimeException (AudioInputStreamErrorCode.WRONG_FORMAT_READ_VALUE, new IllegalArgumentException (), AudioInputStream.SHORT_BYTE_NUMBER, i);
         }
         return (short) this.byteArrayToShort (this.shortBuffer);
     }
