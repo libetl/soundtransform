@@ -130,7 +130,8 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
         for (int position = 0 ; position < (int) isInfo.getFrameLength () ; position++) {
             final byte [] frame = new byte [isInfo.getSampleSize () * isInfo.getChannels ()];
             try {
-                ais.read (frame);
+                int frameSize = ais.read (frame);
+                this.log (new LogEvent (FrameProcessorEventCode.READ_FRAME_SIZE, frameSize));
             } catch (final IOException e) {
                 throw new SoundTransformException (TransformInputStreamServiceErrorCode.COULD_NOT_READ_STREAM, e);
             }
