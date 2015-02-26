@@ -18,6 +18,7 @@ public class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelp
     private static final int   HELPER_DEFAULT_SPEEDUP_STEP_VALUE  = 100;
 
     private static final int   HELPER_DEFAULT_SLOWDOWN_STEP_VALUE = 1024;
+    private static final int   HELPER_DEFAULT_WINDOW_LENGTH_VALUE = 2 * ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_SLOWDOWN_STEP_VALUE;
 
     @Override
     public Sound pitchAndSetLength (final Sound sound, final float percent, final float lengthInSeconds) throws SoundTransformException {
@@ -37,7 +38,7 @@ public class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelp
                 result = speedup.transform (result);
 
             } else if (factor > ConvertedSoundPitchAndTempoHelper.THRESHOLD_SLOWDOWN) {
-                final SlowdownSoundTransformation slowdown = new SlowdownSoundTransformation (ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_SLOWDOWN_STEP_VALUE, (float) factor, 2 * ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_SLOWDOWN_STEP_VALUE);
+                final SlowdownSoundTransformation slowdown = new SlowdownSoundTransformation (ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_SLOWDOWN_STEP_VALUE, (float) factor, ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_WINDOW_LENGTH_VALUE);
                 result = slowdown.transform (result);
             }
         }

@@ -32,7 +32,7 @@ public class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHel
                     fileInputStream.close ();
                 }
             } catch (final IOException e) {
-                this.log (new LogEvent (AudioFileHelperEventCode.COULD_NOT_CLOSE));
+                this.log (new LogEvent (AudioFileHelperEventCode.COULD_NOT_CLOSE, e));
             }
         }
 

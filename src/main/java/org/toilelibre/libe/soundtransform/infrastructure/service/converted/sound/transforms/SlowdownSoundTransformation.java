@@ -55,12 +55,16 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
         }
     }
 
-    private final float factor;
-    private Sound       sound;
-    private final int   step;
-    private float       writeIfGreaterEqThan1;
-    private int         additionalFrames;
-    private final int   windowLength;
+    private static final int TWICE     = 2;
+
+    private static final int A_HUNDRED = 100;
+
+    private final float      factor;
+    private Sound            sound;
+    private final int        step;
+    private float            writeIfGreaterEqThan1;
+    private int              additionalFrames;
+    private final int        windowLength;
 
     /**
      * WARN : can fail for various reasons
@@ -86,7 +90,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     }
 
     private void checkConstructor () throws SoundTransformException {
-        if (this.windowLength < (2 * this.step)) {
+        if (this.windowLength < (SlowdownSoundTransformation.TWICE * this.step)) {
             throw new SoundTransformException (SlowdownSoundTransformationErrorCode.WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_STEP, new IllegalArgumentException (), this.windowLength, this.step);
         }
         if ((this.windowLength & -this.windowLength) != this.windowLength) {
@@ -134,10 +138,10 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     @Override
     public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset) {
         final int total = (int) (this.sound.getSamplesLength () * this.factor);
-        final int logStep = (total / 100) - ((total / 100) % this.step);
+        final int logStep = (total / SlowdownSoundTransformation.A_HUNDRED) - ((total / SlowdownSoundTransformation.A_HUNDRED) % this.step);
         // This if helps to only log some of all iterations to avoid being too
         // verbose
-        if (((total / 100) != 0) && (logStep != 0) && ((offset % logStep) == 0)) {
+        if (((total / SlowdownSoundTransformation.A_HUNDRED) != 0) && (logStep != 0) && ((offset % logStep) == 0)) {
             this.log (new LogEvent (SlowdownSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamplesLength () / this.factor)));
         }
         final float remaining = (float) (this.factor - Math.floor (this.factor));

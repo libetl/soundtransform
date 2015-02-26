@@ -70,7 +70,7 @@ public class InputStreamInfo {
 
     @Override
     public String toString () {
-        return String.format (Locale.ENGLISH, "%1s %6.1f Hz, %1d bit, %1s, %1d bytes/frame, %6s", this.isPcmSigned () ? "PCM_SIGNED" : "PCM_UNSIGNED", this.getSampleRate (), this.getSampleSize () * 8, this.getChannels () == 1 ? "mono" : "stereo", this.getSampleSize () * this.getChannels (),
+        return String.format (Locale.ENGLISH, "%1s %6.1f Hz, %1d bit, %1s, %1d bytes/frame, %6s", this.isPcmSigned () ? "PCM_SIGNED" : "PCM_UNSIGNED", this.getSampleRate (), this.getSampleSize () * Byte.SIZE, this.getChannels () == 1 ? "mono" : "stereo", this.getSampleSize () * this.getChannels (),
                 this.isBigEndian () ? "big-endian" : "little-endian");
     }
 }

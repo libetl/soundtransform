@@ -50,20 +50,22 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
         }
     }
 
-    private static final String RIFF               = "RIFF";
-    private static final String WAVE               = "WAVE";
-    private static final String FMT_               = "fmt ";
-    private static final String LIST               = "LIST";
-    private static final String DATA               = "data";
-    private static final int    INFO_METADATA_SIZE = 44;
+    private static final String RIFF                = "RIFF";
+    private static final String WAVE                = "WAVE";
+    private static final String FMT                 = "fmt ";
+    private static final String LIST                = "LIST";
+    private static final String DATA                = "data";
+    private static final int    INFO_METADATA_SIZE  = 44;
 
-    private static final int    INFO_CHUNK_SIZE    = 16;
+    private static final int    INFO_CHUNK_SIZE     = 16;
+
+    private static final int    TWO_BYTES_NB_VALUES = 1 << (2 * Byte.SIZE);
 
     public AndroidWavHelper () {
 
     }
 
-    public InputStreamInfo readMetadata (final AudioInputStream ais) throws IOException {
+    private void readMagicChars (final AudioInputStream ais) throws IOException {
         String string = ais.readFourChars ();
         if (!AndroidWavHelper.RIFF.equals (string)) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_MAGIC_NUMBER, new IllegalArgumentException ()));
@@ -74,20 +76,25 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_WAVE_HEADER, new IllegalArgumentException ()));
         }
         string = ais.readFourChars ();
-        if (!AndroidWavHelper.FMT_.equals (string)) {
+        if (!AndroidWavHelper.FMT.equals (string)) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_WAVE_HEADER, new IllegalArgumentException ()));
         }
         ais.readInt2 ();
+
+    }
+
+    public InputStreamInfo readMetadata (final AudioInputStream ais) throws IOException {
+        this.readMagicChars (ais);
         final int typeOfEncoding = ais.readShort2 ();
         if (typeOfEncoding != 1) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NON_PCM_WAV, new IllegalArgumentException ()));
         }
         final int channels = ais.readShort2 ();
-        final int sampleRate = (ais.readInt2 () + 65536) % 65536;
+        final int sampleRate = (ais.readInt2 () + AndroidWavHelper.TWO_BYTES_NB_VALUES) % AndroidWavHelper.TWO_BYTES_NB_VALUES;
         ais.readInt2 ();
         final int frameSize = ais.readShort2 ();
         final int sampleSize = ais.readShort2 ();
-        string = ais.readFourChars ();
+        String string = ais.readFourChars ();
         int soundInfoSize = 0;
         String list = null;
         if (AndroidWavHelper.LIST.equals (string)) {
@@ -101,7 +108,7 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_DATA_SEPARATOR, new IllegalArgumentException ()));
         }
         final int dataSize = ais.readInt2 ();
-        return new InputStreamInfo (channels, dataSize / frameSize, sampleSize / 8, sampleRate, false, true, list);
+        return new InputStreamInfo (channels, dataSize / frameSize, sampleSize / Byte.SIZE, sampleRate, false, true, list);
     }
 
     public void writeMetadata (final ByteArrayWithAudioFormatInputStream audioInputStream, final WavOutputStream outputStream) throws IOException {
@@ -114,12 +121,12 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
         final int sampleRate = (int) info.getSampleRate ();
         final int byterate = (int) info.getSampleRate () * info.getSampleSize ();
         final int frameSize = info.getSampleSize () / info.getChannels ();
-        final int sampleSize = info.getSampleSize () * 8;
+        final int sampleSize = info.getSampleSize () * Byte.SIZE;
         final int dataSize = (int) info.getFrameLength () * info.getSampleSize ();
         outputStream.write (AndroidWavHelper.RIFF.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         outputStream.writeInt (fileSize);
         outputStream.write (AndroidWavHelper.WAVE.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
-        outputStream.write (AndroidWavHelper.FMT_.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
+        outputStream.write (AndroidWavHelper.FMT.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         outputStream.writeInt (chunkSize);
         outputStream.writeShortInt (typeOfEncoding);
         outputStream.writeShortInt (channels);

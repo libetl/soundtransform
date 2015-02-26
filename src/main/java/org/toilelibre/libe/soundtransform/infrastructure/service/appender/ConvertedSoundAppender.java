@@ -7,6 +7,9 @@ import org.toilelibre.libe.soundtransform.model.library.note.Note;
 
 public class ConvertedSoundAppender implements SoundAppender {
 
+    private static final int HALF           = 2;
+    private static final int BYTE_NB_VALUES = 1 << 8;
+
     /*
      * (non-Javadoc)
      *
@@ -72,9 +75,8 @@ public class ConvertedSoundAppender implements SoundAppender {
     @Override
     public Sound changeNbBytesPerSample (final Sound sound, final int newNbBytesPerSample) {
         final long [] newsamples = new long [sound.getSamplesLength ()];
-        final int byteNbValues = 1 << Byte.SIZE;
-        final long oldMax = (long) (Math.pow (byteNbValues, sound.getNbBytesPerSample ()) / 2);
-        final long newMax = (long) (Math.pow (byteNbValues, newNbBytesPerSample) / 2);
+        final long oldMax = (long) (Math.pow (ConvertedSoundAppender.BYTE_NB_VALUES, sound.getNbBytesPerSample ()) / ConvertedSoundAppender.HALF);
+        final long newMax = (long) (Math.pow (ConvertedSoundAppender.BYTE_NB_VALUES, newNbBytesPerSample) / ConvertedSoundAppender.HALF);
         for (int j = 0 ; j < sound.getSamplesLength () ; j++) {
             newsamples [j] = (long) ((sound.getSampleAt (j) * 1.0 * newMax) / oldMax);
         }

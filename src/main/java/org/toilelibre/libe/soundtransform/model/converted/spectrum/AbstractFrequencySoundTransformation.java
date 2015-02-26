@@ -6,6 +6,8 @@ import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 
 public abstract class AbstractFrequencySoundTransformation<T> extends AbstractLogAware<AbstractFrequencySoundTransformation<T>> implements SoundTransformation {
 
+    private static final double             LOG_2 = Math.log (2);
+    private static final int                TWO   = 2;
     private final FourierTransformHelper<T> fourierTransformHelper;
 
     public AbstractFrequencySoundTransformation (final FourierTransformHelper<T> helper1) {
@@ -17,7 +19,7 @@ public abstract class AbstractFrequencySoundTransformation<T> extends AbstractLo
     public abstract double getStep (double defaultValue);
 
     public int getWindowLength (final double freqmax) {
-        return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
+        return (int) Math.pow (AbstractFrequencySoundTransformation.TWO, Math.ceil (Math.log (freqmax) / AbstractFrequencySoundTransformation.LOG_2));
     }
 
     public abstract Sound initSound (Sound input);

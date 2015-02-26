@@ -7,8 +7,34 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReverseSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
+import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.observer.EventCode;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-public class MagnitudeADSRHelper implements ADSRHelper {
+public class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> implements ADSRHelper {
+
+    public enum MagnitudeADSRHelperEventCode implements EventCode {
+        FOUND_EDGE (LogLevel.PARANOIAC, "Found an edge %1s");
+
+        private final String   messageFormat;
+        private final LogLevel logLevel;
+
+        MagnitudeADSRHelperEventCode (final LogLevel ll, final String mF) {
+            this.messageFormat = mF;
+            this.logLevel = ll;
+        }
+
+        @Override
+        public LogLevel getLevel () {
+            return this.logLevel;
+        }
+
+        @Override
+        public String getMessageFormat () {
+            return this.messageFormat;
+        }
+    }
 
     private static final int ACCURATE_STEP_FOR_ADSR_HELPER = 100;
 
@@ -23,6 +49,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
         try {
             MathArrays.checkOrder (decayArray, MathArrays.OrderDirection.INCREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
+            this.log (new LogEvent (MagnitudeADSRHelperEventCode.FOUND_EDGE, nmse));
             decayIndex = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER;
         }
         return decayIndex;
@@ -38,6 +65,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
         try {
             MathArrays.checkOrder (magnitude, MathArrays.OrderDirection.INCREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
+            this.log (new LogEvent (MagnitudeADSRHelperEventCode.FOUND_EDGE, nmse));
             releaseIndexFromReversed = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER;
         }
         return channel1.getSamplesLength () - releaseIndexFromReversed;
@@ -55,6 +83,7 @@ public class MagnitudeADSRHelper implements ADSRHelper {
         try {
             MathArrays.checkOrder (sustainArray, MathArrays.OrderDirection.DECREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
+            this.log (new LogEvent (MagnitudeADSRHelperEventCode.FOUND_EDGE, nmse));
             sustainIndex = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER;
         }
         return sustainIndex;

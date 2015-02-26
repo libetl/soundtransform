@@ -16,6 +16,8 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
     private static final int   NB_BYTE_VALUES = 1 << Byte.SIZE;
     private static final int   MAX_BYTE_VALUE = ByteArrayFrameProcessor.NB_BYTE_VALUES - 1;
     private static final float PERCENT        = 100.0f;
+    private static final int   HALF           = 2;
+    private static final int   TWICE          = 2;
 
     /*
      * (non-Javadoc)
@@ -82,7 +84,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
             }
             byteValueSigned = (byte) ((((int) value >> (rightShift * Byte.SIZE)) & ByteArrayFrameProcessor.MAX_BYTE_VALUE) + (pcmSigned ? Byte.MIN_VALUE : 0));
 
-            data [i + (!bigEndian ? 0 : sampleSize - (2 * numByte) - 1)] = byteValueSigned;
+            data [i + (!bigEndian ? 0 : sampleSize - (ByteArrayFrameProcessor.TWICE * numByte) - 1)] = byteValueSigned;
             rightShift++;
         }
         return data;
@@ -108,7 +110,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
     private long getNeutral (final int sampleSize) {
         long neutral = 0;
         for (int i = 1 ; i <= sampleSize ; i++) {
-            neutral += Math.pow (ByteArrayFrameProcessor.MAX_BYTE_VALUE, i) / 2;
+            neutral += Math.pow (ByteArrayFrameProcessor.MAX_BYTE_VALUE, i) / ByteArrayFrameProcessor.HALF;
         }
         return neutral;
     }
