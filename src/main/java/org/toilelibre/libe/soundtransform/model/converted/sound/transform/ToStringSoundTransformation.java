@@ -10,6 +10,8 @@ public class ToStringSoundTransformation implements SoundTransformation {
     private final int           length;
     private final int           height;
     private StringBuilder       sb             = new StringBuilder ();
+    private double              maxPlotValue;
+    private double              minValuePlotted;
 
     public ToStringSoundTransformation (final int length, final int height) {
         this.length = length;
@@ -23,15 +25,33 @@ public class ToStringSoundTransformation implements SoundTransformation {
 
     @Override
     public Sound transform (final Sound input) {
+        this.maxPlotValue = 0d;
+        this.minValuePlotted = -1;
         final double compression = input.getSamplesLength () * 1.0 / this.length;
         this.sb = new StringBuilder ();
-
         final float lastSample = input.getSamplesLength ();
         final long maxMagn = (long) Math.pow (ToStringSoundTransformation.NB_BYTE_VALUES, input.getNbBytesPerSample ()) / ToStringSoundTransformation.TWO;
         final int step = (int) lastSample / this.length;
+        final int [] valuesOnPlot = this.prepareValuesOnPlot (input, step, maxMagn);
+        for (int j = this.height ; j >= 0 ; j--) {
+            this.displayRow (j, maxMagn, valuesOnPlot);
+        }
+        this.diplayFooter (input, compression);
+
+        return input;
+    }
+
+    private void diplayFooter (Sound input, double compression) {
+        this.sb.append ("L");
+        for (int i = 0 ; i < this.length ; i++) {
+            this.sb.append ("-");
+        }
+        this.sb.append ("> ").append (Integer.valueOf ((int) (this.length * compression / input.getSampleRate ()))).append ("s (time)\n");
+
+    }
+
+    private int [] prepareValuesOnPlot (final Sound input, int step, long maxMagn) {
         final int [] valuesOnPlot = new int [this.length];
-        int maxPlotValue = 0;
-        double minValuePlotted = -1;
         for (int i = 0 ; i < valuesOnPlot.length ; i++) {
             double maxValue = 0;
             for (int j = 0 ; j < step ; j++) {
@@ -51,30 +71,26 @@ public class ToStringSoundTransformation implements SoundTransformation {
         for (int i = 0 ; i < valuesOnPlot.length ; i++) {
             valuesOnPlot [i] -= minValuePlotted * this.height / maxMagn;
         }
-        for (int j = this.height ; j >= 0 ; j--) {
-            if (j == this.height) {
-                this.sb.append ("^ ").append (Long.valueOf (maxMagn)).append (" (magnitude)\n");
-                continue;
-            } else {
-                this.sb.append ("|");
-            }
-            for (int i = 0 ; i < this.length ; i++) {
-                if (valuesOnPlot [i] == j) {
-                    this.sb.append ("_");
-                } else if (valuesOnPlot [i] > j) {
-                    this.sb.append ("#");
-                } else {
-                    this.sb.append (" ");
-                }
-            }
-            this.sb.append ("\n");
-        }
-        this.sb.append ("L");
-        for (int i = 0 ; i < this.length ; i++) {
-            this.sb.append ("-");
-        }
-        this.sb.append ("> ").append (Integer.valueOf ((int) (this.length * compression / input.getSampleRate ()))).append ("s (time)\n");
+        return valuesOnPlot;
+    }
 
-        return input;
+    private void displayRow (int j, long maxMagn, int [] valuesOnPlot) {
+        if (j == this.height) {
+            this.sb.append ("^ ").append (Long.valueOf (maxMagn)).append (" (magnitude)\n");
+            return;
+        } else {
+            this.sb.append ("|");
+        }
+        for (int i = 0 ; i < this.length ; i++) {
+            if (valuesOnPlot [i] == j) {
+                this.sb.append ("_");
+            } else if (valuesOnPlot [i] > j) {
+                this.sb.append ("#");
+            } else {
+                this.sb.append (" ");
+            }
+        }
+        this.sb.append ("\n");
+
     }
 }
