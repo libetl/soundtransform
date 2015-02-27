@@ -64,17 +64,21 @@ public class ApplicationInjector {
         int additionalParamCounter = 0;
         for (int i = 0 ; i < newInstanceParams.length ; i++) {
             if (newInstanceParams [i] == null) {
-                if (additionalParamCounter < additionalParameters.length) {
-                    if (ptypes [i].isArray () && !additionalParameters [additionalParamCounter].getClass ().isArray ()) {
-                        newInstanceParams [i] = Array.fill (additionalParameters [additionalParamCounter], 1);
-                    } else {
-                        newInstanceParams [i] = additionalParameters [additionalParamCounter];
-                    }
-                }
+                ApplicationInjector.setNewInstanceParamsValue (newInstanceParams, i, ptypes [i], additionalParameters, additionalParamCounter);
                 additionalParamCounter++;
             }
         }
         return additionalParamCounter;
+    }
+
+    private static void setNewInstanceParamsValue (Object [] newInstanceParams, int i, Class<?> parameterType, final Object [] additionalParameters, int additionalParamCounter) {
+        if (additionalParamCounter < additionalParameters.length) {
+            if (parameterType.isArray () && !additionalParameters [additionalParamCounter].getClass ().isArray ()) {
+                newInstanceParams [i] = Array.fill (additionalParameters [additionalParamCounter], 1);
+            } else {
+                newInstanceParams [i] = additionalParameters [additionalParamCounter];
+            }
+        }        
     }
 
     public static <T> T getBean (final Class<T> type) {
