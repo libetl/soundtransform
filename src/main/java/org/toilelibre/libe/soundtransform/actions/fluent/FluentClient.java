@@ -36,6 +36,22 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithSpectrums {
 
+    private static final int     DEFAULT_STEP_VALUE = 100;
+    private Sound []             sounds;
+    private InputStream          audioInputStream;
+    private String               sameDirectoryAsClasspathResource;
+    private float []             freqs;
+    private File                 file;
+    private List<Spectrum<?> []> spectrums;
+
+    private List<Observer>       observers;
+
+    private int                  step;
+
+    private FluentClient () {
+        this.andAfterStart ();
+    }
+    
     public enum FluentClientErrorCode implements ErrorCode {
 
         INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE ("This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
@@ -59,22 +75,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public static FluentClientReady start () {
         return new FluentClient ();
-    }
-
-    private static final int     DEFAULT_STEP_VALUE = 100;
-    private Sound []             sounds;
-    private InputStream          audioInputStream;
-    private String               sameDirectoryAsClasspathResource;
-    private float []             freqs;
-    private File                 file;
-    private List<Spectrum<?> []> spectrums;
-
-    private List<Observer>       observers;
-
-    private int                  step;
-
-    private FluentClient () {
-        this.andAfterStart ();
     }
 
     @Override

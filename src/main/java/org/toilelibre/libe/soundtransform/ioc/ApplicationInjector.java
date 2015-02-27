@@ -17,8 +17,19 @@ import se.jbee.inject.Injector;
 import se.jbee.inject.bootstrap.Bootstrap;
 
 public class ApplicationInjector {
+
+    static Injector injector = Bootstrap.injector (AndroidRootModule.class);
+
+    private ApplicationInjector () {
+
+    }
+    
     public static class $ {
 
+        private $ () {
+
+        }
+        
         public static <T> T create (final Class<T> type, final Object... additionalParameters) {
             return ApplicationInjector.instantiate (type, additionalParameters);
         }
@@ -27,9 +38,6 @@ public class ApplicationInjector {
             return ApplicationInjector.getBean (type);
         }
 
-        private $ () {
-
-        }
     }
 
     public enum ApplicationInjectorErrorCode implements ErrorCode {
@@ -117,12 +125,6 @@ public class ApplicationInjector {
             warnings.add ("Could not find a bean named " + class1 + " (" + nsre.getMessage () + ")");
             return null;
         }
-
-    }
-
-    static Injector injector = Bootstrap.injector (AndroidRootModule.class);
-
-    private ApplicationInjector () {
 
     }
 

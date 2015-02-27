@@ -5,10 +5,6 @@ import java.util.Locale;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class InputStreamInfo {
-    public static InputStreamInfo of (final Sound [] channels) {
-        return new InputStreamInfo (channels.length, channels [0].getSamplesLength (), channels [0].getNbBytesPerSample (), channels [0].getSampleRate (), false, true);
-    }
-
     private final int     channels;
     private final long    frameLength;
     private final int     sampleSize;
@@ -19,14 +15,7 @@ public class InputStreamInfo {
     private final String  soundInfo;
 
     public InputStreamInfo (final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned) {
-        super ();
-        this.channels = channels;
-        this.frameLength = frameLength;
-        this.sampleSize = sampleSize;
-        this.sampleRate = sampleRate;
-        this.bigEndian = bigEndian;
-        this.pcmSigned = pcmSigned;
-        this.soundInfo = null;
+        this (channels, frameLength, sampleSize, sampleRate, bigEndian, pcmSigned, null);
     }
 
     public InputStreamInfo (final int channels, final long frameLength, final int sampleSize, final double sampleRate, final boolean bigEndian, final boolean pcmSigned, final String soundInfo) {
@@ -39,6 +28,11 @@ public class InputStreamInfo {
         this.pcmSigned = pcmSigned;
         this.soundInfo = soundInfo;
     }
+
+    public static InputStreamInfo of (final Sound [] channels) {
+        return new InputStreamInfo (channels.length, channels [0].getSamplesLength (), channels [0].getNbBytesPerSample (), channels [0].getSampleRate (), false, true);
+    }
+
 
     public int getChannels () {
         return this.channels;
