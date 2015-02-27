@@ -33,6 +33,8 @@ public class SpeedUpSoundTransformation<T> extends SimpleFrequencySoundTransform
         }
     }
 
+    private static final int A_HUNDRED = 100;
+
     private final float factor;
     private Sound       sound;
     private final int   step;
@@ -65,10 +67,10 @@ public class SpeedUpSoundTransformation<T> extends SimpleFrequencySoundTransform
     @Override
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset) {
         final int total = (int) (this.sound.getSamplesLength () / this.factor);
-        final int logStep = (total / 100) - ((total / 100) % this.step);
+        final int logStep = (total / A_HUNDRED) - ((total / A_HUNDRED) % this.step);
         // This if helps to only log some of all iterations to avoid being too
         // verbose
-        if (((total / 100) != 0) && (logStep != 0) && ((offset % logStep) == 0)) {
+        if (((total / A_HUNDRED) != 0) && (logStep != 0) && ((offset % logStep) == 0)) {
             this.log (new LogEvent (SpeedUpSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamplesLength () * this.factor)));
         }
         if (this.writeIfGreaterEqThanFactor >= this.factor) {
