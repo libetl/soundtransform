@@ -1,5 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
@@ -11,7 +12,7 @@ import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-public class PeakFindWithHPSSoundTransformation<T> extends SimpleFrequencySoundTransformation<T> {
+public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> {
 
     public enum PeakFindWithHPSSoundTransformationEventCode implements EventCode {
 

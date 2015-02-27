@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.actions.fluent;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -34,7 +35,7 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
      *
      * @return a list of spectrums for each channel
      */
-    List<Spectrum<?> []> stopWithSpectrums ();
+    List<Spectrum<? extends Serializable> []> stopWithSpectrums ();
 
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A

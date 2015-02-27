@@ -1,10 +1,12 @@
 package org.toilelibre.libe.soundtransform.model.converted.spectrum;
 
+import java.io.Serializable;
+
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 
-public abstract class AbstractFrequencySoundTransformation<T> extends AbstractLogAware<AbstractFrequencySoundTransformation<T>> implements SoundTransformation {
+public abstract class AbstractFrequencySoundTransformation<T extends Serializable> extends AbstractLogAware<AbstractFrequencySoundTransformation<T>> implements SoundTransformation {
 
     private static final double             LOG_2 = Math.log (2);
     private static final int                TWO   = 2;

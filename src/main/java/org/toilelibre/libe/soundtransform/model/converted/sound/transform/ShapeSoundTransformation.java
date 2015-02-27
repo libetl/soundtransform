@@ -109,7 +109,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         final boolean freqChangedFromLastNote = this.freqHasChanged (this.freqs [i], lastFreq);
         final boolean frequencyDidNotChangeBetweenIAndIMinusTwo = !freqChangedAtI && !freqChangedAtIMinusOne && !freqChangedAtIMinusTwo;
 
-        final boolean thereIsANewFrequencyValue = (freqChangedFromLastNote || firstNote);
+        final boolean thereIsANewFrequencyValue = (!freqChangedFromLastNote || firstNote);
 
         return frequencyDidNotChangeBetweenIAndIMinusTwo && freqChangedAtIMinusThree && thereIsANewFrequencyValue;
     }

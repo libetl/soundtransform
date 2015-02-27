@@ -1,5 +1,7 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.appender;
 
+import java.io.Serializable;
+
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.SlowdownSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
@@ -34,7 +36,7 @@ public class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelp
             return result;
         } else if ((factor < ConvertedSoundPitchAndTempoHelper.THRESHOLD_SPEEDUP) || (factor > ConvertedSoundPitchAndTempoHelper.THRESHOLD_SLOWDOWN)) {
             if (factor < ConvertedSoundPitchAndTempoHelper.THRESHOLD_SPEEDUP) {
-                final SpeedUpSoundTransformation<?> speedup = new SpeedUpSoundTransformation<Object> (ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_SPEEDUP_STEP_VALUE, (float) (1 / factor));
+                final SpeedUpSoundTransformation<Serializable> speedup = new SpeedUpSoundTransformation<Serializable> (ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_SPEEDUP_STEP_VALUE, (float) (1 / factor));
                 result = speedup.transform (result);
 
             } else if (factor > ConvertedSoundPitchAndTempoHelper.THRESHOLD_SLOWDOWN) {

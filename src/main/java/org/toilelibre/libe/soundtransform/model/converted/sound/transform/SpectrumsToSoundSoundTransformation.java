@@ -1,5 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
@@ -12,11 +13,11 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public class SpectrumsToSoundSoundTransformation implements SoundTransformation {
 
-    private final List<Spectrum<?> []>      spectrums;
+    private final List<Spectrum<? extends Serializable> []>      spectrums;
     private final FourierTransformHelper<?> fourierHelper;
     private final SoundAppender             appender;
 
-    public SpectrumsToSoundSoundTransformation (final List<Spectrum<?> []> spectrums1) {
+    public SpectrumsToSoundSoundTransformation (final List<Spectrum<? extends Serializable> []> spectrums1) {
         this.fourierHelper = $.select (FourierTransformHelper.class);
         this.appender = $.select (SoundAppender.class);
         this.spectrums = spectrums1;
@@ -36,7 +37,7 @@ public class SpectrumsToSoundSoundTransformation implements SoundTransformation 
         int length = 0;
         for (final Spectrum<?> spectrum : spectrumChannel) {
             @SuppressWarnings ("unchecked")
-            final Sound tmpSound = ((FourierTransformHelper<Object>) this.fourierHelper).reverse ((Spectrum<Object>) spectrum);
+            final Sound tmpSound = ((FourierTransformHelper<Serializable>) this.fourierHelper).reverse ((Spectrum<Serializable>) spectrum);
             this.appender.append (result, length, tmpSound);
             length += tmpSound.getSamplesLength ();
         }

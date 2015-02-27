@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -163,5 +164,5 @@ public interface FluentClientReady {
      *            the spectrums
      * @return the client, with the spectrums
      */
-    FluentClientWithSpectrums withSpectrums (List<Spectrum<?> []> spectrums);
+    FluentClientWithSpectrums withSpectrums (List<Spectrum<? extends Serializable> []> spectrums);
 }

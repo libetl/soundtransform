@@ -1,5 +1,7 @@
 package org.toilelibre.libe.soundtransform.model.converted.spectrum;
 
+import java.io.Serializable;
+
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
@@ -9,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
  * @author lionel
  *
  */
-public class SimpleFrequencySoundTransformation<T> extends AbstractFrequencySoundTransformation<T> {
+public class SimpleFrequencySoundTransformation<T extends Serializable> extends AbstractFrequencySoundTransformation<T> {
 
     @SuppressWarnings ("unchecked")
     public SimpleFrequencySoundTransformation () {

@@ -1,5 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,20 +8,20 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
-public class SoundToSpectrumsSoundTransformation<T> extends SimpleFrequencySoundTransformation<T> {
+public class SoundToSpectrumsSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> {
 
     private static final int           TWO = 2;
     private int                        step;
     private int                        channel;
-    private final List<Spectrum<?> []> spectrums;
+    private final List<Spectrum<? extends Serializable> []> spectrums;
     private int                        index;
 
     public SoundToSpectrumsSoundTransformation () {
         super ();
-        this.spectrums = new ArrayList<Spectrum<?> []> ();
+        this.spectrums = new ArrayList<Spectrum<? extends Serializable> []> ();
     }
 
-    public List<Spectrum<?> []> getSpectrums () {
+    public List<Spectrum<? extends Serializable> []> getSpectrums () {
         return this.spectrums;
     }
 

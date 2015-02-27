@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.actions.play;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
 import org.toilelibre.libe.soundtransform.actions.Action;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundService;
@@ -20,7 +21,7 @@ public class PlaySound extends Action {
 
     @SuppressWarnings ("unchecked")
     public void play (final Spectrum<?> spectrum1) throws SoundTransformException {
-        final Spectrum<Object> spectrum = (Spectrum<Object>) spectrum1;
-        ((PlaySoundService<Object>) this.playSound).play (spectrum);
+        final Spectrum<Serializable> spectrum = (Spectrum<Serializable>) spectrum1;
+        ((PlaySoundService<Serializable>) this.playSound).play (spectrum);
     }
 }

@@ -1,5 +1,7 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
+import java.io.Serializable;
+
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -8,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 //WARN : long execution time soundtransform
-public class SpeedUpSoundTransformation<T> extends SimpleFrequencySoundTransformation<T> {
+public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> {
 
     public enum SpeedUpSoundTransformationEventCode implements EventCode {
 

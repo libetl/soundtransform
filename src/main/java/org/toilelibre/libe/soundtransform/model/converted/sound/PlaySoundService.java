@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
@@ -10,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
-public class PlaySoundService<T> {
+public class PlaySoundService<T extends Serializable> {
 
     private final PlaySoundProcessor processor;
 

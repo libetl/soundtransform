@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     private String               sameDirectoryAsClasspathResource;
     private float []             freqs;
     private File                 file;
-    private List<Spectrum<?> []> spectrums;
+    private List<Spectrum<? extends Serializable> []> spectrums;
 
     private List<Observer>       observers;
 
@@ -278,7 +279,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException {
-        final PeakFindWithHPSSoundTransformation<?> peakFind = new PeakFindWithHPSSoundTransformation<Object> (this.step);
+        final PeakFindWithHPSSoundTransformation<Serializable> peakFind = new PeakFindWithHPSSoundTransformation<Serializable> (this.step);
         new ApplySoundTransform (this.getObservers ()).apply (this.sounds, peakFind);
         this.cleanData ();
         this.freqs = peakFind.getLoudestFreqs ();
@@ -387,7 +388,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         } else if (this.audioInputStream != null) {
             new PlaySound ().play (this.audioInputStream);
         } else if (this.spectrums != null) {
-            final List<Spectrum<?> []> savedSpectrums = this.spectrums;
+            final List<Spectrum<? extends Serializable> []> savedSpectrums = this.spectrums;
             this.extractSound ();
             new PlaySound ().play (this.sounds);
             this.cleanData ();
@@ -425,7 +426,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException could not convert the sound into some spectrums
      */
     public FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException {
-        final SoundToSpectrumsSoundTransformation<?> sound2Spectrums = new SoundToSpectrumsSoundTransformation<Object> ();
+        final SoundToSpectrumsSoundTransformation<Serializable> sound2Spectrums = new SoundToSpectrumsSoundTransformation<Serializable> ();
         new ApplySoundTransform (this.getObservers ()).apply (this.sounds, sound2Spectrums);
         this.cleanData ();
         this.spectrums = sound2Spectrums.getSpectrums ();
@@ -500,7 +501,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Stops the client pipeline and returns the obtained spectrums
      * @return a list of spectrums for each channel
      */
-    public List<Spectrum<?> []> stopWithSpectrums () {
+    public List<Spectrum<? extends Serializable> []> stopWithSpectrums () {
         return this.spectrums;
     }
 
@@ -648,7 +649,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @param spectrums the spectrums
      * @return the client, with the spectrums
      */
-    public FluentClientWithSpectrums withSpectrums (final List<Spectrum<?> []> spectrums) {
+    public FluentClientWithSpectrums withSpectrums (final List<Spectrum<? extends Serializable> []> spectrums) {
         this.cleanData ();
         this.spectrums = spectrums;
         return this;
