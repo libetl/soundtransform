@@ -102,16 +102,16 @@ public class ApplicationInjector {
         try {
             return constructor.newInstance (newInstanceParams);
         } catch (final InstantiationException e) {
-            warnings.add (warningPrefix + " could not instantiate");
+            warnings.add (warningPrefix + " could not instantiate (" + e + ")");
         } catch (final IllegalAccessException e) {
-            warnings.add (warningPrefix + " is not accessible");
+            warnings.add (warningPrefix + " is not accessible (" + e + ")");
         } catch (final IllegalArgumentException e) {
-            warnings.add (warningPrefix + " had an illegal argument");
+            warnings.add (warningPrefix + " had an illegal argument (" + e + ")");
         } catch (final InvocationTargetException e) {
             if (e.getCause () instanceof SoundTransformException) {
                 warnings.add (warningPrefix + " threw an ErrorCode : " + ((SoundTransformException) e.getCause ()).getErrorCode ().name ());
             }
-            warnings.add (warningPrefix + " could not call a method");
+            warnings.add (warningPrefix + " could not call a method (" + e + ")");
         }
         return null;
     }
@@ -120,12 +120,12 @@ public class ApplicationInjector {
         try {
             return ApplicationInjector.instantiate (class1);
         } catch (final SoundTransformRuntimeException stre) {
-            warnings.add (stre.getMessage ());
+            warnings.add (stre.getMessage () + "  (" + stre + ")");
         }
         try {
             return ApplicationInjector.getBean (class1);
         } catch (final NoSuchResourceException nsre) {
-            warnings.add ("Could not find a bean named " + class1 + " (" + nsre.getMessage () + ")");
+            warnings.add ("Could not find a bean named " + class1 + " (" + nsre + ")");
             return null;
         }
 
