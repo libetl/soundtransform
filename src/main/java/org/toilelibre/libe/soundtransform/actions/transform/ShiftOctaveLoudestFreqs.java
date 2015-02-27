@@ -4,6 +4,10 @@ import org.toilelibre.libe.soundtransform.actions.Action;
 
 public final class ShiftOctaveLoudestFreqs extends Action {
 
+    public float [] adjust (final float [] freqs) {
+        return this.loudestFreqsService.adjust (freqs);
+    }
+    
     public float [] octaveDown (final float [] freqs) {
         return this.loudestFreqsService.octaveDown (freqs);
     }

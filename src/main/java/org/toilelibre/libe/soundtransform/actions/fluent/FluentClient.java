@@ -78,6 +78,16 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return new FluentClient ();
     }
 
+    /**
+     * Adjust the loudest freqs array to match exactly the piano notes frequencies
+     *
+     * @return the client, with a loudest frequencies float array
+     */
+    public FluentClientWithFreqs adjust (){
+        this.freqs = new ShiftOctaveLoudestFreqs ().adjust (this.freqs);
+        return this;
+    }
+    
     @Override
     /**
      * Start over the client : reset the state and the value objects nested in the client
@@ -357,7 +367,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     /**
      * Changes the loudest frequencies array to become one octave lower
      *
-     * @return the client, with a sound imported
+     * @return the client, with a loudest frequencies float array
      */
     @Override
     public FluentClientWithFreqs octaveDown () {
@@ -368,7 +378,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     /**
      * Changes the loudest frequencies array to become one octave upper
      *
-     * @return the client, with a sound imported
+     * @return the client, with a loudest frequencies float array
      */
     @Override
     public FluentClientWithFreqs octaveUp () {

@@ -6,18 +6,25 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public interface FluentClientWithFreqs extends FluentClientCommon {
-
+    
+    /**
+     * Adjust the loudest freqs array to match exactly the piano notes frequencies
+     *
+     * @return the client, with a loudest frequencies float array
+     */
+    FluentClientWithFreqs adjust ();
+    
     /**
      * Changes the loudest frequencies array to become one octave lower
      *
-     * @return the client, with a sound imported
+     * @return the client, with a loudest frequencies float array
      */
     FluentClientWithFreqs octaveDown ();
 
     /**
      * Changes the loudest frequencies array to become one octave upper
      *
-     * @return the client, with a sound imported
+     * @return the client, with a loudest frequencies float array
      */
     FluentClientWithFreqs octaveUp ();
 

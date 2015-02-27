@@ -3,7 +3,15 @@ package org.toilelibre.libe.soundtransform;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 
-public class ChangeOctaveTest {
+public class LoudestFreqsTest {
+
+    @Test
+    public void adjustFreqs () {
+        final float [] array = { 225.32f, 799.2f, 146.11f, 332.74f, 55f, 139f, 1010f };
+        final float [] array2 = { 220f, 783.991f, 146.832f, 329.628f, 55f, 146.832f, 987.767f };
+        final float [] result = FluentClient.start ().withFreqs (array).adjust ().stopWithFreqs ();
+        org.junit.Assert.assertArrayEquals (result, array2, 0);
+    }
 
     @Test
     public void changeOctaveDown () {
