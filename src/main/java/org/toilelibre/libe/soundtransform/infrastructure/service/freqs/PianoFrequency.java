@@ -9,6 +9,12 @@ public class PianoFrequency {
                 PianoFrequency.D3N), C3 (PianoFrequency.C3N), B2 (PianoFrequency.B2N), A2 (PianoFrequency.A2N), G2 (PianoFrequency.G2N), F2 (PianoFrequency.F2N), E2 (PianoFrequency.E2N), D2 (PianoFrequency.D2N), C2 (PianoFrequency.C2N), B1 (PianoFrequency.B1N), A1 (PianoFrequency.A1N), G1 (
                 PianoFrequency.G1N), F1 (PianoFrequency.F1N), E1 (PianoFrequency.E1N), D1 (PianoFrequency.D1N), C1 (PianoFrequency.C1N);
 
+        private final float frequency;
+
+        PianoValues (float frequency1) {
+            this.frequency = frequency1;
+        }
+
         public static PianoValues getNearestNote (float value) {
             PianoValues nearest = PianoValues.A1;
             for (final PianoValues pianoFreq : PianoValues.values ()) {
@@ -18,13 +24,7 @@ public class PianoFrequency {
             }
             return nearest;
         }
-
-        private final float frequency;
-
-        PianoValues (float frequency1) {
-            this.frequency = frequency1;
-        }
-
+        
         public float getFrequency () {
             return this.frequency;
         }
