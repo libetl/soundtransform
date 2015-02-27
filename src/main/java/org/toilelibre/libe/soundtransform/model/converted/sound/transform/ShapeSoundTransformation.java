@@ -102,12 +102,16 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
     }
 
     private boolean isNewNote (final int i, final float lastFreq, final boolean firstNote) {
-        final boolean freqChanged = this.freqHasChanged (this.freqs [i - 1], this.freqs [i]);
-        final boolean freqChangedBefore = this.freqHasChanged (this.freqs [i - 2], this.freqs [i - 1]);
-        final boolean freqChangedBeforeBefore = this.freqHasChanged (this.freqs [i - 3], this.freqs [i - 2]);
-        final boolean freqChangedBeforeBeforeBefore = this.freqHasChanged (this.freqs [i - 4], this.freqs [i - 3]);
+        final boolean freqChangedAtI = this.freqHasChanged (this.freqs [i - 1], this.freqs [i]);
+        final boolean freqChangedAtIMinusOne = this.freqHasChanged (this.freqs [i - 2], this.freqs [i - 1]);
+        final boolean freqChangedAtIMinusTwo = this.freqHasChanged (this.freqs [i - 3], this.freqs [i - 2]);
+        final boolean freqChangedAtIMinusThree = this.freqHasChanged (this.freqs [i - 4], this.freqs [i - 3]);
         final boolean freqChangedFromLastNote = this.freqHasChanged (this.freqs [i], lastFreq);
-        return !freqChanged && !freqChangedBefore && !freqChangedBeforeBefore && freqChangedBeforeBeforeBefore && (!freqChangedFromLastNote || firstNote);
+        final boolean frequencyDidNotChangeBetweenIAndIMinusTwo = !freqChangedAtI && !freqChangedAtIMinusOne && !freqChangedAtIMinusTwo;
+
+        final boolean thereIsANewFrequencyValue = (freqChangedFromLastNote || firstNote);
+
+        return frequencyDidNotChangeBetweenIAndIMinusTwo && freqChangedAtIMinusThree && thereIsANewFrequencyValue;
     }
 
     public Sound transform (final int step, final int channelNum) throws SoundTransformException {
