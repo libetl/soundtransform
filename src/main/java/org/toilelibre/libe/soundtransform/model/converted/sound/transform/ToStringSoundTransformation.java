@@ -6,6 +6,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 public class ToStringSoundTransformation implements SoundTransformation {
 
     private static final double NB_BYTE_VALUES = 1 << Byte.SIZE;
+    private static final long   TWO            = 2;
     private final int           length;
     private final int           height;
     private StringBuilder       sb             = new StringBuilder ();
@@ -26,7 +27,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
         this.sb = new StringBuilder ();
 
         final float lastSample = input.getSamplesLength ();
-        final long maxMagn = (long) Math.pow (ToStringSoundTransformation.NB_BYTE_VALUES, input.getNbBytesPerSample ()) / 2;
+        final long maxMagn = (long) Math.pow (ToStringSoundTransformation.NB_BYTE_VALUES, input.getNbBytesPerSample ()) / ToStringSoundTransformation.TWO;
         final int step = (int) lastSample / this.length;
         final int [] valuesOnPlot = new int [this.length];
         int maxPlotValue = 0;

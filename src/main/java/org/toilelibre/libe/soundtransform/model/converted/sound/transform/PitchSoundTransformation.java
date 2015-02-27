@@ -5,8 +5,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class PitchSoundTransformation implements SoundTransformation {
 
-    private static final float A_HUNDRED = 100;
-    private float              percent   = 20;
+    private static final float A_HUNDRED             = 100;
+    private static final float DEFAULT_PERCENT_VALUE = 20;
+    private float              percent               = PitchSoundTransformation.DEFAULT_PERCENT_VALUE;
 
     public PitchSoundTransformation (final float percent) {
         this.percent = percent;
