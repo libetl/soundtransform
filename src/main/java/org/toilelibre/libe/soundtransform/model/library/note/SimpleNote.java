@@ -7,15 +7,17 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public class SimpleNote implements Note {
 
-    private final Sound [] attack;
-    private final Sound [] decay;
-    private final Sound [] sustain;
-    private final Sound [] release;
-    private final float    frequency;
-    private final String   fileName;
+    private final Sound []                  attack;
+    private final Sound []                  decay;
+    private final Sound []                  sustain;
+    private final Sound []                  release;
+    private final float                     frequency;
+    private final String                    fileName;
+    private final SoundPitchAndTempoService soundPitchAndTempoService;
 
     public SimpleNote (final String fileName, final Sound [] channels, final float frequency, final int attack, final int decay, final int sustain, final int release) {
         this.frequency = frequency;
+        this.soundPitchAndTempoService = $.create (SoundPitchAndTempoService.class);
         this.attack = new Sound [channels.length];
         this.decay = new Sound [channels.length];
         this.sustain = new Sound [channels.length];
@@ -41,12 +43,12 @@ public class SimpleNote implements Note {
 
     @Override
     public Sound getAttack (final float frequency, final int channelnum, final float length) throws SoundTransformException {
-        return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.attack, channelnum), this.getPercent (frequency), this.getRatio (this.attack) * length);
+        return this.soundPitchAndTempoService.callTransform (this.get (this.attack, channelnum), this.getPercent (frequency), this.getRatio (this.attack) * length);
     }
 
     @Override
     public Sound getDecay (final float frequency, final int channelnum, final float length) throws SoundTransformException {
-        return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.decay, channelnum), this.getPercent (frequency), this.getRatio (this.decay) * length);
+        return this.soundPitchAndTempoService.callTransform (this.get (this.decay, channelnum), this.getPercent (frequency), this.getRatio (this.decay) * length);
     }
 
     @Override
@@ -60,24 +62,24 @@ public class SimpleNote implements Note {
     }
 
     private float getPercent (final float frequency2) {
-        return (float) ((frequency2 * 100.0) / this.frequency);
+        return (float) (frequency2 * 100.0 / this.frequency);
     }
 
     private float getRatio (final Sound [] subsound) {
-        final float lengthOfSubsound = (1.0f * subsound [0].getSamplesLength ()) / subsound [0].getSampleRate ();
-        final float lengthOfSound = ((1.0f * this.attack [0].getSamplesLength ()) / this.attack [0].getSampleRate ()) + ((1.0f * this.decay [0].getSamplesLength ()) / this.decay [0].getSampleRate ()) + ((1.0f * this.sustain [0].getSamplesLength ()) / this.sustain [0].getSampleRate ())
-                + ((1.0f * this.release [0].getSamplesLength ()) / this.release [0].getSampleRate ());
-        return (lengthOfSubsound * 1.0f) / lengthOfSound;
+        final float lengthOfSubsound = 1.0f * subsound [0].getSamplesLength () / subsound [0].getSampleRate ();
+        final float lengthOfSound = 1.0f * this.attack [0].getSamplesLength () / this.attack [0].getSampleRate () + 1.0f * this.decay [0].getSamplesLength () / this.decay [0].getSampleRate () + 1.0f * this.sustain [0].getSamplesLength () / this.sustain [0].getSampleRate ()
+                + 1.0f * this.release [0].getSamplesLength () / this.release [0].getSampleRate ();
+        return lengthOfSubsound * 1.0f / lengthOfSound;
     }
 
     @Override
     public Sound getRelease (final float frequency, final int channelnum, final float length) throws SoundTransformException {
-        return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.release, channelnum), this.getPercent (frequency), this.getRatio (this.release) * length);
+        return this.soundPitchAndTempoService.callTransform (this.get (this.release, channelnum), this.getPercent (frequency), this.getRatio (this.release) * length);
     }
 
     @Override
     public Sound getSustain (final float frequency, final int channelnum, final float length) throws SoundTransformException {
-        return $.create (SoundPitchAndTempoService.class).callTransform (this.get (this.sustain, channelnum), this.getPercent (frequency), this.getRatio (this.sustain) * length);
+        return this.soundPitchAndTempoService.callTransform (this.get (this.sustain, channelnum), this.getPercent (frequency), this.getRatio (this.sustain) * length);
     }
 
     private Sound soundToSubSound (final Sound input, final int beginning, final int end) {
