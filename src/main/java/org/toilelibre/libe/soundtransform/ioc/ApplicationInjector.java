@@ -56,37 +56,36 @@ public class ApplicationInjector {
         }
     }
 
+    private static int findNewInstanceParams (final Object [] newInstanceParams, final Constructor<?> constructor, final Object [] additionalParameters, final List<String> warnings) {
+        final Class<?> [] ptypes = constructor.getParameterTypes ();
+        for (int i = 0 ; i < ptypes.length ; i++) {
+            newInstanceParams [i] = ApplicationInjector.tryToFindABeanForClass (ptypes [i], warnings);
+        }
+        int additionalParamCounter = 0;
+        for (int i = 0 ; i < newInstanceParams.length ; i++) {
+            if (newInstanceParams [i] == null) {
+                if (additionalParamCounter < additionalParameters.length) {
+                    if (ptypes [i].isArray () && !additionalParameters [additionalParamCounter].getClass ().isArray ()) {
+                        newInstanceParams [i] = Array.fill (additionalParameters [additionalParamCounter], 1);
+                    } else {
+                        newInstanceParams [i] = additionalParameters [additionalParamCounter];
+                    }
+                }
+                additionalParamCounter++;
+            }
+        }
+        return additionalParamCounter;
+    }
+
     public static <T> T getBean (final Class<T> type) {
         return ApplicationInjector.injector.resolve (Dependency.<T> dependency (type));
     }
 
-    @SuppressWarnings ("unchecked")
     public static <T> T instantiate (final Class<T> type, final Object... additionalParameters) {
         final List<String> warnings = new LinkedList<String> ();
         for (final Constructor<?> constructor : type.getDeclaredConstructors ()) {
-            final Class<?> [] ptypes = constructor.getParameterTypes ();
-            final Object [] newInstanceParams = new Object [ptypes.length];
-            for (int i = 0 ; i < ptypes.length ; i++) {
-                newInstanceParams [i] = ApplicationInjector.tryToFindABeanForClass (ptypes [i], warnings);
-            }
-            int additionalParamCounter = 0;
-            for (int i = 0 ; i < newInstanceParams.length ; i++) {
-                if (newInstanceParams [i] == null) {
-                    if (additionalParamCounter < additionalParameters.length) {
-                        if (ptypes [i].isArray () && !additionalParameters [additionalParamCounter].getClass ().isArray ()) {
-                            newInstanceParams [i] = Array.fill (additionalParameters [additionalParamCounter], 1);
-                        } else {
-                            newInstanceParams [i] = additionalParameters [additionalParamCounter];
-                        }
-                    }
-                    additionalParamCounter++;
-                }
-            }
-            if (additionalParamCounter != additionalParameters.length) {
-                warnings.add ("Argument number in constructor did not match");
-                continue;
-            }
-            final T result = (T) ApplicationInjector.newInstance (constructor, newInstanceParams, warnings);
+            @SuppressWarnings ("unchecked")
+            final T result = (T) ApplicationInjector.tryToInstantiateWithThisConstructor (constructor, additionalParameters, warnings);
             if (result != null) {
                 return result;
             }
@@ -126,6 +125,18 @@ public class ApplicationInjector {
             return null;
         }
 
+    }
+
+    @SuppressWarnings ("unchecked")
+    private static <T> T tryToInstantiateWithThisConstructor (final Constructor<?> constructor, final Object [] additionalParameters, final List<String> warnings) {
+
+        final Object [] newInstanceParams = new Object [constructor.getParameterTypes ().length];
+        final int additionalParamCounter = ApplicationInjector.findNewInstanceParams (newInstanceParams, constructor, additionalParameters, warnings);
+        if (additionalParamCounter != additionalParameters.length) {
+            warnings.add ("Argument number in constructor did not match");
+            return null;
+        }
+        return (T) ApplicationInjector.newInstance (constructor, newInstanceParams, warnings);
     }
 
 }
