@@ -24,7 +24,7 @@ public class PianoFrequency {
             }
             return nearest;
         }
-        
+
         public float getFrequency () {
             return this.frequency;
         }
@@ -79,4 +79,8 @@ public class PianoFrequency {
     private static final float E1N = 41.2035f;
     private static final float D1N = 36.7081f;
     private static final float C1N = 32.7032f;
+
+    private PianoFrequency () {
+
+    }
 }
