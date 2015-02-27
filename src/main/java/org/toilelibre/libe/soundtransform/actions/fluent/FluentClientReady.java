@@ -164,5 +164,5 @@ public interface FluentClientReady {
      *            the spectrums
      * @return the client, with the spectrums
      */
-    FluentClientWithSpectrums withSpectrums (List<Spectrum<? extends Serializable> []> spectrums);
+    FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable> []> spectrums);
 }

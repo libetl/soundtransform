@@ -13,11 +13,11 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public class SpectrumsToSoundSoundTransformation implements SoundTransformation {
 
-    private final List<Spectrum<? extends Serializable> []>      spectrums;
+    private final List<Spectrum<Serializable> []>      spectrums;
     private final FourierTransformHelper<?> fourierHelper;
     private final SoundAppender             appender;
 
-    public SpectrumsToSoundSoundTransformation (final List<Spectrum<? extends Serializable> []> spectrums1) {
+    public SpectrumsToSoundSoundTransformation (final List<Spectrum<Serializable> []> spectrums1) {
         this.fourierHelper = $.select (FourierTransformHelper.class);
         this.appender = $.select (SoundAppender.class);
         this.spectrums = spectrums1;

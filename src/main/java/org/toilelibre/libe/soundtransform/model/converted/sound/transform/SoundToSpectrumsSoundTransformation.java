@@ -8,20 +8,20 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
-public class SoundToSpectrumsSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> {
+public class SoundToSpectrumsSoundTransformation extends SimpleFrequencySoundTransformation<Serializable> {
 
-    private static final int           TWO = 2;
-    private int                        step;
-    private int                        channel;
-    private final List<Spectrum<? extends Serializable> []> spectrums;
-    private int                        index;
+    private static final int                      TWO = 2;
+    private int                                   step;
+    private int                                   channel;
+    private final List<Spectrum<Serializable> []> spectrums;
+    private int                                   index;
 
     public SoundToSpectrumsSoundTransformation () {
         super ();
-        this.spectrums = new ArrayList<Spectrum<? extends Serializable> []> ();
+        this.spectrums = new ArrayList<Spectrum<Serializable> []> ();
     }
 
-    public List<Spectrum<? extends Serializable> []> getSpectrums () {
+    public List<Spectrum<Serializable> []> getSpectrums () {
         return this.spectrums;
     }
 
@@ -40,13 +40,18 @@ public class SoundToSpectrumsSoundTransformation<T extends Serializable> extends
         }
         this.step = roundedSize;
         final int spectrumsSize = (int) Math.ceil (input.getSamplesLength () * 1.0 / roundedSize);
-        this.spectrums.add (new Spectrum [spectrumsSize]);
+        this.spectrums.add (this.generateSpectrumArray (spectrumsSize));
         return super.initSound (input);
     }
 
+    @SuppressWarnings ("unchecked")
+    private Spectrum<Serializable> [] generateSpectrumArray (int spectrumsSize) {
+        return new Spectrum [spectrumsSize];
+    }
+
     @Override
-    public Spectrum<T> transformFrequencies (final Spectrum<T> fs) {
-        this.spectrums.get (this.channel) [this.index++] = fs;
+    public Spectrum<Serializable> transformFrequencies (final Spectrum<Serializable> fs) {
+        this.spectrums.get (this.channel) [this.index++] = (Spectrum<Serializable>) fs;
         return fs;
     }
 }

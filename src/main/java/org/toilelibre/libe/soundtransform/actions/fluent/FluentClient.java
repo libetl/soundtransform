@@ -43,7 +43,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     private String               sameDirectoryAsClasspathResource;
     private float []             freqs;
     private File                 file;
-    private List<Spectrum<? extends Serializable> []> spectrums;
+    private List<Spectrum<Serializable> []> spectrums;
 
     private List<Observer>       observers;
 
@@ -388,7 +388,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         } else if (this.audioInputStream != null) {
             new PlaySound ().play (this.audioInputStream);
         } else if (this.spectrums != null) {
-            final List<Spectrum<? extends Serializable> []> savedSpectrums = this.spectrums;
+            final List<Spectrum<Serializable> []> savedSpectrums = this.spectrums;
             this.extractSound ();
             new PlaySound ().play (this.sounds);
             this.cleanData ();
@@ -426,7 +426,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException could not convert the sound into some spectrums
      */
     public FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException {
-        final SoundToSpectrumsSoundTransformation<Serializable> sound2Spectrums = new SoundToSpectrumsSoundTransformation<Serializable> ();
+        final SoundToSpectrumsSoundTransformation sound2Spectrums = new SoundToSpectrumsSoundTransformation ();
         new ApplySoundTransform (this.getObservers ()).apply (this.sounds, sound2Spectrums);
         this.cleanData ();
         this.spectrums = sound2Spectrums.getSpectrums ();
@@ -501,7 +501,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Stops the client pipeline and returns the obtained spectrums
      * @return a list of spectrums for each channel
      */
-    public List<Spectrum<? extends Serializable> []> stopWithSpectrums () {
+    public List<Spectrum<Serializable> []> stopWithSpectrums () {
         return this.spectrums;
     }
 
@@ -649,7 +649,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @param spectrums the spectrums
      * @return the client, with the spectrums
      */
-    public FluentClientWithSpectrums withSpectrums (final List<Spectrum<? extends Serializable> []> spectrums) {
+    public FluentClientWithSpectrums withSpectrums (final List<Spectrum<Serializable> []> spectrums) {
         this.cleanData ();
         this.spectrums = spectrums;
         return this;

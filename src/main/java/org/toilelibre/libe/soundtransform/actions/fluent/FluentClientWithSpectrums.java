@@ -35,7 +35,7 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
      *
      * @return a list of spectrums for each channel
      */
-    List<Spectrum<? extends Serializable> []> stopWithSpectrums ();
+    List<Spectrum<Serializable> []> stopWithSpectrums ();
 
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
