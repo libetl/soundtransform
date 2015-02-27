@@ -40,7 +40,7 @@ public class TestDetectNotes extends SoundTransformTest {
             public void notify (final LogEvent logEvent) {
                 messages.add (logEvent.toString ());
             }
-        }).transform (100);
+        }).transform (100, 1);
         Assert.assertTrue (messages.get (0).endsWith (" between 200/2000 and  600/ 2000"));
         Assert.assertTrue (messages.get (1).endsWith (" between 800/2000 and 1000/ 2000"));
         Assert.assertTrue (messages.get (2).endsWith (" between 1100/2000 and 1600/ 2000"));
