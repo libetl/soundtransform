@@ -15,6 +15,14 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
     FluentClientWithFreqs adjust ();
     
     /**
+     * Remove the values between low and high in the loudest freqs array
+     * (replace them by 0)
+     *
+     * @return the client, with a loudest frequencies float array
+     */
+    FluentClientWithFreqs filterRange (float low, float high);
+    
+    /**
      * Changes the loudest frequencies array to become one octave lower
      *
      * @return the client, with a loudest frequencies float array

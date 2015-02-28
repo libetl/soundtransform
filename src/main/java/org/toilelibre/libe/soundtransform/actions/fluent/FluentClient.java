@@ -16,7 +16,7 @@ import org.toilelibre.libe.soundtransform.actions.transform.ConvertFromInputStre
 import org.toilelibre.libe.soundtransform.actions.transform.ExportAFile;
 import org.toilelibre.libe.soundtransform.actions.transform.GetInputStreamInfo;
 import org.toilelibre.libe.soundtransform.actions.transform.InputStreamToAudioInputStream;
-import org.toilelibre.libe.soundtransform.actions.transform.ShiftOctaveLoudestFreqs;
+import org.toilelibre.libe.soundtransform.actions.transform.ChangeLoudestFreqs;
 import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -84,7 +84,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @return the client, with a loudest frequencies float array
      */
     public FluentClientWithFreqs adjust (){
-        this.freqs = new ShiftOctaveLoudestFreqs ().adjust (this.freqs);
+        this.freqs = new ChangeLoudestFreqs ().adjust (this.freqs);
         return this;
     }
     
@@ -275,6 +275,19 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.apply (new SubSoundExtractSoundTransformation (start, end));
     }
 
+    
+    /**
+     * Remove the values between low and high in the loudest freqs array
+     * (replace them by 0)
+     *
+     * @return the client, with a loudest frequencies float array
+     */
+    @Override
+    public FluentClientWithFreqs filterRange (float low, float high) {
+        this.freqs = new ChangeLoudestFreqs ().filterRange (this.freqs, low, high);
+        return this;
+    }
+    
     /**
      * Will invoke a soundtransform to find the loudest frequencies of the
      * sound, chronologically<br/>
@@ -371,7 +384,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     public FluentClientWithFreqs octaveDown () {
-        this.freqs = new ShiftOctaveLoudestFreqs ().octaveDown (this.freqs);
+        this.freqs = new ChangeLoudestFreqs ().octaveDown (this.freqs);
         return this;
     }
 
@@ -382,7 +395,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     public FluentClientWithFreqs octaveUp () {
-        this.freqs = new ShiftOctaveLoudestFreqs ().octaveUp (this.freqs);
+        this.freqs = new ChangeLoudestFreqs ().octaveUp (this.freqs);
         return this;
     }
 

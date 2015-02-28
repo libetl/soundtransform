@@ -6,6 +6,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.fourier.Commons
 import org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.AdjustFrequenciesToPianoProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleChangeOctaveProcessor;
+import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleFilterFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.pack.GsonPackConfigParser;
 import org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.CallHPSFrequencyHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.MagnitudeADSRHelper;
@@ -22,6 +23,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelpe
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToStringHelper;
 import org.toilelibre.libe.soundtransform.model.freqs.AdjustFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.ChangeOctaveProcessor;
+import org.toilelibre.libe.soundtransform.model.freqs.FilterFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
@@ -54,6 +56,7 @@ public abstract class ImplAgnosticRootModule extends BinderModule {
         super.bind (PackConfigParser.class).to (new GsonPackConfigParser ());
         super.bind (ChangeOctaveProcessor.class).to (new SimpleChangeOctaveProcessor ());
         super.bind (AdjustFrequenciesProcessor.class).to (new AdjustFrequenciesToPianoProcessor ());
+        super.bind (FilterFrequenciesProcessor.class).to (new SimpleFilterFrequenciesProcessor ());
         super.bind (Library.class).to (new Library ());
     }
 

@@ -114,6 +114,26 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
+    public void testFilterFreqs () throws SoundTransformException {
+        final Random random = new Random ();
+        final float [] freqs = new float [random.nextInt (2000) + 4000];
+        int i = 0;
+        while (i < freqs.length) {
+            final int length = Math.min (random.nextInt (200) + 400, freqs.length - i);
+            final float currentFreq = random.nextInt (300) + 360;
+            for (int j = 0 ; j < length ; j++) {
+                freqs [i++] = currentFreq;
+            }
+        }
+        final float [] freqsOutput = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (freqs).filterRange (0, 90).filterRange (500, 1000).stopWithFreqs ();
+        for (i = 0 ; i < freqsOutput.length ; i++) {
+            if (freqsOutput [i] > 0 && freqsOutput [i] <= 90 || freqsOutput [i] >= 500 && freqsOutput [i] <= 1000) {
+                org.junit.Assert.fail (freqsOutput [i] + " is not filtered in the freqs array (index " + i + ")");
+            }
+        }
+    }
+
+    @Test
     public void testImportHPSFreqs () throws SoundTransformException {
         final Random random = new Random ();
         final float [] freqs = new float [random.nextInt (2000) + 4000];
