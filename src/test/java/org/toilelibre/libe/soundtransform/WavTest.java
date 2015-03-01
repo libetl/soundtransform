@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.EqualizerSoundTransformation;
+import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.GaussianEqualizerSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.LinearRegressionSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.PurifySoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.SlowdownSoundTransformation;
@@ -31,6 +32,7 @@ public class WavTest extends SoundTransformTest {
 
     private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
     private final File        input       = new File (this.classLoader.getResource ("before.wav").getFile ());
+    private final File        shortInput  = new File (this.classLoader.getResource ("notes/g-piano3.wav").getFile ());
 
     private final File        output      = new File (new File (this.classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
@@ -46,6 +48,11 @@ public class WavTest extends SoundTransformTest {
 
     }
 
+    @Test
+    public void testGaussianEqualizer () throws SoundTransformException {
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new GaussianEqualizerSoundTransformation ());
+    }
+    
     @Test
     public void testLinearReg () throws SoundTransformException {
         // will remove the high freqs and smooth the signal
@@ -80,10 +87,10 @@ public class WavTest extends SoundTransformTest {
 
     }
 
-    // @Test
+    @Test
     public void testPurify () throws SoundTransformException {
         // WARN : quite long
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, $.create (PurifySoundTransformation.class));
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, $.create (PurifySoundTransformation.class));
 
     }
 
@@ -91,13 +98,11 @@ public class WavTest extends SoundTransformTest {
     public void testRemoveLowFreqs () throws SoundTransformException {
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output,
                 $.create (EqualizerSoundTransformation.class, new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 24000 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 }));
-
     }
 
     @Test
     public void testReverse () throws SoundTransformException {
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new ReverseSoundTransformation ());
-
     }
 
     @Test
@@ -106,7 +111,7 @@ public class WavTest extends SoundTransformTest {
         new Slf4jObserver (LogLevel.WARN).notify ("Loading default pack");
         final Library library = $.select (Library.class);
         $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack (library, "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new ShapeSoundTransformation ("default", "simple_piano"));
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new ShapeSoundTransformation ("default", "simple_piano"));
 
     }
 
