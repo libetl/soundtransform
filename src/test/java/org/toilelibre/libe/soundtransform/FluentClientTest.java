@@ -36,6 +36,13 @@ public class FluentClientTest extends SoundTransformTest {
         final InputStreamInfo isi = new InputStreamInfo (1, 0, 1, 8000, false, true);
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().changeFormat (isi);
     }
+
+    @Test
+    public void readFormat () throws SoundTransformException {
+        InputStreamInfo isInfo = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").importToStream ().stopWithInputStreamInfo ();
+        isInfo.hashCode ();
+    }
+    
     
     @Test
     public void cutsound () throws SoundTransformException {
@@ -45,6 +52,11 @@ public class FluentClientTest extends SoundTransformTest {
     @Test (expected = SoundTransformException.class)
     public void cutsoundOutOfBounds () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (-100000, 200000).exportToClasspathResource ("after.wav");
+    }
+    
+    @Test
+    public void findLoudestFreqs () throws SoundTransformException {
+        org.junit.Assert.assertNotNull (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().findLoudestFrequencies ().stopWithFreqs ());
     }
 
     @Test
@@ -65,10 +77,9 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().mixWith (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
-    // Plays the sound three times, therefore too long time consuming test
-    // @Test
+    @Test
     public void playIt () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
     }
 
     @Test

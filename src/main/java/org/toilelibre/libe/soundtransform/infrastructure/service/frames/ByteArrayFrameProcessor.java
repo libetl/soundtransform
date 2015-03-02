@@ -128,7 +128,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
     }
 
     private void writeSound (final InputStream ais, final InputStreamInfo isInfo, final Sound [] result) throws SoundTransformException {
-        final long neutral = isInfo.isPcmSigned () ? this.getNeutral (isInfo.getSampleSize ()) : 0;
+        final long neutral = this.getNeutral (isInfo.getSampleSize ());
         for (int position = 0 ; position < (int) isInfo.getFrameLength () ; position++) {
             final byte [] frame = new byte [isInfo.getSampleSize () * isInfo.getChannels ()];
             try {
