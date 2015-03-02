@@ -19,12 +19,34 @@ import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileServ
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
 import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
+import org.toilelibre.libe.soundtransform.model.library.pack.AddNoteService;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.library.pack.Range;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class Sound2NoteTest extends SoundTransformTest {
+
+    @Test
+    public void fileNotFound () throws SoundTransformException {
+        final Range range = new Range ();
+        $.create (AddNoteService.class).addNote (range, "notAFile.wav");
+        org.junit.Assert.assertTrue (range.size () == 0);
+    }
+
+    @Test
+    public void readNotes () throws SoundTransformException {
+        final Range range = new Range ();
+        $.create (AddNoteService.class).addNotes (range, "notes/g-piano3.wav", "notes/g-piano4.wav");
+        org.junit.Assert.assertTrue (range.size () == 2);
+    }
+    
+    @Test
+    public void strangeFileName () throws SoundTransformException {
+        final Range range = new Range ();
+        $.create (AddNoteService.class).addNote (range, "sftp://mywebsite.fr");
+        org.junit.Assert.assertTrue (range.size () == 0);
+    }
 
     @Test
     public void run () throws SoundTransformException {
@@ -146,5 +168,4 @@ public class Sound2NoteTest extends SoundTransformTest {
             new Slf4jObserver ().notify ("...acceptable");
         }
     }
-
 }

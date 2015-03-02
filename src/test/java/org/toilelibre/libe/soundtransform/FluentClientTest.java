@@ -32,6 +32,12 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
+    public void changeFormat () throws SoundTransformException {
+        final InputStreamInfo isi = new InputStreamInfo (1, 0, 1, 8000, false, true);
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().changeFormat (isi);
+    }
+    
+    @Test
     public void cutsound () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().cutSubSound (100000, 600000).exportToClasspathResource ("after.wav");
     }

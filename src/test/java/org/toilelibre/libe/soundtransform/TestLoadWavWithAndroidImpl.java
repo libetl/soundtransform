@@ -1,15 +1,18 @@
 package org.toilelibre.libe.soundtransform;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android.AndroidAudioFileHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android.AndroidWavHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android.AudioInputStream.AudioInputStreamErrorCode;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformAndroidTest;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper.AudioFileHelperErrorCode;
 
 public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
 
@@ -92,6 +95,25 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
         } catch (final SoundTransformRuntimeException stre) {
             final SoundTransformException ste = (SoundTransformException) stre.getCause ();
             org.junit.Assert.assertEquals (AndroidWavHelper.AudioWavHelperErrorCode.NO_MAGIC_NUMBER, ste.getErrorCode ());
+            throw ste;
+        }
+    }
+    
+    @Test(expected=SoundTransformException.class)
+    public void testFileNotFound () throws SoundTransformException {
+        try  {
+        FluentClient.start ().withClasspathResource ("fileNotFound.wav").convertIntoSound ().exportToClasspathResource ("after.wav");
+        }catch (SoundTransformException ste){
+            org.junit.Assert.assertEquals (FluentClient.FluentClientErrorCode.NO_FILE_IN_INPUT, ste.getErrorCode ());
+            throw ste;
+        }
+    }
+    @Test(expected=SoundTransformException.class)
+    public void testConvertToBaosWithFileNotFound () throws SoundTransformException {
+        try  {
+            new AndroidAudioFileHelper ().convertFileToBaos (new File ("fileNotFound"));
+        }catch (SoundTransformException ste){
+            org.junit.Assert.assertEquals (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, ste.getErrorCode ());
             throw ste;
         }
     }

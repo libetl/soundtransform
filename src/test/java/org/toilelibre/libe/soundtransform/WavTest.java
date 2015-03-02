@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -14,6 +15,7 @@ import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CepstrumSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
@@ -43,9 +45,13 @@ public class WavTest extends SoundTransformTest {
     }
 
     @Test
+    public void testCepstrum () throws SoundTransformException {
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new CepstrumSoundTransformation<Serializable> (100));
+    }
+
+    @Test
     public void testFreqNoOp () throws SoundTransformException {
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, $.create (SimpleFrequencySoundTransformation.class));
-
     }
 
     @Test
@@ -122,10 +128,10 @@ public class WavTest extends SoundTransformTest {
 
     }
 
-    // @Test
+    @Test
     public void testSpeedUp () throws SoundTransformException {
         // WARN : quite long
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, $.create (SpeedUpSoundTransformation.class, 200, 1.5f));
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, $.create (SpeedUpSoundTransformation.class, 200, 1.5f));
 
     }
 }

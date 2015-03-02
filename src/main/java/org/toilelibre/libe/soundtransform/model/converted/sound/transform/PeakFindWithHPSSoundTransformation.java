@@ -134,7 +134,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
         }
         float f0 = 0;
 
-        if (soundLevelInDB > 30) {
+        if (soundLevelInDB > 30 || this.note) {
             final float [] peaks = new float [10];
             for (int i = 1 ; i <= 10 ; i++) {
                 peaks [i - 1] = this.spectrumHelper.f0 (fs, i);

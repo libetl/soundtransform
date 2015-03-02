@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -607,7 +608,11 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientWithFile withClasspathResource (final String resource) throws SoundTransformException {
         this.cleanData ();
-        this.file = new File (Thread.currentThread ().getContextClassLoader ().getResource (resource).getFile ());
+        final URL fileURL = Thread.currentThread ().getContextClassLoader ().getResource (resource);
+        if (fileURL == null) {
+            throw new SoundTransformException (FluentClientErrorCode.NO_FILE_IN_INPUT, new NullPointerException ());
+        }
+        this.file = new File (fileURL.getFile ());
         this.sameDirectoryAsClasspathResource = this.file.getParent ();
         return this;
     }

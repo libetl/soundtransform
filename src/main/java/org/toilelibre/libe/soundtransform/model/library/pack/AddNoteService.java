@@ -18,7 +18,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class AddNoteService extends AbstractLogAware<AddNoteService> {
 
-    enum AddNoteErrorCode implements ErrorCode {
+    public enum AddNoteErrorCode implements ErrorCode {
         COULD_NOT_BE_PARSED ("%1s could not be parsed as an ADSR note"), NOT_READABLE ("%1s could not be read"), NOT_SUPPORTED ("%1s is not yet a supported sound file"), ;
 
         private String messageFormat;
@@ -34,7 +34,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
 
     }
 
-    enum AddNoteEventCode implements EventCode {
+    public enum AddNoteEventCode implements EventCode {
         FILE_NOT_FOUND (LogLevel.ERROR, "%1s not found"), NOT_A_CLASSPATH_RESOURCE (LogLevel.WARN, "%1s is not a classpath resource"), NOT_A_FILESYSTEM_ENTRY (LogLevel.ERROR, "%1s is not a filesystem entry (%2s)");
 
         private String   messageFormat;
@@ -118,7 +118,10 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
         if (completeURL == null) {
             this.log (new LogEvent (AddNoteEventCode.NOT_A_CLASSPATH_RESOURCE, fileName));
             try {
-                completeURL = new File (fileName).toURI ().toURL ();
+                File tmpFile = new File (fileName);
+                if (tmpFile.exists ()){
+                    completeURL = tmpFile.toURI ().toURL ();
+                }
             } catch (final MalformedURLException e) {
                 this.log (new LogEvent (AddNoteEventCode.NOT_A_FILESYSTEM_ENTRY, fileName, e));
             }
