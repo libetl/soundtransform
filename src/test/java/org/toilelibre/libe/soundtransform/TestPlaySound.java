@@ -29,6 +29,10 @@ public class TestPlaySound extends SoundTransformTest {
         } catch (final PlaySoundException e) {
             // javax.sound.sampled.LineUnavailableException for some JDK
             // versions
+            if (!javax.sound.sampled.LineUnavailableException.class.equals (e.getCause ().getClass ()) &&
+                    !java.lang.IllegalArgumentException.class.equals (e.getCause ().getClass ())) {
+                throw e;
+            }
         } catch (final RuntimeException e) {
             if (!"Stub!".equals (e.getMessage ())) {
                 throw e;
