@@ -20,6 +20,26 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
 
     }
 
+    private void addLineListener (final Clip clip) {
+        clip.addLineListener (new LineListener () {
+
+            @Override
+            public void update (final LineEvent event) {
+                final LineEvent.Type type = event.getType ();
+                if (type == LineEvent.Type.STOP) {
+                    synchronized (clip) {
+                        clip.stop ();
+                        clip.close ();
+                        clip.notify ();
+                    }
+                }
+
+            }
+
+        });
+
+    }
+
     @Override
     public Object play (final InputStream ais) throws PlaySoundException {
         try {
@@ -44,28 +64,15 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
             final Line.Info linfo = new Line.Info (Clip.class);
             final Line line = AudioSystem.getLine (linfo);
             final Clip clip = (Clip) line;
-            clip.addLineListener (new LineListener () {
-
-                @Override
-                public void update (final LineEvent event) {
-                    final LineEvent.Type type = event.getType ();
-                    if (type == LineEvent.Type.STOP) {
-                        synchronized (clip) {
-                            clip.stop ();
-                            clip.close ();
-                            clip.notify ();
-                        }
-                    }
-
-                }
-
-            });
+            this.addLineListener (clip);
             clip.open ((AudioInputStream) ais);
 
             return clip;
         } catch (final LineUnavailableException lineUnavailableException) {
             throw new PlaySoundException (lineUnavailableException);
         } catch (final IOException e) {
+            throw new PlaySoundException (e);
+        } catch (final IllegalArgumentException e) {
             throw new PlaySoundException (e);
         }
     }
