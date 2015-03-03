@@ -39,13 +39,6 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
-    public void readFormat () throws SoundTransformException {
-        InputStreamInfo isInfo = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").importToStream ().stopWithInputStreamInfo ();
-        isInfo.hashCode ();
-    }
-    
-    
-    @Test
     public void cutsound () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().cutSubSound (100000, 600000).exportToClasspathResource ("after.wav");
     }
@@ -54,7 +47,7 @@ public class FluentClientTest extends SoundTransformTest {
     public void cutsoundOutOfBounds () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (-100000, 200000).exportToClasspathResource ("after.wav");
     }
-    
+
     @Test
     public void findLoudestFreqs () throws SoundTransformException {
         org.junit.Assert.assertNotNull (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().findLoudestFrequencies ().stopWithFreqs ());
@@ -82,9 +75,15 @@ public class FluentClientTest extends SoundTransformTest {
     public void playIt () throws SoundTransformException {
         try {
             FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
-        }catch (PlaySoundException pse){
+        } catch (final PlaySoundException pse) {
             new Slf4jObserver ().notify ("This build environment cannot play a sound (ignoring) " + pse);
         }
+    }
+
+    @Test
+    public void readFormat () throws SoundTransformException {
+        final InputStreamInfo isInfo = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").importToStream ().stopWithInputStreamInfo ();
+        isInfo.hashCode ();
     }
 
     @Test
@@ -105,6 +104,30 @@ public class FluentClientTest extends SoundTransformTest {
         final InputStreamInfo isi = new InputStreamInfo (1, 32768, 2, 8000, false, true);
 
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withRawInputStream (is, isi).importToSound ().exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+    }
+
+    @Test
+    public void replacePart1 () throws SoundTransformException {
+        final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
+        final float [] array2 = { 15, 16, 17, 18 };
+
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (array1).replacePart (array2, 4).stopWithFreqs (), 0);
+    }
+
+    @Test
+    public void replacePart2 () throws SoundTransformException {
+        final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
+        final float [] array2 = { 15, 16, 17, 18 };
+
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (array1).replacePart (array2, 7).stopWithFreqs (), 0);
+    }
+
+    @Test
+    public void replacePart3 () throws SoundTransformException {
+        final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
+        final float [] array2 = { 15, 16, 17, 18 };
+
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (array1).replacePart (array2, 11).stopWithFreqs (), 0);
     }
 
     // Exactly the same code run as WavTest.testShape
@@ -149,7 +172,7 @@ public class FluentClientTest extends SoundTransformTest {
         }
         final float [] freqsOutput = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (freqs).filterRange (0, 90).filterRange (500, 1000).stopWithFreqs ();
         for (i = 0 ; i < freqsOutput.length ; i++) {
-            if (freqsOutput [i] > 0 && freqsOutput [i] <= 90 || freqsOutput [i] >= 500 && freqsOutput [i] <= 1000) {
+            if (((freqsOutput [i] > 0) && (freqsOutput [i] <= 90)) || ((freqsOutput [i] >= 500) && (freqsOutput [i] <= 1000))) {
                 org.junit.Assert.fail (freqsOutput [i] + " is not filtered in the freqs array (index " + i + ")");
             }
         }

@@ -20,4 +20,8 @@ public final class ChangeLoudestFreqs extends Action {
         return this.loudestFreqsService.octaveUp (freqs);
     }
 
+    public float [] replacePart (float [] freqs, final float [] subFreqs, final int start) {
+        return this.loudestFreqsService.replacePart (freqs, subFreqs, start);
+    }
+
 }

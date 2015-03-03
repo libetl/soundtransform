@@ -429,6 +429,18 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     /**
+     * Replace some of the values of the loudest freqs array from the "start" index
+     * (replace them by the values of subfreqs)
+     *
+     * @return the client, with a loudest frequencies float array
+     */
+    public FluentClientWithFreqs replacePart (float [] subFreqs, int start) {
+        this.freqs = new ChangeLoudestFreqs ().replacePart (this.freqs, subFreqs, start);
+        return this;
+    }
+    
+    @Override
+    /**
      * Shapes these loudest frequencies array into a sound and set the converted sound in the pipeline
      * @param packName reference to an existing imported pack (must be invoked before the shapeIntoSound method by using withAPack)
      * @param instrumentName the name of the instrument that will map the freqs object

@@ -35,6 +35,14 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      * @return the client, with a loudest frequencies float array
      */
     FluentClientWithFreqs octaveUp ();
+    
+    /**
+     * Replace some of the values of the loudest freqs array from the "start" index
+     * (replace them by the values of subfreqs)
+     *
+     * @return the client, with a loudest frequencies float array
+     */
+    FluentClientWithFreqs replacePart (float [] subFreqs, int start);
 
     /**
      * Shapes these loudest frequencies array into a sound and set the converted
