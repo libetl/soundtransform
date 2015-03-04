@@ -27,895 +27,966 @@ Android library to shape a voice with an instrument.
 * Use the lib by yourself
 
 #### FluentClient Javadoc :
--  -  #### Method Detail
+#### Methods Detail
 
-        -   #### start
+-    start
 
-                public static FluentClientReady start()
+```java
+public static FluentClientReady start ()
+```
 
-            Startup the client
+    Startup the client
 
-            Returns:  
-            the client, ready to start
+    Returns:  
+    the client, ready to start
 
-        -   #### adjust
+-    adjust
 
-                public FluentClientWithFreqs adjust()
+```java
+public FluentClientWithFreqs adjust ()
+```
 
-            Adjust the loudest freqs array to match exactly the piano notes frequencies
+    Adjust the loudest freqs array to match exactly the piano notes frequencies
 
-            **Specified by:**  
-            `adjust` in interface `FluentClientWithFreqs`
+    **Specified by:**  
+    `adjust` in interface `FluentClientWithFreqs`
 
-            Returns:  
-            the client, with a loudest frequencies float array
+    Returns:  
+    the client, with a loudest frequencies float array
 
-        -   #### andAfterStart
+-    andAfterStart
 
-                public FluentClientReady andAfterStart()
+```java
+public FluentClientReady andAfterStart ()
+```
 
-            **Description copied from interface: `FluentClientCommon`**
+    **Description copied from interface: `FluentClientCommon`**
 
-            Start over the client : reset the state and the value objects nested in the client
+    Start over the client : reset the state and the value objects nested in the client
 
-            **Specified by:**  
-            `andAfterStart` in interface `FluentClientCommon`
+    **Specified by:**  
+    `andAfterStart` in interface `FluentClientCommon`
 
-            Returns:  
-            the client, ready to start
+    Returns:  
+    the client, ready to start
 
-        -   #### append
+-    append
 
-                public FluentClientSoundImported append(Sound[] sounds1)
-                                                 throws SoundTransformException
+```java
+public FluentClientSoundImported append (Sound[] sounds1) throws SoundTransformException
+```
 
-            Append the sound passed in parameter to the current sound stored in the client
+    Append the sound passed in parameter to the current sound stored in the client
 
-            **Specified by:**  
-            `append` in interface `FluentClientSoundImported`
+    **Specified by:**  
+    `append` in interface `FluentClientSoundImported`
 
-            Parameters:  
-            `sounds1` - the sound to append the current sound to
+    Parameters:  
+    `sounds1` - the sound to append the current sound to
 
-            Returns:  
-            the client, with a sound imported
+    Returns:  
+    the client, with a sound imported
 
-            Throws:  
-            `SoundTransformException` - if the sound is null or if there is a problem with the appending please ensure that both sounds have the same number of channels
+    Throws:  
+    `SoundTransformException` - if the sound is null or if there is a problem with the appending please ensure that both sounds have the same number of channels
 
-        -   #### apply
+-    apply
 
-                public FluentClientSoundImported apply(SoundTransformation st)
-                                                throws SoundTransformException
+```java
+public FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException
+```
 
-            **Description copied from interface: `FluentClientSoundImported`**
 
-            Apply one transform and continue with the current imported sound
+    **Description copied from interface: `FluentClientSoundImported`**
 
-            **Specified by:**  
-            `apply` in interface `FluentClientSoundImported`
+    Apply one transform and continue with the current imported sound
 
-            Parameters:  
-            `st` - the SoundTransformation to apply
+    **Specified by:**  
+    `apply` in interface `FluentClientSoundImported`
 
-            Returns:  
-            the client with a sound imported
+    Parameters:  
+    `st` - the SoundTransformation to apply
 
-            Throws:  
-            `SoundTransformException` - if the transform does not work
+    Returns:  
+    the client with a sound imported
 
-        -   #### changeFormat
+    Throws:  
+    `SoundTransformException` - if the transform does not work
 
-                public FluentClientSoundImported changeFormat(InputStreamInfo inputStreamInfo)
-                                                       throws SoundTransformException
+-    changeFormat
 
-            Changes the current imported sound to fit the expected format
+```java
+public FluentClientSoundImported changeFormat (InputStreamInfo inputStreamInfo) throws SoundTransformException
+```
+       
 
-            **Specified by:**  
-            `changeFormat` in interface `FluentClientSoundImported`
+    Changes the current imported sound to fit the expected format
 
-            Parameters:  
-            `inputStreamInfo` - only the sampleSize and the sampleRate pieces of data will be used
+    **Specified by:**  
+    `changeFormat` in interface `FluentClientSoundImported`
 
-            Returns:  
-            the client, with a sound imported
+    Parameters:  
+    `inputStreamInfo` - only the sampleSize and the sampleRate pieces of data will be used
 
-            Throws:  
-            `SoundTransformException`
+    Returns:  
+    the client, with a sound imported
 
-        -   #### convertIntoSound
+    Throws:  
+    `SoundTransformException`
 
-                public FluentClientSoundImported convertIntoSound()
-                                                           throws SoundTransformException
+-    convertIntoSound
 
-            **Description copied from interface: `FluentClientWithFile`**
+```java
+public FluentClientSoundImported convertIntoSound () throws SoundTransformException
+```
+   
 
-            Shortcut for importToStream ().importToSound () : Conversion from a File to a Sound
+    **Description copied from interface: `FluentClientWithFile`**
 
-            **Specified by:**  
-            `convertIntoSound` in interface `FluentClientWithFile`
+    Shortcut for importToStream ().importToSound () : Conversion from a File to a Sound
 
-            Returns:  
-            the client, with a sound imported
+    **Specified by:**  
+    `convertIntoSound` in interface `FluentClientWithFile`
 
-            Throws:  
-            `SoundTransformException` - if one of the two import fails
+    Returns:  
+    the client, with a sound imported
 
-        -   #### cutSubSound
+    Throws:  
+    `SoundTransformException` - if one of the two import fails
 
-                public FluentClientSoundImported cutSubSound(int start,
-                                                    int end)
-                                                      throws SoundTransformException
+-    cutSubSound
 
-            Splice a part of the sound between the sample \#start and the sample \#end
+```java
+public FluentClientSoundImported cutSubSound (int start, int end) throws SoundTransformException
+```
+      
 
-            **Specified by:**  
-            `cutSubSound` in interface `FluentClientSoundImported`
+    Splice a part of the sound between the sample \#start and the sample \#end
 
-            Parameters:  
-            `start` - the first sample to cut
+    **Specified by:**  
+    `cutSubSound` in interface `FluentClientSoundImported`
 
-            `end` - the last sample to cut
+    Parameters:  
+    `start` - the first sample to cut
 
-            Returns:  
-            the client, with a sound imported
+    `end` - the last sample to cut
 
-            Throws:  
-            `SoundTransformException` - if the indexes are out of bound
+    Returns:  
+    the client, with a sound imported
 
-        -   #### exportToClasspathResource
+    Throws:  
+    `SoundTransformException` - if the indexes are out of bound
 
-                public FluentClientWithFile exportToClasspathResource(String resource)
-                                                               throws SoundTransformException
+-    exportToClasspathResource
 
-            **Description copied from interface: `FluentClientSoundImported`**
+```java
+public FluentClientWithFile exportToClasspathResource (String resource) throws SoundTransformException
+```
 
-            Shortcut for exportToStream ().writeToClasspathResource (resource) : Conversion from a Sound to a File
 
-            **Specified by:**  
-            `exportToClasspathResource` in interface `FluentClientSoundImported`
+    **Description copied from interface: `FluentClientSoundImported`**
 
-            Parameters:  
-            `resource` - a resource that can be found in the classpath
+    Shortcut for exportToStream ().writeToClasspathResource (resource) : Conversion from a Sound to a File
 
-            Returns:  
-            the client, with a file written
+    **Specified by:**  
+    `exportToClasspathResource` in interface `FluentClientSoundImported`
 
-            Throws:  
-            `SoundTransformException` - if one of the two operations fails
+    Parameters:  
+    `resource` - a resource that can be found in the classpath
 
-        -   #### exportToClasspathResourceWithSiblingResource
+    Returns:  
+    the client, with a file written
 
-                public FluentClientWithFile exportToClasspathResourceWithSiblingResource(String resource,
-                                                                                String siblingResource)
-                                                                                  throws SoundTransformException
+    Throws:  
+    `SoundTransformException` - if one of the two operations fails
 
-            **Description copied from interface: `FluentClientSoundImported`**
+-    exportToClasspathResourceWithSiblingResource
 
-            Shortcut for exportToStream ().writeToClasspathResourceWithSiblingResource (resource, siblingResource)
+```java
+public FluentClientWithFile exportToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException
+```
 
-            **Specified by:**  
-            `exportToClasspathResourceWithSiblingResource` in interface `FluentClientSoundImported`
 
-            Parameters:  
-            `resource` - a resource that may or may not exist in the classpath
+    **Description copied from interface: `FluentClientSoundImported`**
 
-            `siblingResource` - a resource that can be found in the classpath.
+    Shortcut for exportToStream ().writeToClasspathResourceWithSiblingResource (resource, siblingResource)
 
-            Returns:  
-            the client, with a file written
+    **Specified by:**  
+    `exportToClasspathResourceWithSiblingResource` in interface `FluentClientSoundImported`
 
-            Throws:  
-            `SoundTransformException` - if one of the two operations fails
+    Parameters:  
+    `resource` - a resource that may or may not exist in the classpath
 
-        -   #### exportToFile
+    `siblingResource` - a resource that can be found in the classpath.
 
-                public FluentClientWithFile exportToFile(File file1)
-                                                  throws SoundTransformException
+    Returns:  
+    the client, with a file written
 
-            **Description copied from interface: `FluentClientSoundImported`**
+    Throws:  
+    `SoundTransformException` - if one of the two operations fails
 
-            Shortcut for exportToStream ().writeToFile (file)
+-    exportToFile
 
-            **Specified by:**  
-            `exportToFile` in interface `FluentClientSoundImported`
+```java
+public FluentClientWithFile exportToFile (File file1)   throws SoundTransformException
+```
 
-            Parameters:  
-            `file1` - the destination file
+    **Description copied from interface: `FluentClientSoundImported`**
 
-            Returns:  
-            the client, with a file written
+    Shortcut for exportToStream ().writeToFile (file)
 
-            Throws:  
-            `SoundTransformException` - if one of the two operations fails
+    **Specified by:**  
+    `exportToFile` in interface `FluentClientSoundImported`
 
-        -   #### exportToStream
+    Parameters:  
+    `file1` - the destination file
 
-                public FluentClientWithInputStream exportToStream()
-                                                           throws SoundTransformException
+    Returns:  
+    the client, with a file written
 
-            **Description copied from interface: `FluentClientSoundImported`**
+    Throws:  
+    `SoundTransformException` - if one of the two operations fails
 
-            Uses the current imported sound and converts it into an InputStream, ready to be written to a file (or to be read again)
+-    exportToStream
 
-            **Specified by:**  
-            `exportToStream` in interface `FluentClientSoundImported`
+```java
+public FluentClientWithInputStream exportToStream () throws SoundTransformException
+```
 
-            Returns:  
-            the client, with an inputStream
 
-            Throws:  
-            `SoundTransformException` - if the metadata format object is invalid, or if the sound cannot be converted
+    **Description copied from interface: `FluentClientSoundImported`**
 
-        -   #### extractSound
+    Uses the current imported sound and converts it into an InputStream, ready to be written to a file (or to be read again)
 
-                public FluentClientSoundImported extractSound()
-                                                       throws SoundTransformException
+    **Specified by:**  
+    `exportToStream` in interface `FluentClientSoundImported`
 
-            **Description copied from interface: `FluentClientWithSpectrums`**
+    Returns:  
+    the client, with an inputStream
 
-            Uses the current available spectrums objects to convert them into a sound (with one or more channels)
+    Throws:  
+    `SoundTransformException` - if the metadata format object is invalid, or if the sound cannot be converted
 
-            **Specified by:**  
-            `extractSound` in interface `FluentClientWithSpectrums`
+-    extractSound
 
-            Returns:  
-            the client, with a sound imported
+```java
+public FluentClientSoundImported extractSound () throws SoundTransformException
+```
 
-            Throws:  
-            `SoundTransformException` - if the spectrums are in an invalid format, or if the transform to sound does not work
+    **Description copied from interface: `FluentClientWithSpectrums`**
 
-        -   #### extractSubSound
+    Uses the current available spectrums objects to convert them into a sound (with one or more channels)
 
-                public FluentClientSoundImported extractSubSound(int start,
-                                                        int end)
-                                                          throws SoundTransformException
+    **Specified by:**  
+    `extractSound` in interface `FluentClientWithSpectrums`
 
-            Extract a part of the sound between the sample \#start and the sample \#end
+    Returns:  
+    the client, with a sound imported
 
-            **Specified by:**  
-            `extractSubSound` in interface `FluentClientSoundImported`
+    Throws:  
+    `SoundTransformException` - if the spectrums are in an invalid format, or if the transform to sound does not work
 
-            Parameters:  
-            `start` - the first sample to extract
+-    extractSubSound
 
-            `end` - the last sample to extract
+```java
+public FluentClientSoundImported extractSubSound (int start, int end) throws SoundTransformException
+```
 
-            Returns:  
-            the client, with a sound imported
+    Extract a part of the sound between the sample \#start and the sample \#end
 
-            Throws:  
-            `SoundTransformException` - if the indexes are out of bound
+    **Specified by:**  
+    `extractSubSound` in interface `FluentClientSoundImported`
 
-        -   #### filterRange
+    Parameters:  
+    `start` - the first sample to extract
 
-                public FluentClientWithFreqs filterRange(float low,
-                                                float high)
+    `end` - the last sample to extract
 
-            Remove the values between low and high in the loudest freqs array (replace them by 0)
+    Returns:  
+    the client, with a sound imported
 
-            **Specified by:**  
-            `filterRange` in interface `FluentClientWithFreqs`
+    Throws:  
+    `SoundTransformException` - if the indexes are out of bound
 
-            Returns:  
-            the client, with a loudest frequencies float array
+-    filterRange
 
-        -   #### findLoudestFrequencies
+```java
+public FluentClientWithFreqs filterRange (float low, float high)
+```
 
-                public FluentClientWithFreqs findLoudestFrequencies()
-                                                             throws SoundTransformException
+    Remove the values between low and high in the loudest freqs array (replace them by 0)
 
-            Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically
-             Caution : the original sound will be lost, and it will be impossible to revert this conversion.
-             When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with
+    **Specified by:**  
+    `filterRange` in interface `FluentClientWithFreqs`
 
-            **Specified by:**  
-            `findLoudestFrequencies` in interface `FluentClientSoundImported`
+    Returns:  
+    the client, with a loudest frequencies float array
 
-            Returns:  
-            the client, with a loudest frequencies float array
+-    findLoudestFrequencies
 
-            Throws:  
-            `SoundTransformException` - if the convert fails
+```java
+public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException
+```
 
-        -   #### importToSound
+    Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically
+     Caution : the original sound will be lost, and it will be impossible to revert this conversion.
+     When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with
 
-                public FluentClientSoundImported importToSound()
-                                                        throws SoundTransformException
+    **Specified by:**  
+    `findLoudestFrequencies` in interface `FluentClientSoundImported`
 
-            **Description copied from interface: `FluentClientWithInputStream`**
+    Returns:  
+    the client, with a loudest frequencies float array
 
-            Uses the current input stream object to convert it into a sound (with one or more channels)
+    Throws:  
+    `SoundTransformException` - if the convert fails
 
-            **Specified by:**  
-            `importToSound` in interface `FluentClientWithInputStream`
+-    importToSound
 
-            Returns:  
-            the client, with a sound imported
+```java
+public FluentClientSoundImported importToSound () throws SoundTransformException
+```
 
-            Throws:  
-            `SoundTransformException` - the inputStream is invalid, or the convert did not work
+    **Description copied from interface: `FluentClientWithInputStream`**
 
-        -   #### importToStream
+    Uses the current input stream object to convert it into a sound (with one or more channels)
 
-                public FluentClientWithInputStream importToStream()
-                                                           throws SoundTransformException
+    **Specified by:**  
+    `importToSound` in interface `FluentClientWithInputStream`
 
-            **Description copied from interface: `FluentClientWithFile`**
+    Returns:  
+    the client, with a sound imported
 
-            Opens the current file and convert it into an InputStream, ready to be read (or to be written to a file)
+    Throws:  
+    `SoundTransformException` - the inputStream is invalid, or the convert did not work
 
-            **Specified by:**  
-            `importToStream` in interface `FluentClientWithFile`
+-    importToStream
 
-            Returns:  
-            the client, with an inputStream
+```java
+public FluentClientWithInputStream importToStream () throws SoundTransformException
+```
 
-            Throws:  
-            `SoundTransformException` - the current file is not valid, or the conversion did not work
+    **Description copied from interface: `FluentClientWithFile`**
 
-        -   #### loop
+    Opens the current file and convert it into an InputStream, ready to be read (or to be written to a file)
 
-                public FluentClientSoundImported loop(int length)
-                                               throws SoundTransformException
+    **Specified by:**  
+    `importToStream` in interface `FluentClientWithFile`
 
-            Extract a part of the sound between the sample \#start and the sample \#end
+    Returns:  
+    the client, with an inputStream
 
-            **Specified by:**  
-            `loop` in interface `FluentClientSoundImported`
+    Throws:  
+    `SoundTransformException` - the current file is not valid, or the conversion did not work
 
-            Parameters:  
-            `length` - the number of samples of the result sound
+-    loop
 
-            Returns:  
-            the client, with a sound imported
+```java
+public FluentClientSoundImported loop (int length) throws SoundTransformException
+```
 
-            Throws:  
-            `SoundTransformException` - if the length is not positive
+    Extract a part of the sound between the sample \#start and the sample \#end
 
-        -   #### mixWith
+    **Specified by:**  
+    `loop` in interface `FluentClientSoundImported`
 
-                public FluentClientSoundImported mixWith(Sound[] sound)
-                                                  throws SoundTransformException
+    Parameters:  
+    `length` - the number of samples of the result sound
 
-            **Description copied from interface: `FluentClientSoundImported`**
+    Returns:  
+    the client, with a sound imported
 
-            Combines the current sound with another sound. The operation is not reversible
+    Throws:  
+    `SoundTransformException` - if the length is not positive
 
-            **Specified by:**  
-            `mixWith` in interface `FluentClientSoundImported`
+-    mixWith
 
-            Parameters:  
-            `sound` - the sound to mix the current sound with
+```java
+public FluentClientSoundImported mixWith (Sound[] sound) throws SoundTransformException
+```
 
-            Returns:  
-            the client, with a sound imported
+    **Description copied from interface: `FluentClientSoundImported`**
 
-            Throws:  
-            `SoundTransformException` - if the sound is null or if there is a problem with the mix
+    Combines the current sound with another sound. The operation is not reversible
 
-        -   #### octaveDown
+    **Specified by:**  
+    `mixWith` in interface `FluentClientSoundImported`
 
-                public FluentClientWithFreqs octaveDown()
+    Parameters:  
+    `sound` - the sound to mix the current sound with
 
-            Changes the loudest frequencies array to become one octave lower
+    Returns:  
+    the client, with a sound imported
 
-            **Specified by:**  
-            `octaveDown` in interface `FluentClientWithFreqs`
+    Throws:  
+    `SoundTransformException` - if the sound is null or if there is a problem with the mix
 
-            Returns:  
-            the client, with a loudest frequencies float array
+-    octaveDown
 
-        -   #### octaveUp
+```java
+public FluentClientWithFreqs octaveDown ()
+```
 
-                public FluentClientWithFreqs octaveUp()
+    Changes the loudest frequencies array to become one octave lower
 
-            Changes the loudest frequencies array to become one octave upper
+    **Specified by:**  
+    `octaveDown` in interface `FluentClientWithFreqs`
 
-            **Specified by:**  
-            `octaveUp` in interface `FluentClientWithFreqs`
+    Returns:  
+    the client, with a loudest frequencies float array
 
-            Returns:  
-            the client, with a loudest frequencies float array
+-    octaveUp
 
-        -   #### playIt
+```java
+public FluentClientWithFreqs octaveUp ()
+```
 
-                public FluentClient playIt()
-                                    throws SoundTransformException
+    Changes the loudest frequencies array to become one octave upper
 
-            **Description copied from interface: `FluentClientSoundImported`**
+    **Specified by:**  
+    `octaveUp` in interface `FluentClientWithFreqs`
 
-            Plays the current audio data
+    Returns:  
+    the client, with a loudest frequencies float array
 
-            **Specified by:**  
-            `playIt` in interface `FluentClientSoundImported`
+-    playIt
 
-            **Specified by:**  
-            `playIt` in interface `FluentClientWithFile`
+```java
+public FluentClient playIt () throws SoundTransformException
+```
 
-            **Specified by:**  
-            `playIt` in interface `FluentClientWithInputStream`
+    **Description copied from interface: `FluentClientSoundImported`**
 
-            **Specified by:**  
-            `playIt` in interface `FluentClientWithSpectrums`
+    Plays the current audio data
 
-            Returns:  
-            the client, with a sound
+    **Specified by:**  
+    `playIt` in interface `FluentClientSoundImported`
 
-            Throws:  
-            `SoundTransformException` - could not play the current audio data
+    **Specified by:**  
+    `playIt` in interface `FluentClientWithFile`
 
-        -   #### replacePart
+    **Specified by:**  
+    `playIt` in interface `FluentClientWithInputStream`
 
-                public FluentClientWithFreqs replacePart(float[] subFreqs,
-                                                int start)
+    **Specified by:**  
+    `playIt` in interface `FluentClientWithSpectrums`
 
-            **Description copied from interface: `FluentClientWithFreqs`**
+    Returns:  
+    the client, with a sound
 
-            Replace some of the values of the loudest freqs array from the “start” index (replace them by the values of subfreqs)
+    Throws:  
+    `SoundTransformException` - could not play the current audio data
 
-            **Specified by:**  
-            `replacePart` in interface `FluentClientWithFreqs`
+-    replacePart
 
-            Returns:  
-            the client, with a loudest frequencies float array
+```java
+public FluentClientWithFreqs replacePart (float[] subFreqs, int start)
+```
 
-        -   #### shapeIntoSound
+    **Description copied from interface: `FluentClientWithFreqs`**
 
-                public FluentClientSoundImported shapeIntoSound(String packName,
-                                                       String instrumentName,
-                                                       InputStreamInfo isi)
-                                                         throws SoundTransformException
+    Replace some of the values of the loudest freqs array from the “start” index (replace them by the values of subfreqs)
 
-            **Description copied from interface: `FluentClientWithFreqs`**
+    **Specified by:**  
+    `replacePart` in interface `FluentClientWithFreqs`
 
-            Shapes these loudest frequencies array into a sound and set the converted sound in the pipeline
+    Returns:  
+    the client, with a loudest frequencies float array
 
-            **Specified by:**  
-            `shapeIntoSound` in interface `FluentClientWithFreqs`
+-    shapeIntoSound
 
-            Parameters:  
-            `packName` - reference to an existing imported pack (must be invoked before the shapeIntoSound method by using withAPack)
+```java
+public FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, InputStreamInfo isi) throws SoundTransformException
+```
 
-            `instrumentName` - the name of the instrument that will map the freqs object
 
-            `isi` - the wanted format for the future sound
+    **Description copied from interface: `FluentClientWithFreqs`**
 
-            Returns:  
-            the client, with a sound imported
+    Shapes these loudest frequencies array into a sound and set the converted sound in the pipeline
 
-            Throws:  
-            `SoundTransformException` - could not call the soundtransform to shape the freqs
+    **Specified by:**  
+    `shapeIntoSound` in interface `FluentClientWithFreqs`
 
-        -   #### splitIntoSpectrums
+    Parameters:  
+    `packName` - reference to an existing imported pack (must be invoked before the shapeIntoSound method by using withAPack)
 
-                public FluentClientWithSpectrums splitIntoSpectrums()
-                                                             throws SoundTransformException
+    `instrumentName` - the name of the instrument that will map the freqs object
 
-            **Description copied from interface: `FluentClientSoundImported`**
+    `isi` - the wanted format for the future sound
 
-            Uses the current sound to pick its spectrums and set that as the current data in the pipeline
+    Returns:  
+    the client, with a sound imported
 
-            **Specified by:**  
-            `splitIntoSpectrums` in interface `FluentClientSoundImported`
+    Throws:  
+    `SoundTransformException` - could not call the soundtransform to shape the freqs
 
-            Returns:  
-            the client, with the spectrums
+-    splitIntoSpectrums
 
-            Throws:  
-            `SoundTransformException` - could not convert the sound into some spectrums
+```java
+public FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException
+```
 
-        -   #### stopWithAPack
 
-                public Pack stopWithAPack(String title)
+    **Description copied from interface: `FluentClientSoundImported`**
 
-            Stops the client pipeline and returns the pack whose title is in parameter
+    Uses the current sound to pick its spectrums and set that as the current data in the pipeline
 
-            **Specified by:**  
-            `stopWithAPack` in interface `FluentClientCommon`
+    **Specified by:**  
+    `splitIntoSpectrums` in interface `FluentClientSoundImported`
 
-            **Specified by:**  
-            `stopWithAPack` in interface `FluentClientReady`
+    Returns:  
+    the client, with the spectrums
 
-            Parameters:  
-            `title` - the title of the pack
+    Throws:  
+    `SoundTransformException` - could not convert the sound into some spectrums
 
-            Returns:  
-            a pack object
+-    stopWithAPack
 
-        -   #### stopWithFile
+```java
+public Pack stopWithAPack (String title)
+```
 
-                public File stopWithFile()
+    Stops the client pipeline and returns the pack whose title is in parameter
 
-            **Description copied from interface: `FluentClientWithFile`**
+    **Specified by:**  
+    `stopWithAPack` in interface `FluentClientCommon`
 
-            Stops the client pipeline and returns the obtained file
+    **Specified by:**  
+    `stopWithAPack` in interface `FluentClientReady`
 
-            **Specified by:**  
-            `stopWithFile` in interface `FluentClientWithFile`
+    Parameters:  
+    `title` - the title of the pack
 
-            Returns:  
-            a file
+    Returns:  
+    a pack object
 
-        -   #### stopWithFreqs
+-    stopWithFile
 
-                public float[] stopWithFreqs()
+```java
+public File stopWithFile ()
+```
 
-            **Description copied from interface: `FluentClientWithFreqs`**
+    **Description copied from interface: `FluentClientWithFile`**
 
-            Stops the client pipeline and returns the obtained loudest frequencies
+    Stops the client pipeline and returns the obtained file
 
-            **Specified by:**  
-            `stopWithFreqs` in interface `FluentClientWithFreqs`
+    **Specified by:**  
+    `stopWithFile` in interface `FluentClientWithFile`
 
-            Returns:  
-            loudest frequencies array
+    Returns:  
+    a file
 
-        -   #### stopWithInputStream
+-    stopWithFreqs
 
-                public InputStream stopWithInputStream()
+```java
+public float[] stopWithFreqs ()
+```
 
-            **Description copied from interface: `FluentClientWithInputStream`**
+    **Description copied from interface: `FluentClientWithFreqs`**
 
-            Stops the client pipeline and returns the obtained input stream
+    Stops the client pipeline and returns the obtained loudest frequencies
 
-            **Specified by:**  
-            `stopWithInputStream` in interface `FluentClientWithInputStream`
+    **Specified by:**  
+    `stopWithFreqs` in interface `FluentClientWithFreqs`
 
-            Returns:  
-            an input stream
+    Returns:  
+    loudest frequencies array
 
-        -   #### stopWithInputStreamInfo
+-    stopWithInputStream
 
-                public InputStreamInfo stopWithInputStreamInfo()
-                                                        throws SoundTransformException
+```java
+public InputStream stopWithInputStream ()
+```
 
-            **Description copied from interface: `FluentClientWithInputStream`**
+    **Description copied from interface: `FluentClientWithInputStream`**
 
-            Stops the client pipeline and returns the obtained input stream info object
+    Stops the client pipeline and returns the obtained input stream
 
-            **Specified by:**  
-            `stopWithInputStreamInfo` in interface `FluentClientWithInputStream`
+    **Specified by:**  
+    `stopWithInputStream` in interface `FluentClientWithInputStream`
 
-            Returns:  
-            an inputStreamInfo object
+    Returns:  
+    an input stream
 
-            Throws:  
-            `SoundTransformException` - could not read the inputstreaminfo from the current inputstream
+-    stopWithInputStreamInfo
 
-        -   #### stopWithSounds
+```java
+public InputStreamInfo stopWithInputStreamInfo () throws SoundTransformException
+```
 
-                public Sound[] stopWithSounds()
 
-            **Description copied from interface: `FluentClientSoundImported`**
+    **Description copied from interface: `FluentClientWithInputStream`**
 
-            Stops the client pipeline and returns the obtained sound
+    Stops the client pipeline and returns the obtained input stream info object
 
-            **Specified by:**  
-            `stopWithSounds` in interface `FluentClientSoundImported`
+    **Specified by:**  
+    `stopWithInputStreamInfo` in interface `FluentClientWithInputStream`
 
-            Returns:  
-            a sound value object
+    Returns:  
+    an inputStreamInfo object
 
-        -   #### stopWithSpectrums
+    Throws:  
+    `SoundTransformException` - could not read the inputstreaminfo from the current inputstream
 
-                public List<Spectrum<Serializable>[]> stopWithSpectrums()
+-    stopWithSounds
 
-            **Description copied from interface: `FluentClientWithSpectrums`**
+```java
+public Sound[] stopWithSounds ()
+```
 
-            Stops the client pipeline and returns the obtained spectrums
+    **Description copied from interface: `FluentClientSoundImported`**
 
-            **Specified by:**  
-            `stopWithSpectrums` in interface `FluentClientWithSpectrums`
+    Stops the client pipeline and returns the obtained sound
 
-            Returns:  
-            a list of spectrums for each channel
+    **Specified by:**  
+    `stopWithSounds` in interface `FluentClientSoundImported`
 
-        -   #### withAnObserver
+    Returns:  
+    a sound value object
 
-                public FluentClientReady withAnObserver(Observer... observers1)
+-    stopWithSpectrums
 
-            **Description copied from interface: `FluentClientReady`**
+```java
+public List<Spectrum<Serializable>[]> stopWithSpectrums ()
+```
 
-            Tells the client to add an observer that will be notified of different kind of updates from the library. It is ok to call withAnObserver several times.
-             If the andAfterStart method is called, the subscribed observers are removed
+    **Description copied from interface: `FluentClientWithSpectrums`**
 
-            **Specified by:**  
-            `withAnObserver` in interface `FluentClientReady`
+    Stops the client pipeline and returns the obtained spectrums
 
-            Parameters:  
-            `observers1` - one or more observer(s)
+    **Specified by:**  
+    `stopWithSpectrums` in interface `FluentClientWithSpectrums`
 
-            Returns:  
-            the client, ready to start
+    Returns:  
+    a list of spectrums for each channel
 
-        -   #### withAPack
+-    withAnObserver
 
-                public FluentClient withAPack(String packName,
-                                     InputStream jsonStream)
-                                       throws SoundTransformException
+```java
+public FluentClientReady withAnObserver (Observer... observers1)
+```
 
-            **Description copied from interface: `FluentClientSoundImported`**
+    **Description copied from interface: `FluentClientReady`**
 
-            Tells the client to work with a pack. Reads the whole inputStream. A pattern must be followed in the jsonStream to enable the import.
+    Tells the client to add an observer that will be notified of different kind of updates from the library. It is ok to call withAnObserver several times.
+     If the andAfterStart method is called, the subscribed observers are removed
 
-            **Specified by:**  
-            `withAPack` in interface `FluentClientReady`
+    **Specified by:**  
+    `withAnObserver` in interface `FluentClientReady`
 
-            **Specified by:**  
-            `withAPack` in interface `FluentClientSoundImported`
+    Parameters:  
+    `observers1` - one or more observer (s)
 
-            **Specified by:**  
-            `withAPack` in interface `FluentClientWithFile`
+    Returns:  
+    the client, ready to start
 
-            **Specified by:**  
-            `withAPack` in interface `FluentClientWithFreqs`
+-    withAPack
 
-            **Specified by:**  
-            `withAPack` in interface `FluentClientWithInputStream`
+```java
+public FluentClient withAPack (String packName, InputStream jsonStream) throws SoundTransformException
 
-            **Specified by:**  
-            `withAPack` in interface `FluentClientWithSpectrums`
+```
+     
+    **Description copied from interface: `FluentClientSoundImported`**
 
-            Parameters:  
-            `packName` - the name of the pack
+    Tells the client to work with a pack. Reads the whole inputStream. A pattern must be followed in the jsonStream to enable the import.
 
-            `jsonStream` - the input stream
+    **Specified by:**  
+    `withAPack` in interface `FluentClientReady`
 
-            Returns:  
-            the client, with a sound imported
+    **Specified by:**  
+    `withAPack` in interface `FluentClientSoundImported`
 
-            Throws:  
-            `SoundTransformException` - the input stream cannot be read, or the json format is not correct, or some sound files are missing
+    **Specified by:**  
+    `withAPack` in interface `FluentClientWithFile`
 
-        -   #### withAPack
+    **Specified by:**  
+    `withAPack` in interface `FluentClientWithFreqs`
 
-                public FluentClient withAPack(String packName,
-                                     String jsonContent)
-                                       throws SoundTransformException
+    **Specified by:**  
+    `withAPack` in interface `FluentClientWithInputStream`
 
-            **Description copied from interface: `FluentClientSoundImported`**
+    **Specified by:**  
+    `withAPack` in interface `FluentClientWithSpectrums`
 
-            Tells the client to work with a pack. Reads the whole string content. A pattern must be followed in the jsonContent to enable the import.
+    Parameters:  
+    `packName` - the name of the pack
 
-            Here is the format allowed in the file
+    `jsonStream` - the input stream
 
-                {
-                  "instrumentName" :
-                  {
-                    -1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
-                   192 : "/data/mypackage.myapp/knownFrequencyFile.wav",
-                   ...
-                  },
-                  ...
-                }
+    Returns:  
+    the client, with a sound imported
 
-            Do not assign the same frequency for two notes in the same instrument. If several notes must have their frequencies detected by the soundtransform lib, set different negative values (-1, -2, -3, …)
+    Throws:  
+    `SoundTransformException` - the input stream cannot be read, or the json format is not correct, or some sound files are missing
 
-            **Specified by:**  
-            `withAPack` in interface `FluentClientReady`
+-    withAPack
 
-            **Specified by:**  
-            `withAPack` in interface `FluentClientSoundImported`
+```java
+public FluentClient withAPack (String packName, String jsonContent) throws SoundTransformException
+```
+     
 
-            **Specified by:**  
-            `withAPack` in interface `FluentClientWithFile`
+    **Description copied from interface: `FluentClientSoundImported`**
 
-            **Specified by:**  
-            `withAPack` in interface `FluentClientWithFreqs`
+    Tells the client to work with a pack. Reads the whole string content. A pattern must be followed in the jsonContent to enable the import.
 
-            **Specified by:**  
-            `withAPack` in interface `FluentClientWithInputStream`
+    Here is the format allowed in the file
 
-            **Specified by:**  
-            `withAPack` in interface `FluentClientWithSpectrums`
+{
+  "instrumentName" :
+  {
+    -1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
+   192 : "/data/mypackage.myapp/knownFrequencyFile.wav",
+   ...
+  },
+  ...
+}
 
-            Parameters:  
-            `packName` - the name of the pack
+    Do not assign the same frequency for two notes in the same instrument. If several notes must have their frequencies detected by the soundtransform lib, set different negative values (-1, -2, -3, …)
 
-            `jsonContent` - a string containing the definition of the pack
+    **Specified by:**  
+    `withAPack` in interface `FluentClientReady`
 
-            Returns:  
-            the client, with a sound imported
+    **Specified by:**  
+    `withAPack` in interface `FluentClientSoundImported`
 
-            Throws:  
-            `SoundTransformException` - the json content is invalid, the json format is not correct, or some sound files are missing
+    **Specified by:**  
+    `withAPack` in interface `FluentClientWithFile`
 
-        -   #### withAudioInputStream
+    **Specified by:**  
+    `withAPack` in interface `FluentClientWithFreqs`
 
-                public FluentClientWithInputStream withAudioInputStream(InputStream ais)
+    **Specified by:**  
+    `withAPack` in interface `FluentClientWithInputStream`
 
-            **Description copied from interface: `FluentClientReady`**
+    **Specified by:**  
+    `withAPack` in interface `FluentClientWithSpectrums`
 
-            Tells the client to work first with an InputStream. It will not be read yet
-             The passed inputStream must own a format metadata object. Therefore it must be an AudioInputStream.
+    Parameters:  
+    `packName` - the name of the pack
 
-            **Specified by:**  
-            `withAudioInputStream` in interface `FluentClientReady`
+    `jsonContent` - a string containing the definition of the pack
 
-            Parameters:  
-            `ais` - the input stream
+    Returns:  
+    the client, with a sound imported
 
-            Returns:  
-            the client, with an input stream
+    Throws:  
+    `SoundTransformException` - the json content is invalid, the json format is not correct, or some sound files are missing
 
-        -   #### withClasspathResource
+-    withAudioInputStream
 
-                public FluentClientWithFile withClasspathResource(String resource)
-                                                           throws SoundTransformException
+```java
+public FluentClientWithInputStream withAudioInputStream (InputStream ais)
+```
 
-            **Description copied from interface: `FluentClientReady`**
+    **Description copied from interface: `FluentClientReady`**
 
-            Tells the client to work first with a classpath resource. It will be converted in a File
+    Tells the client to work first with an InputStream. It will not be read yet
+     The passed inputStream must own a format metadata object. Therefore it must be an AudioInputStream.
 
-            **Specified by:**  
-            `withClasspathResource` in interface `FluentClientReady`
+    **Specified by:**  
+    `withAudioInputStream` in interface `FluentClientReady`
 
-            Parameters:  
-            `resource` - a classpath resource that must exist
+    Parameters:  
+    `ais` - the input stream
 
-            Returns:  
-            the client, with a file
+    Returns:  
+    the client, with an input stream
 
-            Throws:  
-            `SoundTransformException` - the classpath resource was not found
+-    withClasspathResource
 
-        -   #### withFile
+```java
+public FluentClientWithFile withClasspathResource (String resource) throws SoundTransformException
+```
 
-                public FluentClientWithFile withFile(File file1)
 
-            **Description copied from interface: `FluentClientReady`**
+    **Description copied from interface: `FluentClientReady`**
 
-            Tells the client to work first with a file. It will not be read yet
+    Tells the client to work first with a classpath resource. It will be converted in a File
 
-            **Specified by:**  
-            `withFile` in interface `FluentClientReady`
+    **Specified by:**  
+    `withClasspathResource` in interface `FluentClientReady`
 
-            Parameters:  
-            `file1` - source file
+    Parameters:  
+    `resource` - a classpath resource that must exist
 
-            Returns:  
-            the client, with a file
+    Returns:  
+    the client, with a file
 
-        -   #### withFreqs
+    Throws:  
+    `SoundTransformException` - the classpath resource was not found
 
-                public FluentClientWithFreqs withFreqs(float[] freqs1)
+-    withFile
 
-            **Description copied from interface: `FluentClientReady`**
+```java
+public FluentClientWithFile withFile (File file1)
+```
 
-            Tells the client to work first with a loudest frequencies integer array. It will not be used yet
+    **Description copied from interface: `FluentClientReady`**
 
-            **Specified by:**  
-            `withFreqs` in interface `FluentClientReady`
+    Tells the client to work first with a file. It will not be read yet
 
-            Parameters:  
-            `freqs1` - the loudest frequencies float array
+    **Specified by:**  
+    `withFile` in interface `FluentClientReady`
 
-            Returns:  
-            the client, with a loudest frequencies float array
+    Parameters:  
+    `file1` - source file
 
-        -   #### withRawInputStream
+    Returns:  
+    the client, with a file
 
-                public FluentClientWithInputStream withRawInputStream(InputStream is,
-                                                             InputStreamInfo isInfo)
-                                                               throws SoundTransformException
+-    withFreqs
 
-            **Description copied from interface: `FluentClientReady`**
+```java
+public FluentClientWithFreqs withFreqs (float[] freqs1)
+```
 
-            Tells the client to work first with a byte array InputStream or any readable DataInputStream. It will be read and transformed into an AudioInputStream
-             The passed inputStream must not contain any metadata piece of information.
+    **Description copied from interface: `FluentClientReady`**
 
-            **Specified by:**  
-            `withRawInputStream` in interface `FluentClientReady`
+    Tells the client to work first with a loudest frequencies integer array. It will not be used yet
 
-            Parameters:  
-            `is` - the input stream
+    **Specified by:**  
+    `withFreqs` in interface `FluentClientReady`
 
-            `isInfo` - the audio format (named “InputStreamInfo”)
+    Parameters:  
+    `freqs1` - the loudest frequencies float array
 
-            Returns:  
-            the client, with an input stream
+    Returns:  
+    the client, with a loudest frequencies float array
 
-            Throws:  
-            `SoundTransformException` - the input stream cannot be read, or the conversion did not work
+-    withRawInputStream
 
-        -   #### withSounds
+```java
+public FluentClientWithInputStream withRawInputStream (InputStream is, InputStreamInfo isInfo) throws SoundTransformException
+```
+     
 
-                public FluentClientSoundImported withSounds(Sound[] sounds1)
+    **Description copied from interface: `FluentClientReady`**
 
-            **Description copied from interface: `FluentClientReady`**
+    Tells the client to work first with a byte array InputStream or any readable DataInputStream. It will be read and transformed into an AudioInputStream
+     The passed inputStream must not contain any metadata piece of information.
 
-            Tells the client to work first with a sound object
+    **Specified by:**  
+    `withRawInputStream` in interface `FluentClientReady`
 
-            **Specified by:**  
-            `withSounds` in interface `FluentClientReady`
+    Parameters:  
+    `is` - the input stream
 
-            Parameters:  
-            `sounds1` - the sound object
+    `isInfo` - the audio format (named “InputStreamInfo”)
 
-            Returns:  
-            the client, with an imported sound
+    Returns:  
+    the client, with an input stream
 
-        -   #### withSpectrums
+    Throws:  
+    `SoundTransformException` - the input stream cannot be read, or the conversion did not work
 
-                public FluentClientWithSpectrums withSpectrums(List<Spectrum<Serializable>[]> spectrums)
+-    withSounds
 
-            **Description copied from interface: `FluentClientReady`**
+```java
+public FluentClientSoundImported withSounds (Sound[] sounds1)
+```
 
-            Tells the client to work first with a spectrum formatted sound.
-             The spectrums inside must be in a list (each item must correspond to a channel) The spectrums are ordered in an array in chronological order
+    **Description copied from interface: `FluentClientReady`**
 
-            **Specified by:**  
-            `withSpectrums` in interface `FluentClientReady`
+    Tells the client to work first with a sound object
 
-            Parameters:  
-            `spectrums` - the spectrums
+    **Specified by:**  
+    `withSounds` in interface `FluentClientReady`
 
-            Returns:  
-            the client, with the spectrums
+    Parameters:  
+    `sounds1` - the sound object
 
-        -   #### writeToClasspathResource
+    Returns:  
+    the client, with an imported sound
 
-                public FluentClientWithFile writeToClasspathResource(String resource)
-                                                              throws SoundTransformException
+-    withSpectrums
 
-            **Description copied from interface: `FluentClientWithInputStream`**
+```java
+public FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable>[]> spectrums)
+```
 
-            Writes the current InputStream in a classpath resource in the same folder as a previously imported classpath resource. Caution : if no classpath resource was imported before, this operation will not work. Use writeToClasspathResourceWithSiblingResource instead
+    **Description copied from interface: `FluentClientReady`**
 
-            **Specified by:**  
-            `writeToClasspathResource` in interface `FluentClientWithInputStream`
+    Tells the client to work first with a spectrum formatted sound.
+     The spectrums inside must be in a list (each item must correspond to a channel) The spectrums are ordered in an array in chronological order
 
-            Parameters:  
-            `resource` - a classpath resource.
+    **Specified by:**  
+    `withSpectrums` in interface `FluentClientReady`
 
-            Returns:  
-            the client, with a file
+    Parameters:  
+    `spectrums` - the spectrums
 
-            Throws:  
-            `SoundTransformException` - there is no predefined classpathresource directory, or the file could not be written
+    Returns:  
+    the client, with the spectrums
 
-        -   #### writeToClasspathResourceWithSiblingResource
+-    writeToClasspathResource
 
-                public FluentClientWithFile writeToClasspathResourceWithSiblingResource(String resource,
-                                                                               String siblingResource)
-                                                                                 throws SoundTransformException
+```java
+public FluentClientWithFile writeToClasspathResource (String resource) throws SoundTransformException
+```
 
-            **Description copied from interface: `FluentClientWithInputStream`**
 
-            Writes the current InputStream in a classpath resource in the same folder as a the sibling resource.
+    **Description copied from interface: `FluentClientWithInputStream`**
 
-            **Specified by:**  
-            `writeToClasspathResourceWithSiblingResource` in interface `FluentClientWithInputStream`
+    Writes the current InputStream in a classpath resource in the same folder as a previously imported classpath resource. Caution : if no classpath resource was imported before, this operation will not work. Use writeToClasspathResourceWithSiblingResource instead
 
-            Parameters:  
-            `resource` - a classpath resource that may or may not exist yet
+    **Specified by:**  
+    `writeToClasspathResource` in interface `FluentClientWithInputStream`
 
-            `siblingResource` - a classpath resource that must exist
+    Parameters:  
+    `resource` - a classpath resource.
 
-            Returns:  
-            the client, with a file
+    Returns:  
+    the client, with a file
 
-            Throws:  
-            `SoundTransformException` - no such sibling resource, or the file could not be written
+    Throws:  
+    `SoundTransformException` - there is no predefined classpathresource directory, or the file could not be written
 
-        -   #### writeToFile
+-    writeToClasspathResourceWithSiblingResource
 
-                public FluentClientWithFile writeToFile(File file1)
-                                                 throws SoundTransformException
+```java
+public FluentClientWithFile writeToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException
+```
 
-            **Description copied from interface: `FluentClientWithInputStream`**
 
-            Writes the current InputStream in a file
+    **Description copied from interface: `FluentClientWithInputStream`**
 
-            **Specified by:**  
-            `writeToFile` in interface `FluentClientWithInputStream`
+    Writes the current InputStream in a classpath resource in the same folder as a the sibling resource.
 
-            Parameters:  
-            `file1` - the destination file
+    **Specified by:**  
+    `writeToClasspathResourceWithSiblingResource` in interface `FluentClientWithInputStream`
 
-            Returns:  
-            the client, with a file
+    Parameters:  
+    `resource` - a classpath resource that may or may not exist yet
 
-            Throws:  
-            `SoundTransformException` - The file could not be written
+    `siblingResource` - a classpath resource that must exist
+
+    Returns:  
+    the client, with a file
+
+    Throws:  
+    `SoundTransformException` - no such sibling resource, or the file could not be written
+
+-    writeToFile
+
+```java
+public FluentClientWithFile writeToFile (File file1) throws SoundTransformException
+```
+
+
+    **Description copied from interface: `FluentClientWithInputStream`**
+
+    Writes the current InputStream in a file
+
+    **Specified by:**  
+    `writeToFile` in interface `FluentClientWithInputStream`
+
+    Parameters:  
+    `file1` - the destination file
+
+    Returns:  
+    the client, with a file
+
+    Throws:  
+    `SoundTransformException` - The file could not be written
