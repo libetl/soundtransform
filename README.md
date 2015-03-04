@@ -23,8 +23,37 @@ Android library to shape a voice with an instrument.
 * Remove the ```<exclusions/>``` tag if your enclosing project is a Java project (and not android)
 * Replace x.x.x with the version you need (do not hesitate to use the latest one).
 *  Make sure you have access to the FluentClient class in your project (try the autocompletion feature of your IDE if you have one)
-* Read the below documentation about the FluentClient API
+* Read the below documentation about the FluentClient facility
 * Use the lib by yourself
+
+### FluentClient :
+The FluentClient service provider interface is a simple class to give a shortcut to all the features of the lib without walking in the nested classes.
+
+It helps you to proceed to the correct actions at each step, giving you the right programming interface during the pipeline.
+
+To use it, it is only needed to chain the methods invocation. it will always start with a ```FluentClient.start()```, can end with a stop method and can contains a startOver call to chain two processes in the same instruction of code.
+
+### FluentClient samples :
+```java
+
+//Apply a 8-bit transform on a wav and then export it to a wav
+FluentClient.start ().withClasspathResource ("foo.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("bar.wav");
+
+//Shape a wav with an instrument and then export it to a wav
+FluentClient.start ().withAPack ("default", packInputStream).withClasspathResource ("foo.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", isi).exportToClasspathResource ("bar.wav");
+
+//Play three times the same data, as a File, then as a sound, then as an inputStream
+ FluentClient.start ().withClasspathResource ("foo.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
+ 
+//Transform a sound into a an array of spectrums
+ FluentClient.start ().withSounds (sounds).splitIntoSpectrums ().stopWithSpectrums ();
+
+//Transform a lowfi wav file into a cd format wavfile
+final InputStreamInfo isi = new InputStreamInfo (2, 0, 2, 44100.0, false, true);
+FluentClient.start ().withClasspathResource ("lowfi.wav").convertIntoSound ().changeFormat (isi).exportToClasspathResource ("hifi.wav");
+```
+
+Please have a look of the many different actions that you can ask to the FluentClient in this [JUnit Test](src/test/java/org/toilelibre/libe/soundtransform/FluentClientTest.java)
 
 ### FluentClient Javadoc :
 
