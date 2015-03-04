@@ -50,7 +50,7 @@ Adjust the loudest freqs array to match exactly the piano notes frequencies
 Returns:  
 the client, with a loudest frequencies float array
 
-####   *.andAfterStart
+####   FluentClient*.andAfterStart
 
 ```java
 public FluentClientReady andAfterStart ()
@@ -437,7 +437,7 @@ the client, with the spectrums
 Throws:  
 `SoundTransformException` - could not convert the sound into some spectrums
 
-####   *.stopWithAPack
+####   FluentClient*.stopWithAPack
 
 ```java
 public Pack stopWithAPack (String title)
@@ -537,7 +537,7 @@ Parameters:
 Returns:  
 the client, ready to start
 
-####   *.withAPack
+####   FluentClient*.withAPack
 
 ```java
 public FluentClient withAPack (String packName, InputStream jsonStream) throws SoundTransformException
@@ -557,7 +557,7 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException` - the input stream cannot be read, or the json format is not correct, or some sound files are missing
 
-####   *.withAPack
+####   FluentClient*.withAPack
 
 ```java
 public FluentClient withAPack (String packName, String jsonContent) throws SoundTransformException
