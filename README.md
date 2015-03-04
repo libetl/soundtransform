@@ -184,9 +184,6 @@ public FluentClientWithFile exportToClasspathResource (String resource) throws S
 
 Shortcut for exportToStream ().writeToClasspathResource (resource) : Conversion from a Sound to a File
 
-*Specified by:*  
-`exportToClasspathResource` in interface `FluentClientSoundImported`
-
 Parameters:  
 `resource` - a resource that can be found in the classpath
 
