@@ -731,7 +731,7 @@ public FluentClient withAPack (String packName, String jsonContent) throws Sound
 Tells the client to work with a pack. Reads the whole string content. A pattern must be followed in the jsonContent to enable the import.
 
 Here is the format allowed in the file
-
+```javascript
 {
   "instrumentName" :
   {
@@ -741,7 +741,7 @@ Here is the format allowed in the file
   },
   ...
 }
-
+```
 Do not assign the same frequency for two notes in the same instrument. If several notes must have their frequencies detected by the soundtransform lib, set different negative values (-1, -2, -3, …)
 
 *Specified by:*  
