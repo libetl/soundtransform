@@ -59,7 +59,7 @@ the client, with a loudest frequencies float array
 public FluentClientReady andAfterStart ()
 ```
 
-**Description copied from interface: `FluentClientCommon`**
+*Description copied from interface: `FluentClientCommon`*
 
 Start over the client : reset the state and the value objects nested in the client
 
@@ -96,7 +96,7 @@ public FluentClientSoundImported apply (SoundTransformation st) throws SoundTran
 ```
 
 
-**Description copied from interface: `FluentClientSoundImported`**
+*Description copied from interface: `FluentClientSoundImported`*
 
 Apply one transform and continue with the current imported sound
 
@@ -140,7 +140,7 @@ public FluentClientSoundImported convertIntoSound () throws SoundTransformExcept
 ```
    
 
-**Description copied from interface: `FluentClientWithFile`**
+*Description copied from interface: `FluentClientWithFile`*
 
 Shortcut for importToStream ().importToSound () : Conversion from a File to a Sound
 
@@ -183,7 +183,7 @@ public FluentClientWithFile exportToClasspathResource (String resource) throws S
 ```
 
 
-**Description copied from interface: `FluentClientSoundImported`**
+*Description copied from interface: `FluentClientSoundImported`*
 
 Shortcut for exportToStream ().writeToClasspathResource (resource) : Conversion from a Sound to a File
 
@@ -206,7 +206,7 @@ public FluentClientWithFile exportToClasspathResourceWithSiblingResource (String
 ```
 
 
-**Description copied from interface: `FluentClientSoundImported`**
+*Description copied from interface: `FluentClientSoundImported`*
 
 Shortcut for exportToStream ().writeToClasspathResourceWithSiblingResource (resource, siblingResource)
 
@@ -230,7 +230,7 @@ Throws:
 public FluentClientWithFile exportToFile (File file1)   throws SoundTransformException
 ```
 
-**Description copied from interface: `FluentClientSoundImported`**
+*Description copied from interface: `FluentClientSoundImported`*
 
 Shortcut for exportToStream ().writeToFile (file)
 
@@ -253,7 +253,7 @@ public FluentClientWithInputStream exportToStream () throws SoundTransformExcept
 ```
 
 
-**Description copied from interface: `FluentClientSoundImported`**
+*Description copied from interface: `FluentClientSoundImported`*
 
 Uses the current imported sound and converts it into an InputStream, ready to be written to a file (or to be read again)
 
@@ -272,7 +272,7 @@ Throws:
 public FluentClientSoundImported extractSound () throws SoundTransformException
 ```
 
-**Description copied from interface: `FluentClientWithSpectrums`**
+*Description copied from interface: `FluentClientWithSpectrums`*
 
 Uses the current available spectrums objects to convert them into a sound (with one or more channels)
 
@@ -346,7 +346,7 @@ Throws:
 public FluentClientSoundImported importToSound () throws SoundTransformException
 ```
 
-**Description copied from interface: `FluentClientWithInputStream`**
+*Description copied from interface: `FluentClientWithInputStream`*
 
 Uses the current input stream object to convert it into a sound (with one or more channels)
 
@@ -365,7 +365,7 @@ Throws:
 public FluentClientWithInputStream importToStream () throws SoundTransformException
 ```
 
-**Description copied from interface: `FluentClientWithFile`**
+*Description copied from interface: `FluentClientWithFile`*
 
 Opens the current file and convert it into an InputStream, ready to be read (or to be written to a file)
 
@@ -404,7 +404,7 @@ Throws:
 public FluentClientSoundImported mixWith (Sound[] sound) throws SoundTransformException
 ```
 
-**Description copied from interface: `FluentClientSoundImported`**
+*Description copied from interface: `FluentClientSoundImported`*
 
 Combines the current sound with another sound. The operation is not reversible
 
@@ -454,7 +454,7 @@ the client, with a loudest frequencies float array
 public FluentClient playIt () throws SoundTransformException
 ```
 
-**Description copied from interface: `FluentClientSoundImported`**
+*Description copied from interface: `FluentClientSoundImported`*
 
 Plays the current audio data
 
@@ -482,7 +482,7 @@ Throws:
 public FluentClientWithFreqs replacePart (float[] subFreqs, int start)
 ```
 
-**Description copied from interface: `FluentClientWithFreqs`**
+*Description copied from interface: `FluentClientWithFreqs`*
 
 Replace some of the values of the loudest freqs array from the “start” index (replace them by the values of subfreqs)
 
@@ -499,7 +499,7 @@ public FluentClientSoundImported shapeIntoSound (String packName, String instrum
 ```
 
 
-**Description copied from interface: `FluentClientWithFreqs`**
+*Description copied from interface: `FluentClientWithFreqs`*
 
 Shapes these loudest frequencies array into a sound and set the converted sound in the pipeline
 
@@ -526,7 +526,7 @@ public FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformExce
 ```
 
 
-**Description copied from interface: `FluentClientSoundImported`**
+*Description copied from interface: `FluentClientSoundImported`*
 
 Uses the current sound to pick its spectrums and set that as the current data in the pipeline
 
@@ -565,7 +565,7 @@ a pack object
 public File stopWithFile ()
 ```
 
-**Description copied from interface: `FluentClientWithFile`**
+*Description copied from interface: `FluentClientWithFile`*
 
 Stops the client pipeline and returns the obtained file
 
@@ -581,7 +581,7 @@ a file
 public float[] stopWithFreqs ()
 ```
 
-**Description copied from interface: `FluentClientWithFreqs`**
+*Description copied from interface: `FluentClientWithFreqs`*
 
 Stops the client pipeline and returns the obtained loudest frequencies
 
@@ -597,7 +597,7 @@ loudest frequencies array
 public InputStream stopWithInputStream ()
 ```
 
-**Description copied from interface: `FluentClientWithInputStream`**
+*Description copied from interface: `FluentClientWithInputStream`*
 
 Stops the client pipeline and returns the obtained input stream
 
@@ -614,7 +614,7 @@ public InputStreamInfo stopWithInputStreamInfo () throws SoundTransformException
 ```
 
 
-**Description copied from interface: `FluentClientWithInputStream`**
+*Description copied from interface: `FluentClientWithInputStream`*
 
 Stops the client pipeline and returns the obtained input stream info object
 
@@ -633,7 +633,7 @@ Throws:
 public Sound[] stopWithSounds ()
 ```
 
-**Description copied from interface: `FluentClientSoundImported`**
+*Description copied from interface: `FluentClientSoundImported`*
 
 Stops the client pipeline and returns the obtained sound
 
@@ -649,7 +649,7 @@ a sound value object
 public List<Spectrum<Serializable>[]> stopWithSpectrums ()
 ```
 
-**Description copied from interface: `FluentClientWithSpectrums`**
+*Description copied from interface: `FluentClientWithSpectrums`*
 
 Stops the client pipeline and returns the obtained spectrums
 
@@ -665,7 +665,7 @@ a list of spectrums for each channel
 public FluentClientReady withAnObserver (Observer... observers1)
 ```
 
-**Description copied from interface: `FluentClientReady`**
+*Description copied from interface: `FluentClientReady`*
 
 Tells the client to add an observer that will be notified of different kind of updates from the library. It is ok to call withAnObserver several times.
  If the andAfterStart method is called, the subscribed observers are removed
@@ -686,7 +686,7 @@ public FluentClient withAPack (String packName, InputStream jsonStream) throws S
 
 ```
  
-**Description copied from interface: `FluentClientSoundImported`**
+*Description copied from interface: `FluentClientSoundImported`*
 
 Tells the client to work with a pack. Reads the whole inputStream. A pattern must be followed in the jsonStream to enable the import.
 
@@ -726,7 +726,7 @@ public FluentClient withAPack (String packName, String jsonContent) throws Sound
 ```
  
 
-**Description copied from interface: `FluentClientSoundImported`**
+*Description copied from interface: `FluentClientSoundImported`*
 
 Tells the client to work with a pack. Reads the whole string content. A pattern must be followed in the jsonContent to enable the import.
 
@@ -779,7 +779,7 @@ Throws:
 public FluentClientWithInputStream withAudioInputStream (InputStream ais)
 ```
 
-**Description copied from interface: `FluentClientReady`**
+*Description copied from interface: `FluentClientReady`*
 
 Tells the client to work first with an InputStream. It will not be read yet
  The passed inputStream must own a format metadata object. Therefore it must be an AudioInputStream.
@@ -800,7 +800,7 @@ public FluentClientWithFile withClasspathResource (String resource) throws Sound
 ```
 
 
-**Description copied from interface: `FluentClientReady`**
+*Description copied from interface: `FluentClientReady`*
 
 Tells the client to work first with a classpath resource. It will be converted in a File
 
@@ -822,7 +822,7 @@ Throws:
 public FluentClientWithFile withFile (File file1)
 ```
 
-**Description copied from interface: `FluentClientReady`**
+*Description copied from interface: `FluentClientReady`*
 
 Tells the client to work first with a file. It will not be read yet
 
@@ -841,7 +841,7 @@ the client, with a file
 public FluentClientWithFreqs withFreqs (float[] freqs1)
 ```
 
-**Description copied from interface: `FluentClientReady`**
+*Description copied from interface: `FluentClientReady`*
 
 Tells the client to work first with a loudest frequencies integer array. It will not be used yet
 
@@ -861,7 +861,7 @@ public FluentClientWithInputStream withRawInputStream (InputStream is, InputStre
 ```
  
 
-**Description copied from interface: `FluentClientReady`**
+*Description copied from interface: `FluentClientReady`*
 
 Tells the client to work first with a byte array InputStream or any readable DataInputStream. It will be read and transformed into an AudioInputStream
  The passed inputStream must not contain any metadata piece of information.
@@ -886,7 +886,7 @@ Throws:
 public FluentClientSoundImported withSounds (Sound[] sounds1)
 ```
 
-**Description copied from interface: `FluentClientReady`**
+*Description copied from interface: `FluentClientReady`*
 
 Tells the client to work first with a sound object
 
@@ -905,7 +905,7 @@ the client, with an imported sound
 public FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable>[]> spectrums)
 ```
 
-**Description copied from interface: `FluentClientReady`**
+*Description copied from interface: `FluentClientReady`*
 
 Tells the client to work first with a spectrum formatted sound.
  The spectrums inside must be in a list (each item must correspond to a channel) The spectrums are ordered in an array in chronological order
@@ -926,7 +926,7 @@ public FluentClientWithFile writeToClasspathResource (String resource) throws So
 ```
 
 
-**Description copied from interface: `FluentClientWithInputStream`**
+*Description copied from interface: `FluentClientWithInputStream`*
 
 Writes the current InputStream in a classpath resource in the same folder as a previously imported classpath resource. Caution : if no classpath resource was imported before, this operation will not work. Use writeToClasspathResourceWithSiblingResource instead
 
@@ -949,7 +949,7 @@ public FluentClientWithFile writeToClasspathResourceWithSiblingResource (String 
 ```
 
 
-**Description copied from interface: `FluentClientWithInputStream`**
+*Description copied from interface: `FluentClientWithInputStream`*
 
 Writes the current InputStream in a classpath resource in the same folder as a the sibling resource.
 
@@ -974,7 +974,7 @@ public FluentClientWithFile writeToFile (File file1) throws SoundTransformExcept
 ```
 
 
-**Description copied from interface: `FluentClientWithInputStream`**
+*Description copied from interface: `FluentClientWithInputStream`*
 
 Writes the current InputStream in a file
 
