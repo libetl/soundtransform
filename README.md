@@ -43,10 +43,10 @@ FluentClient.start ().withClasspathResource ("foo.wav").convertIntoSound ().appl
 FluentClient.start ().withAPack ("default", packInputStream).withClasspathResource ("foo.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", isi).exportToClasspathResource ("bar.wav");
 
 //Play three times the same data, as a File, then as a sound, then as an inputStream
- FluentClient.start ().withClasspathResource ("foo.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
+FluentClient.start ().withClasspathResource ("foo.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
  
 //Transform a sound into a an array of spectrums
- FluentClient.start ().withSounds (sounds).splitIntoSpectrums ().stopWithSpectrums ();
+FluentClient.start ().withSounds (sounds).splitIntoSpectrums ().stopWithSpectrums ();
 
 //Transform a lowfi wav file into a cd format wavfile
 final InputStreamInfo isi = new InputStreamInfo (2, 0, 2, 44100.0, false, true);
