@@ -402,7 +402,7 @@ the client, with a loudest frequencies float array
 ####   FluentClientSoundImported.playIt or FluentClientWithFile.playIt or FluentClientWithInputStream.playIt or FluentClientWithSpectrums.playIt
 
 ```java
-public FluentClient playIt () throws SoundTransformException
+public <T> playIt () throws SoundTransformException
 ```
 
 
@@ -566,7 +566,7 @@ the client, ready to start
 ####   FluentClient*.withAPack
 
 ```java
-public FluentClient withAPack (String packName, InputStream jsonStream) throws SoundTransformException
+public <T> withAPack (String packName, InputStream jsonStream) throws SoundTransformException
 ```
 
 
@@ -578,7 +578,7 @@ Parameters:
 `jsonStream` - the input stream
 
 Returns:  
-the client, with a sound imported
+the client, with the current data
 
 Throws:  
 `SoundTransformException` - the input stream cannot be read, or the json format is not correct, or some sound files are missing
@@ -586,7 +586,7 @@ Throws:
 ####   FluentClient*.withAPack
 
 ```java
-public FluentClient withAPack (String packName, String jsonContent) throws SoundTransformException
+public <T> withAPack (String packName, String jsonContent) throws SoundTransformException
 ```
  
 
@@ -597,7 +597,7 @@ Here is the format allowed in the file
 {
   "instrumentName" :
   {
--1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
+    -1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
    192 : "/data/mypackage.myapp/knownFrequencyFile.wav",
    ...
   },
@@ -612,7 +612,7 @@ Parameters:
 `jsonContent` - a string containing the definition of the pack
 
 Returns:  
-the client, with a sound imported
+the client, with the current data
 
 Throws:  
 `SoundTransformException` - the json content is invalid, the json format is not correct, or some sound files are missing
