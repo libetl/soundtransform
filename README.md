@@ -28,7 +28,7 @@ Android library to shape a voice with an instrument.
 
 ### FluentClient Javadoc :
 
-####   start
+####   FluentClient.start *(only way to start the FluentClient)*
 
 ```java
 public static FluentClientReady start ()
