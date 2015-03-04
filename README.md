@@ -31,7 +31,7 @@ The FluentClient service provider interface is a simple class to give a shortcut
 
 It helps you to proceed to the correct actions at each step, giving you the right programming interface during the pipeline.
 
-To use it, it is only needed to chain the methods invocation. it will always start with a ```FluentClient.start()```, can end with a stop method and can contains a startOver call to chain two processes in the same instruction of code.
+To use it, it is only needed to chain the methods invocation. it will always start with a ```FluentClient.start()```, can end with a stop method and can contains an ```andAfterStart``` call to chain two processes in the same instruction of code.
 
 ### FluentClient samples :
 ```java
