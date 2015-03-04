@@ -105,7 +105,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Append the sound passed in parameter to the current sound stored in the
      * client
      *
-     * @param sound
+     * @param sounds1
      *            the sound to append the current sound to
      * @return the client, with a sound imported
      * @throws SoundTransformException

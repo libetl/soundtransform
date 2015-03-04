@@ -69,7 +69,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     /**
      * WARN : can fail for various reasons
      *
-     * @param step
+     * @param step1
      *            must be > that the f0 of the sound. Else it will not fail but
      *            will produce a bad sound
      * @param factor
