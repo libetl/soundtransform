@@ -104,7 +104,7 @@ public class ConvertedSoundAppender implements SoundAppender {
             }
             appendIfGreaterThanOrEqualsRatio += 1.0;
         }
-        return new Sound (result, new FormatInfo (sound.getSampleSize (), (sound.getSampleRate () / ratio)), sound.getChannelNum ());
+        return new Sound (result, new FormatInfo (sound.getSampleSize (), sound.getSampleRate () / ratio), sound.getChannelNum ());
     }
 
     /*

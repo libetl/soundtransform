@@ -2,7 +2,6 @@ package org.toilelibre.libe.soundtransform.model.inputstream;
 
 import java.io.InputStream;
 
-import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
