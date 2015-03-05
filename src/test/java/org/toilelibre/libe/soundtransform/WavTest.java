@@ -58,7 +58,7 @@ public class WavTest extends SoundTransformTest {
     public void testGaussianEqualizer () throws SoundTransformException {
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new GaussianEqualizerSoundTransformation ());
     }
-    
+
     @Test
     public void testLinearReg () throws SoundTransformException {
         // will remove the high freqs and smooth the signal
@@ -83,8 +83,17 @@ public class WavTest extends SoundTransformTest {
 
     @Test
     public void testNormalize () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new NormalizeSoundTransformation ());
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new NormalizeSoundTransformation (1.0f));
+    }
 
+    @Test (expected = SoundTransformException.class)
+    public void testNormalizeAbove1 () throws SoundTransformException {
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new NormalizeSoundTransformation (-0.5f));
+    }
+
+    @Test (expected = SoundTransformException.class)
+    public void testNormalizeBelow0 () throws SoundTransformException {
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new NormalizeSoundTransformation (-0.5f));
     }
 
     @Test

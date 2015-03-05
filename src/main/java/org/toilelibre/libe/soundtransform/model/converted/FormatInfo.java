@@ -12,8 +12,8 @@ public class FormatInfo implements Cloneable, Serializable {
      * 
      */
     private static final long serialVersionUID = 2807016563144431421L;
-    private final int     sampleSize;
-    private final float  sampleRate;
+    private final int         sampleSize;
+    private final float       sampleRate;
 
     enum FormatInfoErrorCode implements ErrorCode {
         CLONE_FAILED ("Clone operation on a format info object failed");
@@ -44,8 +44,11 @@ public class FormatInfo implements Cloneable, Serializable {
     public int getSampleSize () {
         return this.sampleSize;
     }
-    
 
+    public boolean sameFormatAs (final FormatInfo fi){
+        return this.sampleRate == fi.sampleRate && this.sampleSize == fi.sampleSize;
+    }
+    
     @Override
     public Sound clone () {
         try {
@@ -54,8 +57,8 @@ public class FormatInfo implements Cloneable, Serializable {
             throw new SoundTransformRuntimeException (FormatInfoErrorCode.CLONE_FAILED, e);
         }
     }
-    
-    @Override    
+
+    @Override
     public String toString () {
         return String.format (Locale.ENGLISH, "%6.1f Hz, %1d bit", this.getSampleRate (), this.getSampleSize () * Byte.SIZE);
     }

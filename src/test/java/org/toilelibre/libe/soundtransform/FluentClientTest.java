@@ -15,7 +15,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundExcepti
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
@@ -88,13 +90,6 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
-    public void readSoundInfo () throws SoundTransformException {
-        final FormatInfo fi = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").importToStream ().stopWithStreamInfo ();
-        Assert.assertNotNull (fi);
-        new Slf4jObserver ().notify (fi.toString ());
-    }
-
-    @Test
     public void readRawInputStream () throws SoundTransformException {
         final RandomDataGenerator rdg = new RandomDataGenerator ();
         final byte [] data = new byte [65536];
@@ -105,6 +100,19 @@ public class FluentClientTest extends SoundTransformTest {
         final StreamInfo isi = new StreamInfo (1, 32768, 2, 8000, false, true, null);
 
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withRawInputStream (is, isi).importToSound ().exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+    }
+
+    @Test
+    public void readSoundInfo () throws SoundTransformException {
+        final FormatInfo fi = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").importToStream ().stopWithStreamInfo ();
+        Assert.assertNotNull (fi);
+        new Slf4jObserver ().notify (fi.toString ());
+    }
+
+    @Test
+    public void replacePart () throws SoundTransformException {
+        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransformation (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSounds (), 100000))
+        .exportToClasspathResource ("after.wav");
     }
 
     @Test
@@ -131,12 +139,18 @@ public class FluentClientTest extends SoundTransformTest {
         org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (array1).replacePart (array2, 11).stopWithFreqs (), 0);
     }
 
+    @Test (expected = SoundTransformRuntimeException.class)
+    public void replacePartOutOfBounds () throws SoundTransformException {
+        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransformation (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSounds (), -100000))
+        .exportToClasspathResource ("after.wav");
+    }
+
     // Exactly the same code run as WavTest.testShape
-    // @Test
+    @Test
     public void shapeASoundTest () throws SoundTransformException {
         final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json");
         final FormatInfo fi = new FormatInfo (2, 48000);
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", packInputStream).withClasspathResource ("before.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", fi);
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", packInputStream).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", fi);
     }
 
     @Test
