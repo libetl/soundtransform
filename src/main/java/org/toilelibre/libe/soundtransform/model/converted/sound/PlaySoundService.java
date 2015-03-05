@@ -3,7 +3,6 @@ package org.toilelibre.libe.soundtransform.model.converted.sound;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -14,9 +13,15 @@ import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 public class PlaySoundService<T extends Serializable> {
 
     private final PlaySoundProcessor processor;
+    private final TransformSoundService transformSoundService;
+    private final FourierTransformHelper<T> fourierTransformHelper;
 
-    public PlaySoundService (final PlaySoundProcessor processor) {
-        this.processor = processor;
+    public PlaySoundService (final PlaySoundProcessor processor1, final TransformSoundService
+            transformSoundService1, FourierTransformHelper<T> fourierTransformHelper1) {
+        this.processor = processor1;
+        this.transformSoundService = transformSoundService1;
+        this.fourierTransformHelper = fourierTransformHelper1;
+        
     }
 
     public Object play (final InputStream is) throws SoundTransformException {
@@ -29,14 +34,12 @@ public class PlaySoundService<T extends Serializable> {
             return new Object ();
         }
 
-        final InputStream ais = $.create (TransformSoundService.class).toStream (channels, 
+        final InputStream ais = this.transformSoundService.toStream (channels, 
                 StreamInfo.from (channels [0].getFormatInfo (), channels));
         return this.processor.play (ais);
     }
 
     public Object play (final Spectrum<T> spectrum) throws SoundTransformException {
-        @SuppressWarnings ("unchecked")
-        final FourierTransformHelper<T> fourierTransformHelper = $.select (FourierTransformHelper.class);
-        return this.play (new Sound [] { fourierTransformHelper.reverse (spectrum) });
+        return this.play (new Sound [] { this.fourierTransformHelper.reverse (spectrum) });
     }
 }

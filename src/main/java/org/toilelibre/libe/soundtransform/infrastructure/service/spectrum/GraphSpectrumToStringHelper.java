@@ -1,13 +1,18 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.spectrum;
 
 import org.apache.commons.math3.complex.Complex;
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToStringHelper;
 
 public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Complex []> {
 
+    private SpectrumHelper<Complex []> spectrumHelper;
+
+    public GraphSpectrumToStringHelper (SpectrumHelper<Complex[]> spectrumHelper1){
+        this.spectrumHelper = spectrumHelper1;
+    }
+    
     private void diplayFooter (final StringBuilder sb, final int length, final SpectrumHelper<Complex []> spectrumHelper, final int compression, final float lastFrequency) {
         sb.append ("L");
         for (int i = 0 ; i < length ; i++) {
@@ -73,8 +78,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
      */
     @Override
     public String fsToString (final Spectrum<Complex []> fs, final int low, final int high, final int compression, final int height) {
-        @SuppressWarnings ("unchecked")
-        final SpectrumHelper<Complex []> spectrumHelper = $.select (SpectrumHelper.class);
+        final SpectrumHelper<Complex []> spectrumHelper = this.spectrumHelper;
         final StringBuilder sb = new StringBuilder ();
         final float lastFrequency = fs.getState ().length < high ? fs.getState ().length : (float) high;
         final int length = (int) lastFrequency / compression;

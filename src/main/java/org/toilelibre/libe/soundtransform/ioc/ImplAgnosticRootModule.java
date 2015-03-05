@@ -51,7 +51,7 @@ public abstract class ImplAgnosticRootModule extends BinderModule {
         super.bind (FourierTransformHelper.class).to (new CommonsMath3FourierTransformHelper ());
         super.bind (Spectrum2CepstrumHelper.class).to (new NaiveSpectrum2CepstrumHelper ());
         super.bind (SpectrumHelper.class).to (new HPSSpectrumHelper ());
-        super.bind (SpectrumToStringHelper.class).to (new GraphSpectrumToStringHelper ());
+        super.bind (SpectrumToStringHelper.class).to (new GraphSpectrumToStringHelper (new HPSSpectrumHelper ()));
         super.bind (FrameProcessor.class).to (new ByteArrayFrameProcessor ());
         super.bind (ADSRHelper.class).to (new MagnitudeADSRHelper ());
         super.bind (FrequencyHelper.class).to (new CallHPSFrequencyHelper ());

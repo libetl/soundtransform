@@ -1,5 +1,7 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
+import java.io.Serializable;
+
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
@@ -93,7 +95,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
     }
 
     private float [] getLoudestFreqs (final Sound sound, final int step) {
-        final PeakFindWithHPSSoundTransformation<?> peak = $.create (PeakFindWithHPSSoundTransformation.class, step, -1);
+        final PeakFindWithHPSSoundTransformation<? extends Serializable> peak = new PeakFindWithHPSSoundTransformation<Serializable> (step, -1);
         peak.setObservers (this.observers).transform (sound);
         return peak.getLoudestFreqs ();
     }
