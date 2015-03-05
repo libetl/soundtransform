@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.model.inputstream;
 
 import java.io.InputStream;
 
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -64,18 +65,18 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
     }
 
     public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {
-        return this.fromInputStream (ais, this.audioFormatParser.getInputStreamInfo (ais));
+        return this.fromInputStream (ais, this.audioFormatParser.getSoundInfo (ais));
     }
 
-    public Sound [] fromInputStream (final InputStream ais, final InputStreamInfo isInfo) throws SoundTransformException {
+    public Sound [] fromInputStream (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
         this.log (new LogEvent (TransformInputStreamServiceEventCode.CONVERT_INTO_JAVA_OBJECT));
         final Sound [] result = this.frameProcessor.fromInputStream (ais, isInfo);
         this.log (new LogEvent (TransformInputStreamServiceEventCode.CONVERT_DONE));
         return result;
     }
 
-    public InputStreamInfo getInputStreamInfo (final InputStream ais) throws SoundTransformException {
-        return this.audioFormatParser.getInputStreamInfo (ais);
+    public StreamInfo getSoundInfo (final InputStream ais) throws SoundTransformException {
+        return this.audioFormatParser.getSoundInfo (ais);
     }
 
     @Override
@@ -85,7 +86,7 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
         return this;
     }
 
-    public byte [] soundToByteArray (final Sound [] channels, final InputStreamInfo inputStreamInfo) {
-        return this.frameProcessor.framesToByteArray (channels, inputStreamInfo.getSampleSize (), inputStreamInfo.isBigEndian (), inputStreamInfo.isPcmSigned ());
+    public byte [] soundToByteArray (final Sound [] channels, final StreamInfo streamInfo) {
+        return this.frameProcessor.framesToByteArray (channels, streamInfo.getSampleSize (), streamInfo.isBigEndian (), streamInfo.isPcmSigned ());
     }
 }

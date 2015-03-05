@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 
@@ -23,16 +24,14 @@ public class Sound implements Cloneable {
     }
 
     private final long [] samples;
-    private final int     nbBytesPerSample;
-    private final int     sampleRate;
+    private final FormatInfo formatInfo;
     private final int     channelNum;
 
-    public Sound (final long [] samples, final int nbBytesPerSample, final int sampleRate, final int channelNum) {
+    public Sound (final long [] samples1, final FormatInfo fomatInfo1, final int channelNum1) {
         super ();
-        this.samples = samples;
-        this.nbBytesPerSample = nbBytesPerSample;
-        this.sampleRate = sampleRate;
-        this.channelNum = channelNum;
+        this.samples = samples1;
+        this.formatInfo = fomatInfo1;
+        this.channelNum = channelNum1;
     }
 
     @Override
@@ -48,16 +47,8 @@ public class Sound implements Cloneable {
         return this.channelNum;
     }
 
-    public int getNbBytesPerSample () {
-        return this.nbBytesPerSample;
-    }
-
     public long getSampleAt (final int i) {
         return this.samples [i];
-    }
-
-    public int getSampleRate () {
-        return this.sampleRate;
     }
 
     public long [] getSamples () {
@@ -68,8 +59,20 @@ public class Sound implements Cloneable {
         return this.samples.length;
     }
 
+    public FormatInfo getFormatInfo () {
+        return this.formatInfo;
+    }
+    
     public void setSampleAt (final int i, final long value) {
         this.samples [i] = value;
+    }
+
+    public float getSampleRate () {
+        return formatInfo.getSampleRate ();
+    }
+
+    public int getSampleSize () {
+        return formatInfo.getSampleSize ();
     }
 
     @Override

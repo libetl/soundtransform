@@ -13,7 +13,7 @@ import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.inputstream.TransformInputStreamService;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
@@ -29,7 +29,7 @@ public class Pcm2FrameTest extends SoundTransformTest {
         new Slf4jObserver ().notify (Arrays.toString (data));
         final TransformInputStreamService ts = $.create (TransformInputStreamService.class, new Slf4jObserver (LogLevel.WARN));
         final InputStream bais = new ByteArrayInputStream (data);
-        final Sound [] channels = ts.fromInputStream (bais, new InputStreamInfo (2, data.length / 4, 2, 44100.0, false, true));
+        final Sound [] channels = ts.fromInputStream (bais, new StreamInfo (2, data.length / 4, 2, 44100.0f, false, true, null));
 
         final byte [] out = new ByteArrayFrameProcessor ().framesToByteArray (channels, 2, false, true);
         new Slf4jObserver ().notify (Arrays.toString (out));

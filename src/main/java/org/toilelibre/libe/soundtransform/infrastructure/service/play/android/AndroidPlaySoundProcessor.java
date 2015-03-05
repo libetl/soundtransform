@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.play.android;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android.HasInputStreamInfo;
+import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android.HasSoundInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException.PlaySoundErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -50,11 +50,11 @@ public class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySound
 
     @Override
     public Object play (final InputStream ais) throws PlaySoundException {
-        if (!(ais instanceof HasInputStreamInfo)) {
-            throw new PlaySoundException (new SoundTransformException (PlaySoundErrorCode.COULD_NOT_PLAY_SOUND, new ClassCastException ("Could not cas InputStream as a HasInputStreamInfo class")));
+        if (!(ais instanceof HasSoundInfo)) {
+            throw new PlaySoundException (new SoundTransformException (PlaySoundErrorCode.COULD_NOT_PLAY_SOUND, new ClassCastException ("Could not cas InputStream as a HasSoundInfo class")));
 
         }
-        final HasInputStreamInfo is = (HasInputStreamInfo) ais;
+        final HasSoundInfo is = (HasSoundInfo) ais;
         final AudioTrack audioTrack = new AudioTrack (AudioManager.STREAM_MUSIC, (int) is.getInfo ().getSampleRate (), AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, (int) is.getInfo ().getFrameLength (), AudioTrack.MODE_STATIC);
         final byte [] baSoundByteArray = new byte [(int) is.getInfo ().getFrameLength () * is.getInfo ().getSampleSize ()];
         try {

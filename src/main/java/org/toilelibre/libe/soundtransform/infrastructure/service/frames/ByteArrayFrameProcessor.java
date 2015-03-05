@@ -6,7 +6,7 @@ import java.io.InputStream;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.inputstream.TransformInputStreamService.TransformInputStreamServiceErrorCode;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
@@ -91,7 +91,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
     }
 
     @Override
-    public Sound [] fromInputStream (final InputStream ais, final InputStreamInfo isInfo) throws SoundTransformException {
+    public Sound [] fromInputStream (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
         this.log (new LogEvent (FrameProcessorEventCode.SOUND_INIT));
         final Sound [] ret = this.initSound (isInfo);
         this.log (new LogEvent (FrameProcessorEventCode.READ_START));
@@ -119,15 +119,15 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
         return Math.round ((position * ByteArrayFrameProcessor.PERCENT) / length);
     }
 
-    private Sound [] initSound (final InputStreamInfo isInfo) {
+    private Sound [] initSound (final StreamInfo isInfo) {
         final Sound [] ret = new Sound [isInfo.getChannels ()];
         for (int channel = 0 ; channel < isInfo.getChannels () ; channel++) {
-            ret [channel] = new Sound (new long [(int) isInfo.getFrameLength ()], isInfo.getSampleSize (), (int) isInfo.getSampleRate (), channel);
+            ret [channel] = new Sound (new long [(int) isInfo.getFrameLength ()], isInfo, channel);
         }
         return ret;
     }
 
-    private void writeSound (final InputStream ais, final InputStreamInfo isInfo, final Sound [] result) throws SoundTransformException {
+    private void writeSound (final InputStream ais, final StreamInfo isInfo, final Sound [] result) throws SoundTransformException {
         final long neutral = this.getNeutral (isInfo.getSampleSize ());
         for (int position = 0 ; position < (int) isInfo.getFrameLength () ; position++) {
             final byte [] frame = new byte [isInfo.getSampleSize () * isInfo.getChannels ()];

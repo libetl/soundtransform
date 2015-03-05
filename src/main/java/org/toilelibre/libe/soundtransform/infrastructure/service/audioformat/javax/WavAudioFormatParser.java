@@ -12,13 +12,13 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor.FrameProcessorErrorCode;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public class WavAudioFormatParser implements AudioFormatParser {
 
     @Override
-    public Object audioFormatfromInputStreamInfo (final InputStreamInfo info) {
+    public Object audioFormatfromSoundInfo (final StreamInfo info) {
         final int channels = info.getChannels ();
         final int sampleSizeInBits = info.getSampleSize () * Byte.SIZE;
         final double sampleRate = info.getSampleRate ();
@@ -28,18 +28,18 @@ public class WavAudioFormatParser implements AudioFormatParser {
     }
 
     @Override
-    public InputStreamInfo fromAudioFormat (final Object audioFormat1, final long frameLength) {
+    public StreamInfo fromAudioFormat (final Object audioFormat1, final long frameLength) {
         final AudioFormat audioFormat = (AudioFormat) audioFormat1;
         final int channels = audioFormat.getChannels ();
         final int sampleSize = audioFormat.getFrameSize () / channels;
-        final double sampleRate = audioFormat.getSampleRate ();
+        final float sampleRate = audioFormat.getSampleRate ();
         final boolean bigEndian = audioFormat.isBigEndian ();
         final boolean pcmSigned = audioFormat.getEncoding () == Encoding.PCM_SIGNED;
-        return new InputStreamInfo (channels, frameLength, sampleSize, sampleRate, bigEndian, pcmSigned);
+        return new StreamInfo (channels, frameLength, sampleSize, sampleRate, bigEndian, pcmSigned, null);
     }
 
     @Override
-    public InputStreamInfo getInputStreamInfo (final InputStream is) throws SoundTransformException {
+    public StreamInfo getSoundInfo (final InputStream is) throws SoundTransformException {
         if (is instanceof AudioInputStream) {
             final AudioInputStream ais = (AudioInputStream) is;
             return this.fromAudioFormat (ais.getFormat (), ais.getFrameLength ());

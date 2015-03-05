@@ -40,7 +40,7 @@ To use it, it is only needed to chain the methods invocation. it will always sta
 FluentClient.start ().withClasspathResource ("foo.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("bar.wav");
 
 //Shape a wav with an instrument and then export it to a wav
-FluentClient.start ().withAPack ("default", packInputStream).withClasspathResource ("foo.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", isi).exportToClasspathResource ("bar.wav");
+FluentClient.start ().withAPack ("default", packInputStream).withClasspathResource ("foo.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", fi).exportToClasspathResource ("bar.wav");
 
 //Play three times the same data, as a File, then as a sound, then as an inputStream
 FluentClient.start ().withClasspathResource ("foo.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
@@ -49,8 +49,8 @@ FluentClient.start ().withClasspathResource ("foo.wav").playIt ().convertIntoSou
 FluentClient.start ().withSounds (sounds).splitIntoSpectrums ().stopWithSpectrums ();
 
 //Transform a lowfi wav file into a cd format wavfile
-final InputStreamInfo isi = new InputStreamInfo (2, 0, 2, 44100.0, false, true);
-FluentClient.start ().withClasspathResource ("lowfi.wav").convertIntoSound ().changeFormat (isi).exportToClasspathResource ("hifi.wav");
+final FormatInfo fi = new FormatInfo (2, 44100.0);
+FluentClient.start ().withClasspathResource ("lowfi.wav").convertIntoSound ().changeFormat (fi).exportToClasspathResource ("hifi.wav");
 ```
 
 Please have a look of the many different actions that you can ask to the FluentClient in this [JUnit Test](src/test/java/org/toilelibre/libe/soundtransform/FluentClientTest.java)
@@ -127,13 +127,13 @@ Throws:
 ####   FluentClientSoundImported.changeFormat
 
 ```java
-public FluentClientSoundImported changeFormat (InputStreamInfo inputStreamInfo) throws SoundTransformException
+public FluentClientSoundImported changeFormat (FormatInfo formatInfo) throws SoundTransformException
 ```
 
 Changes the current imported sound to fit the expected format
 
 Parameters:  
-`inputStreamInfo` - only the sampleSize and the sampleRate pieces of data will be used
+`formatInfo` - the new expected format
 
 Returns:  
 the client, with a sound imported
@@ -429,7 +429,7 @@ the client, with a loudest frequencies float array
 ####   FluentClientWithFreqs.shapeIntoSound
 
 ```java
-public FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, InputStreamInfo isi) throws SoundTransformException
+public FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, InputStreamInfo fi) throws SoundTransformException
 ```
 
 
@@ -440,7 +440,7 @@ Parameters:
 
 `instrumentName` - the name of the instrument that will map the freqs object
 
-`isi` - the wanted format for the future sound
+`fi` - the wanted format for the future sound
 
 Returns:  
 the client, with a sound imported
@@ -510,21 +510,6 @@ Stops the client pipeline and returns the obtained input stream
 Returns:  
 an input stream
 
-####   FluentClientWithInputStream.stopWithInputStreamInfo
-
-```java
-public InputStreamInfo stopWithInputStreamInfo () throws SoundTransformException
-```
-
-
-Stops the client pipeline and returns the obtained input stream info object
-
-Returns:  
-an inputStreamInfo object
-
-Throws:  
-`SoundTransformException` - could not read the inputstreaminfo from the current inputstream
-
 ####   FluentClientSoundImported.stopWithSounds
 
 ```java
@@ -547,6 +532,21 @@ Stops the client pipeline and returns the obtained spectrums
 
 Returns:  
 a list of spectrums for each channel
+
+####   FluentClientWithInputStream.stopWithStreamInfo
+
+```java
+public StreamInfo stopWithStreamInfo () throws SoundTransformException
+```
+
+
+Stops the client pipeline and returns the obtained stream info object
+
+Returns:  
+a streamInfo object
+
+Throws:  
+`SoundTransformException` - could not read the StreamInfo from the current inputstream
 
 ####   FluentClientReady.withAnObserver (before another with.. method)
 

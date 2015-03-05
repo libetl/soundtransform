@@ -62,7 +62,7 @@ public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFr
     @Override
     public Sound initSound (final Sound input) {
         final long [] newdata = new long [(int) (input.getSamplesLength () / this.factor)];
-        this.sound = new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
+        this.sound = new Sound (newdata, input.getFormatInfo (), input.getChannelNum ());
         return this.sound;
     }
 

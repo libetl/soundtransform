@@ -31,7 +31,7 @@ public class SimpleFrequencySoundTransformation<T extends Serializable> extends 
     @Override
     public Sound initSound (final Sound input) {
         final long [] newdata = new long [input.getSamplesLength ()];
-        return new Sound (newdata, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
+        return new Sound (newdata, input.getFormatInfo (), input.getChannelNum ());
     }
 
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs) {

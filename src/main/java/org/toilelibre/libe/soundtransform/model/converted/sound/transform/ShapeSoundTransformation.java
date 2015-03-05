@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
@@ -60,9 +61,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
     private final SoundAppender soundAppender;
     private final Silence       silence;
     private float []            freqs;
-    private int                 nbBytesPerSample;
-    private int                 soundLength;
-    private int                 sampleRate;
+    private FormatInfo formatInfo;
 
     public ShapeSoundTransformation (final String packName, final String instrument) {
         this.silence = new Silence ();
@@ -71,12 +70,10 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         this.soundAppender = $.select (SoundAppender.class);
     }
 
-    public ShapeSoundTransformation (final String packName, final String instrument, final float [] freqs, final int soundLength1, final int nbBytesPerSample1, final int sampleRate1) {
+    public ShapeSoundTransformation (final String packName, final String instrument, final float [] freqs, final FormatInfo formatInfo1) {
         this (packName, instrument);
         this.freqs = freqs.clone ();
-        this.soundLength = soundLength1;
-        this.nbBytesPerSample = nbBytesPerSample1;
-        this.sampleRate = sampleRate1;
+        this.formatInfo = formatInfo1;
     }
 
     private Note findNote (final double lastFreq, final int sampleRate, final int i, final int lastBegining) throws SoundTransformException {
@@ -114,16 +111,16 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         return frequencyDidNotChangeBetweenIAndIMinusTwo && freqChangedAtIMinusThree && thereIsANewFrequencyValue;
     }
 
-    public Sound transform (final int step, final int channelNum) throws SoundTransformException {
-        final Sound builtSound = new Sound (new long [this.soundLength], this.nbBytesPerSample, this.sampleRate, channelNum);
+    public Sound transform (final int step, final int channelNum, int soundLength) throws SoundTransformException {
+        final Sound builtSound = new Sound (new long [soundLength], this.formatInfo, channelNum);
         int lastBegining = 0;
         float lastFreq = 0;
         boolean firstNote = true;
         for (int i = 4 ; i < this.freqs.length ; i++) {
             if (i == this.freqs.length - 1 || this.isNewNote (i, lastFreq, firstNote)) {
                 final int endOfNoteIndex = i == this.freqs.length - 1 ? i : i - 4;
-                final float lengthInSeconds = (endOfNoteIndex - lastBegining < 1 ? this.freqs [i] * step : (endOfNoteIndex - 1 - lastBegining) * step * 1.0f) / this.sampleRate;
-                final Note note = this.findNote (this.freqs [endOfNoteIndex], this.sampleRate, endOfNoteIndex + 1, lastBegining + 1);
+                final float lengthInSeconds = (endOfNoteIndex - lastBegining < 1 ? this.freqs [i] * step : (endOfNoteIndex - 1 - lastBegining) * step * 1.0f) / (float)this.formatInfo.getSampleRate ();
+                final Note note = this.findNote (this.freqs [endOfNoteIndex], (int)this.formatInfo.getSampleRate (), endOfNoteIndex + 1, lastBegining + 1);
                 this.soundAppender.appendNote (builtSound, note, this.freqs [endOfNoteIndex], step * lastBegining, channelNum, lengthInSeconds);
                 lastBegining = endOfNoteIndex;
                 lastFreq = this.freqs [endOfNoteIndex];
@@ -142,17 +139,20 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         }
         final int step = 100;
         int channelNum = 1;
+        int soundLength = 0;
 
         this.log (new LogEvent (ShapeSoundTransformationEventCode.FINDING_LOUDEST_FREQUENCIES));
 
         if (this.freqs == null) {
-            this.soundLength = sound.getSamplesLength ();
-            this.nbBytesPerSample = sound.getNbBytesPerSample ();
-            this.sampleRate = sound.getSampleRate ();
+            this.formatInfo = sound.getFormatInfo ();
+            soundLength = sound.getSamplesLength ();
             this.freqs = this.getLoudestFreqs (sound, step);
             channelNum = sound.getChannelNum ();
         }
-        return this.transform (step, channelNum);
+        if (soundLength == 0){
+            soundLength = step * this.freqs.length;
+        }
+        return this.transform (step, channelNum, soundLength);
     }
 
 }

@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.model.library.note;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoService;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -33,7 +34,7 @@ public class SimpleNote implements Note {
 
     private Sound get (final Sound [] adsr, final int channelnum) {
         if (adsr.length == 0) {
-            return new Sound (new long [0], 0, 0, 0);
+            return new Sound (new long [0], new FormatInfo (0, 0), 0);
         }
         if (adsr.length <= channelnum) {
             return adsr [adsr.length - 1];
@@ -88,7 +89,7 @@ public class SimpleNote implements Note {
             newsamples = new long [end - beginning];
             System.arraycopy (input.getSamples (), beginning, newsamples, 0, end - beginning);
         }
-        return new Sound (newsamples, input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
+        return new Sound (newsamples, input.getFormatInfo (), input.getChannelNum ());
     }
 
 }

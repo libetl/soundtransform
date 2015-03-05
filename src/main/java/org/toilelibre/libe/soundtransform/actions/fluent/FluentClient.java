@@ -15,10 +15,11 @@ import org.toilelibre.libe.soundtransform.actions.transform.ApplySoundTransform;
 import org.toilelibre.libe.soundtransform.actions.transform.ChangeSoundFormat;
 import org.toilelibre.libe.soundtransform.actions.transform.ConvertFromInputStream;
 import org.toilelibre.libe.soundtransform.actions.transform.ExportAFile;
-import org.toilelibre.libe.soundtransform.actions.transform.GetInputStreamInfo;
+import org.toilelibre.libe.soundtransform.actions.transform.GetSoundInfo;
 import org.toilelibre.libe.soundtransform.actions.transform.InputStreamToAudioInputStream;
 import org.toilelibre.libe.soundtransform.actions.transform.ChangeLoudestFreqs;
 import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CutSoundTransformation;
@@ -32,7 +33,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SubSou
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
@@ -136,15 +137,14 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     /**
      * Changes the current imported sound to fit the expected format
      *
-     * @param inputStreamInfo
-     *            only the sampleSize and the sampleRate pieces of data will be
-     *            used
+     * @param formatInfo
+     *            the new expected format
      * @return the client, with a sound imported
      * @throws SoundTransformException
      */
     @Override
-    public FluentClientSoundImported changeFormat (final InputStreamInfo inputStreamInfo) throws SoundTransformException {
-        this.sounds = new ChangeSoundFormat (this.getObservers ()).changeFormat (this.sounds, inputStreamInfo);
+    public FluentClientSoundImported changeFormat (final FormatInfo formatInfo) throws SoundTransformException {
+        this.sounds = new ChangeSoundFormat (this.getObservers ()).changeFormat (this.sounds, formatInfo);
         return this;
     }
 
@@ -233,8 +233,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException if the metadata format object is invalid, or if the sound cannot be converted
      */
     public FluentClientWithInputStream exportToStream () throws SoundTransformException {
-        final InputStreamInfo currentInfo = new GetInputStreamInfo (this.getObservers ()).getInputStreamInfo (this.sounds);
-        final InputStream audioInputStream1 = new ToInputStream (this.getObservers ()).toStream (this.sounds, currentInfo);
+        final FormatInfo currentInfo = new GetSoundInfo (this.getObservers ()).getSoundInfo (this.sounds);
+        final InputStream audioInputStream1 = new ToInputStream (this.getObservers ()).toStream (this.sounds, 
+                StreamInfo.from (currentInfo, this.sounds));
         this.cleanData ();
         this.audioInputStream = audioInputStream1;
         return this;
@@ -252,7 +253,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         }
         final Sound [] input = new Sound [this.spectrums.size ()];
         for (int i = 0 ; i < input.length ; i++) {
-            input [i] = new Sound (new long [0], this.spectrums.get (0) [0].getNbBytes (), this.spectrums.get (0) [0].getSampleRate (), i);
+            input [i] = new Sound (new long [0], this.spectrums.get (0) [0].getFormatInfo (), i);
         }
         final Sound [] sounds1 = new ApplySoundTransform (this.getObservers ()).apply (input, new SpectrumsToSoundSoundTransformation (this.spectrums));
         this.cleanData ();
@@ -444,14 +445,14 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Shapes these loudest frequencies array into a sound and set the converted sound in the pipeline
      * @param packName reference to an existing imported pack (must be invoked before the shapeIntoSound method by using withAPack)
      * @param instrumentName the name of the instrument that will map the freqs object
-     * @param isi the wanted format for the future sound
+     * @param fi the wanted format for the future sound
      * @return the client, with a sound imported
      * @throws SoundTransformException could not call the soundtransform to shape the freqs
      */
-    public FluentClientSoundImported shapeIntoSound (final String packName, final String instrumentName, final InputStreamInfo isi) throws SoundTransformException {
-        final SoundTransformation soundTransformation = new ShapeSoundTransformation (packName, instrumentName, this.freqs, (int) isi.getFrameLength (), isi.getSampleSize (), (int) isi.getSampleRate ());
+    public FluentClientSoundImported shapeIntoSound (final String packName, final String instrumentName, final FormatInfo fi) throws SoundTransformException {
+        final SoundTransformation soundTransformation = new ShapeSoundTransformation (packName, instrumentName, this.freqs, fi);
         this.cleanData ();
-        this.sounds = new ApplySoundTransform (this.getObservers ()).apply (new Sound [] { new Sound (new long [0], 0, 0, 0) }, soundTransformation);
+        this.sounds = new ApplySoundTransform (this.getObservers ()).apply (new Sound [] { new Sound (new long [0], new FormatInfo (0, 0), 0) }, soundTransformation);
         return this;
     }
 
@@ -511,16 +512,16 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     /**
-     * Stops the client pipeline and returns the obtained input stream info
+     * Stops the client pipeline and returns the obtained stream info
      * object
      *
-     * @return an inputStreamInfo object
+     * @return a streamInfo object
      * @throws SoundTransformException
-     *             could not read the inputstreaminfo from the current
+     *             could not read the StreamInfo from the current
      *             inputstream
      */
-    public InputStreamInfo stopWithInputStreamInfo () throws SoundTransformException {
-        return new GetInputStreamInfo (this.getObservers ()).getInputStreamInfo (this.audioInputStream);
+    public StreamInfo stopWithStreamInfo () throws SoundTransformException {
+        return new GetSoundInfo (this.getObservers ()).getSoundInfo (this.audioInputStream);
     }
 
     @Override
@@ -659,11 +660,11 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * It will be read and transformed into an AudioInputStream<br/>
      * The passed inputStream must not contain any metadata piece of information.
      * @param is the input stream
-     * @param isInfo the audio format (named "InputStreamInfo")
+     * @param isInfo the audio format (named "SoundInfo")
      * @return the client, with an input stream
      * @throws SoundTransformException the input stream cannot be read, or the conversion did not work
      */
-    public FluentClientWithInputStream withRawInputStream (final InputStream is, final InputStreamInfo isInfo) throws SoundTransformException {
+    public FluentClientWithInputStream withRawInputStream (final InputStream is, final StreamInfo isInfo) throws SoundTransformException {
         this.cleanData ();
         this.audioInputStream = new InputStreamToAudioInputStream (this.getObservers ()).transformRawInputStream (is, isInfo);
         return this;

@@ -5,24 +5,24 @@ import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 public class NoOpFormatParser implements AudioFormatParser {
 
     @Override
-    public Object audioFormatfromInputStreamInfo (final InputStreamInfo info) {
+    public Object audioFormatfromSoundInfo (final StreamInfo info) {
         return info;
     }
 
     @Override
-    public InputStreamInfo fromAudioFormat (final Object audioFormat1, final long l) {
-        return (InputStreamInfo) audioFormat1;
+    public StreamInfo fromAudioFormat (final Object audioFormat1, final long l) {
+        return (StreamInfo) audioFormat1;
     }
 
     @Override
-    public InputStreamInfo getInputStreamInfo (final InputStream is) throws SoundTransformException {
-        if (is instanceof HasInputStreamInfo) {
-            return ((HasInputStreamInfo) is).getInfo ();
+    public StreamInfo getSoundInfo (final InputStream is) throws SoundTransformException {
+        if (is instanceof HasSoundInfo) {
+            return ((HasSoundInfo) is).getInfo ();
         }
         try {
             return new AndroidWavHelper ().readMetadata (new AudioInputStream (is));

@@ -60,7 +60,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
      */
     @Override
     public String fsToString (final Spectrum<Complex []> fs) {
-        return this.fsToString (fs, 0, fs.getSampleRate () / 2, 20, 20);
+        return this.fsToString (fs, 0, (int)fs.getSampleRate () / 2, 20, 20);
     }
 
     /*

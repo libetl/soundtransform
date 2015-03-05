@@ -69,7 +69,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
 
         final Spectrum<T> fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
 
-        this.loudestfreqs [this.index] = this.spectrumHelper.getMaxIndex (fscep, 0, fs.getSampleRate ());
+        this.loudestfreqs [this.index] = this.spectrumHelper.getMaxIndex (fscep, 0, (int)fs.getSampleRate ());
         this.index++;
 
         return fscep;

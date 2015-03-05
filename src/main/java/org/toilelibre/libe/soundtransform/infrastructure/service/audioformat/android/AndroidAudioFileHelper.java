@@ -10,7 +10,7 @@ import java.io.InputStream;
 import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.WriteInputStreamToBuffer;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
@@ -53,18 +53,18 @@ public class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHel
 
     @Override
     public InputStream toStream (final byte [] byteArray, final Object audioFormat1) throws SoundTransformException {
-        if (!(audioFormat1 instanceof InputStreamInfo)) {
+        if (!(audioFormat1 instanceof StreamInfo)) {
             throw new SoundTransformException (AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ, new IllegalArgumentException ());
         }
-        return new ByteArrayWithAudioFormatInputStream (byteArray, (InputStreamInfo) audioFormat1);
+        return new ByteArrayWithAudioFormatInputStream (byteArray, (StreamInfo) audioFormat1);
     }
 
     @Override
     public InputStream toStream (final InputStream is, final Object audioFormat1) throws SoundTransformException {
-        if (!(audioFormat1 instanceof InputStreamInfo)) {
+        if (!(audioFormat1 instanceof StreamInfo)) {
             throw new SoundTransformException (AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ, new IllegalArgumentException ());
         }
-        final InputStreamInfo isi = (InputStreamInfo) audioFormat1;
+        final StreamInfo isi = (StreamInfo) audioFormat1;
         try {
             return new ByteArrayWithAudioFormatInputStream (new WriteInputStreamToBuffer ().write (is), isi);
         } catch (final IOException e) {

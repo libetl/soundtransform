@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 public class PlaySoundService<T extends Serializable> {
@@ -29,7 +29,8 @@ public class PlaySoundService<T extends Serializable> {
             return new Object ();
         }
 
-        final InputStream ais = $.create (TransformSoundService.class).toStream (channels, InputStreamInfo.of (channels));
+        final InputStream ais = $.create (TransformSoundService.class).toStream (channels, 
+                StreamInfo.from (channels [0].getFormatInfo (), channels));
         return this.processor.play (ais);
     }
 

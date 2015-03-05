@@ -2,8 +2,8 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 
 import java.io.InputStream;
 
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public interface FluentClientWithFreqs extends FluentClientCommon {
     
@@ -53,13 +53,13 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *            the shapeIntoSound method by using withAPack)
      * @param instrumentName
      *            the name of the instrument that will map the freqs object
-     * @param isi
+     * @param fi
      *            the wanted format for the future sound
      * @return the client, with a sound imported
      * @throws SoundTransformException
      *             could not call the soundtransform to shape the freqs
      */
-    FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, InputStreamInfo isi) throws SoundTransformException;
+    FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, FormatInfo fi) throws SoundTransformException;
 
     /**
      * Stops the client pipeline and returns the obtained loudest frequencies

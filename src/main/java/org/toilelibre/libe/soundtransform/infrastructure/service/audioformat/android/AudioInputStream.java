@@ -8,9 +8,9 @@ import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-public class AudioInputStream extends DataInputStream implements HasInputStreamInfo {
+public class AudioInputStream extends DataInputStream implements HasSoundInfo {
     public enum AudioInputStreamErrorCode implements ErrorCode {
 
         WRONG_FORMAT_READ_VALUE ("Read value has an invalid format (expected : %1d bytes, got : %2d bytes)");
@@ -41,7 +41,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
 
     private final byte []    intBuffer            = new byte [AudioInputStream.INTEGER_BYTE_NUMBER];
     private final byte []    shortBuffer          = new byte [AudioInputStream.SHORT_BYTE_NUMBER];
-    private InputStreamInfo  info;
+    private StreamInfo        info;
 
     public AudioInputStream (final File f) throws IOException {
         super (new FileInputStream (f));
@@ -61,7 +61,7 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
     }
 
     @Override
-    public InputStreamInfo getInfo () {
+    public StreamInfo getInfo () {
         return this.info;
     }
 
@@ -89,8 +89,8 @@ public class AudioInputStream extends DataInputStream implements HasInputStreamI
         return (short) this.byteArrayToShort (this.shortBuffer);
     }
 
-    void setInfo (final InputStreamInfo info) {
-        this.info = info;
+    void setInfo (final StreamInfo info1) {
+        this.info = info1;
     }
 
 }

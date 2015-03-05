@@ -22,7 +22,7 @@ public class MixSoundTransformation implements SoundTransformation {
         final Sound [] ajustedSounds = new Sound [sounds.length + 1];
         ajustedSounds [0] = firstSound;
         for (int i = 1 ; i < (sounds.length + 1) ; i++) {
-            ajustedSounds [i] = this.soundAppender.changeNbBytesPerSample (this.soundAppender.resizeToSampleRate (sounds [i - 1], firstSound.getSampleRate ()), firstSound.getNbBytesPerSample ());
+            ajustedSounds [i] = this.soundAppender.changeNbBytesPerSample (this.soundAppender.resizeToSampleRate (sounds [i - 1], firstSound.getSampleRate ()), firstSound.getSampleSize ());
         }
 
         for (final Sound sound : ajustedSounds) {
@@ -43,14 +43,14 @@ public class MixSoundTransformation implements SoundTransformation {
         }
 
         // now find the result, with scaling:
-        final double maxValue = Math.pow (256, sounds [0].getNbBytesPerSample ()) - 1;
+        final double maxValue = Math.pow (256, sounds [0].getSampleSize ()) - 1;
         final double ratio = maxValue / (max * ajustedSounds.length);
         for (int i = 0 ; i < maxlength ; i++) {
             newdata [i] *= ratio;
         }
 
         // normalized result in newdata
-        return new Sound (newdata, firstSound.getNbBytesPerSample (), firstSound.getSampleRate (), firstSound.getChannelNum ());
+        return new Sound (newdata, firstSound.getFormatInfo (), firstSound.getChannelNum ());
     }
 
     @Override

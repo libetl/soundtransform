@@ -1,8 +1,8 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public class ModifySoundService {
     enum ModifySoundServiceErrorCode implements ErrorCode {
@@ -39,8 +39,8 @@ public class ModifySoundService {
         return result;
     }
 
-    public Sound [] changeFormat (final Sound [] input, final InputStreamInfo inputStreamInfo) {
-        return this.changeFormat (input, inputStreamInfo.getSampleSize (), (int) inputStreamInfo.getSampleRate ());
+    public Sound [] changeFormat (final Sound [] input, final FormatInfo formatInfo) {
+        return this.changeFormat (input, formatInfo.getSampleSize (), (int) formatInfo.getSampleRate ());
     }
 
     private Sound [] changeFormat (final Sound [] input, final int sampleSize, final int sampleRate) {

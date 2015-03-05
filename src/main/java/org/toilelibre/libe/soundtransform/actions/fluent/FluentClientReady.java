@@ -8,7 +8,7 @@ import java.util.List;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
@@ -138,13 +138,13 @@ public interface FluentClientReady {
      * @param is
      *            the input stream
      * @param isInfo
-     *            the audio format (named "InputStreamInfo")
+     *            the stream info
      * @return the client, with an input stream
      * @throws SoundTransformException
      *             the input stream cannot be read, or the conversion did not
      *             work
      */
-    FluentClientWithInputStream withRawInputStream (InputStream is, InputStreamInfo isInfo) throws SoundTransformException;
+    FluentClientWithInputStream withRawInputStream (InputStream is, StreamInfo isInfo) throws SoundTransformException;
 
     /**
      * Tells the client to work first with a sound object

@@ -1,5 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.library.note;
 
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class Silence implements Note {
@@ -10,7 +11,7 @@ public class Silence implements Note {
 
     private Sound generateSilence (final float lengthInSeconds) {
         final int nbSamples = (int) (Silence.SAMPLE_RATE * lengthInSeconds * 1.0);
-        return new Sound (new long [nbSamples], Silence.DEFAULT_NB_BYTES, Silence.SAMPLE_RATE, 0);
+        return new Sound (new long [nbSamples], new FormatInfo (Silence.DEFAULT_NB_BYTES, Silence.SAMPLE_RATE), 0);
     }
 
     @Override

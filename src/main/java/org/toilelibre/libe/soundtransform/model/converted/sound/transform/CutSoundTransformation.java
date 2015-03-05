@@ -35,7 +35,7 @@ public class CutSoundTransformation implements SoundTransformation {
     public Sound transform (final Sound input) throws SoundTransformException {
         final int delta = this.end - this.start;
         final int newlength = input.getSamplesLength () - delta;
-        final Sound result = new Sound (new long [newlength], input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
+        final Sound result = new Sound (new long [newlength], input.getFormatInfo (), input.getChannelNum ());
 
         if ((this.start > this.end) || (this.start < 0) || (this.end >= input.getSamplesLength ())) {
             throw new SoundTransformException (SoundCutSoundTransformationErrorCode.INDEXS_OUT_OF_BOUND, new IllegalArgumentException (), 0, input.getSamplesLength (), this.start, this.end);

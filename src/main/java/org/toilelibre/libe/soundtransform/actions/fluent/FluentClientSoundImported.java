@@ -3,10 +3,10 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 import java.io.File;
 import java.io.InputStream;
 
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
 
 public interface FluentClientSoundImported extends FluentClientCommon {
 
@@ -37,13 +37,12 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     /**
      * Changes the current imported sound to fit the expected format
      *
-     * @param inputStreamInfo
-     *            only the sampleSize and the sampleRate pieces of data will be
-     *            used
+     * @param formatInfo
+     *            the new expected format
      * @return the client, with a sound imported
      * @throws SoundTransformException
      */
-    FluentClientSoundImported changeFormat (InputStreamInfo inputStreamInfo) throws SoundTransformException;
+    FluentClientSoundImported changeFormat (FormatInfo formatInfo) throws SoundTransformException;
 
     /**
      * Splice a part of the sound between the sample #start and the sample #end

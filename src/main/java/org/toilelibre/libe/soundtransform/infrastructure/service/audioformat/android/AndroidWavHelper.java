@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
@@ -83,7 +83,7 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
 
     }
 
-    public InputStreamInfo readMetadata (final AudioInputStream ais) throws IOException {
+    public StreamInfo readMetadata (final AudioInputStream ais) throws IOException {
         this.readMagicChars (ais);
         final int typeOfEncoding = ais.readShort2 ();
         if (typeOfEncoding != 1) {
@@ -108,12 +108,12 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_DATA_SEPARATOR, new IllegalArgumentException ()));
         }
         final int dataSize = ais.readInt2 ();
-        return new InputStreamInfo (channels, dataSize / frameSize, sampleSize / Byte.SIZE, sampleRate, false, true, list);
+        return new StreamInfo (channels, dataSize / frameSize, sampleSize / Byte.SIZE, sampleRate, false, true, list);
     }
 
     public void writeMetadata (final ByteArrayWithAudioFormatInputStream audioInputStream, final WavOutputStream outputStream) throws IOException {
-        final InputStreamInfo info = audioInputStream.getInfo ();
-        final int soundInfoSize = info.getSoundInfo () == null ? 0 : info.getSoundInfo ().length ();
+        final StreamInfo info = audioInputStream.getInfo ();
+        final int soundInfoSize = info.getTaggedInfo () == null ? 0 : info.getTaggedInfo ().length ();
         final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + soundInfoSize + (info.getFrameLength () * info.getSampleSize () * info.getChannels ()));
         final int chunkSize = AndroidWavHelper.INFO_CHUNK_SIZE;
         final int typeOfEncoding = 1;
@@ -134,10 +134,10 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
         outputStream.writeInt (byterate);
         outputStream.writeShortInt (frameSize);
         outputStream.writeShortInt (sampleSize);
-        if (info.getSoundInfo () != null) {
+        if (info.getTaggedInfo () != null) {
             outputStream.write (AndroidWavHelper.LIST.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
-            outputStream.writeInt (info.getSoundInfo ().length ());
-            outputStream.write (info.getSoundInfo ().getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
+            outputStream.writeInt (info.getTaggedInfo ().length ());
+            outputStream.write (info.getTaggedInfo ().getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         }
         outputStream.write (AndroidWavHelper.DATA.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         outputStream.writeInt (dataSize);

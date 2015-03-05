@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.actions.Action;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public final class InputStreamToAudioInputStream extends Action {
@@ -13,7 +13,7 @@ public final class InputStreamToAudioInputStream extends Action {
         super (observers);
     }
 
-    public InputStream transformRawInputStream (final InputStream ais, final InputStreamInfo isi) throws SoundTransformException {
+    public InputStream transformRawInputStream (final InputStream ais, final StreamInfo isi) throws SoundTransformException {
         return this.transformSound.transformRawInputStream (ais, isi);
     }
 

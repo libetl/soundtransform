@@ -2,13 +2,13 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.an
 
 import java.io.ByteArrayInputStream;
 
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-public class ByteArrayWithAudioFormatInputStream extends ByteArrayInputStream implements HasInputStreamInfo {
+public class ByteArrayWithAudioFormatInputStream extends ByteArrayInputStream implements HasSoundInfo {
 
-    private final InputStreamInfo info;
+    private final StreamInfo info;
 
-    public ByteArrayWithAudioFormatInputStream (final byte [] buf, final InputStreamInfo info1) {
+    public ByteArrayWithAudioFormatInputStream (final byte [] buf, final StreamInfo info1) {
         super (buf);
         this.info = info1;
     }
@@ -18,7 +18,7 @@ public class ByteArrayWithAudioFormatInputStream extends ByteArrayInputStream im
     }
 
     @Override
-    public InputStreamInfo getInfo () {
+    public StreamInfo getInfo () {
         return this.info;
     }
 

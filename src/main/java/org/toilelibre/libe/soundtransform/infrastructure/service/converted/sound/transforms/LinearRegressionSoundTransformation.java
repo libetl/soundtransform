@@ -27,7 +27,7 @@ public class LinearRegressionSoundTransformation implements SoundTransformation 
 
         final PolynomialSplineFunction psf = reg.interpolate (x, y);
 
-        final Sound outputSound = new Sound (new long [input.getSamplesLength ()], input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
+        final Sound outputSound = new Sound (new long [input.getSamplesLength ()], input.getFormatInfo (), input.getChannelNum ());
         for (int i = 0 ; i < input.getSamplesLength () ; i++) {
             if (i < x [x.length - 1]) {
                 outputSound.setSampleAt (i, (long) psf.value (i));

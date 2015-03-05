@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.converted.soun
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.complex.Complex;
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
@@ -31,6 +32,6 @@ public class EqualizerSoundTransformation extends SimpleFrequencySoundTransforma
         for (int j = length ; j < powOf2NearestLength ; j++) {
             newAmpl [j] = new Complex (0, 0);
         }
-        return new Spectrum<Complex []> (newAmpl, fs.getSampleRate (), fs.getNbBytes ());
+        return new Spectrum<Complex []> (newAmpl, new FormatInfo (fs.getSampleSize (), fs.getSampleRate ()));
     }
 }

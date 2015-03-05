@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransformation;
@@ -140,7 +141,7 @@ public class Sound2NoteTest extends SoundTransformTest {
         for (int j = 0 ; j < length ; j++) {
             signal [j] = (long) (Math.sin ((j * 440 * 2 * Math.PI) / samplerate) * 32768.0);
         }
-        final Sound s = new Sound (signal, 2, samplerate, 1);
+        final Sound s = new Sound (signal, new FormatInfo (2, samplerate), 1);
         final Note n = $.create (Sound2NoteService.class).convert ("Sample A4 (440 Hz) Sound", new Sound [] { s });
 
         new Slf4jObserver ().notify ("Sample A4 (440Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
@@ -160,7 +161,7 @@ public class Sound2NoteTest extends SoundTransformTest {
             for (int j = 0 ; j < length ; j++) {
                 signal [j] = (long) (Math.sin ((j * notes [i] * 2 * Math.PI) / samplerate) * 32768.0);
             }
-            final Sound s = new Sound (signal, 2, samplerate, 1);
+            final Sound s = new Sound (signal, new FormatInfo (2, samplerate), 1);
             final Note n = $.create (Sound2NoteService.class).convert ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound", new Sound [] { s });
 
             new Slf4jObserver ().notify ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");

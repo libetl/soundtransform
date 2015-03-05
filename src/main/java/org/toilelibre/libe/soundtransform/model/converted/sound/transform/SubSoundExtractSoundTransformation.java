@@ -32,7 +32,7 @@ public class SubSoundExtractSoundTransformation implements SoundTransformation {
 
     @Override
     public Sound transform (final Sound input) throws SoundTransformException {
-        final Sound result = new Sound (new long [this.end - this.start], input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
+        final Sound result = new Sound (new long [this.end - this.start], input.getFormatInfo (), input.getChannelNum ());
 
         if ((this.start > this.end) || (this.start < 0) || (this.end >= input.getSamplesLength ())) {
             throw new SoundTransformException (SubSoundExtractSoundTransformationErrorCode.INDEXS_OUT_OF_BOUND, new IllegalArgumentException (), 0, input.getSamplesLength (), this.start, this.end);

@@ -33,7 +33,7 @@ public class SpectrumsToSoundSoundTransformation implements SoundTransformation 
         while (roundedSampleRate < this.spectrums.get (input.getChannelNum ()) [0].getSampleRate ()) {
             roundedSampleRate *= 2;
         }
-        final Sound result = new Sound (new long [roundedSampleRate * spectrumChannel.length], spectrumChannel [0].getNbBytes (), spectrumChannel [0].getSampleRate (), 0);
+        final Sound result = new Sound (new long [roundedSampleRate * spectrumChannel.length], spectrumChannel [0].getFormatInfo (), 0);
         int length = 0;
         for (final Spectrum<?> spectrum : spectrumChannel) {
             @SuppressWarnings ("unchecked")

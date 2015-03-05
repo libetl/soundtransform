@@ -31,7 +31,7 @@ public class LoopSoundTransformation implements SoundTransformation {
 
     @Override
     public Sound transform (final Sound input) throws SoundTransformException {
-        final Sound result = new Sound (new long [this.length], input.getNbBytesPerSample (), input.getSampleRate (), input.getChannelNum ());
+        final Sound result = new Sound (new long [this.length], input.getFormatInfo (), input.getChannelNum ());
 
         if (this.length < 0) {
             throw new SoundTransformException (LoopSoundTransformationErrorCode.NOT_POSITIVE_VALUE, new IllegalArgumentException (), 0, this.length);

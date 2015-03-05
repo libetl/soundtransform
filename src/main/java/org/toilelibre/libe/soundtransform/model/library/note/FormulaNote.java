@@ -1,5 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.library.note;
 
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public abstract class FormulaNote implements Note {
@@ -20,18 +21,16 @@ public abstract class FormulaNote implements Note {
     private static final float RELEASE_START_AMPLITUDE     = 0.8f;
     private static final float RELEASE_END_AMPLITUDE       = 0;
 
-    private final int          sampleRate;
-    private final int          nbBytesPerSample;
+    private final FormatInfo   formatInfo;
     private final int          maxVal;
 
     public FormulaNote () {
-        this (FormulaNote.DEFAULT_SAMPLE_RATE, FormulaNote.DEFAULT_NB_BYTES_PER_SAMPLE);
+        this (new FormatInfo (FormulaNote.DEFAULT_NB_BYTES_PER_SAMPLE, FormulaNote.DEFAULT_SAMPLE_RATE));
     }
 
-    public FormulaNote (final int sampleRate1, final int nbBytesPerSamples1) {
-        this.sampleRate = sampleRate1;
-        this.nbBytesPerSample = nbBytesPerSamples1;
-        this.maxVal = (int) Math.pow (FormulaNote.BYTE_NB_VALUES, this.nbBytesPerSample) / FormulaNote.HALF;
+    public FormulaNote (final FormatInfo formatInfo1) {
+        this.formatInfo = formatInfo1;
+        this.maxVal = (int) Math.pow (FormulaNote.BYTE_NB_VALUES, this.formatInfo.getSampleSize ()) / FormulaNote.HALF;
 
     }
 
@@ -48,8 +47,8 @@ public abstract class FormulaNote implements Note {
     }
 
     private Sound generatePureNote (final float frequency, final float lengthInSeconds, final int channelnum, final float startAmplitude, final float endAmplitude) {
-        final int nbSamples = (int) (this.sampleRate * lengthInSeconds * 1.0);
-        return new Sound (this.generateLongArray (frequency, nbSamples, this.sampleRate, this.maxVal, startAmplitude, endAmplitude), this.nbBytesPerSample, this.sampleRate, channelnum);
+        final int nbSamples = (int) (this.formatInfo.getSampleRate () * lengthInSeconds * 1.0);
+        return new Sound (this.generateLongArray (frequency, nbSamples, (float)this.formatInfo.getSampleRate (), this.maxVal, startAmplitude, endAmplitude), this.formatInfo, channelnum);
     }
 
     @Override

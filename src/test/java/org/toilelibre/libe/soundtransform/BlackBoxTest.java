@@ -8,7 +8,7 @@ import java.io.IOException;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
 import org.toilelibre.libe.soundtransform.actions.transform.ExportAFile;
-import org.toilelibre.libe.soundtransform.actions.transform.GetInputStreamInfo;
+import org.toilelibre.libe.soundtransform.actions.transform.GetSoundInfo;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -32,7 +32,7 @@ public class BlackBoxTest extends SoundTransformTest {
     }
 
     @Test
-    public void getInputStreamInfo () throws SoundTransformException, IOException {
-        new Slf4jObserver ().notify (new GetInputStreamInfo ().getInputStreamInfo (new BufferedInputStream (new FileInputStream (this.gPiano3))).toString ());
+    public void getSoundInfo () throws SoundTransformException, IOException {
+        new Slf4jObserver ().notify (new GetSoundInfo ().getSoundInfo (new BufferedInputStream (new FileInputStream (this.gPiano3))).toString ());
     }
 }

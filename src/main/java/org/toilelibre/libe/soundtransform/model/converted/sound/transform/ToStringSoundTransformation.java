@@ -30,7 +30,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
         final double compression = input.getSamplesLength () * 1.0 / this.length;
         this.sb = new StringBuilder ();
         final float lastSample = input.getSamplesLength ();
-        final long maxMagn = (long) Math.pow (ToStringSoundTransformation.NB_BYTE_VALUES, input.getNbBytesPerSample ()) / ToStringSoundTransformation.TWO;
+        final long maxMagn = (long) Math.pow (ToStringSoundTransformation.NB_BYTE_VALUES, input.getSampleSize ()) / ToStringSoundTransformation.TWO;
         final int step = (int) lastSample / this.length;
         final int [] valuesOnPlot = this.prepareValuesOnPlot (input, step, maxMagn);
         for (int j = this.height ; j >= 0 ; j--) {

@@ -40,7 +40,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
     private double                  step;
     private float []                loudestfreqs;
     private boolean                 note;
-    private int                     fsLimit;
+    private float                   fsLimit;
     private int                     windowLength;
     private int                     soundLength;
     private float                   detectedNoteVolume;

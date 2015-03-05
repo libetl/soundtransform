@@ -16,7 +16,7 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
     private Spectrum<Complex []> forwardPartOfTheSound (final Sound sound, final double [] transformeddata) {
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         final Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
-        return new Spectrum<Complex []> (complexArray, sound.getSampleRate (), sound.getNbBytesPerSample ());
+        return new Spectrum<Complex []> (complexArray, sound.getFormatInfo ());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class CommonsMath3FourierTransformHelper implements FourierTransformHelpe
                 output [index] = (long) Math.floor (complexArray [i].getReal ());
             }
         }
-        return new Sound (output, spectrum.getNbBytes (), spectrum.getSampleRate (), 0);
+        return new Sound (output, spectrum.getFormatInfo (), 0);
     }
 
     @Override

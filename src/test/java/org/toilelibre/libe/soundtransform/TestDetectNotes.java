@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.Library;
@@ -34,13 +35,13 @@ public class TestDetectNotes extends SoundTransformTest {
             t [i] = (float) ((value + (Math.random () * twopercents)) - (twopercents / 2));
         }
         $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
-        new ShapeSoundTransformation ("default", "simple_piano", t, 200000, 2, 44100).setObservers (new Slf4jObserver (), new Observer () {
+        new ShapeSoundTransformation ("default", "simple_piano", t, new FormatInfo (2, 44100.0f)).setObservers (new Slf4jObserver (), new Observer () {
 
             @Override
             public void notify (final LogEvent logEvent) {
                 messages.add (logEvent.toString ());
             }
-        }).transform (100, 1);
+        }).transform (100, 1, 200000);
         Assert.assertTrue (messages.get (0).endsWith (" between 200/2000 and  600/ 2000"));
         Assert.assertTrue (messages.get (1).endsWith (" between 800/2000 and 1000/ 2000"));
         Assert.assertTrue (messages.get (2).endsWith (" between 1100/2000 and 1600/ 2000"));

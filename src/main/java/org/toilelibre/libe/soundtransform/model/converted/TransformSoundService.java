@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundServi
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.inputstream.TransformInputStreamService;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
@@ -65,8 +65,8 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
         return this.callTransformService.transformAudioStream (in, transforms);
     }
 
-    public Sound [] changeSoundFormat (final Sound [] input, final InputStreamInfo inputStreamInfo) throws SoundTransformException {
-        return this.modifySoundService.changeFormat (input, inputStreamInfo);
+    public Sound [] changeSoundFormat (final Sound [] input, final FormatInfo formatInfo) throws SoundTransformException {
+        return this.modifySoundService.changeFormat (input, formatInfo);
     }
 
     public Sound [] convertAndApply (final InputStream ais, final SoundTransformation... transforms) throws SoundTransformException {
@@ -82,22 +82,22 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
         return this.transformInputStreamService.fromInputStream (ais);
     }
 
-    public Sound [] fromInputStream (final InputStream ais, final InputStreamInfo isInfo) throws SoundTransformException {
+    public Sound [] fromInputStream (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
         return this.transformInputStreamService.fromInputStream (ais, isInfo);
     }
 
-    public InputStreamInfo getInputStreamInfo (final InputStream ais) throws SoundTransformException {
-        return this.transformInputStreamService.getInputStreamInfo (ais);
+    public StreamInfo getSoundInfo (final InputStream ais) throws SoundTransformException {
+        return this.transformInputStreamService.getSoundInfo (ais);
     }
 
-    public InputStreamInfo getInputStreamInfo (final Sound [] sounds) {
-        return InputStreamInfo.of (sounds);
+    public FormatInfo getSoundInfo (final Sound [] sounds) {
+        return sounds [0].getFormatInfo ();
     }
 
-    public InputStream toStream (final Sound [] channels, final InputStreamInfo inputStreamInfo) throws SoundTransformException {
+    public InputStream toStream (final Sound [] channels, final StreamInfo streamInfo) throws SoundTransformException {
         this.log (new LogEvent (TransformSoundServiceEventCode.CREATING_OUTPUT_FILE));
-        final byte [] byteArray = this.transformInputStreamService.soundToByteArray (channels, inputStreamInfo);
-        return this.convertAudioFileService.toStream (byteArray, inputStreamInfo);
+        final byte [] byteArray = this.transformInputStreamService.soundToByteArray (channels, streamInfo);
+        return this.convertAudioFileService.toStream (byteArray, streamInfo);
     }
 
     public InputStream transformAudioStream (final InputStream ais, final SoundTransformation... transforms) throws SoundTransformException {
@@ -106,17 +106,17 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
 
     public void transformFile (final File fOrigin, final File fDest, final SoundTransformation... sts) throws SoundTransformException {
         final InputStream ais1 = this.convertAudioFileService.callConverter (fOrigin);
-        final InputStreamInfo aisi1 = this.convertAudioFileService.callAudioFormatParser (ais1);
-        this.log (new LogEvent (TransformSoundServiceEventCode.INPUT_IS_THIS_INPUTSTREAM, aisi1.toString ()));
+        final FormatInfo fi1 = this.convertAudioFileService.callAudioFormatParser (ais1);
+        this.log (new LogEvent (TransformSoundServiceEventCode.INPUT_IS_THIS_INPUTSTREAM, fi1.toString ()));
         InputStream ais2 = ais1;
         ais2 = this.transformAudioStream (ais1, sts);
-        final InputStreamInfo aisi2 = this.convertAudioFileService.callAudioFormatParser (ais2);
+        final FormatInfo fi2 = this.convertAudioFileService.callAudioFormatParser (ais2);
         this.convertAudioFileService.writeInputStream (ais2, fDest);
         this.log (new LogEvent (TransformSoundServiceEventCode.WROTE_OUTPUT));
-        this.log (new LogEvent (TransformSoundServiceEventCode.OUTPUT_IS_THIS_INPUTSTREAM, aisi2.toString ()));
+        this.log (new LogEvent (TransformSoundServiceEventCode.OUTPUT_IS_THIS_INPUTSTREAM, fi2.toString ()));
     }
 
-    public InputStream transformRawInputStream (final InputStream ais, final InputStreamInfo isi) throws SoundTransformException {
+    public InputStream transformRawInputStream (final InputStream ais, final StreamInfo isi) throws SoundTransformException {
         return this.convertAudioFileService.toStream (ais, isi);
     }
 

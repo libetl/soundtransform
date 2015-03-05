@@ -34,7 +34,7 @@ public class PitchAndSpeedHelperTest extends SoundTransformTest {
         e4 [0] = helper.pitchAndSetLength (e3 [0], 200, 1);
         e4 [1] = helper.pitchAndSetLength (e3 [1], 200, 1);
 
-        final InputStream ais2 = ts.toStream (e4, $.select (AudioFormatParser.class).getInputStreamInfo (ais));
+        final InputStream ais2 = ts.toStream (e4, $.select (AudioFormatParser.class).getSoundInfo (ais));
         final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
         $.create (ConvertAudioFileService.class).writeInputStream (ais2, fDest);

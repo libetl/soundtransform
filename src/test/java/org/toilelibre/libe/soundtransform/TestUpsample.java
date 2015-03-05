@@ -12,7 +12,7 @@ import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 public class TestUpsample extends SoundTransformTest {
 
@@ -30,7 +30,7 @@ public class TestUpsample extends SoundTransformTest {
             outputSounds [i] = tmp;
         }
 
-        final InputStream ais = $.create (TransformSoundService.class).toStream (outputSounds, new InputStreamInfo (outputSounds.length, outputSounds [0].getSamplesLength (), 2, 44100, false, true));
+        final InputStream ais = $.create (TransformSoundService.class).toStream (outputSounds, new StreamInfo (outputSounds.length, outputSounds [0].getSamplesLength (), 2, 44100, false, true, null));
         $.create (ConvertAudioFileService.class).writeInputStream (ais, output);
 
     }
@@ -50,7 +50,7 @@ public class TestUpsample extends SoundTransformTest {
             outputSounds [i] = tmp;
         }
 
-        final InputStream ais = $.create (TransformSoundService.class).toStream (outputSounds, new InputStreamInfo (outputSounds.length, outputSounds [0].getSamplesLength (), 2, 44100, false, true));
+        final InputStream ais = $.create (TransformSoundService.class).toStream (outputSounds, new StreamInfo (outputSounds.length, outputSounds [0].getSamplesLength (), 2, 44100, false, true, null));
 
         $.create (ConvertAudioFileService.class).writeInputStream (ais, output);
     }

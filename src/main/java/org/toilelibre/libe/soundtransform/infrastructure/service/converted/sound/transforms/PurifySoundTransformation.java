@@ -35,7 +35,7 @@ public class PurifySoundTransformation extends SimpleFrequencySoundTransformatio
         for (int j = 0 ; j < powOf2NearestLength ; j++) {
             newAmpl [j] = fs.getState () [j].multiply (Math.exp (-Math.pow (j - max, PurifySoundTransformation.EXPONENT) / PurifySoundTransformation.COEFFICIENT));
         }
-        return new Spectrum<Complex []> (newAmpl, fs.getSampleRate (), fs.getNbBytes ());
+        return new Spectrum<Complex []> (newAmpl, fs.getFormatInfo ());
     }
 
 }

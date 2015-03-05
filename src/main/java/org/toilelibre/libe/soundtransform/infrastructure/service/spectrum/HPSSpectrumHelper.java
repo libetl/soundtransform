@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.spectrum;
 
 import org.apache.commons.math3.complex.Complex;
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 
@@ -29,7 +30,7 @@ public class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
     }
 
     @Override
-    public float freqFromSampleRate (final float freq, final int sqr2length, final int sampleRate) {
+    public float freqFromSampleRate (final float freq, final int sqr2length, final float sampleRate) {
         return (int) (freq * HPSSpectrumHelper.TWICE * 1.0 * sampleRate / sqr2length);
     }
 
@@ -40,7 +41,7 @@ public class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
         final int reallow = low == 0 ? 1 : low;
         final int realhigh = Math.min (high, fs.getState ().length);
         for (int i = reallow ; i < realhigh ; i++) {
-            if (max < fs.getState () [i].abs () && fs.getState () [i].abs () > Math.pow (HPSSpectrumHelper.NB_BYTE_VALUES, fs.getNbBytes ()) + 1) {
+            if (max < fs.getState () [i].abs () && fs.getState () [i].abs () > Math.pow (HPSSpectrumHelper.NB_BYTE_VALUES, fs.getSampleSize ()) + 1) {
                 max = fs.getState () [i].abs ();
                 maxIndex = i;
             }
@@ -61,6 +62,6 @@ public class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
             }
             result [i] = new Complex (val);
         }
-        return new Spectrum<Complex []> (result, fs.getSampleRate () / factor, fs.getNbBytes ());
+        return new Spectrum<Complex []> (result, new FormatInfo (fs.getSampleSize (), fs.getSampleRate () / factor));
     }
 }
