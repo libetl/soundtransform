@@ -20,7 +20,7 @@
 			<email>libe4@free.fr</email>
 			<organization>toile-libre</organization>
 			<organizationUrl>http://libe.toile-libre.org</organizationUrl>
-    	</developer>
+		</developer>
   	</developers>
 	<scm>
 		<connection>scm:git:git@github.com:libetl/soundtransform.git</connection>
