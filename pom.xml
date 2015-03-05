@@ -17,9 +17,9 @@
 	<developers>
    		<developer>
 			<name>libetl</name>
-    		<email>libe4@free.fr</email>
-    		<organization>toile-libre</organization>
-    		<organizationUrl>http://libe.toile-libre.org</organizationUrl>
+			<email>libe4@free.fr</email>
+			<organization>toile-libre</organization>
+			<organizationUrl>http://libe.toile-libre.org</organizationUrl>
     	</developer>
   	</developers>
 	<scm>
