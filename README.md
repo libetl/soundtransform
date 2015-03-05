@@ -53,7 +53,7 @@ final FormatInfo fi = new FormatInfo (2, 44100.0);
 FluentClient.start ().withClasspathResource ("lowfi.wav").convertIntoSound ().changeFormat (fi).exportToClasspathResource ("hifi.wav");
 ```
 
-Please have a look of the many different actions that you can ask to the FluentClient in this [JUnit Test](src/test/java/org/toilelibre/libe/soundtransform/FluentClientTest.java)
+Please have a look at the many different actions that you can ask to the FluentClient in this [JUnit Test](src/test/java/org/toilelibre/libe/soundtransform/FluentClientTest.java)
 
 ### FluentClient Javadoc :
 
