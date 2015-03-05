@@ -429,7 +429,7 @@ the client, with a loudest frequencies float array
 ####   FluentClientWithFreqs.shapeIntoSound
 
 ```java
-public FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, InputStreamInfo fi) throws SoundTransformException
+public FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, FormatInfo fi) throws SoundTransformException
 ```
 
 
@@ -684,7 +684,7 @@ the client, with a loudest frequencies float array
 ####   FluentClientReady.withRawInputStream (just after start)
 
 ```java
-public FluentClientWithInputStream withRawInputStream (InputStream is, InputStreamInfo isInfo) throws SoundTransformException
+public FluentClientWithInputStream withRawInputStream (InputStream is, StreamInfo isInfo) throws SoundTransformException
 ```
 
 
@@ -694,7 +694,7 @@ Tells the client to work first with a byte array InputStream or any readable Dat
 Parameters:  
 `is` - the input stream
 
-`isInfo` - the audio format (named “InputStreamInfo”)
+`isInfo` - the stream info
 
 Returns:  
 the client, with an input stream

@@ -660,7 +660,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * It will be read and transformed into an AudioInputStream<br/>
      * The passed inputStream must not contain any metadata piece of information.
      * @param is the input stream
-     * @param isInfo the audio format (named "SoundInfo")
+     * @param isInfo the stream info
      * @return the client, with an input stream
      * @throws SoundTransformException the input stream cannot be read, or the conversion did not work
      */
