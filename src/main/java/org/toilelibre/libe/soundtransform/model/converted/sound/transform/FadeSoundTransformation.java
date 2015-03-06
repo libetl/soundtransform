@@ -24,15 +24,15 @@ public class FadeSoundTransformation implements SoundTransformation {
         }
     }
 
-    private final float   length;
+    private final int    length;
     private final boolean fadeIn;
 
-    public FadeSoundTransformation (final float length1, final boolean fadeIn1) throws SoundTransformException {
+    public FadeSoundTransformation (final int length1, final boolean fadeIn1) throws SoundTransformException {
         this.length = this.checkLength (length1);
         this.fadeIn = fadeIn1;
     }
 
-    private float checkLength (final float length1) throws SoundTransformException {
+    private int checkLength (final int length1) throws SoundTransformException {
         if (length1 < 0) {
             throw new SoundTransformException (FadeSoundTransformationErrorCode.FADE_LENGTH_IS_BELOW_ZERO, new IllegalArgumentException ());
         }

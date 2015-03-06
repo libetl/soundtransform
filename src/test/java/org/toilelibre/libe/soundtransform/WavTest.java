@@ -27,6 +27,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeS
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpeedUpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
@@ -53,6 +54,16 @@ public class WavTest extends SoundTransformTest {
     @Test
     public void testFadeIn () throws SoundTransformException {
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (100000, true));
+    }
+
+    @Test (expected = SoundTransformException.class)
+    public void testFadeBelowZero () throws SoundTransformException {
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (-5, true));
+    }
+
+    @Test (expected = SoundTransformRuntimeException.class)
+    public void testFadeAboveSoundLength () throws SoundTransformException {
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (Integer.MAX_VALUE, true));
     }
 
     @Test
