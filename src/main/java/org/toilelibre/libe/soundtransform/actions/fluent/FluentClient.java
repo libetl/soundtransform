@@ -174,7 +174,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *
      * @param factor
      *            the factor parameter quantifies how much the stretch will be
-     *            (i.e if factor = 2, then the result will be twice as long than
+     *            (i.e if factor = 0.5, then the result will be twice as long than
      *            the original)
      * @return the client, with a loudest frequencies float array
      */
