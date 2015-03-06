@@ -152,7 +152,7 @@ Compresses the loudest freq array (speedup or slowdown).
 When shaped into a sound, the result will have a different tempo than the original sound but will keep the same pitch
 
 Parameters:  
-`factor` - the factor parameter quantifies how much the stretch or shrink will be. (i.e if factor = 2, then the result 
+`factor` - the factor parameter quantifies how much the stretch or shrink will be. (i.e if factor = 0.5, then the result 
            will be twice as long than the original)
 
 Returns:  
