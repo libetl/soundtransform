@@ -29,7 +29,7 @@ public class ReplacePartSoundTransformation implements SoundTransformation {
     private final int   start;
 
     public ReplacePartSoundTransformation (final Sound [] replacement1, final int start1) throws SoundTransformException {
-        this.replacement = replacement1;
+        this.replacement = replacement1.clone ();
         this.start = start1;
     }
 

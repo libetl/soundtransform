@@ -9,11 +9,11 @@ import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 
 public abstract class Action {
 
-    protected TransformSoundService transformSound;
-    protected LoudestFreqsService   loudestFreqsService;
-    protected PlaySoundService<?>   playSound;
-    protected ImportPackService     importPackService;
-    protected Library               library;
+    protected final TransformSoundService transformSound;
+    protected final LoudestFreqsService   loudestFreqsService;
+    protected final PlaySoundService<?>   playSound;
+    protected final ImportPackService     importPackService;
+    protected final Library               library;
 
     public Action (final org.toilelibre.libe.soundtransform.model.observer.Observer... observers) {
         this.transformSound = $.create (TransformSoundService.class, new Object [] { observers });
