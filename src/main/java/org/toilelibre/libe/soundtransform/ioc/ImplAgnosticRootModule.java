@@ -6,6 +6,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.fourier.Commons
 import org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.AdjustFrequenciesToPianoProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleChangeOctaveProcessor;
+import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleCompressFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleFilterFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleReplaceFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.pack.GsonPackConfigParser;
@@ -24,6 +25,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelpe
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToStringHelper;
 import org.toilelibre.libe.soundtransform.model.freqs.AdjustFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.ChangeOctaveProcessor;
+import org.toilelibre.libe.soundtransform.model.freqs.CompressFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.FilterFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.ReplaceFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
@@ -60,6 +62,7 @@ public abstract class ImplAgnosticRootModule extends BinderModule {
         super.bind (AdjustFrequenciesProcessor.class).to (new AdjustFrequenciesToPianoProcessor ());
         super.bind (FilterFrequenciesProcessor.class).to (new SimpleFilterFrequenciesProcessor ());
         super.bind (ReplaceFrequenciesProcessor.class).to (new SimpleReplaceFrequenciesProcessor ());
+        super.bind (CompressFrequenciesProcessor.class).to (new SimpleCompressFrequenciesProcessor ());
         super.bind (Library.class).to (new Library ());
     }
 

@@ -141,11 +141,29 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException`
 
+####   FluentClientWithFreqs.compress
+
+```java
+public FluentClientWithFreqs compress (float factor)
+```
+
+
+Compresses the loudest freq array (speedup or slowdown).
+When shaped into a sound, the result will have a different tempo than the original sound but will keep the same pitch
+
+Parameters:  
+`factor` - the factor parameter quantifies how much the stretch or shrink will be. (i.e if factor = 2, then the result 
+           will be twice as long than the original)
+
+Returns:  
+the client, with a loudest frequencies float array
+
 ####   FluentClientWithFile.convertIntoSound
 
 ```java
 public FluentClientSoundImported convertIntoSound () throws SoundTransformException
 ```
+
 
 Shortcut for importToStream ().importToSound () : Conversion from a File to a Sound
 
@@ -290,6 +308,11 @@ public FluentClientWithFreqs filterRange (float low, float high)
 
 Remove the values between low and high in the loudest freqs array (replace them by 0)
 
+Parameters:  
+`low` - low frequency (first one to avoid)
+
+`high` - high frequency (last one to avoid)
+
 Returns:  
 the client, with a loudest frequencies float array
 
@@ -417,11 +440,16 @@ Throws:
 ####   FluentClientWithFreqs.replacePart
 
 ```java
-public FluentClientWithFreqs replacePart (float[] subFreqs, int start)
+public FluentClientWithFreqs replacePart (float [] subFreqs, int start)
 ```
 
 
-Replace some of the values of the loudest freqs array from the “start” index (replace them by the values of subfreqs)
+Replace some of the values of the loudest freqs array from the "start" index (replace them by the values of subfreqs)
+
+Parameters:  
+`subFreqs` - replacement loudest freqs array
+
+`start` - index where to start the replacement
 
 Returns:  
 the client, with a loudest frequencies float array
@@ -491,7 +519,7 @@ a file
 ####   FluentClientWithFreqs.stopWithFreqs
 
 ```java
-public float[] stopWithFreqs ()
+public float [] stopWithFreqs ()
 ```
 
 Stops the client pipeline and returns the obtained loudest frequencies
@@ -604,7 +632,7 @@ Here is the format allowed in the file
   ...
 }
 ```
-Do not assign the same frequency for two notes in the same instrument. If several notes must have their frequencies detected by the soundtransform lib, set different negative values (-1, -2, -3, …)
+Do not assign the same frequency for two notes in the same instrument. If several notes must have their frequencies detected by the soundtransform lib, set different negative values (-1, -2, -3, â€¦)
 
 Parameters:  
 `packName` - the name of the pack
@@ -669,7 +697,7 @@ the client, with a file
 ####   FluentClientReady.withFreqs (just after start)
 
 ```java
-public FluentClientWithFreqs withFreqs (float[] freqs1)
+public FluentClientWithFreqs withFreqs (float [] freqs1)
 ```
 
 

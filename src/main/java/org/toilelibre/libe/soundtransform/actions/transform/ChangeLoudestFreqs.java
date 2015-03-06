@@ -8,6 +8,10 @@ public final class ChangeLoudestFreqs extends Action {
         return this.loudestFreqsService.adjust (freqs);
     }
 
+    public float [] compress (final float [] freqs, final float factor) {
+        return this.loudestFreqsService.compress (freqs, factor);
+    }
+    
     public float [] filterRange (final float [] freqs, final float low, final float high) {
         return this.loudestFreqsService.filterRange (freqs, low, high);
     }

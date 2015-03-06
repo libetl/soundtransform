@@ -6,22 +6,40 @@ import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 public interface FluentClientWithFreqs extends FluentClientCommon {
-    
+
     /**
-     * Adjust the loudest freqs array to match exactly the piano notes frequencies
+     * Adjust the loudest freqs array to match exactly the piano notes
+     * frequencies
      *
      * @return the client, with a loudest frequencies float array
      */
     FluentClientWithFreqs adjust ();
-    
+
+    /**
+     * Compresses the loudest freq array (speedup or slowdown). When shaped into
+     * a sound, the result will have a different tempo than the original sound
+     * but will keep the same pitch
+     *
+     * @param factor
+     *            the factor parameter quantifies how much the stretch or shrink will be.
+     *            (i.e if factor = 2, then the result will be twice as long than
+     *            the original)
+     * @return the client, with a loudest frequencies float array
+     */
+    FluentClientWithFreqs compress (float factor);
+
     /**
      * Remove the values between low and high in the loudest freqs array
      * (replace them by 0)
      *
+     * @param low
+     *            low frequency (first one to avoid)
+     * @param high
+     *            high frequency (last one to avoid)
      * @return the client, with a loudest frequencies float array
      */
     FluentClientWithFreqs filterRange (float low, float high);
-    
+
     /**
      * Changes the loudest frequencies array to become one octave lower
      *
@@ -35,11 +53,15 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      * @return the client, with a loudest frequencies float array
      */
     FluentClientWithFreqs octaveUp ();
-    
+
     /**
-     * Replace some of the values of the loudest freqs array from the "start" index
-     * (replace them by the values of subfreqs)
+     * Replace some of the values of the loudest freqs array from the "start"
+     * index (replace them by the values of subfreqs)
      *
+     * @param subFreqs
+     *            replacement loudest freqs array
+     * @param start
+     *            index where to start the replacement
      * @return the client, with a loudest frequencies float array
      */
     FluentClientWithFreqs replacePart (float [] subFreqs, int start);

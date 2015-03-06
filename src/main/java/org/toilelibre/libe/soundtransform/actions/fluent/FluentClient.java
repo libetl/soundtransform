@@ -168,6 +168,24 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     /**
+     * Compresses the loudest freq array (speedup or slowdown) When shaped into
+     * a sound, the result will have a different tempo than the original sound
+     * but will keep the same pitch
+     *
+     * @param factor
+     *            the factor parameter quantifies how much the stretch will be
+     *            (i.e if factor = 2, then the result will be twice as long than
+     *            the original)
+     * @return the client, with a loudest frequencies float array
+     */
+    
+    public FluentClientWithFreqs compress (final float factor) {
+        this.freqs = new ChangeLoudestFreqs ().compress (this.freqs, factor);
+        return this;
+    }
+    
+    @Override
+    /**
      * Shortcut for importToStream ().importToSound () : Conversion from a File to a Sound
      * @return the client, with a sound imported
      * @throws SoundTransformException if one of the two import fails
@@ -278,10 +296,15 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     
+
     /**
      * Remove the values between low and high in the loudest freqs array
      * (replace them by 0)
      *
+     * @param low
+     *            low frequency (first one to avoid)
+     * @param high
+     *            high frequency (last one to avoid)
      * @return the client, with a loudest frequencies float array
      */
     @Override
@@ -430,9 +453,13 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     /**
-     * Replace some of the values of the loudest freqs array from the "start" index
-     * (replace them by the values of subfreqs)
+     * Replace some of the values of the loudest freqs array from the "start"
+     * index (replace them by the values of subfreqs)
      *
+     * @param subFreqs
+     *            replacement loudest freqs array
+     * @param start
+     *            index where to start the replacement
      * @return the client, with a loudest frequencies float array
      */
     public FluentClientWithFreqs replacePart (float [] subFreqs, int start) {
