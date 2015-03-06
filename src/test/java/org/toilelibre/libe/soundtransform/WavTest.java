@@ -17,6 +17,7 @@ import org.toilelibre.libe.soundtransform.model.converted.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CepstrumSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.FadeSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NormalizeSoundTransformation;
@@ -47,6 +48,16 @@ public class WavTest extends SoundTransformTest {
     @Test
     public void testCepstrum () throws SoundTransformException {
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new CepstrumSoundTransformation<Serializable> (100));
+    }
+
+    @Test
+    public void testFadeIn () throws SoundTransformException {
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (100000, true));
+    }
+
+    @Test
+    public void testFadeOut () throws SoundTransformException {
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (100000, false));
     }
 
     @Test
