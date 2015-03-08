@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -18,6 +19,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CepstrumSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.FadeSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.InsertPartSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NormalizeSoundTransformation;
@@ -51,9 +53,9 @@ public class WavTest extends SoundTransformTest {
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new CepstrumSoundTransformation<Serializable> (100));
     }
 
-    @Test
-    public void testFadeIn () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (100000, true));
+    @Test (expected = SoundTransformRuntimeException.class)
+    public void testFadeAboveSoundLength () throws SoundTransformException {
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (Integer.MAX_VALUE, true));
     }
 
     @Test (expected = SoundTransformException.class)
@@ -61,9 +63,9 @@ public class WavTest extends SoundTransformTest {
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (-5, true));
     }
 
-    @Test (expected = SoundTransformRuntimeException.class)
-    public void testFadeAboveSoundLength () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (Integer.MAX_VALUE, true));
+    @Test
+    public void testFadeIn () throws SoundTransformException {
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (100000, true));
     }
 
     @Test
@@ -82,10 +84,27 @@ public class WavTest extends SoundTransformTest {
     }
 
     @Test
+    public void testInsert () throws SoundTransformException {
+        final InputStream ais = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromFile (new File (this.classLoader.getResource ("notes/g-piano4.wav").getFile ()));
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new InsertPartSoundTransformation ($.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream (ais), 1000));
+    }
+
+    @Test
+    public void testInsertAfterEnd () throws SoundTransformException {
+        final InputStream ais = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromFile (new File (this.classLoader.getResource ("notes/g-piano4.wav").getFile ()));
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new InsertPartSoundTransformation ($.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream (ais), 15000));
+    }
+
+    @Test (expected = SoundTransformRuntimeException.class)
+    public void testInsertWrongFormat () throws SoundTransformException {
+        final InputStream ais = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromFile (new File (this.classLoader.getResource ("notes/g-piano4.wav").getFile ()));
+        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new InsertPartSoundTransformation ($.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream (ais), 1000));
+    }
+
+    @Test
     public void testLinearReg () throws SoundTransformException {
         // will remove the high freqs and smooth the signal
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new LinearRegressionSoundTransformation (25));
-
     }
 
     @Test

@@ -12,12 +12,12 @@ import org.toilelibre.libe.soundtransform.actions.notes.ImportAPackIntoTheLibrar
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
 import org.toilelibre.libe.soundtransform.actions.transform.AppendSound;
 import org.toilelibre.libe.soundtransform.actions.transform.ApplySoundTransform;
+import org.toilelibre.libe.soundtransform.actions.transform.ChangeLoudestFreqs;
 import org.toilelibre.libe.soundtransform.actions.transform.ChangeSoundFormat;
 import org.toilelibre.libe.soundtransform.actions.transform.ConvertFromInputStream;
 import org.toilelibre.libe.soundtransform.actions.transform.ExportAFile;
 import org.toilelibre.libe.soundtransform.actions.transform.GetSoundInfo;
 import org.toilelibre.libe.soundtransform.actions.transform.InputStreamToAudioInputStream;
-import org.toilelibre.libe.soundtransform.actions.transform.ChangeLoudestFreqs;
 import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
@@ -39,22 +39,6 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithSpectrums {
 
-    private static final int     DEFAULT_STEP_VALUE = 100;
-    private Sound []             sounds;
-    private InputStream          audioInputStream;
-    private String               sameDirectoryAsClasspathResource;
-    private float []             freqs;
-    private File                 file;
-    private List<Spectrum<Serializable> []> spectrums;
-
-    private List<Observer>       observers;
-
-    private int                  step;
-
-    private FluentClient () {
-        this.andAfterStart ();
-    }
-    
     public enum FluentClientErrorCode implements ErrorCode {
 
         INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE ("This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
@@ -71,6 +55,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         }
     }
 
+    private static final int DEFAULT_STEP_VALUE = 100;
+
     /**
      * Startup the client
      *
@@ -80,16 +66,35 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return new FluentClient ();
     }
 
+    private Sound []                        sounds;
+    private InputStream                     audioInputStream;
+    private String                          sameDirectoryAsClasspathResource;
+    private float []                        freqs;
+
+    private File                            file;
+
+    private List<Spectrum<Serializable> []> spectrums;
+
+    private List<Observer>                  observers;
+
+    private int                             step;
+
+    private FluentClient () {
+        this.andAfterStart ();
+    }
+
     /**
-     * Adjust the loudest freqs array to match exactly the piano notes frequencies
+     * Adjust the loudest freqs array to match exactly the piano notes
+     * frequencies
      *
      * @return the client, with a loudest frequencies float array
      */
-    public FluentClientWithFreqs adjust (){
+    @Override
+    public FluentClientWithFreqs adjust () {
         this.freqs = new ChangeLoudestFreqs ().adjust (this.freqs);
         return this;
     }
-    
+
     @Override
     /**
      * Start over the client : reset the state and the value objects nested in the client
@@ -178,12 +183,11 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *            the original)
      * @return the client, with a loudest frequencies float array
      */
-    
     public FluentClientWithFreqs compress (final float factor) {
         this.freqs = new ChangeLoudestFreqs ().compress (this.freqs, factor);
         return this;
     }
-    
+
     @Override
     /**
      * Shortcut for importToStream ().importToSound () : Conversion from a File to a Sound
@@ -252,8 +256,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientWithInputStream exportToStream () throws SoundTransformException {
         final FormatInfo currentInfo = new GetSoundInfo (this.getObservers ()).getSoundInfo (this.sounds);
-        final InputStream audioInputStream1 = new ToInputStream (this.getObservers ()).toStream (this.sounds, 
-                StreamInfo.from (currentInfo, this.sounds));
+        final InputStream audioInputStream1 = new ToInputStream (this.getObservers ()).toStream (this.sounds, StreamInfo.from (currentInfo, this.sounds));
         this.cleanData ();
         this.audioInputStream = audioInputStream1;
         return this;
@@ -295,8 +298,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.apply (new SubSoundExtractSoundTransformation (start, end));
     }
 
-    
-
     /**
      * Remove the values between low and high in the loudest freqs array
      * (replace them by 0)
@@ -312,7 +313,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.freqs = new ChangeLoudestFreqs ().filterRange (this.freqs, low, high);
         return this;
     }
-    
+
     /**
      * Will invoke a soundtransform to find the loudest frequencies of the
      * sound, chronologically<br/>
@@ -374,6 +375,22 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         final InputStream inputStream = new ToInputStream (this.getObservers ()).toStream (this.file);
         this.cleanData ();
         this.audioInputStream = inputStream;
+        return this;
+    }
+
+    /**
+     * Add some new values in the loudest freqs array from the "start" index
+     * (add the values of subfreqs)
+     *
+     * @param subFreqs
+     *            loudest freqs array to insert
+     * @param start
+     *            index where to start the insert
+     * @return the client, with a loudest frequencies float array
+     */
+    @Override
+    public FluentClientWithFreqs insertPart (float [] subFreqs, int start) {
+        this.freqs = new ChangeLoudestFreqs ().insertPart (this.freqs, subFreqs, start);
         return this;
     }
 
@@ -466,7 +483,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.freqs = new ChangeLoudestFreqs ().replacePart (this.freqs, subFreqs, start);
         return this;
     }
-    
+
     @Override
     /**
      * Shapes these loudest frequencies array into a sound and set the converted sound in the pipeline
@@ -539,20 +556,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     /**
-     * Stops the client pipeline and returns the obtained stream info
-     * object
-     *
-     * @return a streamInfo object
-     * @throws SoundTransformException
-     *             could not read the StreamInfo from the current
-     *             inputstream
-     */
-    public StreamInfo stopWithStreamInfo () throws SoundTransformException {
-        return new GetSoundInfo (this.getObservers ()).getSoundInfo (this.audioInputStream);
-    }
-
-    @Override
-    /**
      * Stops the client pipeline and returns the obtained sound
      * @return a sound value object
      */
@@ -567,6 +570,20 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public List<Spectrum<Serializable> []> stopWithSpectrums () {
         return this.spectrums;
+    }
+
+    @Override
+    /**
+     * Stops the client pipeline and returns the obtained stream info
+     * object
+     *
+     * @return a streamInfo object
+     * @throws SoundTransformException
+     *             could not read the StreamInfo from the current
+     *             inputstream
+     */
+    public StreamInfo stopWithStreamInfo () throws SoundTransformException {
+        return new GetSoundInfo (this.getObservers ()).getSoundInfo (this.audioInputStream);
     }
 
     @Override

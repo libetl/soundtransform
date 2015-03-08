@@ -363,6 +363,23 @@ the client, with an inputStream
 Throws:  
 `SoundTransformException` - the current file is not valid, or the conversion did not work
 
+####   FluentClientWithFreqs.insertPart
+
+```java
+public FluentClientWithFreqs insertPart (float [] subFreqs, int start)
+```
+
+
+Add some new values in the loudest freqs array from the "start" index (add the values of subfreqs)
+
+Parameters:  
+`subFreqs` - loudest freqs array to insert
+
+`start` - index where to start the insert
+
+Returns:  
+the client, with a loudest frequencies float array
+
 ####   FluentClientSoundImported.loop
 
 ```java

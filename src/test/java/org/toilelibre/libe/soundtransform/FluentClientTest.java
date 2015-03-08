@@ -14,6 +14,7 @@ import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.InsertPartSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -64,6 +65,30 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
+    public void insertPart1 () throws SoundTransformException {
+        final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
+        final float [] array2 = { 15, 16, 17, 18 };
+
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 15, 16, 17, 18, 5, 6, 7, 8 }, FluentClient.start ().withFreqs (array1).insertPart (array2, 4).stopWithFreqs (), 0);
+    }
+
+    @Test
+    public void insertPart2 () throws SoundTransformException {
+        final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
+        final float [] array2 = { 15, 16, 17, 18 };
+
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18, 8 }, FluentClient.start ().withFreqs (array1).insertPart (array2, 7).stopWithFreqs (), 0);
+    }
+
+    @Test
+    public void insertPart3 () throws SoundTransformException {
+        final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
+        final float [] array2 = { 15, 16, 17, 18 };
+
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (array1).insertPart (array2, 11).stopWithFreqs (), 0);
+    }
+
+    @Test
     public void loop () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().loop (100000).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
@@ -72,6 +97,17 @@ public class FluentClientTest extends SoundTransformTest {
     public void mixTest () throws SoundTransformException {
         final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/Piano3-E.wav").convertIntoSound ().stopWithSounds ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().mixWith (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+    }
+
+    @Test
+    public void noOp () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().apply (new NoOpSoundTransformation ()).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+    }
+
+    @Test
+    public void noOpWithInsert () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().apply (new NoOpSoundTransformation ())
+        .apply (new InsertPartSoundTransformation (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano4.wav").convertIntoSound ().stopWithSounds (), 12000)).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     @Test

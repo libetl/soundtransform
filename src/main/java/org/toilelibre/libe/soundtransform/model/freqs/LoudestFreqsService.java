@@ -32,6 +32,10 @@ public class LoudestFreqsService {
         return this.filterFrequenciesProcessor.filter (freqs, low, high);
     }
 
+    public float [] insertPart (final float [] freqs, final float [] subFreqs, final int start) {
+        return this.replaceFrequenciesProcessor.insertPart (freqs, subFreqs, start);
+    }
+
     public float [] octaveDown (final float [] freqs) {
         return this.changeOctaveProcessor.multFreqs (freqs, LoudestFreqsService.HALF);
     }
@@ -43,5 +47,4 @@ public class LoudestFreqsService {
     public float [] replacePart (final float [] freqs, final float [] subFreqs, final int start) {
         return this.replaceFrequenciesProcessor.replacePart (freqs, subFreqs, start);
     }
-
 }

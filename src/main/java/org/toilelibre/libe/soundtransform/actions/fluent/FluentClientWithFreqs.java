@@ -21,9 +21,9 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      * but will keep the same pitch
      *
      * @param factor
-     *            the factor parameter quantifies how much the stretch or shrink will be.
-     *            (i.e if factor = 0.5, then the result will be twice as long than
-     *            the original)
+     *            the factor parameter quantifies how much the stretch or shrink
+     *            will be. (i.e if factor = 0.5, then the result will be twice
+     *            as long than the original)
      * @return the client, with a loudest frequencies float array
      */
     FluentClientWithFreqs compress (float factor);
@@ -39,6 +39,18 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      * @return the client, with a loudest frequencies float array
      */
     FluentClientWithFreqs filterRange (float low, float high);
+
+    /**
+     * Add some new values in the loudest freqs array from the "start" index
+     * (add the values of subfreqs)
+     *
+     * @param subFreqs
+     *            loudest freqs array to insert
+     * @param start
+     *            index where to start the insert
+     * @return the client, with a loudest frequencies float array
+     */
+    FluentClientWithFreqs insertPart (float [] subFreqs, int start);
 
     /**
      * Changes the loudest frequencies array to become one octave lower
