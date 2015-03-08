@@ -57,15 +57,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     private static final int DEFAULT_STEP_VALUE = 100;
 
-    /**
-     * Startup the client
-     *
-     * @return the client, ready to start
-     */
-    public static FluentClientReady start () {
-        return new FluentClient ();
-    }
-
     private Sound []                        sounds;
     private InputStream                     audioInputStream;
     private String                          sameDirectoryAsClasspathResource;
@@ -81,6 +72,15 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     private FluentClient () {
         this.andAfterStart ();
+    }
+
+    /**
+     * Startup the client
+     *
+     * @return the client, ready to start
+     */
+    public static FluentClientReady start () {
+        return new FluentClient ();
     }
 
     /**
