@@ -93,7 +93,7 @@ the client, ready to start
 ####   FluentClientSoundImported.append
 
 ```java
-public FluentClientSoundImported append (Sound[] sounds1) throws SoundTransformException
+public FluentClientSoundImported append (Sound [] sounds1) throws SoundTransformException
 ```
 
 Append the sound passed in parameter to the current sound stored in the client
@@ -384,7 +384,7 @@ Throws:
 ####   FluentClientSoundImported.mixWith
 
 ```java
-public FluentClientSoundImported mixWith (Sound[] sound) throws SoundTransformException
+public FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException
 ```
 
 
@@ -541,7 +541,7 @@ an input stream
 ####   FluentClientSoundImported.stopWithSounds
 
 ```java
-public Sound[] stopWithSounds ()
+public Sound [] stopWithSounds ()
 ```
 
 Stops the client pipeline and returns the obtained sound
@@ -552,7 +552,7 @@ a sound value object
 ####   FluentClientWithSpectrums.stopWithSpectrums
 
 ```java
-public List<Spectrum<Serializable>[]> stopWithSpectrums ()
+public List<Spectrum<Serializable> []> stopWithSpectrums ()
 ```
 
 
@@ -733,7 +733,7 @@ Throws:
 ####   FluentClientReady.withSounds (just after start)
 
 ```java
-public FluentClientSoundImported withSounds (Sound[] sounds1)
+public FluentClientSoundImported withSounds (Sound [] sounds1)
 ```
 
 
@@ -748,7 +748,7 @@ the client, with an imported sound
 ####   FluentClientReady.withSpectrums (just after start)
 
 ```java
-public FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable>[]> spectrums)
+public FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable> []> spectrums)
 ```
 
 
