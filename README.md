@@ -36,6 +36,9 @@ To use it, it is only needed to chain the methods invocation. it will always sta
 ### FluentClient samples :
 ```java
 
+//Set the default Slf4J logger and the log threshold as "WARNING" (the only output will be the warning and error logs)
+FluentClient.setDefaultObserversValue (new Slf4jObserver (LogLevel.WARN));
+
 //Apply a 8-bit transform on a wav and then export it to a wav
 FluentClient.start ().withClasspathResource ("foo.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("bar.wav");
 
@@ -60,7 +63,7 @@ Please have a look at the many different actions that you can ask to the FluentC
 ####   FluentClient.setDefaultObserversValue
 
 ```java
-FluentClient setDefaultObserversValue (Observer... defaultObservers1)
+void setDefaultObserversValue (Observer... defaultObservers1)
 ```
 
 
