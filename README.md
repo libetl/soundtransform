@@ -68,6 +68,7 @@ static void setDefaultObserversValue (Observer... defaultObservers1)
 
 
 Set the passed observers as the default value when a FluentClient is started
+
 It can be useful if you are going to use the FluentClient several times but you want to declare the subscribed observers only once
  
 Parameters:
