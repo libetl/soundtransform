@@ -21,7 +21,9 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class FluentClientTest extends SoundTransformTest {
 
@@ -29,6 +31,34 @@ public class FluentClientTest extends SoundTransformTest {
     public void appendTest () throws SoundTransformException {
         final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano4.wav").convertIntoSound ().stopWithSounds ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().append (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+    }
+
+    @Test
+    public void defaultObserversValue () throws SoundTransformException {
+        FluentClient.setDefaultObservers (new Observer () {
+
+            @Override
+            public void notify (LogEvent logEvent) {
+            }
+
+        }, new Observer () {
+
+            @Override
+            public void notify (LogEvent logEvent) {
+            }
+
+        });
+        org.junit.Assert.assertEquals (FluentClient.start ().stopWithObservers ().length, 2);
+
+        org.junit.Assert.assertEquals (FluentClient.start ().withAnObserver (new Observer () {
+
+            @Override
+            public void notify (LogEvent logEvent) {
+            }
+
+        }).stopWithObservers ().length, 3);
+
+        FluentClient.setDefaultObservers ();
     }
 
     @Test
@@ -107,7 +137,7 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void noOpWithInsert () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano3.wav").convertIntoSound ().apply (new NoOpSoundTransformation ())
-        .apply (new InsertPartSoundTransformation (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano4.wav").convertIntoSound ().stopWithSounds (), 12000)).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+                .apply (new InsertPartSoundTransformation (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("notes/g-piano4.wav").convertIntoSound ().stopWithSounds (), 12000)).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     @Test
@@ -148,7 +178,7 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void replacePart () throws SoundTransformException {
         FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransformation (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSounds (), 100000))
-        .exportToClasspathResource ("after.wav");
+                .exportToClasspathResource ("after.wav");
     }
 
     @Test
@@ -178,7 +208,7 @@ public class FluentClientTest extends SoundTransformTest {
     @Test (expected = SoundTransformRuntimeException.class)
     public void replacePartOutOfBounds () throws SoundTransformException {
         FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransformation (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSounds (), -100000))
-        .exportToClasspathResource ("after.wav");
+                .exportToClasspathResource ("after.wav");
     }
 
     // Exactly the same code run as WavTest.testShape

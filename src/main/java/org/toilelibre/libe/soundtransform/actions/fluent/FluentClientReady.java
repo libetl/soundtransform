@@ -25,6 +25,12 @@ public interface FluentClientReady {
     Pack stopWithAPack (String title);
 
     /**
+     * Stops the client pipeline and returns the currently subscribed observers
+     * @return the observers
+     */
+    Observer [] stopWithObservers ();
+    
+    /**
      * Tells the client to add an observer that will be notified of different
      * kind of updates from the library. It is ok to call withAnObserver several
      * times.<br/>
