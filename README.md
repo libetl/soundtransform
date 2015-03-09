@@ -63,7 +63,7 @@ Please have a look at the many different actions that you can ask to the FluentC
 ####   FluentClient.setDefaultObserversValue
 
 ```java
-void setDefaultObserversValue (Observer... defaultObservers1)
+static void setDefaultObserversValue (Observer... defaultObservers1)
 ```
 
 
