@@ -56,6 +56,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     private static final int DEFAULT_STEP_VALUE = 100;
+    private static List<Observer> defaultObservers = new LinkedList<Observer> ();
 
     private Sound []                        sounds;
     private InputStream                     audioInputStream;
@@ -74,6 +75,21 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.andAfterStart ();
     }
 
+    /**
+     * Set the passed observers as the default value when a FluentClient is started
+     * 
+     * It can be useful if you are going to use the FluentClient several times but you 
+     * want to declare the subscribed observers only once
+     * 
+     * @param defaultObservers1
+     *            one or more observer(s)
+     * 
+     * @return the client, in its current state.
+     */
+    public static void setDefaultObservers (final Observer... defaultObservers1) {
+        FluentClient.defaultObservers = Arrays.<Observer>asList (defaultObservers1);
+    }
+    
     /**
      * Startup the client
      *
@@ -95,7 +111,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    @Override
     /**
      * Start over the client : reset the state and the value objects nested in the client
      * @return the client, ready to start
@@ -168,7 +183,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Reset the list of the subscribed observers
      */
     private void cleanObservers () {
-        this.observers = new LinkedList<Observer> ();
+        this.observers = FluentClient.defaultObservers;
     }
 
     @Override
@@ -343,7 +358,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     private Observer [] getObservers () {
         return this.observers.toArray (new Observer [this.observers.size ()]);
     }
-
+    
     @Override
     /**
      * Uses the current input stream object to convert it into a sound (with one or more channels)
@@ -554,6 +569,16 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.audioInputStream;
     }
 
+
+    @Override
+    /**
+     * Stops the client pipeline and returns the currently subscribed observers
+     * @return the observers
+     */
+    public Observer [] stopWithObservers () {
+        return this.getObservers ();
+    }
+
     @Override
     /**
      * Stops the client pipeline and returns the obtained sound
@@ -642,7 +667,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         new ImportAPackIntoTheLibrary (this.getObservers ()).importAPack (packName, jsonContent);
         return this;
     }
-
+    
     @Override
     /**
      * Tells the client to work first with an InputStream. It will not be read yet<br/>
@@ -673,7 +698,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.sameDirectoryAsClasspathResource = this.file.getParent ();
         return this;
     }
-
+    
     @Override
     /**
      * Tells the client to work first with a file. It will not be read yet

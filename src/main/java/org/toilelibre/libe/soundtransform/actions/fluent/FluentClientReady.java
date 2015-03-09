@@ -108,7 +108,7 @@ public interface FluentClientReady {
      *             the classpath resource was not found
      */
     FluentClientWithFile withClasspathResource (String resource) throws SoundTransformException;
-
+    
     /**
      * Tells the client to work first with a file. It will not be read yet
      *

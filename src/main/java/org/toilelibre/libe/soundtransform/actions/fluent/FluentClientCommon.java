@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.actions.fluent;
 
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
+import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public interface FluentClientCommon {
 
@@ -21,4 +22,10 @@ public interface FluentClientCommon {
      * @return a pack object
      */
     Pack stopWithAPack (String title);
+
+    /**
+     * Stops the client pipeline and returns the currently subscribed observers
+     * @return the observers
+     */
+    Observer [] stopWithObservers ();
 }
