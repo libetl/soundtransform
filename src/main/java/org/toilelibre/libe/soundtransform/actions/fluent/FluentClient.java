@@ -87,9 +87,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @return the client, in its current state.
      */
     public static void setDefaultObservers (final Observer... defaultObservers1) {
-        final List<Observer> newValue = new LinkedList<Observer> ();
-        newValue.addAll (Arrays.<Observer>asList (defaultObservers1));
-        FluentClient.defaultObservers = newValue;
+        FluentClient.defaultObservers = new LinkedList<Observer> (Arrays.<Observer>asList (defaultObservers1));
+;
     }
     
     /**
