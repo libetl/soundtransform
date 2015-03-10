@@ -26,6 +26,7 @@
 		<connection>scm:git:git@github.com:libetl/soundtransform.git</connection>
 		<developerConnection>scm:git:git@github.com:libetl/soundtransform.git</developerConnection>
 		<url>git@github.com:libetl/soundtransform.git</url>
+		<tag>${project.version}</tag>
 	</scm>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -36,7 +37,7 @@
 				<directory>src/main/java</directory>
 			</resource>
 			<resource>
-				<directory>src/main/resources</directory>
+				<directory>src/main/resources/raw</directory>
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
@@ -63,7 +64,7 @@
 					<sign>
 						<debug>both</debug>
 					</sign>
-					<resourceDirectory>${basedir}/src/main/gen</resourceDirectory>
+					<resourceDirectory>${basedir}/src/main/resources</resourceDirectory>
 					<androidManifestFile>${basedir}/AndroidManifest.xml</androidManifestFile>
 					<excludeJarResources>
 						<excludeJarResource>.*\.jar$</excludeJarResource>

@@ -166,7 +166,7 @@ public class WavTest extends SoundTransformTest {
         // WARN : quite long
         new Slf4jObserver (LogLevel.WARN).notify ("Loading default pack");
         final Library library = $.select (Library.class);
-        $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack (library, "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
+        $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack (library, "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json"));
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new ShapeSoundTransformation ("default", "simple_piano"));
 
     }

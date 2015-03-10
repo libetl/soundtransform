@@ -17,7 +17,8 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class ImportPackService extends AbstractLogAware<ImportPackService> {
     public enum ImportPackServiceErrorCode implements ErrorCode {
-        EXPECTED_A_FREQUENCY ("%1s is not an Integer, could not know which frequency was expected");
+        EXPECTED_A_FREQUENCY ("%1s is not an Integer, could not know which frequency was expected"),
+        EMPTY_INPUT_STREAM ("No input stream to read while trying to import a pack");
 
         private final String messageFormat;
 
@@ -101,6 +102,9 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
     }
 
     public void importPack (final Library library, final String title, final InputStream inputStream) throws SoundTransformException {
+        if (inputStream == null){
+            throw new SoundTransformException (ImportPackServiceErrorCode.EMPTY_INPUT_STREAM, new NullPointerException ());
+        }
         final Scanner scanner = new Scanner (inputStream, ImportPackService.DEFAULT_CHARSET_NAME);
         final String content = scanner.useDelimiter ("\\Z").next ();
         scanner.close ();

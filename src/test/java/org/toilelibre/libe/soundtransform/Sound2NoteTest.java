@@ -70,7 +70,7 @@ public class Sound2NoteTest extends SoundTransformTest {
             }
         };
         new Slf4jObserver ().notify ("Loading Packs");
-        $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
+        $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json"));
         final Pack pack = $.select (Library.class).getPack ("default");
         for (final Entry<String, Range> packEntry : pack.entrySet ()) {
             for (final Entry<Float, Note> noteEntry : packEntry.getValue ().entrySet ()) {

@@ -91,7 +91,7 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
     @Test (expected = SoundTransformException.class)
     public void testNotRiffFile () throws SoundTransformException {
         try {
-            FluentClient.start ().withClasspathResource ("defaultPack.json").importToStream ();
+            FluentClient.start ().withClasspathResource ("defaultpack.json").importToStream ();
         } catch (final SoundTransformRuntimeException stre) {
             final SoundTransformException ste = (SoundTransformException) stre.getCause ();
             org.junit.Assert.assertEquals (AndroidWavHelper.AudioWavHelperErrorCode.NO_MAGIC_NUMBER, ste.getErrorCode ());

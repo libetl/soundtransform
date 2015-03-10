@@ -34,7 +34,7 @@ public class TestDetectNotes extends SoundTransformTest {
         for (int i = 1100 ; i < 1600 ; i++) {
             t [i] = (float) ((value + (Math.random () * twopercents)) - (twopercents / 2));
         }
-        $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultPack.json"));
+        $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json"));
         new ShapeSoundTransformation ("default", "simple_piano", t, new FormatInfo (2, 44100.0f)).setObservers (new Slf4jObserver (), new Observer () {
 
             @Override
