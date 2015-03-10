@@ -677,7 +677,7 @@ Here is the format allowed in the file
   ...
 }
 ```
-Do not assign the same frequency for two notes in the same instrument. If several notes must have their frequencies detected by the soundtransform lib, set different negative values (-1, -2, -3, â€¦)
+Do not assign the same frequency for two notes in the same instrument. If several notes must have their frequencies detected by the soundtransform lib, set different negative values (-1, -2, -3, ...)
 
 Parameters:  
 `packName` - the name of the pack
