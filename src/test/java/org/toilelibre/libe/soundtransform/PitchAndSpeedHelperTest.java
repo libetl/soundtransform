@@ -22,7 +22,7 @@ public class PitchAndSpeedHelperTest extends SoundTransformTest {
     @Test
     public void shouldBeTwiceTheF0ValuePiano3e () throws SoundTransformException {
         final ClassLoader classLoader = PitchAndSpeedHelperTest.class.getClassLoader ();
-        final URL fileURL = classLoader.getResource ("notes/Piano3-E.wav");
+        final URL fileURL = classLoader.getResource ("piano3e.wav");
         final File input = new File (fileURL.getFile ());
 
         final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);

@@ -38,7 +38,7 @@ public class Sound2NoteTest extends SoundTransformTest {
     @Test
     public void readNotes () throws SoundTransformException {
         final Range range = new Range ();
-        $.create (AddNoteService.class).addNotes (range, "notes/g-piano3.wav", "notes/g-piano4.wav");
+        $.create (AddNoteService.class).addNotes (range, "gpiano3.wav", "gpiano4.wav");
         org.junit.Assert.assertTrue (range.size () == 2);
     }
     
@@ -88,7 +88,7 @@ public class Sound2NoteTest extends SoundTransformTest {
     @Test
     public void shouldBeTwiceTheF0ValuePiano4F () throws SoundTransformException {
         final ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
-        final URL fileURL = classLoader.getResource ("notes/Piano3-E.wav");
+        final URL fileURL = classLoader.getResource ("piano3e.wav");
         final File input = new File (fileURL.getFile ());
 
         final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
@@ -99,7 +99,7 @@ public class Sound2NoteTest extends SoundTransformTest {
         final Sound f51 = pitcher.transform (f4 [0]);
         final Sound f52 = pitcher.transform (f4 [1]);
 
-        final Note n = $.create (Sound2NoteService.class).convert ("Piano4-E.wav", new Sound [] { f51, f52 });
+        final Note n = $.create (Sound2NoteService.class).convert ("piano4e.wav", new Sound [] { f51, f52 });
         new Slf4jObserver ().notify ("e' 4 : " + n.getFrequency () + "Hz, should be around 664Hz");
         org.junit.Assert.assertTrue ((n.getFrequency () > (664 - 10)) && (n.getFrequency () < (664 + 10)));
     }
@@ -107,13 +107,13 @@ public class Sound2NoteTest extends SoundTransformTest {
     @Test
     public void shouldNotBeTwiceTheF0ValuePiano1C () throws SoundTransformException {
         final ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
-        final URL fileURL = classLoader.getResource ("notes/Piano1-C.wav");
+        final URL fileURL = classLoader.getResource ("piano1c.wav");
         final File input = new File (fileURL.getFile ());
 
         final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
         final TransformSoundService ts = $.create (TransformSoundService.class);
 
-        final Note n = $.create (Sound2NoteService.class).convert ("Piano1-C.wav", ts.fromInputStream (ais));
+        final Note n = $.create (Sound2NoteService.class).convert ("piano1c.wav", ts.fromInputStream (ais));
         new Slf4jObserver ().notify ("c' 1-line octave : " + n.getFrequency () + "Hz, should be around 261Hz");
         org.junit.Assert.assertTrue ((n.getFrequency () > (261 - 10)) && (n.getFrequency () < (261 + 10)));
     }
@@ -121,13 +121,13 @@ public class Sound2NoteTest extends SoundTransformTest {
     @Test
     public void shouldNotBeTwiceTheF0ValuePiano4F () throws SoundTransformException {
         final ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
-        final URL fileURL = classLoader.getResource ("notes/Piano4-F.wav");
+        final URL fileURL = classLoader.getResource ("piano4f.wav");
         final File input = new File (fileURL.getFile ());
 
         final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
         final TransformSoundService ts = $.create (TransformSoundService.class);
 
-        final Note n = $.create (Sound2NoteService.class).convert ("Piano4-F.wav", ts.fromInputStream (ais));
+        final Note n = $.create (Sound2NoteService.class).convert ("piano4f.wav", ts.fromInputStream (ais));
         new Slf4jObserver ().notify ("f' 4 : " + n.getFrequency () + "Hz, should be around 349Hz");
         org.junit.Assert.assertTrue ((n.getFrequency () > (349 - 10)) && (n.getFrequency () < (349 + 10)));
     }

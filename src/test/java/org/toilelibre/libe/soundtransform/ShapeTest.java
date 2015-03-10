@@ -23,8 +23,8 @@ public class ShapeTest extends SoundTransformTest {
     @Test
     public void testAppendSoundsWithDifferentNbBytes () throws SoundTransformException {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-        final File input1 = new File (classLoader.getResource ("notes/Piano2-D.wav").getFile ());
-        final File input2 = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
+        final File input1 = new File (classLoader.getResource ("piano2d.wav").getFile ());
+        final File input2 = new File (classLoader.getResource ("gpiano3.wav").getFile ());
         final Sound [] s1 = $.create (TransformSoundService.class).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (input1));
         final Sound [] s2 = $.create (TransformSoundService.class).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (input2));
         new ConvertedSoundAppender ().append (s2 [0], 1000, s1 [0]);
@@ -36,7 +36,7 @@ public class ShapeTest extends SoundTransformTest {
         new Slf4jObserver ().notify ("Loading packs");
         $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json"));
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-        final File input = new File (classLoader.getResource ("notes/Piano5-G.wav").getFile ());
+        final File input = new File (classLoader.getResource ("piano5g.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
         final InputStream outputStream = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformAudioStream ($.create (ConvertAudioFileService.class).callConverter (input), new ShapeSoundTransformation ("default", "chord_piano"));
 
@@ -53,7 +53,7 @@ public class ShapeTest extends SoundTransformTest {
         new Slf4jObserver ().notify ("Loading packs");
         $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json"));
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-        final File input = new File (classLoader.getResource ("notes/Piano3-E.wav").getFile ());
+        final File input = new File (classLoader.getResource ("piano3e.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
         final InputStream outputStream = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformAudioStream ($.create (ConvertAudioFileService.class).callConverter (input), new ShapeSoundTransformation ("default", "chord_piano"));
 

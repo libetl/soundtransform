@@ -38,7 +38,7 @@ public class WavTest extends SoundTransformTest {
 
     private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
     private final File        input       = new File (this.classLoader.getResource ("before.wav").getFile ());
-    private final File        shortInput  = new File (this.classLoader.getResource ("notes/g-piano3.wav").getFile ());
+    private final File        shortInput  = new File (this.classLoader.getResource ("gpiano3.wav").getFile ());
 
     private final File        output      = new File (new File (this.classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
@@ -85,19 +85,19 @@ public class WavTest extends SoundTransformTest {
 
     @Test
     public void testInsert () throws SoundTransformException {
-        final InputStream ais = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromFile (new File (this.classLoader.getResource ("notes/g-piano4.wav").getFile ()));
+        final InputStream ais = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromFile (new File (this.classLoader.getResource ("gpiano4.wav").getFile ()));
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new InsertPartSoundTransformation ($.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream (ais), 1000));
     }
 
     @Test
     public void testInsertAfterEnd () throws SoundTransformException {
-        final InputStream ais = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromFile (new File (this.classLoader.getResource ("notes/g-piano4.wav").getFile ()));
+        final InputStream ais = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromFile (new File (this.classLoader.getResource ("gpiano4.wav").getFile ()));
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new InsertPartSoundTransformation ($.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream (ais), 15000));
     }
 
     @Test (expected = SoundTransformRuntimeException.class)
     public void testInsertWrongFormat () throws SoundTransformException {
-        final InputStream ais = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromFile (new File (this.classLoader.getResource ("notes/g-piano4.wav").getFile ()));
+        final InputStream ais = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromFile (new File (this.classLoader.getResource ("gpiano4.wav").getFile ()));
         $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new InsertPartSoundTransformation ($.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream (ais), 1000));
     }
 
@@ -109,8 +109,8 @@ public class WavTest extends SoundTransformTest {
 
     @Test
     public void testMix () throws SoundTransformException {
-        final File input1 = new File (this.classLoader.getResource ("notes/g-piano3.wav").getFile ());
-        final File input2 = new File (this.classLoader.getResource ("notes/Piano3-E.wav").getFile ());
+        final File input1 = new File (this.classLoader.getResource ("gpiano3.wav").getFile ());
+        final File input2 = new File (this.classLoader.getResource ("piano3e.wav").getFile ());
         final TransformSoundService transform = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN));
         final Sound [] sound2 = transform.fromInputStream (transform.fromFile (input2));
         transform.transformFile (input1, this.output, new MixSoundTransformation (Arrays.<Sound []> asList (sound2)));

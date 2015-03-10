@@ -20,7 +20,7 @@ public class TestUpsample extends SoundTransformTest {
     public void testTransform11025Hz2BitsMonoSoundInto44100Hz2BitsMonoSound () throws SoundTransformException, IOException {
 
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-        final File input = new File (classLoader.getResource ("notes/Piano2-D.wav").getFile ());
+        final File input = new File (classLoader.getResource ("piano2d.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
         final Sound [] inputSounds = $.create (TransformSoundService.class).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (input));
         final Sound [] outputSounds = new Sound [inputSounds.length];
@@ -39,7 +39,7 @@ public class TestUpsample extends SoundTransformTest {
     public void testTransform8363Hz1BitMonoSoundInto44100Hz2BitsMonoSound () throws SoundTransformException, IOException {
 
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-        final File input = new File (classLoader.getResource ("notes/g-piano3.wav").getFile ());
+        final File input = new File (classLoader.getResource ("gpiano3.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
         final Sound [] inputSounds = $.create (TransformSoundService.class).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (input));
         final Sound [] outputSounds = new Sound [inputSounds.length];

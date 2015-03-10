@@ -18,7 +18,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 public class BlackBoxTest extends SoundTransformTest {
     private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
     private final File        input       = new File (this.classLoader.getResource ("before.wav").getFile ());
-    private final File        gPiano3     = new File (this.classLoader.getResource ("notes/g-piano3.wav").getFile ());
+    private final File        gPiano3     = new File (this.classLoader.getResource ("gpiano3.wav").getFile ());
     private final File        output      = new File (new File (this.classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
     @Test
