@@ -60,11 +60,11 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
     private final AddNoteService   addNoteService;
     private final PackConfigParser packConfigParser;
     private final ContextLoader    contextLoader;
-    
+
     public ImportPackService (final AddNoteService addNoteService1, final PackConfigParser packConfigParser1, final ContextLoader contextLoader1) {
         this (addNoteService1, packConfigParser1, contextLoader1, new Observer [0]);
     }
-    
+
     public ImportPackService (final AddNoteService addNoteService1, final PackConfigParser packConfigParser1, final ContextLoader contextLoader1, final Observer... observers1) {
         this.observers = observers1.clone ();
         this.addNoteService = addNoteService1.setObservers (this.observers);
@@ -95,7 +95,7 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         if (notes.isEmpty ()) {
             return this.technicalInstrument (title, instrument);
         }
-        if ((context != null) && (rClass != null)) {
+        if (context != null && rClass != null) {
             return this.tryToReadNotesFromContext (notes, title, instrument, context, rClass);
         }
         return this.fileNotes (notes, title, instrument);
@@ -109,11 +109,11 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         this.importPack (library, title, null, null, this.readInputStream (inputStream));
     }
 
-    public void importPack (Library library, String title, Object context, Class<?> rClass, InputStream inputStream) throws SoundTransformException {
-        this.importPack (library, title, context, rClass, this.readInputStream (inputStream));
+    public void importPack (final Library library, final String title, final Object context, final Class<?> rClass, final int packJsonId) throws SoundTransformException {
+        this.importPack (library, title, context, rClass, this.readInputStream (this.contextLoader.read (context, rClass, packJsonId)));
     }
 
-    private void importPack (final Library library, final String title, Object context, Class<?> rClass, final String jsonContent) throws SoundTransformException {
+    private void importPack (final Library library, final String title, final Object context, final Class<?> rClass, final String jsonContent) throws SoundTransformException {
         this.log (new LogEvent (ImportPackServiceEventCode.STARTING_IMPORT, title));
         final Map<String, Map<String, String>> map = this.packConfigParser.parse (jsonContent);
         final Pack pack = this.mapToPack (title, map, context, rClass);
@@ -125,7 +125,7 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         this.importPack (library, title, null, null, jsonContent);
     }
 
-    private Pack mapToPack (final String title, final Map<String, Map<String, String>> map, Object context, Class<?> rClass) throws SoundTransformException {
+    private Pack mapToPack (final String title, final Map<String, Map<String, String>> map, final Object context, final Class<?> rClass) throws SoundTransformException {
         final Pack pack = new Pack ();
         for (final Entry<String, Map<String, String>> instrument : map.entrySet ()) {
             this.log (new LogEvent (ImportPackServiceEventCode.STARTING_ANALYSIS_OF_AN_INSTRUMENT, title, instrument.getKey ()));
@@ -163,7 +163,7 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         return range;
     }
 
-    private Range tryToReadNotesFromContext (Map<String, String> notes, String title, String instrument, Object context, Class<?> rClass) throws SoundTransformException {
+    private Range tryToReadNotesFromContext (final Map<String, String> notes, final String title, final String instrument, final Object context, final Class<?> rClass) throws SoundTransformException {
         final Range range = new Range ();
         for (final Entry<String, String> notesEntry : notes.entrySet ()) {
             int frequency;

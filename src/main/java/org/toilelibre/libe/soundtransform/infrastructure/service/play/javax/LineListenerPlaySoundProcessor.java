@@ -56,7 +56,7 @@ public class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
         }
     }
 
-    private Clip prepareClip (InputStream ais) throws PlaySoundException {
+    private Clip prepareClip (final InputStream ais) throws PlaySoundException {
         if (!(ais instanceof AudioInputStream)) {
             throw new PlaySoundException (new IllegalArgumentException ("" + ais));
         }

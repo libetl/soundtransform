@@ -16,7 +16,7 @@ public class EightBitsSoundTransformation implements SoundTransformation {
 
         final Sound outputSound = new Sound (new long [input.getSamplesLength ()], input.getFormatInfo (), input.getChannelNum ());
         for (int i = 0 ; i < input.getSamplesLength () ; i++) {
-            if ((i % this.step) == 0) {
+            if (i % this.step == 0) {
                 outputSound.setSampleAt (i, input.getSampleAt (i));
             } else {
                 outputSound.setSampleAt (i, 0);

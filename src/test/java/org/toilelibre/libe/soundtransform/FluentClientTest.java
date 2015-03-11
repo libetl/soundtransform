@@ -34,34 +34,6 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
-    public void defaultObserversValue () throws SoundTransformException {
-        FluentClient.setDefaultObservers (new Observer () {
-
-            @Override
-            public void notify (LogEvent logEvent) {
-            }
-
-        }, new Observer () {
-
-            @Override
-            public void notify (LogEvent logEvent) {
-            }
-
-        });
-        org.junit.Assert.assertEquals (FluentClient.start ().stopWithObservers ().length, 2);
-
-        org.junit.Assert.assertEquals (FluentClient.start ().withAnObserver (new Observer () {
-
-            @Override
-            public void notify (LogEvent logEvent) {
-            }
-
-        }).stopWithObservers ().length, 3);
-
-        FluentClient.setDefaultObservers ();
-    }
-
-    @Test
     public void backAndForth () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().apply (new NoOpSoundTransformation ()).exportToClasspathResource ("before.wav").convertIntoSound ();
     }
@@ -80,6 +52,34 @@ public class FluentClientTest extends SoundTransformTest {
     @Test (expected = SoundTransformException.class)
     public void cutsoundOutOfBounds () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (-100000, 200000).exportToClasspathResource ("after.wav");
+    }
+
+    @Test
+    public void defaultObserversValue () throws SoundTransformException {
+        FluentClient.setDefaultObservers (new Observer () {
+
+            @Override
+            public void notify (final LogEvent logEvent) {
+            }
+
+        }, new Observer () {
+
+            @Override
+            public void notify (final LogEvent logEvent) {
+            }
+
+        });
+        org.junit.Assert.assertEquals (FluentClient.start ().stopWithObservers ().length, 2);
+
+        org.junit.Assert.assertEquals (FluentClient.start ().withAnObserver (new Observer () {
+
+            @Override
+            public void notify (final LogEvent logEvent) {
+            }
+
+        }).stopWithObservers ().length, 3);
+
+        FluentClient.setDefaultObservers ();
     }
 
     @Test
@@ -253,7 +253,7 @@ public class FluentClientTest extends SoundTransformTest {
         }
         final float [] freqsOutput = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (freqs).filterRange (0, 90).filterRange (500, 1000).stopWithFreqs ();
         for (i = 0 ; i < freqsOutput.length ; i++) {
-            if (((freqsOutput [i] > 0) && (freqsOutput [i] <= 90)) || ((freqsOutput [i] >= 500) && (freqsOutput [i] <= 1000))) {
+            if (freqsOutput [i] > 0 && freqsOutput [i] <= 90 || freqsOutput [i] >= 500 && freqsOutput [i] <= 1000) {
                 org.junit.Assert.fail (freqsOutput [i] + " is not filtered in the freqs array (index " + i + ")");
             }
         }

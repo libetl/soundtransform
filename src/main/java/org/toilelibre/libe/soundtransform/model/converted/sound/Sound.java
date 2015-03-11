@@ -47,32 +47,32 @@ public class Sound implements Cloneable {
         return this.channelNum;
     }
 
+    public FormatInfo getFormatInfo () {
+        return this.formatInfo;
+    }
+
     public long getSampleAt (final int i) {
         return this.samples [i];
+    }
+
+    public float getSampleRate () {
+        return this.formatInfo.getSampleRate ();
     }
 
     public long [] getSamples () {
         return this.samples;
     }
 
+    public int getSampleSize () {
+        return this.formatInfo.getSampleSize ();
+    }
+
     public int getSamplesLength () {
         return this.samples.length;
     }
 
-    public FormatInfo getFormatInfo () {
-        return this.formatInfo;
-    }
-    
     public void setSampleAt (final int i, final long value) {
         this.samples [i] = value;
-    }
-
-    public float getSampleRate () {
-        return formatInfo.getSampleRate ();
-    }
-
-    public int getSampleSize () {
-        return formatInfo.getSampleSize ();
     }
 
     @Override

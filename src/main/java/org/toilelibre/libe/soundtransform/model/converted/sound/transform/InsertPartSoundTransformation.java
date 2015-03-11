@@ -50,7 +50,7 @@ public class InsertPartSoundTransformation implements SoundTransformation {
         final long [] samples = new long [Math.max (this.start, sound.getSamplesLength ()) + subsamples.length];
         System.arraycopy (sound.getSamples (), 0, samples, 0, Math.min (this.start, sound.getSamplesLength ()));
         System.arraycopy (subsamples, 0, samples, this.start, subsamples.length);
-        if ((sound.getSamplesLength () - this.start) > 0) {
+        if (sound.getSamplesLength () - this.start > 0) {
             System.arraycopy (sound.getSamples (), this.start, samples, this.start + subsamples.length, sound.getSamplesLength () - this.start);
         }
         return new Sound (samples, sound.getFormatInfo (), sound.getChannelNum ());

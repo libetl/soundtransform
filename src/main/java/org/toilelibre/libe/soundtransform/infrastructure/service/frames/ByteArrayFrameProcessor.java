@@ -35,10 +35,10 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
             final int cursor = bigEndian ? frame.length - j - 1 : j;
             final int fromIndex = cursor < destination ? cursor : destination;
             final int toIndex = cursor < destination ? destination : cursor;
-            final int currentChannel = !bigEndian ? j / (frame.length / sound.length) : sound.length - 1 - (j / (frame.length / sound.length));
+            final int currentChannel = !bigEndian ? j / (frame.length / sound.length) : sound.length - 1 - j / (frame.length / sound.length);
             final int numByte = j % (frame.length / sound.length);
             if (fromIndex <= toIndex) {
-                value [currentChannel] += (frame [cursor] + (pcmSigned ? -Byte.MIN_VALUE : 0)) << (Byte.SIZE * numByte);
+                value [currentChannel] += frame [cursor] + (pcmSigned ? -Byte.MIN_VALUE : 0) << Byte.SIZE * numByte;
             }
 
         }
@@ -48,7 +48,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
         }
     }
 
-    private void closeInputStream (InputStream ais) throws SoundTransformException {
+    private void closeInputStream (final InputStream ais) throws SoundTransformException {
         try {
             ais.close ();
         } catch (final IOException e) {
@@ -76,15 +76,15 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
         final long neutral = pcmSigned ? this.getNeutral (sampleSize) : 0;
         for (int i = 0 ; i < data.length ; i++) {
             final int numByte = i % sampleSize;
-            final int currentChannel = (i / sampleSize) % channels.length;
+            final int currentChannel = i / sampleSize % channels.length;
             final int currentFrame = i / (sampleSize * channels.length);
-            if ((numByte == 0) && (channels [currentChannel].getSamples ().length > currentFrame)) {
+            if (numByte == 0 && channels [currentChannel].getSamples ().length > currentFrame) {
                 value = channels [currentChannel].getSamples () [currentFrame] + neutral;
                 rightShift = 0;
             }
-            byteValueSigned = (byte) ((((int) value >> (rightShift * Byte.SIZE)) & ByteArrayFrameProcessor.MAX_BYTE_VALUE) + (pcmSigned ? Byte.MIN_VALUE : 0));
+            byteValueSigned = (byte) (((int) value >> rightShift * Byte.SIZE & ByteArrayFrameProcessor.MAX_BYTE_VALUE) + (pcmSigned ? Byte.MIN_VALUE : 0));
 
-            data [i + (!bigEndian ? 0 : sampleSize - (ByteArrayFrameProcessor.TWICE * numByte) - 1)] = byteValueSigned;
+            data [i + (!bigEndian ? 0 : sampleSize - ByteArrayFrameProcessor.TWICE * numByte - 1)] = byteValueSigned;
             rightShift++;
         }
         return data;
@@ -115,7 +115,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
         return neutral;
     }
 
-    private int getPercent (int position, long length) {
+    private int getPercent (final int position, final long length) {
         return (int) (position * ByteArrayFrameProcessor.PERCENT / length);
     }
 
@@ -132,13 +132,13 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
         for (int position = 0 ; position < (int) isInfo.getFrameLength () ; position++) {
             final byte [] frame = new byte [isInfo.getSampleSize () * isInfo.getChannels ()];
             try {
-                ais.read (frame);
-                //this.log (new LogEvent (FrameProcessorEventCode.READ_FRAME_SIZE, frameSize));
+                final int frameSize = ais.read (frame);
+                this.log (new LogEvent (FrameProcessorEventCode.READ_FRAME_SIZE, frameSize));
             } catch (final IOException e) {
                 throw new SoundTransformException (TransformInputStreamServiceErrorCode.COULD_NOT_READ_STREAM, e);
             }
-            int currentPercent = this.getPercent (position, isInfo.getFrameLength ());
-            int lastPercent = this.getPercent (position - 1, isInfo.getFrameLength ());
+            final int currentPercent = this.getPercent (position, isInfo.getFrameLength ());
+            final int lastPercent = this.getPercent (position - 1, isInfo.getFrameLength ());
             if (currentPercent % 5 == 0 && lastPercent % 5 == 4) {
                 this.log (new LogEvent (FrameProcessorEventCode.BYTEARRAY_TO_FRAME_CONVERSION, position, isInfo.getFrameLength (), currentPercent));
             }

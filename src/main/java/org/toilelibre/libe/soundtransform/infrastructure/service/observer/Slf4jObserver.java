@@ -26,7 +26,7 @@ public class Slf4jObserver implements Observer {
     private String getCallerClassName () {
         int i = 1;
         final StackTraceElement [] stackTrace = Thread.currentThread ().getStackTrace ();
-        while ((i < stackTrace.length) && (stackTrace [i].getClassName ().equals (Slf4jObserver.OBSERVER_CLASSNAME) || stackTrace [i].getClassName ().equals (Slf4jObserver.LOGAWARE_CLASSNAME))) {
+        while (i < stackTrace.length && (stackTrace [i].getClassName ().equals (Slf4jObserver.OBSERVER_CLASSNAME) || stackTrace [i].getClassName ().equals (Slf4jObserver.LOGAWARE_CLASSNAME))) {
             i++;
         }
         return stackTrace [i].getClassName ();

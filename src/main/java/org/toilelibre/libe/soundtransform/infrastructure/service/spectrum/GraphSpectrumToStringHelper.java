@@ -15,7 +15,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
     private static final float               DECIBELS_FORMULA_COEFFICIENT = 20.0f;
     private final SpectrumHelper<Complex []> spectrumHelper;
 
-    public GraphSpectrumToStringHelper (SpectrumHelper<Complex []> spectrumHelper1) {
+    public GraphSpectrumToStringHelper (final SpectrumHelper<Complex []> spectrumHelper1) {
         this.spectrumHelper = spectrumHelper1;
     }
 
@@ -51,7 +51,7 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
         int i = 0;
         while (i < length) {
             sb.append (" ");
-            if (i == (maxIndex / compression)) {
+            if (i == maxIndex / compression) {
                 final float foundFreq = spectrumHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * GraphSpectrumToStringHelper.TWICE, (int) lastFrequency * GraphSpectrumToStringHelper.TWICE);
                 sb.append ("^").append (Float.valueOf (foundFreq)).append ("Hz");
                 i += (foundFreq == 0 ? 1 : Math.log10 (foundFreq)) + GraphSpectrumToStringHelper.TWO;
@@ -107,21 +107,21 @@ public class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Compl
         for (int i = 0 ; i < valuesOnPlot.length ; i++) {
             double maxValue = 0;
             for (int j = 0 ; j < step ; j++) {
-                final int x = (i * step) + j + low;
-                if ((x < fs.getState ().length) && (maxValue < fs.getState () [x].abs ())) {
+                final int x = i * step + j + low;
+                if (x < fs.getState ().length && maxValue < fs.getState () [x].abs ()) {
                     maxValue = GraphSpectrumToStringHelper.DECIBELS_FORMULA_COEFFICIENT * Math.log10 (fs.getState () [x].abs ());
                 }
             }
-            if ((minValuePlotted == -1) || (minValuePlotted > maxValue)) {
+            if (minValuePlotted == -1 || minValuePlotted > maxValue) {
                 minValuePlotted = maxValue;
             }
-            valuesOnPlot [i] = (int) ((maxValue * height) / maxMagn);
-            if ((maxPlotValue < valuesOnPlot [i]) && (i > 0)) {
+            valuesOnPlot [i] = (int) (maxValue * height / maxMagn);
+            if (maxPlotValue < valuesOnPlot [i] && i > 0) {
                 maxPlotValue = valuesOnPlot [i];
             }
         }
         for (int i = 0 ; i < valuesOnPlot.length ; i++) {
-            valuesOnPlot [i] -= (minValuePlotted * height) / maxMagn;
+            valuesOnPlot [i] -= minValuePlotted * height / maxMagn;
         }
 
         return valuesOnPlot;

@@ -11,13 +11,13 @@ public class ByteArrayTest extends SoundTransformTest {
     byte [] array1 = { 42, -127, 23, 0 };
 
     int byteArrayToInt (final byte [] bytes) {
-        return (bytes [3] << 24) | ((bytes [2] & 0xFF) << 16) | ((bytes [1] & 0xFF) << 8) | (bytes [0] & 0xFF);
+        return bytes [3] << 24 | (bytes [2] & 0xFF) << 16 | (bytes [1] & 0xFF) << 8 | bytes [0] & 0xFF;
     }
 
     byte [] intToByteArray (final int n) {
         final byte [] b = new byte [4];
         for (int i = 0 ; i < b.length ; i++) {
-            b [i] = (byte) (n >> (i * 8));
+            b [i] = (byte) (n >> i * 8);
         }
         return b;
     }

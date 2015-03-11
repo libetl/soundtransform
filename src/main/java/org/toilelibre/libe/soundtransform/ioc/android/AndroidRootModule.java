@@ -23,13 +23,13 @@ public class AndroidRootModule extends ImplAgnosticRootModule {
     }
 
     @Override
-    protected PlaySoundProcessor providePlaySoundProcessor () {
-        return new AndroidPlaySoundProcessor ();
+    protected ContextLoader provideContextLoader () {
+        return new AndroidContextLoader ();
     }
 
     @Override
-    protected ContextLoader provideContextLoader () {
-        return new AndroidContextLoader ();
+    protected PlaySoundProcessor providePlaySoundProcessor () {
+        return new AndroidPlaySoundProcessor ();
     }
 
 }

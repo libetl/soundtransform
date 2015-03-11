@@ -59,7 +59,7 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
 
     private static final int    INFO_CHUNK_SIZE     = 16;
 
-    private static final int    TWO_BYTES_NB_VALUES = 1 << (2 * Byte.SIZE);
+    private static final int    TWO_BYTES_NB_VALUES = 1 << 2 * Byte.SIZE;
 
     public AndroidWavHelper () {
 
@@ -114,7 +114,7 @@ public class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
     public void writeMetadata (final ByteArrayWithAudioFormatInputStream audioInputStream, final WavOutputStream outputStream) throws IOException {
         final StreamInfo info = audioInputStream.getInfo ();
         final int soundInfoSize = info.getTaggedInfo () == null ? 0 : info.getTaggedInfo ().length ();
-        final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + soundInfoSize + (info.getFrameLength () * info.getSampleSize () * info.getChannels ()));
+        final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + soundInfoSize + info.getFrameLength () * info.getSampleSize () * info.getChannels ());
         final int chunkSize = AndroidWavHelper.INFO_CHUNK_SIZE;
         final int typeOfEncoding = 1;
         final int channels = info.getChannels ();

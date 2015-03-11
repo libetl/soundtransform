@@ -40,6 +40,6 @@ public class PitchAndSpeedHelperTest extends SoundTransformTest {
         $.create (ConvertAudioFileService.class).writeInputStream (ais2, fDest);
         final Note n = $.create (Sound2NoteService.class).convert ("e4", e4);
         new Slf4jObserver ().notify ("e' 4 : " + n.getFrequency () + "Hz, should be around 658Hz");
-        org.junit.Assert.assertTrue ((n.getFrequency () > (658 - 10)) && (n.getFrequency () < (658 + 10)));
+        org.junit.Assert.assertTrue (n.getFrequency () > 658 - 10 && n.getFrequency () < 658 + 10);
     }
 }

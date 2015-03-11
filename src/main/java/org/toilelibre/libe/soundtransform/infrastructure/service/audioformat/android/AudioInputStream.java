@@ -52,12 +52,12 @@ public class AudioInputStream extends DataInputStream implements HasSoundInfo {
     }
 
     private int byteArrayToInt (final byte [] bytes) {
-        return (bytes [AudioInputStream.FOURTH_INDEX] << AudioInputStream.FOURTH_BYTE) | ((bytes [AudioInputStream.THIRD_INDEX] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.THIRD_BYTE)
-                | ((bytes [AudioInputStream.SECOND_INDEX] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.SECOND_BYTE) | (bytes [AudioInputStream.FIRST_INDEX] & AudioInputStream.BYTE_MAX_VALUE);
+        return bytes [AudioInputStream.FOURTH_INDEX] << AudioInputStream.FOURTH_BYTE | (bytes [AudioInputStream.THIRD_INDEX] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.THIRD_BYTE
+                | (bytes [AudioInputStream.SECOND_INDEX] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.SECOND_BYTE | bytes [AudioInputStream.FIRST_INDEX] & AudioInputStream.BYTE_MAX_VALUE;
     }
 
     private int byteArrayToShort (final byte [] bytes) {
-        return ((bytes [AudioInputStream.SECOND_INDEX] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.SECOND_BYTE) | (bytes [AudioInputStream.FIRST_INDEX] & AudioInputStream.BYTE_MAX_VALUE);
+        return (bytes [AudioInputStream.SECOND_INDEX] & AudioInputStream.BYTE_MAX_VALUE) << AudioInputStream.SECOND_BYTE | bytes [AudioInputStream.FIRST_INDEX] & AudioInputStream.BYTE_MAX_VALUE;
     }
 
     @Override

@@ -12,8 +12,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
-import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor.FrameProcessorErrorCode;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 public class WavAudioFormatParser implements AudioFormatParser {
 

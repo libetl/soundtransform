@@ -8,13 +8,6 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 
 public class FormatInfo implements Cloneable, Serializable {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 2807016563144431421L;
-    private final int         sampleSize;
-    private final float       sampleRate;
-
     enum FormatInfoErrorCode implements ErrorCode {
         CLONE_FAILED ("Clone operation on a format info object failed");
 
@@ -30,11 +23,27 @@ public class FormatInfo implements Cloneable, Serializable {
         }
 
     }
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2807016563144431421L;
+    private final int         sampleSize;
+
+    private final float       sampleRate;
 
     public FormatInfo (final int sampleSize, final float sampleRate) {
         super ();
         this.sampleSize = sampleSize;
         this.sampleRate = sampleRate;
+    }
+
+    @Override
+    public Sound clone () {
+        try {
+            return (Sound) super.clone ();
+        } catch (final CloneNotSupportedException e) {
+            throw new SoundTransformRuntimeException (FormatInfoErrorCode.CLONE_FAILED, e);
+        }
     }
 
     public float getSampleRate () {
@@ -47,15 +56,6 @@ public class FormatInfo implements Cloneable, Serializable {
 
     public boolean sameFormatAs (final FormatInfo fi){
         return this.sampleRate == fi.sampleRate && this.sampleSize == fi.sampleSize;
-    }
-    
-    @Override
-    public Sound clone () {
-        try {
-            return (Sound) super.clone ();
-        } catch (final CloneNotSupportedException e) {
-            throw new SoundTransformRuntimeException (FormatInfoErrorCode.CLONE_FAILED, e);
-        }
     }
 
     @Override

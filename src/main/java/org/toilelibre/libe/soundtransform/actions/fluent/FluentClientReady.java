@@ -29,7 +29,7 @@ public interface FluentClientReady {
      * @return the observers
      */
     Observer [] stopWithObservers ();
-    
+
     /**
      * Tells the client to add an observer that will be notified of different
      * kind of updates from the library. It is ok to call withAnObserver several
@@ -71,7 +71,7 @@ public interface FluentClientReady {
      *             the input stream cannot be read, or the json format is not
      *             correct, or some sound files are missing
      */
-    FluentClientReady withAPack (String packName, Object context, Class<?> rClass, InputStream jsonStream) throws SoundTransformException;
+    FluentClientReady withAPack (String packName, Object context, Class<?> rClass, int packJsonId) throws SoundTransformException;
 
     /**
      * Tells the client to work with a pack. Reads the whole string content. A
@@ -129,7 +129,7 @@ public interface FluentClientReady {
      *             the classpath resource was not found
      */
     FluentClientWithFile withClasspathResource (String resource) throws SoundTransformException;
-    
+
     /**
      * Tells the client to work first with a file. It will not be read yet
      *

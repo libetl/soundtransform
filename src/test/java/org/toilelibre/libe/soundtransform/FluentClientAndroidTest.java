@@ -3,18 +3,27 @@ package org.toilelibre.libe.soundtransform;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformAndroidTest;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class FluentClientAndroidTest extends SoundTransformAndroidTest {
 
+    public static class Context {
+
+        public Resources getResources () {
+            return new Resources ();
+        }
+
+    }
     public static class Resources {
-        public InputStream openRawResource (int id) throws RuntimeException {
-            for (Field f : org.toilelibre.libe.soundtransform.R.raw.class.getDeclaredFields ()){
+        public InputStream openRawResource (final int id) throws RuntimeException {
+            for (final Field f : org.toilelibre.libe.soundtransform.R.raw.class.getDeclaredFields ()){
 
                 try {
                 if (f.getInt (null) == id){
@@ -27,28 +36,22 @@ public class FluentClientAndroidTest extends SoundTransformAndroidTest {
                     }
                     return result;
                 }
-                } catch (IllegalArgumentException e) {
+                } catch (final IllegalArgumentException e) {
                     new Slf4jObserver (LogLevel.INFO).notify ("openRawResource : " + e);
-                } catch (IllegalAccessException e) {
+                } catch (final IllegalAccessException e) {
                     new Slf4jObserver (LogLevel.INFO).notify ("openRawResource : " + e);
                 }
             }
             throw new RuntimeException ("" + id);
         }
     }
-    public static class Context {
 
-        public Resources getResources () {
-            return new Resources ();
-        }
-        
-    }
-    
     @Test
     public void testLoadPack () throws SoundTransformException{
-        Context context = new Context ();
+        final Context context = new Context ();
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
-        FluentClient.start ().withAPack ("default", context, org.toilelibre.libe.soundtransform.R.raw.class, 
-                context.getResources ().openRawResource (R.raw.defaultpack));
+        final Pack pack = FluentClient.start ().withAPack ("default", context, R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
+        Assert.assertNotNull (pack);
+        Assert.assertNotEquals (pack.size (), 0);
     }
 }

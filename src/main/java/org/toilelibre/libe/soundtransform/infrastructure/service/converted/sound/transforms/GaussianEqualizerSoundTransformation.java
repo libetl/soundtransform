@@ -17,14 +17,14 @@ public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTr
     }
 
     private Complex function (final double x) {
-        return new Complex (1 - (Math.exp (-Math.pow (x - GaussianEqualizerSoundTransformation.DELTA_X, GaussianEqualizerSoundTransformation.EXPONENT) / GaussianEqualizerSoundTransformation.DIVISION) / GaussianEqualizerSoundTransformation.HALF));
+        return new Complex (1 - Math.exp (-Math.pow (x - GaussianEqualizerSoundTransformation.DELTA_X, GaussianEqualizerSoundTransformation.EXPONENT) / GaussianEqualizerSoundTransformation.DIVISION) / GaussianEqualizerSoundTransformation.HALF);
     }
 
     @Override
     public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset, final int powOf2NearestLength, final int length) {
         final Complex [] newAmpl = new Complex [powOf2NearestLength];
         for (double j = 0 ; j < length ; j++) {
-            final double freq = (j * fs.getSampleRate ()) / fs.getState ().length;
+            final double freq = j * fs.getSampleRate () / fs.getState ().length;
             newAmpl [(int) j] = fs.getState () [(int) j].multiply (this.function (freq));
         }
         for (int j = length ; j < powOf2NearestLength ; j++) {

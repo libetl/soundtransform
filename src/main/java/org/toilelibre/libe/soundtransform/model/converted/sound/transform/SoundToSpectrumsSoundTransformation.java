@@ -21,6 +21,11 @@ public class SoundToSpectrumsSoundTransformation extends SimpleFrequencySoundTra
         this.spectrums = new ArrayList<Spectrum<Serializable> []> ();
     }
 
+    @SuppressWarnings ("unchecked")
+    private Spectrum<Serializable> [] generateSpectrumArray (final int spectrumsSize) {
+        return new Spectrum [spectrumsSize];
+    }
+
     public List<Spectrum<Serializable> []> getSpectrums () {
         return this.spectrums;
     }
@@ -44,14 +49,9 @@ public class SoundToSpectrumsSoundTransformation extends SimpleFrequencySoundTra
         return super.initSound (input);
     }
 
-    @SuppressWarnings ("unchecked")
-    private Spectrum<Serializable> [] generateSpectrumArray (int spectrumsSize) {
-        return new Spectrum [spectrumsSize];
-    }
-
     @Override
     public Spectrum<Serializable> transformFrequencies (final Spectrum<Serializable> fs) {
-        this.spectrums.get (this.channel) [this.index++] = (Spectrum<Serializable>) fs;
+        this.spectrums.get (this.channel) [this.index++] = fs;
         return fs;
     }
 }

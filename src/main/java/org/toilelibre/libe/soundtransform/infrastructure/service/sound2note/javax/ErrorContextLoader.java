@@ -22,9 +22,14 @@ public class ErrorContextLoader implements ContextLoader {
             return this.messageFormat;
         }
     }
-    
+
     @Override
-    public InputStream read (Object context, Class<?> rClass, String idName) throws SoundTransformException {
+    public InputStream read (final Object context, final Class<?> rClass, final int id) throws SoundTransformException {
+        throw new SoundTransformException (ErrorContextReaderErrorCode.STUB_IMPLEMENTATION, new UnsupportedOperationException ());
+    }
+
+    @Override
+    public InputStream read (final Object context, final Class<?> rClass, final String idName) throws SoundTransformException {
         throw new SoundTransformException (ErrorContextReaderErrorCode.STUB_IMPLEMENTATION, new UnsupportedOperationException ());
     }
 

@@ -16,7 +16,7 @@ public final class ChangeLoudestFreqs extends Action {
         return this.loudestFreqsService.filterRange (freqs, low, high);
     }
 
-    public float [] insertPart (float [] freqs, float [] subFreqs, int start) {
+    public float [] insertPart (final float [] freqs, final float [] subFreqs, final int start) {
         return this.loudestFreqsService.insertPart (freqs, subFreqs, start);
     }
 
@@ -28,7 +28,7 @@ public final class ChangeLoudestFreqs extends Action {
         return this.loudestFreqsService.octaveUp (freqs);
     }
 
-    public float [] replacePart (float [] freqs, final float [] subFreqs, final int start) {
+    public float [] replacePart (final float [] freqs, final float [] subFreqs, final int start) {
         return this.loudestFreqsService.replacePart (freqs, subFreqs, start);
     }
 }

@@ -25,7 +25,7 @@ public class SpectrumsToSoundSoundTransformation implements SoundTransformation 
 
     @Override
     public Sound transform (final Sound input) throws SoundTransformException {
-        if ((this.spectrums == null) || (this.spectrums.size () == 0)) {
+        if (this.spectrums == null || this.spectrums.size () == 0) {
             return null;
         }
         final Spectrum<?> [] spectrumChannel = this.spectrums.get (input.getChannelNum ());

@@ -18,6 +18,59 @@ public class ToStringSoundTransformation implements SoundTransformation {
         this.height = height;
     }
 
+    private void diplayFooter (final Sound input, final double compression) {
+        this.sb.append ("L");
+        for (int i = 0 ; i < this.length ; i++) {
+            this.sb.append ("-");
+        }
+        this.sb.append ("> ").append (Integer.valueOf ((int) (this.length * compression / input.getSampleRate ()))).append ("s (time)\n");
+
+    }
+
+    private void displayRow (final int j, final long maxMagn, final int [] valuesOnPlot) {
+        if (j == this.height) {
+            this.sb.append ("^ ").append (Long.valueOf (maxMagn)).append (" (magnitude)\n");
+            return;
+        } else {
+            this.sb.append ("|");
+        }
+        for (int i = 0 ; i < this.length ; i++) {
+            if (valuesOnPlot [i] == j) {
+                this.sb.append ("_");
+            } else if (valuesOnPlot [i] > j) {
+                this.sb.append ("#");
+            } else {
+                this.sb.append (" ");
+            }
+        }
+        this.sb.append ("\n");
+
+    }
+
+    private int [] prepareValuesOnPlot (final Sound input, final int step, final long maxMagn) {
+        final int [] valuesOnPlot = new int [this.length];
+        for (int i = 0 ; i < valuesOnPlot.length ; i++) {
+            double maxValue = 0;
+            for (int j = 0 ; j < step ; j++) {
+                final int x = i * step + j;
+                if (x < input.getSamplesLength () && maxValue < input.getSampleAt (x)) {
+                    maxValue = input.getSampleAt (x);
+                }
+            }
+            if (this.minValuePlotted == -1 || this.minValuePlotted > maxValue) {
+                this.minValuePlotted = maxValue;
+            }
+            valuesOnPlot [i] = (int) (maxValue * this.height / maxMagn);
+            if (this.maxPlotValue < valuesOnPlot [i] && i > 0) {
+                this.maxPlotValue = valuesOnPlot [i];
+            }
+        }
+        for (int i = 0 ; i < valuesOnPlot.length ; i++) {
+            valuesOnPlot [i] -= this.minValuePlotted * this.height / maxMagn;
+        }
+        return valuesOnPlot;
+    }
+
     public String toString (final Sound sound) {
         this.transform (sound);
         return this.sb.toString ();
@@ -39,58 +92,5 @@ public class ToStringSoundTransformation implements SoundTransformation {
         this.diplayFooter (input, compression);
 
         return input;
-    }
-
-    private void diplayFooter (Sound input, double compression) {
-        this.sb.append ("L");
-        for (int i = 0 ; i < this.length ; i++) {
-            this.sb.append ("-");
-        }
-        this.sb.append ("> ").append (Integer.valueOf ((int) (this.length * compression / input.getSampleRate ()))).append ("s (time)\n");
-
-    }
-
-    private int [] prepareValuesOnPlot (final Sound input, int step, long maxMagn) {
-        final int [] valuesOnPlot = new int [this.length];
-        for (int i = 0 ; i < valuesOnPlot.length ; i++) {
-            double maxValue = 0;
-            for (int j = 0 ; j < step ; j++) {
-                final int x = i * step + j;
-                if (x < input.getSamplesLength () && maxValue < input.getSampleAt (x)) {
-                    maxValue = input.getSampleAt (x);
-                }
-            }
-            if (minValuePlotted == -1 || minValuePlotted > maxValue) {
-                minValuePlotted = maxValue;
-            }
-            valuesOnPlot [i] = (int) (maxValue * this.height / maxMagn);
-            if (maxPlotValue < valuesOnPlot [i] && i > 0) {
-                maxPlotValue = valuesOnPlot [i];
-            }
-        }
-        for (int i = 0 ; i < valuesOnPlot.length ; i++) {
-            valuesOnPlot [i] -= minValuePlotted * this.height / maxMagn;
-        }
-        return valuesOnPlot;
-    }
-
-    private void displayRow (int j, long maxMagn, int [] valuesOnPlot) {
-        if (j == this.height) {
-            this.sb.append ("^ ").append (Long.valueOf (maxMagn)).append (" (magnitude)\n");
-            return;
-        } else {
-            this.sb.append ("|");
-        }
-        for (int i = 0 ; i < this.length ; i++) {
-            if (valuesOnPlot [i] == j) {
-                this.sb.append ("_");
-            } else if (valuesOnPlot [i] > j) {
-                this.sb.append ("#");
-            } else {
-                this.sb.append (" ");
-            }
-        }
-        this.sb.append ("\n");
-
     }
 }

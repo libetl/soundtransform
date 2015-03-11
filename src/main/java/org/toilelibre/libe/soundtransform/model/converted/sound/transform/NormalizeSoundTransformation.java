@@ -30,7 +30,7 @@ public class NormalizeSoundTransformation implements SoundTransformation {
         this.coefficient = this.checkCoefficient (coefficient1);
     }
 
-    private float checkCoefficient (float coefficient1) throws SoundTransformException {
+    private float checkCoefficient (final float coefficient1) throws SoundTransformException {
         if (coefficient1 > 1) {
             throw new SoundTransformException (NormalizeSoundTransformationErrorCode.COEFFICIENT_IS_ABOVE_ONE, new IllegalArgumentException ());
         }

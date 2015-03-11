@@ -27,54 +27,29 @@ public class JavazoomAudioFileHelper implements AudioFileHelper {
 
     private void convertIntoWavFile (final File inputFile, final File tempFile) throws SoundTransformException {
         try {
-            AudioFileReader afr = this.getMpegAudioFileReader ();
+            final AudioFileReader afr = this.getMpegAudioFileReader ();
             final AudioInputStream ais = afr.getAudioInputStream (inputFile);
             final AudioFormat cdFormat = new AudioFormat (JavazoomAudioFileHelper.HIGH_SAMPLE_RATE, JavazoomAudioFileHelper.TWO_BYTES_SAMPLE, JavazoomAudioFileHelper.STEREO, true, false);
             final AudioInputStream decodedAis = this.createNewInstance (this.getDecodedAudioInputStreamClassConstructor (), cdFormat, ais);
             AudioSystem.write (decodedAis, AudioFileFormat.Type.WAVE, tempFile);
         } catch (final IOException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
-        } catch (UnsupportedAudioFileException e) {
+        } catch (final UnsupportedAudioFileException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
         }
     }
 
-    private AudioInputStream createNewInstance (Constructor<AudioInputStream> decodedAudioInputStreamClassConstructor, AudioFormat cdFormat, AudioInputStream ais) throws SoundTransformException {
+    private AudioInputStream createNewInstance (final Constructor<AudioInputStream> decodedAudioInputStreamClassConstructor, final AudioFormat cdFormat, final AudioInputStream ais) throws SoundTransformException {
         try {
             return decodedAudioInputStreamClassConstructor.newInstance (cdFormat, ais);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.MP3_CONVERSION_FAILED, e);
-        } catch (InstantiationException e) {
+        } catch (final InstantiationException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.MP3_CONVERSION_FAILED, e);
-        } catch (IllegalAccessException e) {
+        } catch (final IllegalAccessException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.MP3_CONVERSION_FAILED, e);
-        } catch (InvocationTargetException e) {
+        } catch (final InvocationTargetException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.MP3_CONVERSION_FAILED, e);
-        }
-    }
-
-    @SuppressWarnings ("unchecked")
-    private <T extends AudioInputStream> Constructor<T> getDecodedAudioInputStreamClassConstructor () throws SoundTransformException {
-        try {
-            return (Constructor<T>) Class.forName ("javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream").getConstructor (AudioFormat.class, AudioInputStream.class);
-        } catch (ClassNotFoundException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.PROBLEM_IN_THE_LIBRARY, e);
-        } catch (SecurityException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.PROBLEM_IN_THE_LIBRARY, e);
-        } catch (NoSuchMethodException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.PROBLEM_IN_THE_LIBRARY, e);
-        }
-    }
-
-    private AudioFileReader getMpegAudioFileReader () throws SoundTransformException {
-        try {
-            return (AudioFileReader) Class.forName ("javazoom.spi.mpeg.sampled.file.MpegAudioFileReader").newInstance ();
-        } catch (IllegalAccessException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.PROBLEM_IN_THE_LIBRARY, e);
-        } catch (InstantiationException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.PROBLEM_IN_THE_LIBRARY, e);
-        } catch (ClassNotFoundException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.PROBLEM_IN_THE_LIBRARY, e);
         }
     }
 
@@ -100,13 +75,50 @@ public class JavazoomAudioFileHelper implements AudioFileHelper {
                 return AudioSystem.getAudioInputStream (readFile);
             } catch (final IOException e) {
                 throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CREATE_A_TEMP_FILE, e);
-            } catch (UnsupportedAudioFileException e) {
+            } catch (final UnsupportedAudioFileException e) {
                 throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
             }
 
         }
         return this.getAudioInputSreamFromWavFile (readFile);
     }
+
+    @Override
+    public InputStream getAudioInputStream (final InputStream rawInputStream) throws SoundTransformException {
+        try {
+            return AudioSystem.getAudioInputStream (rawInputStream);
+        } catch (final UnsupportedAudioFileException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e);
+        } catch (final IOException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e);
+        }
+    }
+
+    @SuppressWarnings ("unchecked")
+    private <T extends AudioInputStream> Constructor<T> getDecodedAudioInputStreamClassConstructor () throws SoundTransformException {
+        try {
+            return (Constructor<T>) Class.forName ("javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream").getConstructor (AudioFormat.class, AudioInputStream.class);
+        } catch (final ClassNotFoundException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.PROBLEM_IN_THE_LIBRARY, e);
+        } catch (final SecurityException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.PROBLEM_IN_THE_LIBRARY, e);
+        } catch (final NoSuchMethodException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.PROBLEM_IN_THE_LIBRARY, e);
+        }
+    }
+
+    private AudioFileReader getMpegAudioFileReader () throws SoundTransformException {
+        try {
+            return (AudioFileReader) Class.forName ("javazoom.spi.mpeg.sampled.file.MpegAudioFileReader").newInstance ();
+        } catch (final IllegalAccessException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.PROBLEM_IN_THE_LIBRARY, e);
+        } catch (final InstantiationException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.PROBLEM_IN_THE_LIBRARY, e);
+        } catch (final ClassNotFoundException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.PROBLEM_IN_THE_LIBRARY, e);
+        }
+    }
+
 
     @Override
     public InputStream toStream (final byte [] byteArray, final Object audioFormat1) throws SoundTransformException {
@@ -118,18 +130,6 @@ public class JavazoomAudioFileHelper implements AudioFileHelper {
         return new AudioInputStream (bais, audioFormat, byteArray.length / audioFormat.getFrameSize ());
     }
 
-
-    @Override
-    public InputStream getAudioInputStream (InputStream rawInputStream) throws SoundTransformException {
-        try {
-            return AudioSystem.getAudioInputStream (rawInputStream);
-        } catch (UnsupportedAudioFileException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e);
-        } catch (IOException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e);
-        }
-    }
-    
     @Override
     public InputStream toStream (final InputStream is, final Object audioFormat1) throws SoundTransformException {
         if (!(audioFormat1 instanceof AudioFormat)) {

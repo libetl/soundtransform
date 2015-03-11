@@ -27,7 +27,7 @@ public class PurifySoundTransformation extends SimpleFrequencySoundTransformatio
         double maxValue = 0;
         for (int j = 0 ; j < length ; j++) {
             final double tmp = Math.sqrt (Math.pow (fs.getState () [j].getReal (), PurifySoundTransformation.EXPONENT) + Math.pow (fs.getState () [j].getImaginary (), PurifySoundTransformation.EXPONENT));
-            if ((tmp > maxValue) && (j > PurifySoundTransformation.START_INDEX) && (j < (fs.getSampleRate () / PurifySoundTransformation.EXPONENT))) {
+            if (tmp > maxValue && j > PurifySoundTransformation.START_INDEX && j < fs.getSampleRate () / PurifySoundTransformation.EXPONENT) {
                 max = j;
                 maxValue = tmp;
             }

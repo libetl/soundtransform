@@ -19,13 +19,23 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
     byte [] intToByteArray (final int n) {
         final byte [] b = new byte [4];
         for (int i = b.length - 1 ; i >= 0 ; i--) {
-            b [b.length - 1 - i] = (byte) (n >> (i * 8));
+            b [b.length - 1 - i] = (byte) (n >> i * 8);
         }
         return b;
     }
 
-    private String itoS (int i) throws UnsupportedEncodingException {
+    private String itoS (final int i) throws UnsupportedEncodingException {
         return new String (this.intToByteArray (i), "UTF-8").toString ();
+    }
+
+    @Test(expected=SoundTransformException.class)
+    public void testConvertToBaosWithFileNotFound () throws SoundTransformException {
+        try  {
+            new AndroidAudioFileHelper ().convertFileToBaos (new File ("fileNotFound"));
+        }catch (final SoundTransformException ste){
+            org.junit.Assert.assertEquals (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, ste.getErrorCode ());
+            throw ste;
+        }
     }
 
     @Test (expected = SoundTransformException.class)
@@ -39,6 +49,16 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
             throw ste;
         } catch (final UnsupportedEncodingException e) {
             org.junit.Assert.fail ("Should not throw an UnsupportedEncodingException");
+        }
+    }
+
+    @Test(expected=SoundTransformException.class)
+    public void testFileNotFound () throws SoundTransformException {
+        try  {
+        FluentClient.start ().withClasspathResource ("fileNotFound.wav").convertIntoSound ().exportToClasspathResource ("after.wav");
+        }catch (final SoundTransformException ste){
+            org.junit.Assert.assertEquals (FluentClient.FluentClientErrorCode.NO_FILE_IN_INPUT, ste.getErrorCode ());
+            throw ste;
         }
     }
 
@@ -87,7 +107,6 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
             org.junit.Assert.fail ("Should not throw an UnsupportedEncodingException");
         }
     }
-
     @Test (expected = SoundTransformException.class)
     public void testNotRiffFile () throws SoundTransformException {
         try {
@@ -95,25 +114,6 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
         } catch (final SoundTransformRuntimeException stre) {
             final SoundTransformException ste = (SoundTransformException) stre.getCause ();
             org.junit.Assert.assertEquals (AndroidWavHelper.AudioWavHelperErrorCode.NO_MAGIC_NUMBER, ste.getErrorCode ());
-            throw ste;
-        }
-    }
-    
-    @Test(expected=SoundTransformException.class)
-    public void testFileNotFound () throws SoundTransformException {
-        try  {
-        FluentClient.start ().withClasspathResource ("fileNotFound.wav").convertIntoSound ().exportToClasspathResource ("after.wav");
-        }catch (SoundTransformException ste){
-            org.junit.Assert.assertEquals (FluentClient.FluentClientErrorCode.NO_FILE_IN_INPUT, ste.getErrorCode ());
-            throw ste;
-        }
-    }
-    @Test(expected=SoundTransformException.class)
-    public void testConvertToBaosWithFileNotFound () throws SoundTransformException {
-        try  {
-            new AndroidAudioFileHelper ().convertFileToBaos (new File ("fileNotFound"));
-        }catch (SoundTransformException ste){
-            org.junit.Assert.assertEquals (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, ste.getErrorCode ());
             throw ste;
         }
     }

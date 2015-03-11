@@ -19,14 +19,14 @@ public class Slf4JObserverTest {
         WARN (LogLevel.WARN, "Warning event"),
         ERROR (LogLevel.ERROR, "Error event");
 
-        private LogLevel level;
-        private String messageFormat;
+        private final LogLevel level;
+        private final String messageFormat;
 
-        private FakeLogEvent (LogLevel ll, String mf) {
+        private FakeLogEvent (final LogLevel ll, final String mf) {
             this.level = ll;
             this.messageFormat = mf;
         }
-        
+
         @Override
         public LogLevel getLevel () {
             return this.level;
@@ -36,9 +36,9 @@ public class Slf4JObserverTest {
         public String getMessageFormat () {
             return this.messageFormat;
         }
-        
+
     }
-    
+
     @Test
     public void levels (){
         final Observer observer = new Slf4jObserver (LogLevel.PARANOIAC);
@@ -48,13 +48,13 @@ public class Slf4JObserverTest {
         observer.notify (new LogEvent (FakeLogEvent.WARN));
         observer.notify (new LogEvent (FakeLogEvent.ERROR));
     }
-    
+
     @Test(expected=MissingFormatArgumentException.class)
     public void missingParameter (){
         final Observer observer = new Slf4jObserver (LogLevel.PARANOIAC);
         observer.notify (new LogEvent (FakeLogEvent.INFO));
     }
-    
+
     @Test
     public void notCalled (){
         final Observer observer = new Slf4jObserver (LogLevel.WARN);

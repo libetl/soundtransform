@@ -79,7 +79,7 @@ public class ConvertedSoundAppender implements SoundAppender {
         final long oldMax = (long) (Math.pow (ConvertedSoundAppender.BYTE_NB_VALUES, sound.getSampleSize ()) / ConvertedSoundAppender.HALF);
         final long newMax = (long) (Math.pow (ConvertedSoundAppender.BYTE_NB_VALUES, newNbBytesPerSample) / ConvertedSoundAppender.HALF);
         for (int j = 0 ; j < sound.getSamplesLength () ; j++) {
-            newsamples [j] = (long) ((sound.getSampleAt (j) * 1.0 * newMax) / oldMax);
+            newsamples [j] = (long) (sound.getSampleAt (j) * 1.0 * newMax / oldMax);
         }
         return new Sound (newsamples, new FormatInfo (newNbBytesPerSample, sound.getSampleRate ()), sound.getChannelNum ());
     }
@@ -117,7 +117,7 @@ public class ConvertedSoundAppender implements SoundAppender {
      */
     @Override
     public Sound resizeToSampleRate (final Sound sound, final float newfreq) {
-        final float ratio = (float) ((newfreq * 1.0) / sound.getSampleRate ());
+        final float ratio = (float) (newfreq * 1.0 / sound.getSampleRate ());
         if (ratio > 1) {
             return this.upsampleWithRatio (sound, ratio);
         }
@@ -143,6 +143,6 @@ public class ConvertedSoundAppender implements SoundAppender {
             outputLongArray = new long [indexResult];
             System.arraycopy (result, 0, outputLongArray, 0, indexResult);
         }
-        return new Sound (outputLongArray, new FormatInfo (sound.getSampleSize (), (float) (sound.getSampleRate () * ratio)), sound.getChannelNum ());
+        return new Sound (outputLongArray, new FormatInfo (sound.getSampleSize (), sound.getSampleRate () * ratio), sound.getChannelNum ());
     }
 }

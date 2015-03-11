@@ -21,12 +21,12 @@ public class ImportAPackIntoTheLibrary extends Action {
         this.importPackService.importPack (this.library, title, jsonStream);
     }
 
-    public void importAPack (final String title, final String jsonContent) throws SoundTransformException {
-        this.importPackService.importPack (this.library, title, jsonContent);
+    public void importAPack (final String title, final Object context, final Class<?> rClass, final int packJsonId) throws SoundTransformException {
+        this.importPackService.importPack (this.library, title, context, rClass, packJsonId);
+
     }
 
-    public void importAPack (String title, Object context, Class<?> rClass, InputStream jsonStream) throws SoundTransformException {
-        this.importPackService.importPack (this.library, title, context, rClass, jsonStream);
-        
+    public void importAPack (final String title, final String jsonContent) throws SoundTransformException {
+        this.importPackService.importPack (this.library, title, jsonContent);
     }
 }

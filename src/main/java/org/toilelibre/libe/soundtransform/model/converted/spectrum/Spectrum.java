@@ -18,20 +18,20 @@ public class Spectrum<T> {
         return this.formatInfo;
     }
 
+    public float getSampleRate () {
+        return this.formatInfo.getSampleRate ();
+    }
+    public int getSampleSize () {
+        return this.formatInfo.getSampleSize ();
+    }
+
     public T getState () {
         return this.state;
     }
+
     @SuppressWarnings ("unchecked")
     @Override
     public String toString () {
         return $.create (Spectrum2StringService.class).convert (this);
-    }
-
-    public float getSampleRate () {
-        return this.formatInfo.getSampleRate ();
-    }
-
-    public int getSampleSize () {
-        return this.formatInfo.getSampleSize ();
     }
 }

@@ -46,7 +46,7 @@ public class ReplacePartSoundTransformation implements SoundTransformation {
     }
 
     private Sound replace (final Sound sound) {
-        long [] samples = new long [Math.max (sound.getSamplesLength (), this.start + this.replacement [sound.getChannelNum ()].getSamplesLength ())];
+        final long [] samples = new long [Math.max (sound.getSamplesLength (), this.start + this.replacement [sound.getChannelNum ()].getSamplesLength ())];
         System.arraycopy (sound.getSamples (), 0, samples, 0, sound.getSamplesLength ());
         System.arraycopy (this.replacement [sound.getChannelNum ()].getSamples (), 0, samples, this.start, this.replacement [sound.getChannelNum ()].getSamplesLength ());
         return new Sound (samples, sound.getFormatInfo (), sound.getChannelNum ());

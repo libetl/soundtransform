@@ -23,13 +23,13 @@ public class JavaXRootModule extends ImplAgnosticRootModule {
     }
 
     @Override
-    protected PlaySoundProcessor providePlaySoundProcessor () {
-        return new LineListenerPlaySoundProcessor ();
+    protected ContextLoader provideContextLoader () {
+        return new ErrorContextLoader ();
     }
 
     @Override
-    protected ContextLoader provideContextLoader () {
-        return new ErrorContextLoader ();
+    protected PlaySoundProcessor providePlaySoundProcessor () {
+        return new LineListenerPlaySoundProcessor ();
     }
 
 }

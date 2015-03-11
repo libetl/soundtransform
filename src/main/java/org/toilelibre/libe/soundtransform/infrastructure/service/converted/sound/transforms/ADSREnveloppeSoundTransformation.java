@@ -35,7 +35,7 @@ public class ADSREnveloppeSoundTransformation extends SimpleFrequencySoundTransf
     @Override
     public Sound initSound (final Sound input) {
         this.arraylength = 0;
-        this.magnitude = new double [(int) ((input.getSamplesLength () / this.step) + 1)];
+        this.magnitude = new double [(int) (input.getSamplesLength () / this.step + 1)];
         return super.initSound (input);
     }
 

@@ -6,5 +6,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public interface ContextLoader {
 
+    InputStream read (Object context, Class<?> rClass, int id) throws SoundTransformException;
+
     InputStream read (Object context, Class<?> rClass, String idName) throws SoundTransformException;
 }

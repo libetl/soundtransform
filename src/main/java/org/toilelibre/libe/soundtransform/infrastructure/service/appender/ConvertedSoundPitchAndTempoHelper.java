@@ -28,13 +28,13 @@ public class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelp
         Sound result = sound;
 
         final PitchSoundTransformation pitcher = new PitchSoundTransformation (percent);
-        if ((percent < ConvertedSoundPitchAndTempoHelper.THRESHOLD_DOWN_PITCH) || (percent > ConvertedSoundPitchAndTempoHelper.THRESHOLD_UP_PITCH)) {
+        if (percent < ConvertedSoundPitchAndTempoHelper.THRESHOLD_DOWN_PITCH || percent > ConvertedSoundPitchAndTempoHelper.THRESHOLD_UP_PITCH) {
             result = pitcher.transform (result);
         }
-        final double factor = sound.getSamplesLength () == 0 ? 0 : (1.0 * lengthInSeconds * sound.getSampleRate ()) / result.getSamplesLength ();
+        final double factor = sound.getSamplesLength () == 0 ? 0 : 1.0 * lengthInSeconds * sound.getSampleRate () / result.getSamplesLength ();
         if (factor == 0) {
             return result;
-        } else if ((factor < ConvertedSoundPitchAndTempoHelper.THRESHOLD_SPEEDUP) || (factor > ConvertedSoundPitchAndTempoHelper.THRESHOLD_SLOWDOWN)) {
+        } else if (factor < ConvertedSoundPitchAndTempoHelper.THRESHOLD_SPEEDUP || factor > ConvertedSoundPitchAndTempoHelper.THRESHOLD_SLOWDOWN) {
             if (factor < ConvertedSoundPitchAndTempoHelper.THRESHOLD_SPEEDUP) {
                 final SpeedUpSoundTransformation<Serializable> speedup = new SpeedUpSoundTransformation<Serializable> (ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_SPEEDUP_STEP_VALUE, (float) (1 / factor));
                 result = speedup.transform (result);

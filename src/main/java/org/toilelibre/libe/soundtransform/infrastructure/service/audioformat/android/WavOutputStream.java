@@ -17,13 +17,13 @@ public class WavOutputStream extends FileOutputStream {
     private byte [] intToByteArray (final int n) {
         final byte [] b = new byte [WavOutputStream.INTEGER_NUMBER_OF_BYTES];
         for (int i = 0 ; i < b.length ; i++) {
-            b [i] = (byte) (n >> (i * Byte.SIZE));
+            b [i] = (byte) (n >> i * Byte.SIZE);
         }
         return b;
     }
 
     private byte [] shortToByteArray (final int i) {
-        return new byte [] { (byte) (i & WavOutputStream.BYTE_MAX_VALUE), (byte) ((i >> Byte.SIZE) & WavOutputStream.BYTE_MAX_VALUE) };
+        return new byte [] { (byte) (i & WavOutputStream.BYTE_MAX_VALUE), (byte) (i >> Byte.SIZE & WavOutputStream.BYTE_MAX_VALUE) };
     }
 
     public void writeInt (final int i) throws IOException {

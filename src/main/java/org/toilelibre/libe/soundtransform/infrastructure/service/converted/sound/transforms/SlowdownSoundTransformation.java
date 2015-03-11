@@ -90,7 +90,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     }
 
     private void checkConstructor () throws SoundTransformException {
-        if (this.windowLength < (SlowdownSoundTransformation.TWICE * this.step)) {
+        if (this.windowLength < SlowdownSoundTransformation.TWICE * this.step) {
             throw new SoundTransformException (SlowdownSoundTransformationErrorCode.WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_STEP, new IllegalArgumentException (), this.windowLength, this.step);
         }
         if ((this.windowLength & -this.windowLength) != this.windowLength) {
@@ -103,7 +103,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         complexArray = fastFourierTransformer.transform (complexArray, TransformType.INVERSE);
         for (int i = start ; i < end ; i++) {
-            if ((i < this.sound.getSamplesLength ()) && ((i - start) < complexArray.length)) {
+            if (i < this.sound.getSamplesLength () && i - start < complexArray.length) {
                 this.sound.setSampleAt (i, (long) complexArray [i - start].getReal ());
             }
         }
@@ -138,17 +138,17 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     @Override
     public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset) {
         final int total = (int) (this.sound.getSamplesLength () * this.factor);
-        final int logStep = (total / SlowdownSoundTransformation.A_HUNDRED) - ((total / SlowdownSoundTransformation.A_HUNDRED) % this.step);
+        final int logStep = total / SlowdownSoundTransformation.A_HUNDRED - total / SlowdownSoundTransformation.A_HUNDRED % this.step;
         // This if helps to only log some of all iterations to avoid being too
         // verbose
-        if (((total / SlowdownSoundTransformation.A_HUNDRED) != 0) && (logStep != 0) && ((offset % logStep) == 0)) {
+        if (total / SlowdownSoundTransformation.A_HUNDRED != 0 && logStep != 0 && offset % logStep == 0) {
             this.log (new LogEvent (SlowdownSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamplesLength () / this.factor)));
         }
         final float remaining = (float) (this.factor - Math.floor (this.factor));
         final int padding = (int) Math.floor (this.writeIfGreaterEqThan1 + remaining);
-        final int loops = (int) ((this.factor + padding) - 1);
+        final int loops = (int) (this.factor + padding - 1);
         this.additionalFrames += loops;
-        final int start = offset + Math.max (0, this.getOffsetFromASimpleLoop (0, 0) - (loops * this.step));
+        final int start = offset + Math.max (0, this.getOffsetFromASimpleLoop (0, 0) - loops * this.step);
         final int end = offset + this.getOffsetFromASimpleLoop (0, 0);
         this.copyBeginingOfSpectrumToFillTheGaps (fs, start, end);
         if (padding == 1) {

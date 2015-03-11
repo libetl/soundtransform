@@ -113,7 +113,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         return frequencyDidNotChangeBetweenIAndIMinusTwo && freqChangedAtIMinusThree && thereIsANewFrequencyValue;
     }
 
-    public Sound transform (final int step, final int channelNum, int soundLength) throws SoundTransformException {
+    public Sound transform (final int step, final int channelNum, final int soundLength) throws SoundTransformException {
         final Sound builtSound = new Sound (new long [soundLength], this.formatInfo, channelNum);
         int lastBegining = 0;
         float lastFreq = 0;
@@ -121,7 +121,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         for (int i = 4 ; i < this.freqs.length ; i++) {
             if (i == this.freqs.length - 1 || this.isNewNote (i, lastFreq, firstNote)) {
                 final int endOfNoteIndex = i == this.freqs.length - 1 ? i : i - 4;
-                final float lengthInSeconds = (endOfNoteIndex - lastBegining < 1 ? this.freqs [i] * step : (endOfNoteIndex - 1 - lastBegining) * step * 1.0f) / (float)this.formatInfo.getSampleRate ();
+                final float lengthInSeconds = (endOfNoteIndex - lastBegining < 1 ? this.freqs [i] * step : (endOfNoteIndex - 1 - lastBegining) * step * 1.0f) / this.formatInfo.getSampleRate ();
                 final Note note = this.findNote (this.freqs [endOfNoteIndex], (int)this.formatInfo.getSampleRate (), endOfNoteIndex + 1, lastBegining + 1);
                 this.soundAppender.appendNote (builtSound, note, this.freqs [endOfNoteIndex], step * lastBegining, channelNum, lengthInSeconds);
                 lastBegining = endOfNoteIndex;

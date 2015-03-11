@@ -6,7 +6,7 @@ public class PureNote extends FormulaNote {
 
     @Override
     protected float applyFormula (final int j, final float frequency, final float sampleRate) {
-        return (float) Math.sin ((j * frequency * PureNote.TWO_PI) / sampleRate);
+        return (float) Math.sin (j * frequency * PureNote.TWO_PI / sampleRate);
     }
 
     @Override
