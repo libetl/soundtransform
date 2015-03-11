@@ -71,7 +71,7 @@ public interface FluentClientReady {
      *             the input stream cannot be read, or the json format is not
      *             correct, or some sound files are missing
      */
-    FluentClientReady withAPack (String packName, Object context, Class<Object> rClass, InputStream jsonStream) throws SoundTransformException;
+    FluentClientReady withAPack (String packName, Object context, Class<?> rClass, InputStream jsonStream) throws SoundTransformException;
 
     /**
      * Tells the client to work with a pack. Reads the whole string content. A

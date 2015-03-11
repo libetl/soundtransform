@@ -1,28 +1,28 @@
 {
   "simple_piano" : 
     {
-  	      -1 : "piano1c.wav",
-  	      -2 : "piano3e.wav",
-  	      -3 : "piano5g.wav",
-  	      -4 : "piano7b.wav",
-  	      -5 : "piano2d.wav",
-  	      -6 : "piano4f.wav",
-  	      -7 : "piano6a.wav",
-  	      -8 : "piano8c.wav"
+  	      -1 : "piano1c",
+  	      -2 : "piano3e",
+  	      -3 : "piano5g",
+  	      -4 : "piano7b",
+  	      -5 : "piano2d",
+  	      -6 : "piano4f",
+  	      -7 : "piano6a",
+  	      -8 : "piano8c"
     },
   "g-piano" :
     {
-        -1 : "gpiano1.wav",
-  	    -2 : "gpiano2.wav",
-  	    -3 : "gpiano3.wav",
-  	    -4 : "gpiano4.wav",
-  	    -5 : "gpiano5.wav",
-  	    -6 : "gpiano6.wav"
+        -1 : "gpiano1",
+  	    -2 : "gpiano2",
+  	    -3 : "gpiano3",
+  	    -4 : "gpiano4",
+  	    -5 : "gpiano5",
+  	    -6 : "gpiano6"
     },
   "chord_piano" :
     {
-        329 : "gpiano3.wav",
-        293 : "gpiano4.wav"
+        329 : "gpiano3",
+        293 : "gpiano4"
     },
   "org.toilelibre.libe.soundtransform.model.library.note.PureNote" : {},
   "org.toilelibre.libe.soundtransform.model.library.note.ComputedOrganNote" : {},

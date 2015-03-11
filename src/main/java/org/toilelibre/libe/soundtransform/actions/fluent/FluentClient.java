@@ -655,7 +655,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             the input stream cannot be read, or the json format is not
      *             correct, or some sound files are missing
      */
-    public FluentClientReady withAPack (final String packName, final Object context, final Class<Object> rClass, InputStream jsonStream) throws SoundTransformException {
+    public FluentClientReady withAPack (final String packName, final Object context, final Class<?> rClass, InputStream jsonStream) throws SoundTransformException {
         new ImportAPackIntoTheLibrary (this.getObservers ()).importAPack (packName, context, rClass, jsonStream);
         return this;
     }

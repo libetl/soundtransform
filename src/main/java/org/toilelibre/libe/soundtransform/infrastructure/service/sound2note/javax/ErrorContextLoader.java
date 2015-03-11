@@ -24,7 +24,7 @@ public class ErrorContextLoader implements ContextLoader {
     }
     
     @Override
-    public InputStream read (Object context, Class<Object> rClass, String idName) throws SoundTransformException {
+    public InputStream read (Object context, Class<?> rClass, String idName) throws SoundTransformException {
         throw new SoundTransformException (ErrorContextReaderErrorCode.STUB_IMPLEMENTATION, new UnsupportedOperationException ());
     }
 

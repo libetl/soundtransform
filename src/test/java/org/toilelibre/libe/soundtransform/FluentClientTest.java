@@ -89,7 +89,7 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void getDefaultPack () throws SoundTransformException {
-        final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json");
+        final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json");
         final Pack pack = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", packInputStream).stopWithAPack ("default");
         Assert.assertNotNull (pack);
     }
@@ -214,7 +214,7 @@ public class FluentClientTest extends SoundTransformTest {
     // Exactly the same code run as WavTest.testShape
     @Test
     public void shapeASoundTest () throws SoundTransformException {
-        final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json");
+        final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json");
         final FormatInfo fi = new FormatInfo (2, 48000);
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", packInputStream).withClasspathResource ("gpiano3.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", fi);
     }
@@ -271,7 +271,7 @@ public class FluentClientTest extends SoundTransformTest {
                 freqs [i++] = currentFreq;
             }
         }
-        final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json");
+        final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json");
         final FormatInfo fi = new FormatInfo (2, 48000);
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", packInputStream).withFreqs (freqs).shapeIntoSound ("default", "simple_piano", fi).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
