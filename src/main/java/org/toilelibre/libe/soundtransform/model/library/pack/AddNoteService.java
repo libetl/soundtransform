@@ -1,15 +1,16 @@
 package org.toilelibre.libe.soundtransform.model.library.pack;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android.AudioInputStream;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.inputstream.TransformInputStreamService;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
 import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
@@ -38,7 +39,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
     }
 
     public enum AddNoteEventCode implements EventCode {
-        FILE_NOT_FOUND (LogLevel.ERROR, "%1s not found"), NOT_READABLE (LogLevel.ERROR, "%1s could not be read"), NOT_A_CLASSPATH_RESOURCE (LogLevel.WARN, "%1s is not a classpath resource"), NOT_A_FILESYSTEM_ENTRY (LogLevel.ERROR, "%1s is not a filesystem entry (%2s)");
+        FILE_NOT_FOUND (LogLevel.ERROR, "%1s not found"), NOT_A_CLASSPATH_RESOURCE (LogLevel.WARN, "%1s is not a classpath resource"), NOT_A_FILESYSTEM_ENTRY (LogLevel.ERROR, "%1s is not a filesystem entry (%2s)");
 
         private String   messageFormat;
         private LogLevel logLevel;
@@ -63,15 +64,19 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
     private final Sound2NoteService           sound2NoteService;
     private final TransformInputStreamService transformInputStreamService;
     private final ConvertAudioFileService     convertAudioFileService;
+    private final AudioFileHelper             audioFileHelper;
+    private final AudioFormatParser           audioFormatParser;
 
-    public AddNoteService (final Sound2NoteService sound2NoteService1, final TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1) {
-        this (sound2NoteService1, transformInputStreamService1, convertAudioFileService1, new Observer [0]);
+    public AddNoteService (final Sound2NoteService sound2NoteService1, final TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1, AudioFileHelper audioFileHelper1, AudioFormatParser audioFormatParser1) {
+        this (sound2NoteService1, transformInputStreamService1, convertAudioFileService1, audioFileHelper1, audioFormatParser1, new Observer [0]);
     }
 
-    public AddNoteService (final Sound2NoteService sound2NoteService1, final TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1, final Observer... observers1) {
+    public AddNoteService (final Sound2NoteService sound2NoteService1, final TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1, AudioFileHelper audioFileHelper1, AudioFormatParser audioFormatParser1, final Observer... observers1) {
         this.sound2NoteService = sound2NoteService1;
         this.transformInputStreamService = transformInputStreamService1.setObservers (observers1);
         this.convertAudioFileService = convertAudioFileService1;
+        this.audioFileHelper = audioFileHelper1;
+        this.audioFormatParser = audioFormatParser1;
         this.observers = observers1;
     }
 
@@ -133,13 +138,11 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
 
     public void addNote (Range range, String idName, InputStream is, int frequency) throws SoundTransformException {
         try {
-            AudioInputStream ais = new AudioInputStream (is);
-            
-            Note n = frequency <= 0 ? this.sound2NoteService.convert (idName, this.transformInputStreamService.fromInputStream (ais, ais.getInfo ())) :
-                this.sound2NoteService.convert (idName, this.transformInputStreamService.fromInputStream (ais, ais.getInfo ()), frequency);
+            InputStream ais = this.audioFileHelper.getAudioInputStream (is);
+            StreamInfo si = this.audioFormatParser.getSoundInfo (ais);
+            Note n = frequency <= 0 ? this.sound2NoteService.convert (idName, this.transformInputStreamService.fromInputStream (ais, si)) :
+                this.sound2NoteService.convert (idName, this.transformInputStreamService.fromInputStream (ais, si), frequency);
             range.put (n.getFrequency (), n);
-        } catch (IOException e) {
-            this.log (new LogEvent (AddNoteEventCode.NOT_READABLE, idName));
         } catch (SoundTransformException e) {
             throw new SoundTransformException (AddNoteErrorCode.COULD_NOT_BE_PARSED, e, idName);
         }

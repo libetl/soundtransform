@@ -118,6 +118,18 @@ public class JavazoomAudioFileHelper implements AudioFileHelper {
         return new AudioInputStream (bais, audioFormat, byteArray.length / audioFormat.getFrameSize ());
     }
 
+
+    @Override
+    public InputStream getAudioInputStream (InputStream rawInputStream) throws SoundTransformException {
+        try {
+            return AudioSystem.getAudioInputStream (rawInputStream);
+        } catch (UnsupportedAudioFileException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e);
+        } catch (IOException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e);
+        }
+    }
+    
     @Override
     public InputStream toStream (final InputStream is, final Object audioFormat1) throws SoundTransformException {
         if (!(audioFormat1 instanceof AudioFormat)) {

@@ -40,14 +40,22 @@ public class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHel
     }
 
     @Override
-    public InputStream getAudioInputStream (final File inputFile) throws SoundTransformException {
-
+    public InputStream getAudioInputStream (final InputStream rawInputStream) throws SoundTransformException {
         try {
-            final AudioInputStream ais = new AudioInputStream (this.convertFileToBaos (inputFile));
+            final AudioInputStream ais = new AudioInputStream (rawInputStream);
             ais.setInfo (new AndroidWavHelper ().readMetadata (ais));
             return ais;
         } catch (final IOException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
+            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT_IS, e);
+        }
+    }
+
+    @Override
+    public InputStream getAudioInputStream (final File inputFile) throws SoundTransformException {
+        try {
+          return this.getAudioInputStream (this.convertFileToBaos (inputFile));
+        } catch (SoundTransformException ste){
+          throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, ste, inputFile.getName ());
         }
     }
 
