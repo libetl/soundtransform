@@ -1,9 +1,12 @@
 package org.toilelibre.libe.soundtransform.model.library.pack;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android.AudioInputStream;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
@@ -35,7 +38,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
     }
 
     public enum AddNoteEventCode implements EventCode {
-        FILE_NOT_FOUND (LogLevel.ERROR, "%1s not found"), NOT_A_CLASSPATH_RESOURCE (LogLevel.WARN, "%1s is not a classpath resource"), NOT_A_FILESYSTEM_ENTRY (LogLevel.ERROR, "%1s is not a filesystem entry (%2s)");
+        FILE_NOT_FOUND (LogLevel.ERROR, "%1s not found"), NOT_READABLE (LogLevel.ERROR, "%1s could not be read"), NOT_A_CLASSPATH_RESOURCE (LogLevel.WARN, "%1s is not a classpath resource"), NOT_A_FILESYSTEM_ENTRY (LogLevel.ERROR, "%1s is not a filesystem entry (%2s)");
 
         private String   messageFormat;
         private LogLevel logLevel;
@@ -72,23 +75,6 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
         this.observers = observers1;
     }
 
-    public void addNote (final Range range, final String fileName) throws SoundTransformException {
-        final URL completeURL = this.getURL (fileName);
-        try {
-            if (completeURL == null) {
-                this.log (new LogEvent (AddNoteEventCode.FILE_NOT_FOUND, fileName));
-                return;
-            }
-            final String completeFileName = completeURL.getFile ();
-            final File file = new File (completeFileName);
-            final Note n = this.sound2NoteService.convert (fileName, this.transformInputStreamService.fromInputStream (this.convertAudioFileService.callConverter (file)));
-            range.put (n.getFrequency (), n);
-        } catch (final IllegalArgumentException e) {
-            throw new SoundTransformException (AddNoteErrorCode.COULD_NOT_BE_PARSED, e, fileName);
-        }
-
-    }
-
     public void addNote (final Range range, final String fileName, final int frequency) throws SoundTransformException {
         final URL completeURL = this.getURL (fileName);
         try {
@@ -98,12 +84,18 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
             }
             final String completeFileName = completeURL.getFile ();
             final File file = new File (completeFileName);
-            final Note n = this.sound2NoteService.convert (fileName, this.transformInputStreamService.fromInputStream (this.convertAudioFileService.callConverter (file)), frequency);
+            final Note n = frequency <= 0 ? 
+                    this.sound2NoteService.convert (fileName, this.transformInputStreamService.fromInputStream (this.convertAudioFileService.callConverter (file))) :
+                        this.sound2NoteService.convert (fileName, this.transformInputStreamService.fromInputStream (this.convertAudioFileService.callConverter (file)), frequency);
             range.put (n.getFrequency (), n);
         } catch (final IllegalArgumentException e) {
             throw new SoundTransformException (AddNoteErrorCode.COULD_NOT_BE_PARSED, e, fileName);
         }
 
+    }
+
+    public void addNote (final Range range, final String fileName) throws SoundTransformException {
+        this.addNote (range, fileName, 0);
     }
 
     public void addNotes (final Range range, final String... fileNames) throws SoundTransformException {
@@ -133,6 +125,24 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
     public AddNoteService setObservers (final Observer... observers1) {
         this.transformInputStreamService.setObservers (observers1);
         return super.setObservers (observers1);
+    }
+
+    public void addNote (Range range, String idName, InputStream is) throws SoundTransformException {
+        this.addNote (range, idName, is, 0);
+    }
+
+    public void addNote (Range range, String idName, InputStream is, int frequency) throws SoundTransformException {
+        try {
+            AudioInputStream ais = new AudioInputStream (is);
+            
+            Note n = frequency <= 0 ? this.sound2NoteService.convert (idName, this.transformInputStreamService.fromInputStream (ais, ais.getInfo ())) :
+                this.sound2NoteService.convert (idName, this.transformInputStreamService.fromInputStream (ais, ais.getInfo ()), frequency);
+            range.put (n.getFrequency (), n);
+        } catch (IOException e) {
+            this.log (new LogEvent (AddNoteEventCode.NOT_READABLE, idName));
+        } catch (SoundTransformException e) {
+            throw new SoundTransformException (AddNoteErrorCode.COULD_NOT_BE_PARSED, e, idName);
+        }
     }
 
 }

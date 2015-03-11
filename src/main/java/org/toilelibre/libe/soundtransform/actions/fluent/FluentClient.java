@@ -640,7 +640,26 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         new ImportAPackIntoTheLibrary (this.getObservers ()).importAPack (packName, jsonStream);
         return this;
     }
-
+    
+    @Override
+    /**
+     * Tells the client to work with a pack. uses the context object to find the resource from the R object
+     * passed in parameter
+     *
+     * @param context
+     *            (Android only) a Context object
+     * @param rObject
+     *            the R object
+     * @return the client, ready to start
+     * @throws SoundTransformException
+     *             the input stream cannot be read, or the json format is not
+     *             correct, or some sound files are missing
+     */
+    public FluentClientReady withAPack (final String packName, final Object context, final Class<Object> rClass, InputStream jsonStream) throws SoundTransformException {
+        new ImportAPackIntoTheLibrary (this.getObservers ()).importAPack (packName, context, rClass, jsonStream);
+        return this;
+    }
+    
     @Override
     /**
      * Tells the client to work with a pack. Reads the whole string content. A pattern must be followed in the jsonContent to

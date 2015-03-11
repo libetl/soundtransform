@@ -34,6 +34,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
+import org.toilelibre.libe.soundtransform.model.library.pack.ContextLoader;
 import org.toilelibre.libe.soundtransform.model.library.pack.PackConfigParser;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
@@ -46,6 +47,7 @@ public abstract class ImplAgnosticRootModule extends BinderModule {
         super.bind (PlaySoundProcessor.class).to (this.providePlaySoundProcessor ());
         super.bind (AudioFileHelper.class).to (this.provideAudioFileHelper ());
         super.bind (AudioFormatParser.class).to (this.provideAudioFormatParser ());
+        super.bind (ContextLoader.class).to (this.provideContextLoader ());
 
         super.bind (Sound2StringHelper.class).to (new GraphSound2StringHelper ());
         super.bind (SoundAppender.class).to (new ConvertedSoundAppender ());
@@ -71,5 +73,7 @@ public abstract class ImplAgnosticRootModule extends BinderModule {
     protected abstract AudioFormatParser provideAudioFormatParser ();
 
     protected abstract PlaySoundProcessor providePlaySoundProcessor ();
+
+    protected abstract ContextLoader provideContextLoader ();
 
 }

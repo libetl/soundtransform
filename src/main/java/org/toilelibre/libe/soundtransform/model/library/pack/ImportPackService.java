@@ -17,8 +17,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class ImportPackService extends AbstractLogAware<ImportPackService> {
     public enum ImportPackServiceErrorCode implements ErrorCode {
-        EXPECTED_A_FREQUENCY ("%1s is not an Integer, could not know which frequency was expected"),
-        EMPTY_INPUT_STREAM ("No input stream to read while trying to import a pack");
+        EXPECTED_A_FREQUENCY ("%1s is not an Integer, could not know which frequency was expected"), EMPTY_INPUT_STREAM ("No input stream to read while trying to import a pack");
 
         private final String messageFormat;
 
@@ -35,7 +34,7 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
     public enum ImportPackServiceEventCode implements EventCode {
         STARTING_IMPORT (LogLevel.VERBOSE, "starting the import of a pack : %1s"), STARTING_ANALYSIS_OF_AN_INSTRUMENT (LogLevel.VERBOSE, "%1s, starting the analysis of an instrument : %2s"), READING_A_NOTE (LogLevel.VERBOSE, "%1s, instrument %2s, reading a note : %3s"), FINISHED_ANALYSIS_OF_AN_INSTRUMENT (
                 LogLevel.VERBOSE, "%1s, finished the analysis of an instrument : %2s"), FINISHED_IMPORT (LogLevel.VERBOSE, "finished the import of a pack : %1s"), READING_A_TECHNICAL_INSTRUMENT (LogLevel.VERBOSE, "%1s, reading a technical instrument : %2s"), TECHNICAL_INSTRUMENT_DOES_NOT_EXIST (
-                        LogLevel.WARN, "%1s, the technical instrument : %2s does not exist");
+                        LogLevel.WARN, "%1s, the technical instrument : %2s does not exist"), COULD_NOT_READ_A_NOTE (LogLevel.ERROR, "Could not read a note : %s");
 
         private final String   messageFormat;
         private final LogLevel logLevel;
@@ -60,15 +59,13 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
 
     private final AddNoteService   addNoteService;
     private final PackConfigParser packConfigParser;
+    private final ContextLoader    contextLoader;
 
-    public ImportPackService (final AddNoteService addNoteService1, final PackConfigParser packConfigParser1) {
-        this (addNoteService1, packConfigParser1, new Observer [0]);
-    }
-
-    public ImportPackService (final AddNoteService addNoteService1, final PackConfigParser packConfigParser1, final Observer... observers1) {
+    public ImportPackService (final AddNoteService addNoteService1, final PackConfigParser packConfigParser1, final ContextLoader contextLoader1, final Observer... observers1) {
         this.observers = observers1.clone ();
         this.addNoteService = addNoteService1.setObservers (this.observers);
         this.packConfigParser = packConfigParser1;
+        this.contextLoader = contextLoader1;
     }
 
     private Range fileNotes (final Map<String, String> notes, final String title, final String instrument) throws SoundTransformException {
@@ -90,9 +87,12 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         return range;
     }
 
-    private Range fillInstrument (final Map<String, String> notes, final String title, final String instrument) throws SoundTransformException {
+    private Range fillInstrument (final Map<String, String> notes, final String title, final String instrument, final Object context, final Class<Object> rClass) throws SoundTransformException {
         if (notes.isEmpty ()) {
             return this.technicalInstrument (title, instrument);
+        }
+        if ((context != null) && (rClass != null)) {
+            return this.tryToReadNotesFromContext (notes, title, instrument, context, rClass);
         }
         return this.fileNotes (notes, title, instrument);
     }
@@ -102,31 +102,43 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
     }
 
     public void importPack (final Library library, final String title, final InputStream inputStream) throws SoundTransformException {
-        if (inputStream == null){
+        this.importPack (library, title, null, null, this.readInputStream (inputStream));
+    }
+
+    public void importPack (Library library, String title, Object context, Class<Object> rClass, InputStream inputStream) throws SoundTransformException {
+        this.importPack (library, title, context, rClass, this.readInputStream (inputStream));
+    }
+
+    private void importPack (final Library library, final String title, Object context, Class<Object> rClass, final String jsonContent) throws SoundTransformException {
+        this.log (new LogEvent (ImportPackServiceEventCode.STARTING_IMPORT, title));
+        final Map<String, Map<String, String>> map = this.packConfigParser.parse (jsonContent);
+        final Pack pack = this.mapToPack (title, map, context, rClass);
+        library.addPack (title, pack);
+        this.log (new LogEvent (ImportPackServiceEventCode.FINISHED_IMPORT, title));
+    }
+
+    public void importPack (final Library library, final String title, final String jsonContent) throws SoundTransformException {
+        this.importPack (library, title, null, null, jsonContent);
+    }
+
+    private Pack mapToPack (final String title, final Map<String, Map<String, String>> map, Object context, Class<Object> rClass) throws SoundTransformException {
+        final Pack pack = new Pack ();
+        for (final Entry<String, Map<String, String>> instrument : map.entrySet ()) {
+            this.log (new LogEvent (ImportPackServiceEventCode.STARTING_ANALYSIS_OF_AN_INSTRUMENT, title, instrument.getKey ()));
+            pack.put (instrument.getKey (), this.fillInstrument (instrument.getValue (), title, instrument.getKey (), context, rClass));
+            this.log (new LogEvent (ImportPackServiceEventCode.FINISHED_ANALYSIS_OF_AN_INSTRUMENT, title, instrument.getKey ()));
+        }
+        return pack;
+    }
+
+    private String readInputStream (final InputStream inputStream) throws SoundTransformException {
+        if (inputStream == null) {
             throw new SoundTransformException (ImportPackServiceErrorCode.EMPTY_INPUT_STREAM, new NullPointerException ());
         }
         final Scanner scanner = new Scanner (inputStream, ImportPackService.DEFAULT_CHARSET_NAME);
         final String content = scanner.useDelimiter ("\\Z").next ();
         scanner.close ();
-        this.importPack (library, title, content);
-    }
-
-    public void importPack (final Library library, final String title, final String jsonContent) throws SoundTransformException {
-        this.log (new LogEvent (ImportPackServiceEventCode.STARTING_IMPORT, title));
-        final Map<String, Map<String, String>> map = this.packConfigParser.parse (jsonContent);
-        final Pack pack = this.mapToPack (title, map);
-        library.addPack (title, pack);
-        this.log (new LogEvent (ImportPackServiceEventCode.FINISHED_IMPORT, title));
-    }
-
-    private Pack mapToPack (final String title, final Map<String, Map<String, String>> map) throws SoundTransformException {
-        final Pack pack = new Pack ();
-        for (final Entry<String, Map<String, String>> instrument : map.entrySet ()) {
-            this.log (new LogEvent (ImportPackServiceEventCode.STARTING_ANALYSIS_OF_AN_INSTRUMENT, title, instrument.getKey ()));
-            pack.put (instrument.getKey (), this.fillInstrument (instrument.getValue (), title, instrument.getKey ()));
-            this.log (new LogEvent (ImportPackServiceEventCode.FINISHED_ANALYSIS_OF_AN_INSTRUMENT, title, instrument.getKey ()));
-        }
-        return pack;
+        return content;
     }
 
     @Override
@@ -143,6 +155,30 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
             range.put (Float.valueOf (-1), technicalInstrument.getUniformNote ());
         } else {
             this.log (new LogEvent (ImportPackServiceEventCode.TECHNICAL_INSTRUMENT_DOES_NOT_EXIST, title, instrument));
+        }
+        return range;
+    }
+
+    private Range tryToReadNotesFromContext (Map<String, String> notes, String title, String instrument, Object context, Class<Object> rClass) throws SoundTransformException {
+        final Range range = new Range ();
+        for (final Entry<String, String> notesEntry : notes.entrySet ()) {
+            int frequency;
+            try {
+                frequency = Integer.parseInt (notesEntry.getKey ());
+            } catch (final NumberFormatException nfe) {
+                throw new SoundTransformException (ImportPackServiceErrorCode.EXPECTED_A_FREQUENCY, nfe, notesEntry.getKey ());
+            }
+            this.log (new LogEvent (ImportPackServiceEventCode.READING_A_NOTE, title, instrument, notesEntry.getValue ()));
+            try {
+                final InputStream is = this.contextLoader.read (context, rClass, notesEntry.getValue ());
+                if (frequency > 0) {
+                    this.addNoteService.addNote (range, notesEntry.getValue (), is, frequency);
+                } else {
+                    this.addNoteService.addNote (range, notesEntry.getValue (), is);
+                }
+            } catch (final SoundTransformException ste) {
+                this.log (new LogEvent (ImportPackServiceEventCode.COULD_NOT_READ_A_NOTE, notesEntry.getValue ()));
+            }
         }
         return range;
     }

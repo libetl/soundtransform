@@ -24,4 +24,9 @@ public class ImportAPackIntoTheLibrary extends Action {
     public void importAPack (final String title, final String jsonContent) throws SoundTransformException {
         this.importPackService.importPack (this.library, title, jsonContent);
     }
+
+    public void importAPack (String title, Object context, Class<Object> rClass, InputStream jsonStream) throws SoundTransformException {
+        this.importPackService.importPack (this.library, title, context, rClass, jsonStream);
+        
+    }
 }
