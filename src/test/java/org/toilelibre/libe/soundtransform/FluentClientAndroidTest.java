@@ -51,6 +51,7 @@ public class FluentClientAndroidTest extends SoundTransformAndroidTest {
         final Context context = new Context ();
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
         final Pack pack = FluentClient.start ().withAPack ("default", context, R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
+        pack.toString ();
         Assert.assertNotNull (pack);
         Assert.assertNotEquals (pack.size (), 0);
     }

@@ -79,50 +79,33 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
         this.audioFormatParser = audioFormatParser1;
         this.observers = observers1;
     }
-
-    public void addNote (final Range range, final String fileName) throws SoundTransformException {
-        this.addNote (range, fileName, 0);
-    }
-
-    public void addNote (final Range range, final String idName, final InputStream is) throws SoundTransformException {
-        this.addNote (range, idName, is, 0);
-    }
-
-    public void addNote (final Range range, final String idName, final InputStream is, final int frequency) throws SoundTransformException {
+    
+    public void addNote (final Range range, final SimpleNoteInfo noteInfo, final InputStream is) throws SoundTransformException {
         try {
             final InputStream ais = this.audioFileHelper.getAudioInputStream (is);
             final StreamInfo si = this.audioFormatParser.getSoundInfo (ais);
-            final Note n = frequency <= 0 ? this.sound2NoteService.convert (idName, this.transformInputStreamService.fromInputStream (ais, si)) :
-                this.sound2NoteService.convert (idName, this.transformInputStreamService.fromInputStream (ais, si), frequency);
+            final Note n = this.sound2NoteService.convert (noteInfo, this.transformInputStreamService.fromInputStream (ais, si));
             range.put (n.getFrequency (), n);
         } catch (final SoundTransformException e) {
-            throw new SoundTransformException (AddNoteErrorCode.COULD_NOT_BE_PARSED, e, idName);
+            throw new SoundTransformException (AddNoteErrorCode.COULD_NOT_BE_PARSED, e, noteInfo.getName ());
         }
     }
-
-    public void addNote (final Range range, final String fileName, final int frequency) throws SoundTransformException {
-        final URL completeURL = this.getURL (fileName);
+    
+    public void addNote (final Range range, final SimpleNoteInfo noteInfo) throws SoundTransformException {
+        final URL completeURL = this.getURL (noteInfo.getName ());
         try {
             if (completeURL == null) {
-                this.log (new LogEvent (AddNoteEventCode.FILE_NOT_FOUND, fileName));
+                this.log (new LogEvent (AddNoteEventCode.FILE_NOT_FOUND, noteInfo.getName ()));
                 return;
             }
             final String completeFileName = completeURL.getFile ();
             final File file = new File (completeFileName);
-            final Note n = frequency <= 0 ?
-                    this.sound2NoteService.convert (fileName, this.transformInputStreamService.fromInputStream (this.convertAudioFileService.callConverter (file))) :
-                        this.sound2NoteService.convert (fileName, this.transformInputStreamService.fromInputStream (this.convertAudioFileService.callConverter (file)), frequency);
+            final Note n = this.sound2NoteService.convert (noteInfo, this.transformInputStreamService.fromInputStream (this.convertAudioFileService.callConverter (file)));
             range.put (n.getFrequency (), n);
         } catch (final IllegalArgumentException e) {
-            throw new SoundTransformException (AddNoteErrorCode.COULD_NOT_BE_PARSED, e, fileName);
+            throw new SoundTransformException (AddNoteErrorCode.COULD_NOT_BE_PARSED, e, noteInfo.getName ());
         }
 
-    }
-
-    public void addNotes (final Range range, final String... fileNames) throws SoundTransformException {
-        for (final String fileName : fileNames) {
-            this.addNote (range, fileName);
-        }
     }
 
     private URL getURL (final String fileName) {

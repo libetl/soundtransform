@@ -16,4 +16,5 @@ public interface Note {
     Sound getRelease (float frequency, int channelnum, float lengthInSeconds) throws SoundTransformException;
 
     Sound getSustain (float frequency, int channelnum, float lengthInSeconds) throws SoundTransformException;
+    
 }

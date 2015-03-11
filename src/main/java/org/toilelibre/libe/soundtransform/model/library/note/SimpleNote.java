@@ -5,6 +5,7 @@ import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoService;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo;
 
 public class SimpleNote implements Note {
 
@@ -12,23 +13,21 @@ public class SimpleNote implements Note {
     private final Sound []                  decay;
     private final Sound []                  sustain;
     private final Sound []                  release;
-    private final float                     frequency;
-    private final String                    fileName;
+    private final SimpleNoteInfo            noteInfo;
     private final SoundPitchAndTempoService soundPitchAndTempoService;
 
-    public SimpleNote (final String fileName, final Sound [] channels, final float frequency, final int attack, final int decay, final int sustain, final int release) {
-        this.frequency = frequency;
+    public SimpleNote (final SimpleNoteInfo noteInfo1, final Sound [] channels) {
         this.soundPitchAndTempoService = $.create (SoundPitchAndTempoService.class);
         this.attack = new Sound [channels.length];
         this.decay = new Sound [channels.length];
         this.sustain = new Sound [channels.length];
         this.release = new Sound [channels.length];
-        this.fileName = fileName;
+        this.noteInfo = noteInfo1;
         for (int i = 0 ; i < channels.length ; i++) {
-            this.attack [i] = this.soundToSubSound (channels [i], attack, decay);
-            this.decay [i] = this.soundToSubSound (channels [i], decay, sustain);
-            this.sustain [i] = this.soundToSubSound (channels [i], sustain, release);
-            this.release [i] = this.soundToSubSound (channels [i], release, channels [i].getSamplesLength () - 1);
+            this.attack [i] = this.soundToSubSound (channels [i], this.noteInfo.getAttack (), this.noteInfo.getDecay ());
+            this.decay [i] = this.soundToSubSound (channels [i], this.noteInfo.getDecay (), this.noteInfo.getSustain ());
+            this.sustain [i] = this.soundToSubSound (channels [i], this.noteInfo.getSustain (), this.noteInfo.getRelease ());
+            this.release [i] = this.soundToSubSound (channels [i], this.noteInfo.getRelease (), channels [i].getSamplesLength () - 1);
         }
     }
 
@@ -54,23 +53,30 @@ public class SimpleNote implements Note {
 
     @Override
     public float getFrequency () {
-        return this.frequency;
+        return this.noteInfo.getFrequency ();
+    }
+
+    /**
+     * @return the noteInfo
+     */
+    public SimpleNoteInfo getNoteInfo () {
+        return noteInfo;
     }
 
     @Override
     public String getName () {
-        return this.fileName;
+        return this.noteInfo.getName ();
     }
 
     private float getPercent (final float frequency2) {
-        return (float) (frequency2 * 100.0 / this.frequency);
+        return (float) ((frequency2 * 100.0) / this.getFrequency ());
     }
 
     private float getRatio (final Sound [] subsound) {
-        final float lengthOfSubsound = 1.0f * subsound [0].getSamplesLength () / subsound [0].getSampleRate ();
-        final float lengthOfSound = 1.0f * this.attack [0].getSamplesLength () / this.attack [0].getSampleRate () + 1.0f * this.decay [0].getSamplesLength () / this.decay [0].getSampleRate () + 1.0f * this.sustain [0].getSamplesLength () / this.sustain [0].getSampleRate ()
-                + 1.0f * this.release [0].getSamplesLength () / this.release [0].getSampleRate ();
-        return lengthOfSubsound * 1.0f / lengthOfSound;
+        final float lengthOfSubsound = (1.0f * subsound [0].getSamplesLength ()) / subsound [0].getSampleRate ();
+        final float lengthOfSound = ((1.0f * this.attack [0].getSamplesLength ()) / this.attack [0].getSampleRate ()) + ((1.0f * this.decay [0].getSamplesLength ()) / this.decay [0].getSampleRate ()) + ((1.0f * this.sustain [0].getSamplesLength ()) / this.sustain [0].getSampleRate ())
+                + ((1.0f * this.release [0].getSamplesLength ()) / this.release [0].getSampleRate ());
+        return (lengthOfSubsound * 1.0f) / lengthOfSound;
     }
 
     @Override
@@ -92,4 +98,8 @@ public class SimpleNote implements Note {
         return new Sound (newsamples, input.getFormatInfo (), input.getChannelNum ());
     }
 
+    @Override
+    public String toString (){
+        return $.select (Pack2StringHelper.class).toString (this);
+    }
 }

@@ -2,7 +2,9 @@ package org.toilelibre.libe.soundtransform.model.library.pack;
 
 import java.util.HashMap;
 
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
+import org.toilelibre.libe.soundtransform.model.library.note.Pack2StringHelper;
 
 public class Range extends HashMap<Float, Note> {
 
@@ -19,5 +21,10 @@ public class Range extends HashMap<Float, Note> {
             }
         }
         return this.get (new Float (nearest));
+    }
+
+    @Override
+    public String toString (){
+        return $.select (Pack2StringHelper.class).toString (this);
     }
 }

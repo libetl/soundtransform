@@ -9,6 +9,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleCha
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleCompressFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleFilterFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleReplaceFrequenciesProcessor;
+import org.toilelibre.libe.soundtransform.infrastructure.service.pack.GsonPack2StringHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.pack.GsonPackConfigParser;
 import org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.CallHPSFrequencyHelper;
 import org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.MagnitudeADSRHelper;
@@ -34,6 +35,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
+import org.toilelibre.libe.soundtransform.model.library.note.Pack2StringHelper;
 import org.toilelibre.libe.soundtransform.model.library.pack.ContextLoader;
 import org.toilelibre.libe.soundtransform.model.library.pack.PackConfigParser;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
@@ -50,6 +52,7 @@ public abstract class ImplAgnosticRootModule extends BinderModule {
         super.bind (ContextLoader.class).to (this.provideContextLoader ());
 
         super.bind (Sound2StringHelper.class).to (new GraphSound2StringHelper ());
+        super.bind (Pack2StringHelper.class).to (new GsonPack2StringHelper ());
         super.bind (SoundAppender.class).to (new ConvertedSoundAppender ());
         super.bind (SoundPitchAndTempoHelper.class).to (new ConvertedSoundPitchAndTempoHelper ());
         super.bind (FourierTransformHelper.class).to (new CommonsMath3FourierTransformHelper ());

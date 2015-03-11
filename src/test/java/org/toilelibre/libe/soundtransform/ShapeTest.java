@@ -16,6 +16,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileServ
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
+import org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class ShapeTest extends SoundTransformTest {
@@ -42,7 +43,7 @@ public class ShapeTest extends SoundTransformTest {
 
         $.create (ConvertAudioFileService.class).writeInputStream (outputStream, output);
 
-        final float frequency = $.create (Sound2NoteService.class).convert ("output chord_note", $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (output))).getFrequency ();
+        final float frequency = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("output chord_note"), $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (output))).getFrequency ();
         new Slf4jObserver ().notify ("Output chord note should be around 387Hz, but is " + frequency + "Hz");
 
     }
@@ -59,7 +60,7 @@ public class ShapeTest extends SoundTransformTest {
 
         $.create (ConvertAudioFileService.class).writeInputStream (outputStream, output);
 
-        final float frequency = $.create (Sound2NoteService.class).convert ("output chord_note", $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (output))).getFrequency ();
+        final float frequency = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("output chord_note"), $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (output))).getFrequency ();
         new Slf4jObserver ().notify ("Output chord note should be around 332Hz, but is " + frequency + "Hz");
 
     }

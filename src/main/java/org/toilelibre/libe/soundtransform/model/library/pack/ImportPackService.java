@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.model.library.pack;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -72,33 +73,23 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         this.contextLoader = contextLoader1;
     }
 
-    private Range fileNotes (final Map<String, String> notes, final String title, final String instrument) throws SoundTransformException {
+    private Range fileNotes (final List<Map<String, Object>> list, final String title, final String instrument) throws SoundTransformException {
         final Range range = new Range ();
-        for (final Entry<String, String> notesEntry : notes.entrySet ()) {
-            int frequency;
-            try {
-                frequency = Integer.parseInt (notesEntry.getKey ());
-            } catch (final NumberFormatException nfe) {
-                throw new SoundTransformException (ImportPackServiceErrorCode.EXPECTED_A_FREQUENCY, nfe, notesEntry.getKey ());
-            }
-            this.log (new LogEvent (ImportPackServiceEventCode.READING_A_NOTE, title, instrument, notesEntry.getValue ()));
-            if (frequency > 0) {
-                this.addNoteService.addNote (range, notesEntry.getValue (), frequency);
-            } else {
-                this.addNoteService.addNote (range, notesEntry.getValue ());
-            }
+        for (Map<String, Object> noteElement : list){
+            this.log (new LogEvent (ImportPackServiceEventCode.READING_A_NOTE, title, instrument, noteElement.get ("name")));
+            this.addNoteService.addNote (range, new SimpleNoteInfo (noteElement));
         }
         return range;
     }
 
-    private Range fillInstrument (final Map<String, String> notes, final String title, final String instrument, final Object context, final Class<?> rClass) throws SoundTransformException {
-        if (notes.isEmpty ()) {
+    private Range fillInstrument (final List<Map<String, Object>> list, final String title, final String instrument, final Object context, final Class<?> rClass) throws SoundTransformException {
+        if (list.isEmpty ()) {
             return this.technicalInstrument (title, instrument);
         }
         if (context != null && rClass != null) {
-            return this.tryToReadNotesFromContext (notes, title, instrument, context, rClass);
+            return this.tryToReadNotesFromContext (list, title, instrument, context, rClass);
         }
-        return this.fileNotes (notes, title, instrument);
+        return this.fileNotes (list, title, instrument);
     }
 
     public Pack getAPack (final Library library, final String title) {
@@ -115,7 +106,7 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
 
     private void importPack (final Library library, final String title, final Object context, final Class<?> rClass, final String jsonContent) throws SoundTransformException {
         this.log (new LogEvent (ImportPackServiceEventCode.STARTING_IMPORT, title));
-        final Map<String, Map<String, String>> map = this.packConfigParser.parse (jsonContent);
+        final Map<String, List<Map<String, Object>>> map = this.packConfigParser.parse (jsonContent);
         final Pack pack = this.mapToPack (title, map, context, rClass);
         library.addPack (title, pack);
         this.log (new LogEvent (ImportPackServiceEventCode.FINISHED_IMPORT, title));
@@ -125,9 +116,9 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         this.importPack (library, title, null, null, jsonContent);
     }
 
-    private Pack mapToPack (final String title, final Map<String, Map<String, String>> map, final Object context, final Class<?> rClass) throws SoundTransformException {
+    private Pack mapToPack (final String title, final Map<String, List<Map<String, Object>>> map, final Object context, final Class<?> rClass) throws SoundTransformException {
         final Pack pack = new Pack ();
-        for (final Entry<String, Map<String, String>> instrument : map.entrySet ()) {
+        for (final Entry<String, List<Map<String, Object>>> instrument : map.entrySet ()) {
             this.log (new LogEvent (ImportPackServiceEventCode.STARTING_ANALYSIS_OF_AN_INSTRUMENT, title, instrument.getKey ()));
             pack.put (instrument.getKey (), this.fillInstrument (instrument.getValue (), title, instrument.getKey (), context, rClass));
             this.log (new LogEvent (ImportPackServiceEventCode.FINISHED_ANALYSIS_OF_AN_INSTRUMENT, title, instrument.getKey ()));
@@ -163,26 +154,13 @@ public class ImportPackService extends AbstractLogAware<ImportPackService> {
         return range;
     }
 
-    private Range tryToReadNotesFromContext (final Map<String, String> notes, final String title, final String instrument, final Object context, final Class<?> rClass) throws SoundTransformException {
+    private Range tryToReadNotesFromContext (final List<Map<String, Object>> list, final String title, final String instrument, final Object context, final Class<?> rClass) throws SoundTransformException {
         final Range range = new Range ();
-        for (final Entry<String, String> notesEntry : notes.entrySet ()) {
-            int frequency;
-            try {
-                frequency = Integer.parseInt (notesEntry.getKey ());
-            } catch (final NumberFormatException nfe) {
-                throw new SoundTransformException (ImportPackServiceErrorCode.EXPECTED_A_FREQUENCY, nfe, notesEntry.getKey ());
-            }
-            this.log (new LogEvent (ImportPackServiceEventCode.READING_A_NOTE, title, instrument, notesEntry.getValue ()));
-            try {
-                final InputStream is = this.contextLoader.read (context, rClass, notesEntry.getValue ());
-                if (frequency > 0) {
-                    this.addNoteService.addNote (range, notesEntry.getValue (), is, frequency);
-                } else {
-                    this.addNoteService.addNote (range, notesEntry.getValue (), is);
-                }
-            } catch (final SoundTransformException ste) {
-                this.log (new LogEvent (ImportPackServiceEventCode.COULD_NOT_READ_A_NOTE, notesEntry.getValue ()));
-            }
+        for (Map<String, Object> noteElement : list){
+            this.log (new LogEvent (ImportPackServiceEventCode.READING_A_NOTE, title, instrument, noteElement.get ("name")));
+            final SimpleNoteInfo noteInfo = new SimpleNoteInfo (noteElement);
+            final InputStream is = this.contextLoader.read (context, rClass, noteElement.get ("name").toString ());
+            this.addNoteService.addNote (range, noteInfo, is);
         }
         return range;
     }

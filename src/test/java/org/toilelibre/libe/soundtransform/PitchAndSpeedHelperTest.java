@@ -16,6 +16,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
 import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
+import org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo;
 
 public class PitchAndSpeedHelperTest extends SoundTransformTest {
 
@@ -38,7 +39,7 @@ public class PitchAndSpeedHelperTest extends SoundTransformTest {
         final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
         $.create (ConvertAudioFileService.class).writeInputStream (ais2, fDest);
-        final Note n = $.create (Sound2NoteService.class).convert ("e4", e4);
+        final Note n = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("e4"), e4);
         new Slf4jObserver ().notify ("e' 4 : " + n.getFrequency () + "Hz, should be around 658Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 658 - 10 && n.getFrequency () < 658 + 10);
     }

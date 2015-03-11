@@ -1,30 +1,40 @@
 {
   "simple_piano" : 
-    {
-  	      -1 : "piano1c.wav",
-  	      -2 : "piano3e.wav",
-  	      -3 : "piano5g.wav",
-  	      -4 : "piano7b.wav",
-  	      -5 : "piano2d.wav",
-  	      -6 : "piano4f.wav",
-  	      -7 : "piano6a.wav",
-  	      -8 : "piano8c.wav"
-    },
+    [
+  	      {"name" : "piano1c.wav"},
+  	      {"name" : "piano3e.wav"},
+  	      {"name" : "piano5g.wav"},
+  	      {"name" : "piano7b.wav"},
+  	      {"name" : "piano2d.wav"},
+  	      {"name" : "piano4f.wav"},
+  	      {"name" : "piano6a.wav"},
+  	      {"name" : "piano8c.wav"}
+    ],
   "g-piano" :
-    {
-        -1 : "gpiano1.wav",
-  	    -2 : "gpiano2.wav",
-  	    -3 : "gpiano3.wav",
-  	    -4 : "gpiano4.wav",
-  	    -5 : "gpiano5.wav",
-  	    -6 : "gpiano6.wav"
-    },
+    [
+          {"name" : "gpiano1.wav"},
+  	      {"name" : "gpiano2.wav"},
+  	      {"name" : "gpiano3.wav"},
+  	      {"name" : "gpiano4.wav"},
+  	      {"name" : "gpiano5.wav"},
+  	      {"name" : "gpiano6.wav"}
+    ],
   "chord_piano" :
-    {
-        329 : "gpiano3.wav",
-        293 : "gpiano4.wav"
-    },
-  "org.toilelibre.libe.soundtransform.model.library.note.PureNote" : {},
-  "org.toilelibre.libe.soundtransform.model.library.note.ComputedOrganNote" : {},
-  "org.toilelibre.libe.soundtransform.model.library.note.ComputedChordNote" : {}
+    [
+  	      {"name"     : "gpiano3.wav",
+  	       "frequency" : 329,
+  	       "attack"    : 0,
+  	       "decay"     : 0,
+  	       "sustain"   : 0,
+  	       "release"   : 0},
+  	      {"name"     : "gpiano4.wav",
+  	       "frequency" : 293,
+  	       "attack"    : 0,
+  	       "decay"     : 0,
+  	       "sustain"   : 0,
+  	       "release"   : 0}
+    ],
+  "org.toilelibre.libe.soundtransform.model.library.note.PureNote" : [],
+  "org.toilelibre.libe.soundtransform.model.library.note.ComputedOrganNote" : [],
+  "org.toilelibre.libe.soundtransform.model.library.note.ComputedChordNote" : []
 }

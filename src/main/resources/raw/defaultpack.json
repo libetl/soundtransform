@@ -1,30 +1,131 @@
 {
-  "simple_piano" : 
+  "org.toilelibre.libe.soundtransform.model.library.note.PureNote": [],
+  "org.toilelibre.libe.soundtransform.model.library.note.ComputedOrganNote": [],
+  "g-piano": [
     {
-  	      -1 : "piano1c",
-  	      -2 : "piano3e",
-  	      -3 : "piano5g",
-  	      -4 : "piano7b",
-  	      -5 : "piano2d",
-  	      -6 : "piano4f",
-  	      -7 : "piano6a",
-  	      -8 : "piano8c"
+      "frequency": 110.0,
+      "name": "gpiano1",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 14732
     },
-  "g-piano" :
     {
-        -1 : "gpiano1",
-  	    -2 : "gpiano2",
-  	    -3 : "gpiano3",
-  	    -4 : "gpiano4",
-  	    -5 : "gpiano5",
-  	    -6 : "gpiano6"
+      "frequency": 220.5,
+      "name": "gpiano3",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 11370
     },
-  "chord_piano" :
     {
-        329 : "gpiano3",
-        293 : "gpiano4"
+      "frequency": 98.0,
+      "name": "gpiano6",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 14768
     },
-  "org.toilelibre.libe.soundtransform.model.library.note.PureNote" : {},
-  "org.toilelibre.libe.soundtransform.model.library.note.ComputedOrganNote" : {},
-  "org.toilelibre.libe.soundtransform.model.library.note.ComputedChordNote" : {}
+    {
+      "frequency": 197.5,
+      "name": "gpiano4",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 13112
+    },
+    {
+      "frequency": 278.5,
+      "name": "gpiano5",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 12524
+    }
+  ],
+  "chord_piano": [
+    {
+      "frequency": 329.0,
+      "name": "gpiano3",
+      "attack": 0,
+      "decay": 0,
+      "sustain": 0,
+      "release": 0
+    },
+    {
+      "frequency": 293.0,
+      "name": "gpiano4",
+      "attack": 0,
+      "decay": 0,
+      "sustain": 0,
+      "release": 0
+    }
+  ],
+  "org.toilelibre.libe.soundtransform.model.library.note.ComputedChordNote": [],
+  "simple_piano": [
+    {
+      "frequency": 499.14285,
+      "name": "piano7b",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 3041
+    },
+    {
+      "frequency": 332.0,
+      "name": "piano3e",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 2976
+    },
+    {
+      "frequency": 387.0,
+      "name": "piano5g",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 2845
+    },
+    {
+      "frequency": 451.42856,
+      "name": "piano6a",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 2649
+    },
+    {
+      "frequency": 344.0,
+      "name": "piano4f",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 2910
+    },
+    {
+      "frequency": 293.0,
+      "name": "piano2d",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 3238
+    },
+    {
+      "frequency": 260.66666,
+      "name": "piano1c",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 3172
+    },
+    {
+      "frequency": 524.0,
+      "name": "piano8c",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 3107
+    }
+  ]
 }
