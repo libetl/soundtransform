@@ -19,7 +19,7 @@ public class SimpleNoteInfo {
     private final int           sustain;
     private final int           release;
 
-    public SimpleNoteInfo (Map<String, Object> noteElement) {
+    public SimpleNoteInfo (final Map<String, Object> noteElement) {
         this.frequency = this.safeParse (noteElement.get (SimpleNoteInfo.FREQUENCY_KEY));
         this.name = noteElement.get (SimpleNoteInfo.NAME_KEY).toString ();
         this.attack = (int) this.safeParse (noteElement.get (SimpleNoteInfo.ATTACK_KEY));
@@ -28,15 +28,7 @@ public class SimpleNoteInfo {
         this.release = (int) this.safeParse (noteElement.get (SimpleNoteInfo.RELEASE_KEY));
     }
 
-    private float safeParse (Object object) {
-        try {
-            return Float.parseFloat ("" + object);
-        } catch (NumberFormatException nfe){
-            return -1;
-        }
-    }
-
-    public SimpleNoteInfo (String fileName) {
+    public SimpleNoteInfo (final String fileName) {
         this.frequency = SimpleNoteInfo.DEFAULT_VALUE;
         this.name = fileName;
         this.attack = SimpleNoteInfo.DEFAULT_VALUE;
@@ -120,6 +112,14 @@ public class SimpleNoteInfo {
      */
     public boolean hasSustain () {
         return this.sustain != SimpleNoteInfo.DEFAULT_VALUE;
+    }
+
+    private float safeParse (final Object object) {
+        try {
+            return Float.parseFloat ("" + object);
+        } catch (final NumberFormatException nfe){
+            return -1;
+        }
     }
 
 }
