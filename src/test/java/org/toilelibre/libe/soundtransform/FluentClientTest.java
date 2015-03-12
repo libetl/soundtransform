@@ -169,7 +169,7 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
-    public void readSoundInfo () throws SoundTransformException {
+    public void readStreamInfo () throws SoundTransformException {
         final FormatInfo fi = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").importToStream ().stopWithStreamInfo ();
         Assert.assertNotNull (fi);
         new Slf4jObserver ().notify (fi.toString ());

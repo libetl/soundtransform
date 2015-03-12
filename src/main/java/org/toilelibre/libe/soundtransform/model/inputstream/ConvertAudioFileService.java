@@ -16,7 +16,7 @@ public class ConvertAudioFileService {
     }
 
     public StreamInfo callAudioFormatParser (final InputStream is) throws SoundTransformException {
-        return this.audioFormatParser.getSoundInfo (is);
+        return this.audioFormatParser.getStreamInfo (is);
     }
 
     public InputStream callConverter (final File file) throws SoundTransformException {
@@ -24,11 +24,11 @@ public class ConvertAudioFileService {
     }
 
     public InputStream toStream (final byte [] byteArray, final StreamInfo streamInfo) throws SoundTransformException {
-        return this.audioFileHelper.toStream (byteArray, this.audioFormatParser.audioFormatfromSoundInfo (streamInfo));
+        return this.audioFileHelper.toStream (byteArray, this.audioFormatParser.audioFormatfromStreamInfo (streamInfo));
     }
 
     public InputStream toStream (final InputStream is, final StreamInfo streamInfo) throws SoundTransformException {
-        return this.audioFileHelper.toStream (is, this.audioFormatParser.audioFormatfromSoundInfo (streamInfo));
+        return this.audioFileHelper.toStream (is, this.audioFormatParser.audioFormatfromStreamInfo (streamInfo));
     }
 
     public void writeInputStream (final InputStream ais2, final File fDest) throws SoundTransformException {

@@ -16,7 +16,7 @@ import org.toilelibre.libe.soundtransform.actions.transform.ChangeLoudestFreqs;
 import org.toilelibre.libe.soundtransform.actions.transform.ChangeSoundFormat;
 import org.toilelibre.libe.soundtransform.actions.transform.ConvertFromInputStream;
 import org.toilelibre.libe.soundtransform.actions.transform.ExportAFile;
-import org.toilelibre.libe.soundtransform.actions.transform.GetSoundInfo;
+import org.toilelibre.libe.soundtransform.actions.transform.GetStreamInfo;
 import org.toilelibre.libe.soundtransform.actions.transform.InputStreamToAudioInputStream;
 import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
@@ -271,7 +271,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException if the metadata format object is invalid, or if the sound cannot be converted
      */
     public FluentClientWithInputStream exportToStream () throws SoundTransformException {
-        final FormatInfo currentInfo = new GetSoundInfo (this.getObservers ()).getSoundInfo (this.sounds);
+        final FormatInfo currentInfo = new GetStreamInfo (this.getObservers ()).getSoundInfo (this.sounds);
         final InputStream audioInputStream1 = new ToInputStream (this.getObservers ()).toStream (this.sounds, StreamInfo.from (currentInfo, this.sounds));
         this.cleanData ();
         this.audioInputStream = audioInputStream1;
@@ -609,7 +609,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             inputstream
      */
     public StreamInfo stopWithStreamInfo () throws SoundTransformException {
-        return new GetSoundInfo (this.getObservers ()).getSoundInfo (this.audioInputStream);
+        return new GetStreamInfo (this.getObservers ()).getSoundInfo (this.audioInputStream);
     }
 
     @Override

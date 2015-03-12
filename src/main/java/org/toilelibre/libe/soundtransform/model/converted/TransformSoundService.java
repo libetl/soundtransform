@@ -86,11 +86,11 @@ public class TransformSoundService extends AbstractLogAware<TransformSoundServic
         return this.transformInputStreamService.fromInputStream (ais, isInfo);
     }
 
-    public StreamInfo getSoundInfo (final InputStream ais) throws SoundTransformException {
-        return this.transformInputStreamService.getSoundInfo (ais);
+    public StreamInfo getStreamInfo (final InputStream ais) throws SoundTransformException {
+        return this.transformInputStreamService.getStreamInfo (ais);
     }
 
-    public FormatInfo getSoundInfo (final Sound [] sounds) {
+    public FormatInfo getFormatInfo (final Sound [] sounds) {
         return sounds [0].getFormatInfo ();
     }
 

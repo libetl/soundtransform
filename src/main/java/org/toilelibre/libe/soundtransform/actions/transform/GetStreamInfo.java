@@ -9,17 +9,17 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class GetSoundInfo extends Action {
+public class GetStreamInfo extends Action {
 
-    public GetSoundInfo (final Observer... observers) {
+    public GetStreamInfo (final Observer... observers) {
         super (observers);
     }
 
     public StreamInfo getSoundInfo (final InputStream ais) throws SoundTransformException {
-        return this.transformSound.getSoundInfo (ais);
+        return this.transformSound.getStreamInfo (ais);
     }
 
     public FormatInfo getSoundInfo (final Sound [] sounds) throws SoundTransformException {
-        return this.transformSound.getSoundInfo (sounds);
+        return this.transformSound.getFormatInfo (sounds);
     }
 }

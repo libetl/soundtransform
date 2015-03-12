@@ -64,7 +64,7 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
     }
 
     public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {
-        return this.fromInputStream (ais, this.audioFormatParser.getSoundInfo (ais));
+        return this.fromInputStream (ais, this.audioFormatParser.getStreamInfo (ais));
     }
 
     public Sound [] fromInputStream (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
@@ -74,8 +74,8 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
         return result;
     }
 
-    public StreamInfo getSoundInfo (final InputStream ais) throws SoundTransformException {
-        return this.audioFormatParser.getSoundInfo (ais);
+    public StreamInfo getStreamInfo (final InputStream ais) throws SoundTransformException {
+        return this.audioFormatParser.getStreamInfo (ais);
     }
 
     @Override

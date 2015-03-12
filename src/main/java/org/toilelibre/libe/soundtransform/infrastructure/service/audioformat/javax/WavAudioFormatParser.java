@@ -18,7 +18,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 public class WavAudioFormatParser implements AudioFormatParser {
 
     @Override
-    public Object audioFormatfromSoundInfo (final StreamInfo info) {
+    public Object audioFormatfromStreamInfo (final StreamInfo info) {
         final int channels = info.getChannels ();
         final int sampleSizeInBits = info.getSampleSize () * Byte.SIZE;
         final double sampleRate = info.getSampleRate ();
@@ -39,7 +39,7 @@ public class WavAudioFormatParser implements AudioFormatParser {
     }
 
     @Override
-    public StreamInfo getSoundInfo (final InputStream is) throws SoundTransformException {
+    public StreamInfo getStreamInfo (final InputStream is) throws SoundTransformException {
         if (is instanceof AudioInputStream) {
             final AudioInputStream ais = (AudioInputStream) is;
             return this.fromAudioFormat (ais.getFormat (), ais.getFrameLength ());

@@ -54,7 +54,7 @@ public interface AudioFileHelper {
 
     public InputStream getAudioInputStream (InputStream rawInputStream) throws SoundTransformException;
 
-    public InputStream toStream (byte [] byteArray, Object audioFormatfromSoundInfo) throws SoundTransformException;
+    public InputStream toStream (byte [] byteArray, Object audioFormatfromStreamInfo) throws SoundTransformException;
 
     public InputStream toStream (InputStream is, Object audioFormat) throws SoundTransformException;
 

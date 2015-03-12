@@ -83,7 +83,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
     public void addNote (final Range range, final SimpleNoteInfo noteInfo, final InputStream is) throws SoundTransformException {
         try {
             final InputStream ais = this.audioFileHelper.getAudioInputStream (is);
-            final StreamInfo si = this.audioFormatParser.getSoundInfo (ais);
+            final StreamInfo si = this.audioFormatParser.getStreamInfo (ais);
             final Note n = this.sound2NoteService.convert (noteInfo, this.transformInputStreamService.fromInputStream (ais, si));
             range.put (n.getFrequency (), n);
         } catch (final SoundTransformException e) {
