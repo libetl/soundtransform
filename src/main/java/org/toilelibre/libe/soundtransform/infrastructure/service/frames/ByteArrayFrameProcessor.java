@@ -13,11 +13,13 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
 public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProcessor> implements FrameProcessor<AbstractLogAware<ByteArrayFrameProcessor>> {
 
-    private static final int   NB_BYTE_VALUES = 1 << Byte.SIZE;
-    private static final int   MAX_BYTE_VALUE = ByteArrayFrameProcessor.NB_BYTE_VALUES - 1;
-    private static final float PERCENT        = 100.0f;
-    private static final int   HALF           = 2;
-    private static final int   TWICE          = 2;
+    private static final int   NB_BYTE_VALUES           = 1 << Byte.SIZE;
+    private static final int   MAX_BYTE_VALUE           = ByteArrayFrameProcessor.NB_BYTE_VALUES - 1;
+    private static final float PERCENT                  = 100.0f;
+    private static final int   HALF                     = 2;
+    private static final int   TWICE                    = 2;
+    private static final int   EACH_X_PERCENT           = 5;
+    private static final int   EACH_X_PERCENT_MINUS_ONE = ByteArrayFrameProcessor.EACH_X_PERCENT - 1;
 
     /*
      * (non-Javadoc)
@@ -139,7 +141,7 @@ public class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProc
             }
             final int currentPercent = this.getPercent (position, isInfo.getFrameLength ());
             final int lastPercent = this.getPercent (position - 1, isInfo.getFrameLength ());
-            if (currentPercent % 5 == 0 && lastPercent % 5 == 4) {
+            if (currentPercent % ByteArrayFrameProcessor.EACH_X_PERCENT == 0 && lastPercent % ByteArrayFrameProcessor.EACH_X_PERCENT == ByteArrayFrameProcessor.EACH_X_PERCENT_MINUS_ONE) {
                 this.log (new LogEvent (FrameProcessorEventCode.BYTEARRAY_TO_FRAME_CONVERSION, position, isInfo.getFrameLength (), currentPercent));
             }
             this.byteArrayToFrame (frame, result, position, isInfo.isBigEndian (), isInfo.isPcmSigned (), neutral);
