@@ -1,7 +1,9 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.android;
 
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -28,46 +30,57 @@ public class AndroidContextLoader implements ContextLoader {
 
     private int getIdFromIdName (final Class<?> rClass, final String idName) throws SoundTransformException {
         try {
-            return rClass.getDeclaredField (idName).getInt (null);
-        } catch (final IllegalArgumentException e) {
+            return this.getDeclaredField (rClass, idName).getInt (null);
+        } catch (IllegalArgumentException e) {
             throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_READ_ID, e, idName);
-        } catch (final IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_READ_ID, e, idName);
+        }
+    }
+
+    private Field getDeclaredField (Class<?> rClass, String idName) throws SoundTransformException {
+        try {
+            return rClass.getDeclaredField (idName);
         } catch (final NoSuchFieldException e) {
-            throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_READ_ID, e, idName);
-        } catch (final SecurityException e) {
             throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_READ_ID, e, idName);
         }
     }
 
     private Object getResources (final Object context) throws SoundTransformException {
         try {
-            return context.getClass ().getMethod ("getResources").invoke (context);
-        } catch (final IllegalArgumentException e) {
+            return this.getMethod (context.getClass (), "getResources").invoke (context);
+        } catch (IllegalAccessException e) {
             throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_USE_CONTEXT, e, context);
-        } catch (final SecurityException e) {
+        } catch (InvocationTargetException e) {
             throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_USE_CONTEXT, e, context);
-        } catch (final IllegalAccessException e) {
-            throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_USE_CONTEXT, e, context);
-        } catch (final InvocationTargetException e) {
-            throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_USE_CONTEXT, e, context);
-        } catch (final NoSuchMethodException e) {
+        }
+    }
+
+    private Method getMethod (Class<? extends Object> class1, String methodName) throws SoundTransformException {
+        try {
+            return class1.getMethod (methodName);
+        } catch (SecurityException e) {
+            throw new SoundTransformException (AndroidContextReaderErrorCode.WRONG_CONTEXT_CLASS, e);
+        } catch (NoSuchMethodException e) {
+            throw new SoundTransformException (AndroidContextReaderErrorCode.WRONG_CONTEXT_CLASS, e);
+        }
+    }
+    private Method getDeclaredMethodOpenRawResource (Class<? extends Object> class1) throws SoundTransformException {
+        try {
+            return class1.getDeclaredMethod ("openRawResource", int.class);
+        } catch (SecurityException e) {
+            throw new SoundTransformException (AndroidContextReaderErrorCode.WRONG_CONTEXT_CLASS, e);
+        } catch (NoSuchMethodException e) {
             throw new SoundTransformException (AndroidContextReaderErrorCode.WRONG_CONTEXT_CLASS, e);
         }
     }
 
     private InputStream openRawResource (final Object resources, final int id) throws SoundTransformException {
         try {
-            return (InputStream) resources.getClass ().getDeclaredMethod ("openRawResource", int.class).invoke (resources, id);
-        } catch (final IllegalArgumentException e) {
+            return (InputStream) this.getDeclaredMethodOpenRawResource (resources.getClass ()).invoke (resources, id);
+        } catch (IllegalAccessException e) {
             throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_FIND_ID, e, id);
-        } catch (final SecurityException e) {
-            throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_FIND_ID, e, id);
-        } catch (final IllegalAccessException e) {
-            throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_FIND_ID, e, id);
-        } catch (final InvocationTargetException e) {
-            throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_FIND_ID, e, id);
-        } catch (final NoSuchMethodException e) {
+        } catch (InvocationTargetException e) {
             throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_FIND_ID, e, id);
         }
     }
