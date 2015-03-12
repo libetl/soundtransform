@@ -59,13 +59,16 @@ public interface FluentClientReady {
     FluentClientReady withAPack (String packName, InputStream jsonStream) throws SoundTransformException;
 
     /**
-     * Tells the client to work with a pack. uses the context object to find the resource from the R object
+     * Tells the client to work with a pack. Uses the context object to find the resource from the R object
      * passed in parameter
      *
      * @param context
-     *            (Android only) a Context object
-     * @param rObject
-     *            the R object
+     *            the Android context (should be an instance of `android.content.Context`, but left as Object so the FluentClient
+     *            can be used in a non-android project.
+     * @param rClass
+     *            R.raw.getClass () (either from soundtransform or from your pack) should be passed in parameter
+     * @param packJsonId
+     *            the id value of your json pack file (should be a field inside R.raw)
      * @return the client, ready to start
      * @throws SoundTransformException
      *             the input stream cannot be read, or the json format is not
@@ -82,18 +85,23 @@ public interface FluentClientReady {
      * <pre>
      * {
      *   "instrumentName" :
-     *   {
-     *     -1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
-     *    192 : "/data/mypackage.myapp/knownFrequencyFile.wav",
-     *    ...
-     *   },
+     *     {
+     *         {"name" : "unknownDetailsFile"},
+     *         {"name" : "knownDetailsFile.wav",
+     *          "frequency": 192.0,
+     *          "attack": 0,
+     *          "decay": 300,
+     *          "sustain": 500,
+     *          "release": 14732},
+     *         ...
+     *     },
      *   ...
      * }
      * </pre>
      *
-     * Do not assign the same frequency for two notes in the same instrument. If
-     * several notes must have their frequencies detected by the soundtransform
-     * lib, set different negative values (-1, -2, -3, ...)
+     * If a note (one of the records inside the `instrumentName` structure) does not own any detail, 
+     * it will be obtained by digging in the file samples, and can take a really long time. 
+     * It is advisable to fill in the details in each note.
      *
      * @param packName
      *            the name of the pack

@@ -629,12 +629,17 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     /**
-     * Tells the client to work with a pack. Reads the whole inputStream. A pattern must be followed in the jsonStream to
-     * enable the import.
-     * @param packName the name of the pack
-     * @param jsonStream the input stream
-     * @return the client, in its current state.
-     * @throws SoundTransformException the input stream cannot be read, or the json format is not correct, or some sound files are missing
+     * Tells the client to work with a pack. Reads the whole inputStream. A
+     * pattern must be followed in the jsonStream to enable the import.
+     *
+     * @param packName
+     *            the name of the pack
+     * @param jsonStream
+     *            the input stream
+     * @return the client, ready to start
+     * @throws SoundTransformException
+     *             the input stream cannot be read, or the json format is not
+     *             correct, or some sound files are missing
      */
     public FluentClient withAPack (final String packName, final InputStream jsonStream) throws SoundTransformException {
         new ImportAPackIntoTheLibrary (this.getObservers ()).importAPack (packName, jsonStream);
@@ -643,13 +648,16 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     
     @Override
     /**
-     * Tells the client to work with a pack. uses the context object to find the resource from the R object
+     * Tells the client to work with a pack. Uses the context object to find the resource from the R object
      * passed in parameter
      *
      * @param context
-     *            (Android only) a Context object
-     * @param rObject
-     *            the R object
+     *            the Android context (should be an instance of `android.content.Context`, but left as Object so the FluentClient
+     *            can be used in a non-android project.
+     * @param rClass
+     *            R.raw.getClass () (either from soundtransform or from your pack) should be passed in parameter
+     * @param packJsonId
+     *            the id value of your json pack file (should be a field inside R.raw)
      * @return the client, ready to start
      * @throws SoundTransformException
      *             the input stream cannot be read, or the json format is not
@@ -662,26 +670,40 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     
     @Override
     /**
-     * Tells the client to work with a pack. Reads the whole string content. A pattern must be followed in the jsonContent to
-     * enable the import.<br/>
+     * Tells the client to work with a pack. Reads the whole string content. A
+     * pattern must be followed in the jsonContent to enable the import.<br/>
+     *
      * Here is the format allowed in the file
+     *
      * <pre>
      * {
      *   "instrumentName" :
-     *   {
-     *     -1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
-     *    192 : "/data/mypackage.myapp/knownFrequencyFile.wav",
-     *    ...
-     *   },
+     *     {
+     *         {"name" : "unknownDetailsFile"},
+     *         {"name" : "knownDetailsFile.wav",
+     *          "frequency": 192.0,
+     *          "attack": 0,
+     *          "decay": 300,
+     *          "sustain": 500,
+     *          "release": 14732},
+     *         ...
+     *     },
      *   ...
      * }
      * </pre>
-     * Do not assign the same frequency for two notes in the same instrument. If several notes must have their frequencies
-     * detected by the soundtransform lib, set different negative values (-1, -2, -3, ...)
-     * @param packName the name of the pack
-     * @param jsonContent a string containing the definition of the pack
-     * @return the client, in its current state.
-     * @throws SoundTransformException the json content is invalid, the json format is not correct, or some sound files are missing
+     *
+     * If a note (one of the records inside the `instrumentName` structure) does not own any detail, 
+     * it will be obtained by digging in the file samples, and can take a really long time. 
+     * It is advisable to fill in the details in each note.
+     *
+     * @param packName
+     *            the name of the pack
+     * @param jsonContent
+     *            a string containing the definition of the pack
+     * @return the client, ready to start
+     * @throws SoundTransformException
+     *             the json content is invalid, the json format is not correct,
+     *             or some sound files are missing
      */
     public FluentClient withAPack (final String packName, final String jsonContent) throws SoundTransformException {
         new ImportAPackIntoTheLibrary (this.getObservers ()).importAPack (packName, jsonContent);

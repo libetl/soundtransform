@@ -636,10 +636,10 @@ Parameters:
 Returns:  
 the client, ready to start
 
-####   FluentClient*.withAPack
+####   FluentClientReady.withAPack
 
 ```java
-<T> withAPack (String packName, InputStream jsonStream) throws SoundTransformException
+FluentClientReady withAPack (String packName, InputStream jsonStream) throws SoundTransformException
 ```
 
 
@@ -651,15 +651,40 @@ Parameters:
 `jsonStream` - the input stream
 
 Returns:  
-the client, with the current data
+the client, ready to start
 
 Throws:  
 `SoundTransformException` - the input stream cannot be read, or the json format is not correct, or some sound files are missing
 
-####   FluentClient*.withAPack
+####   FluentClientReady.withAPack (Android only)
 
 ```java
-<T> withAPack (String packName, String jsonContent) throws SoundTransformException
+FluentClientReady withAPack  (String packName, Object context, Class<?> rClass, int packJsonId) throws SoundTransformException
+```
+
+
+Tells the client to work with a pack. Uses the context object to find the resource from the R object passed in parameter
+
+Parameters:  
+`packName`   - the name of the pack
+
+`context`    - the Android context (should be an instance of `android.content.Context`, but left as Object so the FluentClient
+               can be used in a non-android project.
+
+`rClass`     - R.raw.getClass () (either from soundtransform or from your pack) should be passed in parameter
+
+`packJsonId` - the id value of your json pack file (should be a field inside R.raw)
+
+Returns:  
+the client, ready to start
+
+Throws:  
+`SoundTransformException` - the input stream cannot be read, or the json format is not correct, or some sound files are missing
+
+####   FluentClientReady.withAPack
+
+```java
+FluentClientReady withAPack (String packName, String jsonContent) throws SoundTransformException
 ```
  
 
@@ -670,14 +695,20 @@ Here is the format allowed in the file
 {
   "instrumentName" :
   {
-    -1 : "/data/mypackage.myapp/unknownFrequencyFile.wav",
-   192 : "/data/mypackage.myapp/knownFrequencyFile.wav",
+    {"name" : "unknownDetailsFile"},
+    {"name" : "knownDetailsFile.wav",
+     "frequency": 192.0,
+     "attack": 0,
+     "decay": 300,
+     "sustain": 500,
+     "release": 14732},
    ...
   },
   ...
 }
 ```
-Do not assign the same frequency for two notes in the same instrument. If several notes must have their frequencies detected by the soundtransform lib, set different negative values (-1, -2, -3, ...)
+If a note (one of the records inside the `instrumentName` structure) does not own any detail, it will be obtained by digging
+ in the file samples, and can take a really long time. It is advisable to fill in the details in each note.
 
 Parameters:  
 `packName` - the name of the pack
@@ -685,7 +716,7 @@ Parameters:
 `jsonContent` - a string containing the definition of the pack
 
 Returns:  
-the client, with the current data
+the client, ready to start
 
 Throws:  
 `SoundTransformException` - the json content is invalid, the json format is not correct, or some sound files are missing
