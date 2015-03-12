@@ -64,7 +64,7 @@ public interface FluentClientReady {
      *
      * @param context
      *            the Android context (should be an instance of `android.content.Context`, but left as Object so the FluentClient
-     *            can be used in a non-android project.
+     *            can be used in a non-android project)
      * @param rClass
      *            R.raw.getClass () (either from soundtransform or from your pack) should be passed in parameter
      * @param packJsonId

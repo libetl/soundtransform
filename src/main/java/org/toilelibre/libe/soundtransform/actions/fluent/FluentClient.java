@@ -270,7 +270,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException if the metadata format object is invalid, or if the sound cannot be converted
      */
     public FluentClientWithInputStream exportToStream () throws SoundTransformException {
-        final FormatInfo currentInfo = new GetStreamInfo (this.getObservers ()).getSoundInfo (this.sounds);
+        final FormatInfo currentInfo = new GetStreamInfo (this.getObservers ()).getFormatInfo (this.sounds);
         final InputStream audioInputStream1 = new ToInputStream (this.getObservers ()).toStream (this.sounds, StreamInfo.from (currentInfo, this.sounds));
         this.cleanData ();
         this.audioInputStream = audioInputStream1;
@@ -608,7 +608,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             inputstream
      */
     public StreamInfo stopWithStreamInfo () throws SoundTransformException {
-        return new GetStreamInfo (this.getObservers ()).getSoundInfo (this.audioInputStream);
+        return new GetStreamInfo (this.getObservers ()).getStreamInfo (this.audioInputStream);
     }
 
     @Override
@@ -652,7 +652,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *
      * @param context
      *            the Android context (should be an instance of `android.content.Context`, but left as Object so the FluentClient
-     *            can be used in a non-android project.
+     *            can be used in a non-android project)
      * @param rClass
      *            R.raw.getClass () (either from soundtransform or from your pack) should be passed in parameter
      * @param packJsonId

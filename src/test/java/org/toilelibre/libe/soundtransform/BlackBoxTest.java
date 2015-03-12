@@ -33,6 +33,6 @@ public class BlackBoxTest extends SoundTransformTest {
 
     @Test
     public void getStreamInfo () throws SoundTransformException, IOException {
-        new Slf4jObserver ().notify (new GetStreamInfo ().getSoundInfo (new BufferedInputStream (new FileInputStream (this.gPiano3))).toString ());
+        new Slf4jObserver ().notify (new GetStreamInfo ().getStreamInfo (new BufferedInputStream (new FileInputStream (this.gPiano3))).toString ());
     }
 }

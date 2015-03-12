@@ -15,11 +15,11 @@ public class GetStreamInfo extends Action {
         super (observers);
     }
 
-    public StreamInfo getSoundInfo (final InputStream ais) throws SoundTransformException {
+    public StreamInfo getStreamInfo (final InputStream ais) throws SoundTransformException {
         return this.transformSound.getStreamInfo (ais);
     }
 
-    public FormatInfo getSoundInfo (final Sound [] sounds) throws SoundTransformException {
+    public FormatInfo getFormatInfo (final Sound [] sounds) throws SoundTransformException {
         return this.transformSound.getFormatInfo (sounds);
     }
 }
