@@ -22,7 +22,7 @@ public class GsonPack2StringHelper implements Pack2StringHelper {
         if (note instanceof SimpleNote) {
             return new Gson ().toJsonTree (((SimpleNote) note).getNoteInfo ());
         }
-        return new Gson ().toJsonTree (Collections.EMPTY_LIST);
+        return new Gson ().toJsonTree (Collections.emptyList ());
     }
 
     private JsonElement toJsonElement (Pack pack) {

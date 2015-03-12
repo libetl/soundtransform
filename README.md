@@ -636,7 +636,7 @@ Parameters:
 Returns:  
 the client, ready to start
 
-####   FluentClientReady.withAPack
+####   FluentClientReady.withAPack (just after start)
 
 ```java
 FluentClientReady withAPack (String packName, InputStream jsonStream) throws SoundTransformException
@@ -656,7 +656,7 @@ the client, ready to start
 Throws:  
 `SoundTransformException` - the input stream cannot be read, or the json format is not correct, or some sound files are missing
 
-####   FluentClientReady.withAPack (Android only)
+####   FluentClientReady.withAPack (just after start) (Android only)
 
 ```java
 FluentClientReady withAPack  (String packName, Object context, Class<?> rClass, int packJsonId) throws SoundTransformException
@@ -681,7 +681,7 @@ the client, ready to start
 Throws:  
 `SoundTransformException` - the input stream cannot be read, or the json format is not correct, or some sound files are missing
 
-####   FluentClientReady.withAPack
+####   FluentClientReady.withAPack (just after start)
 
 ```java
 FluentClientReady withAPack (String packName, String jsonContent) throws SoundTransformException
