@@ -11,17 +11,17 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public class PlaySound extends Action {
 
-    public void play(final InputStream is) throws SoundTransformException {
-        this.playSound.play(is);
+    public void play (final InputStream is) throws SoundTransformException {
+        this.playSound.play (is);
     }
 
-    public void play(final Sound[] channels) throws SoundTransformException {
-        this.playSound.play(channels);
+    public void play (final Sound [] channels) throws SoundTransformException {
+        this.playSound.play (channels);
     }
 
-    @SuppressWarnings("unchecked")
-    public void play(final Spectrum<?> spectrum1) throws SoundTransformException {
+    @SuppressWarnings ("unchecked")
+    public void play (final Spectrum<? extends Serializable> spectrum1) throws SoundTransformException {
         final Spectrum<Serializable> spectrum = (Spectrum<Serializable>) spectrum1;
-        ((PlaySoundService<Serializable>) this.playSound).play(spectrum);
+        ((PlaySoundService<Serializable>) this.playSound).play (spectrum);
     }
 }

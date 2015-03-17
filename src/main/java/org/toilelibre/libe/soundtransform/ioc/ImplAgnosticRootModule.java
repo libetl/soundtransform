@@ -25,43 +25,45 @@ import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
 
-    protected void declare() {
-        super.bind(PlaySoundProcessor.class).to(this.providePlaySoundProcessor());
-        super.bind(AudioFileHelper.class).to(this.provideAudioFileHelper());
-        super.bind(AudioFormatParser.class).to(this.provideAudioFormatParser());
-        super.bind(ContextLoader.class).to(this.provideContextLoader());
+    @Override
+    protected void declare () {
+        super.bind (PlaySoundProcessor.class).to (this.providePlaySoundProcessor ());
+        super.bind (AudioFileHelper.class).to (this.provideAudioFileHelper ());
+        super.bind (AudioFormatParser.class).to (this.provideAudioFormatParser ());
+        super.bind (ContextLoader.class).to (this.provideContextLoader ());
 
-        super.bind(Sound2StringHelper.class).to(this.provideSound2StringHelper());
-        super.bind(Pack2StringHelper.class).to(this.providePack2StringHelper());
-        super.bind(SoundAppender.class).to(this.provideSoundAppender());
-        super.bind(SoundPitchAndTempoHelper.class).to(this.provideSoundPitchAndTempoHelper());
-        super.bind(FourierTransformHelper.class).to(this.provideFourierTransformHelper());
-        super.bind(Spectrum2CepstrumHelper.class).to(this.provideSpectrum2CepstrumHelper());
-        super.bind(SpectrumHelper.class).to(this.provideSpectrumHelper());
-        super.bind(SpectrumToStringHelper.class).to(this.provideSpectrumToStringHelper());
-        super.bind(FrameProcessor.class).to(this.provideFrameProcessor());
-        super.bind(ADSRHelper.class).to(this.provideAdsrHelper());
-        super.bind(FrequencyHelper.class).to(this.provideFrequencyHelper());
-        super.bind(PackConfigParser.class).to(this.providePackConfigParser());
-        super.bind(ChangeOctaveProcessor.class).to(this.provideChangeOctaveProcessor());
-        super.bind(AdjustFrequenciesProcessor.class).to(this.provideAdjustFrequenciesProcessor());
-        super.bind(FilterFrequenciesProcessor.class).to(this.provideFilterFrequenciesProcessor());
-        super.bind(ReplaceFrequenciesProcessor.class).to(this.provideReplaceFrequenciesProcessor());
-        super.bind(CompressFrequenciesProcessor.class).to(this.provideCompressFrequenciesProcessor());
-        super.bind(Library.class).to(this.provideLibrary());
+        super.bind (Sound2StringHelper.class).to (this.provideSound2StringHelper ());
+        super.bind (Pack2StringHelper.class).to (this.providePack2StringHelper ());
+        super.bind (SoundAppender.class).to (this.provideSoundAppender ());
+        super.bind (SoundPitchAndTempoHelper.class).to (this.provideSoundPitchAndTempoHelper ());
+        super.bind (FourierTransformHelper.class).to (this.provideFourierTransformHelper ());
+        super.bind (Spectrum2CepstrumHelper.class).to (this.provideSpectrum2CepstrumHelper ());
+        super.bind (SpectrumHelper.class).to (this.provideSpectrumHelper ());
+        super.bind (SpectrumToStringHelper.class).to (this.provideSpectrumToStringHelper ());
+        super.bind (FrameProcessor.class).to (this.provideFrameProcessor ());
+        super.bind (ADSRHelper.class).to (this.provideAdsrHelper ());
+        super.bind (FrequencyHelper.class).to (this.provideFrequencyHelper ());
+        super.bind (PackConfigParser.class).to (this.providePackConfigParser ());
+        super.bind (ChangeOctaveProcessor.class).to (this.provideChangeOctaveProcessor ());
+        super.bind (AdjustFrequenciesProcessor.class).to (this.provideAdjustFrequenciesProcessor ());
+        super.bind (FilterFrequenciesProcessor.class).to (this.provideFilterFrequenciesProcessor ());
+        super.bind (ReplaceFrequenciesProcessor.class).to (this.provideReplaceFrequenciesProcessor ());
+        super.bind (CompressFrequenciesProcessor.class).to (this.provideCompressFrequenciesProcessor ());
+
+        super.bind (Library.class).to (this.provideLibrary ());
 
     }
 
-    private Library provideLibrary() {
-        return new Library();
+    protected abstract AudioFileHelper provideAudioFileHelper ();
+
+    protected abstract AudioFormatParser provideAudioFormatParser ();
+
+    protected abstract ContextLoader provideContextLoader ();
+
+    private Library provideLibrary () {
+        return new Library ();
     }
 
-    protected abstract AudioFileHelper provideAudioFileHelper();
-
-    protected abstract AudioFormatParser provideAudioFormatParser();
-
-    protected abstract ContextLoader provideContextLoader();
-
-    protected abstract PlaySoundProcessor providePlaySoundProcessor();
+    protected abstract PlaySoundProcessor providePlaySoundProcessor ();
 
 }
