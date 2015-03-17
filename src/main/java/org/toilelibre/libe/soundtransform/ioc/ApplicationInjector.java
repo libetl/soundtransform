@@ -133,7 +133,7 @@ public class ApplicationInjector {
 
     @SuppressWarnings("unchecked")
     private static <T> T tryToInstantiateWithThisConstructor(final Constructor<?> constructor, final Object[] additionalParameters, final List<String> warnings) {
-
+        constructor.setAccessible (true);
         final Object[] newInstanceParams = new Object[constructor.getParameterTypes().length];
         final int additionalParamCounter = ApplicationInjector.findNewInstanceParams(newInstanceParams, constructor, additionalParameters, warnings);
         if (additionalParamCounter != additionalParameters.length) {
