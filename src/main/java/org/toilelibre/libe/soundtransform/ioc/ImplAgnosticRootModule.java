@@ -1,22 +1,5 @@
 package org.toilelibre.libe.soundtransform.ioc;
 
-import org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundAppender;
-import org.toilelibre.libe.soundtransform.infrastructure.service.appender.ConvertedSoundPitchAndTempoHelper;
-import org.toilelibre.libe.soundtransform.infrastructure.service.fourier.CommonsMath3FourierTransformHelper;
-import org.toilelibre.libe.soundtransform.infrastructure.service.frames.ByteArrayFrameProcessor;
-import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.AdjustFrequenciesToPianoProcessor;
-import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleChangeOctaveProcessor;
-import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleCompressFrequenciesProcessor;
-import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleFilterFrequenciesProcessor;
-import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.SimpleReplaceFrequenciesProcessor;
-import org.toilelibre.libe.soundtransform.infrastructure.service.pack.GsonPack2StringHelper;
-import org.toilelibre.libe.soundtransform.infrastructure.service.pack.GsonPackConfigParser;
-import org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.CallHPSFrequencyHelper;
-import org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.MagnitudeADSRHelper;
-import org.toilelibre.libe.soundtransform.infrastructure.service.sound2string.GraphSound2StringHelper;
-import org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.GraphSpectrumToStringHelper;
-import org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.HPSSpectrumHelper;
-import org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.NaiveSpectrum2CepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound2StringHelper;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
@@ -40,43 +23,45 @@ import org.toilelibre.libe.soundtransform.model.library.pack.ContextLoader;
 import org.toilelibre.libe.soundtransform.model.library.pack.PackConfigParser;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
-import se.jbee.inject.bind.BinderModule;
+abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
 
-public abstract class ImplAgnosticRootModule extends BinderModule {
+    protected void declare() {
+        super.bind(PlaySoundProcessor.class).to(this.providePlaySoundProcessor());
+        super.bind(AudioFileHelper.class).to(this.provideAudioFileHelper());
+        super.bind(AudioFormatParser.class).to(this.provideAudioFormatParser());
+        super.bind(ContextLoader.class).to(this.provideContextLoader());
 
-    @Override
-    protected void declare () {
-        super.bind (PlaySoundProcessor.class).to (this.providePlaySoundProcessor ());
-        super.bind (AudioFileHelper.class).to (this.provideAudioFileHelper ());
-        super.bind (AudioFormatParser.class).to (this.provideAudioFormatParser ());
-        super.bind (ContextLoader.class).to (this.provideContextLoader ());
+        super.bind(Sound2StringHelper.class).to(this.provideSound2StringHelper());
+        super.bind(Pack2StringHelper.class).to(this.providePack2StringHelper());
+        super.bind(SoundAppender.class).to(this.provideSoundAppender());
+        super.bind(SoundPitchAndTempoHelper.class).to(this.provideSoundPitchAndTempoHelper());
+        super.bind(FourierTransformHelper.class).to(this.provideFourierTransformHelper());
+        super.bind(Spectrum2CepstrumHelper.class).to(this.provideSpectrum2CepstrumHelper());
+        super.bind(SpectrumHelper.class).to(this.provideSpectrumHelper());
+        super.bind(SpectrumToStringHelper.class).to(this.provideSpectrumToStringHelper());
+        super.bind(FrameProcessor.class).to(this.provideFrameProcessor());
+        super.bind(ADSRHelper.class).to(this.provideAdsrHelper());
+        super.bind(FrequencyHelper.class).to(this.provideFrequencyHelper());
+        super.bind(PackConfigParser.class).to(this.providePackConfigParser());
+        super.bind(ChangeOctaveProcessor.class).to(this.provideChangeOctaveProcessor());
+        super.bind(AdjustFrequenciesProcessor.class).to(this.provideAdjustFrequenciesProcessor());
+        super.bind(FilterFrequenciesProcessor.class).to(this.provideFilterFrequenciesProcessor());
+        super.bind(ReplaceFrequenciesProcessor.class).to(this.provideReplaceFrequenciesProcessor());
+        super.bind(CompressFrequenciesProcessor.class).to(this.provideCompressFrequenciesProcessor());
+        super.bind(Library.class).to(this.provideLibrary());
 
-        super.bind (Sound2StringHelper.class).to (new GraphSound2StringHelper ());
-        super.bind (Pack2StringHelper.class).to (new GsonPack2StringHelper ());
-        super.bind (SoundAppender.class).to (new ConvertedSoundAppender ());
-        super.bind (SoundPitchAndTempoHelper.class).to (new ConvertedSoundPitchAndTempoHelper ());
-        super.bind (FourierTransformHelper.class).to (new CommonsMath3FourierTransformHelper ());
-        super.bind (Spectrum2CepstrumHelper.class).to (new NaiveSpectrum2CepstrumHelper ());
-        super.bind (SpectrumHelper.class).to (new HPSSpectrumHelper ());
-        super.bind (SpectrumToStringHelper.class).to (new GraphSpectrumToStringHelper (new HPSSpectrumHelper ()));
-        super.bind (FrameProcessor.class).to (new ByteArrayFrameProcessor ());
-        super.bind (ADSRHelper.class).to (new MagnitudeADSRHelper ());
-        super.bind (FrequencyHelper.class).to (new CallHPSFrequencyHelper ());
-        super.bind (PackConfigParser.class).to (new GsonPackConfigParser ());
-        super.bind (ChangeOctaveProcessor.class).to (new SimpleChangeOctaveProcessor ());
-        super.bind (AdjustFrequenciesProcessor.class).to (new AdjustFrequenciesToPianoProcessor ());
-        super.bind (FilterFrequenciesProcessor.class).to (new SimpleFilterFrequenciesProcessor ());
-        super.bind (ReplaceFrequenciesProcessor.class).to (new SimpleReplaceFrequenciesProcessor ());
-        super.bind (CompressFrequenciesProcessor.class).to (new SimpleCompressFrequenciesProcessor ());
-        super.bind (Library.class).to (new Library ());
     }
 
-    protected abstract AudioFileHelper provideAudioFileHelper ();
+    private Library provideLibrary() {
+        return new Library();
+    }
 
-    protected abstract AudioFormatParser provideAudioFormatParser ();
+    protected abstract AudioFileHelper provideAudioFileHelper();
 
-    protected abstract ContextLoader provideContextLoader ();
+    protected abstract AudioFormatParser provideAudioFormatParser();
 
-    protected abstract PlaySoundProcessor providePlaySoundProcessor ();
+    protected abstract ContextLoader provideContextLoader();
+
+    protected abstract PlaySoundProcessor providePlaySoundProcessor();
 
 }

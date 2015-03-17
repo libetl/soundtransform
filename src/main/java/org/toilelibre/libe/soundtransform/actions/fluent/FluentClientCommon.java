@@ -11,7 +11,7 @@ public interface FluentClientCommon {
      *
      * @return the client, ready to start
      */
-    FluentClientReady andAfterStart ();
+    FluentClientReady andAfterStart();
 
     /**
      * Stops the client pipeline and returns the pack whose title is in
@@ -21,11 +21,12 @@ public interface FluentClientCommon {
      *            the title of the pack
      * @return a pack object
      */
-    Pack stopWithAPack (String title);
+    Pack stopWithAPack(String title);
 
     /**
      * Stops the client pipeline and returns the currently subscribed observers
+     * 
      * @return the observers
      */
-    Observer [] stopWithObservers ();
+    Observer[] stopWithObservers();
 }

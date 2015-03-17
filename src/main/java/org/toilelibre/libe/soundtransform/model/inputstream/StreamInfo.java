@@ -10,15 +10,14 @@ public class StreamInfo extends FormatInfo {
      * 
      */
     private static final long serialVersionUID = 3374492428338107884L;
-    private final int     channels;
-    private final long    frameLength;
+    private final int channels;
+    private final long frameLength;
     private final boolean bigEndian;
     private final boolean pcmSigned;
-    private final String  taggedInfo;
+    private final String taggedInfo;
 
-
-    public StreamInfo (final int channels, final long frameLength, final int sampleSize, final float sampleRate, final boolean bigEndian, final boolean pcmSigned, final String taggedInfo) {
-        super (sampleSize, sampleRate);
+    public StreamInfo(final int channels, final long frameLength, final int sampleSize, final float sampleRate, final boolean bigEndian, final boolean pcmSigned, final String taggedInfo) {
+        super(sampleSize, sampleRate);
         this.channels = channels;
         this.frameLength = frameLength;
         this.bigEndian = bigEndian;
@@ -26,38 +25,32 @@ public class StreamInfo extends FormatInfo {
         this.taggedInfo = taggedInfo;
     }
 
-    public static StreamInfo from (FormatInfo fi, Sound [] data){
-        return new StreamInfo (data.length, data [0].getSamplesLength (), fi.getSampleSize (), fi.getSampleRate (), false, true, null);
+    public static StreamInfo from(FormatInfo fi, Sound[] data) {
+        return new StreamInfo(data.length, data[0].getSamplesLength(), fi.getSampleSize(), fi.getSampleRate(), false, true, null);
     }
-    
-    public int getChannels () {
+
+    public int getChannels() {
         return this.channels;
     }
 
-    public long getFrameLength () {
+    public long getFrameLength() {
         return this.frameLength;
     }
 
-    public String getTaggedInfo () {
+    public String getTaggedInfo() {
         return this.taggedInfo;
     }
 
-    public boolean isBigEndian () {
+    public boolean isBigEndian() {
         return this.bigEndian;
     }
 
-    public boolean isPcmSigned () {
+    public boolean isPcmSigned() {
         return this.pcmSigned;
     }
 
     @Override
-    public String toString () {
-        return String.format (Locale.ENGLISH, 
-                "%1s %1s, %1s, %1d bytes/frame, %6s", 
-                this.isPcmSigned () ? "PCM_SIGNED" : "PCM_UNSIGNED", 
-                        super.toString (), 
-                        this.getChannels () == 1 ? "mono" : "stereo", 
-                                this.getSampleSize () * this.getChannels (),
-                this.isBigEndian () ? "big-endian" : "little-endian");
+    public String toString() {
+        return String.format(Locale.ENGLISH, "%1s %1s, %1s, %1d bytes/frame, %6s", this.isPcmSigned() ? "PCM_SIGNED" : "PCM_UNSIGNED", super.toString(), this.getChannels() == 1 ? "mono" : "stereo", this.getSampleSize() * this.getChannels(), this.isBigEndian() ? "big-endian" : "little-endian");
     }
 }

@@ -2,6 +2,6 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.an
 
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-public interface HasStreamInfo {
-    StreamInfo getInfo ();
+interface HasStreamInfo {
+    StreamInfo getInfo();
 }

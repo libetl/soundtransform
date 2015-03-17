@@ -14,23 +14,23 @@ public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFr
 
     public enum SpeedUpSoundTransformationEventCode implements EventCode {
 
-        ITERATION_IN_PROGRESS (LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #%1d/%2d");
+        ITERATION_IN_PROGRESS(LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #%1d/%2d");
 
-        private final String   messageFormat;
+        private final String messageFormat;
         private final LogLevel logLevel;
 
-        SpeedUpSoundTransformationEventCode (final LogLevel ll, final String mF) {
+        SpeedUpSoundTransformationEventCode(final LogLevel ll, final String mF) {
             this.logLevel = ll;
             this.messageFormat = mF;
         }
 
         @Override
-        public LogLevel getLevel () {
+        public LogLevel getLevel() {
             return this.logLevel;
         }
 
         @Override
-        public String getMessageFormat () {
+        public String getMessageFormat() {
             return this.messageFormat;
         }
     }
@@ -38,42 +38,42 @@ public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFr
     private static final int A_HUNDRED = 100;
 
     private final float factor;
-    private Sound       sound;
-    private final int   step;
-    private float       writeIfGreaterEqThanFactor;
+    private Sound sound;
+    private final int step;
+    private float writeIfGreaterEqThanFactor;
 
-    public SpeedUpSoundTransformation (final int step1, final float factor) {
-        super ();
+    public SpeedUpSoundTransformation(final int step1, final float factor) {
+        super();
         this.factor = factor;
         this.step = step1;
         this.writeIfGreaterEqThanFactor = 0;
     }
 
     @Override
-    public int getOffsetFromASimpleLoop (final int i, final double step) {
+    public int getOffsetFromASimpleLoop(final int i, final double step) {
         return (int) (-i * (this.factor - 1) / this.factor);
     }
 
     @Override
-    public double getStep (final double defaultValue) {
+    public double getStep(final double defaultValue) {
         return this.step;
     }
 
     @Override
-    public Sound initSound (final Sound input) {
-        final long [] newdata = new long [(int) (input.getSamplesLength () / this.factor)];
-        this.sound = new Sound (newdata, input.getFormatInfo (), input.getChannelNum ());
+    public Sound initSound(final Sound input) {
+        final long[] newdata = new long[(int) (input.getSamplesLength() / this.factor)];
+        this.sound = new Sound(newdata, input.getFormatInfo(), input.getChannelNum());
         return this.sound;
     }
 
     @Override
-    public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset) {
-        final int total = (int) (this.sound.getSamplesLength () / this.factor);
+    public Spectrum<T> transformFrequencies(final Spectrum<T> fs, final int offset) {
+        final int total = (int) (this.sound.getSamplesLength() / this.factor);
         final int logStep = total / SpeedUpSoundTransformation.A_HUNDRED - total / SpeedUpSoundTransformation.A_HUNDRED % this.step;
         // This if helps to only log some of all iterations to avoid being too
         // verbose
         if (total / SpeedUpSoundTransformation.A_HUNDRED != 0 && logStep != 0 && offset % logStep == 0) {
-            this.log (new LogEvent (SpeedUpSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamplesLength () * this.factor)));
+            this.log(new LogEvent(SpeedUpSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamplesLength() * this.factor)));
         }
         if (this.writeIfGreaterEqThanFactor >= this.factor) {
             this.writeIfGreaterEqThanFactor -= this.factor;

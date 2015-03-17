@@ -17,7 +17,7 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
      *             if the spectrums are in an invalid format, or if the
      *             transform to sound does not work
      */
-    FluentClientSoundImported extractSound () throws SoundTransformException;
+    FluentClientSoundImported extractSound() throws SoundTransformException;
 
     /**
      * Plays the current audio data and (if needed) convert it temporarily to a
@@ -27,13 +27,13 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
      * @throws SoundTransformException
      *             could not play the current audio data
      */
-    FluentClientWithSpectrums playIt () throws SoundTransformException;
+    FluentClientWithSpectrums playIt() throws SoundTransformException;
 
     /**
      * Stops the client pipeline and returns the obtained spectrums
      *
      * @return a list of spectrums for each channel
      */
-    List<Spectrum<Serializable> []> stopWithSpectrums ();
-    
+    List<Spectrum<Serializable>[]> stopWithSpectrums();
+
 }

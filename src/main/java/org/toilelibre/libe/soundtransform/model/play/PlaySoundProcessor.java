@@ -6,5 +6,5 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundExcepti
 
 public interface PlaySoundProcessor {
 
-    Object play (InputStream ais) throws PlaySoundException;
+    Object play(InputStream ais) throws PlaySoundException;
 }

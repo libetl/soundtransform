@@ -12,29 +12,28 @@ import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileServ
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 public class TestPlaySound extends SoundTransformTest {
-    private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
-    private final File        input       = new File (this.classLoader.getResource ("before.wav").getFile ());
+    private final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    private final File input = new File(this.classLoader.getResource("before.wav").getFile());
 
     @Test
-    public void playBeforeWav () throws SoundTransformException {
-        final PlaySoundProcessor ps = $.select (PlaySoundProcessor.class);
-        final ConvertAudioFileService convertAudioFileService = $.create (ConvertAudioFileService.class);
-        final InputStream ais = convertAudioFileService.callConverter (this.input);
+    public void playBeforeWav() throws SoundTransformException {
+        final PlaySoundProcessor ps = $.select(PlaySoundProcessor.class);
+        final ConvertAudioFileService convertAudioFileService = $.create(ConvertAudioFileService.class);
+        final InputStream ais = convertAudioFileService.callConverter(this.input);
         try {
-            ps.play (ais);
+            ps.play(ais);
         } catch (final java.lang.IllegalArgumentException iae) {
-            if (!"No line matching interface Clip is supported.".equals (iae.getMessage ())) {
+            if (!"No line matching interface Clip is supported.".equals(iae.getMessage())) {
                 throw iae;
             }
         } catch (final PlaySoundException e) {
             // javax.sound.sampled.LineUnavailableException for some JDK
             // versions
-            if (!javax.sound.sampled.LineUnavailableException.class.equals (e.getCause ().getClass ()) &&
-                    !java.lang.IllegalArgumentException.class.equals (e.getCause ().getClass ())) {
+            if (!javax.sound.sampled.LineUnavailableException.class.equals(e.getCause().getClass()) && !java.lang.IllegalArgumentException.class.equals(e.getCause().getClass())) {
                 throw e;
             }
         } catch (final RuntimeException e) {
-            if (!"Stub!".equals (e.getMessage ())) {
+            if (!"Stub!".equals(e.getMessage())) {
                 throw e;
             }
         }

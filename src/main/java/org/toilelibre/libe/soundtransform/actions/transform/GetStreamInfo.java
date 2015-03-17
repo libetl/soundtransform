@@ -11,15 +11,15 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class GetStreamInfo extends Action {
 
-    public GetStreamInfo (final Observer... observers) {
-        super (observers);
+    public GetStreamInfo(final Observer... observers) {
+        super(observers);
     }
 
-    public StreamInfo getStreamInfo (final InputStream ais) throws SoundTransformException {
-        return this.transformSound.getStreamInfo (ais);
+    public StreamInfo getStreamInfo(final InputStream ais) throws SoundTransformException {
+        return this.transformSound.getStreamInfo(ais);
     }
 
-    public FormatInfo getFormatInfo (final Sound [] sounds) throws SoundTransformException {
-        return this.transformSound.getFormatInfo (sounds);
+    public FormatInfo getFormatInfo(final Sound[] sounds) throws SoundTransformException {
+        return this.transformSound.getFormatInfo(sounds);
     }
 }

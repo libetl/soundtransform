@@ -8,11 +8,11 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public final class ApplySoundTransform extends Action {
 
-    public ApplySoundTransform (final Observer... observers) {
-        super (observers);
+    public ApplySoundTransform(final Observer... observers) {
+        super(observers);
     }
 
-    public Sound [] apply (final Sound [] sounds, final SoundTransformation transform) throws SoundTransformException {
-        return this.transformSound.apply (sounds, transform);
+    public Sound[] apply(final Sound[] sounds, final SoundTransformation transform) throws SoundTransformException {
+        return this.transformSound.apply(sounds, transform);
     }
 }

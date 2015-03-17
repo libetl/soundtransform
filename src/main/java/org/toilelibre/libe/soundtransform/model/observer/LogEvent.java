@@ -12,34 +12,34 @@ public class LogEvent {
 
     private final EventCode eventCode;
 
-    private final Date      date;
+    private final Date date;
 
-    private final Object [] params;
+    private final Object[] params;
 
-    public LogEvent (final EventCode eventCode, final Object... params1) {
+    public LogEvent(final EventCode eventCode, final Object... params1) {
         this.eventCode = eventCode;
-        this.date = new Date ();
+        this.date = new Date();
         this.params = params1;
     }
 
-    private String getDateInIso8601Format () {
-        return new SimpleDateFormat ("yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Locale.US).format (this.date);
+    private String getDateInIso8601Format() {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Locale.US).format(this.date);
     }
 
-    public EventCode getEventCode () {
+    public EventCode getEventCode() {
         return this.eventCode;
     }
 
-    public LogLevel getLevel () {
-        return this.eventCode.getLevel ();
+    public LogLevel getLevel() {
+        return this.eventCode.getLevel();
     }
 
-    public String getMsg () {
-        return String.format (this.eventCode.getMessageFormat (), this.params);
+    public String getMsg() {
+        return String.format(this.eventCode.getMessageFormat(), this.params);
     }
 
     @Override
-    public String toString () {
-        return this.getDateInIso8601Format () + " [" + this.eventCode.getLevel () + "," + this.eventCode.name () + "] " + this.getMsg ();
+    public String toString() {
+        return this.getDateInIso8601Format() + " [" + this.eventCode.getLevel() + "," + this.eventCode.name() + "] " + this.getMsg();
     }
 }

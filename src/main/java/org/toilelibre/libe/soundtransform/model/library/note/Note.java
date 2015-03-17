@@ -5,16 +5,16 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public interface Note {
 
-    Sound getAttack (float frequency, int channelnum, float lengthInSeconds) throws SoundTransformException;
+    Sound getAttack(float frequency, int channelnum, float lengthInSeconds) throws SoundTransformException;
 
-    Sound getDecay (float frequency, int channelnum, float lengthInSeconds) throws SoundTransformException;
+    Sound getDecay(float frequency, int channelnum, float lengthInSeconds) throws SoundTransformException;
 
-    float getFrequency ();
+    float getFrequency();
 
-    String getName ();
+    String getName();
 
-    Sound getRelease (float frequency, int channelnum, float lengthInSeconds) throws SoundTransformException;
+    Sound getRelease(float frequency, int channelnum, float lengthInSeconds) throws SoundTransformException;
 
-    Sound getSustain (float frequency, int channelnum, float lengthInSeconds) throws SoundTransformException;
-    
+    Sound getSustain(float frequency, int channelnum, float lengthInSeconds) throws SoundTransformException;
+
 }

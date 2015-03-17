@@ -9,12 +9,12 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public final class InputStreamToAudioInputStream extends Action {
 
-    public InputStreamToAudioInputStream (final Observer... observers) {
-        super (observers);
+    public InputStreamToAudioInputStream(final Observer... observers) {
+        super(observers);
     }
 
-    public InputStream transformRawInputStream (final InputStream ais, final StreamInfo isi) throws SoundTransformException {
-        return this.transformSound.transformRawInputStream (ais, isi);
+    public InputStream transformRawInputStream(final InputStream ais, final StreamInfo isi) throws SoundTransformException {
+        return this.transformSound.transformRawInputStream(ais, isi);
     }
 
 }

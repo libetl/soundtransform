@@ -5,5 +5,5 @@ import java.util.Map;
 
 public interface PackConfigParser {
 
-    Map<String, List<Map<String, Object>>> parse (String input);
+    Map<String, List<Map<String, Object>>> parse(String input);
 }

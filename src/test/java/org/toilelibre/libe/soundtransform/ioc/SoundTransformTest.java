@@ -8,7 +8,7 @@ import se.jbee.inject.bootstrap.Bootstrap;
 public class SoundTransformTest {
 
     @BeforeClass
-    public static void setUp () {
-        ApplicationInjector.injector = Bootstrap.injector (JavaXRootModule.class);
+    public static void setUp() {
+        ApplicationInjector.injector = Bootstrap.injector(JavaXRootModule.class);
     }
 }

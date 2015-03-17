@@ -11,15 +11,15 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public final class ToInputStream extends Action {
 
-    public ToInputStream (final Observer... observers) {
-        super (observers);
+    public ToInputStream(final Observer... observers) {
+        super(observers);
     }
 
-    public InputStream toStream (final File fOrigin) throws SoundTransformException {
-        return this.transformSound.fromFile (fOrigin);
+    public InputStream toStream(final File fOrigin) throws SoundTransformException {
+        return this.transformSound.fromFile(fOrigin);
     }
 
-    public InputStream toStream (final Sound [] channels, final StreamInfo streamInfo) throws SoundTransformException {
-        return this.transformSound.toStream (channels, streamInfo);
+    public InputStream toStream(final Sound[] channels, final StreamInfo streamInfo) throws SoundTransformException {
+        return this.transformSound.toStream(channels, streamInfo);
     }
 }

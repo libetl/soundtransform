@@ -2,16 +2,16 @@ package org.toilelibre.libe.soundtransform.model.exception;
 
 public class SoundTransformRuntimeException extends RuntimeException {
     enum RuntimeErrorCode implements ErrorCode {
-        RUNTIME_ERROR ("Runtime error");
+        RUNTIME_ERROR("Runtime error");
 
         private String messageFormat;
 
-        RuntimeErrorCode (final String mF) {
+        RuntimeErrorCode(final String mF) {
             this.messageFormat = mF;
         }
 
         @Override
-        public String getMessageFormat () {
+        public String getMessageFormat() {
             return this.messageFormat;
         }
 
@@ -21,27 +21,27 @@ public class SoundTransformRuntimeException extends RuntimeException {
      *
      */
     private static final long serialVersionUID = 2154130846010299931L;
-    private final ErrorCode   errorCode;
-    private final Object []   args;
+    private final ErrorCode errorCode;
+    private final Object[] args;
 
-    public SoundTransformRuntimeException (final ErrorCode errorCode, final Exception cause, final Object... args) {
-        super (cause);
+    public SoundTransformRuntimeException(final ErrorCode errorCode, final Exception cause, final Object... args) {
+        super(cause);
         this.errorCode = errorCode;
         this.args = args;
     }
 
-    public SoundTransformRuntimeException (final SoundTransformException cause) {
-        super (cause);
+    public SoundTransformRuntimeException(final SoundTransformException cause) {
+        super(cause);
         this.errorCode = RuntimeErrorCode.RUNTIME_ERROR;
-        this.args = new Object [0];
+        this.args = new Object[0];
     }
 
-    public ErrorCode getErrorCode () {
+    public ErrorCode getErrorCode() {
         return this.errorCode;
     }
 
     @Override
-    public String getMessage () {
-        return String.format (this.errorCode.getMessageFormat (), this.args);
+    public String getMessage() {
+        return String.format(this.errorCode.getMessageFormat(), this.args);
     }
 }

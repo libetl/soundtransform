@@ -9,16 +9,16 @@ public class Library {
 
     private final Map<String, Pack> packs;
 
-    public Library () {
-        this.packs = new HashMap<String, Pack> ();
+    public Library() {
+        this.packs = new HashMap<String, Pack>();
     }
 
-    public void addPack (final String name, final Pack p) {
-        this.packs.put (name, p);
+    public void addPack(final String name, final Pack p) {
+        this.packs.put(name, p);
     }
 
-    public Pack getPack (final String name) {
-        return this.packs.get (name);
+    public Pack getPack(final String name) {
+        return this.packs.get(name);
     }
 
 }

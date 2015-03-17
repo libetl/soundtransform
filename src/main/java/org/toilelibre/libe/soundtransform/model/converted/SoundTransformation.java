@@ -5,5 +5,5 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public interface SoundTransformation {
 
-    Sound transform (Sound input) throws SoundTransformException;
+    Sound transform(Sound input) throws SoundTransformException;
 }

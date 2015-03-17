@@ -5,10 +5,10 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public interface ADSRHelper {
 
-    int findDecay (Sound channel1, int attack) throws SoundTransformException;
+    int findDecay(Sound channel1, int attack) throws SoundTransformException;
 
-    int findRelease (Sound channel1) throws SoundTransformException;
+    int findRelease(Sound channel1) throws SoundTransformException;
 
-    int findSustain (Sound channel1, int decay) throws SoundTransformException;
+    int findSustain(Sound channel1, int decay) throws SoundTransformException;
 
 }

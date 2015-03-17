@@ -12,47 +12,47 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 public interface FrameProcessor<T> extends LogAware<T> {
 
     public enum FrameProcessorErrorCode implements ErrorCode {
-        WRONG_TYPE ("incorrect stream type");
+        WRONG_TYPE("incorrect stream type"), COULD_NOT_READ_STREAM("Could not read stream"), COULD_NOT_CLOSE_STREAM("Could not close stream");
 
         private final String messageFormat;
 
-        FrameProcessorErrorCode (final String mF) {
+        FrameProcessorErrorCode(final String mF) {
             this.messageFormat = mF;
         }
 
         @Override
-        public String getMessageFormat () {
+        public String getMessageFormat() {
             return this.messageFormat;
         }
     }
 
     public enum FrameProcessorEventCode implements EventCode {
-        READ_START (LogLevel.INFO, "Starting to read the input stream"), BYTEARRAY_TO_FRAME_CONVERSION (LogLevel.VERBOSE, "Converting a byte array into a sound frame (%1d/%2d, %3d%%)"), READ_END (LogLevel.INFO, "Finished reading the input stream"), SOUND_INIT (LogLevel.INFO,
-                "Converted sound allocation in memory"), READ_FRAME_SIZE (LogLevel.PARANOIAC, "Read frame size : %1d");
+        READ_START(LogLevel.INFO, "Starting to read the input stream"), BYTEARRAY_TO_FRAME_CONVERSION(LogLevel.VERBOSE, "Converting a byte array into a sound frame (%1d/%2d, %3d%%)"), READ_END(LogLevel.INFO, "Finished reading the input stream"), SOUND_INIT(LogLevel.INFO,
+                "Converted sound allocation in memory"), READ_FRAME_SIZE(LogLevel.PARANOIAC, "Read frame size : %1d");
 
-        private final String   messageFormat;
+        private final String messageFormat;
         private final LogLevel logLevel;
 
-        FrameProcessorEventCode (final LogLevel ll, final String mF) {
+        FrameProcessorEventCode(final LogLevel ll, final String mF) {
             this.logLevel = ll;
             this.messageFormat = mF;
         }
 
         @Override
-        public LogLevel getLevel () {
+        public LogLevel getLevel() {
             return this.logLevel;
         }
 
         @Override
-        public String getMessageFormat () {
+        public String getMessageFormat() {
             return this.messageFormat;
         }
     }
 
-    public abstract void byteArrayToFrame (byte [] frame, Sound [] sound, int position, boolean bigEndian, boolean pcmSigned, long neutral);
+    public abstract void byteArrayToFrame(byte[] frame, Sound[] sound, int position, boolean bigEndian, boolean pcmSigned, long neutral);
 
-    public abstract byte [] framesToByteArray (Sound [] channels, int sampleSize, boolean bigEndian, boolean pcmSigned);
+    public abstract byte[] framesToByteArray(Sound[] channels, int sampleSize, boolean bigEndian, boolean pcmSigned);
 
-    public abstract Sound [] fromInputStream (InputStream ais, StreamInfo isInfo) throws SoundTransformException;
+    public abstract Sound[] fromInputStream(InputStream ais, StreamInfo isInfo) throws SoundTransformException;
 
 }

@@ -14,7 +14,7 @@ public interface FluentClientWithFile extends FluentClientCommon {
      * @throws SoundTransformException
      *             if one of the two import fails
      */
-    FluentClientSoundImported convertIntoSound () throws SoundTransformException;
+    FluentClientSoundImported convertIntoSound() throws SoundTransformException;
 
     /**
      * Opens the current file and convert it into an InputStream, ready to be
@@ -24,7 +24,7 @@ public interface FluentClientWithFile extends FluentClientCommon {
      * @throws SoundTransformException
      *             the current file is not valid, or the conversion did not work
      */
-    FluentClientWithInputStream importToStream () throws SoundTransformException;
+    FluentClientWithInputStream importToStream() throws SoundTransformException;
 
     /**
      * Plays the current audio data and convert it temporarily into a sound
@@ -33,13 +33,13 @@ public interface FluentClientWithFile extends FluentClientCommon {
      * @throws SoundTransformException
      *             could not play the current audio data
      */
-    FluentClientWithFile playIt () throws SoundTransformException;
+    FluentClientWithFile playIt() throws SoundTransformException;
 
     /**
      * Stops the client pipeline and returns the obtained file
      *
      * @return a file
      */
-    File stopWithFile ();
+    File stopWithFile();
 
 }

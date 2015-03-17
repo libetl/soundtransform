@@ -7,31 +7,31 @@ import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
-public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
+public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex[]> {
 
     private static final int HALF = 2;
-    private final double []  ranges;
-    private final double []  amplification;
+    private final double[] ranges;
+    private final double[] amplification;
 
-    public EqualizerSoundTransformation (final double [] ranges1, final double [] amplification1) {
-        super ();
-        this.ranges = ranges1.clone ();
-        this.amplification = amplification1.clone ();
+    public EqualizerSoundTransformation(final double[] ranges1, final double[] amplification1) {
+        super();
+        this.ranges = ranges1.clone();
+        this.amplification = amplification1.clone();
     }
 
     @Override
-    public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset, final int powOf2NearestLength, final int length) {
-        final SplineInterpolator reg = new SplineInterpolator ();
+    public Spectrum<Complex[]> transformFrequencies(final Spectrum<Complex[]> fs, final int offset, final int powOf2NearestLength, final int length) {
+        final SplineInterpolator reg = new SplineInterpolator();
 
-        final PolynomialSplineFunction psf = reg.interpolate (this.ranges, this.amplification);
-        final Complex [] newAmpl = new Complex [powOf2NearestLength];
-        for (double j = 0 ; j < length ; j++) {
-            final double freq = j * fs.getSampleRate () / fs.getState ().length;
-            newAmpl [(int) j] = fs.getState () [(int) j].multiply (psf.value (freq / EqualizerSoundTransformation.HALF));
+        final PolynomialSplineFunction psf = reg.interpolate(this.ranges, this.amplification);
+        final Complex[] newAmpl = new Complex[powOf2NearestLength];
+        for (double j = 0; j < length; j++) {
+            final double freq = j * fs.getSampleRate() / fs.getState().length;
+            newAmpl[(int) j] = fs.getState()[(int) j].multiply(psf.value(freq / EqualizerSoundTransformation.HALF));
         }
-        for (int j = length ; j < powOf2NearestLength ; j++) {
-            newAmpl [j] = new Complex (0, 0);
+        for (int j = length; j < powOf2NearestLength; j++) {
+            newAmpl[j] = new Complex(0, 0);
         }
-        return new Spectrum<Complex []> (newAmpl, new FormatInfo (fs.getSampleSize (), fs.getSampleRate ()));
+        return new Spectrum<Complex[]>(newAmpl, new FormatInfo(fs.getSampleSize(), fs.getSampleRate()));
     }
 }

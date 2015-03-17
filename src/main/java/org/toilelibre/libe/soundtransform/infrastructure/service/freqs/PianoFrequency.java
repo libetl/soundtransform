@@ -1,31 +1,31 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.freqs;
 
-public class PianoFrequency {
+class PianoFrequency {
     public static enum PianoValues {
 
-        C8 (PianoFrequency.C8N), B7 (PianoFrequency.B7N), A7 (PianoFrequency.A7N), G7 (PianoFrequency.G7N), F7 (PianoFrequency.F7N), E7 (PianoFrequency.E7N), D7 (PianoFrequency.D7N), C7 (PianoFrequency.C7N), B6 (PianoFrequency.B6N), A6 (PianoFrequency.A6N), G6 (PianoFrequency.G6N), F6 (
-                PianoFrequency.F6N), E6 (PianoFrequency.E6N), D6 (PianoFrequency.D6N), C6 (PianoFrequency.C6N), B5 (PianoFrequency.B5N), A5 (PianoFrequency.A5N), G5 (PianoFrequency.G5N), F5 (PianoFrequency.F5N), E5 (PianoFrequency.E5N), D5 (PianoFrequency.D5N), C5 (PianoFrequency.C5N), B4 (
-                PianoFrequency.B4N), A4 (PianoFrequency.A4N), G4 (PianoFrequency.G4N), F4 (PianoFrequency.F4N), E4 (PianoFrequency.E4N), D4 (PianoFrequency.D4N), B3 (PianoFrequency.B3N), A3 (PianoFrequency.A3N), G3 (PianoFrequency.G3N), F3 (PianoFrequency.F3N), E3 (PianoFrequency.E3N), D3 (
-                PianoFrequency.D3N), C3 (PianoFrequency.C3N), B2 (PianoFrequency.B2N), A2 (PianoFrequency.A2N), G2 (PianoFrequency.G2N), F2 (PianoFrequency.F2N), E2 (PianoFrequency.E2N), D2 (PianoFrequency.D2N), C2 (PianoFrequency.C2N), B1 (PianoFrequency.B1N), A1 (PianoFrequency.A1N), G1 (
-                PianoFrequency.G1N), F1 (PianoFrequency.F1N), E1 (PianoFrequency.E1N), D1 (PianoFrequency.D1N), C1 (PianoFrequency.C1N);
+        C8(PianoFrequency.C8N), B7(PianoFrequency.B7N), A7(PianoFrequency.A7N), G7(PianoFrequency.G7N), F7(PianoFrequency.F7N), E7(PianoFrequency.E7N), D7(PianoFrequency.D7N), C7(PianoFrequency.C7N), B6(PianoFrequency.B6N), A6(PianoFrequency.A6N), G6(PianoFrequency.G6N), F6(PianoFrequency.F6N), E6(
+                PianoFrequency.E6N), D6(PianoFrequency.D6N), C6(PianoFrequency.C6N), B5(PianoFrequency.B5N), A5(PianoFrequency.A5N), G5(PianoFrequency.G5N), F5(PianoFrequency.F5N), E5(PianoFrequency.E5N), D5(PianoFrequency.D5N), C5(PianoFrequency.C5N), B4(PianoFrequency.B4N), A4(PianoFrequency.A4N), G4(
+                PianoFrequency.G4N), F4(PianoFrequency.F4N), E4(PianoFrequency.E4N), D4(PianoFrequency.D4N), B3(PianoFrequency.B3N), A3(PianoFrequency.A3N), G3(PianoFrequency.G3N), F3(PianoFrequency.F3N), E3(PianoFrequency.E3N), D3(PianoFrequency.D3N), C3(PianoFrequency.C3N), B2(PianoFrequency.B2N), A2(
+                PianoFrequency.A2N), G2(PianoFrequency.G2N), F2(PianoFrequency.F2N), E2(PianoFrequency.E2N), D2(PianoFrequency.D2N), C2(PianoFrequency.C2N), B1(PianoFrequency.B1N), A1(PianoFrequency.A1N), G1(PianoFrequency.G1N), F1(PianoFrequency.F1N), E1(PianoFrequency.E1N), D1(PianoFrequency.D1N), C1(
+                PianoFrequency.C1N);
 
         private final float frequency;
 
-        PianoValues (float frequency1) {
+        PianoValues(float frequency1) {
             this.frequency = frequency1;
         }
 
-        public static PianoValues getNearestNote (float value) {
+        public static PianoValues getNearestNote(float value) {
             PianoValues nearest = PianoValues.A1;
-            for (final PianoValues pianoFreq : PianoValues.values ()) {
-                if (Math.abs (value - pianoFreq.frequency) < Math.abs (value - nearest.frequency)) {
+            for (final PianoValues pianoFreq : PianoValues.values()) {
+                if (Math.abs(value - pianoFreq.frequency) < Math.abs(value - nearest.frequency)) {
                     nearest = pianoFreq;
                 }
             }
             return nearest;
         }
 
-        public float getFrequency () {
+        public float getFrequency() {
             return this.frequency;
         }
     }
@@ -80,7 +80,7 @@ public class PianoFrequency {
     private static final float D1N = 36.7081f;
     private static final float C1N = 32.7032f;
 
-    private PianoFrequency () {
+    private PianoFrequency() {
 
     }
 }

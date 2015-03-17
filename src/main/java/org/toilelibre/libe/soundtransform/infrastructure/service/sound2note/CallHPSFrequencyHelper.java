@@ -9,15 +9,15 @@ import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
 public class CallHPSFrequencyHelper implements FrequencyHelper {
 
     @Override
-    public float findFrequency (final Sound [] channels) {
-        final PeakFindWithHPSSoundTransformation<? extends Serializable> peak = new PeakFindWithHPSSoundTransformation<Serializable> (true);
+    public float findFrequency(final Sound[] channels) {
+        final PeakFindWithHPSSoundTransformation<? extends Serializable> peak = new PeakFindWithHPSSoundTransformation<Serializable>(true);
         float value = 0;
         float volume = 0;
         for (final Sound channel : channels) {
-            peak.transform (channel);
-            if (volume < peak.getDetectedNoteVolume ()) {
-                value = peak.getLoudestFreqs () [0];
-                volume = peak.getDetectedNoteVolume ();
+            peak.transform(channel);
+            if (volume < peak.getDetectedNoteVolume()) {
+                value = peak.getLoudestFreqs()[0];
+                volume = peak.getDetectedNoteVolume();
             }
         }
 

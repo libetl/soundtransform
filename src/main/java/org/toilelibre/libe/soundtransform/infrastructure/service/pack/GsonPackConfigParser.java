@@ -7,12 +7,12 @@ import org.toilelibre.libe.soundtransform.model.library.pack.PackConfigParser;
 
 import com.google.gson.Gson;
 
-public class GsonPackConfigParser implements PackConfigParser {
+class GsonPackConfigParser implements PackConfigParser {
 
     @Override
-    public Map<String, List<Map<String, Object>>> parse (final String input) {
-        final Gson gson = new Gson ();
-        return gson.<Map<String, List<Map<String, Object>>>>fromJson (input, Map.class);
+    public Map<String, List<Map<String, Object>>> parse(final String input) {
+        final Gson gson = new Gson();
+        return gson.<Map<String, List<Map<String, Object>>>> fromJson(input, Map.class);
     }
 
 }
