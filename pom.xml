@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.toilelibre.libe</groupId>
 	<artifactId>soundtransform</artifactId>
-	<version>1.0.10</version>
+	<version>1.0.11-SNAPSHOT</version>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<packaging>aar</packaging>
 	<description>Android library to shape a voice with an instrument.</description>
