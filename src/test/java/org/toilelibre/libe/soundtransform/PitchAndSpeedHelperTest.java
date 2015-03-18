@@ -29,10 +29,9 @@ public class PitchAndSpeedHelperTest extends SoundTransformTest {
 
         final InputStream ais = $.create (AudioFileService.class).streamFromFile (input);
 
-
         final InputStreamToSoundService is2Sound = $.create (InputStreamToSoundService.class);
         final SoundToInputStreamService sound2Is = $.create (SoundToInputStreamService.class);
-        
+
         final Sound [] e3 = is2Sound.fromInputStream (ais);
         final SoundPitchAndTempoHelper helper = $.select (SoundPitchAndTempoHelper.class);
         final Sound [] e4 = new Sound [2];
@@ -45,6 +44,6 @@ public class PitchAndSpeedHelperTest extends SoundTransformTest {
         $.create (AudioFileService.class).fileFromStream (ais2, fDest);
         final Note n = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("e4"), e4);
         new Slf4jObserver ().notify ("e' 4 : " + n.getFrequency () + "Hz, should be around 658Hz");
-        org.junit.Assert.assertTrue ((n.getFrequency () > (658 - 10)) && (n.getFrequency () < (658 + 10)));
+        org.junit.Assert.assertTrue (n.getFrequency () > 658 - 10 && n.getFrequency () < 658 + 10);
     }
 }

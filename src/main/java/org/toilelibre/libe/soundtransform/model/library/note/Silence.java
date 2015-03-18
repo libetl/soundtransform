@@ -5,43 +5,43 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
 public class Silence implements Note {
 
-    private static final float ONE_FOURTH = 1.0f / 4;
-    private static final int DEFAULT_NB_BYTES = 2;
-    private static final int SAMPLE_RATE = 48000;
+    private static final float ONE_FOURTH       = 1.0f / 4;
+    private static final int   DEFAULT_NB_BYTES = 2;
+    private static final int   SAMPLE_RATE      = 48000;
 
-    private Sound generateSilence(final float lengthInSeconds) {
+    private Sound generateSilence (final float lengthInSeconds) {
         final int nbSamples = (int) (Silence.SAMPLE_RATE * lengthInSeconds * 1.0);
-        return new Sound(new long[nbSamples], new FormatInfo(Silence.DEFAULT_NB_BYTES, Silence.SAMPLE_RATE), 0);
+        return new Sound (new long [nbSamples], new FormatInfo (Silence.DEFAULT_NB_BYTES, Silence.SAMPLE_RATE), 0);
     }
 
     @Override
-    public Sound getAttack(final float frequency, final int channelnum, final float lengthInSeconds) {
-        return this.generateSilence(Silence.ONE_FOURTH * lengthInSeconds);
+    public Sound getAttack (final float frequency, final int channelnum, final float lengthInSeconds) {
+        return this.generateSilence (Silence.ONE_FOURTH * lengthInSeconds);
     }
 
     @Override
-    public Sound getDecay(final float frequency, final int channelnum, final float lengthInSeconds) {
-        return this.generateSilence(Silence.ONE_FOURTH * lengthInSeconds);
+    public Sound getDecay (final float frequency, final int channelnum, final float lengthInSeconds) {
+        return this.generateSilence (Silence.ONE_FOURTH * lengthInSeconds);
     }
 
     @Override
-    public float getFrequency() {
+    public float getFrequency () {
         return 0;
     }
 
     @Override
-    public String getName() {
+    public String getName () {
         return "SILENCE";
     }
 
     @Override
-    public Sound getRelease(final float frequency, final int channelnum, final float lengthInSeconds) {
-        return this.generateSilence(Silence.ONE_FOURTH * lengthInSeconds);
+    public Sound getRelease (final float frequency, final int channelnum, final float lengthInSeconds) {
+        return this.generateSilence (Silence.ONE_FOURTH * lengthInSeconds);
     }
 
     @Override
-    public Sound getSustain(final float frequency, final int channelnum, final float lengthInSeconds) {
-        return this.generateSilence(Silence.ONE_FOURTH * lengthInSeconds);
+    public Sound getSustain (final float frequency, final int channelnum, final float lengthInSeconds) {
+        return this.generateSilence (Silence.ONE_FOURTH * lengthInSeconds);
     }
 
 }

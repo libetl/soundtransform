@@ -42,9 +42,9 @@ public class ShapeTest extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("piano5g.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-        final Sound [] sounds = $.create(CallTransformService.class).apply($.create (InputStreamToSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.create (AudioFileService.class).streamFromFile (input)), new ShapeSoundTransformation ("default", "chord_piano"));
+        final Sound [] sounds = $.create (CallTransformService.class).apply ($.create (InputStreamToSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.create (AudioFileService.class).streamFromFile (input)), new ShapeSoundTransformation ("default", "chord_piano"));
 
-        final InputStream finalInputStream = $.create(SoundToInputStreamService.class).toStream(sounds, StreamInfo.from(sounds [0].getFormatInfo(), sounds));
+        final InputStream finalInputStream = $.create (SoundToInputStreamService.class).toStream (sounds, StreamInfo.from (sounds [0].getFormatInfo (), sounds));
         $.create (AudioFileService.class).fileFromStream (finalInputStream, output);
 
         final float frequency = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("output chord_note"), $.create (InputStreamToSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.create (AudioFileService.class).streamFromFile (output))).getFrequency ();
@@ -60,9 +60,9 @@ public class ShapeTest extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("piano3e.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-        final Sound [] sounds = $.create(CallTransformService.class).apply($.create (InputStreamToSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.create (AudioFileService.class).streamFromFile (input)), new ShapeSoundTransformation ("default", "chord_piano"));
+        final Sound [] sounds = $.create (CallTransformService.class).apply ($.create (InputStreamToSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.create (AudioFileService.class).streamFromFile (input)), new ShapeSoundTransformation ("default", "chord_piano"));
 
-        final InputStream finalInputStream = $.create(SoundToInputStreamService.class).toStream(sounds, StreamInfo.from(sounds [0].getFormatInfo(), sounds));
+        final InputStream finalInputStream = $.create (SoundToInputStreamService.class).toStream (sounds, StreamInfo.from (sounds [0].getFormatInfo (), sounds));
         $.create (AudioFileService.class).fileFromStream (finalInputStream, output);
 
         final float frequency = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("output chord_note"), $.create (InputStreamToSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.create (AudioFileService.class).streamFromFile (output))).getFrequency ();

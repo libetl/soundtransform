@@ -11,7 +11,7 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *
      * @return the client, with a loudest frequencies float array
      */
-    FluentClientWithFreqs adjust();
+    FluentClientWithFreqs adjust ();
 
     /**
      * Compresses the loudest freq array (speedup or slowdown). When shaped into
@@ -24,7 +24,7 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *            as long than the original)
      * @return the client, with a loudest frequencies float array
      */
-    FluentClientWithFreqs compress(float factor);
+    FluentClientWithFreqs compress (float factor);
 
     /**
      * Remove the values between low and high in the loudest freqs array
@@ -36,7 +36,7 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *            high frequency (last one to avoid)
      * @return the client, with a loudest frequencies float array
      */
-    FluentClientWithFreqs filterRange(float low, float high);
+    FluentClientWithFreqs filterRange (float low, float high);
 
     /**
      * Add some new values in the loudest freqs array from the "start" index
@@ -48,21 +48,21 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *            index where to start the insert
      * @return the client, with a loudest frequencies float array
      */
-    FluentClientWithFreqs insertPart(float[] subFreqs, int start);
+    FluentClientWithFreqs insertPart (float [] subFreqs, int start);
 
     /**
      * Changes the loudest frequencies array to become one octave lower
      *
      * @return the client, with a loudest frequencies float array
      */
-    FluentClientWithFreqs octaveDown();
+    FluentClientWithFreqs octaveDown ();
 
     /**
      * Changes the loudest frequencies array to become one octave upper
      *
      * @return the client, with a loudest frequencies float array
      */
-    FluentClientWithFreqs octaveUp();
+    FluentClientWithFreqs octaveUp ();
 
     /**
      * Replace some of the values of the loudest freqs array from the "start"
@@ -74,7 +74,7 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *            index where to start the replacement
      * @return the client, with a loudest frequencies float array
      */
-    FluentClientWithFreqs replacePart(float[] subFreqs, int start);
+    FluentClientWithFreqs replacePart (float [] subFreqs, int start);
 
     /**
      * Shapes these loudest frequencies array into a sound and set the converted
@@ -91,13 +91,13 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      * @throws SoundTransformException
      *             could not call the soundtransform to shape the freqs
      */
-    FluentClientSoundImported shapeIntoSound(String packName, String instrumentName, FormatInfo fi) throws SoundTransformException;
+    FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, FormatInfo fi) throws SoundTransformException;
 
     /**
      * Stops the client pipeline and returns the obtained loudest frequencies
      *
      * @return loudest frequencies array
      */
-    float[] stopWithFreqs();
+    float [] stopWithFreqs ();
 
 }

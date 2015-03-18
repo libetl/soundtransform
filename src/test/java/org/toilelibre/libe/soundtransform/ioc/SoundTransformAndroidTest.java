@@ -8,7 +8,7 @@ import se.jbee.inject.bootstrap.Bootstrap;
 public class SoundTransformAndroidTest {
 
     @BeforeClass
-    public static void setUp() {
-        ApplicationInjector.injector = Bootstrap.injector(AndroidRootModule.class);
+    public static void setUp () {
+        ApplicationInjector.injector = Bootstrap.injector (AndroidRootModule.class);
     }
 }

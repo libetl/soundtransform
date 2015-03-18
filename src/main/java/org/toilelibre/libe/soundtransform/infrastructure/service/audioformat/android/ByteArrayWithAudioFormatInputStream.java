@@ -8,17 +8,17 @@ class ByteArrayWithAudioFormatInputStream extends ByteArrayInputStream implement
 
     private final StreamInfo info;
 
-    public ByteArrayWithAudioFormatInputStream(final byte[] buf, final StreamInfo info1) {
-        super(buf);
+    public ByteArrayWithAudioFormatInputStream (final byte [] buf, final StreamInfo info1) {
+        super (buf);
         this.info = info1;
     }
 
-    public byte[] getAllContent() {
-        return this.buf.clone();
+    public byte [] getAllContent () {
+        return this.buf.clone ();
     }
 
     @Override
-    public StreamInfo getInfo() {
+    public StreamInfo getInfo () {
         return this.info;
     }
 

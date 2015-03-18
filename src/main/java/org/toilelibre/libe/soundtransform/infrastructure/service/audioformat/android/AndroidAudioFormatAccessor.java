@@ -6,12 +6,14 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 
 public abstract class AndroidAudioFormatAccessor extends AllAgnosticAccessorsAndBindings {
 
-    protected AudioFileHelper provideAudioFileHelper() {
-        return new AndroidAudioFileHelper();
+    @Override
+    protected AudioFileHelper provideAudioFileHelper () {
+        return new AndroidAudioFileHelper ();
     }
 
-    protected AudioFormatParser provideAudioFormatParser() {
-        return new NoOpFormatParser();
+    @Override
+    protected AudioFormatParser provideAudioFormatParser () {
+        return new NoOpFormatParser ();
     }
 
 }

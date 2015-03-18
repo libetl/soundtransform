@@ -27,10 +27,10 @@ public class SlowdownSoundTest extends SoundTransformTest {
         final File input = new File (classLoader.getResource ("before.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        InputStream is = $.create (AudioFileService.class).streamFromFile(input);
-        Sound [] sounds = $.create (InputStreamToSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream(is);
-        sounds = $.create (CallTransformService.class, new Slf4jObserver (LogLevel.WARN)).apply(sounds, $.create (SlowdownSoundTransformation.class, 1024, 2.5f, 2048));
-        $.create (SoundToInputStreamService.class, new Slf4jObserver (LogLevel.WARN)).toStream (sounds, StreamInfo.from(sounds [0].getFormatInfo(), sounds));
+        final InputStream is = $.create (AudioFileService.class).streamFromFile (input);
+        Sound [] sounds = $.create (InputStreamToSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream (is);
+        sounds = $.create (CallTransformService.class, new Slf4jObserver (LogLevel.WARN)).apply (sounds, $.create (SlowdownSoundTransformation.class, 1024, 2.5f, 2048));
+        $.create (SoundToInputStreamService.class, new Slf4jObserver (LogLevel.WARN)).toStream (sounds, StreamInfo.from (sounds [0].getFormatInfo (), sounds));
         $.create (AudioFileService.class).fileFromStream (is, output);
     }
 

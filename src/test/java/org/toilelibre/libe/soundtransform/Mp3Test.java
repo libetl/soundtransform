@@ -17,7 +17,7 @@ public class Mp3Test extends SoundTransformTest {
 
     @Test
     public void testNoOp () throws SoundTransformException {
-        FluentClient.start().withFile(this.mp3input).convertIntoSound().apply(new NoOpSoundTransformation()).exportToFile(this.output);
+        FluentClient.start ().withFile (this.mp3input).convertIntoSound ().apply (new NoOpSoundTransformation ()).exportToFile (this.output);
 
     }
 }

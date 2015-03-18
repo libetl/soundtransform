@@ -6,18 +6,18 @@ public class TextLogEvent extends LogEvent {
         PLAIN_TEXT_EVENT;
 
         @Override
-        public LogLevel getLevel() {
+        public LogLevel getLevel () {
             return LogLevel.INFO;
         }
 
         @Override
-        public String getMessageFormat() {
+        public String getMessageFormat () {
             return "%1s";
         }
     }
 
-    public TextLogEvent(final String msg) {
-        super(NoEventCode.PLAIN_TEXT_EVENT, msg);
+    public TextLogEvent (final String msg) {
+        super (NoEventCode.PLAIN_TEXT_EVENT, msg);
     }
 
 }

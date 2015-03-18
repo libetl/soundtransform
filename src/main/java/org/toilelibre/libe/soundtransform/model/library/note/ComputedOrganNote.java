@@ -14,14 +14,14 @@ class ComputedOrganNote extends FormulaNote {
     private static final float NO_GAP           = 0;
     private static final float ONE_FOURTH_GAP   = (float) Math.PI / 2;
     private static final float HALF_GAP         = (float) Math.PI;
-    private static final float THREE_FOURTH_GAP = (float) ((3 * Math.PI) / 2);
+    private static final float THREE_FOURTH_GAP = (float) (3 * Math.PI / 2);
 
     @Override
     protected float applyFormula (final int j, final float frequency, final float sampleRate) {
-        return (float) ((Math.sin (((j * ComputedOrganNote.ONCE * frequency * ComputedOrganNote.TWO_PI) / sampleRate) + ComputedOrganNote.NO_GAP) * ComputedOrganNote.FIRST_COEFF)
-                + (Math.sin (((j * ComputedOrganNote.TWICE * frequency * ComputedOrganNote.TWO_PI) / sampleRate) + ComputedOrganNote.ONE_FOURTH_GAP) * ComputedOrganNote.SECOND_COEFF)
-                + (Math.sin (((j * ComputedOrganNote.FOUR_TIMES * frequency * ComputedOrganNote.TWO_PI) / sampleRate) + ComputedOrganNote.HALF_GAP) * ComputedOrganNote.THIRD_COEFF) + (Math.sin (((j * ComputedOrganNote.EIGHT_TIMES * frequency * ComputedOrganNote.TWO_PI) / sampleRate)
-                        + ComputedOrganNote.THREE_FOURTH_GAP) * ComputedOrganNote.FOURTH_COEFF));
+        return (float) (Math.sin (j * ComputedOrganNote.ONCE * frequency * ComputedOrganNote.TWO_PI / sampleRate + ComputedOrganNote.NO_GAP) * ComputedOrganNote.FIRST_COEFF
+                + Math.sin (j * ComputedOrganNote.TWICE * frequency * ComputedOrganNote.TWO_PI / sampleRate + ComputedOrganNote.ONE_FOURTH_GAP) * ComputedOrganNote.SECOND_COEFF
+                + Math.sin (j * ComputedOrganNote.FOUR_TIMES * frequency * ComputedOrganNote.TWO_PI / sampleRate + ComputedOrganNote.HALF_GAP) * ComputedOrganNote.THIRD_COEFF + Math.sin (j * ComputedOrganNote.EIGHT_TIMES * frequency * ComputedOrganNote.TWO_PI / sampleRate
+                        + ComputedOrganNote.THREE_FOURTH_GAP) * ComputedOrganNote.FOURTH_COEFF);
 
     }
 

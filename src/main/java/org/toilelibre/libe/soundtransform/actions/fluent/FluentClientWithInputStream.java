@@ -16,7 +16,7 @@ public interface FluentClientWithInputStream extends FluentClientCommon {
      * @throws SoundTransformException
      *             the inputStream is invalid, or the convert did not work
      */
-    FluentClientSoundImported importToSound() throws SoundTransformException;
+    FluentClientSoundImported importToSound () throws SoundTransformException;
 
     /**
      * Plays the current audio data and convert it temporarily into a sound
@@ -25,14 +25,14 @@ public interface FluentClientWithInputStream extends FluentClientCommon {
      * @throws SoundTransformException
      *             could not play the current audio data
      */
-    FluentClientWithInputStream playIt() throws SoundTransformException;
+    FluentClientWithInputStream playIt () throws SoundTransformException;
 
     /**
      * Stops the client pipeline and returns the obtained input stream
      *
      * @return an input stream
      */
-    InputStream stopWithInputStream();
+    InputStream stopWithInputStream ();
 
     /**
      * Stops the client pipeline and returns the obtained stream info object
@@ -41,7 +41,7 @@ public interface FluentClientWithInputStream extends FluentClientCommon {
      * @throws SoundTransformException
      *             could not read the StreamInfo from the current inputstream
      */
-    FormatInfo stopWithStreamInfo() throws SoundTransformException;
+    FormatInfo stopWithStreamInfo () throws SoundTransformException;
 
     /**
      * Writes the current InputStream in a classpath resource in the same folder
@@ -56,7 +56,7 @@ public interface FluentClientWithInputStream extends FluentClientCommon {
      *             there is no predefined classpathresource directory, or the
      *             file could not be written
      */
-    FluentClientWithFile writeToClasspathResource(String resource) throws SoundTransformException;
+    FluentClientWithFile writeToClasspathResource (String resource) throws SoundTransformException;
 
     /**
      * Writes the current InputStream in a classpath resource in the same folder
@@ -70,7 +70,7 @@ public interface FluentClientWithInputStream extends FluentClientCommon {
      * @throws SoundTransformException
      *             no such sibling resource, or the file could not be written
      */
-    FluentClientWithFile writeToClasspathResourceWithSiblingResource(String resource, String siblingResource) throws SoundTransformException;
+    FluentClientWithFile writeToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException;
 
     /**
      * Writes the current InputStream in a file
@@ -81,5 +81,5 @@ public interface FluentClientWithInputStream extends FluentClientCommon {
      * @throws SoundTransformException
      *             The file could not be written
      */
-    FluentClientWithFile writeToFile(File file) throws SoundTransformException;
+    FluentClientWithFile writeToFile (File file) throws SoundTransformException;
 }

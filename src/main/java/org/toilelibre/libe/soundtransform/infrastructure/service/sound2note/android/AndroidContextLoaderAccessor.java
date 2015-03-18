@@ -5,7 +5,8 @@ import org.toilelibre.libe.soundtransform.model.library.pack.ContextLoader;
 
 public abstract class AndroidContextLoaderAccessor extends AndroidPlayAccessor {
 
-    protected ContextLoader provideContextLoader() {
-        return new AndroidContextLoader();
+    @Override
+    protected ContextLoader provideContextLoader () {
+        return new AndroidContextLoader ();
     }
 }

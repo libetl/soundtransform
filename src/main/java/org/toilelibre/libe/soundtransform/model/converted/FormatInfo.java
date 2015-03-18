@@ -9,16 +9,16 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
 
 public class FormatInfo implements Cloneable, Serializable {
     enum FormatInfoErrorCode implements ErrorCode {
-        CLONE_FAILED("Clone operation on a format info object failed");
+        CLONE_FAILED ("Clone operation on a format info object failed");
 
         private String messageFormat;
 
-        FormatInfoErrorCode(final String mF) {
+        FormatInfoErrorCode (final String mF) {
             this.messageFormat = mF;
         }
 
         @Override
-        public String getMessageFormat() {
+        public String getMessageFormat () {
             return this.messageFormat;
         }
 
@@ -28,40 +28,40 @@ public class FormatInfo implements Cloneable, Serializable {
      *
      */
     private static final long serialVersionUID = 2807016563144431421L;
-    private final int sampleSize;
+    private final int         sampleSize;
 
-    private final float sampleRate;
+    private final float       sampleRate;
 
-    public FormatInfo(final int sampleSize, final float sampleRate) {
-        super();
+    public FormatInfo (final int sampleSize, final float sampleRate) {
+        super ();
         this.sampleSize = sampleSize;
         this.sampleRate = sampleRate;
     }
 
     @Override
-    public Sound clone() {
+    public Sound clone () {
         try {
-            return (Sound) super.clone();
+            return (Sound) super.clone ();
         } catch (final CloneNotSupportedException e) {
-            throw new SoundTransformRuntimeException(FormatInfoErrorCode.CLONE_FAILED, e);
+            throw new SoundTransformRuntimeException (FormatInfoErrorCode.CLONE_FAILED, e);
         }
     }
 
-    public float getSampleRate() {
+    public float getSampleRate () {
         return this.sampleRate;
     }
 
-    public int getSampleSize() {
+    public int getSampleSize () {
         return this.sampleSize;
     }
 
-    public boolean sameFormatAs(final FormatInfo fi) {
+    public boolean sameFormatAs (final FormatInfo fi) {
         return this.sampleRate == fi.sampleRate && this.sampleSize == fi.sampleSize;
     }
 
     @Override
-    public String toString() {
-        return String.format(Locale.ENGLISH, "%6.1f Hz, %1d bit", this.getSampleRate(), this.getSampleSize() * Byte.SIZE);
+    public String toString () {
+        return String.format (Locale.ENGLISH, "%6.1f Hz, %1d bit", this.getSampleRate (), this.getSampleSize () * Byte.SIZE);
     }
 
 }

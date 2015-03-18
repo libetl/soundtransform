@@ -5,9 +5,9 @@ import org.toilelibre.libe.soundtransform.model.library.pack.Range;
 
 public interface Pack2StringHelper {
 
-    String toString(Range range);
+    String toString (Range range);
 
-    String toString(Note note);
+    String toString (Note note);
 
-    String toString(Pack pack);
+    String toString (Pack pack);
 }

@@ -6,12 +6,14 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 
 public abstract class JavaxAudioFormatAccessor extends AllAgnosticAccessorsAndBindings {
 
-    protected AudioFileHelper provideAudioFileHelper() {
-        return new JavazoomAudioFileHelper();
+    @Override
+    protected AudioFileHelper provideAudioFileHelper () {
+        return new JavazoomAudioFileHelper ();
     }
 
-    protected AudioFormatParser provideAudioFormatParser() {
-        return new WavAudioFormatParser();
+    @Override
+    protected AudioFormatParser provideAudioFormatParser () {
+        return new WavAudioFormatParser ();
     }
 
 }

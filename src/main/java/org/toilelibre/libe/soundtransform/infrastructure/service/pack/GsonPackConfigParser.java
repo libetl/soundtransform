@@ -10,9 +10,9 @@ import com.google.gson.Gson;
 class GsonPackConfigParser implements PackConfigParser {
 
     @Override
-    public Map<String, List<Map<String, Object>>> parse(final String input) {
-        final Gson gson = new Gson();
-        return gson.<Map<String, List<Map<String, Object>>>> fromJson(input, Map.class);
+    public Map<String, List<Map<String, Object>>> parse (final String input) {
+        final Gson gson = new Gson ();
+        return gson.<Map<String, List<Map<String, Object>>>> fromJson (input, Map.class);
     }
 
 }

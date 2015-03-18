@@ -9,24 +9,24 @@ import org.toilelibre.libe.soundtransform.model.freqs.ReplaceFrequenciesProcesso
 
 public abstract class FreqsAccessor extends FrameProcessorAccessor {
 
-    protected AdjustFrequenciesProcessor provideAdjustFrequenciesProcessor() {
-        return new AdjustFrequenciesToPianoProcessor();
+    protected AdjustFrequenciesProcessor provideAdjustFrequenciesProcessor () {
+        return new AdjustFrequenciesToPianoProcessor ();
     }
 
-    protected ChangeOctaveProcessor provideChangeOctaveProcessor() {
-        return new SimpleChangeOctaveProcessor();
+    protected ChangeOctaveProcessor provideChangeOctaveProcessor () {
+        return new SimpleChangeOctaveProcessor ();
     }
 
-    protected CompressFrequenciesProcessor provideCompressFrequenciesProcessor() {
-        return new SimpleCompressFrequenciesProcessor();
+    protected CompressFrequenciesProcessor provideCompressFrequenciesProcessor () {
+        return new SimpleCompressFrequenciesProcessor ();
     }
 
-    protected FilterFrequenciesProcessor provideFilterFrequenciesProcessor() {
-        return new SimpleFilterFrequenciesProcessor();
+    protected FilterFrequenciesProcessor provideFilterFrequenciesProcessor () {
+        return new SimpleFilterFrequenciesProcessor ();
     }
 
-    protected ReplaceFrequenciesProcessor provideReplaceFrequenciesProcessor() {
-        return new SimpleReplaceFrequenciesProcessor();
+    protected ReplaceFrequenciesProcessor provideReplaceFrequenciesProcessor () {
+        return new SimpleReplaceFrequenciesProcessor ();
     }
 
 }

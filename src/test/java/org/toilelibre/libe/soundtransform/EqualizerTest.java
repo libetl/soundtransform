@@ -13,11 +13,11 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 public class EqualizerTest extends SoundTransformTest {
 
     @Test
-    public void test() {
-        final long[] testarray = new long[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-        final Sound testsound = new Sound(testarray, new FormatInfo(1, testarray.length), 1);
-        final EqualizerSoundTransformation est = $.create(EqualizerSoundTransformation.class, new double[] { 0, 4, 8 }, new double[] { 1, 1, 1 });
-        final Sound resultsound = est.transform(testsound);
-        new Slf4jObserver().notify(Arrays.toString(resultsound.getSamples()));
+    public void test () {
+        final long [] testarray = new long [] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+        final Sound testsound = new Sound (testarray, new FormatInfo (1, testarray.length), 1);
+        final EqualizerSoundTransformation est = $.create (EqualizerSoundTransformation.class, new double [] { 0, 4, 8 }, new double [] { 1, 1, 1 });
+        final Sound resultsound = est.transform (testsound);
+        new Slf4jObserver ().notify (Arrays.toString (resultsound.getSamples ()));
     }
 }

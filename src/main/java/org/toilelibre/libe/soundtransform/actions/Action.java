@@ -32,7 +32,7 @@ public abstract class Action {
         this.is2Sound = $.create (InputStreamToSoundService.class, new Object [] { observers });
         this.loudestFreqs = $.create (LoudestFreqsService.class);
         this.modifySound = $.create (ModifySoundService.class);
-        this.sound2is = $.create(SoundToInputStreamService.class, new Object [] { observers });
+        this.sound2is = $.create (SoundToInputStreamService.class, new Object [] { observers });
         this.library = $.select (Library.class);
     }
 }

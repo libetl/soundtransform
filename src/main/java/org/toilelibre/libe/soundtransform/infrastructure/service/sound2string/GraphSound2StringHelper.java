@@ -11,14 +11,14 @@ class GraphSound2StringHelper implements Sound2StringHelper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.infrastructure.service.sound2string
      * .Sound2StringHelper
      * #process(org.toilelibre.libe.soundtransform.model.converted.sound.Sound)
      */
     @Override
-    public String process(final Sound input) {
-        return new ToStringSoundTransformation(GraphSound2StringHelper.ARBITRARY_LENGTH, GraphSound2StringHelper.ARBITRARY_HEIGHT).toString(input);
+    public String process (final Sound input) {
+        return new ToStringSoundTransformation (GraphSound2StringHelper.ARBITRARY_LENGTH, GraphSound2StringHelper.ARBITRARY_HEIGHT).toString (input);
     }
 }

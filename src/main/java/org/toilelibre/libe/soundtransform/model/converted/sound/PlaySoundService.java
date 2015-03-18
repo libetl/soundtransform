@@ -12,9 +12,9 @@ import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 public class PlaySoundService<T extends Serializable> {
 
-    private final PlaySoundProcessor          processor;
-    private final SoundToInputStreamService   sound2IsService;
-    private final FourierTransformHelper<T>   fourierTransformHelper;
+    private final PlaySoundProcessor        processor;
+    private final SoundToInputStreamService sound2IsService;
+    private final FourierTransformHelper<T> fourierTransformHelper;
 
     public PlaySoundService (final PlaySoundProcessor processor1, final SoundToInputStreamService sound2IsService1, final FourierTransformHelper<T> fourierTransformHelper1) {
         this.processor = processor1;

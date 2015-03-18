@@ -4,11 +4,11 @@ public class Spectrum2StringService<T> {
 
     private final SpectrumToStringHelper<T> spectrumHelper;
 
-    public Spectrum2StringService(final SpectrumToStringHelper<T> helper1) {
+    public Spectrum2StringService (final SpectrumToStringHelper<T> helper1) {
         this.spectrumHelper = helper1;
     }
 
-    public String convert(final Spectrum<T> spectrum) {
-        return this.spectrumHelper.fsToString(spectrum);
+    public String convert (final Spectrum<T> spectrum) {
+        return this.spectrumHelper.fsToString (spectrum);
     }
 }

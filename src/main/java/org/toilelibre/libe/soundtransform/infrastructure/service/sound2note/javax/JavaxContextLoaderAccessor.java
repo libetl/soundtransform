@@ -5,7 +5,8 @@ import org.toilelibre.libe.soundtransform.model.library.pack.ContextLoader;
 
 public abstract class JavaxContextLoaderAccessor extends JavaxPlayAccessor {
 
-    protected ContextLoader provideContextLoader() {
-        return new ErrorContextLoader();
+    @Override
+    protected ContextLoader provideContextLoader () {
+        return new ErrorContextLoader ();
     }
 }

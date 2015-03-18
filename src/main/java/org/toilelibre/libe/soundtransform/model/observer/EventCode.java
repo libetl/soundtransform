@@ -4,10 +4,10 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public interface EventCode {
 
-    LogLevel getLevel();
+    LogLevel getLevel ();
 
-    String getMessageFormat();
+    String getMessageFormat ();
 
-    String name();
+    String name ();
 
 }

@@ -20,7 +20,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      *             if the sound is null or if there is a problem with the
      *             appending
      */
-    FluentClientSoundImported append(Sound[] sound) throws SoundTransformException;
+    FluentClientSoundImported append (Sound [] sound) throws SoundTransformException;
 
     /**
      * Apply one transform and continue with the current imported sound
@@ -31,7 +31,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             if the transform does not work
      */
-    FluentClientSoundImported apply(SoundTransformation st) throws SoundTransformException;
+    FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException;
 
     /**
      * Changes the current imported sound to fit the expected format
@@ -41,7 +41,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @return the client, with a sound imported
      * @throws SoundTransformException
      */
-    FluentClientSoundImported changeFormat(FormatInfo formatInfo) throws SoundTransformException;
+    FluentClientSoundImported changeFormat (FormatInfo formatInfo) throws SoundTransformException;
 
     /**
      * Splice a part of the sound between the sample #start and the sample #end
@@ -54,7 +54,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             if the indexes are out of bound
      */
-    FluentClientSoundImported cutSubSound(int start, int end) throws SoundTransformException;
+    FluentClientSoundImported cutSubSound (int start, int end) throws SoundTransformException;
 
     /**
      * Shortcut for exportToStream ().writeToClasspathResource (resource) :
@@ -66,7 +66,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             if one of the two operations fails
      */
-    FluentClientWithFile exportToClasspathResource(String resource) throws SoundTransformException;
+    FluentClientWithFile exportToClasspathResource (String resource) throws SoundTransformException;
 
     /**
      * Shortcut for exportToStream
@@ -81,7 +81,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             if one of the two operations fails
      */
-    FluentClientWithFile exportToClasspathResourceWithSiblingResource(String resource, String siblingResource) throws SoundTransformException;
+    FluentClientWithFile exportToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException;
 
     /**
      * Shortcut for exportToStream ().writeToFile (file)
@@ -92,7 +92,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             if one of the two operations fails
      */
-    FluentClientWithFile exportToFile(File file) throws SoundTransformException;
+    FluentClientWithFile exportToFile (File file) throws SoundTransformException;
 
     /**
      * Uses the current imported sound and converts it into an InputStream,
@@ -103,7 +103,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      *             if the metadata format object is invalid, or if the sound
      *             cannot be converted
      */
-    FluentClientWithInputStream exportToStream() throws SoundTransformException;
+    FluentClientWithInputStream exportToStream () throws SoundTransformException;
 
     /**
      * Extract a part of the sound between the sample #start and the sample #end
@@ -116,7 +116,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             if the indexes are out of bound
      */
-    FluentClientSoundImported extractSubSound(int start, int end) throws SoundTransformException;
+    FluentClientSoundImported extractSubSound (int start, int end) throws SoundTransformException;
 
     /**
      * Will invoke a soundtransform to find the loudest frequencies of the
@@ -129,7 +129,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             if the convert fails
      */
-    FluentClientWithFreqs findLoudestFrequencies() throws SoundTransformException;
+    FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException;
 
     /**
      * Extract a part of the sound between the sample #start and the sample #end
@@ -140,7 +140,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             if the length is not positive
      */
-    FluentClientSoundImported loop(int length) throws SoundTransformException;
+    FluentClientSoundImported loop (int length) throws SoundTransformException;
 
     /**
      * Combines the current sound with another sound. The operation is not
@@ -152,7 +152,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             if the sound is null or if there is a problem with the mix
      */
-    FluentClientSoundImported mixWith(Sound[] sound) throws SoundTransformException;
+    FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException;
 
     /**
      * Plays the current audio data
@@ -161,7 +161,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             could not play the current audio data
      */
-    FluentClientSoundImported playIt() throws SoundTransformException;
+    FluentClientSoundImported playIt () throws SoundTransformException;
 
     /**
      * Uses the current sound to pick its spectrums and set that as the current
@@ -171,13 +171,13 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             could not convert the sound into some spectrums
      */
-    FluentClientWithSpectrums splitIntoSpectrums() throws SoundTransformException;
+    FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException;
 
     /**
      * Stops the client pipeline and returns the obtained sound
      *
      * @return a sound value object
      */
-    Sound[] stopWithSounds();
+    Sound [] stopWithSounds ();
 
 }

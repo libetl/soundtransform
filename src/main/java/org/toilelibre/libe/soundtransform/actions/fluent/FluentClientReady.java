@@ -22,14 +22,14 @@ public interface FluentClientReady {
      *            the title of the pack
      * @return a pack object
      */
-    Pack stopWithAPack(String title);
+    Pack stopWithAPack (String title);
 
     /**
      * Stops the client pipeline and returns the currently subscribed observers
-     * 
+     *
      * @return the observers
      */
-    Observer[] stopWithObservers();
+    Observer [] stopWithObservers ();
 
     /**
      * Tells the client to add an observer that will be notified of different
@@ -42,7 +42,7 @@ public interface FluentClientReady {
      *            one or more observer(s)
      * @return the client, ready to start
      */
-    FluentClientReady withAnObserver(Observer... observers);
+    FluentClientReady withAnObserver (Observer... observers);
 
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
@@ -57,7 +57,7 @@ public interface FluentClientReady {
      *             the input stream cannot be read, or the json format is not
      *             correct, or some sound files are missing
      */
-    FluentClientReady withAPack(String packName, InputStream jsonStream) throws SoundTransformException;
+    FluentClientReady withAPack (String packName, InputStream jsonStream) throws SoundTransformException;
 
     /**
      * Tells the client to work with a pack. Uses the context object to find the
@@ -78,7 +78,7 @@ public interface FluentClientReady {
      *             the input stream cannot be read, or the json format is not
      *             correct, or some sound files are missing
      */
-    FluentClientReady withAPack(String packName, Object context, Class<?> rClass, int packJsonId) throws SoundTransformException;
+    FluentClientReady withAPack (String packName, Object context, Class<?> rClass, int packJsonId) throws SoundTransformException;
 
     /**
      * Tells the client to work with a pack. Reads the whole string content. A
@@ -117,7 +117,7 @@ public interface FluentClientReady {
      *             the json content is invalid, the json format is not correct,
      *             or some sound files are missing
      */
-    FluentClientReady withAPack(String packName, String jsonContent) throws SoundTransformException;
+    FluentClientReady withAPack (String packName, String jsonContent) throws SoundTransformException;
 
     /**
      * Tells the client to work first with an InputStream. It will not be read
@@ -129,7 +129,7 @@ public interface FluentClientReady {
      *            the input stream
      * @return the client, with an input stream
      */
-    FluentClientWithInputStream withAudioInputStream(InputStream is);
+    FluentClientWithInputStream withAudioInputStream (InputStream is);
 
     /**
      * Tells the client to work first with a classpath resource. It will be
@@ -141,7 +141,7 @@ public interface FluentClientReady {
      * @throws SoundTransformException
      *             the classpath resource was not found
      */
-    FluentClientWithFile withClasspathResource(String resource) throws SoundTransformException;
+    FluentClientWithFile withClasspathResource (String resource) throws SoundTransformException;
 
     /**
      * Tells the client to work first with a file. It will not be read yet
@@ -150,7 +150,7 @@ public interface FluentClientReady {
      *            source file
      * @return the client, with a file
      */
-    FluentClientWithFile withFile(File file);
+    FluentClientWithFile withFile (File file);
 
     /**
      * Tells the client to work first with a loudest frequencies integer array.
@@ -160,7 +160,7 @@ public interface FluentClientReady {
      *            the loudest frequencies float array
      * @return the client, with a loudest frequencies float array
      */
-    FluentClientWithFreqs withFreqs(float[] freqs);
+    FluentClientWithFreqs withFreqs (float [] freqs);
 
     /**
      * Tells the client to work first with a byte array InputStream or any
@@ -178,7 +178,7 @@ public interface FluentClientReady {
      *             the input stream cannot be read, or the conversion did not
      *             work
      */
-    FluentClientWithInputStream withRawInputStream(InputStream is, StreamInfo isInfo) throws SoundTransformException;
+    FluentClientWithInputStream withRawInputStream (InputStream is, StreamInfo isInfo) throws SoundTransformException;
 
     /**
      * Tells the client to work first with a sound object
@@ -187,7 +187,7 @@ public interface FluentClientReady {
      *            the sound object
      * @return the client, with an imported sound
      */
-    FluentClientSoundImported withSounds(Sound[] sounds);
+    FluentClientSoundImported withSounds (Sound [] sounds);
 
     /**
      * Tells the client to work first with a spectrum formatted sound.<br/>
@@ -198,5 +198,5 @@ public interface FluentClientReady {
      *            the spectrums
      * @return the client, with the spectrums
      */
-    FluentClientWithSpectrums withSpectrums(List<Spectrum<Serializable>[]> spectrums);
+    FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable> []> spectrums);
 }

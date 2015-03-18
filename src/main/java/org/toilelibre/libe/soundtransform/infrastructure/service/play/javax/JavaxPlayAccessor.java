@@ -5,7 +5,8 @@ import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 public abstract class JavaxPlayAccessor extends JavaxAudioFormatAccessor {
 
-    protected PlaySoundProcessor providePlaySoundProcessor() {
-        return new LineListenerPlaySoundProcessor();
+    @Override
+    protected PlaySoundProcessor providePlaySoundProcessor () {
+        return new LineListenerPlaySoundProcessor ();
     }
 }

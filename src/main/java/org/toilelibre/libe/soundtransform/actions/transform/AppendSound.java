@@ -7,11 +7,11 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public final class AppendSound extends Action {
 
-    public AppendSound(final Observer... observers) {
-        super(observers);
+    public AppendSound (final Observer... observers) {
+        super (observers);
     }
 
-    public Sound[] append(final Sound[] sounds1, final Sound[] sounds2) throws SoundTransformException {
-        return this.modifySound.append(sounds1, sounds2);
+    public Sound [] append (final Sound [] sounds1, final Sound [] sounds2) throws SoundTransformException {
+        return this.modifySound.append (sounds1, sounds2);
     }
 }

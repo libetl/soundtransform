@@ -21,28 +21,28 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 public class BlackBoxTest extends SoundTransformTest {
-    private final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    private final File input = new File(this.classLoader.getResource("before.wav").getFile());
-    private final File gPiano3 = new File(this.classLoader.getResource("gpiano3.wav").getFile());
-    private final File output = new File(new File(this.classLoader.getResource("before.wav").getFile()).getParent() + "/after.wav");
+    private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
+    private final File        input       = new File (this.classLoader.getResource ("before.wav").getFile ());
+    private final File        gPiano3     = new File (this.classLoader.getResource ("gpiano3.wav").getFile ());
+    private final File        output      = new File (new File (this.classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
     @Test
-    public void callPlaySoundFromOutside() throws SoundTransformException {
-        new PlaySound().play(new Sound[0]);
+    public void callPlaySoundFromOutside () throws SoundTransformException {
+        new PlaySound ().play (new Sound [0]);
     }
 
     @Test
-    public void callTransformFromOutside() throws SoundTransformException {
-        InputStream is = new ToInputStream ().toStream (this.input);
-        StreamInfo streamInfo = new GetStreamInfo ().getStreamInfo (new ToInputStream ().toStream (this.input));
+    public void callTransformFromOutside () throws SoundTransformException {
+        final InputStream is = new ToInputStream ().toStream (this.input);
+        final StreamInfo streamInfo = new GetStreamInfo ().getStreamInfo (new ToInputStream ().toStream (this.input));
         Sound [] sounds = new ConvertFromInputStream ().fromInputStream (is);
-        sounds = new ApplySoundTransform ().apply (sounds, new EightBitsSoundTransformation(25));
-        InputStream isOut = new ToInputStream ().toStream (sounds, streamInfo);
-        new ExportAFile ().writeFile(isOut, this.output);
+        sounds = new ApplySoundTransform ().apply (sounds, new EightBitsSoundTransformation (25));
+        final InputStream isOut = new ToInputStream ().toStream (sounds, streamInfo);
+        new ExportAFile ().writeFile (isOut, this.output);
     }
 
     @Test
-    public void getStreamInfo() throws SoundTransformException, IOException {
-        new Slf4jObserver().notify(new GetStreamInfo().getStreamInfo(new BufferedInputStream(new FileInputStream(this.gPiano3))).toString());
+    public void getStreamInfo () throws SoundTransformException, IOException {
+        new Slf4jObserver ().notify (new GetStreamInfo ().getStreamInfo (new BufferedInputStream (new FileInputStream (this.gPiano3))).toString ());
     }
 }

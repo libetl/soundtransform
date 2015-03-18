@@ -5,7 +5,8 @@ import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 public abstract class AndroidPlayAccessor extends AndroidAudioFormatAccessor {
 
-    protected PlaySoundProcessor providePlaySoundProcessor() {
-        return new AndroidPlaySoundProcessor();
+    @Override
+    protected PlaySoundProcessor providePlaySoundProcessor () {
+        return new AndroidPlaySoundProcessor ();
     }
 }

@@ -6,11 +6,11 @@ import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
 
 public abstract class Sound2NoteAccessor extends PackAccessor {
 
-    protected FrequencyHelper provideFrequencyHelper() {
-        return new CallHPSFrequencyHelper();
+    protected FrequencyHelper provideFrequencyHelper () {
+        return new CallHPSFrequencyHelper ();
     }
 
-    protected ADSRHelper provideAdsrHelper() {
-        return new MagnitudeADSRHelper();
+    protected ADSRHelper provideAdsrHelper () {
+        return new MagnitudeADSRHelper ();
     }
 }

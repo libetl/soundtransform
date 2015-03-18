@@ -6,11 +6,11 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTem
 
 public abstract class AppenderAccessor extends RootModuleWithoutAccessor {
 
-    protected SoundAppender provideSoundAppender() {
-        return new ConvertedSoundAppender();
+    protected SoundAppender provideSoundAppender () {
+        return new ConvertedSoundAppender ();
     }
 
-    protected SoundPitchAndTempoHelper provideSoundPitchAndTempoHelper() {
-        return new ConvertedSoundPitchAndTempoHelper();
+    protected SoundPitchAndTempoHelper provideSoundPitchAndTempoHelper () {
+        return new ConvertedSoundPitchAndTempoHelper ();
     }
 }

@@ -9,11 +9,11 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class GetStreamInfo extends Action {
 
-    public GetStreamInfo(final Observer... observers) {
-        super(observers);
+    public GetStreamInfo (final Observer... observers) {
+        super (observers);
     }
 
-    public StreamInfo getStreamInfo(final InputStream ais) throws SoundTransformException {
-        return this.is2Sound.getStreamInfo(ais);
+    public StreamInfo getStreamInfo (final InputStream ais) throws SoundTransformException {
+        return this.is2Sound.getStreamInfo (ais);
     }
 }

@@ -15,105 +15,105 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper.Audi
 
 public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
 
-    byte[] intToByteArray(final int n) {
-        final byte[] b = new byte[4];
-        for (int i = b.length - 1; i >= 0; i--) {
-            b[b.length - 1 - i] = (byte) (n >> i * 8);
+    byte [] intToByteArray (final int n) {
+        final byte [] b = new byte [4];
+        for (int i = b.length - 1 ; i >= 0 ; i--) {
+            b [b.length - 1 - i] = (byte) (n >> i * 8);
         }
         return b;
     }
 
-    private String itoS(final int i) throws UnsupportedEncodingException {
-        return new String(this.intToByteArray(i), "UTF-8").toString();
+    private String itoS (final int i) throws UnsupportedEncodingException {
+        return new String (this.intToByteArray (i), "UTF-8").toString ();
     }
 
-    @Test(expected = SoundTransformException.class)
-    public void testConvertToBaosWithFileNotFound() throws SoundTransformException {
+    @Test (expected = SoundTransformException.class)
+    public void testConvertToBaosWithFileNotFound () throws SoundTransformException {
         try {
-            $.select(AudioFileHelper.class).getAudioInputStream(new File("fileNotFound"));
+            $.select (AudioFileHelper.class).getAudioInputStream (new File ("fileNotFound"));
         } catch (final SoundTransformException ste) {
-            org.junit.Assert.assertEquals(AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, ((SoundTransformException) ste.getCause()).getErrorCode());
+            org.junit.Assert.assertEquals (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, ((SoundTransformException) ste.getCause ()).getErrorCode ());
             throw ste;
         }
     }
 
-    @Test(expected = SoundTransformException.class)
-    public void testDidNotFindData() throws SoundTransformException, UnsupportedEncodingException {
-        final String input = "RIFF1000WAVEfmt     " + '\1' + '\0' + '\1' + '\0' + this.itoS(48000) + this.itoS(0) + '\2' + '\0' + '\2' + '\0' + "datedate";
+    @Test (expected = SoundTransformException.class)
+    public void testDidNotFindData () throws SoundTransformException, UnsupportedEncodingException {
+        final String input = "RIFF1000WAVEfmt     " + '\1' + '\0' + '\1' + '\0' + this.itoS (48000) + this.itoS (0) + '\2' + '\0' + '\2' + '\0' + "datedate";
         try {
-            FluentClient.start().withAudioInputStream(new ByteArrayInputStream(input.getBytes("UTF-8"))).importToSound();
+            FluentClient.start ().withAudioInputStream (new ByteArrayInputStream (input.getBytes ("UTF-8"))).importToSound ();
         } catch (final SoundTransformRuntimeException stre) {
-            final SoundTransformException ste = (SoundTransformException) stre.getCause();
-            org.junit.Assert.assertEquals("NO_DATA_SEPARATOR", ste.getErrorCode().name());
+            final SoundTransformException ste = (SoundTransformException) stre.getCause ();
+            org.junit.Assert.assertEquals ("NO_DATA_SEPARATOR", ste.getErrorCode ().name ());
             throw ste;
         } catch (final UnsupportedEncodingException e) {
-            org.junit.Assert.fail("Should not throw an UnsupportedEncodingException");
+            org.junit.Assert.fail ("Should not throw an UnsupportedEncodingException");
         }
     }
 
-    @Test(expected = SoundTransformException.class)
-    public void testFileNotFound() throws SoundTransformException {
+    @Test (expected = SoundTransformException.class)
+    public void testFileNotFound () throws SoundTransformException {
         try {
-            FluentClient.start().withClasspathResource("fileNotFound.wav").convertIntoSound().exportToClasspathResource("after.wav");
+            FluentClient.start ().withClasspathResource ("fileNotFound.wav").convertIntoSound ().exportToClasspathResource ("after.wav");
         } catch (final SoundTransformException ste) {
-            org.junit.Assert.assertEquals(FluentClient.FluentClientErrorCode.NO_FILE_IN_INPUT, ste.getErrorCode());
+            org.junit.Assert.assertEquals (FluentClient.FluentClientErrorCode.NO_FILE_IN_INPUT, ste.getErrorCode ());
             throw ste;
         }
     }
 
     @Test
-    public void testLoadWav() throws SoundTransformException {
-        FluentClient.start().withClasspathResource("before.wav").convertIntoSound().exportToClasspathResource("after.wav");
+    public void testLoadWav () throws SoundTransformException {
+        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().exportToClasspathResource ("after.wav");
     }
 
-    @Test(expected = SoundTransformRuntimeException.class)
-    public void testMissingFmtTag() throws SoundTransformException {
+    @Test (expected = SoundTransformRuntimeException.class)
+    public void testMissingFmtTag () throws SoundTransformException {
         final String input = "RIFF1000WAVEfmx";
         try {
-            FluentClient.start().withAudioInputStream(new ByteArrayInputStream(input.getBytes("UTF-8"))).importToSound();
+            FluentClient.start ().withAudioInputStream (new ByteArrayInputStream (input.getBytes ("UTF-8"))).importToSound ();
         } catch (final SoundTransformRuntimeException stre) {
-            org.junit.Assert.assertEquals("WRONG_FORMAT_READ_VALUE", stre.getErrorCode().name());
+            org.junit.Assert.assertEquals ("WRONG_FORMAT_READ_VALUE", stre.getErrorCode ().name ());
             throw stre;
         } catch (final UnsupportedEncodingException e) {
-            org.junit.Assert.fail("Should not throw an UnsupportedEncodingException");
+            org.junit.Assert.fail ("Should not throw an UnsupportedEncodingException");
         }
     }
 
-    @Test(expected = SoundTransformException.class)
-    public void testMissingWavTag() throws SoundTransformException {
+    @Test (expected = SoundTransformException.class)
+    public void testMissingWavTag () throws SoundTransformException {
         final String input = "RIFF1000WAVA";
         try {
-            FluentClient.start().withAudioInputStream(new ByteArrayInputStream(input.getBytes("UTF-8"))).importToSound();
+            FluentClient.start ().withAudioInputStream (new ByteArrayInputStream (input.getBytes ("UTF-8"))).importToSound ();
         } catch (final SoundTransformRuntimeException stre) {
-            final SoundTransformException ste = (SoundTransformException) stre.getCause();
-            org.junit.Assert.assertEquals("NO_WAVE_HEADER", ste.getErrorCode().name());
+            final SoundTransformException ste = (SoundTransformException) stre.getCause ();
+            org.junit.Assert.assertEquals ("NO_WAVE_HEADER", ste.getErrorCode ().name ());
             throw ste;
         } catch (final UnsupportedEncodingException e) {
-            org.junit.Assert.fail("Should not throw an UnsupportedEncodingException");
+            org.junit.Assert.fail ("Should not throw an UnsupportedEncodingException");
         }
     }
 
-    @Test(expected = SoundTransformException.class)
-    public void testMissingWrongEncoding() throws SoundTransformException {
+    @Test (expected = SoundTransformException.class)
+    public void testMissingWrongEncoding () throws SoundTransformException {
         final String input = "RIFF1000WAVEfmt     " + '\0' + '\2';
         try {
-            FluentClient.start().withAudioInputStream(new ByteArrayInputStream(input.getBytes("UTF-8"))).importToSound();
+            FluentClient.start ().withAudioInputStream (new ByteArrayInputStream (input.getBytes ("UTF-8"))).importToSound ();
         } catch (final SoundTransformRuntimeException stre) {
-            final SoundTransformException ste = (SoundTransformException) stre.getCause();
-            org.junit.Assert.assertEquals("NON_PCM_WAV", ste.getErrorCode().name());
+            final SoundTransformException ste = (SoundTransformException) stre.getCause ();
+            org.junit.Assert.assertEquals ("NON_PCM_WAV", ste.getErrorCode ().name ());
             throw ste;
         } catch (final UnsupportedEncodingException e) {
-            org.junit.Assert.fail("Should not throw an UnsupportedEncodingException");
+            org.junit.Assert.fail ("Should not throw an UnsupportedEncodingException");
         }
     }
 
-    @Test(expected = SoundTransformException.class)
-    public void testNotRiffFile() throws SoundTransformException {
+    @Test (expected = SoundTransformException.class)
+    public void testNotRiffFile () throws SoundTransformException {
         try {
-            FluentClient.start().withClasspathResource("defaultpackjavax.json").importToStream();
+            FluentClient.start ().withClasspathResource ("defaultpackjavax.json").importToStream ();
         } catch (final SoundTransformRuntimeException stre) {
-            final SoundTransformException ste = (SoundTransformException) stre.getCause();
-            org.junit.Assert.assertEquals("NO_MAGIC_NUMBER", ste.getErrorCode().name());
+            final SoundTransformException ste = (SoundTransformException) stre.getCause ();
+            org.junit.Assert.assertEquals ("NO_MAGIC_NUMBER", ste.getErrorCode ().name ());
             throw ste;
         }
     }

@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransf
 
 public abstract class FourierAccessor extends AppenderAccessor {
 
-    protected FourierTransformHelper<Complex[]> provideFourierTransformHelper() {
-        return new CommonsMath3FourierTransformHelper();
+    protected FourierTransformHelper<Complex []> provideFourierTransformHelper () {
+        return new CommonsMath3FourierTransformHelper ();
     }
 }

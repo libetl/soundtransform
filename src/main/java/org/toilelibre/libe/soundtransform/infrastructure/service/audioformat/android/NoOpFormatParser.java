@@ -10,24 +10,24 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 class NoOpFormatParser implements AudioFormatParser {
 
     @Override
-    public Object audioFormatfromStreamInfo(final StreamInfo info) {
+    public Object audioFormatfromStreamInfo (final StreamInfo info) {
         return info;
     }
 
     @Override
-    public StreamInfo fromAudioFormat(final Object audioFormat1, final long l) {
+    public StreamInfo fromAudioFormat (final Object audioFormat1, final long l) {
         return (StreamInfo) audioFormat1;
     }
 
     @Override
-    public StreamInfo getStreamInfo(final InputStream is) throws SoundTransformException {
+    public StreamInfo getStreamInfo (final InputStream is) throws SoundTransformException {
         if (is instanceof HasStreamInfo) {
-            return ((HasStreamInfo) is).getInfo();
+            return ((HasStreamInfo) is).getInfo ();
         }
         try {
-            return new AndroidWavHelper().readMetadata(new AudioInputStream(is));
+            return new AndroidWavHelper ().readMetadata (new AudioInputStream (is));
         } catch (final IOException e) {
-            throw new SoundTransformException(AudioFormatParserErrorCode.READ_ERROR, e);
+            throw new SoundTransformException (AudioFormatParserErrorCode.READ_ERROR, e);
         }
     }
 }

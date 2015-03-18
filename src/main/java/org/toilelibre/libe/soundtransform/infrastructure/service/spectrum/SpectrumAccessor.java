@@ -8,15 +8,15 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToStr
 
 public abstract class SpectrumAccessor extends Sound2StringAccessor {
 
-    protected SpectrumToStringHelper<Complex[]> provideSpectrumToStringHelper() {
-        return new GraphSpectrumToStringHelper(this.provideSpectrumHelper());
+    protected SpectrumToStringHelper<Complex []> provideSpectrumToStringHelper () {
+        return new GraphSpectrumToStringHelper (this.provideSpectrumHelper ());
     }
 
-    protected SpectrumHelper<Complex[]> provideSpectrumHelper() {
-        return new HPSSpectrumHelper();
+    protected SpectrumHelper<Complex []> provideSpectrumHelper () {
+        return new HPSSpectrumHelper ();
     }
 
-    protected Spectrum2CepstrumHelper<Complex[]> provideSpectrum2CepstrumHelper() {
-        return new NaiveSpectrum2CepstrumHelper();
+    protected Spectrum2CepstrumHelper<Complex []> provideSpectrum2CepstrumHelper () {
+        return new NaiveSpectrum2CepstrumHelper ();
     }
 }

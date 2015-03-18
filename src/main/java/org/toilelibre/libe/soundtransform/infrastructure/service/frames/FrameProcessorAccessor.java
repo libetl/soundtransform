@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 
 public abstract class FrameProcessorAccessor extends FourierAccessor {
 
-    protected FrameProcessor<AbstractLogAware<ByteArrayFrameProcessor>> provideFrameProcessor() {
-        return new ByteArrayFrameProcessor();
+    protected FrameProcessor<AbstractLogAware<ByteArrayFrameProcessor>> provideFrameProcessor () {
+        return new ByteArrayFrameProcessor ();
     }
 }

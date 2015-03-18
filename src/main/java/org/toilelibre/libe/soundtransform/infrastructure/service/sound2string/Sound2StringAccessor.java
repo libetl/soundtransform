@@ -5,7 +5,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound2StringHelp
 
 public abstract class Sound2StringAccessor extends Sound2NoteAccessor {
 
-    protected Sound2StringHelper provideSound2StringHelper() {
-        return new GraphSound2StringHelper();
+    protected Sound2StringHelper provideSound2StringHelper () {
+        return new GraphSound2StringHelper ();
     }
 }

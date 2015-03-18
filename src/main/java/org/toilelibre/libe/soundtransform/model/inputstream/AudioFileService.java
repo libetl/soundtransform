@@ -12,18 +12,18 @@ public class AudioFileService extends AbstractLogAware<AudioFileService> {
     private final AudioFileHelper   audioFileHelper;
     private final AudioFormatParser audioFormatParser;
 
-    public AudioFileService(final AudioFileHelper helper1, final AudioFormatParser audioFormatParser1) {
+    public AudioFileService (final AudioFileHelper helper1, final AudioFormatParser audioFormatParser1) {
         this (helper1, audioFormatParser1, new Observer [0]);
     }
-    
-    public AudioFileService(final AudioFileHelper helper1, final AudioFormatParser audioFormatParser1, Observer... observers1) {
+
+    public AudioFileService (final AudioFileHelper helper1, final AudioFormatParser audioFormatParser1, Observer... observers1) {
         this.audioFileHelper = helper1;
         this.audioFormatParser = audioFormatParser1;
         this.observers = observers1;
     }
 
-    public InputStream streamFromFile(final File file) throws SoundTransformException {
-        return this.audioFileHelper.getAudioInputStream(file);
+    public InputStream streamFromFile (final File file) throws SoundTransformException {
+        return this.audioFileHelper.getAudioInputStream (file);
     }
 
     public InputStream streamFromRawStream (final InputStream is, final StreamInfo streamInfo) throws SoundTransformException {
@@ -31,6 +31,6 @@ public class AudioFileService extends AbstractLogAware<AudioFileService> {
     }
 
     public void fileFromStream (final InputStream ais2, final File fDest) throws SoundTransformException {
-        this.audioFileHelper.writeInputStream(ais2, fDest);
+        this.audioFileHelper.writeInputStream (ais2, fDest);
     }
 }

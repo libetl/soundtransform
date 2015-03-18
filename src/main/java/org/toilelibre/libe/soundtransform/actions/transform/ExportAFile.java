@@ -9,11 +9,11 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public final class ExportAFile extends Action {
 
-    public ExportAFile(final Observer... observers) {
-        super(observers);
+    public ExportAFile (final Observer... observers) {
+        super (observers);
     }
 
-    public void writeFile(final InputStream is, final File fDest) throws SoundTransformException {
+    public void writeFile (final InputStream is, final File fDest) throws SoundTransformException {
         this.audioFile.fileFromStream (is, fDest);
     }
 }
