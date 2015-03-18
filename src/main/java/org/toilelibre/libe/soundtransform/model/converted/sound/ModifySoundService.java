@@ -4,7 +4,7 @@ import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-class ModifySoundService {
+public class ModifySoundService {
     enum ModifySoundServiceErrorCode implements ErrorCode {
         DIFFERENT_NUMBER_OF_CHANNELS ("Could not append two sounds : Different number of channels (%1d and %2d)");
 

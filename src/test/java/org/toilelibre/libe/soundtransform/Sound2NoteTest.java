@@ -13,10 +13,10 @@ import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
 import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
@@ -86,10 +86,9 @@ public class Sound2NoteTest extends SoundTransformTest {
         final URL fileURL = classLoader.getResource ("piano3e.wav");
         final File input = new File (fileURL.getFile ());
 
-        final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
-        final TransformSoundService ts = $.create (TransformSoundService.class);
+        final InputStream ais = $.create (AudioFileService.class).streamFromFile (input);
 
-        final Sound [] f4 = ts.fromInputStream (ais);
+        final Sound [] f4 = $.create(InputStreamToSoundService.class).fromInputStream (ais);
         final PitchSoundTransformation pitcher = new PitchSoundTransformation (200);
         final Sound f51 = pitcher.transform (f4 [0]);
         final Sound f52 = pitcher.transform (f4 [1]);
@@ -105,10 +104,9 @@ public class Sound2NoteTest extends SoundTransformTest {
         final URL fileURL = classLoader.getResource ("piano1c.wav");
         final File input = new File (fileURL.getFile ());
 
-        final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
-        final TransformSoundService ts = $.create (TransformSoundService.class);
+        final InputStream ais = $.create (AudioFileService.class).streamFromFile (input);
 
-        final Note n = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("piano1c.wav"), ts.fromInputStream (ais));
+        final Note n = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("piano1c.wav"), $.create(InputStreamToSoundService.class).fromInputStream (ais));
         new Slf4jObserver ().notify ("c' 1-line octave : " + n.getFrequency () + "Hz, should be around 261Hz");
         org.junit.Assert.assertTrue ((n.getFrequency () > (261 - 10)) && (n.getFrequency () < (261 + 10)));
     }
@@ -119,10 +117,9 @@ public class Sound2NoteTest extends SoundTransformTest {
         final URL fileURL = classLoader.getResource ("piano4f.wav");
         final File input = new File (fileURL.getFile ());
 
-        final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
-        final TransformSoundService ts = $.create (TransformSoundService.class);
+        final InputStream ais = $.create (AudioFileService.class).streamFromFile (input);
 
-        final Note n = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("piano4f.wav"), ts.fromInputStream (ais));
+        final Note n = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("piano4f.wav"), $.create(InputStreamToSoundService.class).fromInputStream (ais));
         new Slf4jObserver ().notify ("f' 4 : " + n.getFrequency () + "Hz, should be around 349Hz");
         org.junit.Assert.assertTrue ((n.getFrequency () > (349 - 10)) && (n.getFrequency () < (349 + 10)));
     }

@@ -14,19 +14,19 @@ public class ImportAPackIntoTheLibrary extends Action {
     }
 
     public Pack getPack(final String title) {
-        return this.importPackService.getAPack(this.library, title);
+        return this.importPack.getAPack(this.library, title);
     }
 
     public void importAPack(final String title, final InputStream jsonStream) throws SoundTransformException {
-        this.importPackService.importPack(this.library, title, jsonStream);
+        this.importPack.importPack(this.library, title, jsonStream);
     }
 
     public void importAPack(final String title, final Object context, final Class<?> rClass, final int packJsonId) throws SoundTransformException {
-        this.importPackService.importPack(this.library, title, context, rClass, packJsonId);
+        this.importPack.importPack(this.library, title, context, rClass, packJsonId);
 
     }
 
     public void importAPack(final String title, final String jsonContent) throws SoundTransformException {
-        this.importPackService.importPack(this.library, title, jsonContent);
+        this.importPack.importPack(this.library, title, jsonContent);
     }
 }

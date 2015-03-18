@@ -28,7 +28,6 @@ class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProcessor> 
      * org.toilelibre.libe.soundtransform.model.sound.Sound[], int, boolean,
      * boolean, long)
      */
-    @Override
     public void byteArrayToFrame(final byte[] frame, final Sound[] sound, final int position, final boolean bigEndian, final boolean pcmSigned, final long neutral) {
         final long[] value = new long[sound.length];
         final int destination = bigEndian ? 0 : frame.length - 1;
@@ -67,7 +66,11 @@ class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProcessor> 
      * sound.Sound[], int, boolean, boolean)
      */
     @Override
-    public byte[] framesToByteArray(final Sound[] channels, final int sampleSize, final boolean bigEndian, final boolean pcmSigned) {
+    public byte[] framesToByteArray(final Sound[] channels, StreamInfo streamInfo) {
+        final boolean pcmSigned = streamInfo.isPcmSigned();
+        final boolean bigEndian = streamInfo.isBigEndian();
+        final int sampleSize = streamInfo.getSampleSize();
+        
         final int length = channels.length * sampleSize * channels[0].getSamples().length;
         final byte[] data = new byte[length];
 

@@ -11,10 +11,10 @@ import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
-import org.toilelibre.libe.soundtransform.model.converted.sound.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.SoundToInputStreamService;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 public class SoundGenerateTest extends SoundTransformTest {
@@ -32,10 +32,10 @@ public class SoundGenerateTest extends SoundTransformTest {
         }
         final Sound s = new Sound (signal, new FormatInfo (sampleInBytes, samplerate), 1);
 
-        final InputStream ais = $.create (TransformSoundService.class).toStream (new Sound [] { s }, new StreamInfo (1, s.getSamplesLength (), sampleInBytes, samplerate, false, true, null));
+        final InputStream ais = $.create (SoundToInputStreamService.class).toStream (new Sound [] { s }, new StreamInfo (1, s.getSamplesLength (), sampleInBytes, samplerate, false, true, null));
         final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        $.create (ConvertAudioFileService.class).writeInputStream (ais, fDest);
+        $.create (AudioFileService.class).fileFromStream (ais, fDest);
     }
 
     @Test
@@ -63,10 +63,10 @@ public class SoundGenerateTest extends SoundTransformTest {
         s = soundAppender.append (s, pureNote.getDecay (270, 1, 2));
         s = soundAppender.append (s, pureNote.getSustain (270, 1, 2));
         s = soundAppender.append (s, pureNote.getRelease (270, 1, 2));
-        final InputStream ais = $.create (TransformSoundService.class).toStream (new Sound [] { s }, new StreamInfo (1, s.getSamplesLength (), s.getSampleSize (), s.getSampleRate (), false, true, null));
+        final InputStream ais = $.create (SoundToInputStreamService.class).toStream (new Sound [] { s }, new StreamInfo (1, s.getSamplesLength (), s.getSampleSize (), s.getSampleRate (), false, true, null));
         final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        $.create (ConvertAudioFileService.class).writeInputStream (ais, fDest);
+        $.create (AudioFileService.class).fileFromStream (ais, fDest);
     }
 
     @Test
@@ -77,10 +77,10 @@ public class SoundGenerateTest extends SoundTransformTest {
         s = soundAppender.append (s, pureNote.getDecay (150, 1, 1));
         s = soundAppender.append (s, pureNote.getSustain (150, 1, 1));
         s = soundAppender.append (s, pureNote.getRelease (150, 1, 1));
-        final InputStream ais = $.create (TransformSoundService.class).toStream (new Sound [] { s }, new StreamInfo (1, s.getSamplesLength (), s.getSampleSize (), s.getSampleRate (), false, true, null));
+        final InputStream ais = $.create (SoundToInputStreamService.class).toStream (new Sound [] { s }, new StreamInfo (1, s.getSamplesLength (), s.getSampleSize (), s.getSampleRate (), false, true, null));
         final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        $.create (ConvertAudioFileService.class).writeInputStream (ais, fDest);
+        $.create (AudioFileService.class).fileFromStream (ais, fDest);
     }
 
     @Test
@@ -91,9 +91,9 @@ public class SoundGenerateTest extends SoundTransformTest {
         s = soundAppender.append (s, pureNote.getDecay (440, 1, 1));
         s = soundAppender.append (s, pureNote.getSustain (440, 1, 1));
         s = soundAppender.append (s, pureNote.getRelease (440, 1, 1));
-        final InputStream ais = $.create (TransformSoundService.class).toStream (new Sound [] { s }, new StreamInfo (1, s.getSamplesLength (), s.getSampleSize (), s.getSampleRate (), false, true, null));
+        final InputStream ais = $.create (SoundToInputStreamService.class).toStream (new Sound [] { s }, new StreamInfo (1, s.getSamplesLength (), s.getSampleSize (), s.getSampleRate (), false, true, null));
         final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        $.create (ConvertAudioFileService.class).writeInputStream (ais, fDest);
+        $.create (AudioFileService.class).fileFromStream (ais, fDest);
     }
 }

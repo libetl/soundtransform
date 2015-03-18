@@ -9,9 +9,10 @@ import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
-import org.toilelibre.libe.soundtransform.model.converted.sound.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
+import org.toilelibre.libe.soundtransform.model.inputstream.SoundToInputStreamService;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 public class TestUpsample extends SoundTransformTest {
@@ -22,7 +23,7 @@ public class TestUpsample extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("piano2d.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-        final Sound [] inputSounds = $.create (TransformSoundService.class).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (input));
+        final Sound [] inputSounds = $.create (InputStreamToSoundService.class).fromInputStream ($.create (AudioFileService.class).streamFromFile (input));
         final Sound [] outputSounds = new Sound [inputSounds.length];
         for (int i = 0 ; i < inputSounds.length ; i++) {
             Sound tmp = $.select (SoundAppender.class).changeNbBytesPerSample (inputSounds [i], 2);
@@ -30,8 +31,8 @@ public class TestUpsample extends SoundTransformTest {
             outputSounds [i] = tmp;
         }
 
-        final InputStream ais = $.create (TransformSoundService.class).toStream (outputSounds, new StreamInfo (outputSounds.length, outputSounds [0].getSamplesLength (), 2, 44100, false, true, null));
-        $.create (ConvertAudioFileService.class).writeInputStream (ais, output);
+        final InputStream ais = $.create (SoundToInputStreamService.class).toStream (outputSounds, new StreamInfo (outputSounds.length, outputSounds [0].getSamplesLength (), 2, 44100, false, true, null));
+        $.create (AudioFileService.class).fileFromStream (ais, output);
 
     }
 
@@ -41,7 +42,7 @@ public class TestUpsample extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("gpiano3.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-        final Sound [] inputSounds = $.create (TransformSoundService.class).fromInputStream ($.create (ConvertAudioFileService.class).callConverter (input));
+        final Sound [] inputSounds = $.create (InputStreamToSoundService.class).fromInputStream ($.create (AudioFileService.class).streamFromFile (input));
         final Sound [] outputSounds = new Sound [inputSounds.length];
         for (int i = 0 ; i < inputSounds.length ; i++) {
             // Sound tmp = SoundAppender.changeNbBytesPerSample (inputSounds
@@ -50,8 +51,8 @@ public class TestUpsample extends SoundTransformTest {
             outputSounds [i] = tmp;
         }
 
-        final InputStream ais = $.create (TransformSoundService.class).toStream (outputSounds, new StreamInfo (outputSounds.length, outputSounds [0].getSamplesLength (), 2, 44100, false, true, null));
+        final InputStream ais = $.create (SoundToInputStreamService.class).toStream (outputSounds, new StreamInfo (outputSounds.length, outputSounds [0].getSamplesLength (), 2, 44100, false, true, null));
 
-        $.create (ConvertAudioFileService.class).writeInputStream (ais, output);
+        $.create (AudioFileService.class).fileFromStream (ais, output);
     }
 }

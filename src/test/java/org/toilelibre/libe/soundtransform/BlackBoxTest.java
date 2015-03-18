@@ -4,16 +4,21 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
+import org.toilelibre.libe.soundtransform.actions.transform.ApplySoundTransform;
+import org.toilelibre.libe.soundtransform.actions.transform.ConvertFromInputStream;
 import org.toilelibre.libe.soundtransform.actions.transform.ExportAFile;
 import org.toilelibre.libe.soundtransform.actions.transform.GetStreamInfo;
+import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 public class BlackBoxTest extends SoundTransformTest {
     private final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -28,7 +33,12 @@ public class BlackBoxTest extends SoundTransformTest {
 
     @Test
     public void callTransformFromOutside() throws SoundTransformException {
-        new ExportAFile().transformFile(this.input, this.output, new EightBitsSoundTransformation(25));
+        InputStream is = new ToInputStream ().toStream (this.input);
+        StreamInfo streamInfo = new GetStreamInfo ().getStreamInfo (new ToInputStream ().toStream (this.input));
+        Sound [] sounds = new ConvertFromInputStream ().fromInputStream (is);
+        sounds = new ApplySoundTransform ().apply (sounds, new EightBitsSoundTransformation(25));
+        InputStream isOut = new ToInputStream ().toStream (sounds, streamInfo);
+        new ExportAFile ().writeFile(isOut, this.output);
     }
 
     @Test

@@ -14,7 +14,7 @@ public final class InputStreamToAudioInputStream extends Action {
     }
 
     public InputStream transformRawInputStream(final InputStream ais, final StreamInfo isi) throws SoundTransformException {
-        return this.transformSound.transformRawInputStream(ais, isi);
+        return this.audioFile.streamFromRawStream (ais, isi);
     }
 
 }

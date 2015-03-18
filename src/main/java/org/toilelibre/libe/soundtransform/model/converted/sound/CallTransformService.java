@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-class CallTransformService extends AbstractLogAware<CallTransformService> {
+public class CallTransformService extends AbstractLogAware<CallTransformService> {
 
     public enum CallTransformServiceEventCode implements EventCode {
 
@@ -41,7 +41,7 @@ class CallTransformService extends AbstractLogAware<CallTransformService> {
         this.setObservers (observers);
     }
 
-    public Sound [] transformAudioStream (final Sound [] input, final SoundTransformation... sts) throws SoundTransformException {
+    public Sound [] apply (final Sound [] input, final SoundTransformation... sts) throws SoundTransformException {
         Sound [] output = new Sound [input.length];
         int transformNumber = 0;
         for (final SoundTransformation st : sts) {

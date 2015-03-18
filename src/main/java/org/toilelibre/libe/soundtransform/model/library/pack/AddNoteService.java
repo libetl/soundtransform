@@ -9,9 +9,9 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
-import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
-import org.toilelibre.libe.soundtransform.model.inputstream.TransformInputStreamService;
+import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
 import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
@@ -62,19 +62,19 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
     }
 
     private final Sound2NoteService sound2NoteService;
-    private final TransformInputStreamService transformInputStreamService;
-    private final ConvertAudioFileService convertAudioFileService;
+    private final InputStreamToSoundService inputStreamToSoundService;
+    private final AudioFileService convertAudioFileService;
     private final AudioFileHelper audioFileHelper;
     private final AudioFormatParser audioFormatParser;
 
-    public AddNoteService(final Sound2NoteService sound2NoteService1, final TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1, final AudioFileHelper audioFileHelper1, final AudioFormatParser audioFormatParser1) {
-        this(sound2NoteService1, transformInputStreamService1, convertAudioFileService1, audioFileHelper1, audioFormatParser1, new Observer[0]);
+    public AddNoteService(final Sound2NoteService sound2NoteService1, final InputStreamToSoundService inputStreamToSoundService1, final AudioFileService convertAudioFileService1, final AudioFileHelper audioFileHelper1, final AudioFormatParser audioFormatParser1) {
+        this(sound2NoteService1, inputStreamToSoundService1, convertAudioFileService1, audioFileHelper1, audioFormatParser1, new Observer[0]);
     }
 
-    public AddNoteService(final Sound2NoteService sound2NoteService1, final TransformInputStreamService transformInputStreamService1, final ConvertAudioFileService convertAudioFileService1, final AudioFileHelper audioFileHelper1, final AudioFormatParser audioFormatParser1,
+    public AddNoteService(final Sound2NoteService sound2NoteService1, final InputStreamToSoundService inputStreamToSoundService1, final AudioFileService convertAudioFileService1, final AudioFileHelper audioFileHelper1, final AudioFormatParser audioFormatParser1,
             final Observer... observers1) {
         this.sound2NoteService = sound2NoteService1;
-        this.transformInputStreamService = transformInputStreamService1.setObservers(observers1);
+        this.inputStreamToSoundService = inputStreamToSoundService1.setObservers(observers1);
         this.convertAudioFileService = convertAudioFileService1;
         this.audioFileHelper = audioFileHelper1;
         this.audioFormatParser = audioFormatParser1;
@@ -85,7 +85,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
         try {
             final InputStream ais = this.audioFileHelper.getAudioInputStream(is);
             final StreamInfo si = this.audioFormatParser.getStreamInfo(ais);
-            final Note n = this.sound2NoteService.convert(noteInfo, this.transformInputStreamService.fromInputStream(ais, si));
+            final Note n = this.sound2NoteService.convert(noteInfo, this.inputStreamToSoundService.fromInputStream(ais, si));
             range.put(n.getFrequency(), n);
         } catch (final SoundTransformException e) {
             throw new SoundTransformException(AddNoteErrorCode.COULD_NOT_BE_PARSED, e, noteInfo.getName());
@@ -101,7 +101,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
             }
             final String completeFileName = completeURL.getFile();
             final File file = new File(completeFileName);
-            final Note n = this.sound2NoteService.convert(noteInfo, this.transformInputStreamService.fromInputStream(this.convertAudioFileService.callConverter(file)));
+            final Note n = this.sound2NoteService.convert(noteInfo, this.inputStreamToSoundService.fromInputStream(this.convertAudioFileService.streamFromFile(file)));
             range.put(n.getFrequency(), n);
         } catch (final IllegalArgumentException e) {
             throw new SoundTransformException(AddNoteErrorCode.COULD_NOT_BE_PARSED, e, noteInfo.getName());
@@ -128,7 +128,7 @@ public class AddNoteService extends AbstractLogAware<AddNoteService> {
 
     @Override
     public AddNoteService setObservers(final Observer... observers1) {
-        this.transformInputStreamService.setObservers(observers1);
+        this.inputStreamToSoundService.setObservers(observers1);
         return super.setObservers(observers1);
     }
 

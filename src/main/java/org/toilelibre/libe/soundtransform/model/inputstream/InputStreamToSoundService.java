@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class TransformInputStreamService extends AbstractLogAware<TransformInputStreamService> {
+public class InputStreamToSoundService extends AbstractLogAware<InputStreamToSoundService> {
 
     public enum TransformInputStreamServiceEventCode implements EventCode {
         CONVERT_INTO_JAVA_OBJECT(LogLevel.INFO, "Converting input into java object"), CONVERT_DONE(LogLevel.INFO, "Done converting the input stream");
@@ -37,11 +37,11 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
     private final FrameProcessor<?> frameProcessor;
     private final AudioFormatParser audioFormatParser;
 
-    public TransformInputStreamService(final FrameProcessor<?> processor1, final AudioFormatParser parser1) {
+    public InputStreamToSoundService(final FrameProcessor<?> processor1, final AudioFormatParser parser1) {
         this(processor1, parser1, new Observer[0]);
     }
 
-    public TransformInputStreamService(final FrameProcessor<?> processor1, final AudioFormatParser parser1, final Observer... observers) {
+    public InputStreamToSoundService(final FrameProcessor<?> processor1, final AudioFormatParser parser1, final Observer... observers) {
         this.frameProcessor = (FrameProcessor<?>) processor1.setObservers(observers);
         this.audioFormatParser = parser1;
         this.setObservers(observers);
@@ -63,13 +63,9 @@ public class TransformInputStreamService extends AbstractLogAware<TransformInput
     }
 
     @Override
-    public TransformInputStreamService setObservers(final Observer... observers1) {
+    public InputStreamToSoundService setObservers(final Observer... observers1) {
         super.setObservers(observers1);
         this.frameProcessor.setObservers(observers1);
         return this;
-    }
-
-    public byte[] soundToByteArray(final Sound[] channels, final StreamInfo streamInfo) {
-        return this.frameProcessor.framesToByteArray(channels, streamInfo.getSampleSize(), streamInfo.isBigEndian(), streamInfo.isPcmSigned());
     }
 }

@@ -3,13 +3,10 @@ package org.toilelibre.libe.soundtransform;
 import java.io.File;
 
 import org.junit.Test;
-import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
-import org.toilelibre.libe.soundtransform.model.converted.sound.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class Mp3Test extends SoundTransformTest {
 
@@ -20,7 +17,7 @@ public class Mp3Test extends SoundTransformTest {
 
     @Test
     public void testNoOp () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.mp3input, this.output, new NoOpSoundTransformation ());
+        FluentClient.start().withFile(this.mp3input).convertIntoSound().apply(new NoOpSoundTransformation()).exportToFile(this.output);
 
     }
 }

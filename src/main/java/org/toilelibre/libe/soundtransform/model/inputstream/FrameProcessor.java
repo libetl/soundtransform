@@ -49,10 +49,8 @@ public interface FrameProcessor<T> extends LogAware<T> {
         }
     }
 
-    public abstract void byteArrayToFrame(byte[] frame, Sound[] sound, int position, boolean bigEndian, boolean pcmSigned, long neutral);
-
-    public abstract byte[] framesToByteArray(Sound[] channels, int sampleSize, boolean bigEndian, boolean pcmSigned);
-
+    public abstract byte[] framesToByteArray(Sound[] channels, StreamInfo streamInfo);
+    
     public abstract Sound[] fromInputStream(InputStream ais, StreamInfo isInfo) throws SoundTransformException;
 
 }

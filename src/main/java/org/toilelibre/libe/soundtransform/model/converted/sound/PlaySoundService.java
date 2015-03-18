@@ -6,18 +6,19 @@ import java.io.Serializable;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.inputstream.SoundToInputStreamService;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 public class PlaySoundService<T extends Serializable> {
 
-    private final PlaySoundProcessor        processor;
-    private final TransformSoundService     transformSoundService;
-    private final FourierTransformHelper<T> fourierTransformHelper;
+    private final PlaySoundProcessor          processor;
+    private final SoundToInputStreamService   sound2IsService;
+    private final FourierTransformHelper<T>   fourierTransformHelper;
 
-    public PlaySoundService (final PlaySoundProcessor processor1, final TransformSoundService transformSoundService1, final FourierTransformHelper<T> fourierTransformHelper1) {
+    public PlaySoundService (final PlaySoundProcessor processor1, final SoundToInputStreamService sound2IsService1, final FourierTransformHelper<T> fourierTransformHelper1) {
         this.processor = processor1;
-        this.transformSoundService = transformSoundService1;
+        this.sound2IsService = sound2IsService1;
         this.fourierTransformHelper = fourierTransformHelper1;
 
     }
@@ -32,7 +33,7 @@ public class PlaySoundService<T extends Serializable> {
             return new Object ();
         }
 
-        final InputStream ais = this.transformSoundService.toStream (channels, StreamInfo.from (channels [0].getFormatInfo (), channels));
+        final InputStream ais = this.sound2IsService.toStream (channels, StreamInfo.from (channels [0].getFormatInfo (), channels));
         return this.processor.play (ais);
     }
 

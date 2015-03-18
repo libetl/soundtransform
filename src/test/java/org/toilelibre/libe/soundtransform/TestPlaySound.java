@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 public class TestPlaySound extends SoundTransformTest {
@@ -18,8 +18,8 @@ public class TestPlaySound extends SoundTransformTest {
     @Test
     public void playBeforeWav() throws SoundTransformException {
         final PlaySoundProcessor ps = $.select(PlaySoundProcessor.class);
-        final ConvertAudioFileService convertAudioFileService = $.create(ConvertAudioFileService.class);
-        final InputStream ais = convertAudioFileService.callConverter(this.input);
+        final AudioFileService convertAudioFileService = $.create(AudioFileService.class);
+        final InputStream ais = convertAudioFileService.streamFromFile(this.input);
         try {
             ps.play(ais);
         } catch (final java.lang.IllegalArgumentException iae) {

@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform;
 
 import java.io.File;
+import java.io.InputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,8 +10,13 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
-import org.toilelibre.libe.soundtransform.model.converted.sound.TransformSoundService;
+import org.toilelibre.libe.soundtransform.model.converted.sound.CallTransformService;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
+import org.toilelibre.libe.soundtransform.model.inputstream.SoundToInputStreamService;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class SlowdownSoundTest extends SoundTransformTest {
@@ -21,8 +27,10 @@ public class SlowdownSoundTest extends SoundTransformTest {
         final File input = new File (classLoader.getResource ("before.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (input, output, $.create (SlowdownSoundTransformation.class, 1024, 2.5f, 2048));
-
+        InputStream is = $.create (AudioFileService.class).streamFromFile(input);
+        Sound [] sounds = $.create (InputStreamToSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream(is);
+        sounds = $.create (CallTransformService.class, new Slf4jObserver (LogLevel.WARN)).apply(sounds, $.create (SlowdownSoundTransformation.class, 1024, 2.5f, 2048));
+        $.create (SoundToInputStreamService.class, new Slf4jObserver (LogLevel.WARN)).toStream (sounds, StreamInfo.from(sounds [0].getFormatInfo(), sounds));
     }
 
     @Test (expected = SoundTransformException.class)

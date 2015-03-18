@@ -273,7 +273,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException if the metadata format object is invalid, or if the sound cannot be converted
      */
     public FluentClientWithInputStream exportToStream() throws SoundTransformException {
-        final FormatInfo currentInfo = new GetStreamInfo(this.getObservers()).getFormatInfo(this.sounds);
+        final FormatInfo currentInfo = this.sounds [0].getFormatInfo();
         final InputStream audioInputStream1 = new ToInputStream(this.getObservers()).toStream(this.sounds, StreamInfo.from(currentInfo, this.sounds));
         this.cleanData();
         this.audioInputStream = audioInputStream1;

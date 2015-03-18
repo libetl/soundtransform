@@ -1,11 +1,11 @@
 package org.toilelibre.libe.soundtransform;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 
 import org.junit.Test;
+import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.EqualizerSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.GaussianEqualizerSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.LinearRegressionSoundTransformation;
@@ -15,7 +15,6 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jO
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CepstrumSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.FadeSoundTransformation;
@@ -44,121 +43,118 @@ public class WavTest extends SoundTransformTest {
 
     @Test
     public void test8bits () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new EightBitsSoundTransformation (25));
-
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new EightBitsSoundTransformation (25)).exportToFile(this.output);
     }
 
     @Test
     public void testCepstrum () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new CepstrumSoundTransformation<Serializable> (100));
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new CepstrumSoundTransformation<Serializable> (100)).exportToFile(this.output);
     }
 
     @Test (expected = SoundTransformRuntimeException.class)
     public void testFadeAboveSoundLength () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (Integer.MAX_VALUE, true));
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new FadeSoundTransformation (Integer.MAX_VALUE, true)).exportToFile(this.output);
     }
 
     @Test (expected = SoundTransformException.class)
     public void testFadeBelowZero () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (-5, true));
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new FadeSoundTransformation (-5, true)).exportToFile(this.output);
     }
 
     @Test
     public void testFadeIn () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (100000, true));
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new FadeSoundTransformation (100000, true)).exportToFile(this.output);
     }
 
     @Test
     public void testFadeOut () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new FadeSoundTransformation (100000, false));
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new FadeSoundTransformation (100000, false)).exportToFile(this.output);
     }
 
     @Test
     public void testFreqNoOp () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, $.create (SimpleFrequencySoundTransformation.class));
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply($.create (SimpleFrequencySoundTransformation.class)).exportToFile(this.output);
     }
 
     @Test
     public void testGaussianEqualizer () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new GaussianEqualizerSoundTransformation ());
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new GaussianEqualizerSoundTransformation ()).exportToFile(this.output);
     }
 
     @Test
     public void testInsert () throws SoundTransformException {
-        final InputStream ais = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromFile (new File (this.classLoader.getResource ("gpiano4.wav").getFile ()));
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new InsertPartSoundTransformation ($.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream (ais), 1000));
+        final File input2 = new File (this.classLoader.getResource ("piano3e.wav").getFile ());
+        final Sound [] sound2 = FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(input2).convertIntoSound().stopWithSounds();
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.shortInput).convertIntoSound().apply(new InsertPartSoundTransformation (sound2, 1000)).exportToFile(this.output);
     }
 
     @Test
     public void testInsertAfterEnd () throws SoundTransformException {
-        final InputStream ais = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromFile (new File (this.classLoader.getResource ("gpiano4.wav").getFile ()));
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new InsertPartSoundTransformation ($.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream (ais), 15000));
+        final File input2 = new File (this.classLoader.getResource ("piano3e.wav").getFile ());
+        final Sound [] sound2 = FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(input2).convertIntoSound().stopWithSounds();
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.shortInput).convertIntoSound().apply(new InsertPartSoundTransformation (sound2, 100000)).exportToFile(this.output);
     }
 
     @Test (expected = SoundTransformRuntimeException.class)
     public void testInsertWrongFormat () throws SoundTransformException {
-        final InputStream ais = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromFile (new File (this.classLoader.getResource ("gpiano4.wav").getFile ()));
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new InsertPartSoundTransformation ($.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream (ais), 1000));
+        final File input2 = new File (this.classLoader.getResource ("piano3e.wav").getFile ());
+        final Sound [] sound2 = FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(input2).convertIntoSound().stopWithSounds();
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.shortInput).convertIntoSound().apply(new InsertPartSoundTransformation (sound2, -100000)).exportToFile(this.output);
     }
 
     @Test
     public void testLinearReg () throws SoundTransformException {
         // will remove the high freqs and smooth the signal
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new LinearRegressionSoundTransformation (25));
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new LinearRegressionSoundTransformation (25)).exportToFile(this.output);
     }
 
     @Test
     public void testMix () throws SoundTransformException {
         final File input1 = new File (this.classLoader.getResource ("gpiano3.wav").getFile ());
         final File input2 = new File (this.classLoader.getResource ("piano3e.wav").getFile ());
-        final TransformSoundService transform = $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN));
-        final Sound [] sound2 = transform.fromInputStream (transform.fromFile (input2));
-        transform.transformFile (input1, this.output, new MixSoundTransformation (Arrays.<Sound []> asList (sound2)));
+        final Sound [] sound2 = FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(input2).convertIntoSound().stopWithSounds();
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(input1).convertIntoSound().apply(new MixSoundTransformation (Arrays.<Sound []> asList (sound2))).exportToFile(this.output);
     }
 
     @Test
     public void testNoOp () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new NoOpSoundTransformation ());
-
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new NoOpSoundTransformation ()).exportToFile(this.output);
     }
 
     @Test
     public void testNormalize () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new NormalizeSoundTransformation (1.0f));
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new NormalizeSoundTransformation (1.0f)).exportToFile(this.output);
     }
 
     @Test (expected = SoundTransformException.class)
     public void testNormalizeAbove1 () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new NormalizeSoundTransformation (-0.5f));
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new NormalizeSoundTransformation (-0.5f)).exportToFile(this.output);
     }
 
     @Test (expected = SoundTransformException.class)
     public void testNormalizeBelow0 () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new NormalizeSoundTransformation (-0.5f));
+        new NormalizeSoundTransformation (-0.5f);
     }
 
     @Test
     public void testPitch () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new PitchSoundTransformation (100));
-
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new PitchSoundTransformation (100)).exportToFile(this.output);
     }
 
     @Test
     public void testPurify () throws SoundTransformException {
         // WARN : quite long
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, $.create (PurifySoundTransformation.class));
-
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.shortInput).convertIntoSound().apply($.create (PurifySoundTransformation.class)).exportToFile(this.output);
     }
 
     @Test
     public void testRemoveLowFreqs () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output,
-                $.create (EqualizerSoundTransformation.class, new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 24000 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 }));
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply($.create (EqualizerSoundTransformation.class, new double [] { 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 24000 }, new double [] { 0, 0, 0.1, 0.3, 0.7, 1, 1, 1, 1, 1, 1 })).exportToFile(this.output);
     }
 
     @Test
     public void testReverse () throws SoundTransformException {
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, new ReverseSoundTransformation ());
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.input).convertIntoSound().apply(new ReverseSoundTransformation ()).exportToFile(this.output);
     }
 
     @Test
@@ -167,21 +163,19 @@ public class WavTest extends SoundTransformTest {
         new Slf4jObserver (LogLevel.WARN).notify ("Loading default pack");
         final Library library = $.select (Library.class);
         $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack (library, "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, new ShapeSoundTransformation ("default", "simple_piano"));
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.shortInput).convertIntoSound().apply( new ShapeSoundTransformation ("default", "simple_piano")).exportToFile(this.output);
 
     }
 
     @Test
     public void testSlowdown () throws SoundTransformException {
         // WARN : quite long
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.input, this.output, $.create (SlowdownSoundTransformation.class, 200, 1.2f, 512));
-
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.shortInput).convertIntoSound().apply($.create (SlowdownSoundTransformation.class, 200, 1.2f, 512)).exportToFile(this.output);
     }
 
     @Test
     public void testSpeedUp () throws SoundTransformException {
         // WARN : quite long
-        $.create (TransformSoundService.class, new Slf4jObserver (LogLevel.WARN)).transformFile (this.shortInput, this.output, $.create (SpeedUpSoundTransformation.class, 200, 1.5f));
-
+        FluentClient.start().withAnObserver(new Slf4jObserver (LogLevel.WARN)).withFile(this.shortInput).convertIntoSound().apply($.create (SpeedUpSoundTransformation.class, 200, 1.5f)).exportToFile(this.output);
     }
 }

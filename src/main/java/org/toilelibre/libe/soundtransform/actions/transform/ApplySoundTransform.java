@@ -13,6 +13,6 @@ public final class ApplySoundTransform extends Action {
     }
 
     public Sound[] apply(final Sound[] sounds, final SoundTransformation transform) throws SoundTransformException {
-        return this.transformSound.apply(sounds, transform);
+        return this.callTransform.apply(sounds, transform);
     }
 }

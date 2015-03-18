@@ -9,11 +9,11 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jO
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.TransformSoundService;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.ConvertAudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
 
 public class SoundToStringTest extends SoundTransformTest {
 
@@ -22,8 +22,8 @@ public class SoundToStringTest extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("before.wav").getFile ());
 
-        final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
-        final Sound s = $.create (TransformSoundService.class).fromInputStream (ais) [0];
+        final InputStream ais = $.create (AudioFileService.class).streamFromFile (input);
+        final Sound s = $.create (InputStreamToSoundService.class).fromInputStream (ais) [0];
         new SimpleFrequencySoundTransformation<Complex []> () {
 
             @Override
@@ -41,8 +41,8 @@ public class SoundToStringTest extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("before.wav").getFile ());
 
-        final InputStream ais = $.create (ConvertAudioFileService.class).callConverter (input);
-        new Slf4jObserver ().notify ($.create (TransformSoundService.class).fromInputStream (ais) [0].toString ());
+        final InputStream ais = $.create (AudioFileService.class).streamFromFile (input);
+        new Slf4jObserver ().notify ($.create (InputStreamToSoundService.class).fromInputStream (ais) [0].toString ());
 
     }
 }

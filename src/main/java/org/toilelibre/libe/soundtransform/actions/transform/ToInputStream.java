@@ -16,10 +16,10 @@ public final class ToInputStream extends Action {
     }
 
     public InputStream toStream(final File fOrigin) throws SoundTransformException {
-        return this.transformSound.fromFile(fOrigin);
+        return this.audioFile.streamFromFile (fOrigin);
     }
 
     public InputStream toStream(final Sound[] channels, final StreamInfo streamInfo) throws SoundTransformException {
-        return this.transformSound.toStream(channels, streamInfo);
+        return this.sound2is.toStream (channels, streamInfo);
     }
 }
