@@ -48,7 +48,7 @@ public class WavTest extends SoundTransformTest {
 
     @Test
     public void testCepstrum () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ().apply (new CepstrumSoundTransformation<Serializable> (100)).exportToFile (this.output);
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().apply (new CepstrumSoundTransformation<Serializable> (100)).exportToFile (this.output);
     }
 
     @Test (expected = SoundTransformRuntimeException.class)
@@ -83,14 +83,14 @@ public class WavTest extends SoundTransformTest {
 
     @Test
     public void testInsert () throws SoundTransformException {
-        final File input2 = new File (this.classLoader.getResource ("piano3e.wav").getFile ());
+        final File input2 = new File (this.classLoader.getResource ("gpiano4.wav").getFile ());
         final Sound [] sound2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (input2).convertIntoSound ().stopWithSounds ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().apply (new InsertPartSoundTransformation (sound2, 1000)).exportToFile (this.output);
     }
 
     @Test
     public void testInsertAfterEnd () throws SoundTransformException {
-        final File input2 = new File (this.classLoader.getResource ("piano3e.wav").getFile ());
+        final File input2 = new File (this.classLoader.getResource ("gpiano4.wav").getFile ());
         final Sound [] sound2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (input2).convertIntoSound ().stopWithSounds ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().apply (new InsertPartSoundTransformation (sound2, 100000)).exportToFile (this.output);
     }
