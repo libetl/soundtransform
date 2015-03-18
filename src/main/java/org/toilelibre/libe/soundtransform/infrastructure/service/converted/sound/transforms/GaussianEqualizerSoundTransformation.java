@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.converted.soun
 
 import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex[]> {

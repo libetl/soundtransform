@@ -2,8 +2,8 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.converted.soun
 
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
-import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
 
 public class LinearRegressionSoundTransformation implements SoundTransformation {
 

@@ -25,8 +25,8 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.Normal
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReverseSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpeedUpSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.library.Library;

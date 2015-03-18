@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class SoundToSpectrumsSoundTransformation extends SimpleFrequencySoundTransformation<Serializable> {

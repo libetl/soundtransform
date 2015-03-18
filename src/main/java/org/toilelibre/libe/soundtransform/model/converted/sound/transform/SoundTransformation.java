@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform.model.converted;
+package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;

@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum2CepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;

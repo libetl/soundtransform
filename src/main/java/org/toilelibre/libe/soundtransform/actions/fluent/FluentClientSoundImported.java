@@ -3,8 +3,8 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 import java.io.File;
 
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
-import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 public interface FluentClientSoundImported extends FluentClientCommon {

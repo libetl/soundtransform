@@ -20,7 +20,6 @@ import org.toilelibre.libe.soundtransform.actions.transform.GetStreamInfo;
 import org.toilelibre.libe.soundtransform.actions.transform.InputStreamToAudioInputStream;
 import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
-import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CutSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.LoopSoundTransformation;
@@ -28,6 +27,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSou
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundToSpectrumsSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpectrumsToSoundSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SubSoundExtractSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;

@@ -1,8 +1,8 @@
 package org.toilelibre.libe.soundtransform.actions.transform;
 
 import org.toilelibre.libe.soundtransform.actions.Action;
-import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 

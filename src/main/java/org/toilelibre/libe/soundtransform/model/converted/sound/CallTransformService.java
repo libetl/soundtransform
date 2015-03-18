@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
-import org.toilelibre.libe.soundtransform.model.converted.SoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;

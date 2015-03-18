@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.model.converted.spectrum;
 import java.io.Serializable;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.AbstractFrequencySoundTransformation;
 
 public interface FourierTransformHelper<T extends Serializable> {
 
