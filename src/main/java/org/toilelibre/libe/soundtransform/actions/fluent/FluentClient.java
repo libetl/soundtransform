@@ -328,7 +328,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @return the client, with a loudest frequencies float array
      */
     @Override
-    public FluentClientWithFreqs filterRange (float low, float high) {
+    public FluentClientWithFreqs filterRange (final float low, final float high) {
         this.freqs = new ChangeLoudestFreqs ().filterRange (this.freqs, low, high);
         return this;
     }
@@ -408,7 +408,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @return the client, with a loudest frequencies float array
      */
     @Override
-    public FluentClientWithFreqs insertPart (float [] subFreqs, int start) {
+    public FluentClientWithFreqs insertPart (final float [] subFreqs, final int start) {
         this.freqs = new ChangeLoudestFreqs ().insertPart (this.freqs, subFreqs, start);
         return this;
     }
@@ -498,7 +498,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *            index where to start the replacement
      * @return the client, with a loudest frequencies float array
      */
-    public FluentClientWithFreqs replacePart (float [] subFreqs, int start) {
+    public FluentClientWithFreqs replacePart (final float [] subFreqs, final int start) {
         this.freqs = new ChangeLoudestFreqs ().replacePart (this.freqs, subFreqs, start);
         return this;
     }
@@ -665,7 +665,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             the input stream cannot be read, or the json format is not
      *             correct, or some sound files are missing
      */
-    public FluentClientReady withAPack (final String packName, final Object context, final Class<?> rClass, int packJsonId) throws SoundTransformException {
+    public FluentClientReady withAPack (final String packName, final Object context, final Class<?> rClass, final int packJsonId) throws SoundTransformException {
         new ImportAPackIntoTheLibrary (this.getObservers ()).importAPack (packName, context, rClass, packJsonId);
         return this;
     }

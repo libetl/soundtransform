@@ -11,11 +11,11 @@ class PianoFrequency {
 
         private final float frequency;
 
-        PianoValues (float frequency1) {
+        PianoValues (final float frequency1) {
             this.frequency = frequency1;
         }
 
-        public static PianoValues getNearestNote (float value) {
+        public static PianoValues getNearestNote (final float value) {
             PianoValues nearest = PianoValues.A1;
             for (final PianoValues pianoFreq : PianoValues.values ()) {
                 if (Math.abs (value - pianoFreq.frequency) < Math.abs (value - nearest.frequency)) {

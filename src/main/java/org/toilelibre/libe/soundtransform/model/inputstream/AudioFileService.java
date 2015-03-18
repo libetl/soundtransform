@@ -16,7 +16,7 @@ public class AudioFileService extends AbstractLogAware<AudioFileService> {
         this (helper1, audioFormatParser1, new Observer [0]);
     }
 
-    public AudioFileService (final AudioFileHelper helper1, final AudioFormatParser audioFormatParser1, Observer... observers1) {
+    public AudioFileService (final AudioFileHelper helper1, final AudioFormatParser audioFormatParser1, final Observer... observers1) {
         this.audioFileHelper = helper1;
         this.audioFormatParser = audioFormatParser1;
         this.observers = observers1;

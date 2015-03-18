@@ -71,7 +71,7 @@ public class ApplicationInjector {
         return additionalParamCounter;
     }
 
-    private static void setNewInstanceParamsValue (Object [] newInstanceParams, int i, Class<?> parameterType, final Object [] additionalParameters, int additionalParamCounter) {
+    private static void setNewInstanceParamsValue (final Object [] newInstanceParams, final int i, final Class<?> parameterType, final Object [] additionalParameters, final int additionalParamCounter) {
         if (additionalParamCounter < additionalParameters.length) {
             if (parameterType.isArray () && !additionalParameters [additionalParamCounter].getClass ().isArray ()) {
                 newInstanceParams [i] = Array.fill (additionalParameters [additionalParamCounter], 1);

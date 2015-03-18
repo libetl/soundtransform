@@ -25,7 +25,7 @@ public class StreamInfo extends FormatInfo {
         this.taggedInfo = taggedInfo;
     }
 
-    public static StreamInfo from (FormatInfo fi, Sound [] data) {
+    public static StreamInfo from (final FormatInfo fi, final Sound [] data) {
         return new StreamInfo (data.length, data [0].getSamplesLength (), fi.getSampleSize (), fi.getSampleRate (), false, true, null);
     }
 

@@ -66,7 +66,7 @@ class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProcessor> 
      * sound.Sound[], int, boolean, boolean)
      */
     @Override
-    public byte [] framesToByteArray (final Sound [] channels, StreamInfo streamInfo) {
+    public byte [] framesToByteArray (final Sound [] channels, final StreamInfo streamInfo) {
         final boolean pcmSigned = streamInfo.isPcmSigned ();
         final boolean bigEndian = streamInfo.isBigEndian ();
         final int sampleSize = streamInfo.getSampleSize ();

@@ -18,14 +18,14 @@ import com.google.gson.JsonElement;
 
 class GsonPack2StringHelper implements Pack2StringHelper {
 
-    private JsonElement toJsonElement (Note note) {
+    private JsonElement toJsonElement (final Note note) {
         if (note instanceof SimpleNote) {
             return new Gson ().toJsonTree (((SimpleNote) note).getNoteInfo ());
         }
         return new Gson ().toJsonTree (Collections.emptyList ());
     }
 
-    private JsonElement toJsonElement (Pack pack) {
+    private JsonElement toJsonElement (final Pack pack) {
         final Map<String, JsonElement> map = new HashMap<String, JsonElement> ();
         for (final Entry<String, Range> entry : pack.entrySet ()) {
             map.put (entry.getKey (), this.toJsonElement (entry.getValue ()));
@@ -33,7 +33,7 @@ class GsonPack2StringHelper implements Pack2StringHelper {
         return new Gson ().toJsonTree (map);
     }
 
-    private JsonElement toJsonElement (Range range) {
+    private JsonElement toJsonElement (final Range range) {
         if (range.size () == 1 && !(range.get (0) instanceof SimpleNote)) {
             return new JsonArray ();
         }
@@ -46,17 +46,17 @@ class GsonPack2StringHelper implements Pack2StringHelper {
     }
 
     @Override
-    public String toString (Note note) {
+    public String toString (final Note note) {
         return new GsonBuilder ().setPrettyPrinting ().create ().toJson (this.toJsonElement (note));
     }
 
     @Override
-    public String toString (Pack pack) {
+    public String toString (final Pack pack) {
         return new GsonBuilder ().setPrettyPrinting ().create ().toJson (this.toJsonElement (pack));
     }
 
     @Override
-    public String toString (Range range) {
+    public String toString (final Range range) {
         return new GsonBuilder ().setPrettyPrinting ().create ().toJson (this.toJsonElement (range));
     }
 

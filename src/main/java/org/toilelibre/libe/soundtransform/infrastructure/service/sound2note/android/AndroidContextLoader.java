@@ -36,7 +36,7 @@ class AndroidContextLoader implements ContextLoader {
         }
     }
 
-    private Field getDeclaredField (Class<?> rClass, String idName) throws SoundTransformException {
+    private Field getDeclaredField (final Class<?> rClass, final String idName) throws SoundTransformException {
         try {
             return rClass.getDeclaredField (idName);
         } catch (final NoSuchFieldException e) {
@@ -54,7 +54,7 @@ class AndroidContextLoader implements ContextLoader {
         }
     }
 
-    private Method getMethod (Class<? extends Object> class1, String methodName) throws SoundTransformException {
+    private Method getMethod (final Class<? extends Object> class1, final String methodName) throws SoundTransformException {
         try {
             return class1.getMethod (methodName);
         } catch (final SecurityException e) {
@@ -64,7 +64,7 @@ class AndroidContextLoader implements ContextLoader {
         }
     }
 
-    private Method getDeclaredMethodOpenRawResource (Class<? extends Object> class1) throws SoundTransformException {
+    private Method getDeclaredMethodOpenRawResource (final Class<? extends Object> class1) throws SoundTransformException {
         try {
             return class1.getDeclaredMethod ("openRawResource", int.class);
         } catch (final SecurityException e) {
