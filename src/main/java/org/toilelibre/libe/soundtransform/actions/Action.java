@@ -3,7 +3,6 @@ package org.toilelibre.libe.soundtransform.actions;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.CallTransformService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService;
-import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundService;
 import org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
@@ -11,6 +10,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.SoundToInputStreamSe
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.play.PlaySoundService;
 
 public abstract class Action {
 
