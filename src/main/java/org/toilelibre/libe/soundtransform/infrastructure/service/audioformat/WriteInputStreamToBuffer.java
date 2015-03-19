@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class WriteInputStreamToBuffer {
+class WriteInputStreamToBuffer {
 
     private static final int ARBITRARY_ARRAY_LENGTH = 16384;
 
