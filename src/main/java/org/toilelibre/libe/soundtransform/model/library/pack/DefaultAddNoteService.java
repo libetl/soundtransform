@@ -19,13 +19,13 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 class DefaultAddNoteService extends AbstractLogAware<DefaultAddNoteService> implements AddNoteService<AbstractLogAware<DefaultAddNoteService>> {
 
-    private final SoundToNoteService         sound2NoteService;
+    private final SoundToNoteService           sound2NoteService;
     private final InputStreamToSoundService<?> inputStreamToSoundService;
-    private final AudioFileService          convertAudioFileService;
-    private final AudioFileHelper           audioFileHelper;
-    private final AudioFormatParser         audioFormatParser;
+    private final AudioFileService<?>          convertAudioFileService;
+    private final AudioFileHelper              audioFileHelper;
+    private final AudioFormatParser            audioFormatParser;
 
-    public DefaultAddNoteService (final SoundToNoteService sound2NoteService1, final InputStreamToSoundService<InputStreamToSoundService<?>> inputStreamToSoundService1, final AudioFileService convertAudioFileService1, final AudioFileHelper audioFileHelper1, final AudioFormatParser audioFormatParser1) {
+    public DefaultAddNoteService (final SoundToNoteService sound2NoteService1, final InputStreamToSoundService<InputStreamToSoundService<?>> inputStreamToSoundService1, final AudioFileService<?> convertAudioFileService1, final AudioFileHelper audioFileHelper1, final AudioFormatParser audioFormatParser1) {
         this.sound2NoteService = sound2NoteService1;
         this.inputStreamToSoundService = inputStreamToSoundService1;
         this.convertAudioFileService = convertAudioFileService1;
