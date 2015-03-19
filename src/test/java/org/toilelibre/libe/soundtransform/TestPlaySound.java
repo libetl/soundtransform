@@ -18,7 +18,7 @@ public class TestPlaySound extends SoundTransformTest {
     @Test
     public void playBeforeWav () throws SoundTransformException {
         final PlaySoundProcessor ps = $.select (PlaySoundProcessor.class);
-        final AudioFileService convertAudioFileService = $.create (AudioFileService.class);
+        final AudioFileService<?> convertAudioFileService = $.select (AudioFileService.class);
         final InputStream ais = convertAudioFileService.streamFromFile (this.input);
         try {
             ps.play (ais);

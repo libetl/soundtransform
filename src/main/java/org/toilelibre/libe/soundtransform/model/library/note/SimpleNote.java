@@ -17,7 +17,7 @@ public class SimpleNote implements Note {
     private final SoundPitchAndTempoService soundPitchAndTempoService;
 
     public SimpleNote (final SimpleNoteInfo noteInfo1, final Sound [] channels) {
-        this.soundPitchAndTempoService = $.create (SoundPitchAndTempoService.class);
+        this.soundPitchAndTempoService = $.select (SoundPitchAndTempoService.class);
         this.attack = new Sound [channels.length];
         this.decay = new Sound [channels.length];
         this.sustain = new Sound [channels.length];
@@ -100,6 +100,6 @@ public class SimpleNote implements Note {
 
     @Override
     public String toString () {
-        return $.select (Pack2StringHelper.class).toString (this);
+        return $.select (PackToStringHelper.class).toString (this);
     }
 }

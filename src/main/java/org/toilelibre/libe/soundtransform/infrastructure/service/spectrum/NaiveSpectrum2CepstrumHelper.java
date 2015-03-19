@@ -5,9 +5,9 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum2CepstrumHelper;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 
-class NaiveSpectrum2CepstrumHelper implements Spectrum2CepstrumHelper<Complex []> {
+class NaiveSpectrum2CepstrumHelper implements SpectrumToCepstrumHelper<Complex []> {
 
     private static final double SQUARE      = 2;
     private static final int    LOW_FILTER  = 50;

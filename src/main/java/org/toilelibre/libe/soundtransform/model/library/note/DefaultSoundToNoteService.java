@@ -7,17 +7,21 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo;
 
-public class Sound2NoteService {
+class DefaultSoundToNoteService implements SoundToNoteService {
 
     private final ADSRHelper      adsrHelper;
 
     private final FrequencyHelper frequencyHelper;
 
-    public Sound2NoteService (final ADSRHelper helper1, final FrequencyHelper helper2) {
+    public DefaultSoundToNoteService (final ADSRHelper helper1, final FrequencyHelper helper2) {
         this.adsrHelper = helper1;
         this.frequencyHelper = helper2;
     }
 
+    /* (non-Javadoc)
+     * @see org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService#convert(org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo, org.toilelibre.libe.soundtransform.model.converted.sound.Sound[])
+     */
+    @Override
     public Note convert (final SimpleNoteInfo noteInfo, final Sound [] channels) throws SoundTransformException {
         final Sound channel1 = channels [0];
 

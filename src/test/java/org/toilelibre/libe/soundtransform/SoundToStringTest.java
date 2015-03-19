@@ -22,8 +22,8 @@ public class SoundToStringTest extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("before.wav").getFile ());
 
-        final InputStream ais = $.create (AudioFileService.class).streamFromFile (input);
-        final Sound s = $.create (InputStreamToSoundService.class).fromInputStream (ais) [0];
+        final InputStream ais = $.select (AudioFileService.class).streamFromFile (input);
+        final Sound s = $.select (InputStreamToSoundService.class).fromInputStream (ais) [0];
         new SimpleFrequencySoundTransformation<Complex []> () {
 
             @Override
@@ -41,8 +41,8 @@ public class SoundToStringTest extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("before.wav").getFile ());
 
-        final InputStream ais = $.create (AudioFileService.class).streamFromFile (input);
-        new Slf4jObserver ().notify ($.create (InputStreamToSoundService.class).fromInputStream (ais) [0].toString ());
+        final InputStream ais = $.select (AudioFileService.class).streamFromFile (input);
+        new Slf4jObserver ().notify ($.select (InputStreamToSoundService.class).fromInputStream (ais) [0].toString ());
 
     }
 }

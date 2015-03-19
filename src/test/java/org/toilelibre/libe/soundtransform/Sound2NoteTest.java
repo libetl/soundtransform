@@ -19,7 +19,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
-import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
+import org.toilelibre.libe.soundtransform.model.library.note.SoundToNoteService;
 import org.toilelibre.libe.soundtransform.model.library.pack.AddNoteService;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
@@ -32,15 +32,15 @@ public class Sound2NoteTest extends SoundTransformTest {
     @Test
     public void fileNotFound () throws SoundTransformException {
         final Range range = new Range ();
-        $.create (AddNoteService.class).addNote (range, new SimpleNoteInfo ("notAFile.wav"));
+        $.select (AddNoteService.class).addNote (range, new SimpleNoteInfo ("notAFile.wav"));
         org.junit.Assert.assertTrue (range.size () == 0);
     }
 
     @Test
     public void readNotes () throws SoundTransformException {
         final Range range = new Range ();
-        $.create (AddNoteService.class).addNote (range, new SimpleNoteInfo ("gpiano3.wav"));
-        $.create (AddNoteService.class).addNote (range, new SimpleNoteInfo ("gpiano4.wav"));
+        $.select (AddNoteService.class).addNote (range, new SimpleNoteInfo ("gpiano3.wav"));
+        $.select (AddNoteService.class).addNote (range, new SimpleNoteInfo ("gpiano4.wav"));
         org.junit.Assert.assertTrue (range.size () == 2);
     }
 
@@ -65,7 +65,7 @@ public class Sound2NoteTest extends SoundTransformTest {
             }
         };
         new Slf4jObserver ().notify ("Loading Packs");
-        $.create (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN)).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+        ((ImportPackService<?>) $.select (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN))).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
         final Pack pack = $.select (Library.class).getPack ("default");
         for (final Entry<String, Range> packEntry : pack.entrySet ()) {
             for (final Entry<Float, Note> noteEntry : packEntry.getValue ().entrySet ()) {
@@ -86,14 +86,14 @@ public class Sound2NoteTest extends SoundTransformTest {
         final URL fileURL = classLoader.getResource ("piano3e.wav");
         final File input = new File (fileURL.getFile ());
 
-        final InputStream ais = $.create (AudioFileService.class).streamFromFile (input);
+        final InputStream ais = $.select (AudioFileService.class).streamFromFile (input);
 
-        final Sound [] f4 = $.create (InputStreamToSoundService.class).fromInputStream (ais);
+        final Sound [] f4 = $.select (InputStreamToSoundService.class).fromInputStream (ais);
         final PitchSoundTransformation pitcher = new PitchSoundTransformation (200);
         final Sound f51 = pitcher.transform (f4 [0]);
         final Sound f52 = pitcher.transform (f4 [1]);
 
-        final Note n = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("piano4e.wav"), new Sound [] { f51, f52 });
+        final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("piano4e.wav"), new Sound [] { f51, f52 });
         new Slf4jObserver ().notify ("e' 4 : " + n.getFrequency () + "Hz, should be around 664Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 664 - 10 && n.getFrequency () < 664 + 10);
     }
@@ -104,9 +104,9 @@ public class Sound2NoteTest extends SoundTransformTest {
         final URL fileURL = classLoader.getResource ("piano1c.wav");
         final File input = new File (fileURL.getFile ());
 
-        final InputStream ais = $.create (AudioFileService.class).streamFromFile (input);
+        final InputStream ais = $.select (AudioFileService.class).streamFromFile (input);
 
-        final Note n = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("piano1c.wav"), $.create (InputStreamToSoundService.class).fromInputStream (ais));
+        final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("piano1c.wav"), $.select (InputStreamToSoundService.class).fromInputStream (ais));
         new Slf4jObserver ().notify ("c' 1-line octave : " + n.getFrequency () + "Hz, should be around 261Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 261 - 10 && n.getFrequency () < 261 + 10);
     }
@@ -117,9 +117,9 @@ public class Sound2NoteTest extends SoundTransformTest {
         final URL fileURL = classLoader.getResource ("piano4f.wav");
         final File input = new File (fileURL.getFile ());
 
-        final InputStream ais = $.create (AudioFileService.class).streamFromFile (input);
+        final InputStream ais = $.select (AudioFileService.class).streamFromFile (input);
 
-        final Note n = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("piano4f.wav"), $.create (InputStreamToSoundService.class).fromInputStream (ais));
+        final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("piano4f.wav"), $.select (InputStreamToSoundService.class).fromInputStream (ais));
         new Slf4jObserver ().notify ("f' 4 : " + n.getFrequency () + "Hz, should be around 349Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 349 - 10 && n.getFrequency () < 349 + 10);
     }
@@ -134,7 +134,7 @@ public class Sound2NoteTest extends SoundTransformTest {
             signal [j] = (long) (Math.sin (j * 440 * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, new FormatInfo (2, samplerate), 1);
-        final Note n = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("Sample A4 (440 Hz) Sound"), new Sound [] { s });
+        final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("Sample A4 (440 Hz) Sound"), new Sound [] { s });
 
         new Slf4jObserver ().notify ("Sample A4 (440Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 440 - 10 && n.getFrequency () < 440 + 10);
@@ -154,7 +154,7 @@ public class Sound2NoteTest extends SoundTransformTest {
                 signal [j] = (long) (Math.sin (j * notes [i] * 2 * Math.PI / samplerate) * 32768.0);
             }
             final Sound s = new Sound (signal, new FormatInfo (2, samplerate), 1);
-            final Note n = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound"), new Sound [] { s });
+            final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound"), new Sound [] { s });
 
             new Slf4jObserver ().notify ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
             org.junit.Assert.assertTrue (n.getFrequency () > notes [i] - 10 && n.getFrequency () < notes [i] + 10);
@@ -165,7 +165,7 @@ public class Sound2NoteTest extends SoundTransformTest {
     @Test
     public void strangeFileName () throws SoundTransformException {
         final Range range = new Range ();
-        $.create (AddNoteService.class).addNote (range, new SimpleNoteInfo ("sftp://mywebsite.fr"));
+        $.select (AddNoteService.class).addNote (range, new SimpleNoteInfo ("sftp://mywebsite.fr"));
         org.junit.Assert.assertTrue (range.size () == 0);
     }
 }

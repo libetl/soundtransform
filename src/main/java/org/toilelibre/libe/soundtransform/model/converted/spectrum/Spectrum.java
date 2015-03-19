@@ -33,6 +33,6 @@ public class Spectrum<T> {
     @SuppressWarnings ("unchecked")
     @Override
     public String toString () {
-        return $.create (Spectrum2StringService.class).convert (this);
+        return $.select (SpectrumToStringService.class).convert (this);
     }
 }

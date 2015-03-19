@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum2CepstrumHelper;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 
 public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> {
@@ -15,7 +15,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     private int                              index;
     private int                              length;
     private static final int                 SHORT_SOUND_LENGTH = 9000;
-    private final Spectrum2CepstrumHelper<T> spectrum2CepstrumHelper;
+    private final SpectrumToCepstrumHelper<T> spectrum2CepstrumHelper;
     private final SpectrumHelper<T>          spectrumHelper;
 
     public CepstrumSoundTransformation () {
@@ -26,7 +26,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     public CepstrumSoundTransformation (final double step1) {
         super ();
         this.step = step1;
-        this.spectrum2CepstrumHelper = $.select (Spectrum2CepstrumHelper.class);
+        this.spectrum2CepstrumHelper = $.select (SpectrumToCepstrumHelper.class);
         this.spectrumHelper = $.select (SpectrumHelper.class);
     }
 

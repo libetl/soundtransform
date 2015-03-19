@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
-import org.toilelibre.libe.soundtransform.model.library.note.Pack2StringHelper;
+import org.toilelibre.libe.soundtransform.model.library.note.PackToStringHelper;
 import org.toilelibre.libe.soundtransform.model.library.note.SimpleNote;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.library.pack.Range;
@@ -16,7 +16,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
-class GsonPack2StringHelper implements Pack2StringHelper {
+class GsonPackToStringHelper implements PackToStringHelper {
 
     private JsonElement toJsonElement (final Note note) {
         if (note instanceof SimpleNote) {

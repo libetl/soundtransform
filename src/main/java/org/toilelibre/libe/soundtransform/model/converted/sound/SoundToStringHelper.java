@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
-public interface Sound2StringHelper {
+public interface SoundToStringHelper {
 
     public abstract String process (Sound input);
 

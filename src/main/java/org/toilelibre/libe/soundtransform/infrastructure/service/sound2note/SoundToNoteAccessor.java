@@ -4,7 +4,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.pack.PackAccess
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
 
-public abstract class Sound2NoteAccessor extends PackAccessor {
+public abstract class SoundToNoteAccessor extends PackAccessor {
 
     protected FrequencyHelper provideFrequencyHelper () {
         return new CallHPSFrequencyHelper ();

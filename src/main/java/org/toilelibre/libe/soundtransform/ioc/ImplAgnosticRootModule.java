@@ -1,11 +1,13 @@
 package org.toilelibre.libe.soundtransform.ioc;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound2StringHelper;
+import java.util.Map.Entry;
+
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
+import org.toilelibre.libe.soundtransform.model.converted.sound.SoundToStringHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum2CepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToStringHelper;
 import org.toilelibre.libe.soundtransform.model.freqs.AdjustFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.ChangeOctaveProcessor;
@@ -18,7 +20,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
-import org.toilelibre.libe.soundtransform.model.library.note.Pack2StringHelper;
+import org.toilelibre.libe.soundtransform.model.library.note.PackToStringHelper;
 import org.toilelibre.libe.soundtransform.model.library.pack.ContextLoader;
 import org.toilelibre.libe.soundtransform.model.library.pack.PackConfigParser;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
@@ -32,12 +34,12 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
         super.bind (AudioFormatParser.class).to (this.provideAudioFormatParser ());
         super.bind (ContextLoader.class).to (this.provideContextLoader ());
 
-        super.bind (Sound2StringHelper.class).to (this.provideSound2StringHelper ());
-        super.bind (Pack2StringHelper.class).to (this.providePack2StringHelper ());
+        super.bind (SoundToStringHelper.class).to (this.provideSound2StringHelper ());
+        super.bind (PackToStringHelper.class).to (this.providePack2StringHelper ());
         super.bind (SoundAppender.class).to (this.provideSoundAppender ());
         super.bind (SoundPitchAndTempoHelper.class).to (this.provideSoundPitchAndTempoHelper ());
         super.bind (FourierTransformHelper.class).to (this.provideFourierTransformHelper ());
-        super.bind (Spectrum2CepstrumHelper.class).to (this.provideSpectrum2CepstrumHelper ());
+        super.bind (SpectrumToCepstrumHelper.class).to (this.provideSpectrum2CepstrumHelper ());
         super.bind (SpectrumHelper.class).to (this.provideSpectrumHelper ());
         super.bind (SpectrumToStringHelper.class).to (this.provideSpectrumToStringHelper ());
         super.bind (FrameProcessor.class).to (this.provideFrameProcessor ());
@@ -50,6 +52,12 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
         super.bind (ReplaceFrequenciesProcessor.class).to (this.provideReplaceFrequenciesProcessor ());
         super.bind (CompressFrequenciesProcessor.class).to (this.provideCompressFrequenciesProcessor ());
 
+        for (Entry<Class<? extends Object>, Class<? extends Object>> serviceClassEntry : this.usedImpls.entrySet()){
+            @SuppressWarnings("unchecked")
+            TypedBinder<Object> objectTypedBinder = (TypedBinder<Object>)super.bind(serviceClassEntry.getKey());
+            objectTypedBinder.to (serviceClassEntry.getValue());
+        }
+        
         super.bind (Library.class).to (this.provideLibrary ());
 
     }

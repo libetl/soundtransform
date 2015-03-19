@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.EqualizerSoundTransformation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -16,7 +15,7 @@ public class EqualizerTest extends SoundTransformTest {
     public void test () {
         final long [] testarray = new long [] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
         final Sound testsound = new Sound (testarray, new FormatInfo (1, testarray.length), 1);
-        final EqualizerSoundTransformation est = $.create (EqualizerSoundTransformation.class, new double [] { 0, 4, 8 }, new double [] { 1, 1, 1 });
+        final EqualizerSoundTransformation est = new EqualizerSoundTransformation (new double [] { 0, 4, 8 }, new double [] { 1, 1, 1 });
         final Sound resultsound = est.transform (testsound);
         new Slf4jObserver ().notify (Arrays.toString (resultsound.getSamples ()));
     }

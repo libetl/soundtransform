@@ -77,6 +77,6 @@ public class Sound implements Cloneable {
 
     @Override
     public String toString () {
-        return $.create (SoundToStringService.class).convert (this);
+        return $.select (SoundToStringService.class).convert (this);
     }
 }

@@ -4,33 +4,14 @@ import java.io.File;
 import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 
-public class AudioFileService extends AbstractLogAware<AudioFileService> {
+public interface AudioFileService<T> extends LogAware<T> {
 
-    private final AudioFileHelper   audioFileHelper;
-    private final AudioFormatParser audioFormatParser;
+    public abstract InputStream streamFromFile(File file) throws SoundTransformException;
 
-    public AudioFileService (final AudioFileHelper helper1, final AudioFormatParser audioFormatParser1) {
-        this (helper1, audioFormatParser1, new Observer [0]);
-    }
+    public abstract InputStream streamFromRawStream(InputStream is, StreamInfo streamInfo) throws SoundTransformException;
 
-    public AudioFileService (final AudioFileHelper helper1, final AudioFormatParser audioFormatParser1, final Observer... observers1) {
-        this.audioFileHelper = helper1;
-        this.audioFormatParser = audioFormatParser1;
-        this.observers = observers1;
-    }
+    public abstract void fileFromStream(InputStream ais2, File fDest) throws SoundTransformException;
 
-    public InputStream streamFromFile (final File file) throws SoundTransformException {
-        return this.audioFileHelper.getAudioInputStream (file);
-    }
-
-    public InputStream streamFromRawStream (final InputStream is, final StreamInfo streamInfo) throws SoundTransformException {
-        return this.audioFileHelper.toStream (is, this.audioFormatParser.audioFormatfromStreamInfo (streamInfo));
-    }
-
-    public void fileFromStream (final InputStream ais2, final File fDest) throws SoundTransformException {
-        this.audioFileHelper.writeInputStream (ais2, fDest);
-    }
 }

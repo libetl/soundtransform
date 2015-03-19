@@ -16,7 +16,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
 import org.toilelibre.libe.soundtransform.model.inputstream.SoundToInputStreamService;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
-import org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService;
+import org.toilelibre.libe.soundtransform.model.library.note.SoundToNoteService;
 import org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo;
 
 public class PitchAndSpeedHelperTest extends SoundTransformTest {
@@ -27,10 +27,10 @@ public class PitchAndSpeedHelperTest extends SoundTransformTest {
         final URL fileURL = classLoader.getResource ("piano3e.wav");
         final File input = new File (fileURL.getFile ());
 
-        final InputStream ais = $.create (AudioFileService.class).streamFromFile (input);
+        final InputStream ais = $.select (AudioFileService.class).streamFromFile (input);
 
-        final InputStreamToSoundService is2Sound = $.create (InputStreamToSoundService.class);
-        final SoundToInputStreamService sound2Is = $.create (SoundToInputStreamService.class);
+        final InputStreamToSoundService<?> is2Sound = $.select (InputStreamToSoundService.class);
+        final SoundToInputStreamService<?> sound2Is = $.select (SoundToInputStreamService.class);
 
         final Sound [] e3 = is2Sound.fromInputStream (ais);
         final SoundPitchAndTempoHelper helper = $.select (SoundPitchAndTempoHelper.class);
@@ -41,8 +41,8 @@ public class PitchAndSpeedHelperTest extends SoundTransformTest {
         final InputStream ais2 = sound2Is.toStream (e4, $.select (AudioFormatParser.class).getStreamInfo (ais));
         final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        $.create (AudioFileService.class).fileFromStream (ais2, fDest);
-        final Note n = $.create (Sound2NoteService.class).convert (new SimpleNoteInfo ("e4"), e4);
+        $.select (AudioFileService.class).fileFromStream (ais2, fDest);
+        final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("e4"), e4);
         new Slf4jObserver ().notify ("e' 4 : " + n.getFrequency () + "Hz, should be around 658Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 658 - 10 && n.getFrequency () < 658 + 10);
     }

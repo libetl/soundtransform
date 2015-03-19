@@ -2,14 +2,11 @@ package org.toilelibre.libe.soundtransform.model.converted.sound;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogAware;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class CallTransformService extends AbstractLogAware<CallTransformService> {
+public interface CallTransformService<T> extends LogAware<T> {
 
     public enum CallTransformServiceEventCode implements EventCode {
 
@@ -33,32 +30,6 @@ public class CallTransformService extends AbstractLogAware<CallTransformService>
             return this.messageFormat;
         }
     }
+    public abstract Sound[] apply(Sound[] input, SoundTransformation... sts) throws SoundTransformException;
 
-    public CallTransformService () {
-    }
-
-    public CallTransformService (final Observer... observers) {
-        this.setObservers (observers);
-    }
-
-    public Sound [] apply (final Sound [] input, final SoundTransformation... sts) throws SoundTransformException {
-        Sound [] output = new Sound [input.length];
-        int transformNumber = 0;
-        for (final SoundTransformation st : sts) {
-            for (int i = 0 ; i < input.length ; i++) {
-                this.log (new LogEvent (CallTransformServiceEventCode.TRANSFORM_STARTING, transformNumber + 1, sts.length, st.getClass ().getSimpleName (), i + 1, input.length));
-                if (st instanceof LogAware) {
-                    ((LogAware<?>) st).setObservers (this.observers);
-                }
-                output [i] = st.transform (output [i] == null ? input [i] : output [i]);
-            }
-            transformNumber++;
-        }
-        if (sts.length == 0) {
-            output = input;
-        }
-        this.log (new LogEvent (CallTransformServiceEventCode.TRANSFORMS_DONE));
-        return output;
-
-    }
 }

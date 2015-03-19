@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
-import org.toilelibre.libe.soundtransform.model.library.note.Pack2StringHelper;
+import org.toilelibre.libe.soundtransform.model.library.note.PackToStringHelper;
 
 public class Range extends HashMap<Float, Note> {
 
@@ -25,6 +25,6 @@ public class Range extends HashMap<Float, Note> {
 
     @Override
     public String toString () {
-        return $.select (Pack2StringHelper.class).toString (this);
+        return $.select (PackToStringHelper.class).toString (this);
     }
 }

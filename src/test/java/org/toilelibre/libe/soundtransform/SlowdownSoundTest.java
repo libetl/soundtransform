@@ -21,17 +21,18 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class SlowdownSoundTest extends SoundTransformTest {
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testSlowdown () throws SoundTransformException {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("before.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
-        final InputStream is = $.create (AudioFileService.class).streamFromFile (input);
-        Sound [] sounds = $.create (InputStreamToSoundService.class, new Slf4jObserver (LogLevel.WARN)).fromInputStream (is);
-        sounds = $.create (CallTransformService.class, new Slf4jObserver (LogLevel.WARN)).apply (sounds, $.create (SlowdownSoundTransformation.class, 1024, 2.5f, 2048));
-        $.create (SoundToInputStreamService.class, new Slf4jObserver (LogLevel.WARN)).toStream (sounds, StreamInfo.from (sounds [0].getFormatInfo (), sounds));
-        $.create (AudioFileService.class).fileFromStream (is, output);
+        final InputStream is = $.select (AudioFileService.class).streamFromFile (input);
+        Sound [] sounds = ((InputStreamToSoundService<InputStreamToSoundService<?>>)$.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream (is);
+        sounds = ((CallTransformService<CallTransformService<?>>)$.select (CallTransformService.class)).setObservers(new Slf4jObserver (LogLevel.WARN)).apply (sounds, new SlowdownSoundTransformation (1024, 2.5f, 2048));
+        ((SoundToInputStreamService<SoundToInputStreamService<?>>)$.select (SoundToInputStreamService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).toStream (sounds, StreamInfo.from (sounds [0].getFormatInfo (), sounds));
+        $.select (AudioFileService.class).fileFromStream (is, output);
     }
 
     @Test (expected = SoundTransformException.class)
