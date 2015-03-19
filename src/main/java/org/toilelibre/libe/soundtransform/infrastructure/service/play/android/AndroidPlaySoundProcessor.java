@@ -51,7 +51,7 @@ class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundProcess
     }
 
     @Override
-    public Object play (final InputStream ais) throws PlaySoundException {
+    public Object play (final InputStream ais, StreamInfo streamInfo) throws PlaySoundException {
         StreamInfo si;
         try {
             si = $.select (AudioFormatParser.class).getStreamInfo (ais);

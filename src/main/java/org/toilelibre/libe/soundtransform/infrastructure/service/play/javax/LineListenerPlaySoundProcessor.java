@@ -12,6 +12,7 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
@@ -41,7 +42,7 @@ class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
     }
 
     @Override
-    public Object play (final InputStream ais) throws PlaySoundException {
+    public Object play (final InputStream ais, final StreamInfo streamInfo) throws PlaySoundException {
         try {
             final Clip clip = this.prepareClip (ais);
             clip.start ();

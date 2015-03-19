@@ -9,6 +9,8 @@ import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
+import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
 public class TestPlaySound extends SoundTransformTest {
@@ -20,8 +22,9 @@ public class TestPlaySound extends SoundTransformTest {
         final PlaySoundProcessor ps = $.select (PlaySoundProcessor.class);
         final AudioFileService<?> convertAudioFileService = $.select (AudioFileService.class);
         final InputStream ais = convertAudioFileService.streamFromFile (this.input);
+        final StreamInfo streamInfo = $.select(InputStreamToSoundService.class).getStreamInfo(ais);
         try {
-            ps.play (ais);
+            ps.play (ais, streamInfo);
         } catch (final java.lang.IllegalArgumentException iae) {
             if (!"No line matching interface Clip is supported.".equals (iae.getMessage ())) {
                 throw iae;
