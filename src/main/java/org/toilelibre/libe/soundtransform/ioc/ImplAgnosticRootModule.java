@@ -17,6 +17,7 @@ import org.toilelibre.libe.soundtransform.model.freqs.ReplaceFrequenciesProcesso
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
+import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToByteArrayHelper;
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
@@ -34,6 +35,7 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
         super.bind (AudioFormatParser.class).to (this.provideAudioFormatParser ());
         super.bind (ContextLoader.class).to (this.provideContextLoader ());
 
+        super.bind (InputStreamToByteArrayHelper.class).to (this.provideInputStreamToByteArrayHelper ());
         super.bind (SoundToStringHelper.class).to (this.provideSound2StringHelper ());
         super.bind (PackToStringHelper.class).to (this.providePack2StringHelper ());
         super.bind (SoundAppender.class).to (this.provideSoundAppender ());

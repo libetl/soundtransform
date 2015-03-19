@@ -8,12 +8,14 @@ import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 
 class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileService> implements AudioFileService<AbstractLogAware<DefaultAudioFileService>> {
 
-    private final AudioFileHelper   audioFileHelper;
-    private final AudioFormatParser audioFormatParser;
+    private final AudioFileHelper              audioFileHelper;
+    private final AudioFormatParser            audioFormatParser;
+    private final InputStreamToByteArrayHelper inputStreamToByteArrayHelper;
 
-    public DefaultAudioFileService (final AudioFileHelper helper1, final AudioFormatParser audioFormatParser1) {
+    public DefaultAudioFileService (final AudioFileHelper helper1, final AudioFormatParser audioFormatParser1, InputStreamToByteArrayHelper inputStreamToByteArrayHelper1) {
         this.audioFileHelper = helper1;
         this.audioFormatParser = audioFormatParser1;
+        this.inputStreamToByteArrayHelper = inputStreamToByteArrayHelper1;
     }
 
     /* (non-Javadoc)
@@ -29,7 +31,7 @@ class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileService> 
      */
     @Override
     public InputStream streamFromRawStream (final InputStream is, final StreamInfo streamInfo) throws SoundTransformException {
-        return this.audioFileHelper.toStream (is, this.audioFormatParser.audioFormatfromStreamInfo (streamInfo));
+        return this.audioFileHelper.toStream (this.inputStreamToByteArrayHelper.convertToByteArray (is), this.audioFormatParser.audioFormatfromStreamInfo (streamInfo));
     }
 
     /* (non-Javadoc)
