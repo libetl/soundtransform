@@ -8,7 +8,7 @@ import se.jbee.inject.DIRuntimeException;
 
 public class WrongPackageAccessorTest {
 
-    class TestAccessor extends RootModuleWithoutAccessor {
+    static class TestAccessor extends RootModuleWithoutAccessor {
 
         @Override
         protected void declare () {

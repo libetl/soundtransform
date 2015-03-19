@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class CorrectPackageAccessorTest {
 
-    class TestAccessor extends RootModuleWithoutAccessor {
+    static class TestAccessor extends RootModuleWithoutAccessor {
 
         @Override
         protected void declare () {

@@ -3,24 +3,7 @@ package org.toilelibre.libe.soundtransform.model.converted;
 import java.io.Serializable;
 import java.util.Locale;
 
-import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
-
-public class FormatInfo implements Cloneable, Serializable {
-    enum FormatInfoErrorCode implements ErrorCode {
-        CLONE_FAILED ("Clone operation on a format info object failed");
-
-        private String messageFormat;
-
-        FormatInfoErrorCode (final String mF) {
-            this.messageFormat = mF;
-        }
-
-        @Override
-        public String getMessageFormat () {
-            return this.messageFormat;
-        }
-
-    }
+public class FormatInfo implements Serializable {
 
     /**
      *
