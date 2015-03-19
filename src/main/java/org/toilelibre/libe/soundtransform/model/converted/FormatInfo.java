@@ -3,9 +3,7 @@ package org.toilelibre.libe.soundtransform.model.converted;
 import java.io.Serializable;
 import java.util.Locale;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
-import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 
 public class FormatInfo implements Cloneable, Serializable {
     enum FormatInfoErrorCode implements ErrorCode {
@@ -36,15 +34,6 @@ public class FormatInfo implements Cloneable, Serializable {
         super ();
         this.sampleSize = sampleSize;
         this.sampleRate = sampleRate;
-    }
-
-    @Override
-    public Sound clone () {
-        try {
-            return (Sound) super.clone ();
-        } catch (final CloneNotSupportedException e) {
-            throw new SoundTransformRuntimeException (FormatInfoErrorCode.CLONE_FAILED, e);
-        }
     }
 
     public float getSampleRate () {
