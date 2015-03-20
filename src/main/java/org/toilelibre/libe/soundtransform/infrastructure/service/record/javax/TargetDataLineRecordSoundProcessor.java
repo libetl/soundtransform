@@ -47,10 +47,12 @@ class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         AudioFormat audioFormat = (AudioFormat) audioFormat1;
 
         this.startRecording(audioFormat);
-        try {
-            stop.wait();
-        } catch (InterruptedException e) {
-            throw new SoundTransformException(TargetDataLineRecordSoundProcessorErrorCode.NOT_READY, e);
+        synchronized (stop){
+          try {
+              stop.wait();
+          } catch (InterruptedException e) {
+              throw new SoundTransformException(TargetDataLineRecordSoundProcessorErrorCode.NOT_READY, e);
+          }
         }
         this.stopRecording();
         return new ByteArrayInputStream(this.baos.toByteArray());

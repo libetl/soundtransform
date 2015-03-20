@@ -70,11 +70,13 @@ class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundPro
         }
         final StreamInfo streamInfo = (StreamInfo) streamInfo1;
         this.startRecording(streamInfo);
-        try {
-            stop.wait();
-        } catch (InterruptedException e) {
-            throw new SoundTransformException(AndroidRecordSoundProcessorErrorCode.NOT_READY, e);
-        }
+        synchronized (stop){
+            try {
+                stop.wait();
+            } catch (InterruptedException e) {
+                throw new SoundTransformException(AndroidRecordSoundProcessorErrorCode.NOT_READY, e);
+            }
+          }
         this.stopRecording();
         return new ByteArrayInputStream(this.baos.toByteArray());
     }
