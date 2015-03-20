@@ -25,11 +25,13 @@ import org.toilelibre.libe.soundtransform.model.library.note.PackToStringHelper;
 import org.toilelibre.libe.soundtransform.model.library.pack.ContextLoader;
 import org.toilelibre.libe.soundtransform.model.library.pack.PackConfigParser;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
+import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 
 abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
 
     @Override
     protected void declare () {
+        super.bind (RecordSoundProcessor.class).to (this.provideRecordSoundProcessor ());
         super.bind (PlaySoundProcessor.class).to (this.providePlaySoundProcessor ());
         super.bind (AudioFileHelper.class).to (this.provideAudioFileHelper ());
         super.bind (AudioFormatParser.class).to (this.provideAudioFormatParser ());
@@ -69,11 +71,14 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
     protected abstract AudioFormatParser provideAudioFormatParser ();
 
     protected abstract ContextLoader provideContextLoader ();
+    
+    protected abstract PlaySoundProcessor providePlaySoundProcessor ();
+    
+    protected abstract RecordSoundProcessor provideRecordSoundProcessor ();
 
     private Library provideLibrary () {
         return new Library ();
     }
 
-    protected abstract PlaySoundProcessor providePlaySoundProcessor ();
 
 }

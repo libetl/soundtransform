@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.toilelibre.libe.soundtransform.actions.notes.ImportAPackIntoTheLibrary;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
+import org.toilelibre.libe.soundtransform.actions.record.RecordSound;
 import org.toilelibre.libe.soundtransform.actions.transform.AppendSound;
 import org.toilelibre.libe.soundtransform.actions.transform.ApplySoundTransform;
 import org.toilelibre.libe.soundtransform.actions.transform.ChangeLoudestFreqs;
@@ -780,6 +781,22 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public FluentClientWithInputStream withRawInputStream (final InputStream is, final StreamInfo isInfo) throws SoundTransformException {
         this.cleanData ();
         this.audioInputStream = new InputStreamToAudioInputStream (this.getObservers ()).transformRawInputStream (is, isInfo);
+        return this;
+    }
+    /**
+     * Tells the client to work first to open the microphone and to record a sound
+     * The result will be of an InputStream type
+     *
+     * @param stop
+     *            the method notify must be called to stop the recording
+     * @return the client, with an input stream
+     * @throws SoundTransformException
+     *             the input stream cannot be read, or the conversion did not
+     *             work
+     */
+    public FluentClientWithInputStream withRecordedInputStream (Object stop) throws SoundTransformException {
+        this.cleanData ();
+        this.audioInputStream = new RecordSound ().record (stop);
         return this;
     }
 

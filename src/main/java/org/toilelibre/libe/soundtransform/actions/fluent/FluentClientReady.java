@@ -181,6 +181,20 @@ public interface FluentClientReady {
     FluentClientWithInputStream withRawInputStream (InputStream is, StreamInfo isInfo) throws SoundTransformException;
 
     /**
+     * Tells the client to work first to open the microphone and to record a sound
+     * The result will be of an InputStream type
+     *
+     * @param stop
+     *            the method notify must be called to stop the recording
+     * @return the client, with an input stream
+     * @throws SoundTransformException
+     *             the input stream cannot be read, or the conversion did not
+     *             work
+     */
+    FluentClientWithInputStream withRecordedInputStream (Object stop) throws SoundTransformException;
+
+    
+    /**
      * Tells the client to work first with a sound object
      *
      * @param sounds
