@@ -34,6 +34,7 @@ class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
 
     private ByteArrayOutputStream baos;
     private boolean isRecording = false;
+    private TargetDataLine line;
 
     public TargetDataLineRecordSoundProcessor() {
 
@@ -59,7 +60,6 @@ class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
     }
 
     private void startRecording(AudioFormat audioFormat) throws SoundTransformException {
-        final TargetDataLine line;
         // format is an AudioFormat object
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, audioFormat);
         this.baos = new ByteArrayOutputStream();
@@ -69,15 +69,15 @@ class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         }
         // Obtain and open the line.
         try {
-            line = (TargetDataLine) AudioSystem.getLine(info);
-            line.open(audioFormat);
+            this.line = (TargetDataLine) AudioSystem.getLine(info);
+            this.line.open(audioFormat);
         } catch (LineUnavailableException ex) {
             throw new SoundTransformException(TargetDataLineRecordSoundProcessorErrorCode.TARGET_LINE_UNAVAILABLE, ex);
         }
         this.isRecording = true;
 
         // Begin audio capture.
-        line.start();
+        this.line.start();
         new Thread() {
 
             public void run() {
@@ -91,12 +91,13 @@ class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
                 }
             }
         }.start();
-        line.close();
     }
 
     private void stopRecording() {
         // stops the recording activity
         this.isRecording = false;
+        this.line.stop ();
+        this.line.close();
     }
 
 }
