@@ -63,7 +63,7 @@ class DefaultRecordSoundService<T extends Serializable> extends AbstractLogAware
                 }
                 stop.notify();
             }
-        };
+        }.start();
         return this.processor.recordRawInputStream (this.audioFormatParser.audioFormatfromStreamInfo (streamInfo), stop);
     }
 
