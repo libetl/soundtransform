@@ -7,6 +7,6 @@ public abstract class JavaxRecordAccessor extends JavaxPlayAccessor {
 
     @Override
     protected RecordSoundProcessor provideRecordSoundProcessor () {
-        return new LineListenerRecordSoundProcessor ();
+        return new TargetDataLineRecordSoundProcessor ();
     }
 }

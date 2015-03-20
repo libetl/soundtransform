@@ -783,10 +783,14 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.audioInputStream = new InputStreamToAudioInputStream (this.getObservers ()).transformRawInputStream (is, isInfo);
         return this;
     }
+    
     /**
      * Tells the client to work first to open the microphone and to record a sound
      * The result will be of an InputStream type
+     * The frameLength in the streamInfo will be ignored
      *
+     * @param streamInfo
+     *            the future input stream info
      * @param stop
      *            the method notify must be called to stop the recording
      * @return the client, with an input stream
@@ -794,10 +798,26 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             the input stream cannot be read, or the conversion did not
      *             work
      */
-    public FluentClientWithInputStream withRecordedInputStream (Object stop) throws SoundTransformException {
+    public FluentClientWithInputStream withRecordedInputStream (final StreamInfo streamInfo, Object stop) throws SoundTransformException {
         this.cleanData ();
-        this.audioInputStream = new RecordSound ().record (stop);
-        return this;
+        return this.withRawInputStream (new RecordSound ().recordRawInputStream (streamInfo, stop), streamInfo);
+    }
+    
+    /**
+     * Tells the client to work first to open the microphone and to record a sound
+     * The result will be of an InputStream type
+     * The recording time will be the one passed in the streamInfo
+     *
+     * @param streamInfo
+     *            the future input stream info
+     * @return the client, with an input stream
+     * @throws SoundTransformException
+     *             the input stream cannot be read, or the conversion did not
+     *             work
+     */
+    public FluentClientWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException {
+        this.cleanData ();
+        return this.withRawInputStream (new RecordSound ().recordLimitedTimeRawInputStream (streamInfo), streamInfo);
     }
 
     @Override

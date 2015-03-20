@@ -191,7 +191,7 @@ public interface FluentClientReady {
      *             the input stream cannot be read, or the conversion did not
      *             work
      */
-    FluentClientWithInputStream withRecordedInputStream (Object stop) throws SoundTransformException;
+    FluentClientWithInputStream withRecordedInputStream (final StreamInfo streamInfo, Object stop) throws SoundTransformException;
 
     
     /**
