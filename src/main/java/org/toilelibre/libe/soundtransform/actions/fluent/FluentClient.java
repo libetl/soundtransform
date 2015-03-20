@@ -767,7 +767,24 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.freqs = freqs1.clone ();
         return this;
     }
-
+    
+    /**
+     * Tells the client to work first to open the microphone and to record a sound
+     * The result will be of an InputStream type
+     * The recording time will be the one passed in the streamInfo
+     *
+     * @param streamInfo
+     *            the future input stream info
+     * @return the client, with an input stream
+     * @throws SoundTransformException
+     *             the input stream cannot be read, or the conversion did not
+     *             work
+     */
+    public FluentClientWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException {
+        this.cleanData ();
+        return this.withRawInputStream (new RecordSound ().recordLimitedTimeRawInputStream (streamInfo), streamInfo);
+    }
+    
     @Override
     /**
      * Tells the client to work first with a byte array InputStream or any readable DataInputStream.
@@ -801,23 +818,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public FluentClientWithInputStream withRecordedInputStream (final StreamInfo streamInfo, Object stop) throws SoundTransformException {
         this.cleanData ();
         return this.withRawInputStream (new RecordSound ().recordRawInputStream (streamInfo, stop), streamInfo);
-    }
-    
-    /**
-     * Tells the client to work first to open the microphone and to record a sound
-     * The result will be of an InputStream type
-     * The recording time will be the one passed in the streamInfo
-     *
-     * @param streamInfo
-     *            the future input stream info
-     * @return the client, with an input stream
-     * @throws SoundTransformException
-     *             the input stream cannot be read, or the conversion did not
-     *             work
-     */
-    public FluentClientWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException {
-        this.cleanData ();
-        return this.withRawInputStream (new RecordSound ().recordLimitedTimeRawInputStream (streamInfo), streamInfo);
     }
 
     @Override
