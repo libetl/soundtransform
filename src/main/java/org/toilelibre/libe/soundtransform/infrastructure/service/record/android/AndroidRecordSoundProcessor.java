@@ -20,6 +20,7 @@ class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundPro
     public enum AndroidRecordSoundProcessorErrorCode implements ErrorCode {
 
         NOT_READY ("Not ready to record a sound"),
+        STREAM_INFO_NOT_SUPPORTED ("Stream Info not supported by Recorder"),
         STREAM_INFO_EXPECTED ("A stream info was expected");
 
         private final String messageFormat;
@@ -43,7 +44,7 @@ class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundPro
 
     private Thread recordingThread;
 
-    public AudioRecord findAudioRecorder(StreamInfo streamInfo) {
+    public AudioRecord findAudioRecorder(StreamInfo streamInfo) throws SoundTransformException {
         final int audioFormat = streamInfo.getSampleSize() == 1 ? AudioFormat.ENCODING_PCM_8BIT : AudioFormat.ENCODING_PCM_16BIT;
         final int channelConfig = streamInfo.getChannels() == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
         final int rate = (int) streamInfo.getSampleRate();
@@ -57,7 +58,9 @@ class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundPro
                 return recorder;
             }
         }
-        return null;
+
+        throw new SoundTransformException (AndroidRecordSoundProcessorErrorCode.STREAM_INFO_NOT_SUPPORTED, 
+                new UnsupportedOperationException(), streamInfo);
     }
 
     @Override
@@ -107,7 +110,7 @@ class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundPro
         }
     }
 
-    private void startRecording(StreamInfo streamInfo) {
+    private void startRecording(StreamInfo streamInfo) throws SoundTransformException {
 
         this.baos = new ByteArrayOutputStream(this.bufferSize);
         this.recorder = findAudioRecorder(streamInfo);
