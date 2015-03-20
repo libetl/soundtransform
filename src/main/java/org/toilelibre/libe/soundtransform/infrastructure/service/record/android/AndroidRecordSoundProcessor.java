@@ -9,6 +9,9 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.observer.EventCode;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 
 import android.media.AudioFormat;
@@ -17,6 +20,28 @@ import android.media.MediaRecorder.AudioSource;
 
 class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundProcessor> implements RecordSoundProcessor {
 
+    public enum AndroidRecordSoundProcessorEvent implements EventCode {
+
+        NOT_ABLE_TO_READ (LogLevel.ERROR, "Not able to read the recorded data");
+
+        private final String messageFormat;
+        private LogLevel logLevel;
+
+        AndroidRecordSoundProcessorEvent(final LogLevel ll, final String mF) {
+            this.messageFormat = mF;
+            this.logLevel = ll;
+        }
+
+        @Override
+        public String getMessageFormat() {
+            return this.messageFormat;
+        }
+
+        @Override
+        public LogLevel getLevel() {
+            return this.logLevel;
+        }
+    }
     public enum AndroidRecordSoundProcessorErrorCode implements ErrorCode {
 
         NOT_READY ("Not ready to record a sound"),
@@ -123,7 +148,7 @@ class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundPro
                 try {
                     AndroidRecordSoundProcessor.this.writeAudioDataToFile();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    AndroidRecordSoundProcessor.this.log (new LogEvent (AndroidRecordSoundProcessorEvent.NOT_ABLE_TO_READ));
                 }
             }
         }, "AudioRecorder Thread");
