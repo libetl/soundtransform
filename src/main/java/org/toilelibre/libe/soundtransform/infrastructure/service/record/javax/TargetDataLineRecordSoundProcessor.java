@@ -83,7 +83,7 @@ class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
             public void run() {
 
                 byte[] data = new byte[line.getBufferSize() / 5];
-                while (!TargetDataLineRecordSoundProcessor.this.isRecording) {
+                while (TargetDataLineRecordSoundProcessor.this.isRecording) {
                     // Read the next chunk of data from the TargetDataLine.
                     final int numBytesRead = line.read(data, 0, data.length);
                     // Save this chunk of data.

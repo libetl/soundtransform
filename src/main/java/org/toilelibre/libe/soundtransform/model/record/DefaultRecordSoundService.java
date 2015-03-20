@@ -52,7 +52,7 @@ class DefaultRecordSoundService<T extends Serializable> extends AbstractLogAware
 
     @Override
     public InputStream recordLimitedTimeRawInputStream (final StreamInfo streamInfo) throws SoundTransformException {
-        final long millis = (long) (streamInfo.getFrameLength() * streamInfo.getSampleRate() * MS_PER_SECOND);
+        final long millis = (long) (streamInfo.getFrameLength() / streamInfo.getSampleRate() * MS_PER_SECOND);
         final Object stop = new Object ();
         new Thread () {
             public void run (){
@@ -61,7 +61,9 @@ class DefaultRecordSoundService<T extends Serializable> extends AbstractLogAware
                 } catch (InterruptedException e) {
                     DefaultRecordSoundService.this.log(new LogEvent (DefaultRecordSoundServiceEventCode.NOT_ABLE, e));
                 }
-                stop.notify();
+                synchronized (stop){
+                    stop.notify();
+                }
             }
         }.start();
         return this.processor.recordRawInputStream (this.audioFormatParser.audioFormatfromStreamInfo (streamInfo), stop);
