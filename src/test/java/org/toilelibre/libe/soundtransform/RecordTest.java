@@ -11,7 +11,7 @@ public class RecordTest extends SoundTransformTest {
 
     @Test
     public void recordTwoSeconds () throws SoundTransformException{
-        Sound [] sounds = FluentClient.start().withLimitedTimeRecordedInputStream(new StreamInfo (2, 10000000, 2, 48000, false, true, null)).importToSound().stopWithSounds();
+        Sound [] sounds = FluentClient.start().withLimitedTimeRecordedInputStream(new StreamInfo (2, 100000, 2, 48000, false, true, null)).importToSound().stopWithSounds();
         sounds.hashCode ();
     }
 }
