@@ -34,7 +34,10 @@ public class RecordTest extends SoundTransformTest {
         try {
             sounds = FluentClient.start().withLimitedTimeRecordedInputStream (new StreamInfo (2, 100000, 2, 48000, false, true, null)).importToSound().stopWithSounds();
         } catch (SoundTransformException ste){
-            if ("AUDIO_FORMAT_NOT_SUPPORTED".equals (ste.getErrorCode().name())){
+            //"AUDIO_FORMAT_NOT_SUPPORTED" is thrown by oracle and
+            //"TARGET_LINE_UNAVAILABLE" is thrown by openjdk
+            if ("AUDIO_FORMAT_NOT_SUPPORTED".equals (ste.getErrorCode().name()) ||
+                    "TARGET_LINE_UNAVAILABLE".equals (ste.getErrorCode().name())){
                 //make the test succeeds because we are unable to test the record audio feature on a machine
                 //without microphone
                 return;
@@ -59,7 +62,10 @@ public class RecordTest extends SoundTransformTest {
                     sounds [0] = sounds2 [0];
                     sounds [1] = sounds2 [1];
                 } catch (SoundTransformException ste) {
-                    if ("AUDIO_FORMAT_NOT_SUPPORTED".equals (ste.getErrorCode().name())){
+                    //"AUDIO_FORMAT_NOT_SUPPORTED" is thrown by oracle and
+                    //"TARGET_LINE_UNAVAILABLE" is thrown by openjdk
+                    if ("AUDIO_FORMAT_NOT_SUPPORTED".equals (ste.getErrorCode().name()) ||
+                            "TARGET_LINE_UNAVAILABLE".equals (ste.getErrorCode().name())){
                         //make the test succeeds because we are unable to test the record audio feature on a machine
                         //without microphone
                         sounds [0] = new Sound (new long [1], new FormatInfo (2, 44100), 0);
