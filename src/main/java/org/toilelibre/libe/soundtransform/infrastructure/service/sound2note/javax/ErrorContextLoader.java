@@ -30,7 +30,7 @@ final class ErrorContextLoader implements ContextLoader {
 
     @Override
     public InputStream read (final Object context, final Class<?> rClass, final String idName) throws SoundTransformException {
-        throw new SoundTransformException (ErrorContextReaderErrorCode.STUB_IMPLEMENTATION, new UnsupportedOperationException ());
+        return this.read (context, rClass, 0);
     }
 
 }

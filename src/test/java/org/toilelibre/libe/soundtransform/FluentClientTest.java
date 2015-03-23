@@ -11,6 +11,7 @@ import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
+import org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
@@ -27,6 +28,16 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class FluentClientTest extends SoundTransformTest {
 
+    @Test
+    public void androidImportPackDoesNotWorkInJavaxMode () throws SoundTransformException {
+        try {
+          FluentClient.start ().withAPack ("default", new FluentClientAndroidTest.Context (), R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
+          Assert.fail ("android import should have failed");
+        } catch (SoundTransformException ste){
+            Assert.assertEquals (ste.getErrorCode ().name (), "STUB_IMPLEMENTATION");
+        }
+    }
+    
     @Test
     public void appendTest () throws SoundTransformException {
         final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().stopWithSounds ();
@@ -127,6 +138,17 @@ public class FluentClientTest extends SoundTransformTest {
     public void mixTest () throws SoundTransformException {
         final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("piano3e.wav").convertIntoSound ().stopWithSounds ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().mixWith (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+    }
+
+    @Test
+    public void appendDifferentFormatsImpossible () throws SoundTransformException {
+        try {
+          final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("piano3e.wav").convertIntoSound ().stopWithSounds ();
+          FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().append (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+          Assert.fail ("append should have failed");
+        }catch (SoundTransformException ste){
+            Assert.assertSame (ste.getErrorCode (), ModifySoundService.ModifySoundServiceErrorCode.DIFFERENT_NUMBER_OF_CHANNELS);
+        }
     }
 
     @Test
