@@ -12,34 +12,43 @@ public interface InputStreamToSoundService<T> extends LogAware<T> {
     public enum TransformInputStreamServiceEventCode implements EventCode {
         CONVERT_INTO_JAVA_OBJECT (LogLevel.INFO, "Converting input into java object"), CONVERT_DONE (LogLevel.INFO, "Done converting the input stream");
 
-        private String   messageFormat;
-        private LogLevel logLevel;
+        private final String   messageFormat;
+        private final LogLevel logLevel;
 
         TransformInputStreamServiceEventCode (final LogLevel ll, final String mF) {
             this.logLevel = ll;
             this.messageFormat = mF;
         }
 
-        /* (non-Javadoc)
-         * @see org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSound#getLevel()
+        /*
+         * (non-Javadoc)
+         *
+         * @see
+         * org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSound
+         * #getLevel()
          */
         @Override
         public LogLevel getLevel () {
             return this.logLevel;
         }
 
-        /* (non-Javadoc)
-         * @see org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSound#getMessageFormat()
+        /*
+         * (non-Javadoc)
+         *
+         * @see
+         * org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSound
+         * #getMessageFormat()
          */
         @Override
         public String getMessageFormat () {
             return this.messageFormat;
         }
     }
-    public abstract Sound[] fromInputStream(InputStream ais) throws SoundTransformException;
 
-    public abstract Sound[] fromInputStream(InputStream ais, StreamInfo isInfo) throws SoundTransformException;
+    public abstract Sound [] fromInputStream (InputStream ais) throws SoundTransformException;
 
-    public abstract StreamInfo getStreamInfo(InputStream ais) throws SoundTransformException;
+    public abstract Sound [] fromInputStream (InputStream ais, StreamInfo isInfo) throws SoundTransformException;
+
+    public abstract StreamInfo getStreamInfo (InputStream ais) throws SoundTransformException;
 
 }

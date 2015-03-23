@@ -25,7 +25,8 @@ final class DefaultAddNoteService extends AbstractLogAware<DefaultAddNoteService
     private final AudioFileHelper              audioFileHelper;
     private final AudioFormatParser            audioFormatParser;
 
-    public DefaultAddNoteService (final SoundToNoteService sound2NoteService1, final InputStreamToSoundService<InputStreamToSoundService<?>> inputStreamToSoundService1, final AudioFileService<?> convertAudioFileService1, final AudioFileHelper audioFileHelper1, final AudioFormatParser audioFormatParser1) {
+    public DefaultAddNoteService (final SoundToNoteService sound2NoteService1, final InputStreamToSoundService<InputStreamToSoundService<?>> inputStreamToSoundService1, final AudioFileService<?> convertAudioFileService1, final AudioFileHelper audioFileHelper1,
+            final AudioFormatParser audioFormatParser1) {
         this.sound2NoteService = sound2NoteService1;
         this.inputStreamToSoundService = inputStreamToSoundService1;
         this.convertAudioFileService = convertAudioFileService1;
@@ -33,8 +34,14 @@ final class DefaultAddNoteService extends AbstractLogAware<DefaultAddNoteService
         this.audioFormatParser = audioFormatParser1;
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.library.pack.addNoteService#addNote(org.toilelibre.libe.soundtransform.model.library.pack.Range, org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo, java.io.InputStream)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.library.pack.addNoteService#
+     * addNote(org.toilelibre.libe.soundtransform.model.library.pack.Range,
+     * org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo,
+     * java.io.InputStream)
      */
     @Override
     public void addNote (final Range range, final SimpleNoteInfo noteInfo, final InputStream is) throws SoundTransformException {
@@ -48,8 +55,13 @@ final class DefaultAddNoteService extends AbstractLogAware<DefaultAddNoteService
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.library.pack.addNoteService#addNote(org.toilelibre.libe.soundtransform.model.library.pack.Range, org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.library.pack.addNoteService#
+     * addNote(org.toilelibre.libe.soundtransform.model.library.pack.Range,
+     * org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo)
      */
     @Override
     public void addNote (final Range range, final SimpleNoteInfo noteInfo) throws SoundTransformException {

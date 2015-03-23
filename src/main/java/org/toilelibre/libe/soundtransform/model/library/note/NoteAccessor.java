@@ -4,8 +4,8 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamAccessor;
 
 public abstract class NoteAccessor extends InputStreamAccessor {
 
-    public NoteAccessor (){
+    public NoteAccessor () {
         super ();
-        this.usedImpls.put(SoundToNoteService.class, DefaultSoundToNoteService.class);
+        this.usedImpls.put (SoundToNoteService.class, DefaultSoundToNoteService.class);
     }
 }

@@ -5,18 +5,18 @@ import java.io.Serializable;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 
 public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> {
 
-    private final double                     step;
-    private int []                           loudestfreqs;
-    private int                              index;
-    private int                              length;
-    private static final int                 SHORT_SOUND_LENGTH = 9000;
+    private final double                      step;
+    private int []                            loudestfreqs;
+    private int                               index;
+    private int                               length;
+    private static final int                  SHORT_SOUND_LENGTH = 9000;
     private final SpectrumToCepstrumHelper<T> spectrum2CepstrumHelper;
-    private final SpectrumHelper<T>          spectrumHelper;
+    private final SpectrumHelper<T>           spectrumHelper;
 
     public CepstrumSoundTransformation () {
         this (100);

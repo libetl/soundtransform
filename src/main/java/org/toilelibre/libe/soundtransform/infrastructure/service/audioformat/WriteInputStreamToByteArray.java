@@ -11,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToByteArr
 final class WriteInputStreamToByteArray implements InputStreamToByteArrayHelper {
 
     private static final int ARBITRARY_ARRAY_LENGTH = 16384;
-    
+
     public enum WriteInputStreamToByteArrayErrorCode implements ErrorCode {
 
         ERROR_WHILE_READING_STREAM ("System error while reading stream");
@@ -27,10 +27,12 @@ final class WriteInputStreamToByteArray implements InputStreamToByteArrayHelper 
             return this.messageFormat;
         }
     }
+
     public WriteInputStreamToByteArray () {
 
     }
 
+    @Override
     public byte [] convertToByteArray (final InputStream is) throws SoundTransformException {
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream ();
 
@@ -42,8 +44,8 @@ final class WriteInputStreamToByteArray implements InputStreamToByteArrayHelper 
             }
 
             buffer.flush ();
-        }catch (IOException exception){
-            throw new SoundTransformException(WriteInputStreamToByteArrayErrorCode.ERROR_WHILE_READING_STREAM, exception);
+        } catch (final IOException exception) {
+            throw new SoundTransformException (WriteInputStreamToByteArrayErrorCode.ERROR_WHILE_READING_STREAM, exception);
         }
 
         return buffer.toByteArray ();

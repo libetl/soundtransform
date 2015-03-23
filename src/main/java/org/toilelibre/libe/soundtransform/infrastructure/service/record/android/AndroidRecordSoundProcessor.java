@@ -19,102 +19,102 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
 
     public enum AndroidRecordSoundProcessorEvent implements EventCode {
 
-        NOT_ABLE_TO_READ(LogLevel.ERROR, "Not able to read the recorded data");
+        NOT_ABLE_TO_READ (LogLevel.ERROR, "Not able to read the recorded data");
 
         private final String messageFormat;
-        private LogLevel logLevel;
+        private final LogLevel     logLevel;
 
-        AndroidRecordSoundProcessorEvent(final LogLevel ll, final String mF) {
+        AndroidRecordSoundProcessorEvent (final LogLevel ll, final String mF) {
             this.messageFormat = mF;
             this.logLevel = ll;
         }
 
         @Override
-        public String getMessageFormat() {
+        public String getMessageFormat () {
             return this.messageFormat;
         }
 
         @Override
-        public LogLevel getLevel() {
+        public LogLevel getLevel () {
             return this.logLevel;
         }
     }
 
     public enum AndroidRecordSoundProcessorErrorCode implements ErrorCode {
 
-        NOT_READY("Not ready to record a sound"), STREAM_INFO_NOT_SUPPORTED("Stream Info not supported by Recorder"), STREAM_INFO_EXPECTED("A stream info was expected");
+        NOT_READY ("Not ready to record a sound"), STREAM_INFO_NOT_SUPPORTED ("Stream Info not supported by Recorder"), STREAM_INFO_EXPECTED ("A stream info was expected");
 
         private final String messageFormat;
 
-        AndroidRecordSoundProcessorErrorCode(final String mF) {
+        AndroidRecordSoundProcessorErrorCode (final String mF) {
             this.messageFormat = mF;
         }
 
         @Override
-        public String getMessageFormat() {
+        public String getMessageFormat () {
             return this.messageFormat;
         }
     }
 
-    private int bufferSize;
-    private AudioRecord recorder;
+    private int                   bufferSize;
+    private AudioRecord           recorder;
 
     private AndroidRecorderThread recordingThread;
 
-    public AudioRecord findAudioRecorder(StreamInfo streamInfo) throws SoundTransformException {
-        final int audioFormat = streamInfo.getSampleSize() == 1 ? AudioFormat.ENCODING_PCM_8BIT : AudioFormat.ENCODING_PCM_16BIT;
-        final int channelConfig = streamInfo.getChannels() == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
-        final int rate = (int) streamInfo.getSampleRate();
-        this.bufferSize = AudioRecord.getMinBufferSize(rate, channelConfig, audioFormat);
-        final AudioRecord candidateRecorder = new AudioRecord(AudioSource.DEFAULT, rate, channelConfig, audioFormat, this.bufferSize);
+    public AudioRecord findAudioRecorder (final StreamInfo streamInfo) throws SoundTransformException {
+        final int audioFormat = streamInfo.getSampleSize () == 1 ? AudioFormat.ENCODING_PCM_8BIT : AudioFormat.ENCODING_PCM_16BIT;
+        final int channelConfig = streamInfo.getChannels () == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
+        final int rate = (int) streamInfo.getSampleRate ();
+        this.bufferSize = AudioRecord.getMinBufferSize (rate, channelConfig, audioFormat);
+        final AudioRecord candidateRecorder = new AudioRecord (AudioSource.DEFAULT, rate, channelConfig, audioFormat, this.bufferSize);
 
-        if (this.bufferSize != AudioRecord.ERROR_BAD_VALUE && candidateRecorder.getState() == AudioRecord.STATE_INITIALIZED) {
+        if (this.bufferSize != AudioRecord.ERROR_BAD_VALUE && candidateRecorder.getState () == AudioRecord.STATE_INITIALIZED) {
             // check if we can instantiate and have a success
             return candidateRecorder;
         }
 
-        throw new SoundTransformException(AndroidRecordSoundProcessorErrorCode.STREAM_INFO_NOT_SUPPORTED, new UnsupportedOperationException(), streamInfo);
+        throw new SoundTransformException (AndroidRecordSoundProcessorErrorCode.STREAM_INFO_NOT_SUPPORTED, new UnsupportedOperationException (), streamInfo);
     }
 
     @Override
-    public InputStream recordRawInputStream(final Object streamInfo1, final Object stop) throws SoundTransformException {
+    public InputStream recordRawInputStream (final Object streamInfo1, final Object stop) throws SoundTransformException {
         if (!(streamInfo1 instanceof StreamInfo)) {
-            throw new SoundTransformException(AndroidRecordSoundProcessorErrorCode.STREAM_INFO_EXPECTED, new IllegalArgumentException());
+            throw new SoundTransformException (AndroidRecordSoundProcessorErrorCode.STREAM_INFO_EXPECTED, new IllegalArgumentException ());
         }
         final StreamInfo streamInfo = (StreamInfo) streamInfo1;
-        this.startRecording(streamInfo);
-        this.waitForStop(stop);
-        this.stopRecording();
-        return new ByteArrayInputStream(this.recordingThread.getOutputStream ().toByteArray());
+        this.startRecording (streamInfo);
+        this.waitForStop (stop);
+        this.stopRecording ();
+        return new ByteArrayInputStream (this.recordingThread.getOutputStream ().toByteArray ());
     }
 
-    private void waitForStop(Object stop) throws SoundTransformException {
+    private void waitForStop (final Object stop) throws SoundTransformException {
         boolean stopped = false;
         synchronized (stop) {
             try {
                 while (!stopped) {
-                    stop.wait();
+                    stop.wait ();
                     stopped = true;
                 }
-            } catch (InterruptedException e) {
-                throw new SoundTransformException(AndroidRecordSoundProcessorErrorCode.NOT_READY, e);
+            } catch (final InterruptedException e) {
+                throw new SoundTransformException (AndroidRecordSoundProcessorErrorCode.NOT_READY, e);
             }
         }
     }
 
-    private void startRecording(StreamInfo streamInfo) throws SoundTransformException {
+    private void startRecording (final StreamInfo streamInfo) throws SoundTransformException {
 
-        this.recorder = findAudioRecorder(streamInfo);
-        this.recordingThread = new AndroidRecorderThread(this.recorder, this.bufferSize);
-        this.recorder.startRecording();
-        this.recordingThread.start();
+        this.recorder = this.findAudioRecorder (streamInfo);
+        this.recordingThread = new AndroidRecorderThread (this.recorder, this.bufferSize);
+        this.recorder.startRecording ();
+        this.recordingThread.start ();
     }
 
-    private void stopRecording() {
+    private void stopRecording () {
         // stops the recording activity
         if (this.recorder != null) {
-            this.recorder.stop();
-            this.recorder.release();
+            this.recorder.stop ();
+            this.recorder.release ();
         }
     }
 }

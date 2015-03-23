@@ -20,56 +20,82 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
         this.compressFrequenciesProcessor = compressFrequenciesProcessor1;
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#adjust(float[])
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#adjust
+     * (float[])
      */
     @Override
     public float [] adjust (final float [] freqs) {
         return this.adjustFrequenciesProcessor.adjust (freqs);
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#compress(float[], float)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#compress
+     * (float[], float)
      */
     @Override
     public float [] compress (final float [] freqs, final float factor) {
         return this.compressFrequenciesProcessor.compress (freqs, factor);
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#filterRange(float[], float, float)
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#
+     * filterRange(float[], float, float)
      */
     @Override
     public float [] filterRange (final float [] freqs, final float low, final float high) {
         return this.filterFrequenciesProcessor.filter (freqs, low, high);
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#insertPart(float[], float[], int)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#insertPart
+     * (float[], float[], int)
      */
     @Override
     public float [] insertPart (final float [] freqs, final float [] subFreqs, final int start) {
         return this.replaceFrequenciesProcessor.insertPart (freqs, subFreqs, start);
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#octaveDown(float[])
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#octaveDown
+     * (float[])
      */
     @Override
     public float [] octaveDown (final float [] freqs) {
         return this.changeOctaveProcessor.multFreqs (freqs, DefaultLoudestFreqsService.HALF);
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#octaveUp(float[])
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#octaveUp
+     * (float[])
      */
     @Override
     public float [] octaveUp (final float [] freqs) {
         return this.changeOctaveProcessor.multFreqs (freqs, DefaultLoudestFreqsService.TWICE);
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#replacePart(float[], float[], int)
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#
+     * replacePart(float[], float[], int)
      */
     @Override
     public float [] replacePart (final float [] freqs, final float [] subFreqs, final int start) {

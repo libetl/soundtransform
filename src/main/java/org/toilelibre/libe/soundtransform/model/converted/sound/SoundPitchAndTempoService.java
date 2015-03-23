@@ -4,6 +4,6 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public interface SoundPitchAndTempoService {
 
-    public abstract Sound callTransform(Sound sound, float percent, float lengthInSeconds) throws SoundTransformException;
+    public abstract Sound callTransform (Sound sound, float percent, float lengthInSeconds) throws SoundTransformException;
 
 }

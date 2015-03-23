@@ -767,11 +767,11 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.freqs = freqs1.clone ();
         return this;
     }
-    
+
     /**
-     * Tells the client to work first to open the microphone and to record a sound
-     * The result will be of an InputStream type
-     * The recording time will be the one passed in the streamInfo
+     * Tells the client to work first to open the microphone and to record a
+     * sound The result will be of an InputStream type The recording time will
+     * be the one passed in the streamInfo
      *
      * @param streamInfo
      *            the future input stream info
@@ -780,11 +780,12 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             the input stream cannot be read, or the conversion did not
      *             work
      */
+    @Override
     public FluentClientWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException {
         this.cleanData ();
         return this.withRawInputStream (new RecordSound ().recordLimitedTimeRawInputStream (streamInfo), streamInfo);
     }
-    
+
     @Override
     /**
      * Tells the client to work first with a byte array InputStream or any readable DataInputStream.
@@ -800,11 +801,11 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.audioInputStream = new InputStreamToAudioInputStream (this.getObservers ()).transformRawInputStream (is, isInfo);
         return this;
     }
-    
+
     /**
-     * Tells the client to work first to open the microphone and to record a sound
-     * The result will be of an InputStream type
-     * The frameLength in the streamInfo will be ignored
+     * Tells the client to work first to open the microphone and to record a
+     * sound The result will be of an InputStream type The frameLength in the
+     * streamInfo will be ignored
      *
      * @param streamInfo
      *            the future input stream info
@@ -815,7 +816,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             the input stream cannot be read, or the conversion did not
      *             work
      */
-    public FluentClientWithInputStream withRecordedInputStream (final StreamInfo streamInfo, Object stop) throws SoundTransformException {
+    @Override
+    public FluentClientWithInputStream withRecordedInputStream (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
         this.cleanData ();
         return this.withRawInputStream (new RecordSound ().recordRawInputStream (streamInfo, stop), streamInfo);
     }

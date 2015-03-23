@@ -18,8 +18,14 @@ final class DefaultSoundToNoteService implements SoundToNoteService {
         this.frequencyHelper = helper2;
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService#convert(org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo, org.toilelibre.libe.soundtransform.model.converted.sound.Sound[])
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService
+     * #convert
+     * (org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo,
+     * org.toilelibre.libe.soundtransform.model.converted.sound.Sound[])
      */
     @Override
     public Note convert (final SimpleNoteInfo noteInfo, final Sound [] channels) throws SoundTransformException {

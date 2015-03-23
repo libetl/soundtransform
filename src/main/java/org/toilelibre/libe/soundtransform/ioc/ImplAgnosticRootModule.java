@@ -56,12 +56,13 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
         super.bind (ReplaceFrequenciesProcessor.class).to (this.provideReplaceFrequenciesProcessor ());
         super.bind (CompressFrequenciesProcessor.class).to (this.provideCompressFrequenciesProcessor ());
 
-        for (Entry<Class<? extends Object>, Class<? extends Object>> serviceClassEntry : this.usedImpls.entrySet()){
-            @SuppressWarnings("unchecked")
-            TypedBinder<Object> objectTypedBinder = (TypedBinder<Object>)super.bind(serviceClassEntry.getKey());
-            objectTypedBinder.to (serviceClassEntry.getValue());
+        for (final Entry<Class<? extends Object>, Class<? extends Object>> serviceClassEntry : this.usedImpls.entrySet ()) {
+            @SuppressWarnings ("unchecked")
+            final
+            TypedBinder<Object> objectTypedBinder = (TypedBinder<Object>) super.bind (serviceClassEntry.getKey ());
+            objectTypedBinder.to (serviceClassEntry.getValue ());
         }
-        
+
         super.bind (Library.class).to (this.provideLibrary ());
 
     }
@@ -71,14 +72,13 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
     protected abstract AudioFormatParser provideAudioFormatParser ();
 
     protected abstract ContextLoader provideContextLoader ();
-    
+
     protected abstract PlaySoundProcessor providePlaySoundProcessor ();
-    
+
     protected abstract RecordSoundProcessor provideRecordSoundProcessor ();
 
     private Library provideLibrary () {
         return new Library ();
     }
-
 
 }

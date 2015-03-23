@@ -21,7 +21,8 @@ final class ComputedOrganNote extends FormulaNote {
         return (float) (Math.sin (j * ComputedOrganNote.ONCE * frequency * ComputedOrganNote.TWO_PI / sampleRate + ComputedOrganNote.NO_GAP) * ComputedOrganNote.FIRST_COEFF
                 + Math.sin (j * ComputedOrganNote.TWICE * frequency * ComputedOrganNote.TWO_PI / sampleRate + ComputedOrganNote.ONE_FOURTH_GAP) * ComputedOrganNote.SECOND_COEFF
                 + Math.sin (j * ComputedOrganNote.FOUR_TIMES * frequency * ComputedOrganNote.TWO_PI / sampleRate + ComputedOrganNote.HALF_GAP) * ComputedOrganNote.THIRD_COEFF + Math.sin (j * ComputedOrganNote.EIGHT_TIMES * frequency * ComputedOrganNote.TWO_PI / sampleRate
-                        + ComputedOrganNote.THREE_FOURTH_GAP) * ComputedOrganNote.FOURTH_COEFF);
+                        + ComputedOrganNote.THREE_FOURTH_GAP)
+                        * ComputedOrganNote.FOURTH_COEFF);
 
     }
 

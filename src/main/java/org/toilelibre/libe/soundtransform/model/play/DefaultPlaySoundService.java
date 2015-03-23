@@ -18,7 +18,7 @@ final class DefaultPlaySoundService<T extends Serializable> implements PlaySound
     private final InputStreamToSoundService<?> is2SoundService;
     private final FourierTransformHelper<T>    fourierTransformHelper;
 
-    public DefaultPlaySoundService (final PlaySoundProcessor processor1, final SoundToInputStreamService<?> sound2IsService1,  final InputStreamToSoundService<?> is2SoundService1,final FourierTransformHelper<T> fourierTransformHelper1) {
+    public DefaultPlaySoundService (final PlaySoundProcessor processor1, final SoundToInputStreamService<?> sound2IsService1, final InputStreamToSoundService<?> is2SoundService1, final FourierTransformHelper<T> fourierTransformHelper1) {
         this.processor = processor1;
         this.sound2IsService = sound2IsService1;
         this.is2SoundService = is2SoundService1;
@@ -26,16 +26,24 @@ final class DefaultPlaySoundService<T extends Serializable> implements PlaySound
 
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.play.PlaySoundService#play(java.io.InputStream)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.play.PlaySoundService#play(java
+     * .io.InputStream)
      */
     @Override
     public Object play (final InputStream is) throws SoundTransformException {
-        return this.processor.play (is, this.is2SoundService.getStreamInfo(is));
+        return this.processor.play (is, this.is2SoundService.getStreamInfo (is));
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.play.PlaySoundService#play(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[])
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.play.PlaySoundService#play(org
+     * .toilelibre.libe.soundtransform.model.converted.sound.Sound[])
      */
     @Override
     public Object play (final Sound [] channels) throws SoundTransformException {
@@ -45,11 +53,15 @@ final class DefaultPlaySoundService<T extends Serializable> implements PlaySound
         }
 
         final InputStream ais = this.sound2IsService.toStream (channels, StreamInfo.from (channels [0].getFormatInfo (), channels));
-        return this.processor.play (ais, this.is2SoundService.getStreamInfo(ais));
+        return this.processor.play (ais, this.is2SoundService.getStreamInfo (ais));
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.play.PlaySoundService#play(org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.play.PlaySoundService#play(org
+     * .toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum)
      */
     @Override
     public Object play (final Spectrum<T> spectrum) throws SoundTransformException {

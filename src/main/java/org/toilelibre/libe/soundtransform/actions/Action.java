@@ -27,15 +27,15 @@ public abstract class Action {
     protected final AudioFileService<?>          audioFile;
 
     public Action (final Observer... observers) {
-        this.callTransform = (CallTransformService<?>) $.select (CallTransformService.class).setObservers(observers);
-        this.audioFile = (AudioFileService<?>) $.select (AudioFileService.class).setObservers(observers);
+        this.callTransform = (CallTransformService<?>) $.select (CallTransformService.class).setObservers (observers);
+        this.audioFile = (AudioFileService<?>) $.select (AudioFileService.class).setObservers (observers);
         this.playSound = $.select (PlaySoundService.class);
         this.recordSound = $.select (RecordSoundService.class);
-        this.importPack = (ImportPackService<?>) $.select (ImportPackService.class).setObservers(observers);
-        this.is2Sound = (InputStreamToSoundService<?>) $.select (InputStreamToSoundService.class).setObservers(observers);
+        this.importPack = (ImportPackService<?>) $.select (ImportPackService.class).setObservers (observers);
+        this.is2Sound = (InputStreamToSoundService<?>) $.select (InputStreamToSoundService.class).setObservers (observers);
         this.loudestFreqs = $.select (LoudestFreqsService.class);
         this.modifySound = $.select (ModifySoundService.class);
-        this.sound2is = (SoundToInputStreamService<?>) $.select (SoundToInputStreamService.class).setObservers(observers);
+        this.sound2is = (SoundToInputStreamService<?>) $.select (SoundToInputStreamService.class).setObservers (observers);
         this.library = $.select (Library.class);
     }
 }

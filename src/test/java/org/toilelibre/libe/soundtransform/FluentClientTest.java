@@ -31,13 +31,13 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void androidImportPackDoesNotWorkInJavaxMode () throws SoundTransformException {
         try {
-          FluentClient.start ().withAPack ("default", new FluentClientAndroidTest.Context (), R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
-          Assert.fail ("android import should have failed");
-        } catch (SoundTransformException ste){
+            FluentClient.start ().withAPack ("default", new FluentClientAndroidTest.Context (), R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
+            Assert.fail ("android import should have failed");
+        } catch (final SoundTransformException ste) {
             Assert.assertEquals (ste.getErrorCode ().name (), "STUB_IMPLEMENTATION");
         }
     }
-    
+
     @Test
     public void appendTest () throws SoundTransformException {
         final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().stopWithSounds ();
@@ -143,10 +143,10 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void appendDifferentFormatsImpossible () throws SoundTransformException {
         try {
-          final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("piano3e.wav").convertIntoSound ().stopWithSounds ();
-          FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().append (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
-          Assert.fail ("append should have failed");
-        }catch (SoundTransformException ste){
+            final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("piano3e.wav").convertIntoSound ().stopWithSounds ();
+            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().append (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+            Assert.fail ("append should have failed");
+        } catch (final SoundTransformException ste) {
             Assert.assertSame (ste.getErrorCode (), ModifySoundService.ModifySoundServiceErrorCode.DIFFERENT_NUMBER_OF_CHANNELS);
         }
     }

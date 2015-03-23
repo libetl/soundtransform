@@ -161,11 +161,11 @@ public interface FluentClientReady {
      * @return the client, with a loudest frequencies float array
      */
     FluentClientWithFreqs withFreqs (float [] freqs);
-    
+
     /**
-     * Tells the client to work first to open the microphone and to record a sound
-     * The result will be of an InputStream type
-     * The recording time will be the one passed in the streamInfo
+     * Tells the client to work first to open the microphone and to record a
+     * sound The result will be of an InputStream type The recording time will
+     * be the one passed in the streamInfo
      *
      * @param streamInfo
      *            the future input stream info
@@ -175,7 +175,7 @@ public interface FluentClientReady {
      *             work
      */
     FluentClientWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException;
-    
+
     /**
      * Tells the client to work first with a byte array InputStream or any
      * readable DataInputStream. It will be read and transformed into an
@@ -195,8 +195,8 @@ public interface FluentClientReady {
     FluentClientWithInputStream withRawInputStream (InputStream is, StreamInfo isInfo) throws SoundTransformException;
 
     /**
-     * Tells the client to work first to open the microphone and to record a sound
-     * The result will be of an InputStream type
+     * Tells the client to work first to open the microphone and to record a
+     * sound The result will be of an InputStream type
      *
      * @param stop
      *            the method notify must be called to stop the recording
@@ -207,7 +207,6 @@ public interface FluentClientReady {
      */
     FluentClientWithInputStream withRecordedInputStream (final StreamInfo streamInfo, Object stop) throws SoundTransformException;
 
-    
     /**
      * Tells the client to work first with a sound object
      *

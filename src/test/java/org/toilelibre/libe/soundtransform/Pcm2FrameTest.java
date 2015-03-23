@@ -27,7 +27,7 @@ public class Pcm2FrameTest extends SoundTransformTest {
             data [i] = (byte) rdg.nextInt (Byte.MIN_VALUE, Byte.MAX_VALUE);
         }
         new Slf4jObserver ().notify (Arrays.toString (data));
-        final InputStreamToSoundService<?> ts = (InputStreamToSoundService<?>) $.select (InputStreamToSoundService.class).setObservers(new Slf4jObserver (LogLevel.WARN));
+        final InputStreamToSoundService<?> ts = (InputStreamToSoundService<?>) $.select (InputStreamToSoundService.class).setObservers (new Slf4jObserver (LogLevel.WARN));
         final InputStream bais = new ByteArrayInputStream (data);
         final StreamInfo streamInfo = new StreamInfo (2, data.length / 4, 2, 44100.0f, false, true, null);
         final Sound [] channels = ts.fromInputStream (bais, streamInfo);

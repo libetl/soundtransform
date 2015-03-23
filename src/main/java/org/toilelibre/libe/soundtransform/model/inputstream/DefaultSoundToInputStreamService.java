@@ -13,18 +13,24 @@ final class DefaultSoundToInputStreamService extends AbstractLogAware<DefaultSou
     private final AudioFormatParser audioFormatParser;
 
     public DefaultSoundToInputStreamService (final FrameProcessor<?> processor1, final AudioFileHelper audioFileHelper1, final AudioFormatParser audioFormatParser1) {
-        this.frameProcessor = (FrameProcessor<?>) processor1.setObservers (observers);
+        this.frameProcessor = (FrameProcessor<?>) processor1.setObservers (this.observers);
         this.audioFileHelper = audioFileHelper1;
         this.audioFormatParser = audioFormatParser1;
-        this.setObservers (observers);
+        this.setObservers (this.observers);
     }
 
     private byte [] soundToByteArray (final Sound [] channels, final StreamInfo streamInfo) {
         return this.frameProcessor.framesToByteArray (channels, streamInfo);
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.inputstream.SoundToInputStreamService#toStream(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[], org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo)
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.toilelibre.libe.soundtransform.model.inputstream.
+     * SoundToInputStreamService
+     * #toStream(org.toilelibre.libe.soundtransform.model
+     * .converted.sound.Sound[],
+     * org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo)
      */
     @Override
     public InputStream toStream (final Sound [] channels, final StreamInfo streamInfo) throws SoundTransformException {

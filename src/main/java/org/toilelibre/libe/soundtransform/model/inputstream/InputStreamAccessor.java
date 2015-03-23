@@ -4,10 +4,10 @@ import org.toilelibre.libe.soundtransform.model.freqs.FreqsAccessor;
 
 public abstract class InputStreamAccessor extends FreqsAccessor {
 
-    public InputStreamAccessor (){
+    public InputStreamAccessor () {
         super ();
-        this.usedImpls.put(AudioFileService.class, DefaultAudioFileService.class);
-        this.usedImpls.put(InputStreamToSoundService.class, DefaultInputStreamToSoundService.class);
-        this.usedImpls.put(SoundToInputStreamService.class, DefaultSoundToInputStreamService.class);
+        this.usedImpls.put (AudioFileService.class, DefaultAudioFileService.class);
+        this.usedImpls.put (InputStreamToSoundService.class, DefaultInputStreamToSoundService.class);
+        this.usedImpls.put (SoundToInputStreamService.class, DefaultSoundToInputStreamService.class);
     }
 }

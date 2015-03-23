@@ -4,8 +4,8 @@ import org.toilelibre.libe.soundtransform.model.library.pack.PackAccessor;
 
 public abstract class PlayAccessor extends PackAccessor {
 
-    public PlayAccessor (){
+    public PlayAccessor () {
         super ();
-        this.usedImpls.put(PlaySoundService.class, DefaultPlaySoundService.class);
+        this.usedImpls.put (PlaySoundService.class, DefaultPlaySoundService.class);
     }
 }

@@ -22,7 +22,7 @@ public class TestPlaySound extends SoundTransformTest {
         final PlaySoundProcessor ps = $.select (PlaySoundProcessor.class);
         final AudioFileService<?> convertAudioFileService = $.select (AudioFileService.class);
         final InputStream ais = convertAudioFileService.streamFromFile (this.input);
-        final StreamInfo streamInfo = $.select(InputStreamToSoundService.class).getStreamInfo(ais);
+        final StreamInfo streamInfo = $.select (InputStreamToSoundService.class).getStreamInfo (ais);
         try {
             ps.play (ais, streamInfo);
         } catch (final java.lang.IllegalArgumentException iae) {

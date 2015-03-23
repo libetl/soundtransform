@@ -74,8 +74,8 @@ public class SimpleNote implements Note {
 
     private float getRatio (final Sound [] subsound) {
         final float lengthOfSubsound = 1.0f * subsound [0].getSamplesLength () / subsound [0].getSampleRate ();
-        final float lengthOfSound = 1.0f * this.attack [0].getSamplesLength () / this.attack [0].getSampleRate () + 1.0f * this.decay [0].getSamplesLength () / this.decay [0].getSampleRate () + 1.0f * this.sustain [0].getSamplesLength () / this.sustain [0].getSampleRate ()
-                + 1.0f * this.release [0].getSamplesLength () / this.release [0].getSampleRate ();
+        final float lengthOfSound = 1.0f * this.attack [0].getSamplesLength () / this.attack [0].getSampleRate () + 1.0f * this.decay [0].getSamplesLength () / this.decay [0].getSampleRate () + 1.0f * this.sustain [0].getSamplesLength () / this.sustain [0].getSampleRate () + 1.0f
+                * this.release [0].getSamplesLength () / this.release [0].getSampleRate ();
         return lengthOfSubsound * 1.0f / lengthOfSound;
     }
 

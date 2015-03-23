@@ -42,14 +42,18 @@ public class ShapeTest extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("piano5g.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-        @SuppressWarnings("unchecked")
-        final Sound [] sounds = $.select (CallTransformService.class).apply (((InputStreamToSoundService<InputStreamToSoundService<?>>)$.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.select (AudioFileService.class).streamFromFile (input)), new ShapeSoundTransformation ("default", "chord_piano"));
+        @SuppressWarnings ("unchecked")
+        final Sound [] sounds = $.select (CallTransformService.class)
+        .apply (((InputStreamToSoundService<InputStreamToSoundService<?>>) $.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.select (AudioFileService.class).streamFromFile (input)),
+                new ShapeSoundTransformation ("default", "chord_piano"));
 
         final InputStream finalInputStream = $.select (SoundToInputStreamService.class).toStream (sounds, StreamInfo.from (sounds [0].getFormatInfo (), sounds));
         $.select (AudioFileService.class).fileFromStream (finalInputStream, output);
 
-        @SuppressWarnings("unchecked")
-        final float frequency = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("output chord_note"), ((InputStreamToSoundService<InputStreamToSoundService<?>>)$.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.select (AudioFileService.class).streamFromFile (output))).getFrequency ();
+        @SuppressWarnings ("unchecked")
+        final float frequency = $.select (SoundToNoteService.class)
+        .convert (new SimpleNoteInfo ("output chord_note"), ((InputStreamToSoundService<InputStreamToSoundService<?>>) $.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.select (AudioFileService.class).streamFromFile (output)))
+        .getFrequency ();
         new Slf4jObserver ().notify ("Output chord note should be around 387Hz, but is " + frequency + "Hz");
 
     }
@@ -62,14 +66,18 @@ public class ShapeTest extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("piano3e.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-        @SuppressWarnings("unchecked")
-        final Sound [] sounds = $.select (CallTransformService.class).apply (((InputStreamToSoundService<InputStreamToSoundService<?>>)$.select (InputStreamToSoundService.class)).setObservers(new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.select (AudioFileService.class).streamFromFile (input)), new ShapeSoundTransformation ("default", "chord_piano"));
+        @SuppressWarnings ("unchecked")
+        final Sound [] sounds = $.select (CallTransformService.class)
+        .apply (((InputStreamToSoundService<InputStreamToSoundService<?>>) $.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.select (AudioFileService.class).streamFromFile (input)),
+                new ShapeSoundTransformation ("default", "chord_piano"));
 
         final InputStream finalInputStream = $.select (SoundToInputStreamService.class).toStream (sounds, StreamInfo.from (sounds [0].getFormatInfo (), sounds));
         $.select (AudioFileService.class).fileFromStream (finalInputStream, output);
 
-        @SuppressWarnings("unchecked")
-        final float frequency = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("output chord_note"),((InputStreamToSoundService<InputStreamToSoundService<?>>)$.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.select (AudioFileService.class).streamFromFile (output))).getFrequency ();
+        @SuppressWarnings ("unchecked")
+        final float frequency = $.select (SoundToNoteService.class)
+        .convert (new SimpleNoteInfo ("output chord_note"), ((InputStreamToSoundService<InputStreamToSoundService<?>>) $.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.select (AudioFileService.class).streamFromFile (output)))
+        .getFrequency ();
         new Slf4jObserver ().notify ("Output chord note should be around 332Hz, but is " + frequency + "Hz");
 
     }

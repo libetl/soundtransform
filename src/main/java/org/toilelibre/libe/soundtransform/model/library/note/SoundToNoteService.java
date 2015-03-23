@@ -6,6 +6,6 @@ import org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo;
 
 public interface SoundToNoteService {
 
-    public abstract Note convert(SimpleNoteInfo noteInfo, Sound[] channels) throws SoundTransformException;
+    public abstract Note convert (SimpleNoteInfo noteInfo, Sound [] channels) throws SoundTransformException;
 
 }

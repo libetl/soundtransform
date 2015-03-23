@@ -4,8 +4,8 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumAcces
 
 public abstract class FreqsAccessor extends SpectrumAccessor {
 
-    public FreqsAccessor (){
+    public FreqsAccessor () {
         super ();
-        this.usedImpls.put(LoudestFreqsService.class, DefaultLoudestFreqsService.class);
+        this.usedImpls.put (LoudestFreqsService.class, DefaultLoudestFreqsService.class);
     }
 }

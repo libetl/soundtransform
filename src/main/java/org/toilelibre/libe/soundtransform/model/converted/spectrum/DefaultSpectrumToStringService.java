@@ -8,8 +8,13 @@ final class DefaultSpectrumToStringService<T> implements SpectrumToStringService
         this.spectrumHelper = helper1;
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum2StringHelper#convert(org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum)
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.toilelibre.libe.soundtransform.model.converted.spectrum.
+     * Spectrum2StringHelper
+     * #convert(org.toilelibre.libe.soundtransform.model.converted
+     * .spectrum.Spectrum)
      */
     @Override
     public String convert (final Spectrum<T> spectrum) {

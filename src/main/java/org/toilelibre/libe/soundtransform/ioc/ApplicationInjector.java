@@ -26,10 +26,8 @@ public class ApplicationInjector {
 
     }
 
-
     private static <T> T getBean (final Class<T> type) {
         return ApplicationInjector.injector.resolve (Dependency.<T> dependency (type));
     }
-
 
 }

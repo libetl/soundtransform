@@ -8,10 +8,10 @@ import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 
 public interface AudioFileService<T> extends LogAware<T> {
 
-    public abstract InputStream streamFromFile(File file) throws SoundTransformException;
+    public abstract InputStream streamFromFile (File file) throws SoundTransformException;
 
-    public abstract InputStream streamFromRawStream(InputStream is, StreamInfo streamInfo) throws SoundTransformException;
+    public abstract InputStream streamFromRawStream (InputStream is, StreamInfo streamInfo) throws SoundTransformException;
 
-    public abstract void fileFromStream(InputStream ais2, File fDest) throws SoundTransformException;
+    public abstract void fileFromStream (InputStream ais2, File fDest) throws SoundTransformException;
 
 }

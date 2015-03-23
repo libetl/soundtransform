@@ -6,37 +6,38 @@ import javax.sound.sampled.TargetDataLine;
 
 final class TargetDataLineReaderThread extends Thread {
     /**
-     * 
+     *
      */
-    private TargetDataLine dataLine;
-    private ByteArrayOutputStream baos;
-    private boolean isRecording = false;
-    private static final int FIVE = 5;
+    private final TargetDataLine        dataLine;
+    private final ByteArrayOutputStream baos;
+    private boolean               isRecording = false;
+    private static final int      FIVE        = 5;
 
     /**
      * @param dataLine1
      */
-    TargetDataLineReaderThread (TargetDataLine dataLine1) {
+    TargetDataLineReaderThread (final TargetDataLine dataLine1) {
         this.dataLine = dataLine1;
         this.baos = new ByteArrayOutputStream ();
     }
 
-    public void stopRecording (){
+    public void stopRecording () {
         this.isRecording = false;
     }
-    
-    public void run() {
+
+    @Override
+    public void run () {
         this.isRecording = true;
-        byte[] data = new byte[this.dataLine.getBufferSize() / TargetDataLineReaderThread.FIVE];
+        final byte [] data = new byte [this.dataLine.getBufferSize () / TargetDataLineReaderThread.FIVE];
         while (this.isRecording) {
             // Read the next chunk of data from the TargetDataLine.
-            final int numBytesRead = this.dataLine.read(data, 0, data.length);
+            final int numBytesRead = this.dataLine.read (data, 0, data.length);
             // Save this chunk of data.
-            this.baos.write(data, 0, numBytesRead);
+            this.baos.write (data, 0, numBytesRead);
         }
     }
 
-    public ByteArrayOutputStream getOutputStream() {
+    public ByteArrayOutputStream getOutputStream () {
         return this.baos;
     }
 }

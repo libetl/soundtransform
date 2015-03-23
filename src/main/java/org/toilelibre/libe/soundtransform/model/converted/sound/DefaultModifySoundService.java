@@ -11,8 +11,13 @@ final class DefaultModifySoundService implements ModifySoundService {
         this.soundAppender = soundAppender1;
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService#append(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[], org.toilelibre.libe.soundtransform.model.converted.sound.Sound[])
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService
+     * #append(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[],
+     * org.toilelibre.libe.soundtransform.model.converted.sound.Sound[])
      */
     @Override
     public Sound [] append (final Sound [] sounds1, final Sound [] sounds2) throws SoundTransformException {
@@ -27,8 +32,14 @@ final class DefaultModifySoundService implements ModifySoundService {
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService#changeFormat(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[], org.toilelibre.libe.soundtransform.model.converted.FormatInfo)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService
+     * #
+     * changeFormat(org.toilelibre.libe.soundtransform.model.converted.sound.Sound
+     * [], org.toilelibre.libe.soundtransform.model.converted.FormatInfo)
      */
     @Override
     public Sound [] changeFormat (final Sound [] input, final FormatInfo formatInfo) {

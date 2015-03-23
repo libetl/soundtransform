@@ -10,8 +10,13 @@ final class DefaultSoundPitchAndTempoService implements SoundPitchAndTempoServic
         this.helper = helper1;
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoService#callTransform(org.toilelibre.libe.soundtransform.model.converted.sound.Sound, float, float)
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.toilelibre.libe.soundtransform.model.converted.sound.
+     * SoundPitchAndTempoService
+     * #callTransform(org.toilelibre.libe.soundtransform
+     * .model.converted.sound.Sound, float, float)
      */
     @Override
     public Sound callTransform (final Sound sound, final float percent, final float lengthInSeconds) throws SoundTransformException {

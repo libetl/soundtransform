@@ -6,6 +6,6 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public interface InputStreamToByteArrayHelper {
 
-    byte[] convertToByteArray (InputStream is) throws SoundTransformException;
+    byte [] convertToByteArray (InputStream is) throws SoundTransformException;
 
 }

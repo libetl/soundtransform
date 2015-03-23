@@ -21,7 +21,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public class SlowdownSoundTest extends SoundTransformTest {
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     @Test
     public void testSlowdown () throws SoundTransformException {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
@@ -29,9 +29,9 @@ public class SlowdownSoundTest extends SoundTransformTest {
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
 
         final InputStream is = $.select (AudioFileService.class).streamFromFile (input);
-        Sound [] sounds = ((InputStreamToSoundService<InputStreamToSoundService<?>>)$.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream (is);
-        sounds = ((CallTransformService<CallTransformService<?>>)$.select (CallTransformService.class)).setObservers(new Slf4jObserver (LogLevel.WARN)).apply (sounds, new SlowdownSoundTransformation (1024, 2.5f, 2048));
-        ((SoundToInputStreamService<SoundToInputStreamService<?>>)$.select (SoundToInputStreamService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).toStream (sounds, StreamInfo.from (sounds [0].getFormatInfo (), sounds));
+        Sound [] sounds = ((InputStreamToSoundService<InputStreamToSoundService<?>>) $.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream (is);
+        sounds = ((CallTransformService<CallTransformService<?>>) $.select (CallTransformService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).apply (sounds, new SlowdownSoundTransformation (1024, 2.5f, 2048));
+        ((SoundToInputStreamService<SoundToInputStreamService<?>>) $.select (SoundToInputStreamService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).toStream (sounds, StreamInfo.from (sounds [0].getFormatInfo (), sounds));
         $.select (AudioFileService.class).fileFromStream (is, output);
     }
 

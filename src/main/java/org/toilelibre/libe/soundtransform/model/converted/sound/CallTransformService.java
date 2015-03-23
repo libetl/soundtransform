@@ -30,6 +30,7 @@ public interface CallTransformService<T> extends LogAware<T> {
             return this.messageFormat;
         }
     }
-    public abstract Sound[] apply(Sound[] input, SoundTransformation... sts) throws SoundTransformException;
+
+    public abstract Sound [] apply (Sound [] input, SoundTransformation... sts) throws SoundTransformException;
 
 }

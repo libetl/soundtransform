@@ -10,25 +10,31 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 final class DefaultInputStreamToSoundService extends AbstractLogAware<DefaultInputStreamToSoundService> implements InputStreamToSoundService<AbstractLogAware<DefaultInputStreamToSoundService>> {
 
-
     private final FrameProcessor<?> frameProcessor;
     private final AudioFormatParser audioFormatParser;
 
     public DefaultInputStreamToSoundService (final FrameProcessor<?> processor1, final AudioFormatParser parser1) {
-        this.frameProcessor = (FrameProcessor<?>) processor1.setObservers (observers);
+        this.frameProcessor = (FrameProcessor<?>) processor1.setObservers (this.observers);
         this.audioFormatParser = parser1;
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService#fromInputStream(java.io.InputStream)
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.toilelibre.libe.soundtransform.model.inputstream.
+     * InputStreamToSoundService#fromInputStream(java.io.InputStream)
      */
     @Override
     public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {
         return this.fromInputStream (ais, this.audioFormatParser.getStreamInfo (ais));
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService#fromInputStream(java.io.InputStream, org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo)
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.toilelibre.libe.soundtransform.model.inputstream.
+     * InputStreamToSoundService#fromInputStream(java.io.InputStream,
+     * org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo)
      */
     @Override
     public Sound [] fromInputStream (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
@@ -38,8 +44,11 @@ final class DefaultInputStreamToSoundService extends AbstractLogAware<DefaultInp
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService#getStreamInfo(java.io.InputStream)
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.toilelibre.libe.soundtransform.model.inputstream.
+     * InputStreamToSoundService#getStreamInfo(java.io.InputStream)
      */
     @Override
     public StreamInfo getStreamInfo (final InputStream ais) throws SoundTransformException {

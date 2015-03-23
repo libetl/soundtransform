@@ -127,7 +127,7 @@ final class JavazoomAudioFileHelper implements AudioFileHelper {
         final ByteArrayInputStream bais = new ByteArrayInputStream (byteArray);
         return new AudioInputStream (bais, audioFormat, byteArray.length / audioFormat.getFrameSize ());
     }
-    
+
     @Override
     public void writeInputStream (final InputStream ais, final File fDest) throws SoundTransformException {
         if (!(ais instanceof AudioInputStream)) {

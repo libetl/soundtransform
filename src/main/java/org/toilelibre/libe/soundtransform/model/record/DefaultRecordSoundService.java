@@ -17,18 +17,19 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
 
         private final String messageFormat;
 
-        DefaultRecordSoundServiceErrorCode(final String mF) {
+        DefaultRecordSoundServiceErrorCode (final String mF) {
             this.messageFormat = mF;
         }
 
         @Override
-        public String getMessageFormat() {
+        public String getMessageFormat () {
             return this.messageFormat;
         }
     }
-    private static final float MS_PER_SECOND = 1000.0f;
+
+    private static final float         MS_PER_SECOND = 1000.0f;
     private final RecordSoundProcessor processor;
-    private final AudioFormatParser audioFormatParser;
+    private final AudioFormatParser    audioFormatParser;
 
     public DefaultRecordSoundService (final RecordSoundProcessor processor1, final AudioFormatParser audioFormatParser1) {
         this.processor = processor1;
@@ -37,26 +38,27 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
     }
 
     @Override
-    public InputStream recordRawInputStream (StreamInfo streamInfo, Object stop) throws SoundTransformException {
+    public InputStream recordRawInputStream (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
         return this.processor.recordRawInputStream (this.audioFormatParser.audioFormatfromStreamInfo (streamInfo), stop);
     }
 
     @Override
     public InputStream recordLimitedTimeRawInputStream (final StreamInfo streamInfo) throws SoundTransformException {
-        final long millis = (long) (streamInfo.getFrameLength() / streamInfo.getSampleRate() * MS_PER_SECOND);
+        final long millis = (long) (streamInfo.getFrameLength () / streamInfo.getSampleRate () * DefaultRecordSoundService.MS_PER_SECOND);
         final Object stop = new Object ();
         new Thread () {
-            public void run (){
+            @Override
+            public void run () {
                 try {
-                    Thread.sleep(millis);
-                } catch (InterruptedException e) {
-                    throw new SoundTransformRuntimeException(DefaultRecordSoundServiceErrorCode.NOT_ABLE, e);
+                    Thread.sleep (millis);
+                } catch (final InterruptedException e) {
+                    throw new SoundTransformRuntimeException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e);
                 }
-                synchronized (stop){
-                    stop.notify();
+                synchronized (stop) {
+                    stop.notify ();
                 }
             }
-        }.start();
+        }.start ();
         return this.processor.recordRawInputStream (this.audioFormatParser.audioFormatfromStreamInfo (streamInfo), stop);
     }
 

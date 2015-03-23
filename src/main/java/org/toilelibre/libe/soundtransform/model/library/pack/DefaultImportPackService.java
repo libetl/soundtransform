@@ -56,11 +56,11 @@ final class DefaultImportPackService extends AbstractLogAware<DefaultImportPackS
         }
     }
 
-    private static final String    DEFAULT_CHARSET_NAME = "UTF-8";
+    private static final String     DEFAULT_CHARSET_NAME = "UTF-8";
 
-    private final AddNoteService<?>  addNoteService;
-    private final PackConfigParser packConfigParser;
-    private final ContextLoader    contextLoader;
+    private final AddNoteService<?> addNoteService;
+    private final PackConfigParser  packConfigParser;
+    private final ContextLoader     contextLoader;
 
     public DefaultImportPackService (final AddNoteService<? extends AddNoteService<?>> addNoteService1, final PackConfigParser packConfigParser1, final ContextLoader contextLoader1) {
         this.addNoteService = addNoteService1;
@@ -87,24 +87,39 @@ final class DefaultImportPackService extends AbstractLogAware<DefaultImportPackS
         return this.fileNotes (list, title, instrument);
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService#getAPack(org.toilelibre.libe.soundtransform.model.library.Library, java.lang.String)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService
+     * #getAPack(org.toilelibre.libe.soundtransform.model.library.Library,
+     * java.lang.String)
      */
     @Override
     public Pack getAPack (final Library library, final String title) {
         return library.getPack (title);
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService#importPack(org.toilelibre.libe.soundtransform.model.library.Library, java.lang.String, java.io.InputStream)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService
+     * #importPack(org.toilelibre.libe.soundtransform.model.library.Library,
+     * java.lang.String, java.io.InputStream)
      */
     @Override
     public void importPack (final Library library, final String title, final InputStream inputStream) throws SoundTransformException {
         this.importPack (library, title, null, null, this.readInputStream (inputStream));
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService#importPack(org.toilelibre.libe.soundtransform.model.library.Library, java.lang.String, java.lang.Object, java.lang.Class, int)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService
+     * #importPack(org.toilelibre.libe.soundtransform.model.library.Library,
+     * java.lang.String, java.lang.Object, java.lang.Class, int)
      */
     @Override
     public void importPack (final Library library, final String title, final Object context, final Class<?> rClass, final int packJsonId) throws SoundTransformException {
@@ -119,8 +134,13 @@ final class DefaultImportPackService extends AbstractLogAware<DefaultImportPackS
         this.log (new LogEvent (ImportPackServiceEventCode.FINISHED_IMPORT, title));
     }
 
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService#importPack(org.toilelibre.libe.soundtransform.model.library.Library, java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService
+     * #importPack(org.toilelibre.libe.soundtransform.model.library.Library,
+     * java.lang.String, java.lang.String)
      */
     @Override
     public void importPack (final Library library, final String title, final String jsonContent) throws SoundTransformException {

@@ -8,12 +8,17 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
 final class DefaultCallTransformService extends AbstractLogAware<DefaultCallTransformService> implements CallTransformService<AbstractLogAware<DefaultCallTransformService>> {
 
-
     public DefaultCallTransformService () {
     }
-    
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.model.converted.sound.CallTransformService#apply(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[], org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation)
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.toilelibre.libe.soundtransform.model.converted.sound.CallTransformService
+     * #apply(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[],
+     * org.toilelibre.libe.soundtransform.model.converted.sound.transform.
+     * SoundTransformation)
      */
     @Override
     public Sound [] apply (final Sound [] input, final SoundTransformation... sts) throws SoundTransformException {
