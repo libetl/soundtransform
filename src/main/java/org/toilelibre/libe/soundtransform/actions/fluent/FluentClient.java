@@ -887,9 +887,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException The file could not be written
      */
     public FluentClientWithFile writeToFile (final File file1) throws SoundTransformException {
-        if (this.audioInputStream != null) {
-            new ExportAFile (this.getObservers ()).writeFile (this.audioInputStream, file1);
+        if (this.audioInputStream == null) {
+            throw new SoundTransformException (FluentClientErrorCode.NOTHING_TO_WRITE, new NullPointerException ());
         }
+        new ExportAFile (this.getObservers ()).writeFile (this.audioInputStream, file1);
         this.cleanData ();
         this.file = file1;
         return this;
