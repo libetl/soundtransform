@@ -66,14 +66,11 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         final int channelConfig = streamInfo.getChannels() == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
         final int rate = (int) streamInfo.getSampleRate();
         this.bufferSize = AudioRecord.getMinBufferSize(rate, channelConfig, audioFormat);
-        final AudioRecord recorder = new AudioRecord(AudioSource.DEFAULT, rate, channelConfig, audioFormat, this.bufferSize);
+        final AudioRecord candidateRecorder = new AudioRecord(AudioSource.DEFAULT, rate, channelConfig, audioFormat, this.bufferSize);
 
-        if (this.bufferSize != AudioRecord.ERROR_BAD_VALUE) {
+        if (this.bufferSize != AudioRecord.ERROR_BAD_VALUE && candidateRecorder.getState() == AudioRecord.STATE_INITIALIZED) {
             // check if we can instantiate and have a success
-
-            if (recorder.getState() == AudioRecord.STATE_INITIALIZED) {
-                return recorder;
-            }
+            return candidateRecorder;
         }
 
         throw new SoundTransformException(AndroidRecordSoundProcessorErrorCode.STREAM_INFO_NOT_SUPPORTED, new UnsupportedOperationException(), streamInfo);

@@ -11,6 +11,7 @@ final class TargetDataLineReaderThread extends Thread {
     private TargetDataLine dataLine;
     private ByteArrayOutputStream baos;
     private boolean isRecording = false;
+    private static final int FIVE = 5;
 
     /**
      * @param dataLine1
@@ -26,7 +27,7 @@ final class TargetDataLineReaderThread extends Thread {
     
     public void run() {
         this.isRecording = true;
-        byte[] data = new byte[this.dataLine.getBufferSize() / 5];
+        byte[] data = new byte[this.dataLine.getBufferSize() / TargetDataLineReaderThread.FIVE];
         while (this.isRecording) {
             // Read the next chunk of data from the TargetDataLine.
             final int numBytesRead = this.dataLine.read(data, 0, data.length);
