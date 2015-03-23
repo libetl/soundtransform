@@ -135,6 +135,15 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
+    public void loopWithLessThan1ValueDoesNotWork () throws SoundTransformException {
+        try {
+            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().loop (0).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        }catch (SoundTransformException ste){
+            Assert.assertEquals (ste.getErrorCode ().name (), "NOT_POSITIVE_VALUE");
+        }
+    }
+
+    @Test
     public void mixTest () throws SoundTransformException {
         final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("piano3e.wav").convertIntoSound ().stopWithSounds ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().mixWith (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
