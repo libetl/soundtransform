@@ -12,7 +12,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 public interface FrameProcessor<T> extends LogAware<T> {
 
     public enum FrameProcessorErrorCode implements ErrorCode {
-        WRONG_TYPE ("incorrect stream type"), COULD_NOT_READ_STREAM ("Could not read stream"), COULD_NOT_CLOSE_STREAM ("Could not close stream");
+        COULD_NOT_READ_STREAM ("Could not read stream"), COULD_NOT_CLOSE_STREAM ("Could not close stream");
 
         private final String messageFormat;
 

@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 public interface AudioFormatParser {
     public enum AudioFormatParserErrorCode implements ErrorCode {
 
-        READ_ERROR ("Could not parse the format of the stream");
+        WRONG_TYPE ("incorrect stream type"), READ_ERROR ("Could not parse the format of the stream");
 
         private final String messageFormat;
 
@@ -24,7 +24,7 @@ public interface AudioFormatParser {
 
     public abstract Object audioFormatfromStreamInfo (StreamInfo info);
 
-    public abstract StreamInfo fromAudioFormat (Object audioFormat1, long l);
+    public abstract StreamInfo fromAudioFormat (Object audioFormat1, long l) throws SoundTransformException;
 
     public abstract StreamInfo getStreamInfo (InputStream ais) throws SoundTransformException;
 }
