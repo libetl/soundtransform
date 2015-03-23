@@ -34,4 +34,4 @@ jdk:
  - openjdk6
  - oraclejdk8
 
-install: travis_wait mvn install
+install: travis_wait mvn org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN
