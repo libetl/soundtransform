@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.library.pack.PackConfigParser;
 
 import com.google.gson.Gson;
 
-class GsonPackConfigParser implements PackConfigParser {
+final class GsonPackConfigParser implements PackConfigParser {
 
     @Override
     public Map<String, List<Map<String, Object>>> parse (final String input) {

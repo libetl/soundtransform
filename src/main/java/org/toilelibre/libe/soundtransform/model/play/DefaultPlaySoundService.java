@@ -11,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundSe
 import org.toilelibre.libe.soundtransform.model.inputstream.SoundToInputStreamService;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-class DefaultPlaySoundService<T extends Serializable> implements PlaySoundService<T> {
+final class DefaultPlaySoundService<T extends Serializable> implements PlaySoundService<T> {
 
     private final PlaySoundProcessor           processor;
     private final SoundToInputStreamService<?> sound2IsService;

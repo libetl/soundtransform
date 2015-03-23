@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform.model.converted.sound;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-class DefaultModifySoundService implements ModifySoundService {
+final class DefaultModifySoundService implements ModifySoundService {
 
     private final SoundAppender soundAppender;
 

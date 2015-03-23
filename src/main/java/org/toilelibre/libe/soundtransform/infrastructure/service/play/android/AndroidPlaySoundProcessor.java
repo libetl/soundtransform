@@ -20,7 +20,7 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 
-class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundProcessor> implements PlaySoundProcessor {
+final class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundProcessor> implements PlaySoundProcessor {
 
     public enum AndroidPlaySoundProcessorEventCode implements EventCode {
         READ_BYTEARRAY_SIZE (LogLevel.PARANOIAC, "Byte array size read : %1d");

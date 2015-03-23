@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo;
 
-class DefaultSoundToNoteService implements SoundToNoteService {
+final class DefaultSoundToNoteService implements SoundToNoteService {
 
     private final ADSRHelper      adsrHelper;
 

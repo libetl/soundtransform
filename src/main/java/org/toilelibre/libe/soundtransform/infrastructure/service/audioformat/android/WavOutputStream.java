@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-class WavOutputStream extends FileOutputStream {
+final class WavOutputStream extends FileOutputStream {
 
     private static final int INTEGER_NUMBER_OF_BYTES = Integer.SIZE / Byte.SIZE;
     private static final int BYTE_MAX_VALUE          = (1 << Byte.SIZE) - 1;

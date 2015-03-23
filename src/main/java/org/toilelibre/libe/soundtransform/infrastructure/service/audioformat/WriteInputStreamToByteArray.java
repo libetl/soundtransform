@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToByteArrayHelper;
 
-class WriteInputStreamToByteArray implements InputStreamToByteArrayHelper {
+final class WriteInputStreamToByteArray implements InputStreamToByteArrayHelper {
 
     private static final int ARBITRARY_ARRAY_LENGTH = 16384;
     

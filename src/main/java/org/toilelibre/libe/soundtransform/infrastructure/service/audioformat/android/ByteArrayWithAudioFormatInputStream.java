@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-class ByteArrayWithAudioFormatInputStream extends ByteArrayInputStream implements HasStreamInfo {
+final class ByteArrayWithAudioFormatInputStream extends ByteArrayInputStream implements HasStreamInfo {
 
     private final StreamInfo info;
 

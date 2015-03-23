@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
-class DefaultSoundToStringService implements SoundToStringService {
+final class DefaultSoundToStringService implements SoundToStringService {
 
     private final SoundToStringHelper helper;
 

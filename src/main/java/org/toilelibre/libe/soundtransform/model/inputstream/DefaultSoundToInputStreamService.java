@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 
-class DefaultSoundToInputStreamService extends AbstractLogAware<DefaultSoundToInputStreamService> implements SoundToInputStreamService<AbstractLogAware<DefaultSoundToInputStreamService>> {
+final class DefaultSoundToInputStreamService extends AbstractLogAware<DefaultSoundToInputStreamService> implements SoundToInputStreamService<AbstractLogAware<DefaultSoundToInputStreamService>> {
 
     private final FrameProcessor<?> frameProcessor;
     private final AudioFileHelper   audioFileHelper;

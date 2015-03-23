@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
 
-class ConvertedSoundAppender implements SoundAppender {
+final class ConvertedSoundAppender implements SoundAppender {
 
     private static final int HALF           = 2;
     private static final int BYTE_NB_VALUES = 1 << 8;

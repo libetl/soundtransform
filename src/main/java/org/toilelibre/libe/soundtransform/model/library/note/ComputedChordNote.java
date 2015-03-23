@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.library.note;
 
-class ComputedChordNote extends FormulaNote {
+final class ComputedChordNote extends FormulaNote {
 
     private static final int   PARTS        = 12;
     private static final int   HALF         = ComputedChordNote.PARTS / 2;

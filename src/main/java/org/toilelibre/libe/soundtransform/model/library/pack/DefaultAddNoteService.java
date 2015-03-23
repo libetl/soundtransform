@@ -17,7 +17,7 @@ import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-class DefaultAddNoteService extends AbstractLogAware<DefaultAddNoteService> implements AddNoteService<AbstractLogAware<DefaultAddNoteService>> {
+final class DefaultAddNoteService extends AbstractLogAware<DefaultAddNoteService> implements AddNoteService<AbstractLogAware<DefaultAddNoteService>> {
 
     private final SoundToNoteService           sound2NoteService;
     private final InputStreamToSoundService<?> inputStreamToSoundService;

@@ -15,7 +15,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor.FrameProcessorErrorCode;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-class WavAudioFormatParser implements AudioFormatParser {
+final class WavAudioFormatParser implements AudioFormatParser {
 
     @Override
     public Object audioFormatfromStreamInfo (final StreamInfo info) {

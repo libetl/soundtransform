@@ -4,7 +4,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundToStringHelper;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ToStringSoundTransformation;
 
-class GraphSoundToStringHelper implements SoundToStringHelper {
+final class GraphSoundToStringHelper implements SoundToStringHelper {
 
     private static final int ARBITRARY_LENGTH = 8000;
     private static final int ARBITRARY_HEIGHT = 20;

@@ -5,7 +5,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToStringHelper;
 
-class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Complex []> {
+final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Complex []> {
 
     private static final int                 TWICE                        = 2;
     private static final int                 TWO                          = 2;

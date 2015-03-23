@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.library.note;
 
-class ComputedOrganNote extends FormulaNote {
+final class ComputedOrganNote extends FormulaNote {
 
     private static final float TWO_PI           = (float) (2 * Math.PI);
     private static final float FIRST_COEFF      = 0.12f;

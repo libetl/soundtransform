@@ -1,8 +1,6 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.record.android;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
@@ -10,7 +8,6 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 
@@ -18,11 +15,11 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder.AudioSource;
 
-class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundProcessor> implements RecordSoundProcessor {
+final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundProcessor> implements RecordSoundProcessor {
 
     public enum AndroidRecordSoundProcessorEvent implements EventCode {
 
-        NOT_ABLE_TO_READ (LogLevel.ERROR, "Not able to read the recorded data");
+        NOT_ABLE_TO_READ(LogLevel.ERROR, "Not able to read the recorded data");
 
         private final String messageFormat;
         private LogLevel logLevel;
@@ -42,11 +39,10 @@ class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundPro
             return this.logLevel;
         }
     }
+
     public enum AndroidRecordSoundProcessorErrorCode implements ErrorCode {
 
-        NOT_READY ("Not ready to record a sound"),
-        STREAM_INFO_NOT_SUPPORTED ("Stream Info not supported by Recorder"),
-        STREAM_INFO_EXPECTED ("A stream info was expected");
+        NOT_READY("Not ready to record a sound"), STREAM_INFO_NOT_SUPPORTED("Stream Info not supported by Recorder"), STREAM_INFO_EXPECTED("A stream info was expected");
 
         private final String messageFormat;
 
@@ -60,14 +56,10 @@ class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundPro
         }
     }
 
-    private boolean isRecording = false;
-
-    private ByteArrayOutputStream baos;
-
     private int bufferSize;
     private AudioRecord recorder;
 
-    private Thread recordingThread;
+    private AndroidRecorderThread recordingThread;
 
     public AudioRecord findAudioRecorder(StreamInfo streamInfo) throws SoundTransformException {
         final int audioFormat = streamInfo.getSampleSize() == 1 ? AudioFormat.ENCODING_PCM_8BIT : AudioFormat.ENCODING_PCM_16BIT;
@@ -84,74 +76,39 @@ class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundPro
             }
         }
 
-        throw new SoundTransformException (AndroidRecordSoundProcessorErrorCode.STREAM_INFO_NOT_SUPPORTED, 
-                new UnsupportedOperationException(), streamInfo);
+        throw new SoundTransformException(AndroidRecordSoundProcessorErrorCode.STREAM_INFO_NOT_SUPPORTED, new UnsupportedOperationException(), streamInfo);
     }
 
     @Override
     public InputStream recordRawInputStream(final Object streamInfo1, final Object stop) throws SoundTransformException {
-        if (!(streamInfo1 instanceof StreamInfo)){
+        if (!(streamInfo1 instanceof StreamInfo)) {
             throw new SoundTransformException(AndroidRecordSoundProcessorErrorCode.STREAM_INFO_EXPECTED, new IllegalArgumentException());
         }
         final StreamInfo streamInfo = (StreamInfo) streamInfo1;
         this.startRecording(streamInfo);
-        synchronized (stop){
+        this.waitForStop(stop);
+        this.stopRecording();
+        return new ByteArrayInputStream(this.recordingThread.getOutputStream ().toByteArray());
+    }
+
+    private void waitForStop(Object stop) throws SoundTransformException {
+        boolean stopped = false;
+        synchronized (stop) {
             try {
-                stop.wait();
+                while (!stopped) {
+                    stop.wait();
+                    stopped = true;
+                }
             } catch (InterruptedException e) {
                 throw new SoundTransformException(AndroidRecordSoundProcessorErrorCode.NOT_READY, e);
-            }
-          }
-        this.stopRecording();
-        return new ByteArrayInputStream(this.baos.toByteArray());
-    }
-
-    // convert short to byte
-    private byte[] short2byte(final short[] sData) {
-        final int shortArrsize = sData.length;
-        final byte[] bytes = new byte[shortArrsize * 2];
-        for (int i = 0; i < shortArrsize; i++) {
-            bytes[i * 2] = (byte) (sData[i] & 0x00FF);
-            bytes[i * 2 + 1] = (byte) (sData[i] >> 8);
-            sData[i] = 0;
-        }
-        return bytes;
-
-    }
-
-    private void writeAudioDataToFile() throws IOException {
-        // Write the output audio in byte
-
-        final short sData[] = new short[1024];
-
-        while (this.isRecording) {
-            // gets the voice output from microphone to byte format
-            if (this.recorder.getRecordingState() != AudioRecord.STATE_UNINITIALIZED) {
-                final int read = this.recorder.read(sData, 0, sData.length);
-                if (read > 0) {
-                    this.baos.write(this.short2byte(sData), 0, read);
-                } else if (read == 0) {
-                    this.isRecording = false;
-                }
             }
         }
     }
 
     private void startRecording(StreamInfo streamInfo) throws SoundTransformException {
 
-        this.baos = new ByteArrayOutputStream(this.bufferSize);
         this.recorder = findAudioRecorder(streamInfo);
-        this.isRecording = true;
-        this.recordingThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    AndroidRecordSoundProcessor.this.writeAudioDataToFile();
-                } catch (IOException e) {
-                    AndroidRecordSoundProcessor.this.log (new LogEvent (AndroidRecordSoundProcessorEvent.NOT_ABLE_TO_READ));
-                }
-            }
-        }, "AudioRecorder Thread");
+        this.recordingThread = new AndroidRecorderThread(this.recorder, this.bufferSize);
         this.recorder.startRecording();
         this.recordingThread.start();
     }
@@ -159,7 +116,6 @@ class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundPro
     private void stopRecording() {
         // stops the recording activity
         if (this.recorder != null) {
-            this.isRecording = false;
             this.recorder.stop();
             this.recorder.release();
         }

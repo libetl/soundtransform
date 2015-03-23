@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-class AudioInputStream extends DataInputStream implements HasStreamInfo {
+final class AudioInputStream extends DataInputStream implements HasStreamInfo {
     public enum AudioInputStreamErrorCode implements ErrorCode {
 
         WRONG_FORMAT_READ_VALUE ("Read value has an invalid format (expected : %1d bytes, got : %2d bytes)");

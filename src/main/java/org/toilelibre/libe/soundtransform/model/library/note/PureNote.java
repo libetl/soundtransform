@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.library.note;
 
-class PureNote extends FormulaNote {
+final class PureNote extends FormulaNote {
 
     private static final float TWO_PI = (float) (2 * Math.PI);
 

@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchS
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpeedUpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelper {
+final class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelper {
 
     private static final int   THRESHOLD_DOWN_PITCH               = 98;
     private static final int   THRESHOLD_UP_PITCH                 = 102;

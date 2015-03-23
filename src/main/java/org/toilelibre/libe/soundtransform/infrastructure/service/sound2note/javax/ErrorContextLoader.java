@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.pack.ContextLoader;
 
-class ErrorContextLoader implements ContextLoader {
+final class ErrorContextLoader implements ContextLoader {
 
     public enum ErrorContextReaderErrorCode implements ErrorCode {
         STUB_IMPLEMENTATION ("Stub implementation of the context reader with javax. This json pack cannot be imported in the javax impl.");

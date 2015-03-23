@@ -16,7 +16,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-class DefaultImportPackService extends AbstractLogAware<DefaultImportPackService> implements ImportPackService<AbstractLogAware<DefaultImportPackService>> {
+final class DefaultImportPackService extends AbstractLogAware<DefaultImportPackService> implements ImportPackService<AbstractLogAware<DefaultImportPackService>> {
     public enum ImportPackServiceErrorCode implements ErrorCode {
         EXPECTED_A_FREQUENCY ("%1s is not an Integer, could not know which frequency was expected"), EMPTY_INPUT_STREAM ("No input stream to read while trying to import a pack"), INVALID_INPUT_STREAM ("Invalid input stream");
 

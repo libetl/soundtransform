@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.freqs;
 
 import org.toilelibre.libe.soundtransform.model.freqs.CompressFrequenciesProcessor;
 
-class SimpleCompressFrequenciesProcessor implements CompressFrequenciesProcessor {
+final class SimpleCompressFrequenciesProcessor implements CompressFrequenciesProcessor {
 
     /*
      * (non-Javadoc)

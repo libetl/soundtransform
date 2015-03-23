@@ -6,7 +6,7 @@ import java.io.InputStream;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 
-class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileService> implements AudioFileService<AbstractLogAware<DefaultAudioFileService>> {
+final class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileService> implements AudioFileService<AbstractLogAware<DefaultAudioFileService>> {
 
     private final AudioFileHelper              audioFileHelper;
     private final AudioFormatParser            audioFormatParser;

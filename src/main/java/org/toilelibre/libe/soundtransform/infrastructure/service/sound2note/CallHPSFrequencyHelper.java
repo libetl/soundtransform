@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
 
-class CallHPSFrequencyHelper implements FrequencyHelper {
+final class CallHPSFrequencyHelper implements FrequencyHelper {
 
     @Override
     public float findFrequency (final Sound [] channels) {

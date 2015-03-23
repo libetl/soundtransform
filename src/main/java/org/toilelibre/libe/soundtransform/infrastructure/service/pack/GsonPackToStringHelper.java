@@ -16,7 +16,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
-class GsonPackToStringHelper implements PackToStringHelper {
+final class GsonPackToStringHelper implements PackToStringHelper {
 
     private JsonElement toJsonElement (final Note note) {
         if (note instanceof SimpleNote) {

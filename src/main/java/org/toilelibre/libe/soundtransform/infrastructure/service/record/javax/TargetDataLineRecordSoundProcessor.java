@@ -1,7 +1,6 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.record.javax;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import javax.sound.sampled.AudioFormat;
@@ -14,7 +13,7 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 
-class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
+final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
 
     public enum TargetDataLineRecordSoundProcessorErrorCode implements ErrorCode {
 
@@ -32,9 +31,8 @@ class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         }
     }
 
-    private ByteArrayOutputStream baos;
-    private boolean isRecording = false;
     private TargetDataLine line;
+    private TargetDataLineReaderThread readerThread;
 
     public TargetDataLineRecordSoundProcessor() {
 
@@ -48,21 +46,33 @@ class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         AudioFormat audioFormat = (AudioFormat) audioFormat1;
 
         this.startRecording(audioFormat);
-        synchronized (stop){
-          try {
-              stop.wait();
-          } catch (InterruptedException e) {
-              throw new SoundTransformException(TargetDataLineRecordSoundProcessorErrorCode.NOT_READY, e);
-          }
-        }
+        waitForStop(stop);
         this.stopRecording();
-        return new ByteArrayInputStream(this.baos.toByteArray());
+        return new ByteArrayInputStream(this.readerThread.getOutputStream ().toByteArray());
+    }
+
+    /**
+     * @param stop
+     * @throws SoundTransformException
+     */
+
+    private void waitForStop(Object stop) throws SoundTransformException {
+        boolean stopped = false;
+        synchronized (stop) {
+            try {
+                while (!stopped) {
+                    stop.wait();
+                    stopped = true;
+                }
+            } catch (InterruptedException e) {
+                throw new SoundTransformException(TargetDataLineRecordSoundProcessorErrorCode.NOT_READY, e);
+            }
+        }
     }
 
     private void startRecording(AudioFormat audioFormat) throws SoundTransformException {
         // format is an AudioFormat object
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, audioFormat);
-        this.baos = new ByteArrayOutputStream();
 
         if (!AudioSystem.isLineSupported(info)) {
             throw new SoundTransformException(TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_NOT_SUPPORTED, new UnsupportedOperationException(), audioFormat);
@@ -74,28 +84,16 @@ class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         } catch (LineUnavailableException ex) {
             throw new SoundTransformException(TargetDataLineRecordSoundProcessorErrorCode.TARGET_LINE_UNAVAILABLE, ex);
         }
-        this.isRecording = true;
 
         // Begin audio capture.
         this.line.start();
-        new Thread() {
-
-            public void run() {
-
-                byte[] data = new byte[line.getBufferSize() / 5];
-                while (TargetDataLineRecordSoundProcessor.this.isRecording) {
-                    // Read the next chunk of data from the TargetDataLine.
-                    final int numBytesRead = line.read(data, 0, data.length);
-                    // Save this chunk of data.
-                    TargetDataLineRecordSoundProcessor.this.baos.write(data, 0, numBytesRead);
-                }
-            }
-        }.start();
+        this.readerThread = new TargetDataLineReaderThread (this.line);
+        this.readerThread.start();
     }
 
     private void stopRecording() {
         // stops the recording activity
-        this.isRecording = false;
+        this.readerThread.stopRecording();
         this.line.stop ();
         this.line.close();
     }

@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.freqs;
 
 import org.toilelibre.libe.soundtransform.model.freqs.ReplaceFrequenciesProcessor;
 
-class SimpleReplaceFrequenciesProcessor implements ReplaceFrequenciesProcessor {
+final class SimpleReplaceFrequenciesProcessor implements ReplaceFrequenciesProcessor {
 
     @Override
     public float [] insertPart (final float [] freqs, final float [] subFreqs, final int start) {

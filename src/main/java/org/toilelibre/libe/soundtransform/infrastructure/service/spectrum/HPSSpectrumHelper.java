@@ -5,7 +5,7 @@ import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 
-class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
+final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
 
     private static final int TWICE          = 2;
     private static final int HALF           = 2;

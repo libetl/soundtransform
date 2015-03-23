@@ -13,7 +13,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
-class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHelper> implements AudioFileHelper {
+final class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHelper> implements AudioFileHelper {
 
     public ByteArrayInputStream convertFileToBaos (final File inputFile) throws SoundTransformException {
         final byte [] byteArray = new byte [(int) inputFile.length ()];

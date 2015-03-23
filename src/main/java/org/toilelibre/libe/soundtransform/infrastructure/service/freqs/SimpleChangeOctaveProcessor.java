@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.freqs;
 
 import org.toilelibre.libe.soundtransform.model.freqs.ChangeOctaveProcessor;
 
-class SimpleChangeOctaveProcessor implements ChangeOctaveProcessor {
+final class SimpleChangeOctaveProcessor implements ChangeOctaveProcessor {
 
     @Override
     public float [] multFreqs (final float [] freqs, final float factor) {

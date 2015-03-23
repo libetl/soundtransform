@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-class DefaultInputStreamToSoundService extends AbstractLogAware<DefaultInputStreamToSoundService> implements InputStreamToSoundService<AbstractLogAware<DefaultInputStreamToSoundService>> {
+final class DefaultInputStreamToSoundService extends AbstractLogAware<DefaultInputStreamToSoundService> implements InputStreamToSoundService<AbstractLogAware<DefaultInputStreamToSoundService>> {
 
 
     private final FrameProcessor<?> frameProcessor;

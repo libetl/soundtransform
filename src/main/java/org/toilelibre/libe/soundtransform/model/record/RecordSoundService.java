@@ -1,12 +1,12 @@
 package org.toilelibre.libe.soundtransform.model.record;
 
 import java.io.InputStream;
-import java.io.Serializable;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
+import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 
-public interface RecordSoundService<T extends Serializable> {
+public interface RecordSoundService<T> extends LogAware<T> {
 
     public abstract InputStream recordRawInputStream (StreamInfo streamInfo, Object stop) throws SoundTransformException;
 

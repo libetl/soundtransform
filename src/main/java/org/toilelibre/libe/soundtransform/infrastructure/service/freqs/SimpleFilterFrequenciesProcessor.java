@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.freqs;
 
 import org.toilelibre.libe.soundtransform.model.freqs.FilterFrequenciesProcessor;
 
-class SimpleFilterFrequenciesProcessor implements FilterFrequenciesProcessor {
+final class SimpleFilterFrequenciesProcessor implements FilterFrequenciesProcessor {
 
     @Override
     public float [] filter (final float [] freqs, final float low, final float high) {

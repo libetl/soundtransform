@@ -7,7 +7,7 @@ import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 
-class NaiveSpectrum2CepstrumHelper implements SpectrumToCepstrumHelper<Complex []> {
+final class NaiveSpectrum2CepstrumHelper implements SpectrumToCepstrumHelper<Complex []> {
 
     private static final double SQUARE      = 2;
     private static final int    LOW_FILTER  = 50;

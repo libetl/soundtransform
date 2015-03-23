@@ -15,7 +15,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundExcepti
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
 
-class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
+final class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
 
     public LineListenerPlaySoundProcessor () {
 

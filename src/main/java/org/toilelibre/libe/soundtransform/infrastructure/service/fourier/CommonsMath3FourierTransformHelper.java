@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.Abstra
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
-class CommonsMath3FourierTransformHelper implements FourierTransformHelper<Complex []> {
+final class CommonsMath3FourierTransformHelper implements FourierTransformHelper<Complex []> {
 
     private static final float COEFFICIENT = 10.0f;
 

@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.pack.ContextLoader;
 
-class AndroidContextLoader implements ContextLoader {
+final class AndroidContextLoader implements ContextLoader {
 
     public enum AndroidContextReaderErrorCode implements ErrorCode {
         WRONG_CONTEXT_CLASS ("Expected an Android context"), COULD_NOT_READ_ID ("Could not read id : %1s"), COULD_NOT_FIND_ID ("Could not find id : %1s"), COULD_NOT_USE_CONTEXT ("Could not use context : %1s");

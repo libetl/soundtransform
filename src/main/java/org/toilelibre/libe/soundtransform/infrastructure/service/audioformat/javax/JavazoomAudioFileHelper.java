@@ -18,7 +18,7 @@ import javax.sound.sampled.spi.AudioFileReader;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 
-class JavazoomAudioFileHelper implements AudioFileHelper {
+final class JavazoomAudioFileHelper implements AudioFileHelper {
 
     private static final int HIGH_SAMPLE_RATE = 48000;
     private static final int TWO_BYTES_SAMPLE = 2 * Byte.SIZE;

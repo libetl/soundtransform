@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.model.converted.sound;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-class DefaultSoundPitchAndTempoService implements SoundPitchAndTempoService {
+final class DefaultSoundPitchAndTempoService implements SoundPitchAndTempoService {
 
     private final SoundPitchAndTempoHelper helper;
 

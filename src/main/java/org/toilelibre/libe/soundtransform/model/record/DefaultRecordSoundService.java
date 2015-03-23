@@ -1,38 +1,29 @@
 package org.toilelibre.libe.soundtransform.model.record;
 
 import java.io.InputStream;
-import java.io.Serializable;
 
+import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
-import org.toilelibre.libe.soundtransform.model.observer.EventCode;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-class DefaultRecordSoundService<T extends Serializable> extends AbstractLogAware<DefaultRecordSoundService<T>> implements RecordSoundService<T> {
+final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoundService> implements RecordSoundService<AbstractLogAware<DefaultRecordSoundService>> {
 
-    public enum DefaultRecordSoundServiceEventCode implements EventCode {
+    enum DefaultRecordSoundServiceErrorCode implements ErrorCode {
 
-        NOT_ABLE (LogLevel.ERROR, "Not able to wait for a recording (%1s)");
+        NOT_ABLE ("Not able to wait for a recording (%1s)");
 
         private final String messageFormat;
-        private final LogLevel logLevel;
 
-        DefaultRecordSoundServiceEventCode(final LogLevel ll, final String mF) {
-            this.logLevel = ll;
+        DefaultRecordSoundServiceErrorCode(final String mF) {
             this.messageFormat = mF;
         }
 
         @Override
         public String getMessageFormat() {
             return this.messageFormat;
-        }
-
-        @Override
-        public LogLevel getLevel() {
-            return this.logLevel;
         }
     }
     private static final float MS_PER_SECOND = 1000.0f;
@@ -59,7 +50,7 @@ class DefaultRecordSoundService<T extends Serializable> extends AbstractLogAware
                 try {
                     Thread.sleep(millis);
                 } catch (InterruptedException e) {
-                    DefaultRecordSoundService.this.log(new LogEvent (DefaultRecordSoundServiceEventCode.NOT_ABLE, e));
+                    throw new SoundTransformRuntimeException(DefaultRecordSoundServiceErrorCode.NOT_ABLE, e);
                 }
                 synchronized (stop){
                     stop.notify();

@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-class NoOpFormatParser implements AudioFormatParser {
+final class NoOpFormatParser implements AudioFormatParser {
 
     @Override
     public Object audioFormatfromStreamInfo (final StreamInfo info) {

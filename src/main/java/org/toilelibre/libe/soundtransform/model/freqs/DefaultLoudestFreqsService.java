@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.freqs;
 
-class DefaultLoudestFreqsService implements LoudestFreqsService {
+final class DefaultLoudestFreqsService implements LoudestFreqsService {
 
     private static final float                 HALF  = 0.5f;
     private static final float                 TWICE = 2.0f;

@@ -11,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
+final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
     public enum AudioWavHelperErrorCode implements ErrorCode {
 
         NO_MAGIC_NUMBER ("Expected a RIFF magic number"), NO_WAVE_HEADER ("RIFF file but not WAVE"), NOT_UNDERSTANDABLE_WAV ("Wave file was not understood"), NON_PCM_WAV ("Can not understand non PCM WAVE"), NO_DATA_SEPARATOR ("Could not find the data separator");
