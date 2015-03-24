@@ -84,11 +84,11 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
 
     @Test(expected = SoundTransformRuntimeException.class)
     public void testMissingFmtTag() throws SoundTransformException {
-        final String input = "RIFF1000WAVEfmx";
+        final String input = "RIFF1000WAVEfmx ";
         try {
             FluentClient.start().withAudioInputStream(new ByteArrayInputStream(input.getBytes("UTF-8"))).importToSound();
         } catch (final SoundTransformRuntimeException stre) {
-            org.junit.Assert.assertEquals("WRONG_FORMAT_READ_VALUE", stre.getErrorCode().name());
+            org.junit.Assert.assertEquals("NO_WAVE_HEADER", ((SoundTransformException)stre.getCause()).getErrorCode().name());
             throw stre;
         } catch (final UnsupportedEncodingException e) {
             org.junit.Assert.fail("Should not throw an UnsupportedEncodingException");
