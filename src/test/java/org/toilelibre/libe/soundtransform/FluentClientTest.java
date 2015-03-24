@@ -281,6 +281,12 @@ public class FluentClientTest extends SoundTransformTest {
         }
     }
 
+
+    @Test
+    public void testStringPack () throws SoundTransformException {
+        Assert.assertNotNull(FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", "{}").stopWithAPack("default"));
+    }
+    
     @Test
     public void testImportHPSFreqs () throws SoundTransformException {
         final Random random = new Random ();
