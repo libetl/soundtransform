@@ -55,6 +55,14 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
+    public void compress () throws SoundTransformException {
+        final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18 };
+        final float [] array2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs(array1).compress(2).stopWithFreqs();
+        Assert.assertArrayEquals(new float [] {1.0f, 3.0f, 5.0f, 7.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f}, array2, 0);
+    }
+
+    
+    @Test
     public void cutsound () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().cutSubSound (100000, 600000).exportToClasspathResource ("after.wav");
     }
