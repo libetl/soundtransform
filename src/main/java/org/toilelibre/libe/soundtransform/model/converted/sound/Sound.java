@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform.model.converted.sound;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 
-public class Sound implements Cloneable {
+public class Sound {
 
     private final long []    samples;
     private final FormatInfo formatInfo;
