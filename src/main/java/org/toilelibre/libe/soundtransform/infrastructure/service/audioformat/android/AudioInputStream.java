@@ -1,8 +1,6 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android;
 
 import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -42,10 +40,6 @@ final class AudioInputStream extends DataInputStream implements HasStreamInfo {
     private final byte []    intBuffer            = new byte [AudioInputStream.INTEGER_BYTE_NUMBER];
     private final byte []    shortBuffer          = new byte [AudioInputStream.SHORT_BYTE_NUMBER];
     private StreamInfo       info;
-
-    public AudioInputStream (final File f) throws IOException {
-        super (new FileInputStream (f));
-    }
 
     public AudioInputStream (final InputStream is) throws IOException {
         super (is);
