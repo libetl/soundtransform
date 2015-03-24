@@ -108,7 +108,35 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
             org.junit.Assert.fail("Should not throw an UnsupportedEncodingException");
         }
     }
+    
+    @Test(expected = SoundTransformRuntimeException.class)
+    public void testCouldNotReadAShortValue () throws SoundTransformException {
 
+        final String input = "RIFF1000WAVEfmt     " + '\0';
+        try {
+            FluentClient.start().withAudioInputStream(new ByteArrayInputStream(input.getBytes("UTF-8"))).importToSound();
+        } catch (final SoundTransformRuntimeException stre) {
+            org.junit.Assert.assertEquals("WRONG_FORMAT_READ_VALUE", stre.getErrorCode().name());
+            throw stre;
+        } catch (final UnsupportedEncodingException e) {
+            org.junit.Assert.fail("Should not throw an UnsupportedEncodingException");
+        }
+    }
+    
+    @Test(expected = SoundTransformRuntimeException.class)
+    public void testCouldNotReadFourChars() throws SoundTransformException {
+
+        final String input = "RIFF1000WAVEfmt";
+        try {
+            FluentClient.start().withAudioInputStream(new ByteArrayInputStream(input.getBytes("UTF-8"))).importToSound();
+        } catch (final SoundTransformRuntimeException stre) {
+            org.junit.Assert.assertEquals("WRONG_FORMAT_READ_VALUE", stre.getErrorCode().name());
+            throw stre;
+        } catch (final UnsupportedEncodingException e) {
+            org.junit.Assert.fail("Should not throw an UnsupportedEncodingException");
+        }
+    }
+    
     @Test(expected = SoundTransformException.class)
     public void testMissingWrongEncoding() throws SoundTransformException {
 
