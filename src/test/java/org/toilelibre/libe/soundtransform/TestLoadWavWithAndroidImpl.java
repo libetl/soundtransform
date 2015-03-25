@@ -4,8 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
@@ -154,11 +152,11 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
 
     @Test
     public void importCDHEader() throws SoundTransformException {
-        Assert.assertEquals(this.sToI(this.iToS(44100)), 44100);
+        org.junit.Assert.assertEquals(this.sToI(this.iToS(44100)), 44100);
         final String input = "RIFF1000WAVEfmt     " + '\1' + '\0' + '\1' + '\0' + this.iToS(44100) + this.iToS(0) + '\2' + '\0' + Character.toChars(16) [0] + '\0' + "data" + this.iToS(44);
         byte [] byteArray = this.toBytes(input.toCharArray());
         Sound [] sound = FluentClient.start().withAudioInputStream(new ByteArrayInputStream(byteArray)).importToSound().stopWithSounds();
-        Assert.assertNotNull(sound);
+        org.junit.Assert.assertNotNull(sound);
     }
 
     @Test(expected = SoundTransformException.class)
