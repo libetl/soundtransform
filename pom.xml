@@ -157,7 +157,7 @@
 			<groupId>com.googlecode.soundlibs</groupId>
 			<artifactId>tritonus-share</artifactId>
 			<version>0.3.7-2</version>
-			<scope>test</scope>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.soundlibs</groupId>
