@@ -5,6 +5,9 @@ import java.lang.reflect.Field;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformAndroidTest;
@@ -12,18 +15,16 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
+import android.content.Context;
+import android.content.res.Resources;
+
 public class FluentClientAndroidTest extends SoundTransformAndroidTest {
 
-    public static class Context {
+    private Answer<InputStream> findAmongRFields = new Answer<InputStream> (){
 
-        public Resources getResources () {
-            return new Resources ();
-        }
-
-    }
-
-    public static class Resources {
-        public InputStream openRawResource (final int id) throws RuntimeException {
+        @Override
+        public InputStream answer(InvocationOnMock invocation) throws Throwable {
+            int id = invocation.getArgumentAt (0, int.class);
             for (final Field f : org.toilelibre.libe.soundtransform.R.raw.class.getDeclaredFields ()) {
 
                 try {
@@ -45,11 +46,16 @@ public class FluentClientAndroidTest extends SoundTransformAndroidTest {
             }
             throw new RuntimeException ("" + id);
         }
-    }
-
+        
+    };
+    
+    
     @Test
     public void testLoadPack () throws SoundTransformException {
-        final Context context = new Context ();
+        final Context context = Mockito.mock (Context.class);
+        final Resources resources = Mockito.mock (Resources.class);
+        Mockito.when(context.getResources()).thenReturn(resources);
+        Mockito.when(resources.openRawResource(Mockito.any (int.class))).then(this.findAmongRFields);
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
         final Pack pack = FluentClient.start ().withAPack ("default", context, R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
         pack.toString ();

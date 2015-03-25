@@ -7,6 +7,7 @@ import java.util.Random;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
@@ -25,12 +26,14 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
+import android.content.Context;
+
 public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void androidImportPackDoesNotWorkInJavaxMode () throws SoundTransformException {
         try {
-            FluentClient.start ().withAPack ("default", new FluentClientAndroidTest.Context (), R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
+            FluentClient.start ().withAPack ("default", Mockito.mock(Context.class), R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
             Assert.fail ("android import should have failed");
         } catch (final SoundTransformException ste) {
             Assert.assertEquals (ste.getErrorCode ().name (), "STUB_IMPLEMENTATION");
