@@ -41,9 +41,9 @@ public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFr
     private final int        step;
     private float            writeIfGreaterEqThanFactor;
 
-    public SpeedUpSoundTransformation (final int step1, final float factor) {
+    public SpeedUpSoundTransformation (final int step1, final float factor1) {
         super ();
-        this.factor = factor;
+        this.factor = factor1;
         this.step = step1;
         this.writeIfGreaterEqThanFactor = 0;
     }
