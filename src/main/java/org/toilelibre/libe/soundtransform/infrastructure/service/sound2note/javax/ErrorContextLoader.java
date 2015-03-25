@@ -24,13 +24,13 @@ final class ErrorContextLoader implements ContextLoader {
     }
 
     @Override
-    public InputStream read (final Object context, final Class<?> rClass, final int id) throws SoundTransformException {
+    public InputStream read (final Object context, final int id) throws SoundTransformException {
         throw new SoundTransformException (ErrorContextReaderErrorCode.STUB_IMPLEMENTATION, new UnsupportedOperationException ());
     }
 
     @Override
     public InputStream read (final Object context, final Class<?> rClass, final String idName) throws SoundTransformException {
-        return this.read (context, rClass, 0);
+        return this.read (context, 0);
     }
 
 }

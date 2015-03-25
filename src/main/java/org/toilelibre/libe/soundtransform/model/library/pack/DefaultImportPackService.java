@@ -123,7 +123,7 @@ final class DefaultImportPackService extends AbstractLogAware<DefaultImportPackS
      */
     @Override
     public void importPack (final Library library, final String title, final Object context, final Class<?> rClass, final int packJsonId) throws SoundTransformException {
-        this.importPack (library, title, context, rClass, this.readInputStream (this.contextLoader.read (context, rClass, packJsonId)));
+        this.importPack (library, title, context, rClass, this.readInputStream (this.contextLoader.read (context, packJsonId)));
     }
 
     private void importPack (final Library library, final String title, final Object context, final Class<?> rClass, final String jsonContent) throws SoundTransformException {
