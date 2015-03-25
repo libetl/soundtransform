@@ -1,0 +1,12 @@
+{
+  "notaninstrument": [
+    {
+      "frequency": 110.0,
+      "name": "notafile",
+      "attack": 0,
+      "decay": 300,
+      "sustain": 500,
+      "release": 14732
+    }
+  ]
+}
