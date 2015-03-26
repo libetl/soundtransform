@@ -826,7 +826,7 @@ the client, with an input stream
 Throws:  
 `SoundTransformException` - the input stream cannot be read, or the conversion did not work
 
-####   FluentClientReady.withTimeRecordedInputStream (just after start)
+####   FluentClientReady.withRecordedInputStream (just after start)
 
 ```java
 FluentClientWithInputStream withRecordedInputStream (StreamInfo streamInfo, Object stop) throws SoundTransformException
