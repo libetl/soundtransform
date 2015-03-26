@@ -837,7 +837,7 @@ Tells the client to work first to open the microphone and to record a sound
 The result will be of an InputStream type.
 The frameLength in the streamInfo will be ignored
 
- :warning: blocking method, the  `stop.notify` method must be called in another thread.
+ /!\ : blocking method, the  `stop.notify` method must be called in another thread.
 
 Parameters:  
 `streamInfo` - the future input stream info
