@@ -785,6 +785,26 @@ Parameters:
 Returns:  
 the client, with a loudest frequencies float array
 
+####   FluentClientReady.withLimitedTimeRecordedInputStream (just after start)
+
+```java
+FluentClientWithInputStream withLimitedTimeRecordedInputStream (StreamInfo streamInfo) throws SoundTransformException
+```
+
+
+Tells the client to work first to open the microphone and to record a sound
+The result will be of an InputStream type.
+The recording time will be the one passed in the streamInfo
+
+Parameters:  
+`streamInfo` - the stream info
+
+Returns:  
+the client, with an input stream
+
+Throws:  
+`SoundTransformException` - the mic could not be read, the recorder could not start, or the buffer did not record anything
+
 ####   FluentClientReady.withRawInputStream (just after start)
 
 ```java
@@ -805,6 +825,30 @@ the client, with an input stream
 
 Throws:  
 `SoundTransformException` - the input stream cannot be read, or the conversion did not work
+
+####   FluentClientReady.withTimeRecordedInputStream (just after start)
+
+```java
+FluentClientWithInputStream withRecordedInputStream (StreamInfo streamInfo, Object stop) throws SoundTransformException
+```
+
+
+Tells the client to work first to open the microphone and to record a sound
+The result will be of an InputStream type.
+The frameLength in the streamInfo will be ignored
+
+ :warning: blocking method, the  `stop.notify` method must be called in another thread.
+
+Parameters:  
+`streamInfo` - the future input stream info
+
+`stop` - the method notify must be called to stop the recording
+
+Returns:  
+the client, with an input stream
+
+Throws:  
+`SoundTransformException` - the mic could not be read, the recorder could not start, or the buffer did not record anything
 
 ####   FluentClientReady.withSounds (just after start)
 
