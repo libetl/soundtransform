@@ -58,7 +58,9 @@ final class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundP
         } catch (final SoundTransformException ste) {
             throw new PlaySoundException (ste);
         }
-        final AudioTrack audioTrack = new AudioTrack (AudioManager.STREAM_MUSIC, (int) si.getSampleRate (), AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, (int) si.getFrameLength (), AudioTrack.MODE_STATIC);
+        final int channelConf = this.getChannelConfiguration (si);
+        final AudioTrack audioTrack = new AudioTrack (AudioManager.STREAM_MUSIC, (int) si.getSampleRate (), channelConf, streamInfo.getSampleSize () == 2 ? AudioFormat.ENCODING_PCM_16BIT : AudioFormat.ENCODING_PCM_8BIT, (int) si.getFrameLength () * streamInfo.getSampleSize (),
+                AudioTrack.MODE_STATIC);
         final byte [] baSoundByteArray = new byte [(int) si.getFrameLength () * si.getSampleSize ()];
         try {
             final int byteArraySize = ais.read (baSoundByteArray);
@@ -88,6 +90,33 @@ final class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundP
         };
         thread.start ();
         return thread;
+    }
+
+    private int getChannelConfiguration (final StreamInfo streamInfo) {
+        final int channelConf;
+        switch (streamInfo.getChannels ()) {
+            case 1:
+                channelConf = AudioFormat.CHANNEL_OUT_MONO;
+                break;
+            case 2:
+                channelConf = AudioFormat.CHANNEL_OUT_STEREO;
+                break;
+            case 4:
+                channelConf = AudioFormat.CHANNEL_OUT_QUAD;
+                break;
+            case 5:
+                channelConf = AudioFormat.CHANNEL_OUT_SURROUND;
+                break;
+            case 6:
+                channelConf = AudioFormat.CHANNEL_OUT_5POINT1;
+                break;
+            case 8:
+                channelConf = AudioFormat.CHANNEL_OUT_7POINT1;
+                break;
+            default:
+                channelConf = 0;
+        }
+        return channelConf;
     }
 
 }
