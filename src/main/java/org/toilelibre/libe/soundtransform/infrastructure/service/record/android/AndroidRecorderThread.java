@@ -10,7 +10,7 @@ import android.media.AudioRecord;
 
 final class AndroidRecorderThread extends Thread {
 
-    private static final int            ARBITRARY_BUFFER = 1024;
+    private static final int            ARBITRARY_BUFFER = 8192;
     private static final int            EIGHT            = 8;
     private static final int            TWO              = 2;
     /**
@@ -67,7 +67,7 @@ final class AndroidRecorderThread extends Thread {
             if (this.audioRecord.getRecordingState () != AudioRecord.STATE_UNINITIALIZED) {
                 final int read = this.audioRecord.read (sData, 0, sData.length);
                 if (read > 0) {
-                    this.baos.write (this.short2byte (sData), 0, read);
+                    this.baos.write (this.short2byte (sData), 0, read * AndroidRecorderThread.TWO);
                 } else if (read == 0) {
                     this.recording = false;
                 }
