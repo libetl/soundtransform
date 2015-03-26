@@ -133,7 +133,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
 
     private int findFrameLength (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
         try {
-            return isInfo.getFrameLength () > 0 ? (int) isInfo.getFrameLength () : ais.available ();
+            return isInfo.getFrameLength () > 0 ? (int) isInfo.getFrameLength () : ais.available () / isInfo.getSampleSize ();
         } catch (final IOException e) {
             throw new SoundTransformException (FrameProcessorErrorCode.COULD_NOT_FIND_LENGTH, e);
         }
