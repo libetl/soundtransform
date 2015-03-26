@@ -171,8 +171,7 @@ public interface FluentClientReady {
      *            the future input stream info
      * @return the client, with an input stream
      * @throws SoundTransformException
-     *             the input stream cannot be read, or the conversion did not
-     *             work
+     *             the mic could not be read, the recorder could not start, or the buffer did not record anything
      */
     FluentClientWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException;
 
@@ -196,14 +195,18 @@ public interface FluentClientReady {
 
     /**
      * Tells the client to work first to open the microphone and to record a
-     * sound The result will be of an InputStream type
+     * sound The result will be of an InputStream type The frameLength in the
+     * streamInfo will be ignored
      *
+     * /!\ :  blocking method, the `stop.notify` method must be called in another thread.
+     *
+     * @param streamInfo
+     *            the future input stream info
      * @param stop
      *            the method notify must be called to stop the recording
      * @return the client, with an input stream
      * @throws SoundTransformException
-     *             the input stream cannot be read, or the conversion did not
-     *             work
+     *             the mic could not be read, the recorder could not start, or the buffer did not record anything
      */
     FluentClientWithInputStream withRecordedInputStream (final StreamInfo streamInfo, Object stop) throws SoundTransformException;
 
