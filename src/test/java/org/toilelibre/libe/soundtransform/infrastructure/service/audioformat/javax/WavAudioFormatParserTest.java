@@ -12,17 +12,17 @@ public class WavAudioFormatParserTest {
         try {
             new WavAudioFormatParser ().fromAudioFormat (new Object (), 0);
             Assert.fail ("Should have failed with read error");
-        } catch (SoundTransformException ste) {
+        } catch (final SoundTransformException ste) {
             Assert.assertEquals (ste.getErrorCode (), AudioFormatParser.AudioFormatParserErrorCode.READ_ERROR);
         }
     }
-    
+
     @Test
     public void notASoundFileTest () throws SoundTransformException {
         try {
             new WavAudioFormatParser ().getStreamInfo (Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json"));
             Assert.fail ("Should have failed with read error");
-        } catch (SoundTransformException ste) {
+        } catch (final SoundTransformException ste) {
             Assert.assertEquals (ste.getErrorCode (), AudioFormatParser.AudioFormatParserErrorCode.WRONG_TYPE);
         }
     }

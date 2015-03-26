@@ -10,8 +10,8 @@ final class TargetDataLineReaderThread extends Thread {
      */
     private final TargetDataLine        dataLine;
     private final ByteArrayOutputStream baos;
-    private boolean               isRecording = false;
-    private static final int      FIVE        = 5;
+    private boolean                     isRecording = false;
+    private static final int            FIVE        = 5;
 
     /**
      * @param dataLine1

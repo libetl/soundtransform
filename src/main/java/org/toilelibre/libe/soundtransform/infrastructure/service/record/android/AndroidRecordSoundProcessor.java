@@ -21,8 +21,8 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
 
         NOT_ABLE_TO_READ (LogLevel.ERROR, "Not able to read the recorded data");
 
-        private final String messageFormat;
-        private final LogLevel     logLevel;
+        private final String   messageFormat;
+        private final LogLevel logLevel;
 
         AndroidRecordSoundProcessorEvent (final LogLevel ll, final String mF) {
             this.messageFormat = mF;

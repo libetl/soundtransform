@@ -46,7 +46,7 @@ final class AndroidContextLoader implements ContextLoader {
 
     @Override
     public InputStream read (final Object context, final int id) throws SoundTransformException {
-       return ((Context)context).getResources ().openRawResource (id);
+        return ((Context) context).getResources ().openRawResource (id);
     }
 
     @Override

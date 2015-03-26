@@ -33,7 +33,7 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void androidImportPackDoesNotWorkInJavaxMode () throws SoundTransformException {
         try {
-            FluentClient.start ().withAPack ("default", Mockito.mock(Context.class), R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
+            FluentClient.start ().withAPack ("default", Mockito.mock (Context.class), R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
             Assert.fail ("android import should have failed");
         } catch (final SoundTransformException ste) {
             Assert.assertEquals (ste.getErrorCode ().name (), "STUB_IMPLEMENTATION");
@@ -60,11 +60,10 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void compress () throws SoundTransformException {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18 };
-        final float [] array2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs(array1).compress(2).stopWithFreqs();
-        Assert.assertArrayEquals(new float [] {1.0f, 3.0f, 5.0f, 7.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f}, array2, 0);
+        final float [] array2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (array1).compress (2).stopWithFreqs ();
+        Assert.assertArrayEquals (new float [] { 1.0f, 3.0f, 5.0f, 7.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f }, array2, 0);
     }
 
-    
     @Test
     public void cutsound () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().cutSubSound (100000, 600000).exportToClasspathResource ("after.wav");
@@ -143,7 +142,7 @@ public class FluentClientTest extends SoundTransformTest {
     public void loopWithLessThan1ValueDoesNotWork () throws SoundTransformException {
         try {
             FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().loop (0).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
-        }catch (SoundTransformException ste){
+        } catch (final SoundTransformException ste) {
             Assert.assertEquals (ste.getErrorCode ().name (), "NOT_POSITIVE_VALUE");
         }
     }
@@ -284,12 +283,11 @@ public class FluentClientTest extends SoundTransformTest {
         }
     }
 
-
     @Test
     public void testStringPack () throws SoundTransformException {
-        Assert.assertNotNull(FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", "{}").stopWithAPack("default"));
+        Assert.assertNotNull (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", "{}").stopWithAPack ("default"));
     }
-    
+
     @Test
     public void testImportHPSFreqs () throws SoundTransformException {
         final Random random = new Random ();

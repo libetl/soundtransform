@@ -20,63 +20,63 @@ import android.content.res.Resources;
 
 public class FluentClientAndroidTest extends SoundTransformAndroidTest {
 
-    private Answer<InputStream> findAmongRFields = new Answer<InputStream>() {
+    private final Answer<InputStream> findAmongRFields = new Answer<InputStream> () {
 
         @Override
-        public InputStream answer(InvocationOnMock invocation) throws Throwable {
-            int id = invocation.getArgumentAt(0, int.class);
-            for (final Field f : org.toilelibre.libe.soundtransform.R.raw.class.getDeclaredFields()) {
+        public InputStream answer (final InvocationOnMock invocation) throws Throwable {
+            final int id = invocation.getArgumentAt (0, int.class);
+            for (final Field f : org.toilelibre.libe.soundtransform.R.raw.class.getDeclaredFields ()) {
 
                 try {
-                    if (f.getInt(null) == id) {
-                        InputStream result = Thread.currentThread().getContextClassLoader().getResourceAsStream(f.getName());
+                    if (f.getInt (null) == id) {
+                        InputStream result = Thread.currentThread ().getContextClassLoader ().getResourceAsStream (f.getName ());
                         if (result == null) {
-                            result = Thread.currentThread().getContextClassLoader().getResourceAsStream(f.getName() + ".wav");
+                            result = Thread.currentThread ().getContextClassLoader ().getResourceAsStream (f.getName () + ".wav");
                         }
                         if (result == null) {
-                            result = Thread.currentThread().getContextClassLoader().getResourceAsStream(f.getName() + ".json");
+                            result = Thread.currentThread ().getContextClassLoader ().getResourceAsStream (f.getName () + ".json");
                         }
                         return result;
                     }
                 } catch (final IllegalArgumentException e) {
-                    new Slf4jObserver(LogLevel.INFO).notify("openRawResource : " + e);
+                    new Slf4jObserver (LogLevel.INFO).notify ("openRawResource : " + e);
                 } catch (final IllegalAccessException e) {
-                    new Slf4jObserver(LogLevel.INFO).notify("openRawResource : " + e);
+                    new Slf4jObserver (LogLevel.INFO).notify ("openRawResource : " + e);
                 }
             }
-            throw new RuntimeException("" + id);
+            throw new RuntimeException ("" + id);
         }
 
     };
 
-    @Test(expected = SoundTransformException.class)
-    public void loadPackWithMissingFile() throws SoundTransformException {
-        final Context context = this.given();
-        FluentClient.setDefaultObservers(new Slf4jObserver(LogLevel.WARN));
+    @Test (expected = SoundTransformException.class)
+    public void loadPackWithMissingFile () throws SoundTransformException {
+        final Context context = this.given ();
+        FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
         try {
-            FluentClient.start().withAPack("default", context, TestR.raw.class, TestR.raw.badidpack).stopWithAPack("default");
-        } catch (SoundTransformException ste) {
-            Assert.assertEquals("COULD_NOT_READ_ID", ste.getErrorCode().name());
+            FluentClient.start ().withAPack ("default", context, TestR.raw.class, TestR.raw.badidpack).stopWithAPack ("default");
+        } catch (final SoundTransformException ste) {
+            Assert.assertEquals ("COULD_NOT_READ_ID", ste.getErrorCode ().name ());
             throw ste;
         }
     }
 
     @Test
-    public void loadPack() throws SoundTransformException {
-        final Context context = this.given();
+    public void loadPack () throws SoundTransformException {
+        final Context context = this.given ();
 
-        FluentClient.setDefaultObservers(new Slf4jObserver(LogLevel.WARN));
-        final Pack pack = FluentClient.start().withAPack("default", context, R.raw.class, R.raw.defaultpack).stopWithAPack("default");
-        pack.toString();
-        Assert.assertNotNull(pack);
-        Assert.assertNotEquals(pack.size(), 0);
+        FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
+        final Pack pack = FluentClient.start ().withAPack ("default", context, R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
+        pack.toString ();
+        Assert.assertNotNull (pack);
+        Assert.assertNotEquals (pack.size (), 0);
     }
 
-    private Context given() {
-        final Context context = Mockito.mock(Context.class);
-        final Resources resources = Mockito.mock(Resources.class);
-        Mockito.when(context.getResources()).thenReturn(resources);
-        Mockito.when(resources.openRawResource(Mockito.any(int.class))).then(this.findAmongRFields);
+    private Context given () {
+        final Context context = Mockito.mock (Context.class);
+        final Resources resources = Mockito.mock (Resources.class);
+        Mockito.when (context.getResources ()).thenReturn (resources);
+        Mockito.when (resources.openRawResource (Mockito.any (int.class))).then (this.findAmongRFields);
         return context;
     }
 }

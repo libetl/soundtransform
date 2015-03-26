@@ -123,7 +123,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
         return (int) (position * ByteArrayFrameProcessor.PERCENT / length);
     }
 
-    private Sound [] initSound (InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
+    private Sound [] initSound (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
         final Sound [] ret = new Sound [isInfo.getChannels ()];
         for (int channel = 0 ; channel < isInfo.getChannels () ; channel++) {
             ret [channel] = new Sound (new long [this.findFrameLength (ais, isInfo)], isInfo, channel);
@@ -131,10 +131,10 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
         return ret;
     }
 
-    private int findFrameLength(InputStream ais, StreamInfo isInfo) throws SoundTransformException {
+    private int findFrameLength (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
         try {
-            return isInfo.getFrameLength() > 0 ? (int) isInfo.getFrameLength () : ais.available();
-        } catch (IOException e) {
+            return isInfo.getFrameLength () > 0 ? (int) isInfo.getFrameLength () : ais.available ();
+        } catch (final IOException e) {
             throw new SoundTransformException (FrameProcessorErrorCode.COULD_NOT_FIND_LENGTH, e);
         }
     }

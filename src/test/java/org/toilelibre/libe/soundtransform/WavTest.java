@@ -53,7 +53,7 @@ public class WavTest extends SoundTransformTest {
 
     @Test
     public void testShortSoundCepstrum () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().extractSubSound (0,  4000).apply (new CepstrumSoundTransformation<Serializable> (100)).exportToFile (this.output);
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().extractSubSound (0, 4000).apply (new CepstrumSoundTransformation<Serializable> (100)).exportToFile (this.output);
     }
 
     @Test (expected = SoundTransformRuntimeException.class)
@@ -182,6 +182,6 @@ public class WavTest extends SoundTransformTest {
     @Test
     public void testSpeedUp () throws SoundTransformException {
         // WARN : quite long
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ().extractSubSound(0, 100000).apply (new SpeedUpSoundTransformation<Serializable> (200, 1.5f)).exportToFile (this.output);
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ().extractSubSound (0, 100000).apply (new SpeedUpSoundTransformation<Serializable> (200, 1.5f)).exportToFile (this.output);
     }
 }

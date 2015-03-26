@@ -58,8 +58,7 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
 
         for (final Entry<Class<? extends Object>, Class<? extends Object>> serviceClassEntry : this.usedImpls.entrySet ()) {
             @SuppressWarnings ("unchecked")
-            final
-            TypedBinder<Object> objectTypedBinder = (TypedBinder<Object>) super.bind (serviceClassEntry.getKey ());
+            final TypedBinder<Object> objectTypedBinder = (TypedBinder<Object>) super.bind (serviceClassEntry.getKey ());
             objectTypedBinder.to (serviceClassEntry.getValue ());
         }
 
