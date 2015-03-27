@@ -1,10 +1,10 @@
-soundtransform
-==============
+# soundtransform
+================
 
 [![Build Status](https://travis-ci.org/libetl/soundtransform.svg?branch=master)](https://travis-ci.org/libetl/soundtransform) [![API](https://img.shields.io/badge/API-8%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=8) [![Coverage Status](https://coveralls.io/repos/libetl/soundtransform/badge.svg)](https://coveralls.io/r/libetl/soundtransform)
 
 Android library to shape a voice with an instrument.
-### How to use the library :
+## How to use the library :
 * Insert the aar into your project dependencies :
 ```xml
 <dependency>
@@ -26,14 +26,14 @@ Android library to shape a voice with an instrument.
 * Read the below documentation about the FluentClient facility
 * Use the lib by yourself
 
-### FluentClient :
+## FluentClient :
 The FluentClient service provider interface is a simple class to give a shortcut to all the features of the lib without walking in the nested classes.
 
 It helps you to proceed to the correct actions at each step, giving you the right programming interface during the pipeline.
 
 To use it, it is only needed to chain the methods invocation. it will always start with a ```FluentClient.start()```, can end with a stop method and can contains an ```andAfterStart``` call to chain two processes in the same instruction of code.
 
-### FluentClient samples :
+## FluentClient samples :
 ```java
 
 //Set the default Slf4J logger and the log threshold as "WARNING" (the only output will be the warning and error logs)
