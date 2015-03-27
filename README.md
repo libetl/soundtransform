@@ -61,12 +61,12 @@ Please have a look at the many different actions that you can ask to the FluentC
 ## FluentClient Javadoc :
 
 Four steps can be identified when using the FluentClient SPI :
-* static init (optional) : the observers subscribe to the future invocations of the FluentClient
-* start of the flow : a call to `start ()`, followed by one or more calls to a `with... ()` method
-* operations (optional) : several chained method calls to transform the data in a "one-lined" way
-* method flow stops (optional) : one call to `stopWith... ()` to get the currently stored data
+1. static init (optional) : the observers subscribe to the future invocations of the FluentClient
+2. start of the flow : a call to `start ()`, followed by one or more calls to a `with... ()` method
+3. operations (optional) : several chained method calls to transform the data in a "one-lined" way
+4. method flow stops (optional) : one call to `stopWith... ()` to get the currently stored data
 
-### static init
+### 1. static init
 
 ####   FluentClient.setDefaultObserversValue
 
@@ -82,7 +82,7 @@ It can be useful if you are going to use the FluentClient several times but you 
 Parameters:  
 `defaultObservers1` - one or more observer(s)
 
-### start of the flow
+### 2. start of the flow
 
 ####   FluentClient.start (*only way to start a FluentClient*)
 
@@ -355,7 +355,7 @@ Parameters:
 Returns:  
 the client, with the spectrums
 
-### operations
+### 3. operations
 
 ####   FluentClientWithFreqs.adjust
 
@@ -853,7 +853,7 @@ the client, with a file
 Throws:  
 `SoundTransformException` - The file could not be written
 
-### method flow stops
+### 4. method flow stops
 
 ####   FluentClient*.stopWithAPack
 
