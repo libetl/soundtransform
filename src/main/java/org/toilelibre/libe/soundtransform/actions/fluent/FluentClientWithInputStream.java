@@ -3,8 +3,8 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 import java.io.File;
 import java.io.InputStream;
 
-import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 public interface FluentClientWithInputStream extends FluentClientCommon {
 
@@ -41,7 +41,7 @@ public interface FluentClientWithInputStream extends FluentClientCommon {
      * @throws SoundTransformException
      *             could not read the StreamInfo from the current inputstream
      */
-    FormatInfo stopWithStreamInfo () throws SoundTransformException;
+    StreamInfo stopWithStreamInfo () throws SoundTransformException;
 
     /**
      * Writes the current InputStream in a classpath resource in the same folder
