@@ -28,7 +28,7 @@ public abstract class AbstractFrequencySoundTransformation<T extends Serializabl
     public abstract Sound initSound (Sound input);
 
     @Override
-    public Sound transform (final Sound sound) {
+    public final Sound transform (final Sound sound) {
         return this.fourierTransformHelper.transform (this, sound);
     }
 
