@@ -35,4 +35,5 @@ jdk:
  - oraclejdk8
 
 install: 
+ - mvn -B install -DskipTests
  - travis_wait mvn org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN
