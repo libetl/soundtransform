@@ -61,10 +61,11 @@ Please have a look at the many different actions that you can ask to the FluentC
 ## FluentClient Javadoc :
 
 Four steps can be identified when using the FluentClient SPI :
-1. static init (optional) : the observers subscribe to the future invocations of the FluentClient
-2. start of the flow : a call to `start ()`, followed by one or more calls to a `with... ()` method
-3. operations (optional) : several chained method calls to transform the data in a "one-lined" way
-4. method flow stops (optional) : one call to `stopWith... ()` to get the currently stored data
+
+ 1. static init (optional) : the observers subscribe to the future invocations of the FluentClient
+ 2. start of the flow : a call to `start ()`, followed by one or more calls to a `with... ()` method
+ 3. operations (optional) : several chained method calls to transform the data in a "one-lined" way
+ 4. method flow stops (optional) : one call to `stopWith... ()` to get the currently stored data
 
 ### 1. static init
 
