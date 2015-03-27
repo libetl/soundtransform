@@ -24,6 +24,7 @@ Android library to shape a voice with an instrument.
 * Replace x.x.x with the version you need (do not hesitate to use the latest one).
 *  Make sure you have access to the FluentClient class in your project (try the autocompletion feature of your IDE if you have one)
 * Read the below documentation about the FluentClient facility
+* Have a look at the available SoundTransformation classes
 * Use the lib by yourself
 
 ## FluentClient :
