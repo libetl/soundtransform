@@ -20,7 +20,7 @@ final class DefaultSoundToNoteService implements SoundToNoteService {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService
      * #convert

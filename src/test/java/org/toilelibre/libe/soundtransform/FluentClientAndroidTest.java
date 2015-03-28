@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -76,7 +77,7 @@ public class FluentClientAndroidTest extends SoundTransformAndroidTest {
         final Context context = Mockito.mock (Context.class);
         final Resources resources = Mockito.mock (Resources.class);
         Mockito.when (context.getResources ()).thenReturn (resources);
-        Mockito.when (resources.openRawResource (Mockito.any (int.class))).then (this.findAmongRFields);
+        Mockito.when (resources.openRawResource (Matchers.any (int.class))).then (this.findAmongRFields);
         return context;
     }
 }

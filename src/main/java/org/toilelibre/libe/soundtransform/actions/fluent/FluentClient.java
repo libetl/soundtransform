@@ -777,7 +777,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *            the future input stream info
      * @return the client, with an input stream
      * @throws SoundTransformException
-     *             the mic could not be read, the recorder could not start, or the buffer did not record anything
+     *             the mic could not be read, the recorder could not start, or
+     *             the buffer did not record anything
      */
     @Override
     public FluentClientWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException {
@@ -806,7 +807,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * sound The result will be of an InputStream type The frameLength in the
      * streamInfo will be ignored
      *
-     * /!\ :  blocking method, the `stop.notify` method must be called in another thread.
+     * /!\ : blocking method, the `stop.notify` method must be called in another
+     * thread.
      *
      * @param streamInfo
      *            the future input stream info
@@ -814,7 +816,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *            the method notify must be called to stop the recording
      * @return the client, with an input stream
      * @throws SoundTransformException
-     *             the mic could not be read, the recorder could not start, or the buffer did not record anything
+     *             the mic could not be read, the recorder could not start, or
+     *             the buffer did not record anything
      */
     @Override
     public FluentClientWithInputStream withRecordedInputStream (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {

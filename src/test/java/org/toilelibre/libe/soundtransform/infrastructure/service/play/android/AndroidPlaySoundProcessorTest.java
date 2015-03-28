@@ -4,6 +4,7 @@ import java.io.InputStream;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -16,30 +17,30 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 import android.media.AudioTrack;
 
-@PrepareForTest(AndroidPlaySoundProcessor.class)
+@PrepareForTest (AndroidPlaySoundProcessor.class)
 public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
-    
-    @Rule
-    public PowerMockRule rule = new PowerMockRule();
 
+    @Rule
+    public PowerMockRule rule = new PowerMockRule ();
 
     @Test
     public void playAMockedSound () throws Exception {
-        AudioTrack audioTrack = Mockito.mock (AudioTrack.class);
-        Mockito.when (audioTrack.getPlaybackHeadPosition ()).thenAnswer (new Answer<Integer> (){
+        final AudioTrack audioTrack = Mockito.mock (AudioTrack.class);
+        Mockito.when (audioTrack.getPlaybackHeadPosition ()).thenAnswer (new Answer<Integer> () {
             int i = 0;
+
             @Override
-            public Integer answer (InvocationOnMock invocation) throws Throwable {
-                return Math.min (5, i++ / 2);
+            public Integer answer (final InvocationOnMock invocation) throws Throwable {
+                return Math.min (5, this.i++ / 2);
             }
-            
+
         });
         PowerMockito.whenNew (AudioTrack.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class, int.class)
-                                               .withArguments (Mockito.any(int.class), Mockito.any(int.class), Mockito.any(int.class), Mockito.any(int.class), Mockito.any(int.class), Mockito.any(int.class)).thenReturn (audioTrack);
-        InputStream inputStream = FluentClient.start ().withClasspathResource ("before.wav").importToStream ().stopWithInputStream ();
-        StreamInfo streamInfo = FluentClient.start ().withAudioInputStream (inputStream).stopWithStreamInfo ();
+                .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
+        final InputStream inputStream = FluentClient.start ().withClasspathResource ("before.wav").importToStream ().stopWithInputStream ();
+        final StreamInfo streamInfo = FluentClient.start ().withAudioInputStream (inputStream).stopWithStreamInfo ();
         final AndroidPlaySoundProcessor processor = new AndroidPlaySoundProcessor ();
-        Object o = processor.play (inputStream, streamInfo);
+        final Object o = processor.play (inputStream, streamInfo);
         synchronized (o) {
             o.wait ();
         }

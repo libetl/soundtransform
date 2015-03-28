@@ -13,7 +13,7 @@ final class DefaultCallTransformService extends AbstractLogAware<DefaultCallTran
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.converted.sound.CallTransformService
      * #apply(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[],

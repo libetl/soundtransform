@@ -13,7 +13,7 @@ final class DefaultModifySoundService implements ModifySoundService {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService
      * #append(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[],
@@ -34,7 +34,7 @@ final class DefaultModifySoundService implements ModifySoundService {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService
      * #

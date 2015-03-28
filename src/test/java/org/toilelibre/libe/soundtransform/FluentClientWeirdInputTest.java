@@ -51,8 +51,7 @@ public class FluentClientWeirdInputTest {
         try {
             final List<Spectrum<Serializable> []> list = new ArrayList<Spectrum<Serializable> []> ();
             @SuppressWarnings ("unchecked")
-            final
-            Spectrum<Serializable> [] emptySpectrumArray = new Spectrum [0];
+            final Spectrum<Serializable> [] emptySpectrumArray = new Spectrum [0];
             list.add (emptySpectrumArray);
             FluentClient.start ().withSpectrums (list).extractSound ();
             Assert.fail ("Should have failed with a empty spectrum array");
