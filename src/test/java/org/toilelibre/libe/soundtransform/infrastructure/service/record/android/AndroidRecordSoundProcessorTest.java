@@ -107,7 +107,7 @@ public class AndroidRecordSoundProcessorTest {
             }
         });
         PowerMockito.whenNew (AudioRecord.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class).withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioRecord);
-        final InputStream is = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 1000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
+        final InputStream is = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
         Assert.assertThat (is.available (), new GreaterThan<Integer> (0));
     }
 }
