@@ -84,6 +84,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.12.4</version>
 				<configuration>
+					<forkMode>pertest</forkMode> 
 					<classpathDependencyExcludes>
 						<classpathDependencyExclude>com.github.tony19:logback-android-classic</classpathDependencyExclude>
 					</classpathDependencyExcludes>
