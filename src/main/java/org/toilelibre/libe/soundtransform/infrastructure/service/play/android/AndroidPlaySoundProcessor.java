@@ -3,12 +3,10 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.play.android;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException.PlaySoundErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
-import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
@@ -52,16 +50,10 @@ final class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundP
 
     @Override
     public Object play (final InputStream ais, final StreamInfo streamInfo) throws PlaySoundException {
-        StreamInfo si;
-        try {
-            si = $.select (AudioFormatParser.class).getStreamInfo (ais);
-        } catch (final SoundTransformException ste) {
-            throw new PlaySoundException (ste);
-        }
-        final int channelConf = this.getChannelConfiguration (si);
-        final AudioTrack audioTrack = new AudioTrack (AudioManager.STREAM_MUSIC, (int) si.getSampleRate (), channelConf, streamInfo.getSampleSize () == 2 ? AudioFormat.ENCODING_PCM_16BIT : AudioFormat.ENCODING_PCM_8BIT, (int) si.getFrameLength () * streamInfo.getSampleSize (),
+        final int channelConf = this.getChannelConfiguration (streamInfo);
+        final AudioTrack audioTrack = new AudioTrack (AudioManager.STREAM_MUSIC, (int) streamInfo.getSampleRate (), channelConf, streamInfo.getSampleSize () == 2 ? AudioFormat.ENCODING_PCM_16BIT : AudioFormat.ENCODING_PCM_8BIT, (int) streamInfo.getFrameLength () * streamInfo.getSampleSize (),
                 AudioTrack.MODE_STATIC);
-        final byte [] baSoundByteArray = new byte [(int) si.getFrameLength () * si.getSampleSize ()];
+        final byte [] baSoundByteArray = new byte [(int) streamInfo.getFrameLength () * streamInfo.getSampleSize ()];
         try {
             final int byteArraySize = ais.read (baSoundByteArray);
             this.log (new LogEvent (AndroidPlaySoundProcessorEventCode.READ_BYTEARRAY_SIZE, byteArraySize));
