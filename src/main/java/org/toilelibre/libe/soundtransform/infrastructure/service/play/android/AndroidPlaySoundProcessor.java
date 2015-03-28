@@ -20,6 +20,13 @@ import android.media.AudioTrack;
 
 final class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundProcessor> implements PlaySoundProcessor {
 
+    private static final int EIGHT = 8;
+    private static final int SIX   = 6;
+    private static final int FIVE  = 5;
+    private static final int FOUR  = 4;
+    private static final int TWO   = 2;
+    private static final int ONE   = 1;
+
     public enum AndroidPlaySoundProcessorEventCode implements EventCode {
         READ_BYTEARRAY_SIZE (LogLevel.PARANOIAC, "Byte array size read : %1d");
 
@@ -51,8 +58,8 @@ final class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundP
     @Override
     public Object play (final InputStream ais, final StreamInfo streamInfo) throws PlaySoundException {
         final int channelConf = this.getChannelConfiguration (streamInfo);
-        final AudioTrack audioTrack = new AudioTrack (AudioManager.STREAM_MUSIC, (int) streamInfo.getSampleRate (), channelConf, streamInfo.getSampleSize () == 2 ? AudioFormat.ENCODING_PCM_16BIT : AudioFormat.ENCODING_PCM_8BIT, (int) streamInfo.getFrameLength () * streamInfo.getSampleSize (),
-                AudioTrack.MODE_STATIC);
+        final AudioTrack audioTrack = new AudioTrack (AudioManager.STREAM_MUSIC, (int) streamInfo.getSampleRate (), channelConf, streamInfo.getSampleSize () == AndroidPlaySoundProcessor.TWO ? AudioFormat.ENCODING_PCM_16BIT : AudioFormat.ENCODING_PCM_8BIT, (int) streamInfo.getFrameLength ()
+                * streamInfo.getSampleSize (), AudioTrack.MODE_STATIC);
         final byte [] baSoundByteArray = new byte [(int) streamInfo.getFrameLength () * streamInfo.getSampleSize ()];
         try {
             final int byteArraySize = ais.read (baSoundByteArray);
@@ -67,7 +74,7 @@ final class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundP
         final Thread thread = new Thread () {
             @Override
             public void run () {
-                int lastFrame = -1;
+                int lastFrame = -AndroidPlaySoundProcessor.ONE;
                 while (lastFrame != audioTrack.getPlaybackHeadPosition ()) {
                     lastFrame = audioTrack.getPlaybackHeadPosition ();
                     try {
@@ -87,22 +94,22 @@ final class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundP
     private int getChannelConfiguration (final StreamInfo streamInfo) {
         final int channelConf;
         switch (streamInfo.getChannels ()) {
-            case 1 :
+            case AndroidPlaySoundProcessor.ONE :
                 channelConf = AudioFormat.CHANNEL_OUT_MONO;
                 break;
-            case 2 :
+            case AndroidPlaySoundProcessor.TWO :
                 channelConf = AudioFormat.CHANNEL_OUT_STEREO;
                 break;
-            case 4 :
+            case AndroidPlaySoundProcessor.FOUR :
                 channelConf = AudioFormat.CHANNEL_OUT_QUAD;
                 break;
-            case 5 :
+            case AndroidPlaySoundProcessor.FIVE :
                 channelConf = AudioFormat.CHANNEL_OUT_SURROUND;
                 break;
-            case 6 :
+            case AndroidPlaySoundProcessor.SIX :
                 channelConf = AudioFormat.CHANNEL_OUT_5POINT1;
                 break;
-            case 8 :
+            case AndroidPlaySoundProcessor.EIGHT :
                 channelConf = AudioFormat.CHANNEL_OUT_7POINT1;
                 break;
             default :
