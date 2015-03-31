@@ -1,7 +1,9 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.play.android;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -45,5 +47,40 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
             o.wait ();
         }
         Mockito.verify (audioTrack, Mockito.times (13)).getPlaybackHeadPosition ();
+    }
+
+    @Test
+    public void playRandomBytes () throws Exception {
+        for (int j : new int [] { 1, 2, 4, 5, 6, 8 }) {
+            final AudioTrack audioTrack = Mockito.mock (AudioTrack.class);
+            Mockito.when (audioTrack.getPlaybackHeadPosition ()).thenAnswer (new Answer<Integer> () {
+                int i = 0;
+
+                @Override
+                public Integer answer (final InvocationOnMock invocation) throws Throwable {
+                    return Math.min (1, this.i++ / 2);
+                }
+
+            });
+            PowerMockito.whenNew (AudioTrack.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class, int.class)
+                    .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
+            final InputStream inputStream = this.generateRandomBytes ();
+            final StreamInfo streamInfo = new StreamInfo (j, 100000, 2, 44100, false, true, null);
+            final AndroidPlaySoundProcessor processor = new AndroidPlaySoundProcessor ();
+            final Object o = processor.play (inputStream, streamInfo);
+            synchronized (o) {
+                o.wait ();
+            }
+            Mockito.verify (audioTrack, Mockito.times (5)).getPlaybackHeadPosition ();
+        }
+    }
+
+    private InputStream generateRandomBytes () {
+        final RandomDataGenerator rdg = new RandomDataGenerator ();
+        final byte [] data = new byte [65536];
+        for (int i = 0 ; i < data.length ; i++) {
+            data [i] = (byte) rdg.nextInt (Byte.MIN_VALUE, Byte.MAX_VALUE);
+        }
+        return new ByteArrayInputStream (data);
     }
 }
