@@ -75,7 +75,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         // format is an AudioFormat object
         final DataLine.Info info = new DataLine.Info (TargetDataLine.class, audioFormat);
 
-        if (!this.checkLineSupported (info)){
+        if (!this.checkLineSupported (info)) {
             throw new SoundTransformException (TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_NOT_SUPPORTED, new UnsupportedOperationException (), audioFormat);
         }
 
@@ -93,13 +93,13 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         this.readerThread.start ();
     }
 
-    private boolean checkLineSupported(Info info) {
+    private boolean checkLineSupported (final Info info) {
         return AudioSystem.isLineSupported (info);
     }
 
-    private TargetDataLine getDataLine (Info info) throws SoundTransformException {
+    private TargetDataLine getDataLine (final Info info) throws SoundTransformException {
         try {
-        return (TargetDataLine) AudioSystem.getLine (info);
+            return (TargetDataLine) AudioSystem.getLine (info);
         } catch (final LineUnavailableException ex) {
             throw new SoundTransformException (TargetDataLineRecordSoundProcessorErrorCode.TARGET_LINE_UNAVAILABLE, ex);
         }

@@ -63,7 +63,7 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.
      * SpectrumToStringH
      * #fsToString(org.toilelibre.libe.soundtransform.model.converted
@@ -76,7 +76,7 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.spectrum.
      * SpectrumToStringH
      * #fsToString(org.toilelibre.libe.soundtransform.model.converted

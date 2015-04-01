@@ -27,16 +27,16 @@ import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
     @Rule
-    public PowerMockRule rule = new PowerMockRule ();
-    
+    public PowerMockRule                      rule = new PowerMockRule ();
+
     @InjectMocks
     public TargetDataLineRecordSoundProcessor processor;
 
     @Test
     public void mockRecordedSound () throws Exception {
-        this.rule.hashCode();
+        this.rule.hashCode ();
         final byte [][] buffers = new byte [15] [1024];
-        for (int i = 0 ; i < 14 ; i++){
+        for (int i = 0 ; i < 14 ; i++) {
             new Random ().nextBytes (buffers [i]);
         }
         buffers [14] = new byte [0];
@@ -45,18 +45,18 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         Assert.assertThat (is.available (), new GreaterThan<Integer> (0));
     }
 
-    private void mockRecordSoundProcessor (final byte[][] buffers) throws Exception {
-        TargetDataLine dataLine = Mockito.mock (TargetDataLine.class);
+    private void mockRecordSoundProcessor (final byte [][] buffers) throws Exception {
+        final TargetDataLine dataLine = Mockito.mock (TargetDataLine.class);
         Mockito.when (dataLine.getBufferSize ()).thenReturn (8192);
-        Mockito.when (dataLine.read(Mockito.any (byte[].class), Mockito.any (int.class), Mockito.any (int.class))).thenAnswer(new Answer<Integer> (){
+        Mockito.when (dataLine.read (Mockito.any (byte [].class), Mockito.any (int.class), Mockito.any (int.class))).thenAnswer (new Answer<Integer> () {
             int i = 0;
-            
+
             @Override
-            public Integer answer(InvocationOnMock invocation) throws Throwable {
-                System.arraycopy (buffers [Math.min (14, i)], 0, invocation.getArgumentAt (0, Object.class), 0, buffers [Math.min (14, i)].length);
-                return buffers [Math.min (14, i++)].length;
+            public Integer answer (final InvocationOnMock invocation) throws Throwable {
+                System.arraycopy (buffers [Math.min (14, this.i)], 0, invocation.getArgumentAt (0, Object.class), 0, buffers [Math.min (14, this.i)].length);
+                return buffers [Math.min (14, this.i++)].length;
             }
-            
+
         });
         PowerMockito.spy (ApplicationInjector.class);
         PowerMockito.when (ApplicationInjector.$.select (RecordSoundProcessor.class)).thenReturn (this.processor);

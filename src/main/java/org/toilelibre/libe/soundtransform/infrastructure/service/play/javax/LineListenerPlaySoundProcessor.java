@@ -79,7 +79,7 @@ final class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
         }
     }
 
-    private Line getLine (Info linfo) throws LineUnavailableException {
+    private Line getLine (final Info linfo) throws LineUnavailableException {
         return AudioSystem.getLine (linfo);
     }
 

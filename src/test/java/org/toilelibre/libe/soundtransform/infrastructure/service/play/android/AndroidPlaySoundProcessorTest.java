@@ -27,7 +27,7 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
 
     @Test
     public void playAMockedSound () throws Exception {
-        this.rule.hashCode();
+        this.rule.hashCode ();
         final AudioTrack audioTrack = Mockito.mock (AudioTrack.class);
         Mockito.when (audioTrack.getPlaybackHeadPosition ()).thenAnswer (new Answer<Integer> () {
             int i = 0;
@@ -39,14 +39,14 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
 
         });
         PowerMockito.whenNew (AudioTrack.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class, int.class)
-                .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
+        .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
         final InputStream inputStream = FluentClient.start ().withClasspathResource ("before.wav").importToStream ().stopWithInputStream ();
         final StreamInfo streamInfo = FluentClient.start ().withAudioInputStream (inputStream).stopWithStreamInfo ();
         final AndroidPlaySoundProcessor processor = new AndroidPlaySoundProcessor ();
         final Object o = processor.play (inputStream, streamInfo);
         boolean waited = false;
         synchronized (o) {
-            while (!waited){
+            while (!waited) {
                 waited = true;
                 o.wait ();
             }
@@ -56,7 +56,7 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
 
     @Test
     public void playRandomBytes () throws Exception {
-        for (int j : new int [] { 1, 2, 4, 5, 6, 8 }) {
+        for (final int j : new int [] { 1, 2, 4, 5, 6, 8 }) {
             final AudioTrack audioTrack = Mockito.mock (AudioTrack.class);
             Mockito.when (audioTrack.getPlaybackHeadPosition ()).thenAnswer (new Answer<Integer> () {
                 int i = 0;
@@ -68,14 +68,14 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
 
             });
             PowerMockito.whenNew (AudioTrack.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class, int.class)
-                    .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
+            .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
             final InputStream inputStream = this.generateRandomBytes ();
             final StreamInfo streamInfo = new StreamInfo (j, 100000, 2, 44100, false, true, null);
             final AndroidPlaySoundProcessor processor = new AndroidPlaySoundProcessor ();
             final Object o = processor.play (inputStream, streamInfo);
             boolean waited = false;
             synchronized (o) {
-                while (!waited){
+                while (!waited) {
                     waited = true;
                     o.wait ();
                 }

@@ -10,7 +10,7 @@ final class DefaultSpectrumToStringService<T> implements SpectrumToStringService
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.model.converted.spectrum.
      * Spectrum2StringHelper
      * #convert(org.toilelibre.libe.soundtransform.model.converted

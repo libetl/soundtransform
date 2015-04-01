@@ -11,7 +11,7 @@ final class GraphSoundToStringHelper implements SoundToStringHelper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.infrastructure.service.sound2string
      * .Sound2StringHelper

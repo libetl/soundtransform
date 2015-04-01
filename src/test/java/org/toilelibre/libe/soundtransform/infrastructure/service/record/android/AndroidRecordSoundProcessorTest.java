@@ -28,7 +28,7 @@ public class AndroidRecordSoundProcessorTest {
 
     @Test
     public void unintialized () throws Exception {
-        this.rule.hashCode();
+        this.rule.hashCode ();
         final AudioRecord audioRecord = Mockito.mock (AudioRecord.class);
         Mockito.when (audioRecord.getState ()).thenReturn (AudioRecord.STATE_UNINITIALIZED);
         PowerMockito.mockStatic (AudioRecord.class, new Answer<Object> () {
@@ -117,13 +117,14 @@ public class AndroidRecordSoundProcessorTest {
         final AudioRecord audioRecord = Mockito.mock (AudioRecord.class);
         Mockito.when (audioRecord.getState ()).thenReturn (AudioRecord.STATE_INITIALIZED);
         Mockito.when (audioRecord.getRecordingState ()).thenReturn (AudioRecord.STATE_INITIALIZED);
-        Mockito.when (audioRecord.read (Matchers.any (short [].class), Matchers.any (int.class), Matchers.any (int.class))).thenAnswer (new Answer<Integer> (){
+        Mockito.when (audioRecord.read (Matchers.any (short [].class), Matchers.any (int.class), Matchers.any (int.class))).thenAnswer (new Answer<Integer> () {
             int i = 0;
+
             @Override
-            public Integer answer (InvocationOnMock invocation) throws Throwable {
-                return i++ < 2 ? 1024 : 0;
+            public Integer answer (final InvocationOnMock invocation) throws Throwable {
+                return this.i++ < 2 ? 1024 : 0;
             }
-            
+
         });
         PowerMockito.mockStatic (AudioRecord.class, new Answer<Object> () {
 

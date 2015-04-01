@@ -22,7 +22,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#adjust
      * (float[])
@@ -34,7 +34,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#compress
      * (float[], float)
@@ -46,7 +46,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#
      * filterRange(float[], float, float)
      */
@@ -57,7 +57,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#insertPart
      * (float[], float[], int)
@@ -69,7 +69,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#octaveDown
      * (float[])
@@ -81,7 +81,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#octaveUp
      * (float[])
@@ -93,7 +93,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.model.freqs.LoudestFreqsService#
      * replacePart(float[], float[], int)
      */
