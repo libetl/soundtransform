@@ -190,6 +190,7 @@
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-classloading-xstream</artifactId>
 			<version>1.6.2</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.tony19</groupId>
