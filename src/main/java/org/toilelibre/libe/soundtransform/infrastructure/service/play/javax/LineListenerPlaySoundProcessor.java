@@ -7,6 +7,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.Line;
+import javax.sound.sampled.Line.Info;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
@@ -63,7 +64,7 @@ final class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
         }
         try {
             final Line.Info linfo = new Line.Info (Clip.class);
-            final Line line = AudioSystem.getLine (linfo);
+            final Line line = this.getLine (linfo);
             final Clip clip = (Clip) line;
             this.addLineListener (clip);
             clip.open ((AudioInputStream) ais);
@@ -76,6 +77,10 @@ final class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
         } catch (final IllegalArgumentException e) {
             throw new PlaySoundException (e);
         }
+    }
+
+    private Line getLine (Info linfo) throws LineUnavailableException {
+        return AudioSystem.getLine (linfo);
     }
 
 }
