@@ -14,7 +14,7 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 
-class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
+final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
 
     public enum TargetDataLineRecordSoundProcessorErrorCode implements ErrorCode {
 

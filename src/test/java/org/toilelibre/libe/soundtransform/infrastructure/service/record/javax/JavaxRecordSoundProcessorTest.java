@@ -9,6 +9,7 @@ import javax.sound.sampled.TargetDataLine;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.internal.matchers.GreaterThan;
 import org.mockito.invocation.InvocationOnMock;
@@ -27,6 +28,9 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
     @Rule
     public PowerMockRule rule = new PowerMockRule ();
+    
+    @InjectMocks
+    public TargetDataLineRecordSoundProcessor processor;
 
     @Test
     public void mockRecordedSound () throws Exception {
@@ -42,7 +46,6 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
     }
 
     private void mockRecordSoundProcessor (final byte[][] buffers) throws Exception {
-        TargetDataLineRecordSoundProcessor processor = Mockito.spy (new TargetDataLineRecordSoundProcessor ());
         TargetDataLine dataLine = Mockito.mock (TargetDataLine.class);
         Mockito.when (dataLine.getBufferSize ()).thenReturn (8192);
         Mockito.when (dataLine.read(Mockito.any (byte[].class), Mockito.any (int.class), Mockito.any (int.class))).thenAnswer(new Answer<Integer> (){
@@ -56,7 +59,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
             
         });
         PowerMockito.spy (ApplicationInjector.class);
-        PowerMockito.when (ApplicationInjector.$.select (RecordSoundProcessor.class)).thenReturn (processor);
+        PowerMockito.when (ApplicationInjector.$.select (RecordSoundProcessor.class)).thenReturn (this.processor);
         PowerMockito.stub (PowerMockito.method (TargetDataLineRecordSoundProcessor.class, "getDataLine", Info.class)).toReturn (dataLine);
         PowerMockito.stub (PowerMockito.method (TargetDataLineRecordSoundProcessor.class, "checkLineSupported", Info.class)).toReturn (true);
     }
