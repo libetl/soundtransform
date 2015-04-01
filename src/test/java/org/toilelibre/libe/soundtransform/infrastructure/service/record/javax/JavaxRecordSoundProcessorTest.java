@@ -57,5 +57,6 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         PowerMockito.spy (ApplicationInjector.class);
         PowerMockito.when (ApplicationInjector.$.select (RecordSoundProcessor.class)).thenReturn (processor);
         PowerMockito.stub (PowerMockito.method (TargetDataLineRecordSoundProcessor.class, "getDataLine", Info.class)).toReturn (dataLine);
+        PowerMockito.stub (PowerMockito.method (TargetDataLineRecordSoundProcessor.class, "checkLineSupported", Info.class)).toReturn (true);
     }
 }
