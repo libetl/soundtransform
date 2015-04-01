@@ -6,6 +6,7 @@ import java.io.InputStream;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.DataLine.Info;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
@@ -13,7 +14,7 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 
-final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
+class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
 
     public enum TargetDataLineRecordSoundProcessorErrorCode implements ErrorCode {
 
@@ -78,8 +79,8 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
             throw new SoundTransformException (TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_NOT_SUPPORTED, new UnsupportedOperationException (), audioFormat);
         }
         // Obtain and open the line.
+        this.line = this.getDataLine (info);
         try {
-            this.line = (TargetDataLine) AudioSystem.getLine (info);
             this.line.open (audioFormat);
         } catch (final LineUnavailableException ex) {
             throw new SoundTransformException (TargetDataLineRecordSoundProcessorErrorCode.TARGET_LINE_UNAVAILABLE, ex);
@@ -89,6 +90,15 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         this.line.start ();
         this.readerThread = new TargetDataLineReaderThread (this.line);
         this.readerThread.start ();
+    }
+
+    private TargetDataLine getDataLine (Info info) throws SoundTransformException {
+        try {
+        return (TargetDataLine) AudioSystem.getLine (info);
+        } catch (final LineUnavailableException ex) {
+            throw new SoundTransformException (TargetDataLineRecordSoundProcessorErrorCode.TARGET_LINE_UNAVAILABLE, ex);
+        }
+
     }
 
     private void stopRecording () {
