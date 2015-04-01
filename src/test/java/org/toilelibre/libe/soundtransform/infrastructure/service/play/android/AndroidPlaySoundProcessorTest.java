@@ -70,7 +70,7 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
         PowerMockito.whenNew (AudioTrack.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class, int.class)
         .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
         FluentClient.start ().withClasspathResource ("gpiano3.wav").convertIntoSound ().playIt ();
-        Mockito.verify (audioTrack, Mockito.atLeast (1)).getPlaybackHeadPosition ();
+        Mockito.verify (audioTrack, Mockito.atLeast (1)).write (Mockito.any (byte [].class), Mockito.anyInt (), Mockito.anyInt ());
     }
 
     @Test
