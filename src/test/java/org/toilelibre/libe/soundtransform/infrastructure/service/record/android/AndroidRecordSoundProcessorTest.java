@@ -28,6 +28,7 @@ public class AndroidRecordSoundProcessorTest {
 
     @Test
     public void unintialized () throws Exception {
+        this.rule.hashCode();
         final AudioRecord audioRecord = Mockito.mock (AudioRecord.class);
         Mockito.when (audioRecord.getState ()).thenReturn (AudioRecord.STATE_UNINITIALIZED);
         PowerMockito.mockStatic (AudioRecord.class, new Answer<Object> () {

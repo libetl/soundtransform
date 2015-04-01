@@ -30,6 +30,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
     @Test
     public void mockRecordedSound () throws Exception {
+        this.rule.hashCode();
         final byte [][] buffers = new byte [15] [1024];
         for (int i = 0 ; i < 14 ; i++){
             new Random ().nextBytes (buffers [i]);

@@ -27,6 +27,7 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
 
     @Test
     public void playAMockedSound () throws Exception {
+        this.rule.hashCode();
         final AudioTrack audioTrack = Mockito.mock (AudioTrack.class);
         Mockito.when (audioTrack.getPlaybackHeadPosition ()).thenAnswer (new Answer<Integer> () {
             int i = 0;
@@ -43,8 +44,12 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
         final StreamInfo streamInfo = FluentClient.start ().withAudioInputStream (inputStream).stopWithStreamInfo ();
         final AndroidPlaySoundProcessor processor = new AndroidPlaySoundProcessor ();
         final Object o = processor.play (inputStream, streamInfo);
+        boolean waited = false;
         synchronized (o) {
-            o.wait ();
+            while (!waited){
+                waited = true;
+                o.wait ();
+            }
         }
         Mockito.verify (audioTrack, Mockito.times (13)).getPlaybackHeadPosition ();
     }
@@ -68,8 +73,12 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
             final StreamInfo streamInfo = new StreamInfo (j, 100000, 2, 44100, false, true, null);
             final AndroidPlaySoundProcessor processor = new AndroidPlaySoundProcessor ();
             final Object o = processor.play (inputStream, streamInfo);
+            boolean waited = false;
             synchronized (o) {
-                o.wait ();
+                while (!waited){
+                    waited = true;
+                    o.wait ();
+                }
             }
             Mockito.verify (audioTrack, Mockito.times (5)).getPlaybackHeadPosition ();
         }
