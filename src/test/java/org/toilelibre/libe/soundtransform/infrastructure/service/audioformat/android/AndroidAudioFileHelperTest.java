@@ -60,6 +60,16 @@ public class AndroidAudioFileHelperTest extends SoundTransformAndroidTest {
     }
 
     @Test
+    public void toStreamNotStreamInfo () {
+        try {
+            new AndroidAudioFileHelper ().toStream (new byte [0], new Object ());
+            Assert.fail ("Should have thrown an exception here");
+        } catch (SoundTransformException e) {
+            Assert.assertEquals (e.getErrorCode (), AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ);
+        }
+    }
+
+    @Test
     public void writeInputStreamWrongFileNotFound () {
         try {
             new AndroidAudioFileHelper ().writeInputStream (new ByteArrayWithAudioFormatInputStream (new byte [0],
