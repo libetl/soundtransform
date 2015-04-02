@@ -1,5 +1,6 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,4 +47,14 @@ public class AndroidAudioFileHelperTest extends SoundTransformAndroidTest {
         }
     }
 
+
+    @Test
+    public void writeInputStreamFileNotFound () {
+        try {
+            new AndroidAudioFileHelper ().writeInputStream (new ByteArrayInputStream (new byte [0]), new File (""));
+            Assert.fail ("Should have thrown an exception here");
+        } catch (SoundTransformException e) {
+            Assert.assertEquals (e.getErrorCode (), AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ);
+        }
+    }
 }
