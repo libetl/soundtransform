@@ -80,7 +80,11 @@ public class JavaxPlaySoundProcessorTest extends SoundTransformTest {
     private LineListener [] mockNecessaryClasses (final Clip clip) throws InterruptedException {
 
         final LineListener [] ll = new LineListener [1];
-        PowerMockito.doCallRealMethod ().when (clip).wait ();
+        boolean waited = false;
+        while (!waited){
+          PowerMockito.doCallRealMethod ().when (clip).wait ();
+          waited = true;
+        }
         PowerMockito.doAnswer (new Answer<Void> () {
             @Override
             public Void answer (final InvocationOnMock invocation) throws Throwable {
