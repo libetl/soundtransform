@@ -4,7 +4,14 @@
 [![Build Status](https://travis-ci.org/libetl/soundtransform.svg?branch=master)](https://travis-ci.org/libetl/soundtransform) [![API](https://img.shields.io/badge/API-8%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=8) [![Coverage Status](https://coveralls.io/repos/libetl/soundtransform/badge.svg)](https://coveralls.io/r/libetl/soundtransform)
 
 Android library to shape a voice with an instrument.
-## How to use the library :
+
+Summary : 
+
+1.  ![How to use the library](README.md#how-to-use-the-library)
+2.  ![FluentClient](README.md#fluentclient)
+3.  ![SoundTransformation classes](README.md#soundtransformation-classes)
+
+## How to use the library
 * Insert the aar into your project dependencies :
 ```xml
 <dependency>
@@ -22,19 +29,19 @@ Android library to shape a voice with an instrument.
 ``` 
 * Remove the ```<exclusions/>``` tag if your enclosing project is a Java project (and not android)
 * Replace x.x.x with the version you need (do not hesitate to use the latest one).
-*  Make sure you have access to the FluentClient class in your project (try the autocompletion feature of your IDE if you have one)
+* Make sure you have access to the FluentClient class in your project (try the autocompletion feature of your IDE if you have one)
 * Read the below documentation about the FluentClient facility
 * Have a look at the available SoundTransformation classes
 * Use the lib by yourself
 
-## FluentClient :
+## FluentClient
 The FluentClient service provider interface is a simple class to give a shortcut to all the features of the lib without walking in the nested classes.
 
 It helps you to proceed to the correct actions at each step, giving you the right programming interface during the pipeline.
 
 To use it, it is only needed to chain the methods invocation. it will always start with a ```FluentClient.start()```, can end with a stop method and can contains an ```andAfterStart``` call to chain two processes in the same instruction of code.
 
-## FluentClient samples :
+### FluentClient samples :
 ```java
 
 //Set the default Slf4J logger and the log threshold as "WARNING" (the only output will be the warning and error logs)
@@ -59,7 +66,7 @@ FluentClient.start ().withClasspathResource ("lowfi.wav").convertIntoSound ().ch
 
 Please have a look at the many different actions that you can ask to the FluentClient in this [JUnit Test](src/test/java/org/toilelibre/libe/soundtransform/FluentClientTest.java)
 
-## FluentClient Javadoc :
+### FluentClient Javadoc :
 
 Four steps can be identified when using the FluentClient SPI :
 
@@ -68,9 +75,9 @@ Four steps can be identified when using the FluentClient SPI :
  3. operations (optional) : several chained method calls to transform the data in a "one-lined" way
  4. method flow stops (optional) : one call to `stopWith... ()` to get the currently stored data
 
-### 1. static init
+#### 1. static init
 
-####   FluentClient.setDefaultObserversValue
+#####   FluentClient.setDefaultObserversValue
 
 ```java
 static void setDefaultObserversValue (Observer... defaultObservers1)
@@ -84,9 +91,9 @@ It can be useful if you are going to use the FluentClient several times but you 
 Parameters:  
 `defaultObservers1` - one or more observer(s)
 
-### 2. start of the flow
+#### 2. start of the flow
 
-####   FluentClient.start (*only way to start a FluentClient*)
+#####   FluentClient.start (*only way to start a FluentClient*)
 
 ```java
 static FluentClientReady start ()
@@ -97,7 +104,7 @@ Startup the client
 Returns:  
 the client, ready to start
 
-####   FluentClientReady.withAnObserver (before another with.. method)
+#####   FluentClientReady.withAnObserver (before another with.. method)
 
 ```java
 FluentClientReady withAnObserver (Observer... observers1)
@@ -112,7 +119,7 @@ Parameters:
 Returns:  
 the client, ready to start
 
-####   FluentClientReady.withAPack (just after start)
+#####   FluentClientReady.withAPack (just after start)
 
 ```java
 FluentClientReady withAPack (String packName, InputStream jsonStream) throws SoundTransformException
@@ -132,7 +139,7 @@ the client, ready to start
 Throws:  
 `SoundTransformException` - the input stream cannot be read, or the json format is not correct, or some sound files are missing
 
-####   FluentClientReady.withAPack (just after start) (Android only)
+#####   FluentClientReady.withAPack (just after start) (Android only)
 
 ```java
 FluentClientReady withAPack  (String packName, Object context, Class<?> rClass, int packJsonId) throws SoundTransformException
@@ -157,7 +164,7 @@ the client, ready to start
 Throws:  
 `SoundTransformException` - the input stream cannot be read, or the json format is not correct, or some sound files are missing
 
-####   FluentClientReady.withAPack (just after start)
+#####   FluentClientReady.withAPack (just after start)
 
 ```java
 FluentClientReady withAPack (String packName, String jsonContent) throws SoundTransformException
@@ -197,7 +204,7 @@ the client, ready to start
 Throws:  
 `SoundTransformException` - the json content is invalid, the json format is not correct, or some sound files are missing
 
-####   FluentClientReady.withAudioInputStream (just after start)
+#####   FluentClientReady.withAudioInputStream (just after start)
 
 ```java
 FluentClientWithInputStream withAudioInputStream (InputStream ais)
@@ -213,7 +220,7 @@ Parameters:
 Returns:  
 the client, with an input stream
 
-####   FluentClientReady.withClasspathResource (just after start)
+#####   FluentClientReady.withClasspathResource (just after start)
 
 ```java
 FluentClientWithFile withClasspathResource (String resource) throws SoundTransformException
@@ -231,7 +238,7 @@ the client, with a file
 Throws:  
 `SoundTransformException` - the classpath resource was not found
 
-####   FluentClientReady.withFile (just after start)
+#####   FluentClientReady.withFile (just after start)
 
 ```java
 FluentClientWithFile withFile (File file1)
@@ -246,7 +253,7 @@ Parameters:
 Returns:  
 the client, with a file
 
-####   FluentClientReady.withFreqs (just after start)
+#####   FluentClientReady.withFreqs (just after start)
 
 ```java
 FluentClientWithFreqs withFreqs (float [] freqs1)
@@ -261,7 +268,7 @@ Parameters:
 Returns:  
 the client, with a loudest frequencies float array
 
-####   FluentClientReady.withLimitedTimeRecordedInputStream (just after start)
+#####   FluentClientReady.withLimitedTimeRecordedInputStream (just after start)
 
 ```java
 FluentClientWithInputStream withLimitedTimeRecordedInputStream (StreamInfo streamInfo) throws SoundTransformException
@@ -281,7 +288,7 @@ the client, with an input stream
 Throws:  
 `SoundTransformException` - the mic could not be read, the recorder could not start, or the buffer did not record anything
 
-####   FluentClientReady.withRawInputStream (just after start)
+#####   FluentClientReady.withRawInputStream (just after start)
 
 ```java
 FluentClientWithInputStream withRawInputStream (InputStream is, StreamInfo isInfo) throws SoundTransformException
@@ -302,7 +309,7 @@ the client, with an input stream
 Throws:  
 `SoundTransformException` - the input stream cannot be read, or the conversion did not work
 
-####   FluentClientReady.withRecordedInputStream (just after start)
+#####   FluentClientReady.withRecordedInputStream (just after start)
 
 ```java
 FluentClientWithInputStream withRecordedInputStream (StreamInfo streamInfo, Object stop) throws SoundTransformException
@@ -326,7 +333,7 @@ the client, with an input stream
 Throws:  
 `SoundTransformException` - the mic could not be read, the recorder could not start, or the buffer did not record anything
 
-####   FluentClientReady.withSounds (just after start)
+#####   FluentClientReady.withSounds (just after start)
 
 ```java
 FluentClientSoundImported withSounds (Sound [] sounds1)
@@ -341,7 +348,7 @@ Parameters:
 Returns:  
 the client, with an imported sound
 
-####   FluentClientReady.withSpectrums (just after start)
+#####   FluentClientReady.withSpectrums (just after start)
 
 ```java
 FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable> []> spectrums)
@@ -357,9 +364,9 @@ Parameters:
 Returns:  
 the client, with the spectrums
 
-### 3. operations
+#### 3. operations
 
-####   FluentClientWithFreqs.adjust
+#####   FluentClientWithFreqs.adjust
 
 ```java
 FluentClientWithFreqs adjust ()
@@ -370,7 +377,7 @@ Adjust the loudest freqs array to match exactly the piano notes frequencies
 Returns:  
 the client, with a loudest frequencies float array
 
-####   FluentClient*.andAfterStart
+#####   FluentClient*.andAfterStart
 
 ```java
 FluentClientReady andAfterStart ()
@@ -381,7 +388,7 @@ Start over the client : reset the state and the value objects nested in the clie
 Returns:  
 the client, ready to start
 
-####   FluentClientSoundImported.append
+#####   FluentClientSoundImported.append
 
 ```java
 FluentClientSoundImported append (Sound [] sounds1) throws SoundTransformException
@@ -398,7 +405,7 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException` - if the sound is null or if there is a problem with the appending please ensure that both sounds have the same number of channels
 
-####   FluentClientSoundImported.apply
+#####   FluentClientSoundImported.apply
 
 ```java
 FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException
@@ -415,7 +422,7 @@ the client with a sound imported
 Throws:  
 `SoundTransformException` - if the transform does not work
 
-####   FluentClientSoundImported.changeFormat
+#####   FluentClientSoundImported.changeFormat
 
 ```java
 FluentClientSoundImported changeFormat (FormatInfo formatInfo) throws SoundTransformException
@@ -432,7 +439,7 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException`
 
-####   FluentClientWithFreqs.compress
+#####   FluentClientWithFreqs.compress
 
 ```java
 FluentClientWithFreqs compress (float factor)
@@ -449,7 +456,7 @@ Parameters:
 Returns:  
 the client, with a loudest frequencies float array
 
-####   FluentClientWithFile.convertIntoSound
+#####   FluentClientWithFile.convertIntoSound
 
 ```java
 FluentClientSoundImported convertIntoSound () throws SoundTransformException
@@ -464,7 +471,7 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException` - if one of the two import fails
 
-####   FluentClientSoundImported.cutSubSound
+#####   FluentClientSoundImported.cutSubSound
 
 ```java
 FluentClientSoundImported cutSubSound (int start, int end) throws SoundTransformException
@@ -484,7 +491,7 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException` - if the indexes are out of bound
 
-####   FluentClientSoundImported.exportToClasspathResource
+#####   FluentClientSoundImported.exportToClasspathResource
 
 ```java
 FluentClientWithFile exportToClasspathResource (String resource) throws SoundTransformException
@@ -502,7 +509,7 @@ the client, with a file written
 Throws:  
 `SoundTransformException` - if one of the two operations fails
 
-####   FluentClientSoundImported.exportToClasspathResourceWithSiblingResource
+#####   FluentClientSoundImported.exportToClasspathResourceWithSiblingResource
 
 ```java
 FluentClientWithFile exportToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException
@@ -522,7 +529,7 @@ the client, with a file written
 Throws:  
 `SoundTransformException` - if one of the two operations fails
 
-####   FluentClientSoundImported.exportToFile
+#####   FluentClientSoundImported.exportToFile
 
 ```java
 FluentClientWithFile exportToFile (File file1)   throws SoundTransformException
@@ -540,7 +547,7 @@ the client, with a file written
 Throws:  
 `SoundTransformException` - if one of the two operations fails
 
-####   FluentClientSoundImported.exportToStream
+#####   FluentClientSoundImported.exportToStream
 
 ```java
 FluentClientWithInputStream exportToStream () throws SoundTransformException
@@ -555,7 +562,7 @@ the client, with an inputStream
 Throws:  
 `SoundTransformException` - if the metadata format object is invalid, or if the sound cannot be converted
 
-####   FluentClientWithSpectrums.extractSound
+#####   FluentClientWithSpectrums.extractSound
 
 ```java
 FluentClientSoundImported extractSound () throws SoundTransformException
@@ -570,7 +577,7 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException` - if the spectrums are in an invalid format, or if the transform to sound does not work
 
-####   FluentClientSoundImported.extractSubSound
+#####   FluentClientSoundImported.extractSubSound
 
 ```java
 FluentClientSoundImported extractSubSound (int start, int end) throws SoundTransformException
@@ -590,7 +597,7 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException` - if the indexes are out of bound
 
-####   FluentClientWithFreqs.filterRange
+#####   FluentClientWithFreqs.filterRange
 
 ```java
 FluentClientWithFreqs filterRange (float low, float high)
@@ -607,7 +614,7 @@ Parameters:
 Returns:  
 the client, with a loudest frequencies float array
 
-####   FluentClientSoundImported.findLoudestFrequencies
+#####   FluentClientSoundImported.findLoudestFrequencies
 
 ```java
 FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException
@@ -624,7 +631,7 @@ the client, with a loudest frequencies float array
 Throws:  
 `SoundTransformException` - if the convert fails
 
-####   FluentClientWithInputStream.importToSound
+#####   FluentClientWithInputStream.importToSound
 
 ```java
 FluentClientSoundImported importToSound () throws SoundTransformException
@@ -639,7 +646,7 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException` - the inputStream is invalid, or the convert did not work
 
-####   FluentClientWithFile.importToStream
+#####   FluentClientWithFile.importToStream
 
 ```java
 FluentClientWithInputStream importToStream () throws SoundTransformException
@@ -654,7 +661,7 @@ the client, with an inputStream
 Throws:  
 `SoundTransformException` - the current file is not valid, or the conversion did not work
 
-####   FluentClientWithFreqs.insertPart
+#####   FluentClientWithFreqs.insertPart
 
 ```java
 FluentClientWithFreqs insertPart (float [] subFreqs, int start)
@@ -671,7 +678,7 @@ Parameters:
 Returns:  
 the client, with a loudest frequencies float array
 
-####   FluentClientSoundImported.loop
+#####   FluentClientSoundImported.loop
 
 ```java
 FluentClientSoundImported loop (int length) throws SoundTransformException
@@ -689,7 +696,7 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException` - if the length is not positive
 
-####   FluentClientSoundImported.mixWith
+#####   FluentClientSoundImported.mixWith
 
 ```java
 FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException
@@ -707,7 +714,7 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException` - if the sound is null or if there is a problem with the mix
 
-####   FluentClientWithFreqs.octaveDown
+#####   FluentClientWithFreqs.octaveDown
 
 ```java
 FluentClientWithFreqs octaveDown ()
@@ -719,7 +726,7 @@ Changes the loudest frequencies array to become one octave lower
 Returns:  
 the client, with a loudest frequencies float array
 
-####   FluentClientWithFreqs.octaveUp
+#####   FluentClientWithFreqs.octaveUp
 
 ```java
 FluentClientWithFreqs octaveUp ()
@@ -730,7 +737,7 @@ Changes the loudest frequencies array to become one octave upper
 Returns:  
 the client, with a loudest frequencies float array
 
-####   FluentClientSoundImported.playIt or FluentClientWithFile.playIt or FluentClientWithInputStream.playIt or FluentClientWithSpectrums.playIt
+#####   FluentClientSoundImported.playIt or FluentClientWithFile.playIt or FluentClientWithInputStream.playIt or FluentClientWithSpectrums.playIt
 
 ```java
 <T> playIt () throws SoundTransformException
@@ -745,7 +752,7 @@ the client, with the current data
 Throws:  
 `SoundTransformException` - could not play the current audio data
 
-####   FluentClientWithFreqs.replacePart
+#####   FluentClientWithFreqs.replacePart
 
 ```java
 FluentClientWithFreqs replacePart (float [] subFreqs, int start)
@@ -762,7 +769,7 @@ Parameters:
 Returns:  
 the client, with a loudest frequencies float array
 
-####   FluentClientWithFreqs.shapeIntoSound
+#####   FluentClientWithFreqs.shapeIntoSound
 
 ```java
 FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, FormatInfo fi) throws SoundTransformException
@@ -784,7 +791,7 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException` - could not call the soundtransform to shape the freqs
 
-####   FluentClientSoundImported.splitIntoSpectrums
+#####   FluentClientSoundImported.splitIntoSpectrums
 
 ```java
 FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException
@@ -799,7 +806,7 @@ the client, with the spectrums
 Throws:  
 `SoundTransformException` - could not convert the sound into some spectrums
 
-####   FluentClientWithInputStream.writeToClasspathResource
+#####   FluentClientWithInputStream.writeToClasspathResource
 
 ```java
 FluentClientWithFile writeToClasspathResource (String resource) throws SoundTransformException
@@ -817,7 +824,7 @@ the client, with a file
 Throws:  
 `SoundTransformException` - there is no predefined classpathresource directory, or the file could not be written
 
-####   FluentClientWithInputStream.writeToClasspathResourceWithSiblingResource
+#####   FluentClientWithInputStream.writeToClasspathResourceWithSiblingResource
 
 ```java
 FluentClientWithFile writeToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException
@@ -837,7 +844,7 @@ the client, with a file
 Throws:  
 `SoundTransformException` - no such sibling resource, or the file could not be written
 
-####   FluentClientWithInputStream.writeToFile
+#####   FluentClientWithInputStream.writeToFile
 
 ```java
 FluentClientWithFile writeToFile (File file1) throws SoundTransformException
@@ -855,9 +862,9 @@ the client, with a file
 Throws:  
 `SoundTransformException` - The file could not be written
 
-### 4. method flow stops
+#### 4. method flow stops
 
-####   FluentClient*.stopWithAPack
+#####   FluentClient*.stopWithAPack
 
 ```java
 Pack stopWithAPack (String title)
@@ -871,7 +878,7 @@ Parameters:
 Returns:  
 a pack object
 
-####   FluentClientWithFile.stopWithFile
+#####   FluentClientWithFile.stopWithFile
 
 ```java
 File stopWithFile ()
@@ -882,7 +889,7 @@ Stops the client pipeline and returns the obtained file
 Returns:  
 a file
 
-####   FluentClientWithFreqs.stopWithFreqs
+#####   FluentClientWithFreqs.stopWithFreqs
 
 ```java
 float [] stopWithFreqs ()
@@ -893,7 +900,7 @@ Stops the client pipeline and returns the obtained loudest frequencies
 Returns:  
 loudest frequencies array
 
-####   FluentClientWithInputStream.stopWithInputStream
+#####   FluentClientWithInputStream.stopWithInputStream
 
 ```java
 InputStream stopWithInputStream ()
@@ -904,7 +911,7 @@ Stops the client pipeline and returns the obtained input stream
 Returns:  
 an input stream
 
-####   FluentClient*.stopWithObservers
+#####   FluentClient*.stopWithObservers
 
 ```java
 Observer [] stopWithObservers ();
@@ -915,7 +922,7 @@ Stops the client pipeline and returns the currently subscribed observers
 Returns:  
 the observers
 
-####   FluentClientSoundImported.stopWithSounds
+#####   FluentClientSoundImported.stopWithSounds
 
 ```java
 Sound [] stopWithSounds ()
@@ -926,7 +933,7 @@ Stops the client pipeline and returns the obtained sound
 Returns:  
 a sound value object
 
-####   FluentClientWithSpectrums.stopWithSpectrums
+#####   FluentClientWithSpectrums.stopWithSpectrums
 
 ```java
 List<Spectrum<Serializable> []> stopWithSpectrums ()
@@ -938,7 +945,7 @@ Stops the client pipeline and returns the obtained spectrums
 Returns:  
 a list of spectrums for each channel
 
-####   FluentClientWithInputStream.stopWithStreamInfo
+#####   FluentClientWithInputStream.stopWithStreamInfo
 
 ```java
 StreamInfo stopWithStreamInfo () throws SoundTransformException
@@ -952,3 +959,39 @@ a streamInfo object
 
 Throws:  
 `SoundTransformException` - could not read the StreamInfo from the current inputstream
+
+## SoundTransformation classes
+The SoundTransformation classes are a family of classes whose role is to process something on a single sound channel. 
+
+The signature will contain this transform method for every class :
+```java
+public Sound transform (Sound input) throws SoundTransformException;
+```
+
+The simplest way to process a transform is to use the `FluentClientSoundImported.apply` method.
+
+Calling directly the transform method can do the trick, but don't forget to call it on each channel with exactly the same parameters, and to pass the list of your observers.
+
+Some of these classes only iterate over the samples once, changing some samples with a formula (for example EightBightSoundTransformation).
+Some others convert first the sound in the frequency domain before processing it (it uses a spectrum as input), like EqualizerSoundTransformation.
+
+## Built-in SoundTransformation
+### CepstrumSoundTransformation
+### CutSoundTransformation
+### EightBitsSoundTransformation
+### EqualizerSoundTransformation
+### FadeSoundTransformation
+### GaussianEqualizerSoundTransformation
+### InsertPartSoundTransformation
+### LinearRegressionSoundTransformation
+### LoopSoundTransformation
+### MixSoundTransformation
+### NormalizeSoundTransformation
+### PeakFindWithHPSSoundTransformation
+### PitchSoundTransformation
+### ReplacePartSoundTransformation
+### ShapeSoundTransformation
+### SimpleFrequencySoundTransformation
+### SlowdownSoundTransformation
+### SpeedUpSoundTransformation
+### SubSoundExtractSoundTransformation
