@@ -1,5 +1,7 @@
 package org.toilelibre.libe.soundtransform.ioc;
 
+import java.util.Arrays;
+
 import org.toilelibre.libe.soundtransform.ioc.android.AndroidRootModule;
 import org.toilelibre.libe.soundtransform.ioc.javax.JavaXRootModule;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
@@ -7,8 +9,8 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
 
 enum ImplChooser {
 
-    ANDROID ("The Android Project", AndroidRootModule.class),
-    JAVA    ("Oracle Corporation", JavaXRootModule.class);
+    ANDROID (new String [] {"The Android Project"}, AndroidRootModule.class),
+    JAVA    (new String [] {"Oracle Corporation", "Sun Microsystems Inc"}, JavaXRootModule.class);
     
     public enum ImplChooserErrorCode implements ErrorCode {
         INVALID_RUNTIME ("Invalid Java Runtime : %1s");
@@ -26,17 +28,17 @@ enum ImplChooser {
     }
     
     private final Class<? extends ImplAgnosticRootModule> moduleClass;
-    private final String acceptValue;
+    private final String [] acceptValues;
 
-    ImplChooser (String acceptValue1, Class<? extends ImplAgnosticRootModule> moduleClass1) {
-        this.acceptValue = acceptValue1;
+    ImplChooser (String[] acceptValues1, Class<? extends ImplAgnosticRootModule> moduleClass1) {
+        this.acceptValues = acceptValues1;
         this.moduleClass = moduleClass1;
     }
     
     @SuppressWarnings("unchecked")
     static Class<ImplAgnosticRootModule> getCorrectImplModule (String acceptValue1){
         for (final ImplChooser runtime : ImplChooser.values ()){ 
-            if (runtime.acceptValue.equals (acceptValue1)){
+            if (Arrays.asList (runtime.acceptValues).contains (acceptValue1)){
                 return (Class<ImplAgnosticRootModule>) runtime.moduleClass;
             }
         }
