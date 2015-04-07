@@ -6,7 +6,7 @@
 Android library to shape a voice with an instrument.
 
 **Table of Contents** 
-- [How to use the library](#)
+- [How to use the library](#how-to-use-the-library)
 - [FluentClient](#)
 	- [FluentClient samples :](#)
 	- [FluentClient Javadoc :](#)
@@ -1053,23 +1053,23 @@ Calling directly the transform method can do the trick, but don't forget to call
 Some of these classes only iterate over the samples once, changing some samples with a formula (for example EightBightSoundTransformation).
 Some others convert first the sound in the frequency domain before processing it (it uses a spectrum as input), like EqualizerSoundTransformation.
 
-## Built-in SoundTransformation
-### CepstrumSoundTransformation
-### CutSoundTransformation
-### EightBitsSoundTransformation
-### EqualizerSoundTransformation
-### FadeSoundTransformation
-### GaussianEqualizerSoundTransformation
-### InsertPartSoundTransformation
-### LinearRegressionSoundTransformation
-### LoopSoundTransformation
-### MixSoundTransformation
-### NormalizeSoundTransformation
-### PeakFindWithHPSSoundTransformation
-### PitchSoundTransformation
-### ReplacePartSoundTransformation
-### ShapeSoundTransformation
-### SimpleFrequencySoundTransformation
-### SlowdownSoundTransformation
-### SpeedUpSoundTransformation
-### SubSoundExtractSoundTransformation
+### Built-in SoundTransformation
+#### CepstrumSoundTransformation
+#### CutSoundTransformation
+#### EightBitsSoundTransformation
+#### EqualizerSoundTransformation
+#### FadeSoundTransformation
+#### GaussianEqualizerSoundTransformation
+#### InsertPartSoundTransformation
+#### LinearRegressionSoundTransformation
+#### LoopSoundTransformation
+#### MixSoundTransformation
+#### NormalizeSoundTransformation
+#### PeakFindWithHPSSoundTransformation
+#### PitchSoundTransformation
+#### ReplacePartSoundTransformation
+#### ShapeSoundTransformation
+#### SimpleFrequencySoundTransformation
+#### SlowdownSoundTransformation
+#### SpeedUpSoundTransformation
+#### SubSoundExtractSoundTransformation
