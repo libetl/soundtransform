@@ -33,10 +33,11 @@ enum ImplChooser {
         this.moduleClass = moduleClass1;
     }
     
-    static Class<? extends ImplAgnosticRootModule> getCorrectImplModule (String acceptValue1){
+    @SuppressWarnings("unchecked")
+    static Class<ImplAgnosticRootModule> getCorrectImplModule (String acceptValue1){
         for (final ImplChooser runtime : ImplChooser.values ()){ 
             if (runtime.acceptValue.equals (acceptValue1)){
-                return runtime.moduleClass;
+                return (Class<ImplAgnosticRootModule>) runtime.moduleClass;
             }
         }
         throw new SoundTransformRuntimeException (ImplChooserErrorCode.INVALID_RUNTIME, new IllegalArgumentException (),
