@@ -15,13 +15,14 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.infrastructure.service.record.android.AndroidRecordSoundProcessor.AndroidRecordSoundProcessorErrorCode;
+import org.toilelibre.libe.soundtransform.ioc.SoundTransformAndroidTest;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 import android.media.AudioRecord;
 
 @PrepareForTest ({ AudioRecord.class, AndroidRecordSoundProcessor.class })
-public class AndroidRecordSoundProcessorTest {
+public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
 
     @Rule
     public PowerMockRule rule = new PowerMockRule ();
@@ -88,7 +89,7 @@ public class AndroidRecordSoundProcessorTest {
         });
         PowerMockito.whenNew (AudioRecord.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class).withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioRecord);
         final InputStream is = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 100000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
-        Assert.assertEquals (is.available (), 0);
+        Assert.assertEquals (0, is.available ());
     }
 
     @Test
