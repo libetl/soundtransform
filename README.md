@@ -7,7 +7,7 @@ Android library to shape a voice with an instrument.
 
 **Table of Contents** 
 - [How to use the library](#how-to-use-the-library)
-- [FluentClient](#)
+- [FluentClient](#fluentclient)
 	- [FluentClient samples :](#)
 	- [FluentClient Javadoc :](#)
 		- [1. static init](#)
@@ -1038,7 +1038,7 @@ a streamInfo object
 Throws:  
 `SoundTransformException` - could not read the StreamInfo from the current inputstream
 
-## SoundTransformation classes [soundtransformation-classes]
+## SoundTransformation classes
 The SoundTransformation classes are a family of classes whose role is to process something on a single sound channel. 
 
 The signature will contain this transform method for every class :
