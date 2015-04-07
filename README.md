@@ -5,11 +5,89 @@
 
 Android library to shape a voice with an instrument.
 
-Summary : 
-
-1.  ![How to use the library](README.md#how-to-use-the-library)
-2.  ![FluentClient](README.md#fluentclient)
-3.  ![SoundTransformation classes](README.md#soundtransformation-classes)
+**Table of Contents** 
+- [How to use the library](#)
+- [FluentClient](#)
+	- [FluentClient samples :](#)
+	- [FluentClient Javadoc :](#)
+		- [1. static init](#)
+			- [FluentClient.setDefaultObserversValue](#)
+		- [2. start of the flow](#)
+			- [FluentClient.start (only way to start a FluentClient)](#)
+			- [FluentClientReady.withAnObserver (before another with.. method)](#)
+			- [FluentClientReady.withAPack (just after start)](#)
+			- [FluentClientReady.withAPack (just after start) (Android only)](#)
+			- [FluentClientReady.withAPack (just after start)](#)
+			- [FluentClientReady.withAudioInputStream (just after start)](#)
+			- [FluentClientReady.withClasspathResource (just after start)](#)
+			- [FluentClientReady.withFile (just after start)](#)
+			- [FluentClientReady.withFreqs (just after start)](#)
+			- [FluentClientReady.withLimitedTimeRecordedInputStream (just after start)](#)
+			- [FluentClientReady.withRawInputStream (just after start)](#)
+			- [FluentClientReady.withRecordedInputStream (just after start)](#)
+			- [FluentClientReady.withSounds (just after start)](#)
+			- [FluentClientReady.withSpectrums (just after start)](#)
+		- [3. operations](#)
+			- [FluentClientWithFreqs.adjust](#)
+			- [FluentClient*.andAfterStart](#)
+			- [FluentClientSoundImported.append](#)
+			- [FluentClientSoundImported.apply](#)
+			- [FluentClientSoundImported.changeFormat](#)
+			- [FluentClientWithFreqs.compress](#)
+			- [FluentClientWithFile.convertIntoSound](#)
+			- [FluentClientSoundImported.cutSubSound](#)
+			- [FluentClientSoundImported.exportToClasspathResource](#)
+			- [FluentClientSoundImported.exportToClasspathResourceWithSiblingResource](#)
+			- [FluentClientSoundImported.exportToFile](#)
+			- [FluentClientSoundImported.exportToStream](#)
+			- [FluentClientWithSpectrums.extractSound](#)
+			- [FluentClientSoundImported.extractSubSound](#)
+			- [FluentClientWithFreqs.filterRange](#)
+			- [FluentClientSoundImported.findLoudestFrequencies](#)
+			- [FluentClientWithInputStream.importToSound](#)
+			- [FluentClientWithFile.importToStream](#)
+			- [FluentClientWithFreqs.insertPart](#)
+			- [FluentClientSoundImported.loop](#)
+			- [FluentClientSoundImported.mixWith](#)
+			- [FluentClientWithFreqs.octaveDown](#)
+			- [FluentClientWithFreqs.octaveUp](#)
+			- [FluentClientSoundImported.playIt or FluentClientWithFile.playIt or FluentClientWithInputStream.playIt or FluentClientWithSpectrums.playIt](#)
+			- [FluentClientWithFreqs.replacePart](#)
+			- [FluentClientWithFreqs.shapeIntoSound](#)
+			- [FluentClientSoundImported.splitIntoSpectrums](#)
+			- [FluentClientWithInputStream.writeToClasspathResource](#)
+			- [FluentClientWithInputStream.writeToClasspathResourceWithSiblingResource](#)
+			- [FluentClientWithInputStream.writeToFile](#)
+		- [4. method flow stops](#)
+			- [FluentClient*.stopWithAPack](#)
+			- [FluentClientWithFile.stopWithFile](#)
+			- [FluentClientWithFreqs.stopWithFreqs](#)
+			- [FluentClientWithInputStream.stopWithInputStream](#)
+			- [FluentClient*.stopWithObservers](#)
+			- [FluentClientSoundImported.stopWithSounds](#)
+			- [FluentClientWithSpectrums.stopWithSpectrums](#)
+			- [FluentClientWithInputStream.stopWithStreamInfo](#)
+- [SoundTransformation classes](#)
+	- [Built-in SoundTransformation](#)
+		- [CepstrumSoundTransformation](#)
+		- [CutSoundTransformation](#)
+		- [EightBitsSoundTransformation](#)
+		- [EqualizerSoundTransformation](#)
+		- [FadeSoundTransformation](#)
+		- [GaussianEqualizerSoundTransformation](#)
+		- [InsertPartSoundTransformation](#)
+		- [LinearRegressionSoundTransformation](#)
+		- [LoopSoundTransformation](#)
+		- [MixSoundTransformation](#)
+		- [NormalizeSoundTransformation](#)
+		- [PeakFindWithHPSSoundTransformation](#)
+		- [PitchSoundTransformation](#)
+		- [ReplacePartSoundTransformation](#)
+		- [ShapeSoundTransformation](#)
+		- [SimpleFrequencySoundTransformation](#)
+		- [SlowdownSoundTransformation](#)
+		- [SpeedUpSoundTransformation](#)
+		- [SubSoundExtractSoundTransformation](#)
 
 ## How to use the library
 * Insert the aar into your project dependencies :
@@ -34,7 +112,7 @@ Summary :
 * Have a look at the available SoundTransformation classes
 * Use the lib by yourself
 
-## FluentClient
+## FluentClient [fluentclient]
 The FluentClient service provider interface is a simple class to give a shortcut to all the features of the lib without walking in the nested classes.
 
 It helps you to proceed to the correct actions at each step, giving you the right programming interface during the pipeline.
@@ -960,7 +1038,7 @@ a streamInfo object
 Throws:  
 `SoundTransformException` - could not read the StreamInfo from the current inputstream
 
-## SoundTransformation classes
+## SoundTransformation classes [soundtransformation-classes]
 The SoundTransformation classes are a family of classes whose role is to process something on a single sound channel. 
 
 The signature will contain this transform method for every class :
