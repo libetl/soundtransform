@@ -8,8 +8,8 @@ Android library to shape a voice with an instrument.
 **Table of Contents** 
 - [How to use the library](#how-to-use-the-library)
 - [FluentClient](#fluentclient)
-	- [FluentClient samples :](#)
-	- [FluentClient Javadoc :](#)
+	- [FluentClient samples](#fluentclient-samples)
+	- [FluentClient Javadoc](#fluentclient-javadoc)
 		- [1. static init](#)
 			- [FluentClient.setDefaultObserversValue](#)
 		- [2. start of the flow](#)
@@ -112,14 +112,14 @@ Android library to shape a voice with an instrument.
 * Have a look at the available SoundTransformation classes
 * Use the lib by yourself
 
-## FluentClient [fluentclient]
+## FluentClient
 The FluentClient service provider interface is a simple class to give a shortcut to all the features of the lib without walking in the nested classes.
 
 It helps you to proceed to the correct actions at each step, giving you the right programming interface during the pipeline.
 
 To use it, it is only needed to chain the methods invocation. it will always start with a ```FluentClient.start()```, can end with a stop method and can contains an ```andAfterStart``` call to chain two processes in the same instruction of code.
 
-### FluentClient samples :
+### FluentClient samples
 ```java
 
 //Set the default Slf4J logger and the log threshold as "WARNING" (the only output will be the warning and error logs)
@@ -144,7 +144,7 @@ FluentClient.start ().withClasspathResource ("lowfi.wav").convertIntoSound ().ch
 
 Please have a look at the many different actions that you can ask to the FluentClient in this [JUnit Test](src/test/java/org/toilelibre/libe/soundtransform/FluentClientTest.java)
 
-### FluentClient Javadoc :
+### FluentClient Javadoc
 
 Four steps can be identified when using the FluentClient SPI :
 
