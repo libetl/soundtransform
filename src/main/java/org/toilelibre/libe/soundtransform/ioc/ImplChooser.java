@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
 enum ImplChooser {
 
     ANDROID (new String [] {"The Android Project"}, AndroidRootModule.class),
-    JAVA    (new String [] {"Oracle Corporation", "Sun Microsystems Inc"}, JavaXRootModule.class);
+    JAVA    (new String [] {"Oracle Corporation", "Sun Microsystems Inc."}, JavaXRootModule.class);
     
     public enum ImplChooserErrorCode implements ErrorCode {
         INVALID_RUNTIME ("Invalid Java Runtime : %1s");
