@@ -5,7 +5,7 @@ import org.toilelibre.libe.soundtransform.ioc.javax.JavaXRootModule;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 
-public enum ImplChooser {
+enum ImplChooser {
 
     ANDROID ("The Android Project", AndroidRootModule.class),
     JAVA    ("Oracle Corporation", JavaXRootModule.class);
