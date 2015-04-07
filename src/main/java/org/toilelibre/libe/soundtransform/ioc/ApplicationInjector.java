@@ -6,7 +6,7 @@ import se.jbee.inject.bootstrap.Bootstrap;
 
 public class ApplicationInjector {
     
-    private static final String RUNTIME_SYSTEM_PROPERTY = "java.vm.vendor";
+    static final String RUNTIME_SYSTEM_PROPERTY = "java.vm.vendor";
 
     static Injector injector = Bootstrap.injector (ImplChooser.getCorrectImplModule (System.getProperty (ApplicationInjector.RUNTIME_SYSTEM_PROPERTY)));
 
