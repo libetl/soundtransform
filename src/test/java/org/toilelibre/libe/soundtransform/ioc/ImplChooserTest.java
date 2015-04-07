@@ -21,6 +21,7 @@ public class ImplChooserTest {
     
     @Test
     public void testWrongRuntime (){
+        rule.hashCode ();
         PowerMockito.mockStatic(System.class, new Answer<Object> (){
 
             @Override
