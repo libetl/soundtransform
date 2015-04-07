@@ -25,8 +25,8 @@ public enum ImplChooser {
         }
     }
     
-    private Class<? extends ImplAgnosticRootModule> moduleClass;
-    private String acceptValue;
+    private final Class<? extends ImplAgnosticRootModule> moduleClass;
+    private final String acceptValue;
 
     ImplChooser (String acceptValue1, Class<? extends ImplAgnosticRootModule> moduleClass1) {
         this.acceptValue = acceptValue1;
@@ -34,7 +34,7 @@ public enum ImplChooser {
     }
     
     static Class<? extends ImplAgnosticRootModule> getCorrectImplModule (String acceptValue1){
-        for (ImplChooser runtime : ImplChooser.values ()){ 
+        for (final ImplChooser runtime : ImplChooser.values ()){ 
             if (runtime.acceptValue.equals (acceptValue1)){
                 return runtime.moduleClass;
             }
