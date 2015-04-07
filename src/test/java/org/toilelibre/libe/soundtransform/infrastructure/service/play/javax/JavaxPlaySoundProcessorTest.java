@@ -81,9 +81,9 @@ public class JavaxPlaySoundProcessorTest extends SoundTransformTest {
 
         final LineListener [] ll = new LineListener [1];
         boolean waited = false;
-        while (!waited){
-          PowerMockito.doCallRealMethod ().when (clip).wait ();
-          waited = true;
+        while (!waited) {
+            PowerMockito.doCallRealMethod ().when (clip).wait ();
+            waited = true;
         }
         PowerMockito.doAnswer (new Answer<Void> () {
             @Override

@@ -9,9 +9,8 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
-    private static final int HALF = 2;
-    private final double []  ranges;
-    private final double []  amplification;
+    private final double []     ranges;
+    private final double []     amplification;
 
     public EqualizerSoundTransformation (final double [] ranges1, final double [] amplification1) {
         super ();
@@ -27,11 +26,15 @@ public class EqualizerSoundTransformation extends SimpleFrequencySoundTransforma
         final Complex [] newAmpl = new Complex [powOf2NearestLength];
         for (double j = 0 ; j < length ; j++) {
             final double freq = j * fs.getSampleRate () / fs.getState ().length;
-            newAmpl [(int) j] = fs.getState () [(int) j].multiply (psf.value (freq / EqualizerSoundTransformation.HALF));
+            newAmpl [(int) j] = fs.getState () [(int) j].multiply (this.valueOrZero (psf, freq, powOf2NearestLength));
         }
         for (int j = length ; j < powOf2NearestLength ; j++) {
             newAmpl [j] = new Complex (0, 0);
         }
         return new Spectrum<Complex []> (newAmpl, new FormatInfo (fs.getSampleSize (), fs.getSampleRate ()));
+    }
+
+    private double valueOrZero (final PolynomialSplineFunction psf, final double freq, final int powOf2NearestLength) {
+        return psf.isValidPoint (freq) ? psf.value (freq) : 0;
     }
 }

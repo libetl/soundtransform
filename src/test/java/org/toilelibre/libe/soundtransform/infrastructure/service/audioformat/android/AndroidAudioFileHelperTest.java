@@ -25,11 +25,11 @@ public class AndroidAudioFileHelperTest extends SoundTransformAndroidTest {
 
     @Test
     public void convertFileToBaosFileNotFound () {
-        powerMockRule.hashCode ();
+        this.powerMockRule.hashCode ();
         try {
             new AndroidAudioFileHelper ().convertFileToBaos (new File (""));
             Assert.fail ("Should have thrown an exception here");
-        } catch (SoundTransformException e) {
+        } catch (final SoundTransformException e) {
             Assert.assertEquals (e.getErrorCode (), AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM);
         }
     }
@@ -37,24 +37,23 @@ public class AndroidAudioFileHelperTest extends SoundTransformAndroidTest {
     @Test
     public void convertFileToBaosIOException () throws Exception {
         try {
-            FileInputStream is = Mockito.mock (FileInputStream.class);
+            final FileInputStream is = Mockito.mock (FileInputStream.class);
             PowerMockito.whenNew (FileInputStream.class).withAnyArguments ().thenReturn (is);
             Mockito.when (is.read (Mockito.any (byte [].class))).thenThrow (new IOException ("Mocked IO Exception"));
             Mockito.doThrow (new IOException ("Mocked IO Exception")).when (is).close ();
             new AndroidAudioFileHelper ().convertFileToBaos (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()));
             Assert.fail ("Should have thrown an exception here");
-        } catch (SoundTransformException e) {
+        } catch (final SoundTransformException e) {
             Assert.assertEquals (e.getErrorCode (), AudioFileHelperErrorCode.COULD_NOT_CONVERT);
         }
     }
-
 
     @Test
     public void writeInputStreamWrongInputStreamFormat () {
         try {
             new AndroidAudioFileHelper ().writeInputStream (new ByteArrayInputStream (new byte [0]), new File (""));
             Assert.fail ("Should have thrown an exception here");
-        } catch (SoundTransformException e) {
+        } catch (final SoundTransformException e) {
             Assert.assertEquals (e.getErrorCode (), AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ);
         }
     }
@@ -64,7 +63,7 @@ public class AndroidAudioFileHelperTest extends SoundTransformAndroidTest {
         try {
             new AndroidAudioFileHelper ().toStream (new byte [0], new Object ());
             Assert.fail ("Should have thrown an exception here");
-        } catch (SoundTransformException e) {
+        } catch (final SoundTransformException e) {
             Assert.assertEquals (e.getErrorCode (), AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ);
         }
     }
@@ -72,10 +71,9 @@ public class AndroidAudioFileHelperTest extends SoundTransformAndroidTest {
     @Test
     public void writeInputStreamWrongFileNotFound () {
         try {
-            new AndroidAudioFileHelper ().writeInputStream (new ByteArrayWithAudioFormatInputStream (new byte [0],
-                    new StreamInfo (2, 10000, 2, 44100, false, true, null)), new File (""));
+            new AndroidAudioFileHelper ().writeInputStream (new ByteArrayWithAudioFormatInputStream (new byte [0], new StreamInfo (2, 10000, 2, 44100, false, true, null)), new File (""));
             Assert.fail ("Should have thrown an exception here");
-        } catch (SoundTransformException e) {
+        } catch (final SoundTransformException e) {
             Assert.assertEquals (e.getErrorCode (), AudioFileHelperErrorCode.COULD_NOT_CREATE_AN_OUTPUT_FILE);
         }
     }
@@ -83,14 +81,13 @@ public class AndroidAudioFileHelperTest extends SoundTransformAndroidTest {
     @Test
     public void writeInputStreamIOException () throws Exception {
         try {
-            WavOutputStream wos = Mockito.mock (WavOutputStream.class);
+            final WavOutputStream wos = Mockito.mock (WavOutputStream.class);
             PowerMockito.whenNew (WavOutputStream.class).withAnyArguments ().thenReturn (wos);
             Mockito.doThrow (new IOException ("Mocked IO Exception")).when (wos).close ();
             Mockito.doThrow (new IOException ("Mocked IO Exception")).when (wos).write (Mockito.any (byte [].class));
-            new AndroidAudioFileHelper ().writeInputStream (new ByteArrayWithAudioFormatInputStream (new byte [0],
-                    new StreamInfo (2, 10000, 2, 44100, false, true, null)), new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()));
+            new AndroidAudioFileHelper ().writeInputStream (new ByteArrayWithAudioFormatInputStream (new byte [0], new StreamInfo (2, 10000, 2, 44100, false, true, null)), new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()));
             Assert.fail ("Should have thrown an exception here");
-        } catch (SoundTransformException e) {
+        } catch (final SoundTransformException e) {
             Assert.assertEquals (e.getErrorCode (), AudioFileHelperErrorCode.COULD_NOT_CONVERT);
         }
     }

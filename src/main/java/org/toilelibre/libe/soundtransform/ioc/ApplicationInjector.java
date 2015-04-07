@@ -5,10 +5,10 @@ import se.jbee.inject.Injector;
 import se.jbee.inject.bootstrap.Bootstrap;
 
 public class ApplicationInjector {
-    
+
     static final String RUNTIME_SYSTEM_PROPERTY = "java.vm.vendor";
 
-    static Injector injector = Bootstrap.injector (ImplChooser.getCorrectImplModule (System.getProperty (ApplicationInjector.RUNTIME_SYSTEM_PROPERTY)));
+    static Injector     injector                = Bootstrap.injector (ImplChooser.getCorrectImplModule (System.getProperty (ApplicationInjector.RUNTIME_SYSTEM_PROPERTY)));
 
     private ApplicationInjector () {
 
