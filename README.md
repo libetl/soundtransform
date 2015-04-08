@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/libetl/soundtransform.svg?branch=master)](https://travis-ci.org/libetl/soundtransform) [![Coverage Status](https://coveralls.io/repos/libetl/soundtransform/badge.svg)](https://coveralls.io/r/libetl/soundtransform) [![API](https://img.shields.io/badge/API-8%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=8) [![Licence](https://img.shields.io/badge/licence-Apache%20Licence%20%282.0%29-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
-Android library to shape a voice with an instrument.
+Android & Pure Java library to shape a voice with an instrument.
 
 **Table of Contents** 
 - [How to use the library](#how-to-use-the-library)
