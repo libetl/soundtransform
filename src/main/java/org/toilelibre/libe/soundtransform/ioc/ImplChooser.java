@@ -26,6 +26,11 @@ enum ImplChooser {
         }
     }
 
+    private final Class<? extends ImplAgnosticRootModule> moduleClass;
+
+    private final String []                               acceptValues;
+
+
     @SuppressWarnings ("unchecked")
     static Class<ImplAgnosticRootModule> getCorrectImplModule (final String acceptValue1) {
         for (final ImplChooser runtime : ImplChooser.values ()) {
@@ -35,10 +40,6 @@ enum ImplChooser {
         }
         throw new SoundTransformRuntimeException (ImplChooserErrorCode.INVALID_RUNTIME, new IllegalArgumentException (), acceptValue1);
     }
-
-    private final Class<? extends ImplAgnosticRootModule> moduleClass;
-
-    private final String []                               acceptValues;
 
     ImplChooser (final String [] acceptValues1, final Class<? extends ImplAgnosticRootModule> moduleClass1) {
         this.acceptValues = acceptValues1;
