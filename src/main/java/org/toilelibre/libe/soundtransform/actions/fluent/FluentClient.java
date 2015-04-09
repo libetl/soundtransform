@@ -43,11 +43,11 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithSpectrums {
+public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums {
 
     public enum FluentClientErrorCode implements ErrorCode {
 
-        PROBLEM_WITH_SIMULTANEOUS_FLOWS ("Problem with simultaneous flows : %1s"), INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE ("This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
+        PROBLEM_WITH_SIMULTANEOUS_FLOWS ("Problem with simultaneous flows : %1s"), MISSING_SOUND_IN_INPUT ("Missing sound in input"), INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE ("This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
 
         private final String messageFormat;
 
@@ -68,6 +68,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     private InputStream                     audioInputStream;
     private String                          sameDirectoryAsClasspathResource;
     private float []                        freqs;
+    private FluentClientCommon []           parallelizedClients;
 
     private File                            file;
 
@@ -187,6 +188,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.file = null;
         this.freqs = null;
         this.spectrums = null;
+        this.parallelizedClients = null;
     }
 
     /**
@@ -419,7 +421,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    public <T extends FluentClientCommon> FluentClientReady inParallel(final FluentClientOperation operation, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
+    public <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel(final FluentClientOperation operation, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
         final ExecutorService threadService = Executors.newFixedThreadPool (clients.length);
         for (final FluentClientCommon client : clients){
             threadService.submit (new Runnable (){
@@ -440,9 +442,57 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         } catch (InterruptedException e) {
             throw new SoundTransformException (FluentClientErrorCode.PROBLEM_WITH_SIMULTANEOUS_FLOWS, e, e.getMessage ());
         }
-        return this;        
+        this.cleanData ();
+        this.parallelizedClients = clients;
+        return this;
+    }
+    
+    @Override
+    public FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds1) throws SoundTransformException {
+
+        final FluentClientCommon [] clients = new FluentClientCommon [sounds1.length];
+        for (int i = 0 ; i < sounds1.length ; i++){
+            clients [i] = FluentClient.start().withSounds(sounds1 [i]);
+        }
+        return this.inParallel (op, timeoutInSeconds, clients);
     }
 
+    @Override
+    public FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams1) throws SoundTransformException {
+        final FluentClientCommon [] clients = new FluentClientCommon [inputStreams1.length];
+        for (int i = 0 ; i < inputStreams1.length ; i++){
+            clients [i] = FluentClient.start().withAudioInputStream (inputStreams1 [i]);
+        }
+        return this.inParallel (op, timeoutInSeconds, clients);
+    }
+
+    @Override
+    public FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, File... files1) throws SoundTransformException {
+        final FluentClientCommon [] clients = new FluentClientCommon [files1.length];
+        for (int i = 0 ; i < files1.length ; i++){
+            clients [i] = FluentClient.start().withFile (files1 [i]);
+        }
+        return this.inParallel (op, timeoutInSeconds, clients);
+    }
+
+    @Override
+    public FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs1) throws SoundTransformException {
+        final FluentClientCommon [] clients = new FluentClientCommon [freqs1.length];
+        for (int i = 0 ; i < freqs1.length ; i++){
+            clients [i] = FluentClient.start().withFreqs (freqs1 [i]);
+        }
+        return this.inParallel (op, timeoutInSeconds, clients);
+    }
+
+    @Override
+    public FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException {
+        final FluentClientCommon [] clients = new FluentClientCommon [classpathResources.length];
+        for (int i = 0 ; i < classpathResources.length ; i++){
+            clients [i] = FluentClient.start().withClasspathResource (classpathResources [i]);
+        }
+        return this.inParallel (op, timeoutInSeconds, clients);
+    }
+    
     /**
      * Extract a part of the sound between the sample #start and the sample #end
      *
@@ -466,6 +516,31 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientSoundImported mixWith (final Sound [] sound) throws SoundTransformException {
         return this.apply (new MixSoundTransformation (Arrays.<Sound []> asList (sound)));
+    }
+    
+    public FluentClientSoundImported mixAllInOneSound () throws SoundTransformException {
+        FluentClientCommon [] savedClients = this.parallelizedClients;
+        
+        this.cleanData ();
+        
+        if (savedClients == null ||
+                savedClients.length == 0 ||
+                ((FluentClient)savedClients [0]).stopWithSounds () == null){
+            throw new SoundTransformException (FluentClient.FluentClientErrorCode.MISSING_SOUND_IN_INPUT, 
+                    new IllegalArgumentException ());
+        }
+        this.sounds = ((FluentClient)savedClients [0]).stopWithSounds ();
+        
+        for (int i = 1 ; i < savedClients.length ; i++){
+            Sound [] otherSound = ((FluentClient) savedClients [i]).stopWithSounds ();
+            if (otherSound == null){
+                throw new SoundTransformException(FluentClient.FluentClientErrorCode.MISSING_SOUND_IN_INPUT, 
+                        new IllegalArgumentException ());
+            }
+            this.apply (new MixSoundTransformation (Arrays.<Sound []> asList (otherSound)));
+        }
+
+        return this;
     }
 
     /**

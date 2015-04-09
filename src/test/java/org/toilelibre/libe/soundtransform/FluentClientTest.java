@@ -109,16 +109,6 @@ public class FluentClientTest extends SoundTransformTest {
         final Pack pack = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", packInputStream).stopWithAPack ("default");
         Assert.assertNotNull (pack);
     }
-
-    @Test
-    public void inParallel () throws SoundTransformException {
-        FluentClient.setDefaultObservers(new Slf4jObserver (LogLevel.VERBOSE));
-        FluentClient.start ().inParallel (FluentClientOperation.declare().convertIntoSound ().build (), 
-                5, 
-                FluentClient.start().withClasspathResource ("gpiano3.wav"),
-                FluentClient.start().withClasspathResource ("gpiano4.wav"));
-                
-    }
     
     @Test
     public void insertPart1 () throws SoundTransformException {
@@ -164,6 +154,19 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().mixWith (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
+
+    @Test
+    public void mixTwoFilesInParallel () throws SoundTransformException {
+        FluentClient.setDefaultObservers(new Slf4jObserver (LogLevel.VERBOSE));
+        FluentClient.start ().inParallel (
+                //operations
+                FluentClientOperation.declare().convertIntoSound ().build (),
+                //timeout in seconds
+                5, 
+                //classpath resources
+                "piano1c.wav","piano8c.wav").mixAllInOneSound ().exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+    }
+    
     @Test
     public void appendDifferentFormatsImpossible () throws SoundTransformException {
         try {

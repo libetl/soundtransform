@@ -31,7 +31,12 @@ public interface FluentClientReady {
      */
     Observer [] stopWithObservers ();
 
-    <T extends FluentClientCommon> FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException;
+    <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
 
     /**
      * Tells the client to add an observer that will be notified of different

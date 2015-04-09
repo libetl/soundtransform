@@ -54,7 +54,7 @@ public class FluentClientOperation {
         this.steps = Collections.unmodifiableList(steps1);
     }
 
-    public static class FluentClientOperationBuilder implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithSpectrums {
+    public static class FluentClientOperationBuilder implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums {
 
         private List<Step> steps = new LinkedList<Step> ();
         
@@ -605,6 +605,20 @@ public class FluentClientOperation {
             return this;
         }
 
+
+        @Override
+        public FluentClientSoundImported mixAllInOneSound() throws SoundTransformException {
+            this.steps.add(new Step() {
+
+                @Override
+                public void run(FluentClient client) throws SoundTransformException {
+                    client.mixAllInOneSound ();
+                }
+            });
+
+            return this;
+        }
+
         @Override
         public FluentClientOperationBuilder mixWith(final Sound[] sound) throws SoundTransformException {
             this.steps.add(new Step() {
@@ -639,7 +653,7 @@ public class FluentClientOperation {
 
 
         @Override
-        public <T extends FluentClientCommon> FluentClientReady inParallel(final FluentClientOperation op, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
+        public <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
             this.steps.add(new Step() {
 
                 @Override
@@ -649,6 +663,59 @@ public class FluentClientOperation {
             });
             return this;
         }
+        
+        @Override
+        public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final Sound []... sounds) throws SoundTransformException {
+            this.steps.add(new Step() {
+
+                @Override
+                public void run(FluentClient client) throws SoundTransformException {
+                    client.inParallel (op, timeoutInSeconds, sounds);
+                }
+            });
+            return this;}
+        @Override
+        public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final InputStream... inputStreams) throws SoundTransformException {
+            this.steps.add(new Step() {
+
+                @Override
+                public void run(FluentClient client) throws SoundTransformException {
+                    client.inParallel (op, timeoutInSeconds, inputStreams);
+                }
+            });
+            return this;}
+        @Override
+        public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final File... files) throws SoundTransformException {
+            this.steps.add(new Step() {
+
+                @Override
+                public void run(FluentClient client) throws SoundTransformException {
+                    client.inParallel (op, timeoutInSeconds, files);
+                }
+            });
+            return this;}
+        @Override
+        public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final float []... freqs) throws SoundTransformException {
+            this.steps.add(new Step() {
+
+                @Override
+                public void run(FluentClient client) throws SoundTransformException {
+                    client.inParallel (op, timeoutInSeconds, freqs);
+                }
+            });
+            return this;}
+        @Override
+        public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final String... classpathResources) throws SoundTransformException {
+            this.steps.add(new Step() {
+
+                @Override
+                public void run(FluentClient client) throws SoundTransformException {
+                    client.inParallel (op, timeoutInSeconds, classpathResources);
+                }
+            });
+            return this;
+        }
+
 
     }
 }
