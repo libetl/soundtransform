@@ -157,7 +157,7 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void mixTwoFilesInParallel () throws SoundTransformException {
-        FluentClient.setDefaultObservers(new Slf4jObserver (LogLevel.VERBOSE));
+        FluentClient.setDefaultObservers(new Slf4jObserver (LogLevel.WARN));
         FluentClient.start ().inParallel (
                 //operations
                 FluentClientOperation.declare().convertIntoSound ().build (),
