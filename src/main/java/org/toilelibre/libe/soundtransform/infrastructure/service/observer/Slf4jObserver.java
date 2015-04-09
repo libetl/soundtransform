@@ -1,5 +1,8 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.observer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
@@ -10,6 +13,7 @@ import org.toilelibre.libe.soundtransform.model.observer.TextLogEvent;
 
 public class Slf4jObserver implements Observer {
 
+    private Map<String, Logger> loggersByClassName = new HashMap<String, Logger> ();
     private static final String OBSERVER_CLASSNAME = Slf4jObserver.class.getName ();
     private static final String LOGAWARE_CLASSNAME = AbstractLogAware.class.getName ();
 
@@ -60,15 +64,23 @@ public class Slf4jObserver implements Observer {
             return;
         }
         final String className = this.getCallerClassName ();
-        final Logger logger = LoggerFactory.getLogger (className);
+        final Logger logger = this.getLoggerByClassName (className);
         this.log (logger, logEvent);
     }
 
     // shortcut for notify with level "info"
     public void notify (final String msg) {
         final String className = this.getCallerClassName ();
-        final Logger logger = LoggerFactory.getLogger (className);
+        final Logger logger = this.getLoggerByClassName (className);
         this.log (logger, new TextLogEvent (msg));
+    }
+
+    private synchronized Logger getLoggerByClassName (final String className) {
+
+        if (!this.loggersByClassName.containsKey (className)){
+            this.loggersByClassName.put (className, LoggerFactory.getLogger (className));
+        }
+        return this.loggersByClassName.get (className);
     }
 
 }

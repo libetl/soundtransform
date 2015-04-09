@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
@@ -109,6 +110,16 @@ public class FluentClientTest extends SoundTransformTest {
         Assert.assertNotNull (pack);
     }
 
+    @Test
+    public void inParallel () throws SoundTransformException {
+        FluentClient.setDefaultObservers(new Slf4jObserver (LogLevel.VERBOSE));
+        FluentClient.start ().inParallel (FluentClientOperation.declare().convertIntoSound ().build (), 
+                5, 
+                FluentClient.start().withClasspathResource ("gpiano3.wav"),
+                FluentClient.start().withClasspathResource ("gpiano4.wav"));
+                
+    }
+    
     @Test
     public void insertPart1 () throws SoundTransformException {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };

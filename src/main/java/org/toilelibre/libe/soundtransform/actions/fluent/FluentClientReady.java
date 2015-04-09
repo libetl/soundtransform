@@ -31,6 +31,8 @@ public interface FluentClientReady {
      */
     Observer [] stopWithObservers ();
 
+    <T extends FluentClientCommon> FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException;
+
     /**
      * Tells the client to add an observer that will be notified of different
      * kind of updates from the library. It is ok to call withAnObserver several
@@ -232,4 +234,5 @@ public interface FluentClientReady {
      * @return the client, with the spectrums
      */
     FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable> []> spectrums);
+
 }

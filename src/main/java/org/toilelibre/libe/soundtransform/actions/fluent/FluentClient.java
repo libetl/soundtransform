@@ -7,7 +7,11 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
+import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation.Step;
 import org.toilelibre.libe.soundtransform.actions.notes.ImportAPackIntoTheLibrary;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
 import org.toilelibre.libe.soundtransform.actions.record.RecordSound;
@@ -34,6 +38,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SubSou
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
@@ -42,7 +47,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     public enum FluentClientErrorCode implements ErrorCode {
 
-        INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE ("This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
+        PROBLEM_WITH_SIMULTANEOUS_FLOWS ("Problem with simultaneous flows : %1s"), INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE ("This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
 
         private final String messageFormat;
 
@@ -412,6 +417,30 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public FluentClientWithFreqs insertPart (final float [] subFreqs, final int start) {
         this.freqs = new ChangeLoudestFreqs ().insertPart (this.freqs, subFreqs, start);
         return this;
+    }
+
+    public <T extends FluentClientCommon> FluentClientReady inParallel(final FluentClientOperation operation, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
+        final ExecutorService threadService = Executors.newFixedThreadPool (clients.length);
+        for (final FluentClientCommon client : clients){
+            threadService.submit (new Runnable (){
+                public void run (){
+                    for (final Step step : operation.getSteps ()){
+                        try {
+                            step.run ((FluentClient) client);
+                        } catch (SoundTransformException ste) {
+                            throw new SoundTransformRuntimeException (ste);
+                        }
+                    }
+                }
+            });
+        }
+        try {
+            threadService.shutdown ();
+            threadService.awaitTermination (timeoutInSeconds, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            throw new SoundTransformException (FluentClientErrorCode.PROBLEM_WITH_SIMULTANEOUS_FLOWS, e, e.getMessage ());
+        }
+        return this;        
     }
 
     /**
