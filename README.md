@@ -129,7 +129,7 @@ the client, ready to start
 #####   FluentClientReady.inParallel 
 
 ```java
-FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException
+<T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException
 ```
 
 
