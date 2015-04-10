@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
+import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation.FluentClientOperationErrorCode;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
@@ -21,6 +22,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.Insert
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
@@ -63,6 +65,64 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18 };
         final float [] array2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (array1).compress (2).stopWithFreqs ();
         Assert.assertArrayEquals (new float [] { 1.0f, 3.0f, 5.0f, 7.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f }, array2, 0);
+    }
+
+    @Test
+    public void cannotAskToTheFluentClientOperationToReturnSomething () throws SoundTransformException {
+        try {
+            FluentClientOperation.prepare().stopWithAPack("default");
+            Assert.fail("should have failed");
+        }catch (SoundTransformRuntimeException ste){
+            Assert.assertEquals(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode());
+        }
+        try {
+            FluentClientOperation.prepare().stopWithFile();
+            Assert.fail("should have failed");
+        }catch (SoundTransformRuntimeException ste){
+            Assert.assertEquals(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode());
+        }
+        try {
+            FluentClientOperation.prepare().stopWithFreqs();
+            Assert.fail("should have failed");
+        }catch (SoundTransformRuntimeException ste){
+            Assert.assertEquals(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode());
+        }
+        try {
+            FluentClientOperation.prepare().stopWithInputStream();
+            Assert.fail("should have failed");
+        }catch (SoundTransformRuntimeException ste){
+            Assert.assertEquals(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode());
+        }
+        try {
+            FluentClientOperation.prepare().stopWithObservers();
+            Assert.fail("should have failed");
+        }catch (SoundTransformRuntimeException ste){
+            Assert.assertEquals(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode());
+        }
+        try {
+            FluentClientOperation.prepare().stopWithResults(Object.class);
+            Assert.fail("should have failed");
+        }catch (SoundTransformRuntimeException ste){
+            Assert.assertEquals(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode());
+        }
+        try {
+            FluentClientOperation.prepare().stopWithSounds();
+            Assert.fail("should have failed");
+        }catch (SoundTransformRuntimeException ste){
+            Assert.assertEquals(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode());
+        }
+        try {
+            FluentClientOperation.prepare().stopWithSpectrums();
+            Assert.fail("should have failed");
+        }catch (SoundTransformRuntimeException ste){
+            Assert.assertEquals(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode());
+        }
+        try {
+            FluentClientOperation.prepare().stopWithStreamInfo();
+            Assert.fail("should have failed");
+        }catch (SoundTransformRuntimeException ste){
+            Assert.assertEquals(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode());
+        }
     }
 
     @Test
