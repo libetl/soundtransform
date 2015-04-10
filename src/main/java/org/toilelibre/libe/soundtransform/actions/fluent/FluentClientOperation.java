@@ -615,7 +615,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported mixAllInOneSound() throws SoundTransformException {
+    public FluentClientOperation mixAllInOneSound() throws SoundTransformException {
         this.steps.add(new Step() {
 
             @Override
@@ -654,7 +654,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
+    public <T extends FluentClientCommon> FluentClientOperation inParallel(final FluentClientOperation op, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
         this.steps.add(new Step() {
 
             @Override
@@ -666,7 +666,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final Sound[]... sounds) throws SoundTransformException {
+    public FluentClientOperation inParallel(final FluentClientOperation op, final int timeoutInSeconds, final Sound[]... sounds) throws SoundTransformException {
         this.steps.add(new Step() {
 
             @Override
@@ -678,7 +678,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final InputStream... inputStreams) throws SoundTransformException {
+    public FluentClientOperation inParallel(final FluentClientOperation op, final int timeoutInSeconds, final InputStream... inputStreams) throws SoundTransformException {
         this.steps.add(new Step() {
 
             @Override
@@ -690,7 +690,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final File... files) throws SoundTransformException {
+    public FluentClientOperation inParallel(final FluentClientOperation op, final int timeoutInSeconds, final File... files) throws SoundTransformException {
         this.steps.add(new Step() {
 
             @Override
@@ -702,7 +702,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final float[]... freqs) throws SoundTransformException {
+    public FluentClientOperation inParallel(final FluentClientOperation op, final int timeoutInSeconds, final float[]... freqs) throws SoundTransformException {
         this.steps.add(new Step() {
 
             @Override
@@ -714,7 +714,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final String... classpathResources) throws SoundTransformException {
+    public FluentClientOperation inParallel(final FluentClientOperation op, final int timeoutInSeconds, final String... classpathResources) throws SoundTransformException {
         this.steps.add(new Step() {
 
             @Override

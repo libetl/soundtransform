@@ -66,6 +66,11 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
+    public void canAskToDoALotOfThingsToTheFluentClientOperationAndNothingShouldBeDone () throws SoundTransformException {
+        FluentClientOperation.prepare().adjust().andAfterStart().append(null).apply(null).changeFormat(null).compress(0).convertIntoSound().cutSubSound(0, 0).exportToClasspathResource(null).exportToClasspathResourceWithSiblingResource(null, null).exportToFile(null).exportToStream().extractSound().extractSubSound(0, 0).filterRange(0, 0).findLoudestFrequencies().importToSound().importToStream().insertPart(null, 0).loop(0).mixAllInOneSound().mixWith(null).playIt().shapeIntoSound(null, null, null).splitIntoSpectrums().withAnObserver().withAudioInputStream(null).withClasspathResource(null).withFile(null).withFreqs(null).withLimitedTimeRecordedInputStream(null).withRawInputStream(null, null).withRecordedInputStream(null, null).withSounds(null).withSpectrums(null).writeToClasspathResource(null).writeToClasspathResourceWithSiblingResource(null, null).writeToFile(null);
+    }
+
+    @Test
     public void cutsound () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().cutSubSound (100000, 600000).exportToClasspathResource ("after.wav");
     }
