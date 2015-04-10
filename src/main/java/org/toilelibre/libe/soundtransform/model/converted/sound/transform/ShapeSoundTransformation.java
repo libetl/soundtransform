@@ -139,7 +139,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
             throw new SoundTransformException (ShapeSoundTransformationErrorCode.NO_PACK_IN_PARAMETER, new NullPointerException ());
         }
         final int step = 100;
-        int channelNum = 1;
+        int channelNum = 0;
         int soundLength = 0;
 
         this.log (new LogEvent (ShapeSoundTransformationEventCode.FINDING_LOUDEST_FREQUENCIES));

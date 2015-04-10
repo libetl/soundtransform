@@ -54,13 +54,13 @@ public class MixSoundTransformation implements SoundTransformation {
 
     @Override
     public Sound transform (final Sound input) {
-        final Sound [] onlyOneChannelSounds = new Sound [this.otherSounds.size ()];
+        final Sound [] onlyOneChannelFromSounds = new Sound [this.otherSounds.size ()];
         int i = 0;
         for (final Sound [] sounds : this.otherSounds) {
             if (sounds.length > input.getChannelNum ()) {
-                onlyOneChannelSounds [i++] = sounds [input.getChannelNum ()];
+                onlyOneChannelFromSounds [i++] = sounds [input.getChannelNum ()];
             }
         }
-        return this.mix (input, onlyOneChannelSounds);
+        return this.mix (input, onlyOneChannelFromSounds);
     }
 }

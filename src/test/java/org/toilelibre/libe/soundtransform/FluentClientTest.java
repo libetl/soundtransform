@@ -166,7 +166,56 @@ public class FluentClientTest extends SoundTransformTest {
                 //classpath resources
                 "piano1c.wav","piano8c.wav").mixAllInOneSound ().exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
+
+    @Test
+    public void apply8BitOnTwoFilesInParallel () throws SoundTransformException {
+        FluentClient.setDefaultObservers(new Slf4jObserver (LogLevel.WARN));
+        
+        FluentClient.start ().inParallel(
+                //operations
+                FluentClientOperation.prepare ().convertIntoSound().apply(new EightBitsSoundTransformation(25)).exportToClasspathResourceWithSiblingResource("after%1d.wav", "before.wav"), 
+                //timeout in seconds
+                5,
+                //classpath resources
+                "piano1c.wav","piano8c.wav");
+    }
+
     
+    @Test
+    public void mix2SoundsWithAThirdOne () throws SoundTransformException {
+        FluentClient.setDefaultObservers(new Slf4jObserver (LogLevel.WARN));
+        FluentClient.start ().inParallel (
+                //operations
+                FluentClientOperation.prepare ().convertIntoSound (),
+                //timeout in seconds
+                5, 
+                //classpath resources
+                "piano1c.wav","piano8c.wav").mixAllInOneSound ().exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+    }
+
+    @Test
+    public void mix2SoundsWith2FreqsArrays () throws SoundTransformException {
+        final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json");
+
+        FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
+        FluentClient.start().withAPack ("default", packInputStream).withSounds (
+        FluentClient.start ().inParallel (
+                //operations
+                FluentClientOperation.prepare ().convertIntoSound (), 
+                //timeout in seconds
+                5,
+                //classpath resources
+                "apiano3.wav","apiano4.wav").mixAllInOneSound ().stopWithSounds()).mixWith (
+                        FluentClient.start ().inParallel(
+                                //operations
+                                FluentClientOperation.prepare ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100f)), 
+                                //timeout in seconds
+                                5,
+                                //classpath resources
+                                this.generateRandomFreqs (), this.generateRandomFreqs ()).mixAllInOneSound ().stopWithSounds ()).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+                        
+    }
+
     @Test
     public void appendDifferentFormatsImpossible () throws SoundTransformException {
         try {
@@ -204,6 +253,15 @@ public class FluentClientTest extends SoundTransformTest {
         isInfo.hashCode ();
     }
 
+    public float [] generateRandomFreqs (){
+        final RandomDataGenerator rdg = new RandomDataGenerator ();
+        final float [] data = new float [655];
+        for (int i = 0 ; i < data.length ; i++) {
+            data [i] = (byte) rdg.nextInt(0, 20000);
+        }
+        return data;
+    }
+    
     @Test
     public void readRawInputStream () throws SoundTransformException {
         final RandomDataGenerator rdg = new RandomDataGenerator ();

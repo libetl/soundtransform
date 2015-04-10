@@ -82,7 +82,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public <T> List<T> stopWithResults(Class<T> resultClass) {
+    public <T> T [] stopWithResults(Class<T> resultClass) {
         throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
     }
 

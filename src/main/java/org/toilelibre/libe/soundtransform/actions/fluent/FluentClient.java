@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -341,28 +342,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     private Observer [] getObservers () {
         return this.observers.toArray (new Observer [this.observers.size ()]);
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface#stopWithResults(java.lang.Class)
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> List<T> stopWithResults(Class<T> resultClass) {
-        List<T> results = new LinkedList<T> ();
-        for (FluentClientCommon fcc : this.parallelizedClients){
-            if (resultClass == float [].class){
-                results.add ((T) ((FluentClient)fcc).stopWithFreqs());
-            }else if (resultClass == Sound [].class){
-                results.add ((T) ((FluentClient)fcc).stopWithSounds());
-            }else if (resultClass == InputStream.class){
-                results.add ((T) ((FluentClient)fcc).stopWithInputStream());
-            }else if (resultClass == File.class){
-                results.add ((T) ((FluentClient)fcc).stopWithFile());
-            }
-        }
-        return results;
     }
     
     /* (non-Javadoc)
@@ -711,6 +690,28 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.getObservers ();
     }
 
+    /* (non-Javadoc)
+     * @see org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface#stopWithResults(java.lang.Class)
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T [] stopWithResults(Class<T> resultClass) {
+        final T [] results = (T[]) Array.newInstance (resultClass, this.parallelizedClients.length);
+        int i = 0;
+        for (FluentClientCommon fcc : this.parallelizedClients){
+            if (resultClass == float [].class){
+                results [i++] =  (T) ((FluentClient)fcc).stopWithFreqs();
+            }else if (resultClass == Sound [].class){
+                results [i++] =  (T) ((FluentClient)fcc).stopWithSounds();
+            }else if (resultClass == InputStream.class){
+                results [i++] =  (T) ((FluentClient)fcc).stopWithInputStream();
+            }else if (resultClass == File.class){
+                results [i++] =  (T) ((FluentClient)fcc).stopWithFile();
+            }
+        }
+        return (T []) results;
+    }
+    
     /* (non-Javadoc)
      * @see org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface#stopWithSounds()
      */

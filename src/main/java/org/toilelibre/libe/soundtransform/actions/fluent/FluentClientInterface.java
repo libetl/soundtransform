@@ -175,7 +175,7 @@ public interface FluentClientInterface {
      */
     public abstract FluentClientWithFreqs findLoudestFrequencies() throws SoundTransformException;
 
-    public abstract <T> List<T> stopWithResults(Class<T> resultClass);
+    public abstract <T> T [] stopWithResults(Class<T> resultClass);
 
     /**
      * Uses the current input stream object to convert it into a sound (with one or more channels)
