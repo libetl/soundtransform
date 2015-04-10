@@ -68,7 +68,7 @@ FluentClient.start ().withSounds (sounds).splitIntoSpectrums ().stopWithSpectrum
 final FormatInfo fi = new FormatInfo (2, 44100.0);
 FluentClient.start ().withClasspathResource ("lowfi.wav").convertIntoSound ().changeFormat (fi).exportToClasspathResource ("hifi.wav");
 
-//Mix of two sounds using two threads
+//Mix of two sounds using two threads for the file-to-sound conversion
 FluentClient.start ().inParallel (
     // operations
     FluentClientOperation.prepare ().convertIntoSound (),
