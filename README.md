@@ -67,6 +67,16 @@ FluentClient.start ().withSounds (sounds).splitIntoSpectrums ().stopWithSpectrum
 //Transform a lowfi wav file into a cd format wavfile
 final FormatInfo fi = new FormatInfo (2, 44100.0);
 FluentClient.start ().withClasspathResource ("lowfi.wav").convertIntoSound ().changeFormat (fi).exportToClasspathResource ("hifi.wav");
+
+//Mix of two sounds using two threads
+FluentClient.start ().inParallel (
+    // operations
+    FluentClientOperation.prepare ().convertIntoSound (),
+    // timeout in seconds
+    5,
+    // classpath resources
+    "foo.wav", "bar.wav")
+                         .mixAllInOneSound ().exportToClasspathResourceWithSiblingResource ("targetResource.wav", "existingSoundInSameDirectory.wav");
 ```
 
 Please have a look at the many different actions that you can ask to the FluentClient in this [JUnit Test](src/test/java/org/toilelibre/libe/soundtransform/FluentClientTest.java)
