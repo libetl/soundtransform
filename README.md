@@ -126,7 +126,7 @@ Parameters:
 Returns:  
 the client, ready to start
 
-#####   FluentClient.inParallel 
+#####   FluentClientReady.inParallel 
 
 ```java
 FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException
@@ -149,7 +149,7 @@ the client, with a list of clients inside holding a value each
 Throws:  
 `SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
 
-#####   FluentClient.inParallel 
+#####   FluentClientReady.inParallel 
 
 ```java
 FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds) throws SoundTransformException
@@ -172,7 +172,7 @@ the client, with a list of clients inside holding a value each
 Throws:  
 `SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
 
-#####   FluentClient.inParallel 
+#####   FluentClientReady.inParallel 
 
 ```java
 FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException
@@ -218,7 +218,7 @@ the client, with a list of clients inside holding a value each
 Throws:  
 `SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
 
-#####   FluentClient.inParallel 
+#####   FluentClientReady.inParallel 
 
 ```java
 FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs) throws SoundTransformException
@@ -241,7 +241,7 @@ the client, with a list of clients inside holding a value each
 Throws:  
 `SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
 
-#####   FluentClient.inParallel 
+#####   FluentClientReady.inParallel 
 
 ```java
 FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException
