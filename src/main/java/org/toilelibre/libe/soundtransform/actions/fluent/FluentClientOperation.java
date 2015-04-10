@@ -83,7 +83,6 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
 
     @Override
     public List<Spectrum<Serializable> []> stopWithSpectrums () {
-
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
 
@@ -94,31 +93,38 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
 
     @Override
     public InputStream stopWithInputStream () {
-
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
 
     @Override
     public StreamInfo stopWithStreamInfo () throws SoundTransformException {
-
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
 
     @Override
+    public float [] stopWithFreqs () {
+        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
+    }
+    
+    @Override
     public Sound [] stopWithSounds () {
-
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
 
     @Override
     public File stopWithFile () {
-
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
 
     @Override
     public FluentClientOperation extractSound () throws SoundTransformException {
+        this.steps.add (new Step () {
 
+            @Override
+            public void run (final FluentClientInterface client) throws SoundTransformException {
+                client.extractSound ();
+            }
+        });
         return this;
     }
 
@@ -148,7 +154,6 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
 
     @Override
     public FluentClientOperation compress (final float factor) {
-
         this.steps.add (new Step () {
 
             @Override
@@ -197,7 +202,6 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
 
     @Override
     public FluentClientOperation octaveUp () {
-
         this.steps.add (new Step () {
 
             @Override
@@ -234,14 +238,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public float [] stopWithFreqs () {
-
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
     public FluentClientOperation convertIntoSound () throws SoundTransformException {
-
         this.steps.add (new Step () {
 
             @Override
