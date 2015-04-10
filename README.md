@@ -85,7 +85,7 @@ Four steps can be identified when using the FluentClient SPI :
 #####   FluentClient.setDefaultObserversValue
 
 ```java
-static void setDefaultObserversValue (Observer... defaultObservers1)
+static void setDefaultObserversValue (Observer... defaultObservers)
 ```
 
 
@@ -94,7 +94,7 @@ Set the passed observers as the default value when a FluentClient is started
 It can be useful if you are going to use the FluentClient several times but you want to declare the subscribed observers only once
  
 Parameters:  
-`defaultObservers1` - one or more observer(s)
+`defaultObservers` - one or more observer(s)
 
 #### 2. start of the flow
 
@@ -104,6 +104,7 @@ Parameters:
 static FluentClientReady start ()
 ```
 
+
 Startup the client
 
 Returns:  
@@ -112,17 +113,156 @@ the client, ready to start
 #####   FluentClientReady.withAnObserver (before another with.. method)
 
 ```java
-FluentClientReady withAnObserver (Observer... observers1)
+FluentClientReady withAnObserver (Observer... observers)
 ```
+
 
 Tells the client to add an observer that will be notified of different kind of updates from the library. It is ok to call withAnObserver several times.
  If the andAfterStart method is called, the subscribed observers are removed
 
 Parameters:  
-`observers1` - one or more observer (s)
+`observers` - one or more observer (s)
 
 Returns:  
 the client, ready to start
+
+#####   FluentClient.inParallel 
+
+```java
+static FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException
+```
+
+
+Runs asynchronously the same operations on a varargs of started FluentClients 
+
+Parameters:  
+`op` - a list of operation to apply
+
+`timeoutInSeconds` - a timeout value. After that, the operation will be stopped, even if it is still processing. 
+                     You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+                     
+`clients` - a list of started FluentClients
+
+Returns:  
+the client, with a list of clients inside holding a value each
+
+Throws:  
+`SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
+
+#####   FluentClient.inParallel 
+
+```java
+static FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds) throws SoundTransformException
+```
+
+
+Alias for the inParallel method using a list of sounds
+
+Parameters:  
+`op` - a list of operation to apply
+
+`timeoutInSeconds` - a timeout value. After that, the operation will be stopped, even if it is still processing. 
+                     You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+                     
+`sounds` - a list of Sounds (each Sound object is a sound channel)
+
+Returns:  
+the client, with a list of clients inside holding a value each
+
+Throws:  
+`SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
+
+#####   FluentClient.inParallel 
+
+```java
+static FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException
+```
+
+
+Alias for the inParallel method using a list of inputStreams
+
+Parameters:  
+`op` - a list of operation to apply
+
+`timeoutInSeconds` - a timeout value. After that, the operation will be stopped, even if it is still processing. 
+                     You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+                     
+`inputStreams` - a list of inputStreams
+
+Returns:  
+the client, with a list of clients inside holding a value each
+
+Throws:  
+`SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
+
+#####   FluentClient.inParallel 
+
+```java
+static FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException
+```
+
+
+Alias for the inParallel method using a list of files
+
+Parameters:  
+`op` - a list of operation to apply
+
+`timeoutInSeconds` - a timeout value. After that, the operation will be stopped, even if it is still processing. 
+                     You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+                     
+`files` - a list of files
+
+Returns:  
+the client, with a list of clients inside holding a value each
+
+Throws:  
+`SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
+
+#####   FluentClient.inParallel 
+
+```java
+static FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs) throws SoundTransformException
+```
+
+
+Alias for the inParallel method using a list of freqs
+
+Parameters:  
+`op` - a list of operation to apply
+
+`timeoutInSeconds` - a timeout value. After that, the operation will be stopped, even if it is still processing. 
+                     You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+                     
+`freqs` - loudest freqs arrays
+
+Returns:  
+the client, with a list of clients inside holding a value each
+
+Throws:  
+`SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
+
+#####   FluentClient.inParallel 
+
+```java
+static FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException
+```
+
+
+Alias for the inParallel method using a list of classpathResources
+
+Parameters:  
+`op` - a list of operation to apply
+
+`timeoutInSeconds` - a timeout value. After that, the operation will be stopped, even if it is still processing. 
+                     You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+                     
+`classpathResources` - a list of classpathResources
+
+Returns:  
+the client, with a list of clients inside holding a value each
+
+Throws:  
+`SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
 
 #####   FluentClientReady.withAPack (Json InputStream) (before another with.. method)
 
@@ -246,14 +386,14 @@ Throws:
 #####   FluentClientReady.withFile (just after start)
 
 ```java
-FluentClientWithFile withFile (File file1)
+FluentClientWithFile withFile (File file)
 ```
 
 
 Tells the client to work first with a file. It will not be read yet
 
 Parameters:  
-`file1` - source file
+`file` - source file
 
 Returns:  
 the client, with a file
@@ -261,14 +401,14 @@ the client, with a file
 #####   FluentClientReady.withFreqs (just after start)
 
 ```java
-FluentClientWithFreqs withFreqs (float [] freqs1)
+FluentClientWithFreqs withFreqs (float [] freqs)
 ```
 
 
 Tells the client to work first with a loudest frequencies integer array. It will not be used yet
 
 Parameters:  
-`freqs1` - the loudest frequencies float array
+`freqs` - the loudest frequencies float array
 
 Returns:  
 the client, with a loudest frequencies float array
@@ -341,14 +481,14 @@ Throws:
 #####   FluentClientReady.withSounds (just after start)
 
 ```java
-FluentClientSoundImported withSounds (Sound [] sounds1)
+FluentClientSoundImported withSounds (Sound [] sounds)
 ```
 
 
 Tells the client to work first with a sound object
 
 Parameters:  
-`sounds1` - the sound object
+`sounds` - the sound object
 
 Returns:  
 the client, with an imported sound
@@ -396,13 +536,13 @@ the client, ready to start
 #####   FluentClientSoundImported.append
 
 ```java
-FluentClientSoundImported append (Sound [] sounds1) throws SoundTransformException
+FluentClientSoundImported append (Sound [] sounds) throws SoundTransformException
 ```
 
 Append the sound passed in parameter to the current sound stored in the client
 
 Parameters:  
-`sounds1` - the sound to append the current sound to
+`sounds` - the sound to append the current sound to
 
 Returns:  
 the client, with a sound imported
@@ -537,14 +677,14 @@ Throws:
 #####   FluentClientSoundImported.exportToFile
 
 ```java
-FluentClientWithFile exportToFile (File file1)   throws SoundTransformException
+FluentClientWithFile exportToFile (File file)   throws SoundTransformException
 ```
 
 
 Shortcut for exportToStream ().writeToFile (file)
 
 Parameters:  
-`file1` - the destination file
+`file` - the destination file
 
 Returns:  
 the client, with a file written
@@ -719,6 +859,21 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException` - if the sound is null or if there is a problem with the mix
 
+#####   FluentClientWithParallelizedClients.mixAllInOneSound
+
+```java
+FluentClientSoundImported mixAllInOneSound () throws SoundTransformException
+```
+
+
+Uses the sounds inside the nested clients to mix them all and to produce a single sound
+
+Returns:  
+the client, with a sound imported
+
+Throws:  
+`SoundTransformException` - if the nested clients are not in the Sound imported state
+
 #####   FluentClientWithFreqs.octaveDown
 
 ```java
@@ -852,14 +1007,14 @@ Throws:
 #####   FluentClientWithInputStream.writeToFile
 
 ```java
-FluentClientWithFile writeToFile (File file1) throws SoundTransformException
+FluentClientWithFile writeToFile (File file) throws SoundTransformException
 ```
 
 
 Writes the current InputStream in a file
 
 Parameters:  
-`file1` - the destination file
+`file` - the destination file
 
 Returns:  
 the client, with a file
@@ -926,6 +1081,21 @@ Stops the client pipeline and returns the currently subscribed observers
 
 Returns:  
 the observers
+
+#####   FluentClientWithParallelizedClients.stopWithResults
+
+```java
+<T> T [] stopWithResults (Class<T> resultClass)
+```
+
+Stops the client pipeline and get all the values inside each nested client
+
+Parameters:  
+`resultClass` - You have to specify what type of result you expect.
+                the value can be one of this list : (Sound.class, InputStream.class, File.class, String.class, float [].class)
+
+Returns:  
+an array of results
 
 #####   FluentClientSoundImported.stopWithSounds
 

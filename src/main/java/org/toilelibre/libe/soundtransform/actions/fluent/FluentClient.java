@@ -465,6 +465,16 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #insertPart(float[], int)
      */
+    /**
+     * Add some new values in the loudest freqs array from the "start" index
+     * (add the values of subfreqs)
+     *
+     * @param subFreqs
+     *            loudest freqs array to insert
+     * @param start
+     *            index where to start the insert
+     * @return the client, with a loudest frequencies float array
+     */
     @Override
     public FluentClientWithFreqs insertPart (final float [] subFreqs, final int start) {
         this.freqs = new ChangeLoudestFreqs ().insertPart (this.freqs, subFreqs, start);
@@ -479,6 +489,15 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * #inParallel
      * (org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation,
      * int, T)
+     */
+    /**
+     * Runs asynchronously the same operations on a varargs of started FluentClients 
+     * @param op a list of operation to apply
+     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
+     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+     * @param clients a list of started FluentClients
+     * @return the client, with a list of clients inside holding a value each
+     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
      */
     @Override
     public <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (final FluentClientOperation operation, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
@@ -519,6 +538,15 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * (org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation,
      * int, org.toilelibre.libe.soundtransform.model.converted.sound.Sound)
      */
+    /**
+     * Alias for the inParallel method using a list of clients
+     * @param op  a list of operation to apply
+     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
+     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+     * @param sounds1 a list of Sounds (each Sound object is a sound channel)
+     * @return the client, with a list of clients inside holding a value each
+     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     */
     @Override
     public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final Sound []... sounds1) throws SoundTransformException {
 
@@ -538,6 +566,15 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * (org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation,
      * int, java.io.InputStream)
      */
+    /**
+     * Alias for the inParallel method using a list of clients
+     * @param op  a list of operation to apply
+     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
+     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+     * @param inputStreams1 a list of inputStreams
+     * @return the client, with a list of clients inside holding a value each
+     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     */
     @Override
     public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final InputStream... inputStreams1) throws SoundTransformException {
         final FluentClientCommon [] clients = new FluentClientCommon [inputStreams1.length];
@@ -555,6 +592,15 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * #inParallel
      * (org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation,
      * int, java.io.File)
+     */
+    /**
+     * Alias for the inParallel method using a list of clients
+     * @param op  a list of operation to apply
+     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
+     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+     * @param files1 a list of Files
+     * @return the client, with a list of clients inside holding a value each
+     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
      */
     @Override
     public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final File... files1) throws SoundTransformException {
@@ -574,6 +620,15 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * (org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation,
      * int, float)
      */
+    /**
+     * Alias for the inParallel method using a list of clients
+     * @param op  a list of operation to apply
+     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
+     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+     * @param freqs1 a list of loudest freqs arrays
+     * @return the client, with a list of clients inside holding a value each
+     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     */
     @Override
     public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final float []... freqs1) throws SoundTransformException {
         final FluentClientCommon [] clients = new FluentClientCommon [freqs1.length];
@@ -592,6 +647,15 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * (org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation,
      * int, java.lang.String)
      */
+    /**
+     * Alias for the inParallel method using a list of clients
+     * @param op  a list of operation to apply
+     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
+     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+     * @param classpathResources a list of classpathResources
+     * @return the client, with a list of clients inside holding a value each
+     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     */
     @Override
     public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final String... classpathResources) throws SoundTransformException {
         final FluentClientCommon [] clients = new FluentClientCommon [classpathResources.length];
@@ -608,6 +672,15 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #loop(int)
      */
+    /**
+     * Extract a part of the sound between the sample #start and the sample #end
+    *
+    * @param length
+    *            the number of samples of the result sound
+    * @return the client, with a sound imported
+    * @throws SoundTransformException
+    *             if the length is not positive
+    */
     @Override
     public FluentClientSoundImported loop (final int length) throws SoundTransformException {
         return this.apply (new LoopSoundTransformation (length));
@@ -638,6 +711,11 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #mixAllInOneSound()
+     */    
+    /**
+     * Uses the sounds inside the nested clients to mix them all and to produce a single sound
+     * @return the client, with a sound imported
+     * @throws SoundTransformException if the nested clients are not in the Sound imported state
      */
     @Override
     public FluentClientSoundImported mixAllInOneSound () throws SoundTransformException {
@@ -793,6 +871,14 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #stopWithAPack(java.lang.String)
      */
+    /**
+     * Stops the client pipeline and returns the pack whose title is in
+     * parameter
+     *
+     * @param title
+     *            the title of the pack
+     * @return a pack object
+     */
     @Override
     public Pack stopWithAPack (final String title) {
         return new ImportAPackIntoTheLibrary (this.getObservers ()).getPack (title);
@@ -868,6 +954,12 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #stopWithResults(java.lang.Class)
+     */
+    /**
+     * Stops the client pipeline and get all the values inside each nested client
+     * @param resultClass You have to specify what type of result you expect.
+     *                    the value can be one of this list : (Sound.class, InputStream.class, File.class, String.class, float [].class)
+     * @return an array of results
      */
     @Override
     @SuppressWarnings ("unchecked")

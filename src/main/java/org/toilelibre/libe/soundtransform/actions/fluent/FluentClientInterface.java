@@ -202,8 +202,6 @@ public interface FluentClientInterface {
      */
     public abstract FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException;
 
-    public abstract <T> T [] stopWithResults (Class<T> resultClass);
-
     /**
      * Uses the current input stream object to convert it into a sound (with one
      * or more channels)
@@ -236,18 +234,72 @@ public interface FluentClientInterface {
      */
     public abstract FluentClientWithFreqs insertPart (float [] subFreqs, int start);
 
-    public abstract <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (FluentClientOperation operation, int timeoutInSeconds, T... clients) throws SoundTransformException;
+    /**
+     * Runs asynchronously the same operations on a varargs of started FluentClients 
+     * @param op a list of operation to apply
+     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
+     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+     * @param clients a list of started FluentClients
+     * @return the client, with a list of clients inside holding a value each
+     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     */
+    public abstract <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException;
 
+    /**
+     * Alias for the inParallel method using a list of clients
+     * @param op  a list of operation to apply
+     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
+     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+     * @param sounds a list of Sounds (each Sound object is a sound channel)
+     * @return the client, with a list of clients inside holding a value each
+     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     */
     public abstract FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds) throws SoundTransformException;
 
+    /**
+     * Alias for the inParallel method using a list of clients
+     * @param op  a list of operation to apply
+     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
+     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+     * @param inputStreams a list of inputStreams
+     * @return the client, with a list of clients inside holding a value each
+     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     */
     public abstract FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException;
 
-    public abstract FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException;
+    /**
+     * Alias for the inParallel method using a list of clients
+     * @param op  a list of operation to apply
+     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
+     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+     * @param files a list of Files
+     * @return the client, with a list of clients inside holding a value each
+     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     */
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException;
 
-    public abstract FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs) throws SoundTransformException;
+    /**
+     * Alias for the inParallel method using a list of clients
+     * @param op  a list of operation to apply
+     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
+     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+     * @param freqs a list of loudest freqs arrays
+     * @return the client, with a list of clients inside holding a value each
+     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     */
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs) throws SoundTransformException;
 
-    public abstract FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
-
+    /**
+     * Alias for the inParallel method using a list of clients
+     * @param op  a list of operation to apply
+     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
+     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
+     * @param classpathResources a list of classpathResources
+     * @return the client, with a list of clients inside holding a value each
+     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     */
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
+    
     /**
      * Extract a part of the sound between the sample #start and the sample #end
      *
@@ -270,7 +322,12 @@ public interface FluentClientInterface {
      *             if the sound is null or if there is a problem with the mix
      */
     public abstract FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException;
-
+    
+    /**
+     * Uses the sounds inside the nested clients to mix them all and to produce a single sound
+     * @return the client, with a sound imported
+     * @throws SoundTransformException if the nested clients are not in the Sound imported state
+     */
     public abstract FluentClientSoundImported mixAllInOneSound () throws SoundTransformException;
 
     /**
@@ -374,6 +431,14 @@ public interface FluentClientInterface {
      */
     public abstract Observer [] stopWithObservers ();
 
+    /**
+     * Stops the client pipeline and get all the values inside each nested client
+     * @param resultClass You have to specify what type of result you expect.
+     *                    the value can be one of this list : (Sound.class, InputStream.class, File.class, String.class, float [].class)
+     * @return an array of results
+     */
+    public abstract <T> T [] stopWithResults (Class<T> resultClass);
+    
     /**
      * Stops the client pipeline and returns the obtained sound
      *
