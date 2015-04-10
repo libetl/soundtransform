@@ -160,7 +160,7 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClient.setDefaultObservers(new Slf4jObserver (LogLevel.WARN));
         FluentClient.start ().inParallel (
                 //operations
-                FluentClientOperation.declare().convertIntoSound ().build (),
+                FluentClientOperation.prepare ().convertIntoSound (),
                 //timeout in seconds
                 5, 
                 //classpath resources

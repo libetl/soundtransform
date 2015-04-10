@@ -12,7 +12,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public interface FluentClientReady {
+public interface FluentClientReady extends FluentClientCommon {
 
     /**
      * Stops the client pipeline and returns the pack whose title is in

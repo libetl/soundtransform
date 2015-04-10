@@ -3,7 +3,6 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,14 +17,10 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class FluentClientOperation {
+public class FluentClientOperation implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums, FluentClientInterface {
 
-    public static FluentClientOperationBuilder declare (){
-        return new FluentClientOperationBuilder ();
-    }
-    
-    List<Step> getSteps() {
-        return steps;
+    public interface Step {
+        void run(FluentClientInterface client) throws SoundTransformException;
     }
 
     public enum FluentClientOperationErrorCode implements ErrorCode {
@@ -44,678 +39,690 @@ public class FluentClientOperation {
         }
     }
 
-    interface Step {
-        void run(FluentClient client) throws SoundTransformException;
-    }
-
     private List<Step> steps;
 
-    private FluentClientOperation(List<Step> steps1) {
-        this.steps = Collections.unmodifiableList(steps1);
+    private FluentClientOperation () {
+        this.steps = new LinkedList<Step> ();
+    }
+    
+    public static FluentClientOperation prepare (){
+        return new FluentClientOperation ();
     }
 
-    public static class FluentClientOperationBuilder implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums {
-
-        private List<Step> steps = new LinkedList<Step> ();
-        
-        public FluentClientOperation build() {
-            return new FluentClientOperation(steps);
-        }
-
-        @Override
-        public FluentClientOperationBuilder andAfterStart() {
-            return this;
-        }
-
-        @Override
-        public Pack stopWithAPack(String title) {
-            throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
-        }
-
-        @Override
-        public Observer[] stopWithObservers() {
-            throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
-        }
-
-        @Override
-        public FluentClientOperationBuilder extractSound() throws SoundTransformException {
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder playIt() throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.playIt();
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public List<Spectrum<Serializable>[]> stopWithSpectrums() {
-
-            throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
-        }
-
-        @Override
-        public FluentClientOperationBuilder adjust() {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.adjust();
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder compress(final float factor) {
-
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.compress(factor);
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder filterRange(final float low, final float high) {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.filterRange(low, high);
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder insertPart(final float[] subFreqs, final int start) {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.insertPart(subFreqs, start);
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder octaveDown() {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.octaveDown();
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder octaveUp() {
-
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.octaveUp();
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder replacePart(final float[] subFreqs, final int start) {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.replacePart(subFreqs, start);
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder shapeIntoSound(final String packName, final String instrumentName, final FormatInfo fi) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.shapeIntoSound(packName, instrumentName, fi);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public float[] stopWithFreqs() {
-
-            throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
-        }
-
-        @Override
-        public FluentClientOperationBuilder convertIntoSound() throws SoundTransformException {
-
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.convertIntoSound();
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder importToStream() throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.importToStream();
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public File stopWithFile() {
-
-            throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
-        }
-
-        @Override
-        public FluentClientOperationBuilder importToSound() throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.importToSound();
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public InputStream stopWithInputStream() {
-
-            throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
-        }
-
-        @Override
-        public StreamInfo stopWithStreamInfo() throws SoundTransformException {
-
-            throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
-        }
-
-        @Override
-        public FluentClientOperationBuilder writeToClasspathResource(final String resource) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.writeToClasspathResource(resource);
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder writeToClasspathResourceWithSiblingResource(final String resource, final String siblingResource) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.writeToClasspathResourceWithSiblingResource(resource, siblingResource);
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder writeToFile(final File file) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.writeToFile(file);
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withAnObserver(final Observer... observers) {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withAnObserver(observers);
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withAPack(final String packName, final InputStream jsonStream) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withAPack(packName, jsonStream);
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withAPack(final String packName, final Object context, final Class<?> rClass, final int packJsonId) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withAPack(packName, context, rClass, packJsonId);
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withAPack(final String packName, final String jsonContent) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withAPack(packName, jsonContent);
-                }
-            });
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withAudioInputStream(final InputStream is) {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withAudioInputStream (is);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withClasspathResource(final String resource) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withClasspathResource (resource);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withFile(final File file) {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withFile (file);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withFreqs(final float[] freqs) {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withFreqs (freqs);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withLimitedTimeRecordedInputStream(final StreamInfo streamInfo) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withLimitedTimeRecordedInputStream (streamInfo);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withRawInputStream(final InputStream is, final StreamInfo isInfo) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withRawInputStream (is , isInfo);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withRecordedInputStream(final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withRecordedInputStream (streamInfo, stop);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withSounds(final Sound[] sounds) {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withSounds (sounds);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder withSpectrums(final List<Spectrum<Serializable>[]> spectrums) {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.withSpectrums (spectrums);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder append(final Sound[] sound) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.append (sound);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder apply(final SoundTransformation st) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.apply (st);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder changeFormat(final FormatInfo formatInfo) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.changeFormat (formatInfo);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder cutSubSound(final int start, final int end) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.cutSubSound (start, end);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder exportToClasspathResource(final String resource) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.exportToClasspathResource (resource);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder exportToClasspathResourceWithSiblingResource(final String resource, final String siblingResource) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.exportToClasspathResourceWithSiblingResource (resource, siblingResource);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder exportToFile(final File file) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.exportToFile (file);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder exportToStream() throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.exportToStream ();
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder extractSubSound(final int start, final int end) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.extractSubSound (start, end);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder findLoudestFrequencies() throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.findLoudestFrequencies ();
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder loop(final int length) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.loop (length);
-                }
-            });
-
-            return this;
-        }
-
-
-        @Override
-        public FluentClientSoundImported mixAllInOneSound() throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.mixAllInOneSound ();
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder mixWith(final Sound[] sound) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.mixWith (sound);
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public FluentClientOperationBuilder splitIntoSpectrums() throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.splitIntoSpectrums ();
-                }
-            });
-
-            return this;
-        }
-
-        @Override
-        public Sound[] stopWithSounds() {
-
-            throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
-        }
-
-
-        @Override
-        public <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.inParallel (op, timeoutInSeconds, clients);
-                }
-            });
-            return this;
-        }
-        
-        @Override
-        public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final Sound []... sounds) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.inParallel (op, timeoutInSeconds, sounds);
-                }
-            });
-            return this;}
-        @Override
-        public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final InputStream... inputStreams) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.inParallel (op, timeoutInSeconds, inputStreams);
-                }
-            });
-            return this;}
-        @Override
-        public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final File... files) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.inParallel (op, timeoutInSeconds, files);
-                }
-            });
-            return this;}
-        @Override
-        public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final float []... freqs) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.inParallel (op, timeoutInSeconds, freqs);
-                }
-            });
-            return this;}
-        @Override
-        public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final String... classpathResources) throws SoundTransformException {
-            this.steps.add(new Step() {
-
-                @Override
-                public void run(FluentClient client) throws SoundTransformException {
-                    client.inParallel (op, timeoutInSeconds, classpathResources);
-                }
-            });
-            return this;
-        }
-
-
+    List<Step> getSteps () {
+        return this.steps;
     }
+    
+    @Override
+    public FluentClientOperation andAfterStart() {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.andAfterStart();
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public Pack stopWithAPack(String title) {
+        throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
+    }
+
+    @Override
+    public Observer[] stopWithObservers() {
+        throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
+    }
+
+    @Override
+    public List<Spectrum<Serializable>[]> stopWithSpectrums() {
+
+        throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
+    }
+
+    @Override
+    public <T> List<T> stopWithResults(Class<T> resultClass) {
+        throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
+    }
+
+    @Override
+    public InputStream stopWithInputStream() {
+
+        throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
+    }
+
+    @Override
+    public StreamInfo stopWithStreamInfo() throws SoundTransformException {
+
+        throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
+    }
+
+    @Override
+    public Sound[] stopWithSounds() {
+
+        throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
+    }
+
+    @Override
+    public File stopWithFile() {
+
+        throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
+    }
+
+    @Override
+    public FluentClientOperation extractSound() throws SoundTransformException {
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation playIt() throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.playIt();
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation adjust() {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.adjust();
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation compress(final float factor) {
+
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.compress(factor);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation filterRange(final float low, final float high) {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.filterRange(low, high);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation insertPart(final float[] subFreqs, final int start) {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.insertPart(subFreqs, start);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation octaveDown() {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.octaveDown();
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation octaveUp() {
+
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.octaveUp();
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation replacePart(final float[] subFreqs, final int start) {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.replacePart(subFreqs, start);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation shapeIntoSound(final String packName, final String instrumentName, final FormatInfo fi) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.shapeIntoSound(packName, instrumentName, fi);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public float[] stopWithFreqs() {
+
+        throw new SoundTransformRuntimeException(FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException());
+    }
+
+    @Override
+    public FluentClientOperation convertIntoSound() throws SoundTransformException {
+
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.convertIntoSound();
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation importToStream() throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.importToStream();
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation importToSound() throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.importToSound();
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation writeToClasspathResource(final String resource) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.writeToClasspathResource(resource);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation writeToClasspathResourceWithSiblingResource(final String resource, final String siblingResource) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.writeToClasspathResourceWithSiblingResource(resource, siblingResource);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation writeToFile(final File file) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.writeToFile(file);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withAnObserver(final Observer... observers) {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withAnObserver(observers);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withAPack(final String packName, final InputStream jsonStream) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withAPack(packName, jsonStream);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withAPack(final String packName, final Object context, final Class<?> rClass, final int packJsonId) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withAPack(packName, context, rClass, packJsonId);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withAPack(final String packName, final String jsonContent) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withAPack(packName, jsonContent);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withAudioInputStream(final InputStream is) {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withAudioInputStream(is);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withClasspathResource(final String resource) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withClasspathResource(resource);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withFile(final File file) {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withFile(file);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withFreqs(final float[] freqs) {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withFreqs(freqs);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withLimitedTimeRecordedInputStream(final StreamInfo streamInfo) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withLimitedTimeRecordedInputStream(streamInfo);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withRawInputStream(final InputStream is, final StreamInfo isInfo) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withRawInputStream(is, isInfo);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withRecordedInputStream(final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withRecordedInputStream(streamInfo, stop);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withSounds(final Sound[] sounds) {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withSounds(sounds);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation withSpectrums(final List<Spectrum<Serializable>[]> spectrums) {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.withSpectrums(spectrums);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation append(final Sound[] sound) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.append(sound);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation apply(final SoundTransformation st) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.apply(st);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation changeFormat(final FormatInfo formatInfo) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.changeFormat(formatInfo);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation cutSubSound(final int start, final int end) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.cutSubSound(start, end);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation exportToClasspathResource(final String resource) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.exportToClasspathResource(resource);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation exportToClasspathResourceWithSiblingResource(final String resource, final String siblingResource) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.exportToClasspathResourceWithSiblingResource(resource, siblingResource);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation exportToFile(final File file) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.exportToFile(file);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation exportToStream() throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.exportToStream();
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation extractSubSound(final int start, final int end) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.extractSubSound(start, end);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation findLoudestFrequencies() throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.findLoudestFrequencies();
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation loop(final int length) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.loop(length);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientSoundImported mixAllInOneSound() throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.mixAllInOneSound();
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation mixWith(final Sound[] sound) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.mixWith(sound);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation splitIntoSpectrums() throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.splitIntoSpectrums();
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.inParallel(op, timeoutInSeconds, clients);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final Sound[]... sounds) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.inParallel(op, timeoutInSeconds, sounds);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final InputStream... inputStreams) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.inParallel(op, timeoutInSeconds, inputStreams);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final File... files) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.inParallel(op, timeoutInSeconds, files);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final float[]... freqs) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.inParallel(op, timeoutInSeconds, freqs);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientWithParallelizedClients inParallel(final FluentClientOperation op, final int timeoutInSeconds, final String... classpathResources) throws SoundTransformException {
+        this.steps.add(new Step() {
+
+            @Override
+            public void run(FluentClientInterface client) throws SoundTransformException {
+                client.inParallel(op, timeoutInSeconds, classpathResources);
+            }
+        });
+        return this;
+    }
+
 }
