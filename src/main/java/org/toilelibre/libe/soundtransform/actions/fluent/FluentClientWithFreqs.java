@@ -85,13 +85,13 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *            the shapeIntoSound method by using withAPack)
      * @param instrumentName
      *            the name of the instrument that will map the freqs object
-     * @param fi
+     * @param formatInfo
      *            the wanted format for the future sound
      * @return the client, with a sound imported
      * @throws SoundTransformException
      *             could not call the soundtransform to shape the freqs
      */
-    FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, FormatInfo fi) throws SoundTransformException;
+    FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, FormatInfo formatInfo) throws SoundTransformException;
 
     /**
      * Stops the client pipeline and returns the obtained loudest frequencies

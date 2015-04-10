@@ -36,7 +36,7 @@ public interface FluentClientInterface {
      * Append the sound passed in parameter to the current sound stored in the
      * client
      *
-     * @param sounds1
+     * @param sound
      *            the sound to append the current sound to
      * @return the client, with a sound imported
      * @throws SoundTransformException
@@ -44,7 +44,7 @@ public interface FluentClientInterface {
      *             appending please ensure that both sounds have the same number
      *             of channels
      */
-    public abstract FluentClientSoundImported append(Sound[] sounds1) throws SoundTransformException;
+    public abstract FluentClientSoundImported append(Sound[] sound) throws SoundTransformException;
 
     /**
      * Apply one transform and continue with the current imported sound
@@ -116,11 +116,11 @@ public interface FluentClientInterface {
 
     /**
      * Shortcut for exportToStream ().writeToFile (file)
-     * @param file1 the destination file
+     * @param file the destination file
      * @return the client, with a file written
      * @throws SoundTransformException if one of the two operations fails
      */
-    public abstract FluentClientWithFile exportToFile(File file1) throws SoundTransformException;
+    public abstract FluentClientWithFile exportToFile(File file) throws SoundTransformException;
 
     /**
      * Uses the current imported sound and converts it into an InputStream, ready to be written to a file (or to be read again)
@@ -205,13 +205,13 @@ public interface FluentClientInterface {
 
     public abstract <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel(FluentClientOperation operation, int timeoutInSeconds, T... clients) throws SoundTransformException;
 
-    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, Sound[]... sounds1) throws SoundTransformException;
+    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, Sound[]... sounds) throws SoundTransformException;
 
-    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams1) throws SoundTransformException;
+    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException;
 
-    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, File... files1) throws SoundTransformException;
+    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException;
 
-    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, float[]... freqs1) throws SoundTransformException;
+    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, float[]... freqs) throws SoundTransformException;
 
     public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
 
@@ -273,11 +273,11 @@ public interface FluentClientInterface {
      * Shapes these loudest frequencies array into a sound and set the converted sound in the pipeline
      * @param packName reference to an existing imported pack (must be invoked before the shapeIntoSound method by using withAPack)
      * @param instrumentName the name of the instrument that will map the freqs object
-     * @param fi the wanted format for the future sound
+     * @param formatInfo the wanted format for the future sound
      * @return the client, with a sound imported
      * @throws SoundTransformException could not call the soundtransform to shape the freqs
      */
-    public abstract FluentClientSoundImported shapeIntoSound(String packName, String instrumentName, FormatInfo fi) throws SoundTransformException;
+    public abstract FluentClientSoundImported shapeIntoSound(String packName, String instrumentName, FormatInfo formatInfo) throws SoundTransformException;
 
     /**
      * Uses the current sound to pick its spectrums and set that as the current data in the pipeline
@@ -501,10 +501,10 @@ public interface FluentClientInterface {
 
     /**
      * Tells the client to work first with a sound object
-     * @param sounds1 the sound object
+     * @param sound the sound object
      * @return the client, with an imported sound
      */
-    public abstract FluentClientSoundImported withSounds(Sound[] sounds1);
+    public abstract FluentClientSoundImported withSounds(Sound [] sound);
 
     /**
      * Tells the client to work first with a spectrum formatted sound.<br/>
@@ -535,10 +535,10 @@ public interface FluentClientInterface {
 
     /**
      * Writes the current InputStream in a file
-     * @param file1 the destination file
+     * @param file the destination file
      * @return the client, with a file
      * @throws SoundTransformException The file could not be written
      */
-    public abstract FluentClientWithFile writeToFile(File file1) throws SoundTransformException;
+    public abstract FluentClientWithFile writeToFile(File file) throws SoundTransformException;
 
 }

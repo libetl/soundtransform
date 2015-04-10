@@ -132,11 +132,11 @@ public interface FluentClientReady extends FluentClientCommon {
      * The passed inputStream must own a format metadata object. Therefore it
      * must be an AudioInputStream.
      *
-     * @param is
+     * @param inputStream
      *            the input stream
      * @return the client, with an input stream
      */
-    FluentClientWithInputStream withAudioInputStream (InputStream is);
+    FluentClientWithInputStream withAudioInputStream (InputStream inputStream);
 
     /**
      * Tells the client to work first with a classpath resource. It will be
@@ -190,16 +190,16 @@ public interface FluentClientReady extends FluentClientCommon {
      * The passed inputStream must not contain any metadata piece of
      * information.
      *
-     * @param is
+     * @param inputStream
      *            the input stream
-     * @param isInfo
+     * @param streamInfo
      *            the stream info
      * @return the client, with an input stream
      * @throws SoundTransformException
      *             the input stream cannot be read, or the conversion did not
      *             work
      */
-    FluentClientWithInputStream withRawInputStream (InputStream is, StreamInfo isInfo) throws SoundTransformException;
+    FluentClientWithInputStream withRawInputStream (InputStream inputStream, StreamInfo streamInfo) throws SoundTransformException;
 
     /**
      * Tells the client to work first to open the microphone and to record a

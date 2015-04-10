@@ -215,12 +215,12 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientOperation shapeIntoSound(final String packName, final String instrumentName, final FormatInfo fi) throws SoundTransformException {
+    public FluentClientOperation shapeIntoSound(final String packName, final String instrumentName, final FormatInfo formatInfo) throws SoundTransformException {
         this.steps.add(new Step() {
 
             @Override
             public void run(FluentClientInterface client) throws SoundTransformException {
-                client.shapeIntoSound(packName, instrumentName, fi);
+                client.shapeIntoSound(packName, instrumentName, formatInfo);
             }
         });
 
