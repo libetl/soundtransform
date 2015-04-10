@@ -129,7 +129,7 @@ the client, ready to start
 #####   FluentClient.inParallel 
 
 ```java
-static FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException
+FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException
 ```
 
 
@@ -152,7 +152,7 @@ Throws:
 #####   FluentClient.inParallel 
 
 ```java
-static FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds) throws SoundTransformException
+FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds) throws SoundTransformException
 ```
 
 
@@ -175,7 +175,7 @@ Throws:
 #####   FluentClient.inParallel 
 
 ```java
-static FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException
+FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException
 ```
 
 
@@ -198,7 +198,7 @@ Throws:
 #####   FluentClient.inParallel 
 
 ```java
-static FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException
+FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException
 ```
 
 
@@ -221,7 +221,7 @@ Throws:
 #####   FluentClient.inParallel 
 
 ```java
-static FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs) throws SoundTransformException
+FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs) throws SoundTransformException
 ```
 
 
@@ -244,7 +244,7 @@ Throws:
 #####   FluentClient.inParallel 
 
 ```java
-static FluentClientReady inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException
+FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException
 ```
 
 
@@ -465,7 +465,7 @@ Tells the client to work first to open the microphone and to record a sound
 The result will be of an InputStream type.
 The frameLength in the streamInfo will be ignored
 
- /!\ : blocking method, the  `stop.notify` method must be called in another thread.
+ /!\ : blocking method, the `stop.notify` method must be called in another thread.
 
 Parameters:  
 `streamInfo` - the future input stream info
