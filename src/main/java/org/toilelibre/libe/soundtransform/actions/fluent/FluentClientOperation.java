@@ -21,10 +21,11 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
 
     public abstract class Step {
         void run (final FluentClientInterface client) throws SoundTransformException {
-
+            client.hashCode ();
         }
 
         void run (final FluentClientInterface client, final int invocationNumber) throws SoundTransformException {
+            ("" + invocationNumber).hashCode ();
             this.run (client);
         }
     }
