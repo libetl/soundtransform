@@ -8,10 +8,13 @@ import javax.sound.sampled.LineListener;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.api.support.membermodification.MemberMatcher;
+import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
@@ -91,7 +94,7 @@ public class JavaxPlaySoundProcessorTest extends SoundTransformTest {
                 ll [0] = invocation.getArgumentAt (0, LineListener.class);
                 return null;
             }
-        }).when (clip).addLineListener (Mockito.any (LineListener.class));
+        }).when (clip).addLineListener (Matchers.any (LineListener.class));
 
         PowerMockito.when (clip.isOpen ()).thenAnswer (new Answer<Boolean> () {
             int i = 0;
@@ -103,7 +106,7 @@ public class JavaxPlaySoundProcessorTest extends SoundTransformTest {
         });
         PowerMockito.spy (ApplicationInjector.class);
         PowerMockito.when (ApplicationInjector.$.select (PlaySoundProcessor.class)).thenReturn (this.processor);
-        PowerMockito.stub (PowerMockito.method (LineListenerPlaySoundProcessor.class, "getLine", Info.class)).toReturn (clip);
+        MemberModifier.stub (MemberMatcher.method (LineListenerPlaySoundProcessor.class, "getLine", Info.class)).toReturn (clip);
         return ll;
     }
 }

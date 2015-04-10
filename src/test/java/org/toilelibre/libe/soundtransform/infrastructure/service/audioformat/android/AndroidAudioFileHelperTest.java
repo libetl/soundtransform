@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -39,7 +40,7 @@ public class AndroidAudioFileHelperTest extends SoundTransformAndroidTest {
         try {
             final FileInputStream is = Mockito.mock (FileInputStream.class);
             PowerMockito.whenNew (FileInputStream.class).withAnyArguments ().thenReturn (is);
-            Mockito.when (is.read (Mockito.any (byte [].class))).thenThrow (new IOException ("Mocked IO Exception"));
+            Mockito.when (is.read (Matchers.any (byte [].class))).thenThrow (new IOException ("Mocked IO Exception"));
             Mockito.doThrow (new IOException ("Mocked IO Exception")).when (is).close ();
             new AndroidAudioFileHelper ().convertFileToBaos (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()));
             Assert.fail ("Should have thrown an exception here");
@@ -84,7 +85,7 @@ public class AndroidAudioFileHelperTest extends SoundTransformAndroidTest {
             final WavOutputStream wos = Mockito.mock (WavOutputStream.class);
             PowerMockito.whenNew (WavOutputStream.class).withAnyArguments ().thenReturn (wos);
             Mockito.doThrow (new IOException ("Mocked IO Exception")).when (wos).close ();
-            Mockito.doThrow (new IOException ("Mocked IO Exception")).when (wos).write (Mockito.any (byte [].class));
+            Mockito.doThrow (new IOException ("Mocked IO Exception")).when (wos).write (Matchers.any (byte [].class));
             new AndroidAudioFileHelper ().writeInputStream (new ByteArrayWithAudioFormatInputStream (new byte [0], new StreamInfo (2, 10000, 2, 44100, false, true, null)), new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()));
             Assert.fail ("Should have thrown an exception here");
         } catch (final SoundTransformException e) {

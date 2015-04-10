@@ -22,6 +22,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *            the title of the pack
      * @return a pack object
      */
+    @Override
     Pack stopWithAPack (String title);
 
     /**
@@ -29,13 +30,19 @@ public interface FluentClientReady extends FluentClientCommon {
      *
      * @return the observers
      */
+    @Override
     Observer [] stopWithObservers ();
 
     <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException;
+
     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds) throws SoundTransformException;
+
     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException;
+
     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException;
+
     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs) throws SoundTransformException;
+
     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
 
     /**

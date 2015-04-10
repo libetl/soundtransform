@@ -13,11 +13,11 @@ import org.toilelibre.libe.soundtransform.model.observer.TextLogEvent;
 
 public class Slf4jObserver implements Observer {
 
-    private Map<String, Logger> loggersByClassName = new HashMap<String, Logger> ();
-    private static final String OBSERVER_CLASSNAME = Slf4jObserver.class.getName ();
-    private static final String LOGAWARE_CLASSNAME = AbstractLogAware.class.getName ();
+    private final Map<String, Logger> loggersByClassName = new HashMap<String, Logger> ();
+    private static final String       OBSERVER_CLASSNAME = Slf4jObserver.class.getName ();
+    private static final String       LOGAWARE_CLASSNAME = AbstractLogAware.class.getName ();
 
-    private final LogLevel      threshold;
+    private final LogLevel            threshold;
 
     public Slf4jObserver () {
         this.threshold = LogLevel.PARANOIAC;
@@ -38,22 +38,22 @@ public class Slf4jObserver implements Observer {
 
     private void log (final Logger logger, final LogEvent logEvent) {
         switch (logEvent.getLevel ()) {
-            case PARANOIAC:
+            case PARANOIAC :
                 logger.trace (logEvent.getMsg ());
                 break;
-            case VERBOSE:
+            case VERBOSE :
                 logger.debug (logEvent.getMsg ());
                 break;
-            case INFO:
+            case INFO :
                 logger.info (logEvent.getMsg ());
                 break;
-            case WARN:
+            case WARN :
                 logger.warn (logEvent.getMsg ());
                 break;
-            case ERROR:
+            case ERROR :
                 logger.error (logEvent.getMsg ());
                 break;
-            default:
+            default :
                 break;
         }
     }
@@ -77,7 +77,7 @@ public class Slf4jObserver implements Observer {
 
     private synchronized Logger getLoggerByClassName (final String className) {
 
-        if (!this.loggersByClassName.containsKey (className)){
+        if (!this.loggersByClassName.containsKey (className)) {
             this.loggersByClassName.put (className, LoggerFactory.getLogger (className));
         }
         return this.loggersByClassName.get (className);

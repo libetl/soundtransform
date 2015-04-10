@@ -29,5 +29,5 @@ public interface FluentClientCommon {
      * @return the observers
      */
     Observer [] stopWithObservers ();
-    
+
 }

@@ -9,8 +9,8 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
-    private final double []     ranges;
-    private final double []     amplification;
+    private final double [] ranges;
+    private final double [] amplification;
 
     public EqualizerSoundTransformation (final double [] ranges1, final double [] amplification1) {
         super ();

@@ -22,7 +22,7 @@ public interface FluentClientInterface {
      *
      * @return the client, with a loudest frequencies float array
      */
-    public abstract FluentClientWithFreqs adjust();
+    public abstract FluentClientWithFreqs adjust ();
 
     /**
      * Start over the client : reset the state and the value objects nested in
@@ -30,7 +30,7 @@ public interface FluentClientInterface {
      *
      * @return the client, ready to start
      */
-    public abstract FluentClientReady andAfterStart();
+    public abstract FluentClientReady andAfterStart ();
 
     /**
      * Append the sound passed in parameter to the current sound stored in the
@@ -44,15 +44,18 @@ public interface FluentClientInterface {
      *             appending please ensure that both sounds have the same number
      *             of channels
      */
-    public abstract FluentClientSoundImported append(Sound[] sound) throws SoundTransformException;
+    public abstract FluentClientSoundImported append (Sound [] sound) throws SoundTransformException;
 
     /**
      * Apply one transform and continue with the current imported sound
-     * @param st the SoundTransformation to apply
+     *
+     * @param st
+     *            the SoundTransformation to apply
      * @return the client with a sound imported
-     * @throws SoundTransformException if the transform does not work
+     * @throws SoundTransformException
+     *             if the transform does not work
      */
-    public abstract FluentClientSoundImported apply(SoundTransformation st) throws SoundTransformException;
+    public abstract FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException;
 
     /**
      * Changes the current imported sound to fit the expected format
@@ -62,7 +65,7 @@ public interface FluentClientInterface {
      * @return the client, with a sound imported
      * @throws SoundTransformException
      */
-    public abstract FluentClientSoundImported changeFormat(FormatInfo formatInfo) throws SoundTransformException;
+    public abstract FluentClientSoundImported changeFormat (FormatInfo formatInfo) throws SoundTransformException;
 
     /**
      * Compresses the loudest freq array (speedup or slowdown) When shaped into
@@ -71,18 +74,21 @@ public interface FluentClientInterface {
      *
      * @param factor
      *            the factor parameter quantifies how much the stretch will be
-     *            (i.e if factor = 0.5, then the result will be twice as long than
-     *            the original)
+     *            (i.e if factor = 0.5, then the result will be twice as long
+     *            than the original)
      * @return the client, with a loudest frequencies float array
      */
-    public abstract FluentClientWithFreqs compress(float factor);
+    public abstract FluentClientWithFreqs compress (float factor);
 
     /**
-     * Shortcut for importToStream ().importToSound () : Conversion from a File to a Sound
+     * Shortcut for importToStream ().importToSound () : Conversion from a File
+     * to a Sound
+     *
      * @return the client, with a sound imported
-     * @throws SoundTransformException if one of the two import fails
+     * @throws SoundTransformException
+     *             if one of the two import fails
      */
-    public abstract FluentClientSoundImported convertIntoSound() throws SoundTransformException;
+    public abstract FluentClientSoundImported convertIntoSound () throws SoundTransformException;
 
     /**
      * Splice a part of the sound between the sample #start and the sample #end
@@ -95,46 +101,67 @@ public interface FluentClientInterface {
      * @throws SoundTransformException
      *             if the indexes are out of bound
      */
-    public abstract FluentClientSoundImported cutSubSound(int start, int end) throws SoundTransformException;
+    public abstract FluentClientSoundImported cutSubSound (int start, int end) throws SoundTransformException;
 
     /**
-     * Shortcut for exportToStream ().writeToClasspathResource (resource) : Conversion from a Sound to a File
-     * @param resource a resource that can be found in the classpath
+     * Shortcut for exportToStream ().writeToClasspathResource (resource) :
+     * Conversion from a Sound to a File
+     *
+     * @param resource
+     *            a resource that can be found in the classpath
      * @return the client, with a file written
-     * @throws SoundTransformException if one of the two operations fails
+     * @throws SoundTransformException
+     *             if one of the two operations fails
      */
-    public abstract FluentClientWithFile exportToClasspathResource(String resource) throws SoundTransformException;
+    public abstract FluentClientWithFile exportToClasspathResource (String resource) throws SoundTransformException;
 
     /**
-     * Shortcut for exportToStream ().writeToClasspathResourceWithSiblingResource (resource, siblingResource)
-     * @param resource a resource that may or may not exist in the classpath
-     * @param siblingResource a resource that can be found in the classpath.
+     * Shortcut for exportToStream
+     * ().writeToClasspathResourceWithSiblingResource (resource,
+     * siblingResource)
+     *
+     * @param resource
+     *            a resource that may or may not exist in the classpath
+     * @param siblingResource
+     *            a resource that can be found in the classpath.
      * @return the client, with a file written
-     * @throws SoundTransformException if one of the two operations fails
+     * @throws SoundTransformException
+     *             if one of the two operations fails
      */
-    public abstract FluentClientWithFile exportToClasspathResourceWithSiblingResource(String resource, String siblingResource) throws SoundTransformException;
+    public abstract FluentClientWithFile exportToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException;
 
     /**
      * Shortcut for exportToStream ().writeToFile (file)
-     * @param file the destination file
+     *
+     * @param file
+     *            the destination file
      * @return the client, with a file written
-     * @throws SoundTransformException if one of the two operations fails
+     * @throws SoundTransformException
+     *             if one of the two operations fails
      */
-    public abstract FluentClientWithFile exportToFile(File file) throws SoundTransformException;
+    public abstract FluentClientWithFile exportToFile (File file) throws SoundTransformException;
 
     /**
-     * Uses the current imported sound and converts it into an InputStream, ready to be written to a file (or to be read again)
+     * Uses the current imported sound and converts it into an InputStream,
+     * ready to be written to a file (or to be read again)
+     *
      * @return the client, with an inputStream
-     * @throws SoundTransformException if the metadata format object is invalid, or if the sound cannot be converted
+     * @throws SoundTransformException
+     *             if the metadata format object is invalid, or if the sound
+     *             cannot be converted
      */
-    public abstract FluentClientWithInputStream exportToStream() throws SoundTransformException;
+    public abstract FluentClientWithInputStream exportToStream () throws SoundTransformException;
 
     /**
-     * Uses the current available spectrums objects to convert them into a sound (with one or more channels)
+     * Uses the current available spectrums objects to convert them into a sound
+     * (with one or more channels)
+     *
      * @return the client, with a sound imported
-     * @throws SoundTransformException if the spectrums are in an invalid format, or if the transform to sound does not work
+     * @throws SoundTransformException
+     *             if the spectrums are in an invalid format, or if the
+     *             transform to sound does not work
      */
-    public abstract FluentClientSoundImported extractSound() throws SoundTransformException;
+    public abstract FluentClientSoundImported extractSound () throws SoundTransformException;
 
     /**
      * Extract a part of the sound between the sample #start and the sample #end
@@ -147,7 +174,7 @@ public interface FluentClientInterface {
      * @throws SoundTransformException
      *             if the indexes are out of bound
      */
-    public abstract FluentClientSoundImported extractSubSound(int start, int end) throws SoundTransformException;
+    public abstract FluentClientSoundImported extractSubSound (int start, int end) throws SoundTransformException;
 
     /**
      * Remove the values between low and high in the loudest freqs array
@@ -159,7 +186,7 @@ public interface FluentClientInterface {
      *            high frequency (last one to avoid)
      * @return the client, with a loudest frequencies float array
      */
-    public abstract FluentClientWithFreqs filterRange(float low, float high);
+    public abstract FluentClientWithFreqs filterRange (float low, float high);
 
     /**
      * Will invoke a soundtransform to find the loudest frequencies of the
@@ -173,23 +200,29 @@ public interface FluentClientInterface {
      * @throws SoundTransformException
      *             if the convert fails
      */
-    public abstract FluentClientWithFreqs findLoudestFrequencies() throws SoundTransformException;
+    public abstract FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException;
 
-    public abstract <T> T [] stopWithResults(Class<T> resultClass);
+    public abstract <T> T [] stopWithResults (Class<T> resultClass);
 
     /**
-     * Uses the current input stream object to convert it into a sound (with one or more channels)
+     * Uses the current input stream object to convert it into a sound (with one
+     * or more channels)
+     *
      * @return the client, with a sound imported
-     * @throws SoundTransformException the inputStream is invalid, or the convert did not work
+     * @throws SoundTransformException
+     *             the inputStream is invalid, or the convert did not work
      */
-    public abstract FluentClientSoundImported importToSound() throws SoundTransformException;
+    public abstract FluentClientSoundImported importToSound () throws SoundTransformException;
 
     /**
-     * Opens the current file and convert it into an InputStream, ready to be read (or to be written to a file)
+     * Opens the current file and convert it into an InputStream, ready to be
+     * read (or to be written to a file)
+     *
      * @return the client, with an inputStream
-     * @throws SoundTransformException the current file is not valid, or the conversion did not work
+     * @throws SoundTransformException
+     *             the current file is not valid, or the conversion did not work
      */
-    public abstract FluentClientWithInputStream importToStream() throws SoundTransformException;
+    public abstract FluentClientWithInputStream importToStream () throws SoundTransformException;
 
     /**
      * Add some new values in the loudest freqs array from the "start" index
@@ -201,19 +234,19 @@ public interface FluentClientInterface {
      *            index where to start the insert
      * @return the client, with a loudest frequencies float array
      */
-    public abstract FluentClientWithFreqs insertPart(float[] subFreqs, int start);
+    public abstract FluentClientWithFreqs insertPart (float [] subFreqs, int start);
 
-    public abstract <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel(FluentClientOperation operation, int timeoutInSeconds, T... clients) throws SoundTransformException;
+    public abstract <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (FluentClientOperation operation, int timeoutInSeconds, T... clients) throws SoundTransformException;
 
-    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, Sound[]... sounds) throws SoundTransformException;
+    public abstract FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds) throws SoundTransformException;
 
-    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException;
+    public abstract FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException;
 
-    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException;
+    public abstract FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException;
 
-    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, float[]... freqs) throws SoundTransformException;
+    public abstract FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs) throws SoundTransformException;
 
-    public abstract FluentClientWithParallelizedClients inParallel(FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
+    public abstract FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
 
     /**
      * Extract a part of the sound between the sample #start and the sample #end
@@ -224,38 +257,45 @@ public interface FluentClientInterface {
      * @throws SoundTransformException
      *             if the length is not positive
      */
-    public abstract FluentClientSoundImported loop(int length) throws SoundTransformException;
+    public abstract FluentClientSoundImported loop (int length) throws SoundTransformException;
 
     /**
-     * Combines the current sound with another sound. The operation is not reversible
-     * @param sound the sound to mix the current sound with
+     * Combines the current sound with another sound. The operation is not
+     * reversible
+     *
+     * @param sound
+     *            the sound to mix the current sound with
      * @return the client, with a sound imported
-     * @throws SoundTransformException if the sound is null or if there is a problem with the mix
+     * @throws SoundTransformException
+     *             if the sound is null or if there is a problem with the mix
      */
-    public abstract FluentClientSoundImported mixWith(Sound[] sound) throws SoundTransformException;
+    public abstract FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException;
 
-    public abstract FluentClientSoundImported mixAllInOneSound() throws SoundTransformException;
+    public abstract FluentClientSoundImported mixAllInOneSound () throws SoundTransformException;
 
     /**
      * Changes the loudest frequencies array to become one octave lower
      *
      * @return the client, with a loudest frequencies float array
      */
-    public abstract FluentClientWithFreqs octaveDown();
+    public abstract FluentClientWithFreqs octaveDown ();
 
     /**
      * Changes the loudest frequencies array to become one octave upper
      *
      * @return the client, with a loudest frequencies float array
      */
-    public abstract FluentClientWithFreqs octaveUp();
+    public abstract FluentClientWithFreqs octaveUp ();
 
     /**
-     * Plays the current audio data and (if needed) convert it temporarily to a sound
+     * Plays the current audio data and (if needed) convert it temporarily to a
+     * sound
+     *
      * @return the client, in its current state.
-     * @throws SoundTransformException could not play the current audio data
+     * @throws SoundTransformException
+     *             could not play the current audio data
      */
-    public abstract FluentClientInterface playIt() throws SoundTransformException;
+    public abstract FluentClientInterface playIt () throws SoundTransformException;
 
     /**
      * Replace some of the values of the loudest freqs array from the "start"
@@ -267,24 +307,34 @@ public interface FluentClientInterface {
      *            index where to start the replacement
      * @return the client, with a loudest frequencies float array
      */
-    public abstract FluentClientWithFreqs replacePart(float[] subFreqs, int start);
+    public abstract FluentClientWithFreqs replacePart (float [] subFreqs, int start);
 
     /**
-     * Shapes these loudest frequencies array into a sound and set the converted sound in the pipeline
-     * @param packName reference to an existing imported pack (must be invoked before the shapeIntoSound method by using withAPack)
-     * @param instrumentName the name of the instrument that will map the freqs object
-     * @param formatInfo the wanted format for the future sound
+     * Shapes these loudest frequencies array into a sound and set the converted
+     * sound in the pipeline
+     *
+     * @param packName
+     *            reference to an existing imported pack (must be invoked before
+     *            the shapeIntoSound method by using withAPack)
+     * @param instrumentName
+     *            the name of the instrument that will map the freqs object
+     * @param formatInfo
+     *            the wanted format for the future sound
      * @return the client, with a sound imported
-     * @throws SoundTransformException could not call the soundtransform to shape the freqs
+     * @throws SoundTransformException
+     *             could not call the soundtransform to shape the freqs
      */
-    public abstract FluentClientSoundImported shapeIntoSound(String packName, String instrumentName, FormatInfo formatInfo) throws SoundTransformException;
+    public abstract FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, FormatInfo formatInfo) throws SoundTransformException;
 
     /**
-     * Uses the current sound to pick its spectrums and set that as the current data in the pipeline
+     * Uses the current sound to pick its spectrums and set that as the current
+     * data in the pipeline
+     *
      * @return the client, with the spectrums
-     * @throws SoundTransformException could not convert the sound into some spectrums
+     * @throws SoundTransformException
+     *             could not convert the sound into some spectrums
      */
-    public abstract FluentClientWithSpectrums splitIntoSpectrums() throws SoundTransformException;
+    public abstract FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException;
 
     /**
      * Stops the client pipeline and returns the pack whose title is in
@@ -294,65 +344,71 @@ public interface FluentClientInterface {
      *            the title of the pack
      * @return a pack object
      */
-    public abstract Pack stopWithAPack(String title);
+    public abstract Pack stopWithAPack (String title);
 
     /**
      * Stops the client pipeline and returns the obtained file
+     *
      * @return a file
      */
-    public abstract File stopWithFile();
+    public abstract File stopWithFile ();
 
     /**
      * Stops the client pipeline and returns the obtained loudest frequencies
+     *
      * @return loudest frequencies array
      */
-    public abstract float[] stopWithFreqs();
+    public abstract float [] stopWithFreqs ();
 
     /**
      * Stops the client pipeline and returns the obtained input stream
+     *
      * @return an input stream
      */
-    public abstract InputStream stopWithInputStream();
+    public abstract InputStream stopWithInputStream ();
 
     /**
      * Stops the client pipeline and returns the currently subscribed observers
+     *
      * @return the observers
      */
-    public abstract Observer[] stopWithObservers();
+    public abstract Observer [] stopWithObservers ();
 
     /**
      * Stops the client pipeline and returns the obtained sound
+     *
      * @return a sound value object
      */
-    public abstract Sound[] stopWithSounds();
+    public abstract Sound [] stopWithSounds ();
 
     /**
      * Stops the client pipeline and returns the obtained spectrums
+     *
      * @return a list of spectrums for each channel
      */
-    public abstract List<Spectrum<Serializable>[]> stopWithSpectrums();
+    public abstract List<Spectrum<Serializable> []> stopWithSpectrums ();
 
     /**
-     * Stops the client pipeline and returns the obtained stream info
-     * object
+     * Stops the client pipeline and returns the obtained stream info object
      *
      * @return a streamInfo object
      * @throws SoundTransformException
-     *             could not read the StreamInfo from the current
-     *             inputstream
+     *             could not read the StreamInfo from the current inputstream
      */
-    public abstract StreamInfo stopWithStreamInfo() throws SoundTransformException;
+    public abstract StreamInfo stopWithStreamInfo () throws SoundTransformException;
 
     /**
-     * Tells the client to add an observer that will be notified of different kind of updates
-     * from the library. It is ok to call withAnObserver several times.<br/>
-     * If the andAfterStart method is called, the subscribed observers are removed
+     * Tells the client to add an observer that will be notified of different
+     * kind of updates from the library. It is ok to call withAnObserver several
+     * times.<br/>
+     * If the andAfterStart method is called, the subscribed observers are
+     * removed
      *
      * @param observers1
      *            one or more observer(s)
      * @return the client, ready to start
      */
-    public abstract FluentClientReady withAnObserver(Observer... observers1);
+    public abstract FluentClientReady withAnObserver (Observer... observers1);
 
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
@@ -367,25 +423,28 @@ public interface FluentClientInterface {
      *             the input stream cannot be read, or the json format is not
      *             correct, or some sound files are missing
      */
-    public abstract FluentClientInterface withAPack(String packName, InputStream jsonStream) throws SoundTransformException;
+    public abstract FluentClientInterface withAPack (String packName, InputStream jsonStream) throws SoundTransformException;
 
     /**
-     * Tells the client to work with a pack. Uses the context object to find the resource from the R object
-     * passed in parameter
+     * Tells the client to work with a pack. Uses the context object to find the
+     * resource from the R object passed in parameter
      *
      * @param context
-     *            the Android context (should be an instance of `android.content.Context`, but left as Object so the FluentClient
-     *            can be used in a non-android project)
+     *            the Android context (should be an instance of
+     *            `android.content.Context`, but left as Object so the
+     *            FluentClient can be used in a non-android project)
      * @param rClass
-     *            R.raw.getClass () (either from soundtransform or from your pack) should be passed in parameter
+     *            R.raw.getClass () (either from soundtransform or from your
+     *            pack) should be passed in parameter
      * @param packJsonId
-     *            the id value of your json pack file (should be a field inside R.raw)
+     *            the id value of your json pack file (should be a field inside
+     *            R.raw)
      * @return the client, ready to start
      * @throws SoundTransformException
      *             the input stream cannot be read, or the json format is not
      *             correct, or some sound files are missing
      */
-    public abstract FluentClientReady withAPack(String packName, Object context, Class<?> rClass, int packJsonId) throws SoundTransformException;
+    public abstract FluentClientReady withAPack (String packName, Object context, Class<?> rClass, int packJsonId) throws SoundTransformException;
 
     /**
      * Tells the client to work with a pack. Reads the whole string content. A
@@ -410,9 +469,10 @@ public interface FluentClientInterface {
      * }
      * </pre>
      *
-     * If a note (one of the records inside the `instrumentName` structure) does not own any detail,
-     * it will be obtained by digging in the file samples, and can take a really long time.
-     * It is advisable to fill in the details in each note.
+     * If a note (one of the records inside the `instrumentName` structure) does
+     * not own any detail, it will be obtained by digging in the file samples,
+     * and can take a really long time. It is advisable to fill in the details
+     * in each note.
      *
      * @param packName
      *            the name of the pack
@@ -423,37 +483,50 @@ public interface FluentClientInterface {
      *             the json content is invalid, the json format is not correct,
      *             or some sound files are missing
      */
-    public abstract FluentClientInterface withAPack(String packName, String jsonContent) throws SoundTransformException;
+    public abstract FluentClientInterface withAPack (String packName, String jsonContent) throws SoundTransformException;
 
     /**
-     * Tells the client to work first with an InputStream. It will not be read yet<br/>
-     * The passed inputStream must own a format metadata object. Therefore it must be an AudioInputStream.
-     * @param ais the input stream
+     * Tells the client to work first with an InputStream. It will not be read
+     * yet<br/>
+     * The passed inputStream must own a format metadata object. Therefore it
+     * must be an AudioInputStream.
+     *
+     * @param ais
+     *            the input stream
      * @return the client, with an input stream
      */
-    public abstract FluentClientWithInputStream withAudioInputStream(InputStream ais);
+    public abstract FluentClientWithInputStream withAudioInputStream (InputStream ais);
 
     /**
-     * Tells the client to work first with a classpath resource. It will be converted in a File
-     * @param resource a classpath resource that must exist
+     * Tells the client to work first with a classpath resource. It will be
+     * converted in a File
+     *
+     * @param resource
+     *            a classpath resource that must exist
      * @return the client, with a file
-     * @throws SoundTransformException the classpath resource was not found
+     * @throws SoundTransformException
+     *             the classpath resource was not found
      */
-    public abstract FluentClientWithFile withClasspathResource(String resource) throws SoundTransformException;
+    public abstract FluentClientWithFile withClasspathResource (String resource) throws SoundTransformException;
 
     /**
      * Tells the client to work first with a file. It will not be read yet
-     * @param file source file
+     *
+     * @param file
+     *            source file
      * @return the client, with a file
      */
-    public abstract FluentClientWithFile withFile(File file1);
+    public abstract FluentClientWithFile withFile (File file1);
 
     /**
-     * Tells the client to work first with a loudest frequencies float array. It will not be used yet
-     * @param freqs1 the loudest frequencies integer array
+     * Tells the client to work first with a loudest frequencies float array. It
+     * will not be used yet
+     *
+     * @param freqs1
+     *            the loudest frequencies integer array
      * @return the client, with a loudest frequencies float array
      */
-    public abstract FluentClientWithFreqs withFreqs(float[] freqs1);
+    public abstract FluentClientWithFreqs withFreqs (float [] freqs1);
 
     /**
      * Tells the client to work first to open the microphone and to record a
@@ -467,18 +540,25 @@ public interface FluentClientInterface {
      *             the mic could not be read, the recorder could not start, or
      *             the buffer did not record anything
      */
-    public abstract FluentClientWithInputStream withLimitedTimeRecordedInputStream(StreamInfo streamInfo) throws SoundTransformException;
+    public abstract FluentClientWithInputStream withLimitedTimeRecordedInputStream (StreamInfo streamInfo) throws SoundTransformException;
 
     /**
-     * Tells the client to work first with a byte array InputStream or any readable DataInputStream.
-     * It will be read and transformed into an AudioInputStream<br/>
-     * The passed inputStream must not contain any metadata piece of information.
-     * @param is the input stream
-     * @param isInfo the stream info
+     * Tells the client to work first with a byte array InputStream or any
+     * readable DataInputStream. It will be read and transformed into an
+     * AudioInputStream<br/>
+     * The passed inputStream must not contain any metadata piece of
+     * information.
+     *
+     * @param is
+     *            the input stream
+     * @param isInfo
+     *            the stream info
      * @return the client, with an input stream
-     * @throws SoundTransformException the input stream cannot be read, or the conversion did not work
+     * @throws SoundTransformException
+     *             the input stream cannot be read, or the conversion did not
+     *             work
      */
-    public abstract FluentClientWithInputStream withRawInputStream(InputStream is, StreamInfo isInfo) throws SoundTransformException;
+    public abstract FluentClientWithInputStream withRawInputStream (InputStream is, StreamInfo isInfo) throws SoundTransformException;
 
     /**
      * Tells the client to work first to open the microphone and to record a
@@ -497,48 +577,66 @@ public interface FluentClientInterface {
      *             the mic could not be read, the recorder could not start, or
      *             the buffer did not record anything
      */
-    public abstract FluentClientWithInputStream withRecordedInputStream(StreamInfo streamInfo, Object stop) throws SoundTransformException;
+    public abstract FluentClientWithInputStream withRecordedInputStream (StreamInfo streamInfo, Object stop) throws SoundTransformException;
 
     /**
      * Tells the client to work first with a sound object
-     * @param sound the sound object
+     *
+     * @param sound
+     *            the sound object
      * @return the client, with an imported sound
      */
-    public abstract FluentClientSoundImported withSounds(Sound [] sound);
+    public abstract FluentClientSoundImported withSounds (Sound [] sound);
 
     /**
      * Tells the client to work first with a spectrum formatted sound.<br/>
-     * The spectrums inside must be in a list (each item must correspond to a channel)
-     * The spectrums are ordered in an array in chronological order
-     * @param spectrums the spectrums
+     * The spectrums inside must be in a list (each item must correspond to a
+     * channel) The spectrums are ordered in an array in chronological order
+     *
+     * @param spectrums
+     *            the spectrums
      * @return the client, with the spectrums
      */
-    public abstract FluentClientWithSpectrums withSpectrums(List<Spectrum<Serializable>[]> spectrums);
+    public abstract FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable> []> spectrums);
 
     /**
-     * Writes the current InputStream in a classpath resource in the same folder as a previously imported classpath resource.
-     * Caution : if no classpath resource was imported before, this operation will not work. Use writeToClasspathResourceWithSiblingResource instead
-     * @param resource a classpath resource.
+     * Writes the current InputStream in a classpath resource in the same folder
+     * as a previously imported classpath resource. Caution : if no classpath
+     * resource was imported before, this operation will not work. Use
+     * writeToClasspathResourceWithSiblingResource instead
+     *
+     * @param resource
+     *            a classpath resource.
      * @return the client, with a file
-     * @throws SoundTransformException there is no predefined classpathresource directory, or the file could not be written
+     * @throws SoundTransformException
+     *             there is no predefined classpathresource directory, or the
+     *             file could not be written
      */
-    public abstract FluentClientWithFile writeToClasspathResource(String resource) throws SoundTransformException;
+    public abstract FluentClientWithFile writeToClasspathResource (String resource) throws SoundTransformException;
 
     /**
-     * Writes the current InputStream in a classpath resource in the same folder as a the sibling resource.
-     * @param resource a classpath resource that may or may not exist yet
-     * @param siblingResource a classpath resource that must exist
+     * Writes the current InputStream in a classpath resource in the same folder
+     * as a the sibling resource.
+     *
+     * @param resource
+     *            a classpath resource that may or may not exist yet
+     * @param siblingResource
+     *            a classpath resource that must exist
      * @return the client, with a file
-     * @throws SoundTransformException no such sibling resource, or the file could not be written
+     * @throws SoundTransformException
+     *             no such sibling resource, or the file could not be written
      */
-    public abstract FluentClientWithFile writeToClasspathResourceWithSiblingResource(String resource, String siblingResource) throws SoundTransformException;
+    public abstract FluentClientWithFile writeToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException;
 
     /**
      * Writes the current InputStream in a file
-     * @param file the destination file
+     *
+     * @param file
+     *            the destination file
      * @return the client, with a file
-     * @throws SoundTransformException The file could not be written
+     * @throws SoundTransformException
+     *             The file could not be written
      */
-    public abstract FluentClientWithFile writeToFile(File file) throws SoundTransformException;
+    public abstract FluentClientWithFile writeToFile (File file) throws SoundTransformException;
 
 }

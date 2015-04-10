@@ -10,11 +10,14 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.internal.matchers.GreaterThan;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.api.support.membermodification.MemberMatcher;
+import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
@@ -48,7 +51,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
     private void mockRecordSoundProcessor (final byte [][] buffers) throws Exception {
         final TargetDataLine dataLine = Mockito.mock (TargetDataLine.class);
         Mockito.when (dataLine.getBufferSize ()).thenReturn (8192);
-        Mockito.when (dataLine.read (Mockito.any (byte [].class), Mockito.any (int.class), Mockito.any (int.class))).thenAnswer (new Answer<Integer> () {
+        Mockito.when (dataLine.read (Matchers.any (byte [].class), Matchers.any (int.class), Matchers.any (int.class))).thenAnswer (new Answer<Integer> () {
             int i = 0;
 
             @Override
@@ -60,7 +63,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         });
         PowerMockito.spy (ApplicationInjector.class);
         PowerMockito.when (ApplicationInjector.$.select (RecordSoundProcessor.class)).thenReturn (this.processor);
-        PowerMockito.stub (PowerMockito.method (TargetDataLineRecordSoundProcessor.class, "getDataLine", Info.class)).toReturn (dataLine);
-        PowerMockito.stub (PowerMockito.method (TargetDataLineRecordSoundProcessor.class, "checkLineSupported", Info.class)).toReturn (true);
+        MemberModifier.stub (MemberMatcher.method (TargetDataLineRecordSoundProcessor.class, "getDataLine", Info.class)).toReturn (dataLine);
+        MemberModifier.stub (MemberMatcher.method (TargetDataLineRecordSoundProcessor.class, "checkLineSupported", Info.class)).toReturn (true);
     }
 }

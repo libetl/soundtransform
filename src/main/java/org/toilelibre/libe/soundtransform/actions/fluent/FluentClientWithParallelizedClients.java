@@ -5,6 +5,6 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 public interface FluentClientWithParallelizedClients extends FluentClientCommon {
 
     FluentClientSoundImported mixAllInOneSound () throws SoundTransformException;
-    
+
     <T> T [] stopWithResults (Class<T> resultClass);
 }
