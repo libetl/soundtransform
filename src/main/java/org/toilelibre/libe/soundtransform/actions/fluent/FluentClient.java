@@ -395,7 +395,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException {
-        final PeakFindSoundTransformation peakFind = new PeakFindWithHPSSoundTransformation<Serializable> (FluentClient.DEFAULT_STEP_VALUE);
+        final PeakFindSoundTransformation<Serializable> peakFind = new PeakFindWithHPSSoundTransformation<Serializable> (FluentClient.DEFAULT_STEP_VALUE);
         new ApplySoundTransform (this.getObservers ()).apply (this.sounds, peakFind);
         this.cleanData ();
         this.freqs = peakFind.getLoudestFreqs ();

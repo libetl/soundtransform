@@ -12,7 +12,7 @@ final class CallHPSFrequencyHelper implements FrequencyHelper {
 
     @Override
     public float findFrequency (final Sound [] channels) throws SoundTransformException {
-        final PeakFindSoundTransformation peak = new PeakFindWithHPSSoundTransformation<Serializable> (true);
+        final PeakFindSoundTransformation<Serializable> peak = new PeakFindWithHPSSoundTransformation<Serializable> (true);
         float value = 0;
         float volume = 0;
         for (final Sound channel : channels) {
