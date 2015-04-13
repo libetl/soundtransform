@@ -127,7 +127,7 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void canAskToDoALotOfThingsToTheFluentClientOperationAndNothingShouldBeDone () throws SoundTransformException {
-        FluentClientOperation.prepare ().withAnObserver().andAfterStart().withAPack(null, new ByteArrayInputStream (null)).withAPack(null, "").withAPack(null, null, null, 0).withAudioInputStream(null).importToSound().append(null).apply(null).changeFormat(null).cutSubSound(0, 0).playIt().changeFormat(null).exportToClasspathResource(null).playIt().importToStream().playIt().importToSound().exportToClasspathResourceWithSiblingResource(null, null).convertIntoSound().exportToFile(null).convertIntoSound().exportToStream().importToSound().findLoudestFrequencies().compress(0).filterRange(0, 0).insertPart(null, 0).octaveDown().octaveUp().replacePart(null, 0).shapeIntoSound(null, null, null).loop(0).mixWith(null).splitIntoSpectrums().playIt().extractSound().build();
+        FluentClientOperation.prepare ().withAnObserver().andAfterStart().withAPack(null, new ByteArrayInputStream (new byte [0])).withAPack(null, "").withAPack(null, null, null, 0).withAudioInputStream(null).importToSound().append(null).apply(null).changeFormat(null).cutSubSound(0, 0).playIt().changeFormat(null).exportToClasspathResource(null).playIt().importToStream().playIt().importToSound().exportToClasspathResourceWithSiblingResource(null, null).convertIntoSound().exportToFile(null).convertIntoSound().exportToStream().importToSound().findLoudestFrequencies().compress(0).filterRange(0, 0).insertPart(null, 0).octaveDown().octaveUp().replacePart(null, 0).shapeIntoSound(null, null, null).loop(0).mixWith(null).splitIntoSpectrums().playIt().extractSound().build();
     }
 
     @Test
