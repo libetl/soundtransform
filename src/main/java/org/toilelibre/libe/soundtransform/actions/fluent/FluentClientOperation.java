@@ -17,7 +17,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class FluentClientOperation implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums, FluentClientInterface {
+public class FluentClientOperation implements BuildableFluentClientOperationSoundImported, BuildableFluentClientOperationReady, BuildableFluentClientOperationWithInputStream, BuildableFluentClientOperationWithFile, BuildableFluentClientOperationWithFreqs, BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
 
     public abstract class Step {
         void run (final FluentClientInterface client) throws SoundTransformException {
@@ -118,7 +118,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported extractSound () throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported extractSound () throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -142,7 +142,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFreqs adjust () {
+    public BuildableFluentClientOperationWithFreqs adjust () {
         this.steps.add (new Step () {
 
             @Override
@@ -154,7 +154,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFreqs compress (final float factor) {
+    public BuildableFluentClientOperationWithFreqs compress (final float factor) {
         this.steps.add (new Step () {
 
             @Override
@@ -166,7 +166,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFreqs filterRange (final float low, final float high) {
+    public BuildableFluentClientOperationWithFreqs filterRange (final float low, final float high) {
         this.steps.add (new Step () {
 
             @Override
@@ -178,7 +178,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFreqs insertPart (final float [] subFreqs, final int start) {
+    public BuildableFluentClientOperationWithFreqs insertPart (final float [] subFreqs, final int start) {
         this.steps.add (new Step () {
 
             @Override
@@ -190,7 +190,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFreqs octaveDown () {
+    public BuildableFluentClientOperationWithFreqs octaveDown () {
         this.steps.add (new Step () {
 
             @Override
@@ -202,7 +202,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFreqs octaveUp () {
+    public BuildableFluentClientOperationWithFreqs octaveUp () {
         this.steps.add (new Step () {
 
             @Override
@@ -214,7 +214,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFreqs replacePart (final float [] subFreqs, final int start) {
+    public BuildableFluentClientOperationWithFreqs replacePart (final float [] subFreqs, final int start) {
         this.steps.add (new Step () {
 
             @Override
@@ -226,7 +226,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported shapeIntoSound (final String packName, final String instrumentName, final FormatInfo formatInfo) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported shapeIntoSound (final String packName, final String instrumentName, final FormatInfo formatInfo) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -239,7 +239,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported convertIntoSound () throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported convertIntoSound () throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -251,7 +251,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithInputStream importToStream () throws SoundTransformException {
+    public BuildableFluentClientOperationWithInputStream importToStream () throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -263,7 +263,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported importToSound () throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported importToSound () throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -275,7 +275,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFile writeToClasspathResource (final String resource) throws SoundTransformException {
+    public BuildableFluentClientOperationWithFile writeToClasspathResource (final String resource) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -287,7 +287,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFile writeToClasspathResourceWithSiblingResource (final String resource, final String siblingResource) throws SoundTransformException {
+    public BuildableFluentClientOperationWithFile writeToClasspathResourceWithSiblingResource (final String resource, final String siblingResource) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -299,7 +299,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFile writeToFile (final File file) throws SoundTransformException {
+    public BuildableFluentClientOperationWithFile writeToFile (final File file) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -323,7 +323,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported withAMixedSound (final Sound []... sounds) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported withAMixedSound (final Sound []... sounds) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -371,7 +371,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithInputStream withAudioInputStream (final InputStream is) {
+    public BuildableFluentClientOperationWithInputStream withAudioInputStream (final InputStream is) {
         this.steps.add (new Step () {
 
             @Override
@@ -384,7 +384,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFile withClasspathResource (final String resource) throws SoundTransformException {
+    public BuildableFluentClientOperationWithFile withClasspathResource (final String resource) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -397,7 +397,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFile withFile (final File file) {
+    public BuildableFluentClientOperationWithFile withFile (final File file) {
         this.steps.add (new Step () {
 
             @Override
@@ -410,7 +410,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFreqs withFreqs (final float [] freqs) {
+    public BuildableFluentClientOperationWithFreqs withFreqs (final float [] freqs) {
         this.steps.add (new Step () {
 
             @Override
@@ -423,7 +423,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException {
+    public BuildableFluentClientOperationWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -436,7 +436,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientOperation withRawInputStream (final InputStream is, final StreamInfo isInfo) throws SoundTransformException {
+    public BuildableFluentClientOperationWithInputStream withRawInputStream (final InputStream is, final StreamInfo isInfo) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -449,7 +449,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientOperation withRecordedInputStream (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
+    public BuildableFluentClientOperationWithInputStream withRecordedInputStream (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -462,7 +462,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientOperation withSounds (final Sound [] sounds) {
+    public BuildableFluentClientOperationSoundImported withSounds (final Sound [] sounds) {
         this.steps.add (new Step () {
 
             @Override
@@ -475,7 +475,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientOperation withSpectrums (final List<Spectrum<Serializable> []> spectrums) {
+    public BuildableFluentClientOperationWithSpectrums withSpectrums (final List<Spectrum<Serializable> []> spectrums) {
         this.steps.add (new Step () {
 
             @Override
@@ -488,7 +488,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported append (final Sound [] sound) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported append (final Sound [] sound) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -501,7 +501,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported apply (final SoundTransformation st) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported apply (final SoundTransformation st) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -514,7 +514,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported changeFormat (final FormatInfo formatInfo) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported changeFormat (final FormatInfo formatInfo) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -527,7 +527,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported cutSubSound (final int start, final int end) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported cutSubSound (final int start, final int end) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -540,7 +540,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFile exportToClasspathResource (final String resource) throws SoundTransformException {
+    public BuildableFluentClientOperationWithFile exportToClasspathResource (final String resource) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -553,7 +553,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFile exportToClasspathResourceWithSiblingResource (final String resource, final String siblingResource) throws SoundTransformException {
+    public BuildableFluentClientOperationWithFile exportToClasspathResourceWithSiblingResource (final String resource, final String siblingResource) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -566,7 +566,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFile exportToFile (final File file) throws SoundTransformException {
+    public BuildableFluentClientOperationWithFile exportToFile (final File file) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -579,7 +579,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithInputStream exportToStream () throws SoundTransformException {
+    public BuildableFluentClientOperationWithInputStream exportToStream () throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -592,7 +592,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported extractSubSound (final int start, final int end) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported extractSubSound (final int start, final int end) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -605,7 +605,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException {
+    public BuildableFluentClientOperationWithFreqs findLoudestFrequencies () throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -618,7 +618,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported loop (final int length) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported loop (final int length) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -631,7 +631,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported mixAllInOneSound () throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported mixAllInOneSound () throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -644,7 +644,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientSoundImported mixWith (final Sound [] sound) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported mixWith (final Sound [] sound) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -657,7 +657,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException {
+    public BuildableFluentClientOperationWithSpectrums splitIntoSpectrums () throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -670,7 +670,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public <T extends FluentClientCommon> FluentClientOperation inParallel (final FluentClientOperation op, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
+    public <T extends FluentClientCommon> BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -682,7 +682,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final Sound []... sounds) throws SoundTransformException {
+    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final Sound []... sounds) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -694,7 +694,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final InputStream... inputStreams) throws SoundTransformException {
+    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final InputStream... inputStreams) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -706,7 +706,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final File... files) throws SoundTransformException {
+    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final File... files) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -718,7 +718,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final float []... freqs) throws SoundTransformException {
+    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final float []... freqs) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -730,7 +730,7 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
-    public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final String... classpathResources) throws SoundTransformException {
+    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final String... classpathResources) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -741,4 +741,8 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
         return this;
     }
 
+    @Override
+    public FluentClientOperation build() {
+        return this;
+    }
 }
