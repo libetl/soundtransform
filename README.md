@@ -71,7 +71,7 @@ FluentClient.start ().withClasspathResource ("lowfi.wav").convertIntoSound ().ch
 //Mix of two sounds using two threads for the file-to-sound conversion
 FluentClient.start ().inParallel (
     // operations
-    FluentClientOperation.prepare ().convertIntoSound (),
+    FluentClientOperation.prepare ().convertIntoSound ().build (),
     // timeout in seconds
     5,
     // classpath resources
