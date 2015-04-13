@@ -4,8 +4,6 @@ import java.io.File;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-
-
 public interface BuildableFluentClientOperationWithFile extends FluentClientWithFile, BuildableFluentClientOperation {
 
     /**
@@ -16,6 +14,7 @@ public interface BuildableFluentClientOperationWithFile extends FluentClientWith
      * @throws SoundTransformException
      *             if one of the two import fails
      */
+    @Override
     BuildableFluentClientOperationSoundImported convertIntoSound () throws SoundTransformException;
 
     /**
@@ -26,6 +25,7 @@ public interface BuildableFluentClientOperationWithFile extends FluentClientWith
      * @throws SoundTransformException
      *             the current file is not valid, or the conversion did not work
      */
+    @Override
     BuildableFluentClientOperationWithInputStream importToStream () throws SoundTransformException;
 
     /**
@@ -35,6 +35,7 @@ public interface BuildableFluentClientOperationWithFile extends FluentClientWith
      * @throws SoundTransformException
      *             could not play the current audio data
      */
+    @Override
     BuildableFluentClientOperationWithFile playIt () throws SoundTransformException;
 
     /**
@@ -42,6 +43,7 @@ public interface BuildableFluentClientOperationWithFile extends FluentClientWith
      *
      * @return a file
      */
+    @Override
     File stopWithFile ();
 
 }

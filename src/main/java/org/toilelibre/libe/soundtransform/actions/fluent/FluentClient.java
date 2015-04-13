@@ -30,6 +30,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CutSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.LoopSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundToSpectrumsSoundTransformation;
@@ -394,7 +395,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException {
-        final PeakFindWithHPSSoundTransformation<Serializable> peakFind = new PeakFindWithHPSSoundTransformation<Serializable> (FluentClient.DEFAULT_STEP_VALUE);
+        final PeakFindSoundTransformation peakFind = new PeakFindWithHPSSoundTransformation<Serializable> (FluentClient.DEFAULT_STEP_VALUE);
         new ApplySoundTransform (this.getObservers ()).apply (this.sounds, peakFind);
         this.cleanData ();
         this.freqs = peakFind.getLoudestFreqs ();
@@ -491,13 +492,22 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * int, T)
      */
     /**
-     * Runs asynchronously the same operations on a varargs of started FluentClients 
-     * @param op a list of operation to apply
-     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
-     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
-     * @param clients a list of started FluentClients
+     * Runs asynchronously the same operations on a varargs of started
+     * FluentClients
+     *
+     * @param op
+     *            a list of operation to apply
+     * @param timeoutInSeconds
+     *            a timeout value. After that, the operation will be stopped,
+     *            even if it is still processing. You can choose
+     *            Integer.MAX_VALUE as a value if you are convinced that it will
+     *            finish.
+     * @param clients
+     *            a list of started FluentClients
      * @return the client, with a list of clients inside holding a value each
-     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     * @throws SoundTransformException
+     *             can happen if there was a problem during the flow, or if the
+     *             threads were interrupted
      */
     @Override
     public <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (final FluentClientOperation operation, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
@@ -540,12 +550,20 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     /**
      * Alias for the inParallel method using a list of clients
-     * @param op  a list of operation to apply
-     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
-     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
-     * @param sounds1 a list of Sounds (each Sound object is a sound channel)
+     *
+     * @param op
+     *            a list of operation to apply
+     * @param timeoutInSeconds
+     *            a timeout value. After that, the operation will be stopped,
+     *            even if it is still processing. You can choose
+     *            Integer.MAX_VALUE as a value if you are convinced that it will
+     *            finish.
+     * @param sounds1
+     *            a list of Sounds (each Sound object is a sound channel)
      * @return the client, with a list of clients inside holding a value each
-     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     * @throws SoundTransformException
+     *             can happen if there was a problem during the flow, or if the
+     *             threads were interrupted
      */
     @Override
     public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final Sound []... sounds1) throws SoundTransformException {
@@ -568,12 +586,20 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     /**
      * Alias for the inParallel method using a list of clients
-     * @param op  a list of operation to apply
-     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
-     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
-     * @param inputStreams1 a list of inputStreams
+     *
+     * @param op
+     *            a list of operation to apply
+     * @param timeoutInSeconds
+     *            a timeout value. After that, the operation will be stopped,
+     *            even if it is still processing. You can choose
+     *            Integer.MAX_VALUE as a value if you are convinced that it will
+     *            finish.
+     * @param inputStreams1
+     *            a list of inputStreams
      * @return the client, with a list of clients inside holding a value each
-     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     * @throws SoundTransformException
+     *             can happen if there was a problem during the flow, or if the
+     *             threads were interrupted
      */
     @Override
     public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final InputStream... inputStreams1) throws SoundTransformException {
@@ -595,12 +621,20 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     /**
      * Alias for the inParallel method using a list of clients
-     * @param op  a list of operation to apply
-     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
-     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
-     * @param files1 a list of Files
+     *
+     * @param op
+     *            a list of operation to apply
+     * @param timeoutInSeconds
+     *            a timeout value. After that, the operation will be stopped,
+     *            even if it is still processing. You can choose
+     *            Integer.MAX_VALUE as a value if you are convinced that it will
+     *            finish.
+     * @param files1
+     *            a list of Files
      * @return the client, with a list of clients inside holding a value each
-     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     * @throws SoundTransformException
+     *             can happen if there was a problem during the flow, or if the
+     *             threads were interrupted
      */
     @Override
     public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final File... files1) throws SoundTransformException {
@@ -622,12 +656,20 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     /**
      * Alias for the inParallel method using a list of clients
-     * @param op  a list of operation to apply
-     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
-     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
-     * @param freqs1 a list of loudest freqs arrays
+     *
+     * @param op
+     *            a list of operation to apply
+     * @param timeoutInSeconds
+     *            a timeout value. After that, the operation will be stopped,
+     *            even if it is still processing. You can choose
+     *            Integer.MAX_VALUE as a value if you are convinced that it will
+     *            finish.
+     * @param freqs1
+     *            a list of loudest freqs arrays
      * @return the client, with a list of clients inside holding a value each
-     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     * @throws SoundTransformException
+     *             can happen if there was a problem during the flow, or if the
+     *             threads were interrupted
      */
     @Override
     public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final float []... freqs1) throws SoundTransformException {
@@ -649,12 +691,20 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     /**
      * Alias for the inParallel method using a list of clients
-     * @param op  a list of operation to apply
-     * @param timeoutInSeconds a timeout value. After that, the operation will be stopped, even if it is still processing. 
-     *                         You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
-     * @param classpathResources a list of classpathResources
+     *
+     * @param op
+     *            a list of operation to apply
+     * @param timeoutInSeconds
+     *            a timeout value. After that, the operation will be stopped,
+     *            even if it is still processing. You can choose
+     *            Integer.MAX_VALUE as a value if you are convinced that it will
+     *            finish.
+     * @param classpathResources
+     *            a list of classpathResources
      * @return the client, with a list of clients inside holding a value each
-     * @throws SoundTransformException can happen if there was a problem during the flow, or if the threads were interrupted
+     * @throws SoundTransformException
+     *             can happen if there was a problem during the flow, or if the
+     *             threads were interrupted
      */
     @Override
     public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final String... classpathResources) throws SoundTransformException {
@@ -674,13 +724,13 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     /**
      * Extract a part of the sound between the sample #start and the sample #end
-    *
-    * @param length
-    *            the number of samples of the result sound
-    * @return the client, with a sound imported
-    * @throws SoundTransformException
-    *             if the length is not positive
-    */
+     *
+     * @param length
+     *            the number of samples of the result sound
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     *             if the length is not positive
+     */
     @Override
     public FluentClientSoundImported loop (final int length) throws SoundTransformException {
         return this.apply (new LoopSoundTransformation (length));
@@ -711,11 +761,14 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #mixAllInOneSound()
-     */    
+     */
     /**
-     * Uses the sounds inside the nested clients to mix them all and to produce a single sound
+     * Uses the sounds inside the nested clients to mix them all and to produce
+     * a single sound
+     *
      * @return the client, with a sound imported
-     * @throws SoundTransformException if the nested clients are not in the Sound imported state
+     * @throws SoundTransformException
+     *             if the nested clients are not in the Sound imported state
      */
     @Override
     public FluentClientSoundImported mixAllInOneSound () throws SoundTransformException {
@@ -956,9 +1009,13 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * #stopWithResults(java.lang.Class)
      */
     /**
-     * Stops the client pipeline and get all the values inside each nested client
-     * @param resultClass You have to specify what type of result you expect.
-     *                    the value can be one of this list : (Sound.class, InputStream.class, File.class, String.class, float [].class)
+     * Stops the client pipeline and get all the values inside each nested
+     * client
+     *
+     * @param resultClass
+     *            You have to specify what type of result you expect. the value
+     *            can be one of this list : (Sound.class, InputStream.class,
+     *            File.class, String.class, float [].class)
      * @return an array of results
      */
     @Override
@@ -1033,7 +1090,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return new GetStreamInfo (this.getObservers ()).getStreamInfo (this.audioInputStream);
     }
 
-    
     /*
      * (non-Javadoc)
      *
@@ -1067,7 +1123,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException
      *             the sound files are invalid
      */
-    public FluentClientSoundImported withAMixedSound (Sound []... sounds1) throws SoundTransformException {
+    public FluentClientSoundImported withAMixedSound (final Sound []... sounds1) throws SoundTransformException {
         final FluentClientCommon [] clients = new FluentClientCommon [sounds1.length];
         for (int i = 0 ; i < sounds1.length ; i++) {
             clients [i] = FluentClient.start ().withSounds (sounds1 [i]);
@@ -1075,7 +1131,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.parallelizedClients = clients;
         return this.mixAllInOneSound ();
     }
-    
+
     /*
      * (non-Javadoc)
      *

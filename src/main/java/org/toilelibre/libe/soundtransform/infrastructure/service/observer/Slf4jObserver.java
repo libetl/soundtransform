@@ -38,22 +38,22 @@ public class Slf4jObserver implements Observer {
 
     private void log (final Logger logger, final LogEvent logEvent) {
         switch (logEvent.getLevel ()) {
-            case PARANOIAC :
+            case PARANOIAC:
                 logger.trace (logEvent.getMsg ());
                 break;
-            case VERBOSE :
+            case VERBOSE:
                 logger.debug (logEvent.getMsg ());
                 break;
-            case INFO :
+            case INFO:
                 logger.info (logEvent.getMsg ());
                 break;
-            case WARN :
+            case WARN:
                 logger.warn (logEvent.getMsg ());
                 break;
-            case ERROR :
+            case ERROR:
                 logger.error (logEvent.getMsg ());
                 break;
-            default :
+            default:
                 break;
         }
     }

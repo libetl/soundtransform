@@ -6,7 +6,6 @@ import java.io.InputStream;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-
 public interface BuildableFluentClientOperationWithInputStream extends FluentClientWithInputStream, BuildableFluentClientOperation {
 
     /**
@@ -17,6 +16,7 @@ public interface BuildableFluentClientOperationWithInputStream extends FluentCli
      * @throws SoundTransformException
      *             the inputStream is invalid, or the convert did not work
      */
+    @Override
     BuildableFluentClientOperationSoundImported importToSound () throws SoundTransformException;
 
     /**
@@ -26,6 +26,7 @@ public interface BuildableFluentClientOperationWithInputStream extends FluentCli
      * @throws SoundTransformException
      *             could not play the current audio data
      */
+    @Override
     BuildableFluentClientOperationWithInputStream playIt () throws SoundTransformException;
 
     /**
@@ -33,6 +34,7 @@ public interface BuildableFluentClientOperationWithInputStream extends FluentCli
      *
      * @return an input stream
      */
+    @Override
     InputStream stopWithInputStream ();
 
     /**
@@ -42,6 +44,7 @@ public interface BuildableFluentClientOperationWithInputStream extends FluentCli
      * @throws SoundTransformException
      *             could not read the StreamInfo from the current inputstream
      */
+    @Override
     StreamInfo stopWithStreamInfo () throws SoundTransformException;
 
     /**
@@ -57,6 +60,7 @@ public interface BuildableFluentClientOperationWithInputStream extends FluentCli
      *             there is no predefined classpathresource directory, or the
      *             file could not be written
      */
+    @Override
     BuildableFluentClientOperationWithFile writeToClasspathResource (String resource) throws SoundTransformException;
 
     /**
@@ -71,6 +75,7 @@ public interface BuildableFluentClientOperationWithInputStream extends FluentCli
      * @throws SoundTransformException
      *             no such sibling resource, or the file could not be written
      */
+    @Override
     BuildableFluentClientOperationWithFile writeToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException;
 
     /**
@@ -82,5 +87,6 @@ public interface BuildableFluentClientOperationWithInputStream extends FluentCli
      * @throws SoundTransformException
      *             The file could not be written
      */
+    @Override
     BuildableFluentClientOperationWithFile writeToFile (File file) throws SoundTransformException;
 }

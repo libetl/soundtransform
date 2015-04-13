@@ -17,7 +17,8 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class FluentClientOperation implements BuildableFluentClientOperationSoundImported, BuildableFluentClientOperationReady, BuildableFluentClientOperationWithInputStream, BuildableFluentClientOperationWithFile, BuildableFluentClientOperationWithFreqs, BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
+public class FluentClientOperation implements BuildableFluentClientOperationSoundImported, BuildableFluentClientOperationReady, BuildableFluentClientOperationWithInputStream, BuildableFluentClientOperationWithFile, BuildableFluentClientOperationWithFreqs,
+BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
 
     public abstract class Step {
         void run (final FluentClientInterface client) throws SoundTransformException {
@@ -106,7 +107,7 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     public float [] stopWithFreqs () {
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
-    
+
     @Override
     public Sound [] stopWithSounds () {
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
@@ -742,7 +743,7 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     }
 
     @Override
-    public FluentClientOperation build() {
+    public FluentClientOperation build () {
         return this;
     }
 }

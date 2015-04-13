@@ -6,8 +6,6 @@ import java.util.List;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-
-
 public interface BuildableFluentClientOperationWithSpectrums extends FluentClientWithSpectrums, BuildableFluentClientOperation {
 
     /**
@@ -19,6 +17,7 @@ public interface BuildableFluentClientOperationWithSpectrums extends FluentClien
      *             if the spectrums are in an invalid format, or if the
      *             transform to sound does not work
      */
+    @Override
     BuildableFluentClientOperationSoundImported extractSound () throws SoundTransformException;
 
     /**
@@ -29,6 +28,7 @@ public interface BuildableFluentClientOperationWithSpectrums extends FluentClien
      * @throws SoundTransformException
      *             could not play the current audio data
      */
+    @Override
     BuildableFluentClientOperationWithSpectrums playIt () throws SoundTransformException;
 
     /**
@@ -36,5 +36,6 @@ public interface BuildableFluentClientOperationWithSpectrums extends FluentClien
      *
      * @return a list of spectrums for each channel
      */
+    @Override
     List<Spectrum<Serializable> []> stopWithSpectrums ();
 }

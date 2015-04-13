@@ -7,7 +7,6 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-
 public interface BuildableFluentClientOperationSoundImported extends FluentClientSoundImported, BuildableFluentClientOperation {
 
     /**
@@ -21,6 +20,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      *             if the sound is null or if there is a problem with the
      *             appending
      */
+    @Override
     BuildableFluentClientOperationSoundImported append (Sound [] sound) throws SoundTransformException;
 
     /**
@@ -32,6 +32,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @throws SoundTransformException
      *             if the transform does not work
      */
+    @Override
     BuildableFluentClientOperationSoundImported apply (SoundTransformation st) throws SoundTransformException;
 
     /**
@@ -42,6 +43,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @return the client, with a sound imported
      * @throws SoundTransformException
      */
+    @Override
     BuildableFluentClientOperationSoundImported changeFormat (FormatInfo formatInfo) throws SoundTransformException;
 
     /**
@@ -55,6 +57,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @throws SoundTransformException
      *             if the indexes are out of bound
      */
+    @Override
     BuildableFluentClientOperationSoundImported cutSubSound (int start, int end) throws SoundTransformException;
 
     /**
@@ -67,6 +70,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @throws SoundTransformException
      *             if one of the two operations fails
      */
+    @Override
     BuildableFluentClientOperationWithFile exportToClasspathResource (String resource) throws SoundTransformException;
 
     /**
@@ -82,6 +86,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @throws SoundTransformException
      *             if one of the two operations fails
      */
+    @Override
     BuildableFluentClientOperationWithFile exportToClasspathResourceWithSiblingResource (String resource, String siblingResource) throws SoundTransformException;
 
     /**
@@ -93,6 +98,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @throws SoundTransformException
      *             if one of the two operations fails
      */
+    @Override
     BuildableFluentClientOperationWithFile exportToFile (File file) throws SoundTransformException;
 
     /**
@@ -104,6 +110,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      *             if the metadata format object is invalid, or if the sound
      *             cannot be converted
      */
+    @Override
     BuildableFluentClientOperationWithInputStream exportToStream () throws SoundTransformException;
 
     /**
@@ -117,6 +124,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @throws SoundTransformException
      *             if the indexes are out of bound
      */
+    @Override
     BuildableFluentClientOperationSoundImported extractSubSound (int start, int end) throws SoundTransformException;
 
     /**
@@ -130,6 +138,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @throws SoundTransformException
      *             if the convert fails
      */
+    @Override
     BuildableFluentClientOperationWithFreqs findLoudestFrequencies () throws SoundTransformException;
 
     /**
@@ -141,6 +150,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @throws SoundTransformException
      *             if the length is not positive
      */
+    @Override
     BuildableFluentClientOperationSoundImported loop (int length) throws SoundTransformException;
 
     /**
@@ -153,6 +163,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @throws SoundTransformException
      *             if the sound is null or if there is a problem with the mix
      */
+    @Override
     BuildableFluentClientOperationSoundImported mixWith (Sound [] sound) throws SoundTransformException;
 
     /**
@@ -162,6 +173,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @throws SoundTransformException
      *             could not play the current audio data
      */
+    @Override
     BuildableFluentClientOperationSoundImported playIt () throws SoundTransformException;
 
     /**
@@ -172,6 +184,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @throws SoundTransformException
      *             could not convert the sound into some spectrums
      */
+    @Override
     BuildableFluentClientOperationWithSpectrums splitIntoSpectrums () throws SoundTransformException;
 
     /**
@@ -179,5 +192,6 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      *
      * @return a sound value object
      */
+    @Override
     Sound [] stopWithSounds ();
 }

@@ -11,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> {
+public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T> {
 
     public enum PeakFindWithHPSSoundTransformationEventCode implements EventCode {
 
@@ -93,6 +93,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
         return this.detectedNoteVolume;
     }
 
+    @Override
     public float [] getLoudestFreqs () {
         return this.loudestfreqs.clone ();
     }

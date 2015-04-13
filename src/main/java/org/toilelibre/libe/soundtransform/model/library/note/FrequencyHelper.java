@@ -1,7 +1,8 @@
 package org.toilelibre.libe.soundtransform.model.library.note;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 public interface FrequencyHelper {
-    float findFrequency (Sound [] sound);
+    float findFrequency (Sound [] sound) throws SoundTransformException;
 }

@@ -3,7 +3,6 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-
 public interface BuildableFluentClientOperationWithFreqs extends FluentClientWithFreqs, BuildableFluentClientOperation {
     /**
      * Adjust the loudest freqs array to match exactly the piano notes
@@ -11,6 +10,7 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
      *
      * @return the client, with a loudest frequencies float array
      */
+    @Override
     BuildableFluentClientOperationWithFreqs adjust ();
 
     /**
@@ -24,6 +24,7 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
      *            as long than the original)
      * @return the client, with a loudest frequencies float array
      */
+    @Override
     BuildableFluentClientOperationWithFreqs compress (float factor);
 
     /**
@@ -36,6 +37,7 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
      *            high frequency (last one to avoid)
      * @return the client, with a loudest frequencies float array
      */
+    @Override
     BuildableFluentClientOperationWithFreqs filterRange (float low, float high);
 
     /**
@@ -48,6 +50,7 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
      *            index where to start the insert
      * @return the client, with a loudest frequencies float array
      */
+    @Override
     BuildableFluentClientOperationWithFreqs insertPart (float [] subFreqs, int start);
 
     /**
@@ -55,6 +58,7 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
      *
      * @return the client, with a loudest frequencies float array
      */
+    @Override
     BuildableFluentClientOperationWithFreqs octaveDown ();
 
     /**
@@ -62,6 +66,7 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
      *
      * @return the client, with a loudest frequencies float array
      */
+    @Override
     BuildableFluentClientOperationWithFreqs octaveUp ();
 
     /**
@@ -74,6 +79,7 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
      *            index where to start the replacement
      * @return the client, with a loudest frequencies float array
      */
+    @Override
     BuildableFluentClientOperationWithFreqs replacePart (float [] subFreqs, int start);
 
     /**
@@ -91,6 +97,7 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
      * @throws SoundTransformException
      *             could not call the soundtransform to shape the freqs
      */
+    @Override
     BuildableFluentClientOperationSoundImported shapeIntoSound (String packName, String instrumentName, FormatInfo formatInfo) throws SoundTransformException;
 
     /**
@@ -98,5 +105,6 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
      *
      * @return loudest frequencies array
      */
+    @Override
     float [] stopWithFreqs ();
 }

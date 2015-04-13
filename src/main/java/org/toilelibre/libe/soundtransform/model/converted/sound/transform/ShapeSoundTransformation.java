@@ -93,9 +93,10 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         return Math.abs (freq1 - freq2) > freq1 * 5.0 / 100;
     }
 
-    private float [] getLoudestFreqs (final Sound sound, final int step) {
-        final PeakFindWithHPSSoundTransformation<? extends Serializable> peak = new PeakFindWithHPSSoundTransformation<Serializable> (step, -1);
-        peak.setObservers (this.observers).transform (sound);
+    private float [] getLoudestFreqs (final Sound sound, final int step) throws SoundTransformException {
+        final PeakFindSoundTransformation<Serializable> peak = new PeakFindWithHPSSoundTransformation<Serializable> (step, -1);
+        peak.setObservers (this.observers);
+        peak.transform (sound);
         return peak.getLoudestFreqs ();
     }
 
