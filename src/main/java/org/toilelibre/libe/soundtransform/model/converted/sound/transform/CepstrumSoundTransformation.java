@@ -8,15 +8,16 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 
-public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> {
+public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T> {
 
     private final double                      step;
-    private int []                            loudestfreqs;
+    private float []                          loudestfreqs;
     private int                               index;
     private int                               length;
     private static final int                  SHORT_SOUND_LENGTH = 9000;
     private final SpectrumToCepstrumHelper<T> spectrum2CepstrumHelper;
     private final SpectrumHelper<T>           spectrumHelper;
+    private float detectedNoteVolume;
 
     public CepstrumSoundTransformation () {
         this (100);
@@ -30,7 +31,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
         this.spectrumHelper = $.select (SpectrumHelper.class);
     }
 
-    public int [] getLoudestFreqs () {
+    public float [] getLoudestFreqs () {
         return this.loudestfreqs.clone ();
     }
 
@@ -52,25 +53,33 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
 
     @Override
     public Sound initSound (final Sound input) {
-        this.loudestfreqs = new int [(int) (input.getSamplesLength () / this.step) + 1];
+        this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
         this.index = 0;
         this.length = input.getSamplesLength ();
         if (this.length < CepstrumSoundTransformation.SHORT_SOUND_LENGTH) {
-            this.loudestfreqs = new int [1];
+            this.loudestfreqs = new float [1];
         } else {
-            this.loudestfreqs = new int [(int) (input.getSamplesLength () / this.step) + 1];
+            this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
         }
         return super.initSound (input);
     }
 
     @Override
-    public Spectrum<T> transformFrequencies (final Spectrum<T> fs) {
+    public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
         final Spectrum<T> fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
 
         this.loudestfreqs [this.index] = this.spectrumHelper.getMaxIndex (fscep, 0, (int) fs.getSampleRate ());
         this.index++;
 
+        if (this.length < CepstrumSoundTransformation.SHORT_SOUND_LENGTH) {
+            this.detectedNoteVolume = soundLevelInDB;
+        }
         return fscep;
+    }
+
+    @Override
+    public float getDetectedNoteVolume () {
+        return this.detectedNoteVolume;
     }
 }

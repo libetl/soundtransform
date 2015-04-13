@@ -48,7 +48,9 @@ public class WavTest extends SoundTransformTest {
 
     @Test
     public void testCepstrum () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().apply (new CepstrumSoundTransformation<Serializable> (100)).exportToFile (this.output);
+        CepstrumSoundTransformation<Serializable> cepstrum = new CepstrumSoundTransformation<Serializable> (100);
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().apply (cepstrum).exportToFile (this.output);
+        new Slf4jObserver (LogLevel.INFO).notify (cepstrum.toString ());
     }
 
     @Test

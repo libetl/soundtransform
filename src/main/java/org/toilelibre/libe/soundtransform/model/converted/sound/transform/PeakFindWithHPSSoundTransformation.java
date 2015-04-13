@@ -52,9 +52,9 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
         this.spectrumHelper = $.select (SpectrumHelper.class);
     }
 
-    public PeakFindWithHPSSoundTransformation (final boolean note) {
+    public PeakFindWithHPSSoundTransformation (final boolean note1) {
         this ();
-        this.note = note;
+        this.note = note1;
         this.step = 100;
         this.windowLength = -1;
         this.soundLength = -1;
@@ -66,10 +66,10 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
         this.windowLength = -1;
     }
 
-    public PeakFindWithHPSSoundTransformation (final double step1, final int windowLength) {
+    public PeakFindWithHPSSoundTransformation (final double step1, final int windowLength1) {
         this ();
         this.step = step1;
-        this.windowLength = windowLength;
+        this.windowLength = windowLength1;
     }
 
     private float bestCandidate (final float [] peaks) {
