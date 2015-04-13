@@ -323,6 +323,18 @@ public class FluentClientOperation implements FluentClientSoundImported, FluentC
     }
 
     @Override
+    public FluentClientOperation withAMixedSound (final Sound []... sounds) throws SoundTransformException {
+        this.steps.add (new Step () {
+
+            @Override
+            public void run (final FluentClientInterface client) throws SoundTransformException {
+                client.withAMixedSound (sounds);
+            }
+        });
+        return this;
+    }
+
+    @Override
     public FluentClientOperation withAPack (final String packName, final InputStream jsonStream) throws SoundTransformException {
         this.steps.add (new Step () {
 

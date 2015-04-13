@@ -1033,6 +1033,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return new GetStreamInfo (this.getObservers ()).getStreamInfo (this.audioInputStream);
     }
 
+    
     /*
      * (non-Javadoc)
      *
@@ -1056,6 +1057,25 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
+    @Override
+    /**
+     * Tells the client to use the sounds passed in parameter by mixing them all into one
+     *
+     * @param sounds
+     *            a var-arg value of arrays of sounds (each value inside the arrays is a sound channel)
+     * @return the client, with an imported sound
+     * @throws SoundTransformException
+     *             the sound files are invalid
+     */
+    public FluentClientSoundImported withAMixedSound (Sound []... sounds1) throws SoundTransformException {
+        final FluentClientCommon [] clients = new FluentClientCommon [sounds1.length];
+        for (int i = 0 ; i < sounds1.length ; i++) {
+            clients [i] = FluentClient.start ().withSounds (sounds1 [i]);
+        }
+        this.parallelizedClients = clients;
+        return this.mixAllInOneSound ();
+    }
+    
     /*
      * (non-Javadoc)
      *

@@ -222,6 +222,15 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().mixWith (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
+    
+    @Test
+    public void mixTwoFilesAfterStart () throws SoundTransformException {
+        FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
+        FluentClient.start ().withAMixedSound (
+                FluentClient.start ().withClasspathResource ("piano1c.wav").convertIntoSound ().stopWithSounds (), 
+                FluentClient.start ().withClasspathResource ("piano8c.wav").convertIntoSound ().stopWithSounds ()).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+    }
+    
     @Test
     public void mixTwoFilesInParallel () throws SoundTransformException {
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));

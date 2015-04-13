@@ -113,6 +113,16 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientReady withAnObserver (Observer... observers);
 
     /**
+     * Tells the client to use the sounds passed in parameter by mixing them all into one
+     * 
+     * @param sounds
+     *            a var-arg value of arrays of sounds (each value inside the arrays is a sound channel)
+     * @return the client, with an imported sound
+     * @throws SoundTransformException
+     *             the sound files are invalid
+     */
+    FluentClientSoundImported withAMixedSound (Sound []... sounds) throws SoundTransformException;
+    /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
      * pattern must be followed in the jsonStream to enable the import.
      *

@@ -274,6 +274,26 @@ the client, with a list of clients inside holding a value each
 Throws:  
 `SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
 
+#####   FluentClientReady.withAMixedSound 
+
+```java
+FluentClientSoundImported withAMixedSound (Sound []... sounds) throws SoundTransformException;
+```
+
+
+Tells the client to use the sounds passed in parameter by mixing them all into one
+
+Parameters:  
+`sounds` - a var-arg value of arrays of sounds (each value inside the arrays is a sound channel)
+
+Returns:  
+the client, with an imported sound
+
+Throws:  
+`SoundTransformException` - the sound files are invalid
+
+
+
 #####   FluentClientReady.withAPack (Json InputStream) (before another with.. method)
 
 ```java
