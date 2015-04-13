@@ -586,7 +586,7 @@ Throws:
 FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException
 ```
 
-Apply one transform and continue with the current imported sound
+Apply one transform and continue with the result sound
 
 Parameters:  
 `st` - the SoundTransformation to apply

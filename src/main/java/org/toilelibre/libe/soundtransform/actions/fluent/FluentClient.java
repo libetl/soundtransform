@@ -158,7 +158,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     /**
-     * Apply one transform and continue with the current imported sound
+     * Apply one transform and continue with the result sound
      * @param st the SoundTransformation to apply
      * @return the client with a sound imported
      * @throws SoundTransformException if the transform does not work

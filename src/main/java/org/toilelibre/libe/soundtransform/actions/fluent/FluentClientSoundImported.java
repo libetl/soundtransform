@@ -23,7 +23,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientSoundImported append (Sound [] sound) throws SoundTransformException;
 
     /**
-     * Apply one transform and continue with the current imported sound
+     * Apply one transform and continue with the result sound
      *
      * @param st
      *            the SoundTransformation to apply
