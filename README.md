@@ -962,7 +962,7 @@ the client, with a loudest frequencies float array
 #####   FluentClientWithFreqs.shapeIntoSound
 
 ```java
-FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, FormatInfo fi) throws SoundTransformException
+FluentClientSoundImported shapeIntoSound (String packName, String instrumentName, FormatInfo formatInfo) throws SoundTransformException
 ```
 
 
@@ -973,7 +973,7 @@ Parameters:
 
 `instrumentName` - the name of the instrument that will map the freqs object
 
-`fi` - the wanted format for the future sound
+`formatInfo` - the wanted format for the future sound
 
 Returns:  
 the client, with a sound imported
