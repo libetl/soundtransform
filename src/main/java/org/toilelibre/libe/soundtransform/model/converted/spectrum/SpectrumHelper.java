@@ -1,6 +1,5 @@
 package org.toilelibre.libe.soundtransform.model.converted.spectrum;
 
-
 public interface SpectrumHelper<T> {
 
     float f0 (Spectrum<T> fs, int i);
@@ -11,6 +10,6 @@ public interface SpectrumHelper<T> {
 
     Spectrum<T> hps (Spectrum<T> fs, int factor);
 
-    int getLengthOfSpectrum(Spectrum<T> fs);
+    int getLengthOfSpectrum (Spectrum<T> fs);
 
 }

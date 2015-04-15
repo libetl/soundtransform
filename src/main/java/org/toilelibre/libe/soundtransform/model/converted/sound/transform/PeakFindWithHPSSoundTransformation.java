@@ -89,6 +89,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
         return rightEdge == leftEdge ? sum : sum * 1.0f / (rightEdge - leftEdge);
     }
 
+    @Override
     public float getDetectedNoteVolume () {
         return this.detectedNoteVolume;
     }

@@ -20,8 +20,10 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     private final SpectrumToCepstrumHelper<T> spectrum2CepstrumHelper;
     private final SpectrumHelper<T>           spectrumHelper;
     private final List<Spectrum<T>>           cepstrums;
-    
-    private float detectedNoteVolume;
+    private static final int                  MIN_VOICE_FREQ     = 40;
+    private static final int                  MAX_VOICE_FREQ     = 1000;
+
+    private float                             detectedNoteVolume;
 
     public CepstrumSoundTransformation () {
         this (100);
@@ -36,6 +38,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
         this.cepstrums = new LinkedList<Spectrum<T>> ();
     }
 
+    @Override
     public float [] getLoudestFreqs () {
         return this.loudestfreqs.clone ();
     }
@@ -84,10 +87,10 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
         return fscep;
     }
 
-    private float findLoudestFreqFromCepstrum (Spectrum<T> fscep) {
-        final float spectrumLength = spectrumHelper.getLengthOfSpectrum(fscep);
+    private float findLoudestFreqFromCepstrum (final Spectrum<T> fscep) {
+        final float spectrumLength = this.spectrumHelper.getLengthOfSpectrum (fscep);
         final float timelapseInTheCepstrum = spectrumLength * 1.0f / fscep.getSampleRate ();
-        final float maxIndex = spectrumHelper.getMaxIndex (fscep, 0, (int)fscep.getSampleRate ());
+        final float maxIndex = this.spectrumHelper.getMaxIndex (fscep, CepstrumSoundTransformation.MIN_VOICE_FREQ, CepstrumSoundTransformation.MAX_VOICE_FREQ);
         final float t0 = maxIndex / spectrumLength * timelapseInTheCepstrum;
         return 1.0f / t0;
     }
@@ -98,7 +101,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     }
 
     public List<Spectrum<T>> getCepstrums () {
-        return cepstrums;
+        return this.cepstrums;
     }
-    
+
 }

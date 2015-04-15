@@ -12,7 +12,8 @@ public interface BuildableFluentClientOperation extends FluentClientCommon {
     BuildableFluentClientOperationReady andAfterStart ();
 
     /**
-     * Builds the operation object, makes it ready to be used in the inParallel method
+     * Builds the operation object, makes it ready to be used in the inParallel
+     * method
      *
      * @return the client operation
      */

@@ -7,8 +7,8 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelpe
 
 final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
 
-    private static final int TWICE          = 2;
-    private static final int HALF           = 2;
+    private static final int TWICE = 2;
+    private static final int HALF  = 2;
 
     public HPSSpectrumHelper () {
 

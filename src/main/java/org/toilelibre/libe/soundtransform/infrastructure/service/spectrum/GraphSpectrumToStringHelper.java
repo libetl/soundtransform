@@ -88,8 +88,8 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
         final float lastFrequency = fs.getState ().length < high ? fs.getState ().length : (float) high;
         final int length = (int) lastFrequency / compression;
         final int maxIndex = this.spectrumHelper.getMaxIndex (fs, low, high);
-        final double maxValue = (double) fs.getState () [maxIndex].abs ();
-        final double maxMagn = (GraphSpectrumToStringHelper.DECIBELS_FORMULA_COEFFICIENT * Math.log10 (maxValue));
+        final double maxValue = fs.getState () [maxIndex].abs ();
+        final double maxMagn = GraphSpectrumToStringHelper.DECIBELS_FORMULA_COEFFICIENT * Math.log10 (maxValue);
         final int step = (int) lastFrequency / length;
         final int [] valuesOnPlot = this.prepareValuesOnPlot (fs, step, this.getMaxValueOrMaxMagn (maxValue, maxMagn), length, low, height);
         for (int j = height ; j >= 0 ; j--) {
@@ -101,7 +101,7 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
         return sb.toString ();
     }
 
-    private double getMaxValueOrMaxMagn (double maxValue, double maxMagn) {
+    private double getMaxValueOrMaxMagn (final double maxValue, final double maxMagn) {
         return maxMagn < 0 ? maxValue : maxMagn;
     }
 
