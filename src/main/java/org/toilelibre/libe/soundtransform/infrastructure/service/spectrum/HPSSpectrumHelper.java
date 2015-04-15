@@ -9,7 +9,6 @@ final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
 
     private static final int TWICE          = 2;
     private static final int HALF           = 2;
-    private static final int NB_BYTE_VALUES = 1 << Byte.SIZE;
 
     public HPSSpectrumHelper () {
 
@@ -35,13 +34,18 @@ final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
     }
 
     @Override
+    public int getLengthOfSpectrum (final Spectrum<Complex []> fs) {
+        return fs.getState ().length;
+    }
+
+    @Override
     public int getMaxIndex (final Spectrum<Complex []> fs, final int low, final int high) {
         double max = 0;
         int maxIndex = 0;
         final int reallow = low == 0 ? 1 : low;
         final int realhigh = Math.min (high, fs.getState ().length);
         for (int i = reallow ; i < realhigh ; i++) {
-            if (max < fs.getState () [i].abs () && fs.getState () [i].abs () > Math.pow (HPSSpectrumHelper.NB_BYTE_VALUES, fs.getSampleSize ()) + 1) {
+            if (max < fs.getState () [i].abs ()) {
                 max = fs.getState () [i].abs ();
                 maxIndex = i;
             }

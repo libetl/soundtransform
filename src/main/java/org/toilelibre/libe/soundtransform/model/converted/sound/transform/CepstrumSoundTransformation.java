@@ -1,6 +1,8 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -17,6 +19,8 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     private static final int                  SHORT_SOUND_LENGTH = 9000;
     private final SpectrumToCepstrumHelper<T> spectrum2CepstrumHelper;
     private final SpectrumHelper<T>           spectrumHelper;
+    private final List<Spectrum<T>>           cepstrums;
+    
     private float detectedNoteVolume;
 
     public CepstrumSoundTransformation () {
@@ -29,6 +33,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
         this.step = step1;
         this.spectrum2CepstrumHelper = $.select (SpectrumToCepstrumHelper.class);
         this.spectrumHelper = $.select (SpectrumHelper.class);
+        this.cepstrums = new LinkedList<Spectrum<T>> ();
     }
 
     public float [] getLoudestFreqs () {
@@ -68,8 +73,9 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
         final Spectrum<T> fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
+        this.cepstrums.add (fscep);
 
-        this.loudestfreqs [this.index] = this.spectrumHelper.getMaxIndex (fscep, 0, (int) fs.getSampleRate ());
+        this.loudestfreqs [this.index] = this.findLoudestFreqFromCepstrum (fscep);
         this.index++;
 
         if (this.length < CepstrumSoundTransformation.SHORT_SOUND_LENGTH) {
@@ -78,8 +84,21 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
         return fscep;
     }
 
+    private float findLoudestFreqFromCepstrum (Spectrum<T> fscep) {
+        final float spectrumLength = spectrumHelper.getLengthOfSpectrum(fscep);
+        final float timelapseInTheCepstrum = spectrumLength * 1.0f / fscep.getSampleRate ();
+        final float maxIndex = spectrumHelper.getMaxIndex (fscep, 0, (int)fscep.getSampleRate ());
+        final float t0 = maxIndex / spectrumLength * timelapseInTheCepstrum;
+        return 1.0f / t0;
+    }
+
     @Override
     public float getDetectedNoteVolume () {
         return this.detectedNoteVolume;
     }
+
+    public List<Spectrum<T>> getCepstrums () {
+        return cepstrums;
+    }
+    
 }
