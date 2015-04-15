@@ -27,7 +27,7 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
         sb.append ("> ").append (spectrumHelper.freqFromSampleRate (length * compression, (int) lastFrequency * GraphSpectrumToStringHelper.TWICE, (int) lastFrequency * GraphSpectrumToStringHelper.TWICE)).append ("Hz (freq)\n");
     }
 
-    private void diplayRow (final StringBuilder sb, final int j, final int [] valuesOnPlot, final double maxMagn, final int length, final int height) {
+    private void displayRow (final StringBuilder sb, final int j, final int [] valuesOnPlot, final double maxMagn, final int length, final int height) {
         if (j == height) {
             sb.append ("^ ").append (Double.valueOf (maxMagn)).append (" (magnitude)\n");
             return;
@@ -93,7 +93,7 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
         final int step = (int) lastFrequency / length;
         final int [] valuesOnPlot = this.prepareValuesOnPlot (fs, step, this.getMaxValueOrMaxMagn (maxValue, maxMagn), length, low, height);
         for (int j = height ; j >= 0 ; j--) {
-            this.diplayRow (sb, j, valuesOnPlot, this.getMaxValueOrMaxMagn (maxValue, maxMagn), length, height);
+            this.displayRow (sb, j, valuesOnPlot, this.getMaxValueOrMaxMagn (maxValue, maxMagn), length, height);
         }
 
         this.diplayFooter (sb, length, this.spectrumHelper, compression, lastFrequency);

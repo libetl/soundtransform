@@ -11,13 +11,13 @@ final class NaiveSpectrum2CepstrumHelper implements SpectrumToCepstrumHelper<Com
 
     @Override
     public Spectrum<Complex []> spectrumToCepstrum (final Spectrum<Complex []> spectrum) {
-        final Spectrum<Complex []> logSpectrum = new Spectrum<Complex []> (spectrum.getState ().clone (), spectrum.getFormatInfo ());
+        final Spectrum<Complex []> logSpectrum = new Spectrum<Complex []> (spectrum.getState (), spectrum.getFormatInfo ());
         for (int i = 0 ; i < logSpectrum.getState ().length ; i++) {
             logSpectrum.getState () [i] = new Complex (Math.log (spectrum.getState () [i].abs ()));
         }
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 
-        final Spectrum<Complex []> fscep = new Spectrum<Complex []> (fastFourierTransformer.transform (logSpectrum.getState ().clone (), TransformType.INVERSE), logSpectrum.getFormatInfo ());
+        final Spectrum<Complex []> fscep = new Spectrum<Complex []> (fastFourierTransformer.transform (logSpectrum.getState (), TransformType.INVERSE), logSpectrum.getFormatInfo ());
         for (int i = 0 ; i < fscep.getState ().length ; i++) {
             fscep.getState () [i] = new Complex (Math.abs (fscep.getState () [i].getReal ()), 0);
         }

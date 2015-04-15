@@ -48,14 +48,14 @@ public class WavTest extends SoundTransformTest {
 
     @Test
     public void testCepstrum () throws SoundTransformException {
-        final CepstrumSoundTransformation<Serializable> cepstrum = new CepstrumSoundTransformation<Serializable> (100);
+        final CepstrumSoundTransformation<Serializable> cepstrum = new CepstrumSoundTransformation<Serializable> (100, false);
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (new File (this.classLoader.getResource ("piano5g.wav").getFile ())).convertIntoSound ().apply (cepstrum).exportToFile (this.output);
         new Slf4jObserver (LogLevel.INFO).notify ("" + cepstrum.getLoudestFreqs () [0]);
     }
 
     @Test
     public void testShortSoundCepstrum () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().extractSubSound (0, 4000).apply (new CepstrumSoundTransformation<Serializable> (100)).exportToFile (this.output);
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().extractSubSound (0, 4000).apply (new CepstrumSoundTransformation<Serializable> (100, false)).exportToFile (this.output);
     }
 
     @Test (expected = SoundTransformRuntimeException.class)

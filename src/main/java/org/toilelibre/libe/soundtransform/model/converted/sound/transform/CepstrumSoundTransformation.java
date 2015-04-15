@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransformation.PeakFindWithHPSSoundTransformationEventCode;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
 public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T> {
 
@@ -22,17 +24,19 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     private final List<Spectrum<T>>           cepstrums;
     private static final int                  MIN_VOICE_FREQ     = 40;
     private static final int                  MAX_VOICE_FREQ     = 1000;
+    private final boolean keepCepstrums;
 
     private float                             detectedNoteVolume;
 
     public CepstrumSoundTransformation () {
-        this (100);
+        this (100, false);
     }
 
     @SuppressWarnings ("unchecked")
-    public CepstrumSoundTransformation (final double step1) {
+    public CepstrumSoundTransformation (final double step1, boolean keepCepstrums1) {
         super ();
         this.step = step1;
+        this.keepCepstrums = keepCepstrums1;
         this.spectrum2CepstrumHelper = $.select (SpectrumToCepstrumHelper.class);
         this.spectrumHelper = $.select (SpectrumHelper.class);
         this.cepstrums = new LinkedList<Spectrum<T>> ();
@@ -75,8 +79,15 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     @Override
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
+        final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.length / this.step));
+        if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.length / this.step))) {
+            this.log (new LogEvent (PeakFindWithHPSSoundTransformationEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.length / this.step), percent));
+        }
+
         final Spectrum<T> fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
-        this.cepstrums.add (fscep);
+        if (this.keepCepstrums){
+            this.cepstrums.add (fscep);
+        }
 
         this.loudestfreqs [this.index] = this.findLoudestFreqFromCepstrum (fscep);
         this.index++;
