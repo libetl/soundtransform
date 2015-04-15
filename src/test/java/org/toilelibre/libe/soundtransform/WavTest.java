@@ -50,7 +50,7 @@ public class WavTest extends SoundTransformTest {
     public void testCepstrum () throws SoundTransformException {
         CepstrumSoundTransformation<Serializable> cepstrum = new CepstrumSoundTransformation<Serializable> (100);
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (new File (this.classLoader.getResource ("piano3e.wav").getFile ())).convertIntoSound ().apply (cepstrum).exportToFile (this.output);
-        new Slf4jObserver (LogLevel.INFO).notify (cepstrum.getCepstrums().get(0).toString ());
+        new Slf4jObserver (LogLevel.INFO).notify ("\n" + cepstrum.getCepstrums().get(0).toString ());
     }
 
     @Test

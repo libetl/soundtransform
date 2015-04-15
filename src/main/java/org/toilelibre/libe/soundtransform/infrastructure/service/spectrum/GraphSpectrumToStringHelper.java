@@ -91,7 +91,7 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
         final double maxValue = (double) fs.getState () [maxIndex].abs ();
         final double maxMagn = (GraphSpectrumToStringHelper.DECIBELS_FORMULA_COEFFICIENT * Math.log10 (maxValue));
         final int step = (int) lastFrequency / length;
-        final int [] valuesOnPlot = this.prepareValuesOnPlot (fs, step, maxMagn, length, low, height);
+        final int [] valuesOnPlot = this.prepareValuesOnPlot (fs, step, this.getMaxValueOrMaxMagn (maxValue, maxMagn), length, low, height);
         for (int j = height ; j >= 0 ; j--) {
             this.diplayRow (sb, j, valuesOnPlot, this.getMaxValueOrMaxMagn (maxValue, maxMagn), length, height);
         }
