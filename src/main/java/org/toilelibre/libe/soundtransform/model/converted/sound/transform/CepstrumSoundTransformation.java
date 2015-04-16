@@ -18,24 +18,37 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     private float []                          loudestfreqs;
     private int                               index;
     private int                               length;
-    private static final int                  SHORT_SOUND_LENGTH = 9000;
     private final SpectrumToCepstrumHelper<T> spectrum2CepstrumHelper;
     private final SpectrumHelper<T>           spectrumHelper;
     private final List<Spectrum<T>>           cepstrums;
     private static final int                  MIN_VOICE_FREQ     = 40;
     private static final int                  MAX_VOICE_FREQ     = 1000;
     private final boolean keepCepstrums;
+    private final boolean note;
 
     private float                             detectedNoteVolume;
 
     public CepstrumSoundTransformation () {
-        this (100, false);
+        this (100, false, false);
+    }
+
+    public CepstrumSoundTransformation (final boolean note1) {
+        this (100, false, note1);
+    }
+
+    public CepstrumSoundTransformation (final double step1) {
+        this (step1, false, false);
+    }
+
+    public CepstrumSoundTransformation (final double step1, final boolean note1) {
+        this (step1, false, note1);
     }
 
     @SuppressWarnings ("unchecked")
-    public CepstrumSoundTransformation (final double step1, boolean keepCepstrums1) {
+    public CepstrumSoundTransformation (final double step1, boolean keepCepstrums1, final boolean note1) {
         super ();
         this.step = step1;
+        this.note = note1;
         this.keepCepstrums = keepCepstrums1;
         this.spectrum2CepstrumHelper = $.select (SpectrumToCepstrumHelper.class);
         this.spectrumHelper = $.select (SpectrumHelper.class);
@@ -49,7 +62,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
 
     @Override
     public double getStep (final double defaultValue) {
-        if (this.length < CepstrumSoundTransformation.SHORT_SOUND_LENGTH) {
+        if (this.note) {
             return this.length;
         }
         return this.step;
@@ -57,7 +70,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
 
     @Override
     public int getWindowLength (final double freqmax) {
-        if (this.length < CepstrumSoundTransformation.SHORT_SOUND_LENGTH) {
+        if (this.note) {
             return (int) Math.pow (2, Math.ceil (Math.log (this.length) / Math.log (2)));
         }
         return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
@@ -68,7 +81,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
         this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
         this.index = 0;
         this.length = input.getSamplesLength ();
-        if (this.length < CepstrumSoundTransformation.SHORT_SOUND_LENGTH) {
+        if (this.note) {
             this.loudestfreqs = new float [1];
         } else {
             this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
@@ -92,7 +105,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
         this.loudestfreqs [this.index] = this.findLoudestFreqFromCepstrum (fscep);
         this.index++;
 
-        if (this.length < CepstrumSoundTransformation.SHORT_SOUND_LENGTH) {
+        if (this.note) {
             this.detectedNoteVolume = soundLevelInDB;
         }
         return fscep;
