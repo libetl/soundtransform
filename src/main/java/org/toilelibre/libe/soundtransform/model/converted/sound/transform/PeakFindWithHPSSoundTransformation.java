@@ -13,7 +13,6 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
 public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T> {
 
-
     private double                  step;
     private List<float []>          allLoudestFreqs;
     private float []                loudestfreqs;

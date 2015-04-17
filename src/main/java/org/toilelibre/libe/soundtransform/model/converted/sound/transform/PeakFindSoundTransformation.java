@@ -32,10 +32,10 @@ public interface PeakFindSoundTransformation<T extends Serializable> extends Sou
             return this.messageFormat;
         }
     }
-    
+
     float [] getLoudestFreqs ();
 
     float getDetectedNoteVolume ();
 
-    List<float[]> getAllLoudestFreqs();
+    List<float []> getAllLoudestFreqs ();
 }

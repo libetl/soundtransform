@@ -35,7 +35,7 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
             Assert.assertEquals (ste.getErrorCode ().name (), "STUB_IMPLEMENTATION");
         }
     }
-    
+
     @Test (expected = SoundTransformException.class)
     public void cutsoundOutOfBounds () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (-100000, 200000).exportToClasspathResource ("after.wav");
@@ -63,7 +63,7 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
             throw ste;
         }
     }
-    
+
     @Test
     public void extractSoundWithNoSpectrum () throws SoundTransformException {
         try {
@@ -188,10 +188,10 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
         } catch (final SoundTransformRuntimeException ste) {
             Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
         }
-        
+
     }
 
-    @Test (expected=SoundTransformException.class)
+    @Test (expected = SoundTransformException.class)
     public void loopWithLessThan1ValueDoesNotWork () throws SoundTransformException {
         try {
             FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().loop (0).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");

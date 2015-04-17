@@ -14,17 +14,17 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T> {
 
     private final double                      step;
-    private List<float []>                    allLoudestFreqs;    
+    private List<float []>                    allLoudestFreqs;
     private float []                          loudestfreqs;
     private int                               index;
     private int                               length;
     private final SpectrumToCepstrumHelper<T> spectrum2CepstrumHelper;
     private final SpectrumHelper<T>           spectrumHelper;
     private final List<Spectrum<T>>           cepstrums;
-    private static final int                  MIN_VOICE_FREQ     = 40;
-    private static final int                  MAX_VOICE_FREQ     = 1000;
-    private final boolean keepCepstrums;
-    private final boolean note;
+    private static final int                  MIN_VOICE_FREQ = 40;
+    private static final int                  MAX_VOICE_FREQ = 1000;
+    private final boolean                     keepCepstrums;
+    private final boolean                     note;
 
     private float                             detectedNoteVolume;
 
@@ -45,7 +45,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     }
 
     @SuppressWarnings ("unchecked")
-    public CepstrumSoundTransformation (final double step1, boolean keepCepstrums1, final boolean note1) {
+    public CepstrumSoundTransformation (final double step1, final boolean keepCepstrums1, final boolean note1) {
         super ();
         this.step = step1;
         this.note = note1;
@@ -65,7 +65,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     public List<float []> getAllLoudestFreqs () {
         return this.allLoudestFreqs;
     }
-    
+
     @Override
     public double getStep (final double defaultValue) {
         if (this.note) {
@@ -105,7 +105,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
         }
 
         final Spectrum<T> fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
-        if (this.keepCepstrums){
+        if (this.keepCepstrums) {
             this.cepstrums.add (fscep);
         }
 
