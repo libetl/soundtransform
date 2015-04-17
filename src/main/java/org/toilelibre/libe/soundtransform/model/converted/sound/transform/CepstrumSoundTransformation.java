@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransformation.PeakFindWithHPSSoundTransformationEventCode;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
@@ -94,7 +93,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
 
         final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.length / this.step));
         if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.length / this.step))) {
-            this.log (new LogEvent (PeakFindWithHPSSoundTransformationEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.length / this.step), percent));
+            this.log (new LogEvent (PeakFindSoundTransformationEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.length / this.step), percent));
         }
 
         final Spectrum<T> fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
