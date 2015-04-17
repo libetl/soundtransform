@@ -59,22 +59,29 @@ public class WavTest extends SoundTransformTest {
                 new File (this.classLoader.getResource ("piano6a.wav").getFile ()),
                 new File (this.classLoader.getResource ("piano7b.wav").getFile ()),
                 new File (this.classLoader.getResource ("piano8c.wav").getFile ())};
-        final PeakFindSoundTransformation<Serializable> cepstrum = new CepstrumSoundTransformation<Serializable> (100, false, true);
-        final PeakFindSoundTransformation<Serializable> hps = new PeakFindWithHPSSoundTransformation<Serializable> (true);
-        final PeakFindSoundTransformation<Serializable> cepstrum22050 = new CepstrumSoundTransformation<Serializable> (100, false, true);
-        final PeakFindSoundTransformation<Serializable> hps22050 = new PeakFindWithHPSSoundTransformation<Serializable> (true);
-        final PeakFindSoundTransformation<Serializable> cepstrum44100 = new CepstrumSoundTransformation<Serializable> (100, false, true);
-        final PeakFindSoundTransformation<Serializable> hps44100 = new PeakFindWithHPSSoundTransformation<Serializable> (true);
         for (File file : files){
+            final PeakFindSoundTransformation<Serializable> cepstrum = new CepstrumSoundTransformation<Serializable> (100, false, true);
+            final PeakFindSoundTransformation<Serializable> hps = new PeakFindWithHPSSoundTransformation<Serializable> (true);
+            final PeakFindSoundTransformation<Serializable> cepstrum22050 = new CepstrumSoundTransformation<Serializable> (100, false, true);
+            final PeakFindSoundTransformation<Serializable> hps22050 = new PeakFindWithHPSSoundTransformation<Serializable> (true);
+            final PeakFindSoundTransformation<Serializable> cepstrum44100 = new CepstrumSoundTransformation<Serializable> (100, false, true);
+            final PeakFindSoundTransformation<Serializable> hps44100 = new PeakFindWithHPSSoundTransformation<Serializable> (true);
             FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().apply (cepstrum).exportToFile (this.output).importToStream ().stopWithStreamInfo ();
             FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().apply (hps);
-            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().changeFormat(new FormatInfo (2, 44100)).apply (cepstrum44100).exportToFile (this.output).importToStream ().stopWithStreamInfo ();
-            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().changeFormat(new FormatInfo (2, 22050)).apply (hps22050);
             FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().changeFormat(new FormatInfo (2, 22050)).apply (cepstrum22050).exportToFile (this.output).importToStream ().stopWithStreamInfo ();
+            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().changeFormat(new FormatInfo (2, 22050)).apply (hps22050);
+            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().changeFormat(new FormatInfo (2, 44100)).apply (cepstrum44100).exportToFile (this.output).importToStream ().stopWithStreamInfo ();
             FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().changeFormat(new FormatInfo (2, 44100)).apply (hps44100);
-            new Slf4jObserver (LogLevel.INFO).notify ("Peak find with the file " + file.getName () + " : cepstrum(11025) -> " + cepstrum.getLoudestFreqs () [0] + ", hps(11025) -> " + hps.getLoudestFreqs () [0]);
-            new Slf4jObserver (LogLevel.INFO).notify ("                                    : cepstrum(22050) -> " + cepstrum22050.getLoudestFreqs () [0] + ", hps(22050) -> " + hps22050.getLoudestFreqs () [0]);
-            new Slf4jObserver (LogLevel.INFO).notify ("                                    : cepstrum(44100) -> " + cepstrum44100.getLoudestFreqs () [0] + ", hps(44100) -> " + hps44100.getLoudestFreqs () [0]);
+            new Slf4jObserver (LogLevel.INFO).notify ("Peak find with the file " + file.getName () + " : ");
+            for (int i = 0 ; i < cepstrum.getAllLoudestFreqs().size() ; i++){
+                new Slf4jObserver (LogLevel.INFO).notify ("                        channel " + i + "   : cepstrum(11025) -> " + cepstrum.getAllLoudestFreqs ().get (i) [0] + ", hps(11025) -> " + hps.getAllLoudestFreqs ().get (i) [0]);
+            }
+            for (int i = 0 ; i < cepstrum22050.getAllLoudestFreqs().size() ; i++){
+                new Slf4jObserver (LogLevel.INFO).notify ("                        channel " + i + "   : cepstrum(22050) -> " + cepstrum22050.getAllLoudestFreqs ().get (i) [0] + ", hps(22050) -> " + hps22050.getAllLoudestFreqs ().get (i) [0]);
+            }
+            for (int i = 0 ; i < cepstrum44100.getAllLoudestFreqs().size() ; i++){
+                new Slf4jObserver (LogLevel.INFO).notify ("                        channel " + i + "   : cepstrum(44100) -> " + cepstrum44100.getAllLoudestFreqs ().get (i) [0] + ", hps(44100) -> " + hps44100.getAllLoudestFreqs ().get (i) [0]);
+            }
         }
     }
 

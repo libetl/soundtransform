@@ -14,6 +14,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T> {
 
     private final double                      step;
+    private List<float []>                    allLoudestFreqs;    
     private float []                          loudestfreqs;
     private int                               index;
     private int                               length;
@@ -52,6 +53,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
         this.spectrum2CepstrumHelper = $.select (SpectrumToCepstrumHelper.class);
         this.spectrumHelper = $.select (SpectrumHelper.class);
         this.cepstrums = new LinkedList<Spectrum<T>> ();
+        this.allLoudestFreqs = new LinkedList<float []> ();
     }
 
     @Override
@@ -59,6 +61,11 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
         return this.loudestfreqs.clone ();
     }
 
+    @Override
+    public List<float []> getAllLoudestFreqs () {
+        return this.allLoudestFreqs;
+    }
+    
     @Override
     public double getStep (final double defaultValue) {
         if (this.note) {
@@ -85,6 +92,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
         } else {
             this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
         }
+        this.allLoudestFreqs.add (this.loudestfreqs);
         return super.initSound (input);
     }
 

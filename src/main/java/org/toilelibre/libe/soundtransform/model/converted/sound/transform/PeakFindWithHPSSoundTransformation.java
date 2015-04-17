@@ -2,6 +2,8 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -13,6 +15,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
 
 
     private double                  step;
+    private List<float []>          allLoudestFreqs;
     private float []                loudestfreqs;
     private boolean                 note;
     private float                   fsLimit;
@@ -25,6 +28,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
     @SuppressWarnings ("unchecked")
     private PeakFindWithHPSSoundTransformation () {
         super ();
+        this.allLoudestFreqs = new LinkedList<float []> ();
         this.spectrumHelper = $.select (SpectrumHelper.class);
     }
 
@@ -76,6 +80,11 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
     }
 
     @Override
+    public List<float []> getAllLoudestFreqs () {
+        return this.allLoudestFreqs;
+    }
+
+    @Override
     public double getStep (final double defaultValue) {
         return this.step;
     }
@@ -98,6 +107,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
             this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
             this.fsLimit = input.getSampleRate ();
         }
+        this.allLoudestFreqs.add (this.loudestfreqs);
         this.soundLength = input.getSamplesLength ();
         return super.initSound (input);
     }
