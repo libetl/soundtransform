@@ -19,7 +19,7 @@ final class NaiveSpectrum2CepstrumHelper implements SpectrumToCepstrumHelper<Com
 
         final Spectrum<Complex []> fscep = new Spectrum<Complex []> (fastFourierTransformer.transform (logSpectrum.getState (), TransformType.INVERSE), logSpectrum.getFormatInfo ());
         for (int i = 0 ; i < fscep.getState ().length ; i++) {
-            fscep.getState () [i] = new Complex (Math.abs (fscep.getState () [i].getReal ()), 0);
+            fscep.getState () [i] = new Complex (fscep.getState () [i].getReal (), 0);
         }
         return fscep;
     }
