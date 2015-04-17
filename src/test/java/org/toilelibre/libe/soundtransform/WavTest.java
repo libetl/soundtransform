@@ -22,6 +22,8 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.Insert
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NormalizeSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReverseSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
@@ -29,7 +31,6 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.Simple
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpeedUpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
-import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
@@ -48,10 +49,13 @@ public class WavTest extends SoundTransformTest {
     }
 
     @Test
-    public void testCepstrum () throws SoundTransformException {
-        final CepstrumSoundTransformation<Serializable> cepstrum = new CepstrumSoundTransformation<Serializable> (100, false, true);
-        StreamInfo si = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (new File (this.classLoader.getResource ("gpiano3.wav").getFile ())).convertIntoSound ().apply (cepstrum).exportToFile (this.output).importToStream ().stopWithStreamInfo ();
-        new Slf4jObserver (LogLevel.INFO).notify (si + " " + cepstrum.getLoudestFreqs () [0]);
+    public void peakFindTest () throws SoundTransformException {
+        final PeakFindSoundTransformation<Serializable> cepstrum = new CepstrumSoundTransformation<Serializable> (100, false, true);
+        File file = new File (this.classLoader.getResource ("piano3e.wav").getFile ());
+        final PeakFindSoundTransformation<Serializable> hps = new PeakFindWithHPSSoundTransformation<Serializable> (true);
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().apply (cepstrum).exportToFile (this.output).importToStream ().stopWithStreamInfo ();
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().apply (hps).exportToFile (this.output).importToStream ().stopWithStreamInfo ();
+        new Slf4jObserver (LogLevel.INFO).notify ("Peak find with the file " + file.getPath() + " : cepstrum -> " + cepstrum.getLoudestFreqs () [0] + ", hps -> " + hps.getLoudestFreqs() [0]);
     }
 
     @Test
@@ -169,7 +173,6 @@ public class WavTest extends SoundTransformTest {
     @Test
     public void testShape () throws SoundTransformException {
         // WARN : quite long
-        new Slf4jObserver (LogLevel.WARN).notify ("Loading default pack");
         final Library library = $.select (Library.class);
         ((ImportPackService<?>) $.select (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN))).importPack (library, "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().apply (new ShapeSoundTransformation ("default", "simple_piano")).exportToFile (this.output);
