@@ -55,7 +55,7 @@ public class WavTest extends SoundTransformTest {
         final PeakFindSoundTransformation<Serializable> hps = new PeakFindWithHPSSoundTransformation<Serializable> (true);
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().apply (cepstrum).exportToFile (this.output).importToStream ().stopWithStreamInfo ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().apply (hps).exportToFile (this.output).importToStream ().stopWithStreamInfo ();
-        new Slf4jObserver (LogLevel.INFO).notify ("Peak find with the file " + file.getPath() + " : cepstrum -> " + cepstrum.getLoudestFreqs () [0] + ", hps -> " + hps.getLoudestFreqs() [0]);
+        new Slf4jObserver (LogLevel.INFO).notify ("Peak find with the file " + file.getName () + " : cepstrum -> " + cepstrum.getLoudestFreqs () [0] + ", hps -> " + hps.getLoudestFreqs () [0]);
     }
 
     @Test
