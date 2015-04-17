@@ -54,14 +54,14 @@ public class Sound2NoteTest extends SoundTransformTest {
             private static final long serialVersionUID = -7749603459667098370L;
 
             {
-                this.put ("Piano1-C.wav", 260);// OK
-                this.put ("Piano2-D.wav", 293);// OK
-                this.put ("Piano3-E.wav", 332);// OK
-                this.put ("Piano4-F.wav", 344);// OK
-                this.put ("Piano5-G.wav", 387);// OK
-                this.put ("Piano6-A.wav", 451);// OK
-                this.put ("Piano7-B.wav", 499);// OK
-                this.put ("Piano8-C.wav", 524);// OK
+                this.put ("piano1c.wav", 260);// OK
+                this.put ("piano2d.wav", 293);// OK
+                this.put ("piano3e.wav", 332);// OK
+                this.put ("piano4f.wav", 344);// OK
+                this.put ("piano5g.wav", 387);// OK
+                this.put ("piano6a.wav", 451);// OK
+                this.put ("piano7b.wav", 499);// OK
+                this.put ("piano8c.wav", 524);// OK
             }
         };
         new Slf4jObserver ().notify ("Loading Packs");
@@ -71,7 +71,7 @@ public class Sound2NoteTest extends SoundTransformTest {
             for (final Entry<Float, Note> noteEntry : packEntry.getValue ().entrySet ()) {
                 final Note n = noteEntry.getValue ();
                 if (frequenciesPerSound.get (n.getName ()) != null) {
-                    org.junit.Assert.assertEquals (frequenciesPerSound.get (n.getName ()).intValue (), n.getFrequency (), 0);
+                    org.junit.Assert.assertEquals (frequenciesPerSound.get (n.getName ()).intValue (), n.getFrequency (), 1);
                     new Slf4jObserver ().notify ("f0 (" + n.getName () + ") = " + n.getFrequency ());
                 } else {
                     new Slf4jObserver ().notify ("Did not find " + n.getName ());
