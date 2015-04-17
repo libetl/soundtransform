@@ -8,14 +8,11 @@ import java.util.Random;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
-import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation.FluentClientOperationErrorCode;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
-import org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
@@ -23,26 +20,13 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.Insert
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-import android.content.Context;
-
 public class FluentClientTest extends SoundTransformTest {
-
-    @Test
-    public void androidImportPackDoesNotWorkInJavaxMode () throws SoundTransformException {
-        try {
-            FluentClient.start ().withAPack ("default", Mockito.mock (Context.class), R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
-            Assert.fail ("android import should have failed");
-        } catch (final SoundTransformException ste) {
-            Assert.assertEquals (ste.getErrorCode ().name (), "STUB_IMPLEMENTATION");
-        }
-    }
 
     @Test
     public void appendTest () throws SoundTransformException {
@@ -66,64 +50,6 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18 };
         final float [] array2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (array1).compress (2).stopWithFreqs ();
         Assert.assertArrayEquals (new float [] { 1.0f, 3.0f, 5.0f, 7.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f }, array2, 0);
-    }
-
-    @Test
-    public void cannotAskToTheFluentClientOperationToReturnSomething () throws SoundTransformException {
-        try {
-            FluentClientOperation.prepare ().stopWithAPack ("default");
-            Assert.fail ("should have failed");
-        } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
-        }
-        try {
-            FluentClientOperation.prepare ().withFile (null).stopWithFile ();
-            Assert.fail ("should have failed");
-        } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
-        }
-        try {
-            FluentClientOperation.prepare ().withFreqs (null).stopWithFreqs ();
-            Assert.fail ("should have failed");
-        } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
-        }
-        try {
-            FluentClientOperation.prepare ().withAudioInputStream (null).stopWithInputStream ();
-            Assert.fail ("should have failed");
-        } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
-        }
-        try {
-            FluentClientOperation.prepare ().stopWithObservers ();
-            Assert.fail ("should have failed");
-        } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
-        }
-        try {
-            FluentClientOperation.prepare ().inParallel (null, 0, "").stopWithResults (Object.class);
-            Assert.fail ("should have failed");
-        } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
-        }
-        try {
-            FluentClientOperation.prepare ().withSounds (null).stopWithSounds ();
-            Assert.fail ("should have failed");
-        } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
-        }
-        try {
-            FluentClientOperation.prepare ().withSpectrums (null).stopWithSpectrums ();
-            Assert.fail ("should have failed");
-        } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
-        }
-        try {
-            FluentClientOperation.prepare ().withAudioInputStream (null).stopWithStreamInfo ();
-            Assert.fail ("should have failed");
-        } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
-        }
     }
 
     @Test
@@ -210,15 +136,6 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
-    public void loopWithLessThan1ValueDoesNotWork () throws SoundTransformException {
-        try {
-            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().loop (0).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
-        } catch (final SoundTransformException ste) {
-            Assert.assertEquals (ste.getErrorCode ().name (), "NOT_POSITIVE_VALUE");
-        }
-    }
-
-    @Test
     public void mixTest () throws SoundTransformException {
         final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("piano3e.wav").convertIntoSound ().stopWithSounds ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().mixWith (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
@@ -287,17 +204,6 @@ public class FluentClientTest extends SoundTransformTest {
                         // classpath resources
                         this.generateRandomFreqs (), this.generateRandomFreqs ()).mixAllInOneSound ().stopWithSounds ()).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
 
-    }
-
-    @Test
-    public void appendDifferentFormatsImpossible () throws SoundTransformException {
-        try {
-            final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("piano3e.wav").convertIntoSound ().stopWithSounds ();
-            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().append (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
-            Assert.fail ("append should have failed");
-        } catch (final SoundTransformException ste) {
-            Assert.assertSame (ste.getErrorCode (), ModifySoundService.ModifySoundServiceErrorCode.DIFFERENT_NUMBER_OF_CHANNELS);
-        }
     }
 
     @Test
