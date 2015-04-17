@@ -14,7 +14,6 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
-import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CepstrumSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
@@ -51,7 +50,7 @@ public class WavTest extends SoundTransformTest {
     @Test
     public void testCepstrum () throws SoundTransformException {
         final CepstrumSoundTransformation<Serializable> cepstrum = new CepstrumSoundTransformation<Serializable> (100, false, true);
-        StreamInfo si = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (new File (this.classLoader.getResource ("piano3e.wav").getFile ())).convertIntoSound ().apply (cepstrum).exportToFile (this.output).importToStream ().stopWithStreamInfo ();
+        StreamInfo si = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (new File (this.classLoader.getResource ("gpiano3.wav").getFile ())).convertIntoSound ().apply (cepstrum).exportToFile (this.output).importToStream ().stopWithStreamInfo ();
         new Slf4jObserver (LogLevel.INFO).notify (si + " " + cepstrum.getLoudestFreqs () [0]);
     }
 
