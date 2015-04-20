@@ -1183,6 +1183,20 @@ Some others convert first the sound in the frequency domain before processing it
 
 ### Time domain transforms
 #### CutSoundTransformation
+###### `public class CutSoundTransformation implements SoundTransformation`
+
+Removes a part of a sound 
+
+The result of the method contains the rest of the sound, and the removed interval is not available from here.
+
+###### `public CutSoundTransformation (final int start1, final int end1)`
+
+default Constructor
+
+ * **Parameters:**
+   * `start1` — start of the interval
+   * `end1` — end of the interval
+   * 
 #### EightBitsSoundTransformation
 #### FadeSoundTransformation
 #### InsertPartSoundTransformation
