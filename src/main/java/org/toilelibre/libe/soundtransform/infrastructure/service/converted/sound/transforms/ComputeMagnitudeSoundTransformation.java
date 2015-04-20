@@ -5,12 +5,20 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
-public class ADSREnveloppeSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
+/**
+ * Stores an array to know the volume at each step of the sound
+ *
+ */
+public class ComputeMagnitudeSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
     private int          arraylength = 0;
     private final double step;
     private double []    magnitude;
 
-    public ADSREnveloppeSoundTransformation (final double step1) {
+    /**
+     * Default constructor
+     * @param step1 iteration step
+     */
+    public ComputeMagnitudeSoundTransformation (final double step1) {
         super ();
         this.step = step1;
     }

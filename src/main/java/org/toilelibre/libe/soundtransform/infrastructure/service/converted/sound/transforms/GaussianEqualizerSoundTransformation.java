@@ -5,6 +5,11 @@ import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
+/**
+ * 
+ * Equalizer which cuts the treble and the bass frequencies of a sound
+ * 
+ */
 public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
     private static final int DELTA_X  = 3500;
@@ -12,6 +17,9 @@ public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTr
     private static final int DIVISION = 1000;
     private static final int HALF     = 2;
 
+    /**
+     * Default constructor
+     */
     public GaussianEqualizerSoundTransformation () {
         super ();
     }

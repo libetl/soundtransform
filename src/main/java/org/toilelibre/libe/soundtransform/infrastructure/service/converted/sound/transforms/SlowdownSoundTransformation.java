@@ -13,7 +13,10 @@ import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-//WARN : long execution time soundtransform
+/**
+ * Builds a new sound, longer than the input, without shifting the frequencies
+ * @param <T> The kind of object held inside a spectrum.
+ */
 public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
     public enum SlowdownSoundTransformationErrorCode implements ErrorCode {
@@ -67,6 +70,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     private final int        windowLength;
 
     /**
+     * Default constructor
      * WARN : can fail for various reasons
      *
      * @param step1

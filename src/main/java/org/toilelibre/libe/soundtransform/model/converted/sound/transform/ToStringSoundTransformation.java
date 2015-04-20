@@ -2,6 +2,10 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
+/**
+ * Builds a string representation of a sound channel
+ *
+ */
 public class ToStringSoundTransformation implements SoundTransformation {
 
     private static final double NB_BYTE_VALUES = 1 << Byte.SIZE;
@@ -12,6 +16,11 @@ public class ToStringSoundTransformation implements SoundTransformation {
     private double              maxPlotValue;
     private double              minValuePlotted;
 
+    /**
+     * Default constructor
+     * @param length width of the string
+     * @param height height of the string
+     */
     public ToStringSoundTransformation (final int length, final int height) {
         this.length = length;
         this.height = height;

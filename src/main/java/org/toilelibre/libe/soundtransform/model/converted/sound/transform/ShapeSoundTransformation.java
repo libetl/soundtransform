@@ -17,6 +17,11 @@ import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
+/**
+ * Create a sound with notes matching the input sound loudest frequencies.
+ * It uses a soundtransform to get the loudest frequencies, then it shapes a sound consisting of the notes heard in the freqs array.
+ * If the constructor using a float array is used, only the shaping step will be processed
+ */
 public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransformation> implements SoundTransformation {
     public enum ShapeSoundTransformationErrorCode implements ErrorCode {
 
@@ -64,6 +69,11 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
     private float []            freqs;
     private FormatInfo          formatInfo;
 
+    /**
+     * Constructor for the two steps
+     * @param packName Pack name, should be already imported
+     * @param instrument instrument of the pack which will be used to shape the sound
+     */
     public ShapeSoundTransformation (final String packName, final String instrument) {
         this.silence = new Silence ();
         this.pack = $.select (Library.class).getPack (packName);
@@ -71,6 +81,13 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         this.soundAppender = $.select (SoundAppender.class);
     }
 
+    /**
+     * Constructor only for the second step
+     * @param packName Pack name, should be already imported
+     * @param instrument instrument of the pack which will be used to shape the sound
+     * @param freqs the loudest freqs array
+     * @param formatInfo1 the format info
+     */
     public ShapeSoundTransformation (final String packName, final String instrument, final float [] freqs, final FormatInfo formatInfo1) {
         this (packName, instrument);
         this.freqs = freqs.clone ();

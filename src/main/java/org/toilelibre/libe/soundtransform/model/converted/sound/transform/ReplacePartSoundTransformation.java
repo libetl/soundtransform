@@ -5,6 +5,12 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 
+/**
+ * Replaces a part of a sound with another sound
+ * The target sound must have the same number of channels as the replacement,
+ * and the insert index must not be out of bounds
+ *
+ */
 public class ReplacePartSoundTransformation implements SoundTransformation {
 
     public enum ReplacePartSoundTransformationErrorCode implements ErrorCode {
@@ -27,7 +33,13 @@ public class ReplacePartSoundTransformation implements SoundTransformation {
     private final Sound [] replacement;
     private final int      start;
 
-    public ReplacePartSoundTransformation (final Sound [] replacement1, final int start1) throws SoundTransformException {
+    /**
+     * Default constructor
+     * @param replacement1 replacement sound
+     * @param start1 start index
+     * @throws SoundTransformException
+     */
+    public ReplacePartSoundTransformation (final Sound [] replacement1, final int start1) {
         this.replacement = replacement1.clone ();
         this.start = start1;
     }

@@ -11,6 +11,16 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelpe
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
+/**
+ * Transforms a sound into a list of cepstrums (log modulus of the spectrums). Useful to get the f0 values of a sound
+ * (loudest freqs array).
+ * 
+ * The obtained Spectrum are not really spectrums. They consist of a graph a quefrencies (and not frequencies).<br/>
+ * The peak can represent the f0 (if the FormatInfo of the input sound is adequate), but it is not faithful everytime.<br/>
+ * This method can detected false values.
+ * 
+ * @param <T> The kind of object held inside a spectrum.
+ */
 public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T> {
 
     private final double                      step;
@@ -28,23 +38,55 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
 
     private float                             detectedNoteVolume;
 
+    /**
+     * Constructor with default values.
+     * The cepstrums will not be kept when using the getCepstrums method
+     */
     public CepstrumSoundTransformation () {
         this (100, false, false);
     }
 
+    /**
+     * Constructor with default values.
+     * The cepstrums will not be kept when using the getCepstrums method
+     * @param note1 if true, the loudest freqs array will contain a single element
+     *              and the cepstrum will be made once, using the whole sound
+     */
     public CepstrumSoundTransformation (final boolean note1) {
         this (100, false, note1);
     }
 
+    /**
+     * The cepstrums will not be kept when using the getCepstrums method
+     * @param step1 the iteration step
+     *        (increasing the value will speed the transform but will be less precise)
+     */
     public CepstrumSoundTransformation (final double step1) {
         this (step1, false, false);
     }
 
+    /**
+     * 
+     * The cepstrums will not be kept when using the getCepstrums method
+     * @param step1 the iteration step
+     *        (increasing the value will speed the transform but will be less precise)
+     * @param note1 if true, the loudest freqs array will contain a single element
+     *              and the cepstrum will be made once, using the whole sound
+     */
     public CepstrumSoundTransformation (final double step1, final boolean note1) {
         this (step1, false, note1);
     }
 
     @SuppressWarnings ("unchecked")
+    /**
+     * Constructor will every parameter specified
+     * @param keepCepstrums1 if true, the cepstrums will all be saved after each call to the method transform
+     *        This can cause a big memory leak if not used with care. Be vigilant.
+     * @param step1 the iteration step
+     *        (increasing the value will speed the transform but will be less precise)
+     * @param note1 if true, the loudest freqs array will contain a single element
+     *              and the cepstrum will be made once, using the whole sound
+     */
     public CepstrumSoundTransformation (final double step1, final boolean keepCepstrums1, final boolean note1) {
         super ();
         this.step = step1;

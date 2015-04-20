@@ -11,6 +11,11 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
+/**
+ * Finds the loudest frequencies array using the Harmonic Product Spectrum algorithm
+ *
+ * @param <T> The kind of object held inside a spectrum.
+ */
 public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T> {
 
     private double                  step;
@@ -31,6 +36,11 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
         this.spectrumHelper = $.select (SpectrumHelper.class);
     }
 
+    /**
+     * Default constructor
+     * @param note1 if true, the whole sound will be transformed at once to know the loudest freq.
+     *              therefore the array will be of size 1. 
+     */
     public PeakFindWithHPSSoundTransformation (final boolean note1) {
         this ();
         this.note = note1;
@@ -39,12 +49,21 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
         this.soundLength = -1;
     }
 
+    /**
+     * Constructor not using the whole sound as a musical note
+     * @param step1 the iteration step
+     */
     public PeakFindWithHPSSoundTransformation (final double step1) {
         this ();
         this.step = step1;
         this.windowLength = -1;
     }
 
+    /**
+     * Constructor not using the whole sound as a musical note
+     * @param step1 the iteration step
+     * @param windowLength1 length of the spectrum used during each iteration (the highest the slowest)
+     */    
     public PeakFindWithHPSSoundTransformation (final double step1, final int windowLength1) {
         this ();
         this.step = step1;

@@ -4,6 +4,10 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
+/**
+ * Raises the sound volume to match a certain percentage of the maximum possible level
+ *
+ */
 public class NormalizeSoundTransformation implements SoundTransformation {
 
     public enum NormalizeSoundTransformationErrorCode implements ErrorCode {
@@ -25,6 +29,11 @@ public class NormalizeSoundTransformation implements SoundTransformation {
     private static final double NB_BYTE_VALUES = 1 << Byte.SIZE;
     private final float         coefficient;
 
+    /**
+     * Default constructor
+     * @param coefficient1 coefficient of the max level (0 <= coefficient <= 1)
+     * @throws SoundTransformException
+     */
     public NormalizeSoundTransformation (final float coefficient1) throws SoundTransformException {
         this.coefficient = this.checkCoefficient (coefficient1);
     }

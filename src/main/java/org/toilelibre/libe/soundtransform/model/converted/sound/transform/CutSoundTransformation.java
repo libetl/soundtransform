@@ -4,6 +4,11 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
+/**
+ * Removes a part of a sound
+ *
+ * The result of the method contains the rest of the sound, and the removed interval is not available from here. 
+ */
 public class CutSoundTransformation implements SoundTransformation {
 
     enum SoundCutSoundTransformationErrorCode implements ErrorCode {
@@ -25,6 +30,11 @@ public class CutSoundTransformation implements SoundTransformation {
     private final int start;
     private final int end;
 
+    /**
+     * default Constructor
+     * @param start1 start of the interval
+     * @param end1 end of the interval
+     */
     public CutSoundTransformation (final int start1, final int end1) {
         this.start = start1;
         this.end = end1;

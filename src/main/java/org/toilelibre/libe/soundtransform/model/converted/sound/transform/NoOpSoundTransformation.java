@@ -2,6 +2,10 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
+/**
+ * Produces an exact copy of the input sound
+ *
+ */
 public class NoOpSoundTransformation implements SoundTransformation {
 
     public NoOpSoundTransformation () {

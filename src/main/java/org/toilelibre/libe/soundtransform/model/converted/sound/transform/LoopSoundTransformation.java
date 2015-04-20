@@ -4,6 +4,10 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
+/**
+ * Repeats a sound as another sound 
+ *
+ */
 public class LoopSoundTransformation implements SoundTransformation {
 
     enum LoopSoundTransformationErrorCode implements ErrorCode {
@@ -24,6 +28,10 @@ public class LoopSoundTransformation implements SoundTransformation {
 
     private final int length;
 
+    /**
+     * Default constructor
+     * @param length1 length (in samples) of the repetition(s)
+     */
     public LoopSoundTransformation (final int length1) {
         this.length = length1;
     }

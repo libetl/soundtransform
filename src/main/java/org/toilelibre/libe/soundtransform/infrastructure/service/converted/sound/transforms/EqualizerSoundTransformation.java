@@ -7,11 +7,22 @@ import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
+/**
+ * 
+ * Change the volume of each frequencies range at each step of the sound
+ * 
+ */
 public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
     private final double [] ranges;
     private final double [] amplification;
 
+    /**
+     * Default constructor.
+     * A mathematical representation of a curve amplification/freqs is asked in the parameters
+     * @param ranges1 the frequencies, in abscissa [0..20000]
+     * @param amplification1 the amplification, in ordinate [0..1]
+     */
     public EqualizerSoundTransformation (final double [] ranges1, final double [] amplification1) {
         super ();
         this.ranges = ranges1.clone ();

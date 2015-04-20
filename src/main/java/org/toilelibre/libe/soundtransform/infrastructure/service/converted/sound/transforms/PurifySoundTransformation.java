@@ -4,6 +4,12 @@ import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransformation;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
+/**
+ * 
+ * Extracts only the frequency with the highest amplitude (not the loudest one)
+ * and builds a sound with this single frequency at each step.
+ *
+ */
 public class PurifySoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
     private static final double DEFAULT_STEP_VALUE = 100;
@@ -11,6 +17,9 @@ public class PurifySoundTransformation extends SimpleFrequencySoundTransformatio
     private static final int    COEFFICIENT        = 100;
     private static final int    EXPONENT           = 2;
 
+    /**
+     * Default constructor
+     */
     public PurifySoundTransformation () {
         super ();
     }

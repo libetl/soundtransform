@@ -2,8 +2,15 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
+/**
+ * Make a new sound such as newsoundsamples [i] = soundsamples [length - i]
+ *
+ */
 public class ReverseSoundTransformation implements SoundTransformation {
 
+    /**
+     * Default constructor
+     */
     public ReverseSoundTransformation () {
     }
 

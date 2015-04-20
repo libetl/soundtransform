@@ -2,12 +2,22 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 
+/**
+ * Removes or adds some samples in the input sound according to the passed percent parameter.
+ * This will change the pitch of the sound (the frequencies will be shifted)
+ */
 public class PitchSoundTransformation implements SoundTransformation {
 
     private static final float A_HUNDRED             = 100;
     private static final float DEFAULT_PERCENT_VALUE = 20;
     private float              percent               = PitchSoundTransformation.DEFAULT_PERCENT_VALUE;
 
+    /**
+     * Default constructor
+     * @param percent if < 100, the sound will contains more samples, therefore the sound will be pitched down, and the frequencies will be lowered
+     *                if = 100, nothing happens
+     *                if > 100, the sound will contains less samples, therefore the sound will be pitched up, and the frequencies will be higher
+     */
     public PitchSoundTransformation (final float percent) {
         this.percent = percent;
     }

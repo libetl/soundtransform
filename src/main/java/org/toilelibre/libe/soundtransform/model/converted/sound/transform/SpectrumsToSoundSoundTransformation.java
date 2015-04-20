@@ -10,12 +10,19 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransf
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
+/**
+ * Uses a list of spectrums to convert them into a sound
+ */
 public class SpectrumsToSoundSoundTransformation implements SoundTransformation {
 
     private final List<Spectrum<Serializable> []> spectrums;
     private final FourierTransformHelper<?>       fourierHelper;
     private final SoundAppender                   appender;
 
+    /**
+     * Default constructors
+     * @param spectrums1 the list of spectrums
+     */
     public SpectrumsToSoundSoundTransformation (final List<Spectrum<Serializable> []> spectrums1) {
         this.fourierHelper = $.select (FourierTransformHelper.class);
         this.appender = $.select (SoundAppender.class);

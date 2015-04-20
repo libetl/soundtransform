@@ -8,7 +8,10 @@ import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-//WARN : long execution time soundtransform
+/**
+ * Builds a new sound, shorter than the input, without shifting the frequencies
+ * @param <T>
+ */
 public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> {
 
     public enum SpeedUpSoundTransformationEventCode implements EventCode {
@@ -41,6 +44,11 @@ public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFr
     private final int        step;
     private float            writeIfGreaterEqThanFactor;
 
+    /**
+     * Default constructor
+     * @param step1 iteration step
+     * @param factor1 factor of compression (e.g. 2 means : twice as short)
+     */
     public SpeedUpSoundTransformation (final int step1, final float factor1) {
         super ();
         this.factor = factor1;

@@ -2,9 +2,12 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
-import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 
+/**
+ * Insert a sound into another
+ *
+ */
 public class InsertPartSoundTransformation implements SoundTransformation {
 
     public enum InsertPartSoundTransformationErrorCode implements ErrorCode {
@@ -27,7 +30,12 @@ public class InsertPartSoundTransformation implements SoundTransformation {
     private final Sound [] subsound;
     private final int      start;
 
-    public InsertPartSoundTransformation (final Sound [] subsound1, final int start1) throws SoundTransformException {
+    /**
+     * Default constructor
+     * @param subsound1 the sound to insert (only one sound is allowed, each element is a sound channel)
+     * @param start1 start index where to insert the sound
+     */
+    public InsertPartSoundTransformation (final Sound [] subsound1, final int start1) {
         this.subsound = subsound1.clone ();
         this.start = start1;
     }

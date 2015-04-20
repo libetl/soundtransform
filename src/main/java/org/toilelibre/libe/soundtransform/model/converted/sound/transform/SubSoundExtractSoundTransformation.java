@@ -4,6 +4,10 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
+/**
+ * Cuts a part of a sound and returns it. The rest of the sound will not be available.
+ *
+ */
 public class SubSoundExtractSoundTransformation implements SoundTransformation {
     enum SubSoundExtractSoundTransformationErrorCode implements ErrorCode {
         INDEXS_OUT_OF_BOUND ("The specified indexes are out of bound (maximum : %1d -> %2d , actual : %3d -> %4d)");
@@ -24,6 +28,11 @@ public class SubSoundExtractSoundTransformation implements SoundTransformation {
     private final int start;
     private final int end;
 
+    /**
+     * Default constructor
+     * @param start1 start index
+     * @param end1 end index
+     */
     public SubSoundExtractSoundTransformation (final int start1, final int end1) {
         this.start = start1;
         this.end = end1;

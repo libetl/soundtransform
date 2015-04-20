@@ -6,7 +6,10 @@ import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
-
+/**
+ * Transforms a sound into a list of spectrums. Useful to display a visualizer.
+ * 
+ */
 public class SoundToSpectrumsSoundTransformation extends SimpleFrequencySoundTransformation<Serializable> {
 
     private static final int                      TWO = 2;
@@ -15,6 +18,9 @@ public class SoundToSpectrumsSoundTransformation extends SimpleFrequencySoundTra
     private final List<Spectrum<Serializable> []> spectrums;
     private int                                   index;
 
+    /**
+     * Default constructor
+     */
     public SoundToSpectrumsSoundTransformation () {
         super ();
         this.spectrums = new ArrayList<Spectrum<Serializable> []> ();

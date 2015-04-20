@@ -5,6 +5,12 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 
+/**
+ * Fade in / Fade out operation of a sound.
+ * Ability to change the first part of a sound as an intro or the last part as an outro
+ * (the sound volume gradually increases in the intro and gradually descreases in the outro) 
+ *
+ */
 public class FadeSoundTransformation implements SoundTransformation {
 
     public enum FadeSoundTransformationErrorCode implements ErrorCode {
@@ -26,6 +32,12 @@ public class FadeSoundTransformation implements SoundTransformation {
     private final int     length;
     private final boolean fadeIn;
 
+    /**
+     * Default constructor
+     * @param length1 length of the fade
+     * @param fadeIn1 true for fadeIn, false for fadeOut
+     * @throws SoundTransformException
+     */
     public FadeSoundTransformation (final int length1, final boolean fadeIn1) throws SoundTransformException {
         this.length = this.checkLength (length1);
         this.fadeIn = fadeIn1;

@@ -10,12 +10,14 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 /**
  * Simple proxy to avoid useless parameters in the overriden method
  *
- * @author lionel
  *
  */
 public class SimpleFrequencySoundTransformation<T extends Serializable> extends AbstractFrequencySoundTransformation<T> {
 
     @SuppressWarnings ("unchecked")
+    /**
+     * Default constructor
+     */
     public SimpleFrequencySoundTransformation () {
         super ($.select (FourierTransformHelper.class));
     }
