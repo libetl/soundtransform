@@ -14,9 +14,8 @@ Android & Pure Java library to shape a voice with an instrument.
 		- [3. operations](#3-operations)
 		- [4. method flow stops](#4-method-flow-stops)
 - [SoundTransformation classes](#soundtransformation-classes)
-	- [Built-in SoundTransformation](#built-in-soundtransformation)
-		- [Time domain transforms](#time-domain-transforms)
-		- [Frequency domain transforms](#frequency-domain-transforms)
+	- [Time domain transforms](#time-domain-transforms)
+	- [Frequency domain transforms](#frequency-domain-transforms)
 
 ## How to use the library
 * Insert the aar into your project dependencies :
@@ -1182,22 +1181,21 @@ Calling directly the transform method can do the trick, but don't forget to call
 Some of these classes only iterate over the samples once, changing some samples with a formula (for example EightBightSoundTransformation).
 Some others convert first the sound in the frequency domain before processing it (it uses a spectrum as input), like EqualizerSoundTransformation.
 
-### Built-in SoundTransformation
-#### Time domain transforms
-##### CutSoundTransformation
-##### EightBitsSoundTransformation
-##### FadeSoundTransformation
-##### InsertPartSoundTransformation
-##### LinearRegressionSoundTransformation
-##### LoopSoundTransformation
-##### MixSoundTransformation
-##### NormalizeSoundTransformation
-##### PitchSoundTransformation
-##### ReplacePartSoundTransformation
-##### SubSoundExtractSoundTransformation
-#### Frequency domain transforms
-##### CepstrumSoundTransformation
-####### `public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T>`
+### Time domain transforms
+#### CutSoundTransformation
+#### EightBitsSoundTransformation
+#### FadeSoundTransformation
+#### InsertPartSoundTransformation
+#### LinearRegressionSoundTransformation
+#### LoopSoundTransformation
+#### MixSoundTransformation
+#### NormalizeSoundTransformation
+#### PitchSoundTransformation
+#### ReplacePartSoundTransformation
+#### SubSoundExtractSoundTransformation
+### Frequency domain transforms
+#### CepstrumSoundTransformation
+###### `public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T>`
 
 Transforms a sound into a list of cepstrums (log modulus of the spectrums). Useful to get the f0 values of a sound (loudest freqs array). 
 
@@ -1205,23 +1203,23 @@ The obtained Spectrum are not really spectrums. They consist of a graph a quefre
 
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
- `public CepstrumSoundTransformation ()`
+######  `public CepstrumSoundTransformation ()`
 
 Constructor with default values. The cepstrums will not be kept when using the getCepstrums method
 
- `public CepstrumSoundTransformation (final boolean note1)`
+######  `public CepstrumSoundTransformation (final boolean note1)`
 
 Constructor with default values. The cepstrums will not be kept when using the getCepstrums method and the cepstrum will be made once, using the whole sound
 
  * **Parameters:** `note1` — if true, the loudest freqs array will contain a single element
 
- `public CepstrumSoundTransformation (final double step1)`
+######  `public CepstrumSoundTransformation (final double step1)`
 
 The cepstrums will not be kept when using the getCepstrums method (increasing the value will speed the transform but will be less precise)
 
  * **Parameters:** `step1` — the iteration step
 
- `public CepstrumSoundTransformation (final double step1, final boolean note1)`
+######  `public CepstrumSoundTransformation (final double step1, final boolean note1)`
 
 The cepstrums will not be kept when using the getCepstrums method (increasing the value will speed the transform but will be less precise) and the cepstrum will be made once, using the whole sound
 
@@ -1229,7 +1227,7 @@ The cepstrums will not be kept when using the getCepstrums method (increasing th
    * `step1` — the iteration step
    * `note1` — if true, the loudest freqs array will contain a single element
 
- `public CepstrumSoundTransformation (final double step1, final boolean keepCepstrums1, final boolean note1)`
+######  `public CepstrumSoundTransformation (final double step1, final boolean keepCepstrums1, final boolean note1)`
 
 Constructor will every parameter specified This can cause a big memory leak if not used with care. Be vigilant. (increasing the value will speed the transform but will be less precise) and the cepstrum will be made once, using the whole sound
 
