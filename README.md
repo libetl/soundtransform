@@ -1205,23 +1205,23 @@ The obtained Spectrum are not really spectrums. They consist of a graph a quefre
 
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
-####### `public CepstrumSoundTransformation ()`
+ `public CepstrumSoundTransformation ()`
 
 Constructor with default values. The cepstrums will not be kept when using the getCepstrums method
 
-####### `public CepstrumSoundTransformation (final boolean note1)`
+ `public CepstrumSoundTransformation (final boolean note1)`
 
 Constructor with default values. The cepstrums will not be kept when using the getCepstrums method and the cepstrum will be made once, using the whole sound
 
  * **Parameters:** `note1` — if true, the loudest freqs array will contain a single element
 
-####### `public CepstrumSoundTransformation (final double step1)`
+ `public CepstrumSoundTransformation (final double step1)`
 
 The cepstrums will not be kept when using the getCepstrums method (increasing the value will speed the transform but will be less precise)
 
  * **Parameters:** `step1` — the iteration step
 
-####### `public CepstrumSoundTransformation (final double step1, final boolean note1)`
+ `public CepstrumSoundTransformation (final double step1, final boolean note1)`
 
 The cepstrums will not be kept when using the getCepstrums method (increasing the value will speed the transform but will be less precise) and the cepstrum will be made once, using the whole sound
 
@@ -1229,7 +1229,7 @@ The cepstrums will not be kept when using the getCepstrums method (increasing th
    * `step1` — the iteration step
    * `note1` — if true, the loudest freqs array will contain a single element
 
-####### `public CepstrumSoundTransformation (final double step1, final boolean keepCepstrums1, final boolean note1)`
+ `public CepstrumSoundTransformation (final double step1, final boolean keepCepstrums1, final boolean note1)`
 
 Constructor will every parameter specified This can cause a big memory leak if not used with care. Be vigilant. (increasing the value will speed the transform but will be less precise) and the cepstrum will be made once, using the whole sound
 
@@ -1237,6 +1237,7 @@ Constructor will every parameter specified This can cause a big memory leak if n
    * `keepCepstrums1` — if true, the cepstrums will all be saved after each call to the method transform
    * `step1` — the iteration step
    * `note1` — if true, the loudest freqs array will contain a single element
+
 ##### EqualizerSoundTransformation
 ##### GaussianEqualizerSoundTransformation
 ##### PeakFindWithHPSSoundTransformation
