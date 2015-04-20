@@ -1196,7 +1196,7 @@ default Constructor
  * **Parameters:**
    * `start1` — start of the interval
    * `end1` — end of the interval
-   * 
+
 #### EightBitsSoundTransformation
 #### FadeSoundTransformation
 #### InsertPartSoundTransformation
