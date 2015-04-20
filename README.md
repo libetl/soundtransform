@@ -15,6 +15,8 @@ Android & Pure Java library to shape a voice with an instrument.
 		- [4. method flow stops](#4-method-flow-stops)
 - [SoundTransformation classes](#soundtransformation-classes)
 	- [Built-in SoundTransformation](#built-in-soundtransformation)
+		- [Time domain transforms](#time-domain-transforms)
+		- [Frequency domain transforms](#frequency-domain-transforms)
 
 ## How to use the library
 * Insert the aar into your project dependencies :
@@ -1181,22 +1183,24 @@ Some of these classes only iterate over the samples once, changing some samples 
 Some others convert first the sound in the frequency domain before processing it (it uses a spectrum as input), like EqualizerSoundTransformation.
 
 ### Built-in SoundTransformation
-#### CepstrumSoundTransformation
-#### CutSoundTransformation
-#### EightBitsSoundTransformation
-#### EqualizerSoundTransformation
-#### FadeSoundTransformation
-#### GaussianEqualizerSoundTransformation
-#### InsertPartSoundTransformation
-#### LinearRegressionSoundTransformation
-#### LoopSoundTransformation
-#### MixSoundTransformation
-#### NormalizeSoundTransformation
-#### PeakFindWithHPSSoundTransformation
-#### PitchSoundTransformation
-#### ReplacePartSoundTransformation
-#### ShapeSoundTransformation
-#### SimpleFrequencySoundTransformation
-#### SlowdownSoundTransformation
-#### SpeedUpSoundTransformation
-#### SubSoundExtractSoundTransformation
+#### Time domain transforms
+##### CutSoundTransformation
+##### EightBitsSoundTransformation
+##### FadeSoundTransformation
+##### InsertPartSoundTransformation
+##### LinearRegressionSoundTransformation
+##### LoopSoundTransformation
+##### MixSoundTransformation
+##### NormalizeSoundTransformation
+##### PitchSoundTransformation
+##### ReplacePartSoundTransformation
+##### SubSoundExtractSoundTransformation
+#### Frequency domain transforms
+##### CepstrumSoundTransformation
+##### EqualizerSoundTransformation
+##### GaussianEqualizerSoundTransformation
+##### PeakFindWithHPSSoundTransformation
+##### ShapeSoundTransformation
+##### SimpleFrequencySoundTransformation
+##### SlowdownSoundTransformation
+##### SpeedUpSoundTransformation
