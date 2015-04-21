@@ -1373,23 +1373,31 @@ The obtained Spectrum are not really spectrums. They consist of a graph a quefre
 
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
-######  `public CepstrumSoundTransformation ()`
+```java
+public CepstrumSoundTransformation ()
+```
 
 Constructor with default values. The cepstrums will not be kept when using the getCepstrums method
 
-######  `public CepstrumSoundTransformation (final boolean note)`
+```java
+public CepstrumSoundTransformation (final boolean note)
+```
 
 Constructor with default values. The cepstrums will not be kept when using the getCepstrums method and the cepstrum will be made once, using the whole sound
 
  * **Parameters:** `note` — if true, the loudest freqs array will contain a single element
 
-######  `public CepstrumSoundTransformation (final double step)`
+```java
+public CepstrumSoundTransformation (final double step)
+```
 
 The cepstrums will not be kept when using the getCepstrums method (increasing the value will speed the transform but will be less precise)
 
  * **Parameters:** `step` — the iteration step
 
-######  `public CepstrumSoundTransformation (final double step, final boolean note)`
+```java
+public CepstrumSoundTransformation (final double step, final boolean note)
+```
 
 The cepstrums will not be kept when using the getCepstrums method (increasing the value will speed the transform but will be less precise) and the cepstrum will be made once, using the whole sound
 
@@ -1397,7 +1405,9 @@ The cepstrums will not be kept when using the getCepstrums method (increasing th
    * `step` — the iteration step
    * `note` — if true, the loudest freqs array will contain a single element
 
-######  `public CepstrumSoundTransformation (final double step, final boolean keepCepstrums, final boolean note)`
+```java
+public CepstrumSoundTransformation (final double step, final boolean keepCepstrums, final boolean note)
+```
 
 Constructor will every parameter specified This can cause a big memory leak if not used with care. Be vigilant. (increasing the value will speed the transform but will be less precise) and the cepstrum will be made once, using the whole sound
 
