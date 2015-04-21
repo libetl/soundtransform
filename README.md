@@ -1520,8 +1520,11 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
 
 Builds a new sound, longer than the input, without shifting the frequencies
 
+<<<<<<< HEAD
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
+=======
+>>>>>>> c5596911aa721e4fce3ed67bd0ceaf68b3f88f5a
 ```java
 public SlowdownSoundTransformation (final int step1, final float factor, final int windowLength) throws SoundTransformException
 ```
@@ -1541,7 +1544,7 @@ public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFr
 
 Builds a new sound, shorter than the input, without shifting the frequencies
 
- * **Parameters:** `<T>` — 
+ * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
 ```java
 public SpeedUpSoundTransformation (final int step1, final float factor1)
