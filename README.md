@@ -1183,13 +1183,17 @@ Some others convert first the sound in the frequency domain before processing it
 
 ### Time domain transforms
 #### CutSoundTransformation
-###### `public class CutSoundTransformation implements SoundTransformation`
+```java
+public class CutSoundTransformation implements SoundTransformation
+```
 
 Removes a part of a sound 
 
 The result of the method contains the rest of the sound, and the removed interval is not available from here.
 
-###### `public CutSoundTransformation (final int start1, final int end1)`
+```java
+public CutSoundTransformation (final int start1, final int end1)
+```
 
 default Constructor
 
@@ -1198,22 +1202,30 @@ default Constructor
    * `end1` — end of the interval
 
 #### EightBitsSoundTransformation
-###### `public class EightBitsSoundTransformation implements SoundTransformation`
+```java
+public class EightBitsSoundTransformation implements SoundTransformation
+```
 
 Leaves only one sample out of [step] ones, the others are set to 0. The effect is to produce a sound that sounds like a video game console. (a good step value for a CD format is 25)
 
-###### `public EightBitsSoundTransformation (final int step)`
+```java
+public EightBitsSoundTransformation (final int step)
+```
 
 Default constructor
 
  * **Parameters:** `step` — iteration step value
 
 #### FadeSoundTransformation
-###### `public class FadeSoundTransformation implements SoundTransformation`
+```java
+public class FadeSoundTransformation implements SoundTransformation
+```
 
 Fade in / Fade out operation of a sound. Ability to change the first part of a sound as an intro or the last part as an outro (the sound volume gradually increases in the intro and gradually descreases in the outro)
 
-###### `public FadeSoundTransformation (final int length1, final boolean fadeIn1) throws SoundTransformException`
+```java
+public FadeSoundTransformation (final int length1, final boolean fadeIn1) throws SoundTransformException
+```
 
 Default constructor
 
@@ -1223,11 +1235,15 @@ Default constructor
  * **Exceptions:** `SoundTransformException` — The fade length is longer than the sound itself
 
 #### InsertPartSoundTransformation
-###### `public class InsertPartSoundTransformation implements SoundTransformation`
+```java
+public class InsertPartSoundTransformation implements SoundTransformation
+```
 
 Insert a sound into another
 
-###### `public InsertPartSoundTransformation (final Sound [] subsound1, final int start1)`
+```java
+public InsertPartSoundTransformation (final Sound [] subsound1, final int start1)
+```
 
 Default constructor
 
@@ -1236,44 +1252,60 @@ Default constructor
    * `start1` — start index where to insert the sound
 
 #### LinearRegressionSoundTransformation
-###### `public class LinearRegressionSoundTransformation implements SoundTransformation`
+```java
+public class LinearRegressionSoundTransformation implements SoundTransformation
+```
 
 Smoothes a sound graph. The effect is to remove the treble frequencies without any time-to-frequency domain transform
 
-###### `public LinearRegressionSoundTransformation (final int step1)`
+```java
+public LinearRegressionSoundTransformation (final int step1)
+```
 
 Default constructor
 
  * **Parameters:** `step1` — iteration step value
 
 #### LoopSoundTransformation
-###### `public class LoopSoundTransformation implements SoundTransformation`
+```java
+public class LoopSoundTransformation implements SoundTransformation
+```
 
 Repeats a sound as another sound
 
-###### `public LoopSoundTransformation (final int length1)`
+```java
+public LoopSoundTransformation (final int length1)
+```
 
 Default constructor
 
  * **Parameters:** `length1` — length (in samples) of the repetition(s)
 
 #### MixSoundTransformation
-###### `public class MixSoundTransformation implements SoundTransformation`
+```java
+public class MixSoundTransformation implements SoundTransformation
+```
 
 Mixes several sounds into a new sound The sound channels will be re-sampled (up sampled or down sampled) to match the first sound format info. The sounds samples will be summed. Therefore, if the first sound is the opposite of the second one (sample1 [i] = -sample2 [i]), the sum will be 0. (there will be nothing to hear)
 
-###### `public MixSoundTransformation (final List<Sound []> otherSounds1)`
+```java
+public MixSoundTransformation (final List<Sound []> otherSounds1)
+```
 
 Default constructor the transform expects to receive all the channels of each sound, even if it will not use them all for the mix. (the channelNum of the first sound will be used to match the other sounds channels before the mix operation takes place)
 
  * **Parameters:** `otherSounds1` — sounds to mix with the first one (passed in the transform)
 
 #### NormalizeSoundTransformation
-###### `public class NormalizeSoundTransformation implements SoundTransformation`
+```java
+public class NormalizeSoundTransformation implements SoundTransformation
+```
 
 Raises the sound volume to match a certain percentage of the maximum possible level
 
-###### `public NormalizeSoundTransformation (final float coefficient1) throws SoundTransformException`
+```java
+public NormalizeSoundTransformation (final float coefficient1) throws SoundTransformException
+```
 
 Default constructor
 
@@ -1281,22 +1313,30 @@ Default constructor
  * **Exceptions:** `SoundTransformException` — The coefficient of the normalizer is above one or below zero
 
 #### PitchSoundTransformation
-###### `public class PitchSoundTransformation implements SoundTransformation`
+```java
+public class PitchSoundTransformation implements SoundTransformation
+```
 
 Removes or adds some samples in the input sound according to the passed percent parameter. This will change the pitch of the sound (the frequencies will be shifted)
 
-###### `public PitchSoundTransformation (final float percent)`
+```java
+public PitchSoundTransformation (final float percent)
+```
 
 Default constructor if = 100, nothing happens if > 100, the sound will contains less samples, therefore the sound will be pitched up, and the frequencies will be higher
 
  * **Parameters:** `percent` — if < 100, the sound will contains more samples, therefore the sound will be pitched down, and the frequencies will be lowered
 
 #### ReplacePartSoundTransformation
-###### `public class ReplacePartSoundTransformation implements SoundTransformation`
+```java
+public class ReplacePartSoundTransformation implements SoundTransformation
+```
 
 Replaces a part of a sound with another sound The target sound must have the same number of channels as the replacement, and the insert index must not be out of bounds
 
-###### `public ReplacePartSoundTransformation (final Sound [] replacement1, final int start1)`
+```java
+public ReplacePartSoundTransformation (final Sound [] replacement1, final int start1)
+```
 
 Default constructor
 
@@ -1305,11 +1345,15 @@ Default constructor
    * `start1` — start index
 
 #### SubSoundExtractSoundTransformation
-###### `public class SubSoundExtractSoundTransformation implements SoundTransformation`
+```java
+public class SubSoundExtractSoundTransformation implements SoundTransformation
+```
 
 Cuts a part of a sound and returns it. The rest of the sound will not be available.
 
-###### `public SubSoundExtractSoundTransformation (final int start1, final int end1)`
+```java
+public SubSoundExtractSoundTransformation (final int start1, final int end1)
+```
 
 Default constructor
 
@@ -1319,7 +1363,9 @@ Default constructor
 
 ### Frequency domain transforms
 #### CepstrumSoundTransformation
-###### `public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T>`
+```java
+public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T>
+```
 
 Transforms a sound into a list of cepstrums (log modulus of the spectrums). Useful to get the f0 values of a sound (loudest freqs array). 
 
@@ -1361,11 +1407,15 @@ Constructor will every parameter specified This can cause a big memory leak if n
    * `note1` — if true, the loudest freqs array will contain a single element
 
 ##### EqualizerSoundTransformation
-###### `public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []>`
+```java
+public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []>
+```
 
 Change the volume of each frequencies range at each step of the sound
 
-###### `public EqualizerSoundTransformation (final double [] ranges1, final double [] amplification1)`
+```java
+public EqualizerSoundTransformation (final double [] ranges1, final double [] amplification1)
+```
 
 Default constructor. A mathematical representation of a curve amplification/freqs is asked in the parameters
 
@@ -1374,34 +1424,46 @@ Default constructor. A mathematical representation of a curve amplification/freq
    * `amplification1` — the amplification, in ordinate [0..1]
 
 ##### GaussianEqualizerSoundTransformation
-###### `public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []>`
+```java
+public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []>
+```
 
 Equalizer which cuts the treble and the bass frequencies of a sound
 
-###### `public GaussianEqualizerSoundTransformation ()`
+```java
+public GaussianEqualizerSoundTransformation ()
+```
 
 Default constructor
 
 ##### PeakFindWithHPSSoundTransformation
-###### `public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T>`
+```java
+public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T>
+```
 
 Finds the loudest frequencies array using the Harmonic Product Spectrum algorithm
 
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
-###### `public PeakFindWithHPSSoundTransformation (final boolean note1)`
+```java
+public PeakFindWithHPSSoundTransformation (final boolean note1)
+```
 
 Default constructor therefore the array will be of size 1.
 
  * **Parameters:** `note1` — if true, the whole sound will be transformed at once to know the loudest freq.
 
-###### `public PeakFindWithHPSSoundTransformation (final double step1)`
+```java
+public PeakFindWithHPSSoundTransformation (final double step1)
+```
 
 Constructor not using the whole sound as a musical note
 
  * **Parameters:** `step1` — the iteration step value
 
-###### `public PeakFindWithHPSSoundTransformation (final double step1, final int windowLength1)`
+```java
+public PeakFindWithHPSSoundTransformation (final double step1, final int windowLength1)
+```
 
 Constructor not using the whole sound as a musical note
 
@@ -1410,11 +1472,15 @@ Constructor not using the whole sound as a musical note
    * `windowLength1` — length of the spectrum used during each iteration (the highest the slowest)
 
 ##### ShapeSoundTransformation
-###### `public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransformation> implements SoundTransformation`
+```java
+public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransformation> implements SoundTransformation
+```
 
 Create a sound with notes matching the input sound loudest frequencies. It uses a soundtransform to get the loudest frequencies, then it shapes a sound consisting of the notes heard in the freqs array. If the constructor using a float array is used, only the shaping step will be processed
 
-###### `public ShapeSoundTransformation (final String packName, final String instrument)`
+```java
+public ShapeSoundTransformation (final String packName, final String instrument)
+```
 
 Constructor for the two steps
 
@@ -1422,7 +1488,9 @@ Constructor for the two steps
    * `packName` — Pack name, should be already imported
    * `instrument` — instrument of the pack which will be used to shape the sound
 
-###### `public ShapeSoundTransformation (final String packName, final String instrument, final float [] freqs, final FormatInfo formatInfo1)`
+```java
+public ShapeSoundTransformation (final String packName, final String instrument, final float [] freqs, final FormatInfo formatInfo1)
+```
 
 Constructor only for the second step
 
@@ -1433,22 +1501,28 @@ Constructor only for the second step
    * `formatInfo1` — the format info
 
 ##### SimpleFrequencySoundTransformation
-###### `public class SimpleFrequencySoundTransformation<T extends Serializable> extends AbstractFrequencySoundTransformation<T>`
+```java
+public class SimpleFrequencySoundTransformation<T extends Serializable> extends AbstractFrequencySoundTransformation<T>
+```
 
 Simple proxy to avoid useless parameters in the overriden method
 
-###### `public SimpleFrequencySoundTransformation ()`
+```java
+public SimpleFrequencySoundTransformation ()
+```
 
 Default constructor
 
 ##### SlowdownSoundTransformation
-###### `public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformation<Complex []>`
+```java
+public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformation<Complex []>
+```
 
 Builds a new sound, longer than the input, without shifting the frequencies
 
- * **Parameters:** `<T>` — The kind of object held inside a spectrum.
-
-###### `public SlowdownSoundTransformation (final int step1, final float factor, final int windowLength) throws SoundTransformException`
+```java
+public SlowdownSoundTransformation (final int step1, final float factor, final int windowLength) throws SoundTransformException
+```
 
 Default constructor WARN : can fail for various reasons
 
@@ -1459,13 +1533,17 @@ Default constructor WARN : can fail for various reasons
  * **Exceptions:** `SoundTransformException` — if the constraint about the windowLength is not met
 
 ##### SpeedUpSoundTransformation
-###### `public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T>`
+```java
+public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T>
+```
 
 Builds a new sound, shorter than the input, without shifting the frequencies
 
- * **Parameters:** `<T>` — 
+ * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
-###### `public SpeedUpSoundTransformation (final int step1, final float factor1)`
+```java
+public SpeedUpSoundTransformation (final int step1, final float factor1)
+```
 
 Default constructor
 
