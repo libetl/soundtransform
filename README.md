@@ -1198,7 +1198,30 @@ default Constructor
    * `end1` — end of the interval
 
 #### EightBitsSoundTransformation
+###### `public class EightBitsSoundTransformation implements SoundTransformation`
+
+Leaves only one sample out of [step] ones, the others are set to 0. The effect is to produce a sound that sounds like a video game console. (a good step value for a CD format is 25)
+
+###### `public EightBitsSoundTransformation (final int step)`
+
+Default constructor
+
+ * **Parameters:** `step` — iteration step value
+
 #### FadeSoundTransformation
+###### `public class FadeSoundTransformation implements SoundTransformation`
+
+Fade in / Fade out operation of a sound. Ability to change the first part of a sound as an intro or the last part as an outro (the sound volume gradually increases in the intro and gradually descreases in the outro)
+
+###### `public FadeSoundTransformation (final int length1, final boolean fadeIn1) throws SoundTransformException`
+
+Default constructor
+
+ * **Parameters:**
+   * `length1` — length of the fade
+   * `fadeIn1` — true for fadeIn, false for fadeOut
+ * **Exceptions:** `SoundTransformException` — The fade length is longer than the sound itself
+
 #### InsertPartSoundTransformation
 #### LinearRegressionSoundTransformation
 #### LoopSoundTransformation
