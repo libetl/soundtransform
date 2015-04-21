@@ -940,7 +940,7 @@ the client, with a loudest frequencies float array
 #####   FluentClientSoundImported.playIt or FluentClientWithFile.playIt or FluentClientWithInputStream.playIt or FluentClientWithSpectrums.playIt
 
 ```java
-<T> playIt () throws SoundTransformException
+<T> T playIt () throws SoundTransformException
 ```
 
 
