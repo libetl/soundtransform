@@ -14,6 +14,10 @@ public class LinearRegressionSoundTransformation implements SoundTransformation 
 
     private final int step;
 
+    /**
+     * Default constructor
+     * @param step1 iteration step value
+     */
     public LinearRegressionSoundTransformation (final int step1) {
         this.step = step1;
     }
