@@ -36,7 +36,7 @@ public class FadeSoundTransformation implements SoundTransformation {
      * Default constructor
      * @param length1 length of the fade
      * @param fadeIn1 true for fadeIn, false for fadeOut
-     * @throws SoundTransformException
+     * @throws SoundTransformException The fade length is longer than the sound itself
      */
     public FadeSoundTransformation (final int length1, final boolean fadeIn1) throws SoundTransformException {
         this.length = this.checkLength (length1);
