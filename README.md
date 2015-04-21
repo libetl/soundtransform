@@ -49,30 +49,36 @@ To use it, it is only needed to chain the methods invocation. it will always sta
 
 ### FluentClient samples
 ```java
+import static org.toilelibre.libe.soundtransform.actions.fluent.FluentClient.start;
+import static org.toilelibre.libe.soundtransform.actions.fluent.FluentClient.setDefaultObservers;
+import static org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation.prepare;
 
-//Set the default Slf4J logger and the log threshold as "WARNING" (the only output will be the warning and error logs)
-FluentClient.setDefaultObserversValue (new Slf4jObserver (LogLevel.WARN));
+//...
 
-//Apply a 8-bit transform on a wav and then export it to a wav
-FluentClient.start ().withClasspathResource ("foo.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("bar.wav");
+public void method (){
+  //Set the default Slf4J logger and the log threshold as "WARNING" (the only output will be the warning and error logs)
+  setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
 
-//Shape a wav with an instrument and then export it to a wav
-FluentClient.start ().withAPack ("default", packInputStream).withClasspathResource ("foo.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", fi).exportToClasspathResource ("bar.wav");
+  //Apply a 8-bit transform on a wav and then export it to a wav
+  start ().withClasspathResource ("foo.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("bar.wav");
 
-//Play three times the same data, as a File, then as a sound, then as an inputStream
-FluentClient.start ().withClasspathResource ("foo.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
+  //Shape a wav with an instrument and then export it to a wav
+  start ().withAPack ("default", packInputStream).withClasspathResource ("foo.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", fi).exportToClasspathResource ("bar.wav");
+
+  //Play three times the same data, as a File, then as a sound, then as an inputStream
+  start ().withClasspathResource ("foo.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
  
-//Transform a sound into a an array of spectrums
-FluentClient.start ().withSounds (sounds).splitIntoSpectrums ().stopWithSpectrums ();
+  //Transform a sound into a an array of spectrums
+  start ().withSounds (sounds).splitIntoSpectrums ().stopWithSpectrums ();
 
-//Transform a lowfi wav file into a cd format wavfile
-final FormatInfo fi = new FormatInfo (2, 44100.0);
-FluentClient.start ().withClasspathResource ("lowfi.wav").convertIntoSound ().changeFormat (fi).exportToClasspathResource ("hifi.wav");
+  //Transform a lowfi wav file into a cd format wavfile
+  FormatInfo fi = new FormatInfo (2, 44100.0);
+  start ().withClasspathResource ("lowfi.wav").convertIntoSound ().changeFormat (fi).exportToClasspathResource ("hifi.wav");
 
-//Mix of two sounds using two threads for the file-to-sound conversion
-FluentClient.start ().inParallel (
+  //Mix of two sounds using two threads for the file-to-sound conversion
+  start ().inParallel (
     // operations
-    FluentClientOperation.prepare ().convertIntoSound ().build (),
+    prepare ().convertIntoSound ().build (),
     // timeout in seconds
     5,
     // classpath resources
@@ -1193,7 +1199,7 @@ The result of the method contains the rest of the sound, and the removed interva
 
  * **Constructor:**
 ```java
-public CutSoundTransformation (final int start, final int end)
+public CutSoundTransformation (int start, int end)
 ```
 
 Default Constructor
@@ -1211,7 +1217,7 @@ Leaves only one sample out of [step] ones, the others are set to 0. The effect i
 
  * **Constructor:**
 ```java
-public EightBitsSoundTransformation (final int step)
+public EightBitsSoundTransformation (int step)
 ```
 
 Default constructor
@@ -1227,7 +1233,7 @@ Fade in / Fade out operation of a sound. Ability to change the first part of a s
 
  * **Constructor:**
 ```java
-public FadeSoundTransformation (final int length, final boolean fadeIn) throws SoundTransformException
+public FadeSoundTransformation (int length, boolean fadeIn) throws SoundTransformException
 ```
 
 Default constructor
@@ -1246,7 +1252,7 @@ Insert a sound into another
 
  * **Constructor:**
 ```java
-public InsertPartSoundTransformation (final Sound [] subsound, final int start)
+public InsertPartSoundTransformation (Sound [] subsound, int start)
 ```
 
 Default constructor
@@ -1264,7 +1270,7 @@ Smoothes a sound graph. The effect is to remove the treble frequencies without a
 
  * **Constructor:**
 ```java
-public LinearRegressionSoundTransformation (final int step)
+public LinearRegressionSoundTransformation (int step)
 ```
 
 Default constructor
@@ -1280,7 +1286,7 @@ Repeats a sound as another sound
 
  * **Constructor:**
 ```java
-public LoopSoundTransformation (final int length)
+public LoopSoundTransformation (int length)
 ```
 
 Default constructor
@@ -1296,7 +1302,7 @@ Mixes several sounds into a new sound The sound channels will be re-sampled (up 
 
  * **Constructor:**
 ```java
-public MixSoundTransformation (final List<Sound []> otherSounds)
+public MixSoundTransformation (List<Sound []> otherSounds)
 ```
 
 Default constructor the transform expects to receive all the channels of each sound, even if it will not use them all for the mix. (the channelNum of the first sound will be used to match the other sounds channels before the mix operation takes place)
@@ -1312,7 +1318,7 @@ Raises the sound volume to match a certain percentage of the maximum possible le
 
  * **Constructor:**
 ```java
-public NormalizeSoundTransformation (final float coefficient) throws SoundTransformException
+public NormalizeSoundTransformation (float coefficient) throws SoundTransformException
 ```
 
 Default constructor
@@ -1329,7 +1335,7 @@ Removes or adds some samples in the input sound according to the passed percent 
 
  * **Constructor:**
 ```java
-public PitchSoundTransformation (final float percent)
+public PitchSoundTransformation (float percent)
 ```
 
 Default constructor 
@@ -1346,7 +1352,7 @@ Replaces a part of a sound with another sound The target sound must have the sam
 
  * **Constructor:**
 ```java
-public ReplacePartSoundTransformation (final Sound [] replacement, final int start)
+public ReplacePartSoundTransformation (Sound [] replacement, int start)
 ```
 
 Default constructor
@@ -1364,7 +1370,7 @@ Cuts a part of a sound and returns it. The rest of the sound will not be availab
 
  * **Constructor:**
 ```java
-public SubSoundExtractSoundTransformation (final int start, final int end)
+public SubSoundExtractSoundTransformation (int start, int end)
 ```
 
 Default constructor
@@ -1395,7 +1401,7 @@ public CepstrumSoundTransformation ()
 Constructor with default values. The cepstrums will not be kept when using the getCepstrums method
 
 ```java
-public CepstrumSoundTransformation (final boolean note)
+public CepstrumSoundTransformation (boolean note)
 ```
 
 Constructor with default values. The cepstrums will not be kept when using the getCepstrums method 
@@ -1403,7 +1409,7 @@ Constructor with default values. The cepstrums will not be kept when using the g
  * **Parameters:** `note` — if true, the loudest freqs array will contain a single element and the cepstrum will be made once, using the whole sound
 
 ```java
-public CepstrumSoundTransformation (final double step)
+public CepstrumSoundTransformation (double step)
 ```
 
 The cepstrums will not be kept when using the getCepstrums method
@@ -1411,7 +1417,7 @@ The cepstrums will not be kept when using the getCepstrums method
  * **Parameters:** `step` — the iteration step (increasing the value will speed the transform but will be less precise)
 
 ```java
-public CepstrumSoundTransformation (final double step, final boolean note)
+public CepstrumSoundTransformation (double step, boolean note)
 ```
 
 The cepstrums will not be kept when using the getCepstrums method
@@ -1421,7 +1427,7 @@ The cepstrums will not be kept when using the getCepstrums method
    * `note` — if true, the loudest freqs array will contain a single element and the cepstrum will be made once, using the whole sound
 
 ```java
-public CepstrumSoundTransformation (final double step, final boolean keepCepstrums, final boolean note)
+public CepstrumSoundTransformation (double step, boolean keepCepstrums, boolean note)
 ```
 
 Constructor with every parameter specified 
@@ -1440,7 +1446,7 @@ Change the volume of each frequencies range at each step of the sound
 
  * **Constructor:**
 ```java
-public EqualizerSoundTransformation (final double [] ranges, final double [] amplification)
+public EqualizerSoundTransformation (double [] ranges, double [] amplification)
 ```
 
 Default constructor. A mathematical representation of a curve amplification/freqs is asked in the parameters
@@ -1474,7 +1480,7 @@ Finds the loudest frequencies array using the Harmonic Product Spectrum algorith
 
  * **Constructors:**
 ```java
-public PeakFindWithHPSSoundTransformation (final boolean note)
+public PeakFindWithHPSSoundTransformation (boolean note)
 ```
 
 Default constructor therefore the array will be of size 1.
@@ -1482,7 +1488,7 @@ Default constructor therefore the array will be of size 1.
  * **Parameters:** `note` — if true, the whole sound will be transformed at once to know the loudest freq.
 
 ```java
-public PeakFindWithHPSSoundTransformation (final double step)
+public PeakFindWithHPSSoundTransformation (double step)
 ```
 
 Constructor not using the whole sound as a musical note
@@ -1490,7 +1496,7 @@ Constructor not using the whole sound as a musical note
  * **Parameters:** `step` — the iteration step value
 
 ```java
-public PeakFindWithHPSSoundTransformation (final double step, final int windowLength)
+public PeakFindWithHPSSoundTransformation (double step, int windowLength)
 ```
 
 Constructor not using the whole sound as a musical note
@@ -1508,7 +1514,7 @@ Create a sound with notes matching the input sound loudest frequencies. It uses 
 
  * **Constructors:**
 ```java
-public ShapeSoundTransformation (final String packName, final String instrument)
+public ShapeSoundTransformation (String packName, String instrument)
 ```
 
 Constructor for the two steps
@@ -1518,7 +1524,7 @@ Constructor for the two steps
    * `instrument` — instrument of the pack which will be used to shape the sound
 
 ```java
-public ShapeSoundTransformation (final String packName, final String instrument, final float [] freqs, final FormatInfo formatInfo)
+public ShapeSoundTransformation (String packName, String instrument, float [] freqs, FormatInfo formatInfo)
 ```
 
 Constructor only for the second step
@@ -1552,7 +1558,7 @@ Builds a new sound, longer than the input, without shifting the frequencies
 
  * **Constructor:**
 ```java
-public SlowdownSoundTransformation (final int step, final float factor, final int windowLength) throws SoundTransformException
+public SlowdownSoundTransformation (int step, float factor, int windowLength) throws SoundTransformException
 ```
 
 Default constructor 
@@ -1575,7 +1581,7 @@ Builds a new sound, shorter than the input, without shifting the frequencies
 
  * **Constructor:**
 ```java
-public SpeedUpSoundTransformation (final int step, final float factor)
+public SpeedUpSoundTransformation (int step, float factor)
 ```
 
 Default constructor

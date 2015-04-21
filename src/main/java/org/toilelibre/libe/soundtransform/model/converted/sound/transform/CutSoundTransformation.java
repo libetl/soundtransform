@@ -31,7 +31,7 @@ public class CutSoundTransformation implements SoundTransformation {
     private final int end;
 
     /**
-     * default Constructor
+     * Default Constructor
      * @param start1 start of the interval
      * @param end1 end of the interval
      */
