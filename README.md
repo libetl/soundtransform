@@ -1191,11 +1191,12 @@ Removes a part of a sound
 
 The result of the method contains the rest of the sound, and the removed interval is not available from here.
 
+ * **Constructor:**
 ```java
 public CutSoundTransformation (final int start, final int end)
 ```
 
-default Constructor
+Default Constructor
 
  * **Parameters:**
    * `start` — start of the interval
@@ -1208,6 +1209,7 @@ public class EightBitsSoundTransformation implements SoundTransformation
 
 Leaves only one sample out of [step] ones, the others are set to 0. The effect is to produce a sound that sounds like a video game console. (a good step value for a CD format is 25)
 
+ * **Constructor:**
 ```java
 public EightBitsSoundTransformation (final int step)
 ```
@@ -1223,6 +1225,7 @@ public class FadeSoundTransformation implements SoundTransformation
 
 Fade in / Fade out operation of a sound. Ability to change the first part of a sound as an intro or the last part as an outro (the sound volume gradually increases in the intro and gradually descreases in the outro)
 
+ * **Constructor:**
 ```java
 public FadeSoundTransformation (final int length, final boolean fadeIn) throws SoundTransformException
 ```
@@ -1241,6 +1244,7 @@ public class InsertPartSoundTransformation implements SoundTransformation
 
 Insert a sound into another
 
+ * **Constructor:**
 ```java
 public InsertPartSoundTransformation (final Sound [] subsound, final int start)
 ```
@@ -1258,6 +1262,7 @@ public class LinearRegressionSoundTransformation implements SoundTransformation
 
 Smoothes a sound graph. The effect is to remove the treble frequencies without any time-to-frequency domain transform
 
+ * **Constructor:**
 ```java
 public LinearRegressionSoundTransformation (final int step)
 ```
@@ -1273,6 +1278,7 @@ public class LoopSoundTransformation implements SoundTransformation
 
 Repeats a sound as another sound
 
+ * **Constructor:**
 ```java
 public LoopSoundTransformation (final int length)
 ```
@@ -1288,6 +1294,7 @@ public class MixSoundTransformation implements SoundTransformation
 
 Mixes several sounds into a new sound The sound channels will be re-sampled (up sampled or down sampled) to match the first sound format info. The sounds samples will be summed. Therefore, if the first sound is the opposite of the second one (sample1 [i] = -sample2 [i]), the sum will be 0. (there will be nothing to hear)
 
+ * **Constructor:**
 ```java
 public MixSoundTransformation (final List<Sound []> otherSounds)
 ```
@@ -1303,6 +1310,7 @@ public class NormalizeSoundTransformation implements SoundTransformation
 
 Raises the sound volume to match a certain percentage of the maximum possible level
 
+ * **Constructor:**
 ```java
 public NormalizeSoundTransformation (final float coefficient) throws SoundTransformException
 ```
@@ -1319,6 +1327,7 @@ public class PitchSoundTransformation implements SoundTransformation
 
 Removes or adds some samples in the input sound according to the passed percent parameter. This will change the pitch of the sound (the frequencies will be shifted)
 
+ * **Constructor:**
 ```java
 public PitchSoundTransformation (final float percent)
 ```
@@ -1334,6 +1343,7 @@ public class ReplacePartSoundTransformation implements SoundTransformation
 
 Replaces a part of a sound with another sound The target sound must have the same number of channels as the replacement, and the insert index must not be out of bounds
 
+ * **Constructor:**
 ```java
 public ReplacePartSoundTransformation (final Sound [] replacement, final int start)
 ```
@@ -1351,6 +1361,7 @@ public class SubSoundExtractSoundTransformation implements SoundTransformation
 
 Cuts a part of a sound and returns it. The rest of the sound will not be available.
 
+ * **Constructor:**
 ```java
 public SubSoundExtractSoundTransformation (final int start, final int end)
 ```
@@ -1369,10 +1380,13 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
 
 Transforms a sound into a list of cepstrums (log modulus of the spectrums). Useful to get the f0 values of a sound (loudest freqs array). 
 
-The obtained Spectrum are not really spectrums. They consist of a graph a quefrencies (and not frequencies).<br/> The peak can represent the f0 (if the FormatInfo of the input sound is adequate), but it is not faithful everytime.<br/> This method can detected false values.
+The obtained Spectrum are not really spectrums. They consist of a graph a quefrencies (and not frequencies).
+
+The peak can represent the f0 (if the FormatInfo of the input sound is adequate), but it is not faithful everytime. This method can detect wrong values.
 
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
+ * **Constructors:**
 ```java
 public CepstrumSoundTransformation ()
 ```
@@ -1383,38 +1397,38 @@ Constructor with default values. The cepstrums will not be kept when using the g
 public CepstrumSoundTransformation (final boolean note)
 ```
 
-Constructor with default values. The cepstrums will not be kept when using the getCepstrums method and the cepstrum will be made once, using the whole sound
+Constructor with default values. The cepstrums will not be kept when using the getCepstrums method 
 
- * **Parameters:** `note` — if true, the loudest freqs array will contain a single element
+ * **Parameters:** `note` — if true, the loudest freqs array will contain a single element and the cepstrum will be made once, using the whole sound
 
 ```java
 public CepstrumSoundTransformation (final double step)
 ```
 
-The cepstrums will not be kept when using the getCepstrums method (increasing the value will speed the transform but will be less precise)
+The cepstrums will not be kept when using the getCepstrums method
 
- * **Parameters:** `step` — the iteration step
+ * **Parameters:** `step` — the iteration step (increasing the value will speed the transform but will be less precise)
 
 ```java
 public CepstrumSoundTransformation (final double step, final boolean note)
 ```
 
-The cepstrums will not be kept when using the getCepstrums method (increasing the value will speed the transform but will be less precise) and the cepstrum will be made once, using the whole sound
+The cepstrums will not be kept when using the getCepstrums method
 
  * **Parameters:**
-   * `step` — the iteration step
-   * `note` — if true, the loudest freqs array will contain a single element
+   * `step` — the iteration step (increasing the value will speed the transform but will be less precise)
+   * `note` — if true, the loudest freqs array will contain a single element and the cepstrum will be made once, using the whole sound
 
 ```java
 public CepstrumSoundTransformation (final double step, final boolean keepCepstrums, final boolean note)
 ```
 
-Constructor will every parameter specified This can cause a big memory leak if not used with care. Be vigilant. (increasing the value will speed the transform but will be less precise) and the cepstrum will be made once, using the whole sound
+Constructor with every parameter specified 
 
  * **Parameters:**
-   * `keepCepstrums` — if true, the cepstrums will all be saved after each call to the method transform
-   * `step` — the iteration step
-   * `note` — if true, the loudest freqs array will contain a single element
+   * `keepCepstrums` — if true, the cepstrums will all be saved after each call to the method transform This can cause a big memory leak if not used with care. Be vigilant.
+   * `step` — the iteration step (increasing the value will speed the transform but will be less precise)
+   * `note` — if true, the loudest freqs array will contain a single element and the cepstrum will be made once, using the whole sound
 
 ##### EqualizerSoundTransformation
 ```java
@@ -1423,6 +1437,7 @@ public class EqualizerSoundTransformation extends SimpleFrequencySoundTransforma
 
 Change the volume of each frequencies range at each step of the sound
 
+ * **Constructor:**
 ```java
 public EqualizerSoundTransformation (final double [] ranges, final double [] amplification)
 ```
@@ -1440,6 +1455,7 @@ public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTr
 
 Equalizer which cuts the treble and the bass frequencies of a sound
 
+ * **Constructor:**
 ```java
 public GaussianEqualizerSoundTransformation ()
 ```
@@ -1455,6 +1471,7 @@ Finds the loudest frequencies array using the Harmonic Product Spectrum algorith
 
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
+ * **Constructors:**
 ```java
 public PeakFindWithHPSSoundTransformation (final boolean note)
 ```
@@ -1488,6 +1505,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
 
 Create a sound with notes matching the input sound loudest frequencies. It uses a soundtransform to get the loudest frequencies, then it shapes a sound consisting of the notes heard in the freqs array. If the constructor using a float array is used, only the shaping step will be processed
 
+ * **Constructors:**
 ```java
 public ShapeSoundTransformation (final String packName, final String instrument)
 ```
@@ -1517,6 +1535,7 @@ public class SimpleFrequencySoundTransformation<T extends Serializable> extends 
 
 Simple proxy to avoid useless parameters in the overriden method
 
+ * **Constructor:**
 ```java
 public SimpleFrequencySoundTransformation ()
 ```
@@ -1530,11 +1549,13 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
 
 Builds a new sound, longer than the input, without shifting the frequencies
 
+ * **Constructor:**
 ```java
 public SlowdownSoundTransformation (final int step, final float factor, final int windowLength) throws SoundTransformException
 ```
 
-Default constructor WARN : can fail for various reasons
+Default constructor 
+WARN : can fail for various reasons
 
  * **Parameters:**
    * `step` — must be > that the f0 of the sound. Else it will not fail but will produce a bad sound
@@ -1551,6 +1572,7 @@ Builds a new sound, shorter than the input, without shifting the frequencies
 
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
+ * **Constructor:**
 ```java
 public SpeedUpSoundTransformation (final int step, final float factor)
 ```
