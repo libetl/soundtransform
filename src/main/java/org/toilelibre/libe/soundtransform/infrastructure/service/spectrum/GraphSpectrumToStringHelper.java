@@ -122,7 +122,7 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
             if (minValuePlotted == -1 || minValuePlotted > maxStepMagn) {
                 minValuePlotted = this.getMaxValueOrMaxMagn (maxStepValue, maxStepMagn);
             }
-            valuesOnPlot [i] = (int) (this.getMaxValueOrMaxMagn (maxStepValue, maxStepMagn) * height / this.getMaxValueOrMaxMagn (maxStepValue, maxStepMagn));
+            valuesOnPlot [i] = (int) (minValuePlotted * height / maxStepMagn);
             if (maxPlotValue < valuesOnPlot [i] && i > 0) {
                 maxPlotValue = valuesOnPlot [i];
             }
