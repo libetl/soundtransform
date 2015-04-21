@@ -1361,9 +1361,114 @@ Constructor will every parameter specified This can cause a big memory leak if n
    * `note1` — if true, the loudest freqs array will contain a single element
 
 ##### EqualizerSoundTransformation
+###### `public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []>`
+
+Change the volume of each frequencies range at each step of the sound
+
+###### `public EqualizerSoundTransformation (final double [] ranges1, final double [] amplification1)`
+
+Default constructor. A mathematical representation of a curve amplification/freqs is asked in the parameters
+
+ * **Parameters:**
+   * `ranges1` — the frequencies, in abscissa [0..20000]
+   * `amplification1` — the amplification, in ordinate [0..1]
+
 ##### GaussianEqualizerSoundTransformation
+###### `public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []>`
+
+Equalizer which cuts the treble and the bass frequencies of a sound
+
+###### `public GaussianEqualizerSoundTransformation ()`
+
+Default constructor
+
 ##### PeakFindWithHPSSoundTransformation
+###### `public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T>`
+
+Finds the loudest frequencies array using the Harmonic Product Spectrum algorithm
+
+ * **Parameters:** `<T>` — The kind of object held inside a spectrum.
+
+###### `public PeakFindWithHPSSoundTransformation (final boolean note1)`
+
+Default constructor therefore the array will be of size 1.
+
+ * **Parameters:** `note1` — if true, the whole sound will be transformed at once to know the loudest freq.
+
+###### `public PeakFindWithHPSSoundTransformation (final double step1)`
+
+Constructor not using the whole sound as a musical note
+
+ * **Parameters:** `step1` — the iteration step value
+
+###### `public PeakFindWithHPSSoundTransformation (final double step1, final int windowLength1)`
+
+Constructor not using the whole sound as a musical note
+
+ * **Parameters:**
+   * `step1` — the iteration step value
+   * `windowLength1` — length of the spectrum used during each iteration (the highest the slowest)
+
 ##### ShapeSoundTransformation
+###### `public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransformation> implements SoundTransformation`
+
+Create a sound with notes matching the input sound loudest frequencies. It uses a soundtransform to get the loudest frequencies, then it shapes a sound consisting of the notes heard in the freqs array. If the constructor using a float array is used, only the shaping step will be processed
+
+###### `public ShapeSoundTransformation (final String packName, final String instrument)`
+
+Constructor for the two steps
+
+ * **Parameters:**
+   * `packName` — Pack name, should be already imported
+   * `instrument` — instrument of the pack which will be used to shape the sound
+
+###### `public ShapeSoundTransformation (final String packName, final String instrument, final float [] freqs, final FormatInfo formatInfo1)`
+
+Constructor only for the second step
+
+ * **Parameters:**
+   * `packName` — Pack name, should be already imported
+   * `instrument` — instrument of the pack which will be used to shape the sound
+   * `freqs` — the loudest freqs array
+   * `formatInfo1` — the format info
+
 ##### SimpleFrequencySoundTransformation
+###### `public class SimpleFrequencySoundTransformation<T extends Serializable> extends AbstractFrequencySoundTransformation<T>`
+
+Simple proxy to avoid useless parameters in the overriden method
+
+###### `public SimpleFrequencySoundTransformation ()`
+
+Default constructor
+
 ##### SlowdownSoundTransformation
+###### `public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformation<Complex []>`
+
+Builds a new sound, longer than the input, without shifting the frequencies
+
+ * **Parameters:** `<T>` — The kind of object held inside a spectrum.
+
+###### `public SlowdownSoundTransformation (final int step1, final float factor, final int windowLength) throws SoundTransformException`
+
+Default constructor WARN : can fail for various reasons
+
+ * **Parameters:**
+   * `step1` — must be > that the f0 of the sound. Else it will not fail but will produce a bad sound
+   * `factor` — the slowdown factor
+   * `windowLength` — must be a power of 2 and must be >= 2 * step
+ * **Exceptions:** `SoundTransformException` — if the constraint about the windowLength is not met
+
 ##### SpeedUpSoundTransformation
+###### `public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T>`
+
+Builds a new sound, shorter than the input, without shifting the frequencies
+
+ * **Parameters:** `<T>` — 
+
+###### `public SpeedUpSoundTransformation (final int step1, final float factor1)`
+
+Default constructor
+
+ * **Parameters:**
+   * `step1` — iteration step value
+   * `factor1` — factor of compression (e.g. 2 means : twice as short)
