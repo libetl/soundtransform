@@ -1223,13 +1223,100 @@ Default constructor
  * **Exceptions:** `SoundTransformException` — The fade length is longer than the sound itself
 
 #### InsertPartSoundTransformation
+###### `public class InsertPartSoundTransformation implements SoundTransformation`
+
+Insert a sound into another
+
+###### `public InsertPartSoundTransformation (final Sound [] subsound1, final int start1)`
+
+Default constructor
+
+ * **Parameters:**
+   * `subsound1` — the sound to insert (only one sound is allowed, each element is a sound channel)
+   * `start1` — start index where to insert the sound
+
 #### LinearRegressionSoundTransformation
+###### `public class LinearRegressionSoundTransformation implements SoundTransformation`
+
+Smoothes a sound graph. The effect is to remove the treble frequencies without any time-to-frequency domain transform
+
+###### `public LinearRegressionSoundTransformation (final int step1)`
+
+Default constructor
+
+ * **Parameters:** `step1` — iteration step value
+
 #### LoopSoundTransformation
+###### `public class LoopSoundTransformation implements SoundTransformation`
+
+Repeats a sound as another sound
+
+###### `public LoopSoundTransformation (final int length1)`
+
+Default constructor
+
+ * **Parameters:** `length1` — length (in samples) of the repetition(s)
+
 #### MixSoundTransformation
+###### `public class MixSoundTransformation implements SoundTransformation`
+
+Mixes several sounds into a new sound The sound channels will be re-sampled (up sampled or down sampled) to match the first sound format info. The sounds samples will be summed. Therefore, if the first sound is the opposite of the second one (sample1 [i] = -sample2 [i]), the sum will be 0. (there will be nothing to hear)
+
+###### `public MixSoundTransformation (final List<Sound []> otherSounds1)`
+
+Default constructor the transform expects to receive all the channels of each sound, even if it will not use them all for the mix. (the channelNum of the first sound will be used to match the other sounds channels before the mix operation takes place)
+
+ * **Parameters:** `otherSounds1` — sounds to mix with the first one (passed in the transform)
+
 #### NormalizeSoundTransformation
+###### `public class NormalizeSoundTransformation implements SoundTransformation`
+
+Raises the sound volume to match a certain percentage of the maximum possible level
+
+###### `public NormalizeSoundTransformation (final float coefficient1) throws SoundTransformException`
+
+Default constructor
+
+ * **Parameters:** `coefficient1` — coefficient of the max level (0 <= coefficient <= 1)
+ * **Exceptions:** `SoundTransformException` — The coefficient of the normalizer is above one or below zero
+
 #### PitchSoundTransformation
+###### `public class PitchSoundTransformation implements SoundTransformation`
+
+Removes or adds some samples in the input sound according to the passed percent parameter. This will change the pitch of the sound (the frequencies will be shifted)
+
+###### `public PitchSoundTransformation (final float percent)`
+
+Default constructor if = 100, nothing happens if > 100, the sound will contains less samples, therefore the sound will be pitched up, and the frequencies will be higher
+
+ * **Parameters:** `percent` — if < 100, the sound will contains more samples, therefore the sound will be pitched down, and the frequencies will be lowered
+
 #### ReplacePartSoundTransformation
+###### `public class ReplacePartSoundTransformation implements SoundTransformation`
+
+Replaces a part of a sound with another sound The target sound must have the same number of channels as the replacement, and the insert index must not be out of bounds
+
+###### `public ReplacePartSoundTransformation (final Sound [] replacement1, final int start1)`
+
+Default constructor
+
+ * **Parameters:**
+   * `replacement1` — replacement sound
+   * `start1` — start index
+
 #### SubSoundExtractSoundTransformation
+###### `public class SubSoundExtractSoundTransformation implements SoundTransformation`
+
+Cuts a part of a sound and returns it. The rest of the sound will not be available.
+
+###### `public SubSoundExtractSoundTransformation (final int start1, final int end1)`
+
+Default constructor
+
+ * **Parameters:**
+   * `start1` — start index
+   * `end1` — end index
+
 ### Frequency domain transforms
 #### CepstrumSoundTransformation
 ###### `public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T>`
