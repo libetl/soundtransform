@@ -73,15 +73,10 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
      * Default constructor
      * WARN : can fail for various reasons
      *
-     * @param step1
-     *            must be > that the f0 of the sound. Else it will not fail but
-     *            will produce a bad sound
-     * @param factor
-     *            the slowdown factor
-     * @param windowLength
-     *            must be a power of 2 and must be >= 2 * step
-     * @throws SoundTransformException
-     *             if the constraint about the windowLength is not met
+     * @param step1 must be > that the f0 of the sound. Else it will not fail but will produce a bad sound
+     * @param factor the slowdown factor
+     * @param windowLength must be a power of 2 and must be >= 2 * step
+     * @throws SoundTransformException if the constraint about the windowLength is not met
      */
     public SlowdownSoundTransformation (final int step1, final float factor, final int windowLength) throws SoundTransformException {
         super ();
