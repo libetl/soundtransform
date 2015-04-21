@@ -15,7 +15,6 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 /**
  * Builds a new sound, longer than the input, without shifting the frequencies
- * @param <T> The kind of object held inside a spectrum.
  */
 public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
 
@@ -74,13 +73,13 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
      * WARN : can fail for various reasons
      *
      * @param step1 must be > that the f0 of the sound. Else it will not fail but will produce a bad sound
-     * @param factor the slowdown factor
+     * @param factor1 the slowdown factor
      * @param windowLength must be a power of 2 and must be >= 2 * step
      * @throws SoundTransformException if the constraint about the windowLength is not met
      */
-    public SlowdownSoundTransformation (final int step1, final float factor, final int windowLength) throws SoundTransformException {
+    public SlowdownSoundTransformation (final int step1, final float factor1, final int windowLength) throws SoundTransformException {
         super ();
-        this.factor = factor;
+        this.factor = factor1;
         this.step = step1;
         this.writeIfGreaterEqThan1 = 0;
         this.additionalFrames = 0;

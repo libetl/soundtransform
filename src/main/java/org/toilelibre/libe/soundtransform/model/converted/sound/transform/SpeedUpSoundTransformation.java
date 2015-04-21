@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 /**
  * Builds a new sound, shorter than the input, without shifting the frequencies
- * @param <T>
+ * @param <T> The kind of object held inside a spectrum.
  */
 public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> {
 
