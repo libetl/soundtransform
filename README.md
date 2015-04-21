@@ -84,6 +84,7 @@ public void method (){
     // classpath resources
     "foo.wav", "bar.wav")
                          .mixAllInOneSound ().exportToClasspathResourceWithSiblingResource ("targetResource.wav", "existingSoundInSameDirectory.wav");
+}
 ```
 
 Please have a look at the many different actions that you can ask to the FluentClient in this [JUnit Test](src/test/java/org/toilelibre/libe/soundtransform/FluentClientTest.java)
