@@ -32,7 +32,7 @@ public class NormalizeSoundTransformation implements SoundTransformation {
     /**
      * Default constructor
      * @param coefficient1 coefficient of the max level (0 <= coefficient <= 1)
-     * @throws SoundTransformException
+     * @throws SoundTransformException The coefficient of the normalizer is above one or below zero
      */
     public NormalizeSoundTransformation (final float coefficient1) throws SoundTransformException {
         this.coefficient = this.checkCoefficient (coefficient1);
