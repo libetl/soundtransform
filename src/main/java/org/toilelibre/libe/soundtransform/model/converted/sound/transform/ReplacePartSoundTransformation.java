@@ -37,7 +37,6 @@ public class ReplacePartSoundTransformation implements SoundTransformation {
      * Default constructor
      * @param replacement1 replacement sound
      * @param start1 start index
-     * @throws SoundTransformException
      */
     public ReplacePartSoundTransformation (final Sound [] replacement1, final int start1) {
         this.replacement = replacement1.clone ();
