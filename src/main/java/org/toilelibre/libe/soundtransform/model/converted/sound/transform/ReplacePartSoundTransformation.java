@@ -2,7 +2,6 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
-import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 
 /**
