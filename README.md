@@ -62,8 +62,11 @@ public void method (){
   //Apply a 8-bit transform on a wav and then export it to a wav
   start ().withClasspathResource ("foo.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("bar.wav");
 
+  //Create a var to use the CD format
+  FormatInfo cdFormatInfo = new FormatInfo (2, 44100.0);
+
   //Shape a wav with an instrument and then export it to a wav
-  start ().withAPack ("default", packInputStream).withClasspathResource ("foo.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", fi).exportToClasspathResource ("bar.wav");
+  start ().withAPack ("default", packInputStream).withClasspathResource ("foo.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", cdFormatInfo).exportToClasspathResource ("bar.wav");
 
   //Play three times the same data, as a File, then as a sound, then as an inputStream
   start ().withClasspathResource ("foo.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
@@ -72,8 +75,7 @@ public void method (){
   start ().withSounds (sounds).splitIntoSpectrums ().stopWithSpectrums ();
 
   //Transform a lowfi wav file into a cd format wavfile
-  FormatInfo fi = new FormatInfo (2, 44100.0);
-  start ().withClasspathResource ("lowfi.wav").convertIntoSound ().changeFormat (fi).exportToClasspathResource ("hifi.wav");
+  start ().withClasspathResource ("lowfi.wav").convertIntoSound ().changeFormat (cdFormatInfo).exportToClasspathResource ("hifi.wav");
 
   //Mix of two sounds using two threads for the file-to-sound conversion
   start ().inParallel (
