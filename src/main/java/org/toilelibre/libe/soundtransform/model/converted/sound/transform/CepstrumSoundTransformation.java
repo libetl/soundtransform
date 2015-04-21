@@ -58,7 +58,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
 
     /**
      * The cepstrums will not be kept when using the getCepstrums method
-     * @param step1 the iteration step
+     * @param step1 the iteration step value
      *        (increasing the value will speed the transform but will be less precise)
      */
     public CepstrumSoundTransformation (final double step1) {
@@ -68,7 +68,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     /**
      * 
      * The cepstrums will not be kept when using the getCepstrums method
-     * @param step1 the iteration step
+     * @param step1 the iteration step value
      *        (increasing the value will speed the transform but will be less precise)
      * @param note1 if true, the loudest freqs array will contain a single element
      *              and the cepstrum will be made once, using the whole sound
@@ -82,7 +82,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
      * Constructor will every parameter specified
      * @param keepCepstrums1 if true, the cepstrums will all be saved after each call to the method transform
      *        This can cause a big memory leak if not used with care. Be vigilant.
-     * @param step1 the iteration step
+     * @param step1 the iteration step value
      *        (increasing the value will speed the transform but will be less precise)
      * @param note1 if true, the loudest freqs array will contain a single element
      *              and the cepstrum will be made once, using the whole sound

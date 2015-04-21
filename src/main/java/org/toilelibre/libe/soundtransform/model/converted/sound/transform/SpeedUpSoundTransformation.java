@@ -46,7 +46,7 @@ public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFr
 
     /**
      * Default constructor
-     * @param step1 iteration step
+     * @param step1 iteration step value
      * @param factor1 factor of compression (e.g. 2 means : twice as short)
      */
     public SpeedUpSoundTransformation (final int step1, final float factor1) {

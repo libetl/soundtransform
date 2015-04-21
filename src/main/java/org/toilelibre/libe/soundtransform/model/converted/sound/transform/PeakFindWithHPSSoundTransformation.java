@@ -51,7 +51,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
 
     /**
      * Constructor not using the whole sound as a musical note
-     * @param step1 the iteration step
+     * @param step1 the iteration step value
      */
     public PeakFindWithHPSSoundTransformation (final double step1) {
         this ();
@@ -61,7 +61,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
 
     /**
      * Constructor not using the whole sound as a musical note
-     * @param step1 the iteration step
+     * @param step1 the iteration step value
      * @param windowLength1 length of the spectrum used during each iteration (the highest the slowest)
      */    
     public PeakFindWithHPSSoundTransformation (final double step1, final int windowLength1) {

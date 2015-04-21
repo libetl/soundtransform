@@ -16,7 +16,7 @@ public class ComputeMagnitudeSoundTransformation extends SimpleFrequencySoundTra
 
     /**
      * Default constructor
-     * @param step1 iteration step
+     * @param step1 iteration step value
      */
     public ComputeMagnitudeSoundTransformation (final double step1) {
         super ();

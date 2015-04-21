@@ -10,6 +10,10 @@ public class EightBitsSoundTransformation implements SoundTransformation {
 
     private final int step;
 
+    /**
+     * Default constructor
+     * @param step iteration step
+     */
     public EightBitsSoundTransformation (final int step) {
         this.step = step;
     }
