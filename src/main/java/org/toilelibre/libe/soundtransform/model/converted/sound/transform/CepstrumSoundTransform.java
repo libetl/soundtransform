@@ -21,7 +21,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
  * 
  * @param <T> The kind of object held inside a spectrum.
  */
-public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T> {
+public class CepstrumSoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T> implements PeakFindSoundTransform<T> {
 
     private final double                      step;
     private List<float []>                    allLoudestFreqs;
@@ -42,7 +42,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
      * Constructor with default values.
      * The cepstrums will not be kept when using the getCepstrums method
      */
-    public CepstrumSoundTransformation () {
+    public CepstrumSoundTransform () {
         this (100, false, false);
     }
 
@@ -52,7 +52,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
      * @param note1 if true, the loudest freqs array will contain a single element
      *              and the cepstrum will be made once, using the whole sound
      */
-    public CepstrumSoundTransformation (final boolean note1) {
+    public CepstrumSoundTransform (final boolean note1) {
         this (100, false, note1);
     }
 
@@ -61,7 +61,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
      * @param step1 the iteration step value
      *        (increasing the value will speed the transform but will be less precise)
      */
-    public CepstrumSoundTransformation (final double step1) {
+    public CepstrumSoundTransform (final double step1) {
         this (step1, false, false);
     }
 
@@ -71,7 +71,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
      * @param step1 the iteration step value (increasing the value will speed the transform but will be less precise)
      * @param note1 if true, the loudest freqs array will contain a single element and the cepstrum will be made once, using the whole sound
      */
-    public CepstrumSoundTransformation (final double step1, final boolean note1) {
+    public CepstrumSoundTransform (final double step1, final boolean note1) {
         this (step1, false, note1);
     }
 
@@ -82,7 +82,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
      * @param step1 the iteration step value (increasing the value will speed the transform but will be less precise)
      * @param note1 if true, the loudest freqs array will contain a single element and the cepstrum will be made once, using the whole sound
      */
-    public CepstrumSoundTransformation (final double step1, final boolean keepCepstrums1, final boolean note1) {
+    public CepstrumSoundTransform (final double step1, final boolean keepCepstrums1, final boolean note1) {
         super ();
         this.step = step1;
         this.note = note1;
@@ -138,7 +138,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
 
         final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.length / this.step));
         if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.length / this.step))) {
-            this.log (new LogEvent (PeakFindSoundTransformationEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.length / this.step), percent));
+            this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.length / this.step), percent));
         }
 
         final Spectrum<T> fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
@@ -158,7 +158,7 @@ public class CepstrumSoundTransformation<T extends Serializable> extends SimpleF
     private float findLoudestFreqFromCepstrum (final Spectrum<T> fscep) {
         final float spectrumLength = this.spectrumHelper.getLengthOfSpectrum (fscep);
         final float timelapseInTheCepstrum = spectrumLength * 1.0f / fscep.getSampleRate ();
-        final float maxIndex = this.spectrumHelper.getMaxIndex (fscep, CepstrumSoundTransformation.MIN_VOICE_FREQ, CepstrumSoundTransformation.MAX_VOICE_FREQ);
+        final float maxIndex = this.spectrumHelper.getMaxIndex (fscep, CepstrumSoundTransform.MIN_VOICE_FREQ, CepstrumSoundTransform.MAX_VOICE_FREQ);
         final float t0 = maxIndex / spectrumLength * timelapseInTheCepstrum;
         return 1.0f / t0;
     }

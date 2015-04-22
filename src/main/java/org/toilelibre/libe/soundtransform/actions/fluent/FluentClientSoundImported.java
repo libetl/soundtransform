@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 public interface FluentClientSoundImported extends FluentClientCommon {
@@ -26,12 +26,12 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * Apply one transform and continue with the result sound
      *
      * @param st
-     *            the SoundTransformation to apply
+     *            the SoundTransform to apply
      * @return the client with a sound imported
      * @throws SoundTransformException
      *             if the transform does not work
      */
-    FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException;
+    FluentClientSoundImported apply (SoundTransform<Sound, Sound> st) throws SoundTransformException;
 
     /**
      * Changes the current imported sound to fit the expected format

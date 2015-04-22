@@ -5,7 +5,7 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.AbstractFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.AbstractFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
@@ -45,7 +45,7 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
     }
 
     @Override
-    public Sound transform (final AbstractFrequencySoundTransformation<Complex []> st, final Sound sound) {
+    public Sound transform (final AbstractFrequencySoundTransform<Complex []> st, final Sound sound) {
         final Sound output = st.initSound (sound);
         final double sampleRate = sound.getSampleRate ();
         final double step = st.getStep (sampleRate);

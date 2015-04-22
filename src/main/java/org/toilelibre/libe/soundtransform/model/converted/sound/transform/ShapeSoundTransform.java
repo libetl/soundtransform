@@ -1,7 +1,5 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import java.io.Serializable;
-
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -22,14 +20,14 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
  * It uses a soundtransform to get the loudest frequencies, then it shapes a sound consisting of the notes heard in the freqs array.
  * If the constructor using a float array is used, only the shaping step will be processed
  */
-public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransformation> implements SoundTransformation {
-    public enum ShapeSoundTransformationErrorCode implements ErrorCode {
+public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> implements SoundTransform<Sound, Sound> {
+    public enum ShapeSoundTransformErrorCode implements ErrorCode {
 
-        NOT_AN_INSTRUMENT ("%1s is not a valid instrument"), NO_PACK_IN_PARAMETER ("No pack in parameter. Please instantiate a ShapeSoundTransformation with a not null Pack");
+        NO_LOUDEST_FREQS_IN_ATTRIBUTE ("No loudest freqs array passed in attribute"), NOT_AN_INSTRUMENT ("%1s is not a valid instrument"), NO_PACK_IN_PARAMETER ("No pack in parameter. Please instantiate a ShapeSoundTransform with a not null Pack");
 
         private final String messageFormat;
 
-        ShapeSoundTransformationErrorCode (final String mF) {
+        ShapeSoundTransformErrorCode (final String mF) {
             this.messageFormat = mF;
         }
 
@@ -39,14 +37,14 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
         }
     }
 
-    public enum ShapeSoundTransformationEventCode implements EventCode {
+    public enum ShapeSoundTransformEventCode implements EventCode {
 
-        FINDING_LOUDEST_FREQUENCIES (LogLevel.VERBOSE, "Finding loudest frequencies"), NOTE_FOUND (LogLevel.VERBOSE, "Note (%1dHz) between %2d/%3d and %4d/%5d");
+        NOTE_FOUND (LogLevel.VERBOSE, "Note (%1dHz) between %2d/%3d and %4d/%5d");
 
         private final String   messageFormat;
         private final LogLevel logLevel;
 
-        ShapeSoundTransformationEventCode (final LogLevel ll, final String mF) {
+        ShapeSoundTransformEventCode (final LogLevel ll, final String mF) {
             this.messageFormat = mF;
             this.logLevel = ll;
         }
@@ -74,7 +72,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
      * @param packName Pack name, should be already imported
      * @param instrument instrument of the pack which will be used to shape the sound
      */
-    public ShapeSoundTransformation (final String packName, final String instrument) {
+    public ShapeSoundTransform (final String packName, final String instrument) {
         this.silence = new Silence ();
         this.pack = $.select (Library.class).getPack (packName);
         this.instrument = instrument;
@@ -88,7 +86,7 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
      * @param freqs the loudest freqs array
      * @param formatInfo1 the format info
      */
-    public ShapeSoundTransformation (final String packName, final String instrument, final float [] freqs, final FormatInfo formatInfo1) {
+    public ShapeSoundTransform (final String packName, final String instrument, final float [] freqs, final FormatInfo formatInfo1) {
         this (packName, instrument);
         this.freqs = freqs.clone ();
         this.formatInfo = formatInfo1;
@@ -97,9 +95,9 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
     private Note findNote (final double lastFreq, final int sampleRate, final int i, final int lastBegining) throws SoundTransformException {
         Note note = this.silence;
         if (lastFreq > 50 && Math.abs (sampleRate - lastFreq) > 100) {
-            this.log (new LogEvent (ShapeSoundTransformationEventCode.NOTE_FOUND, (int) lastFreq, lastBegining, this.freqs.length, i, this.freqs.length));
+            this.log (new LogEvent (ShapeSoundTransformEventCode.NOTE_FOUND, (int) lastFreq, lastBegining, this.freqs.length, i, this.freqs.length));
             if (!this.pack.containsKey (this.instrument)) {
-                throw new SoundTransformException (ShapeSoundTransformationErrorCode.NOT_AN_INSTRUMENT, new NullPointerException (), this.instrument);
+                throw new SoundTransformException (ShapeSoundTransformErrorCode.NOT_AN_INSTRUMENT, new NullPointerException (), this.instrument);
             }
             note = this.pack.get (this.instrument).getNearestNote ((int) lastFreq);
         }
@@ -108,13 +106,6 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
 
     private boolean freqHasChanged (final float freq1, final float freq2) {
         return Math.abs (freq1 - freq2) > freq1 * 5.0 / 100;
-    }
-
-    private float [] getLoudestFreqs (final Sound sound, final int step) throws SoundTransformException {
-        final PeakFindSoundTransformation<Serializable> peak = new PeakFindWithHPSSoundTransformation<Serializable> (step, -1);
-        peak.setObservers (this.observers);
-        peak.transform (sound);
-        return peak.getLoudestFreqs ();
     }
 
     private boolean isNewNote (final int i, final float lastFreq, final boolean firstNote) {
@@ -154,19 +145,14 @@ public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransfo
     @Override
     public Sound transform (final Sound sound) throws SoundTransformException {
         if (this.pack == null) {
-            throw new SoundTransformException (ShapeSoundTransformationErrorCode.NO_PACK_IN_PARAMETER, new NullPointerException ());
+            throw new SoundTransformException (ShapeSoundTransformErrorCode.NO_PACK_IN_PARAMETER, new NullPointerException ());
         }
         final int step = 100;
         int channelNum = 0;
         int soundLength = 0;
 
-        this.log (new LogEvent (ShapeSoundTransformationEventCode.FINDING_LOUDEST_FREQUENCIES));
-
         if (this.freqs == null) {
-            this.formatInfo = sound.getFormatInfo ();
-            soundLength = sound.getSamplesLength ();
-            this.freqs = this.getLoudestFreqs (sound, step);
-            channelNum = sound.getChannelNum ();
+            throw new SoundTransformException (ShapeSoundTransformErrorCode.NO_LOUDEST_FREQS_IN_ATTRIBUTE, new NullPointerException ());
         }
         if (soundLength == 0) {
             soundLength = step * this.freqs.length;

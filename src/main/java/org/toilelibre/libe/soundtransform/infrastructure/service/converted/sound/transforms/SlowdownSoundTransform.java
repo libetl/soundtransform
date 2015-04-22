@@ -5,7 +5,7 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -16,15 +16,15 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 /**
  * Builds a new sound, longer than the input, without shifting the frequencies
  */
-public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
+public class SlowdownSoundTransform extends SimpleFrequencySoundTransform<Complex []> {
 
-    public enum SlowdownSoundTransformationErrorCode implements ErrorCode {
+    public enum SlowdownSoundTransformErrorCode implements ErrorCode {
 
         WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_STEP ("Window length is lower than twice the step value (%1i < 2 * %2i)"), WINDOW_LENGTH_IS_NOT_A_POWER_OF_2 ("Window length is not a power of 2 (%1i)");
 
         private final String messageFormat;
 
-        SlowdownSoundTransformationErrorCode (final String mF) {
+        SlowdownSoundTransformErrorCode (final String mF) {
             this.messageFormat = mF;
         }
 
@@ -34,14 +34,14 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
         }
     }
 
-    public enum SlowdownSoundTransformationEventCode implements EventCode {
+    public enum SlowdownSoundTransformEventCode implements EventCode {
 
-        ITERATION_IN_PROGRESS (LogLevel.VERBOSE, "SlowdownSoundTransformation : Iteration #%1d/%2d");
+        ITERATION_IN_PROGRESS (LogLevel.VERBOSE, "SlowdownSoundTransform : Iteration #%1d/%2d");
 
         private final String   messageFormat;
         private final LogLevel logLevel;
 
-        SlowdownSoundTransformationEventCode (final LogLevel ll, final String mF) {
+        SlowdownSoundTransformEventCode (final LogLevel ll, final String mF) {
             this.messageFormat = mF;
             this.logLevel = ll;
         }
@@ -77,7 +77,7 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
      * @param windowLength1 must be a power of 2 and must be >= 2 * step
      * @throws SoundTransformException if the constraint about the windowLength is not met
      */
-    public SlowdownSoundTransformation (final int step1, final float factor1, final int windowLength1) throws SoundTransformException {
+    public SlowdownSoundTransform (final int step1, final float factor1, final int windowLength1) throws SoundTransformException {
         super ();
         this.factor = factor1;
         this.step = step1;
@@ -88,11 +88,11 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     }
 
     private void checkConstructor () throws SoundTransformException {
-        if (this.windowLength < SlowdownSoundTransformation.TWICE * this.step) {
-            throw new SoundTransformException (SlowdownSoundTransformationErrorCode.WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_STEP, new IllegalArgumentException (), this.windowLength, this.step);
+        if (this.windowLength < SlowdownSoundTransform.TWICE * this.step) {
+            throw new SoundTransformException (SlowdownSoundTransformErrorCode.WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_STEP, new IllegalArgumentException (), this.windowLength, this.step);
         }
         if ((this.windowLength & -this.windowLength) != this.windowLength) {
-            throw new SoundTransformException (SlowdownSoundTransformationErrorCode.WINDOW_LENGTH_IS_NOT_A_POWER_OF_2, new IllegalArgumentException (), this.windowLength);
+            throw new SoundTransformException (SlowdownSoundTransformErrorCode.WINDOW_LENGTH_IS_NOT_A_POWER_OF_2, new IllegalArgumentException (), this.windowLength);
         }
     }
 
@@ -136,11 +136,11 @@ public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformat
     @Override
     public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs, final int offset) {
         final int total = (int) (this.sound.getSamplesLength () * this.factor);
-        final int logStep = total / SlowdownSoundTransformation.A_HUNDRED - total / SlowdownSoundTransformation.A_HUNDRED % this.step;
+        final int logStep = total / SlowdownSoundTransform.A_HUNDRED - total / SlowdownSoundTransform.A_HUNDRED % this.step;
         // This if helps to only log some of all iterations to avoid being too
         // verbose
-        if (total / SlowdownSoundTransformation.A_HUNDRED != 0 && logStep != 0 && offset % logStep == 0) {
-            this.log (new LogEvent (SlowdownSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamplesLength () / this.factor)));
+        if (total / SlowdownSoundTransform.A_HUNDRED != 0 && logStep != 0 && offset % logStep == 0) {
+            this.log (new LogEvent (SlowdownSoundTransformEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamplesLength () / this.factor)));
         }
         final float remaining = (float) (this.factor - Math.floor (this.factor));
         final int padding = (int) Math.floor (this.writeIfGreaterEqThan1 + remaining);

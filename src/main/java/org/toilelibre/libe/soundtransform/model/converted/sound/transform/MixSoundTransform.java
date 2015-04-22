@@ -13,7 +13,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
  * Therefore, if the first sound is the opposite of the second one (sample1 [i] = -sample2 [i]), the sum will be 0. (there will be nothing to hear)
  *
  */
-public class MixSoundTransformation implements SoundTransformation {
+public class MixSoundTransform implements SoundTransform<Sound, Sound> {
 
     private final SoundAppender  soundAppender;
     private final List<Sound []> otherSounds;
@@ -26,7 +26,7 @@ public class MixSoundTransformation implements SoundTransformation {
      *                     (the channelNum of the first sound will be used to match the other sounds channels
      *                     before the mix operation takes place)
      */
-    public MixSoundTransformation (final List<Sound []> otherSounds1) {
+    public MixSoundTransform (final List<Sound []> otherSounds1) {
         this.soundAppender = $.select (SoundAppender.class);
         this.otherSounds = otherSounds1;
     }

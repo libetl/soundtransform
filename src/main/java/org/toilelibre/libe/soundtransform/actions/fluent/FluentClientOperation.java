@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -502,7 +502,7 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
     }
 
     @Override
-    public BuildableFluentClientOperationSoundImported apply (final SoundTransformation st) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported apply (final SoundTransform<Sound, Sound> st) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override

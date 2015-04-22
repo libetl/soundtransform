@@ -5,7 +5,7 @@ import java.util.Collections;
 
 import org.apache.commons.math3.exception.NonMonotonicSequenceException;
 import org.apache.commons.math3.util.MathArrays;
-import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.ComputeMagnitudeSoundTransformation;
+import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.ComputeMagnitudeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
@@ -94,7 +94,7 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
 
     private void ensureComputedMagnitudeArray (final Sound sound, final int step) {
         if (this.magnitude == null) {
-            final ComputeMagnitudeSoundTransformation soundTransform = new ComputeMagnitudeSoundTransformation (step);
+            final ComputeMagnitudeSoundTransform soundTransform = new ComputeMagnitudeSoundTransform (step);
             soundTransform.transform (sound);
             this.magnitude = soundTransform.getMagnitude ();
         }

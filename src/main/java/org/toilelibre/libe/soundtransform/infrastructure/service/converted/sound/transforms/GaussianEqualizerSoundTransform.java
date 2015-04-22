@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.converted.soun
 
 import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 /**
@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
  * Equalizer which cuts the treble and the bass frequencies of a sound
  * 
  */
-public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
+public class GaussianEqualizerSoundTransform extends SimpleFrequencySoundTransform<Complex []> {
 
     private static final int DELTA_X  = 3500;
     private static final int EXPONENT = 2;
@@ -20,12 +20,12 @@ public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTr
     /**
      * Default constructor
      */
-    public GaussianEqualizerSoundTransformation () {
+    public GaussianEqualizerSoundTransform () {
         super ();
     }
 
     private Complex function (final double x) {
-        return new Complex (1 - Math.exp (-Math.pow (x - GaussianEqualizerSoundTransformation.DELTA_X, GaussianEqualizerSoundTransformation.EXPONENT) / GaussianEqualizerSoundTransformation.DIVISION) / GaussianEqualizerSoundTransformation.HALF);
+        return new Complex (1 - Math.exp (-Math.pow (x - GaussianEqualizerSoundTransform.DELTA_X, GaussianEqualizerSoundTransform.EXPONENT) / GaussianEqualizerSoundTransform.DIVISION) / GaussianEqualizerSoundTransform.HALF);
     }
 
     @Override

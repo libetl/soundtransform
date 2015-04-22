@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.sound2string;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundToStringHelper;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ToStringSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ToStringSoundTransform;
 
 final class GraphSoundToStringHelper implements SoundToStringHelper {
 
@@ -19,6 +19,6 @@ final class GraphSoundToStringHelper implements SoundToStringHelper {
      */
     @Override
     public String process (final Sound input) {
-        return new ToStringSoundTransformation (GraphSoundToStringHelper.ARBITRARY_LENGTH, GraphSoundToStringHelper.ARBITRARY_HEIGHT).toString (input);
+        return new ToStringSoundTransform (GraphSoundToStringHelper.ARBITRARY_LENGTH, GraphSoundToStringHelper.ARBITRARY_HEIGHT).toString (input);
     }
 }

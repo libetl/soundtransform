@@ -10,8 +10,8 @@ import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.SoundToInputStreamService;
@@ -50,7 +50,7 @@ public class SoundGenerateTest extends SoundTransformTest {
             signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, new FormatInfo (sampleInBytes, samplerate), 1);
-        final SoundTransformation st = new SimpleFrequencySoundTransformation<Complex []> ();
+        final SoundTransform st = new SimpleFrequencySoundTransform<Complex []> ();
         st.transform (s);
 
     }

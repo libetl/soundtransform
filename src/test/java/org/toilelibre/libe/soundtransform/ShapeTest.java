@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.CallTransformService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
@@ -43,9 +43,9 @@ public class ShapeTest extends SoundTransformTest {
         final File input = new File (classLoader.getResource ("piano5g.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
         @SuppressWarnings ("unchecked")
-        final Sound [] sounds = $.select (CallTransformService.class)
+        final Sound [] sounds = (Sound[]) $.select (CallTransformService.class)
         .apply (((InputStreamToSoundService<InputStreamToSoundService<?>>) $.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.select (AudioFileService.class).streamFromFile (input)),
-                new ShapeSoundTransformation ("default", "chord_piano"));
+                new ShapeSoundTransform ("default", "chord_piano"));
 
         final InputStream finalInputStream = $.select (SoundToInputStreamService.class).toStream (sounds, StreamInfo.from (sounds [0].getFormatInfo (), sounds));
         $.select (AudioFileService.class).fileFromStream (finalInputStream, output);
@@ -67,9 +67,9 @@ public class ShapeTest extends SoundTransformTest {
         final File input = new File (classLoader.getResource ("piano3e.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
         @SuppressWarnings ("unchecked")
-        final Sound [] sounds = $.select (CallTransformService.class)
+        final Sound [] sounds = (Sound[]) $.select (CallTransformService.class)
         .apply (((InputStreamToSoundService<InputStreamToSoundService<?>>) $.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream ($.select (AudioFileService.class).streamFromFile (input)),
-                new ShapeSoundTransformation ("default", "chord_piano"));
+                new ShapeSoundTransform ("default", "chord_piano"));
 
         final InputStream finalInputStream = $.select (SoundToInputStreamService.class).toStream (sounds, StreamInfo.from (sounds [0].getFormatInfo (), sounds));
         $.select (AudioFileService.class).fileFromStream (finalInputStream, output);

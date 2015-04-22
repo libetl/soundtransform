@@ -5,7 +5,7 @@ import java.io.File;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 public class Mp3Test extends SoundTransformTest {
@@ -17,7 +17,7 @@ public class Mp3Test extends SoundTransformTest {
 
     @Test
     public void testNoOp () throws SoundTransformException {
-        FluentClient.start ().withFile (this.mp3input).convertIntoSound ().apply (new NoOpSoundTransformation ()).exportToFile (this.output);
+        FluentClient.start ().withFile (this.mp3input).convertIntoSound ().apply (new NoOpSoundTransform ()).exportToFile (this.output);
 
     }
 }

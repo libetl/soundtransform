@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogAware;
@@ -10,7 +10,7 @@ public interface CallTransformService<T> extends LogAware<T> {
 
     public enum CallTransformServiceEventCode implements EventCode {
 
-        TRANSFORM_STARTING (LogLevel.INFO, "Transform %1d/%2d ( %3s ), channel %4d/%5d"), TRANSFORMS_DONE (LogLevel.INFO, "Transforms done");
+        TRANSFORM_STARTING (LogLevel.INFO, "Transform %3s, channel %4d/%5d"), TRANSFORMS_DONE (LogLevel.INFO, "Transforms done");
 
         private final String   messageFormat;
         private final LogLevel logLevel;
@@ -31,6 +31,6 @@ public interface CallTransformService<T> extends LogAware<T> {
         }
     }
 
-    public abstract Sound [] apply (Sound [] input, SoundTransformation... sts) throws SoundTransformException;
+    public abstract <U, V> V [] apply (U [] input, SoundTransform<U, V> transform) throws SoundTransformException;
 
 }

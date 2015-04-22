@@ -15,10 +15,10 @@ import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.InsertPartSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.InsertPartSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
@@ -36,7 +36,7 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void backAndForth () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().apply (new NoOpSoundTransformation ()).exportToClasspathResource ("before.wav").convertIntoSound ();
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().apply (new NoOpSoundTransform ()).exportToClasspathResource ("before.wav").convertIntoSound ();
     }
 
     @Test
@@ -166,7 +166,7 @@ public class FluentClientTest extends SoundTransformTest {
 
         FluentClient.start ().inParallel (
                 // operations
-                FluentClientOperation.prepare ().convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResourceWithSiblingResource ("after%1d.wav", "before.wav").build (),
+                FluentClientOperation.prepare ().convertIntoSound ().apply (new EightBitsSoundTransform (25)).exportToClasspathResourceWithSiblingResource ("after%1d.wav", "before.wav").build (),
                 // timeout in seconds
                 5,
                 // classpath resources
@@ -208,13 +208,13 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void noOp () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().apply (new NoOpSoundTransformation ()).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().apply (new NoOpSoundTransform ()).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     @Test
     public void noOpWithInsert () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().apply (new NoOpSoundTransformation ())
-        .apply (new InsertPartSoundTransformation (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().stopWithSounds (), 12000)).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().apply (new NoOpSoundTransform ())
+        .apply (new InsertPartSoundTransform (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().stopWithSounds (), 12000)).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     @Test
@@ -263,7 +263,7 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void replacePart () throws SoundTransformException {
-        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransformation (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSounds (), 100000))
+        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransform (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSounds (), 100000))
         .exportToClasspathResource ("after.wav");
     }
 
@@ -301,7 +301,7 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void simpleLifeCycle () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("after.wav");
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().apply (new EightBitsSoundTransform (25)).exportToClasspathResource ("after.wav");
     }
 
     @Test

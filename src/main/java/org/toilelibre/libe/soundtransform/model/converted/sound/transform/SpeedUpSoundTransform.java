@@ -12,16 +12,16 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
  * Builds a new sound, shorter than the input, without shifting the frequencies
  * @param <T> The kind of object held inside a spectrum.
  */
-public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> {
+public class SpeedUpSoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T> {
 
-    public enum SpeedUpSoundTransformationEventCode implements EventCode {
+    public enum SpeedUpSoundTransformEventCode implements EventCode {
 
-        ITERATION_IN_PROGRESS (LogLevel.VERBOSE, "SpeedUpSoundTransformation : Iteration #%1d/%2d");
+        ITERATION_IN_PROGRESS (LogLevel.VERBOSE, "SpeedUpSoundTransform : Iteration #%1d/%2d");
 
         private final String   messageFormat;
         private final LogLevel logLevel;
 
-        SpeedUpSoundTransformationEventCode (final LogLevel ll, final String mF) {
+        SpeedUpSoundTransformEventCode (final LogLevel ll, final String mF) {
             this.logLevel = ll;
             this.messageFormat = mF;
         }
@@ -49,7 +49,7 @@ public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFr
      * @param step1 iteration step value
      * @param factor1 factor of compression (e.g. 2 means : twice as short)
      */
-    public SpeedUpSoundTransformation (final int step1, final float factor1) {
+    public SpeedUpSoundTransform (final int step1, final float factor1) {
         super ();
         this.factor = factor1;
         this.step = step1;
@@ -76,11 +76,11 @@ public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFr
     @Override
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset) {
         final int total = (int) (this.sound.getSamplesLength () / this.factor);
-        final int logStep = total / SpeedUpSoundTransformation.A_HUNDRED - total / SpeedUpSoundTransformation.A_HUNDRED % this.step;
+        final int logStep = total / SpeedUpSoundTransform.A_HUNDRED - total / SpeedUpSoundTransform.A_HUNDRED % this.step;
         // This if helps to only log some of all iterations to avoid being too
         // verbose
-        if (total / SpeedUpSoundTransformation.A_HUNDRED != 0 && logStep != 0 && offset % logStep == 0) {
-            this.log (new LogEvent (SpeedUpSoundTransformationEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamplesLength () * this.factor)));
+        if (total / SpeedUpSoundTransform.A_HUNDRED != 0 && logStep != 0 && offset % logStep == 0) {
+            this.log (new LogEvent (SpeedUpSoundTransformEventCode.ITERATION_IN_PROGRESS, offset, (int) (this.sound.getSamplesLength () * this.factor)));
         }
         if (this.writeIfGreaterEqThanFactor >= this.factor) {
             this.writeIfGreaterEqThanFactor -= this.factor;

@@ -2,11 +2,11 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.appender;
 
 import java.io.Serializable;
 
-import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.SlowdownSoundTransformation;
+import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.SlowdownSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpeedUpSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpeedUpSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 final class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelper {
@@ -27,7 +27,7 @@ final class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelpe
 
         Sound result = sound;
 
-        final PitchSoundTransformation pitcher = new PitchSoundTransformation (percent);
+        final PitchSoundTransform pitcher = new PitchSoundTransform (percent);
         if (percent < ConvertedSoundPitchAndTempoHelper.THRESHOLD_DOWN_PITCH || percent > ConvertedSoundPitchAndTempoHelper.THRESHOLD_UP_PITCH) {
             result = pitcher.transform (result);
         }
@@ -36,11 +36,11 @@ final class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelpe
             return result;
         } else if (factor < ConvertedSoundPitchAndTempoHelper.THRESHOLD_SPEEDUP || factor > ConvertedSoundPitchAndTempoHelper.THRESHOLD_SLOWDOWN) {
             if (factor < ConvertedSoundPitchAndTempoHelper.THRESHOLD_SPEEDUP) {
-                final SpeedUpSoundTransformation<Serializable> speedup = new SpeedUpSoundTransformation<Serializable> (ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_SPEEDUP_STEP_VALUE, (float) (1 / factor));
+                final SpeedUpSoundTransform<Serializable> speedup = new SpeedUpSoundTransform<Serializable> (ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_SPEEDUP_STEP_VALUE, (float) (1 / factor));
                 result = speedup.transform (result);
 
             } else if (factor > ConvertedSoundPitchAndTempoHelper.THRESHOLD_SLOWDOWN) {
-                final SlowdownSoundTransformation slowdown = new SlowdownSoundTransformation (ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_SLOWDOWN_STEP_VALUE, (float) factor, ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_WINDOW_LENGTH_VALUE);
+                final SlowdownSoundTransform slowdown = new SlowdownSoundTransform (ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_SLOWDOWN_STEP_VALUE, (float) factor, ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_WINDOW_LENGTH_VALUE);
                 result = slowdown.transform (result);
             }
         }

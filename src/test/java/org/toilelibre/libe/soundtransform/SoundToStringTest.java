@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jO
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
@@ -24,7 +24,7 @@ public class SoundToStringTest extends SoundTransformTest {
 
         final InputStream ais = $.select (AudioFileService.class).streamFromFile (input);
         final Sound s = $.select (InputStreamToSoundService.class).fromInputStream (ais) [0];
-        new SimpleFrequencySoundTransformation<Complex []> () {
+        new SimpleFrequencySoundTransform<Complex []> () {
 
             @Override
             public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {

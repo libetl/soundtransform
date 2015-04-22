@@ -16,7 +16,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
  *
  * @param <T> The kind of object held inside a spectrum.
  */
-public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T> {
+public class PeakFindWithHPSSoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T> implements PeakFindSoundTransform<T> {
 
     private double                  step;
     private List<float []>          allLoudestFreqs;
@@ -30,7 +30,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
     private final SpectrumHelper<T> spectrumHelper;
 
     @SuppressWarnings ("unchecked")
-    private PeakFindWithHPSSoundTransformation () {
+    private PeakFindWithHPSSoundTransform () {
         super ();
         this.allLoudestFreqs = new LinkedList<float []> ();
         this.spectrumHelper = $.select (SpectrumHelper.class);
@@ -41,7 +41,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
      * @param note1 if true, the whole sound will be transformed at once to know the loudest freq.
      *              therefore the array will be of size 1. 
      */
-    public PeakFindWithHPSSoundTransformation (final boolean note1) {
+    public PeakFindWithHPSSoundTransform (final boolean note1) {
         this ();
         this.note = note1;
         this.step = 100;
@@ -53,7 +53,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
      * Constructor not using the whole sound as a musical note
      * @param step1 the iteration step value
      */
-    public PeakFindWithHPSSoundTransformation (final double step1) {
+    public PeakFindWithHPSSoundTransform (final double step1) {
         this ();
         this.step = step1;
         this.windowLength = -1;
@@ -64,7 +64,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
      * @param step1 the iteration step value
      * @param windowLength1 length of the spectrum used during each iteration (the highest the slowest)
      */    
-    public PeakFindWithHPSSoundTransformation (final double step1, final int windowLength1) {
+    public PeakFindWithHPSSoundTransform (final double step1, final int windowLength1) {
         this ();
         this.step = step1;
         this.windowLength = windowLength1;
@@ -135,7 +135,7 @@ public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends 
 
         final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.soundLength / this.step));
         if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.soundLength / this.step))) {
-            this.log (new LogEvent (PeakFindSoundTransformationEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.soundLength / this.step), percent));
+            this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.soundLength / this.step), percent));
         }
         float f0 = 0;
 

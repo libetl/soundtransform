@@ -27,16 +27,16 @@ import org.toilelibre.libe.soundtransform.actions.transform.InputStreamToAudioIn
 import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CutSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.LoopSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundToSpectrumsSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpectrumsToSoundSoundTransformation;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SubSoundExtractSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CutSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.LoopSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundToSpectrumsSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpectrumsToSoundSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SubSoundExtractSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -155,16 +155,16 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #apply
      * (org.toilelibre.libe.soundtransform.model.converted.sound.transform.
-     * SoundTransformation)
+     * SoundTransform)
      */
     @Override
     /**
      * Apply one transform and continue with the result sound
-     * @param st the SoundTransformation to apply
+     * @param st the SoundTransform to apply
      * @return the client with a sound imported
      * @throws SoundTransformException if the transform does not work
      */
-    public FluentClientSoundImported apply (final SoundTransformation st) throws SoundTransformException {
+    public FluentClientSoundImported apply (final SoundTransform<Sound, Sound> st) throws SoundTransformException {
         final Sound [] sounds1 = new ApplySoundTransform (this.getObservers ()).apply (this.sounds, st);
         this.cleanData ();
         this.sounds = sounds1;
@@ -254,7 +254,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     public FluentClientSoundImported cutSubSound (final int start, final int end) throws SoundTransformException {
-        return this.apply (new CutSoundTransformation (start, end));
+        return this.apply (new CutSoundTransform (start, end));
     }
 
     /*
@@ -351,11 +351,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         if (this.spectrums == null || this.spectrums.isEmpty () || this.spectrums.get (0).length == 0) {
             throw new SoundTransformException (FluentClientErrorCode.NO_SPECTRUM_IN_INPUT, new IllegalArgumentException ());
         }
-        final Sound [] input = new Sound [this.spectrums.size ()];
-        for (int i = 0 ; i < input.length ; i++) {
-            input [i] = new Sound (new long [0], this.spectrums.get (0) [0].getFormatInfo (), i);
-        }
-        final Sound [] sounds1 = new ApplySoundTransform (this.getObservers ()).apply (input, new SpectrumsToSoundSoundTransformation (this.spectrums));
+        @SuppressWarnings("unchecked")
+        final Sound [] sounds1 = new ApplySoundTransform (this.getObservers ()).<Spectrum<Serializable> [], Sound>apply (this.spectrums.toArray (new Spectrum [0] [0]), new SpectrumsToSoundSoundTransform ());
         this.cleanData ();
         this.sounds = sounds1;
         return this;
@@ -370,7 +367,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     public FluentClientSoundImported extractSubSound (final int start, final int end) throws SoundTransformException {
-        return this.apply (new SubSoundExtractSoundTransformation (start, end));
+        return this.apply (new SubSoundExtractSoundTransform (start, end));
     }
 
     /*
@@ -395,7 +392,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException {
-        final PeakFindSoundTransformation<Serializable> peakFind = new PeakFindWithHPSSoundTransformation<Serializable> (FluentClient.DEFAULT_STEP_VALUE);
+        final PeakFindSoundTransform<Serializable> peakFind = new PeakFindWithHPSSoundTransform<Serializable> (FluentClient.DEFAULT_STEP_VALUE);
         new ApplySoundTransform (this.getObservers ()).apply (this.sounds, peakFind);
         this.cleanData ();
         this.freqs = peakFind.getLoudestFreqs ();
@@ -733,7 +730,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     public FluentClientSoundImported loop (final int length) throws SoundTransformException {
-        return this.apply (new LoopSoundTransformation (length));
+        return this.apply (new LoopSoundTransform (length));
     }
 
     /*
@@ -752,7 +749,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException if the sound is null or if there is a problem with the mix
      */
     public FluentClientSoundImported mixWith (final Sound [] sound) throws SoundTransformException {
-        return this.apply (new MixSoundTransformation (Arrays.<Sound []> asList (sound)));
+        return this.apply (new MixSoundTransform (Arrays.<Sound []> asList (sound)));
     }
 
     /*
@@ -783,7 +780,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
         for (int i = 1 ; i < savedClients.length ; i++) {
             final Sound [] otherSound = ((FluentClient) savedClients [i]).sounds;
-            this.apply (new MixSoundTransformation (Arrays.<Sound []> asList (otherSound)));
+            this.apply (new MixSoundTransform (Arrays.<Sound []> asList (otherSound)));
         }
 
         return this;
@@ -890,9 +887,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException could not call the soundtransform to shape the freqs
      */
     public FluentClientSoundImported shapeIntoSound (final String packName, final String instrumentName, final FormatInfo fi) throws SoundTransformException {
-        final SoundTransformation soundTransformation = new ShapeSoundTransformation (packName, instrumentName, this.freqs, fi);
+        final SoundTransform<Sound, Sound> SoundTransform = new ShapeSoundTransform (packName, instrumentName, this.freqs, fi);
         this.cleanData ();
-        this.sounds = new ApplySoundTransform (this.getObservers ()).apply (new Sound [] { new Sound (new long [0], new FormatInfo (0, 0), 0) }, soundTransformation);
+        this.sounds = new ApplySoundTransform (this.getObservers ()).apply (new Sound [] { new Sound (new long [0], new FormatInfo (0, 0), 0) }, SoundTransform);
         return this;
     }
 
@@ -910,7 +907,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException could not convert the sound into some spectrums
      */
     public FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException {
-        final SoundToSpectrumsSoundTransformation sound2Spectrums = new SoundToSpectrumsSoundTransformation ();
+        final SoundToSpectrumsSoundTransform sound2Spectrums = new SoundToSpectrumsSoundTransform ();
         new ApplySoundTransform (this.getObservers ()).apply (this.sounds, sound2Spectrums);
         this.cleanData ();
         this.spectrums = sound2Spectrums.getSpectrums ();

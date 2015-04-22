@@ -10,16 +10,16 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
  * and the insert index must not be out of bounds
  *
  */
-public class ReplacePartSoundTransformation implements SoundTransformation {
+public class ReplacePartSoundTransform implements SoundTransform<Sound, Sound> {
 
-    public enum ReplacePartSoundTransformationErrorCode implements ErrorCode {
+    public enum ReplacePartSoundTransformErrorCode implements ErrorCode {
 
         START_INDEX_OUT_OF_BOUNDS ("The start index is out of bounds (start index : %1d)"), CHANGE_THE_FORMAT_FIRST ("Change the replacement sound format first before this transform (actual replacement format : %1s, expected : %2s)"), NOT_AS_MANY_CHANNELS (
                 "The replacement sound does not have as many channels as the input"), ;
 
         private final String messageFormat;
 
-        ReplacePartSoundTransformationErrorCode (final String mF) {
+        ReplacePartSoundTransformErrorCode (final String mF) {
             this.messageFormat = mF;
         }
 
@@ -37,20 +37,20 @@ public class ReplacePartSoundTransformation implements SoundTransformation {
      * @param replacement1 replacement sound
      * @param start1 start index
      */
-    public ReplacePartSoundTransformation (final Sound [] replacement1, final int start1) {
+    public ReplacePartSoundTransform (final Sound [] replacement1, final int start1) {
         this.replacement = replacement1.clone ();
         this.start = start1;
     }
 
     private void checks (final Sound input) {
         if (this.start < 0) {
-            throw new SoundTransformRuntimeException (ReplacePartSoundTransformationErrorCode.START_INDEX_OUT_OF_BOUNDS, new IllegalArgumentException (), this.start);
+            throw new SoundTransformRuntimeException (ReplacePartSoundTransformErrorCode.START_INDEX_OUT_OF_BOUNDS, new IllegalArgumentException (), this.start);
         }
         if (input.getChannelNum () >= this.replacement.length) {
-            throw new SoundTransformRuntimeException (ReplacePartSoundTransformationErrorCode.NOT_AS_MANY_CHANNELS, new IllegalArgumentException (), this.start);
+            throw new SoundTransformRuntimeException (ReplacePartSoundTransformErrorCode.NOT_AS_MANY_CHANNELS, new IllegalArgumentException (), this.start);
         }
         if (!this.replacement [input.getChannelNum ()].getFormatInfo ().sameFormatAs (input.getFormatInfo ())) {
-            throw new SoundTransformRuntimeException (ReplacePartSoundTransformationErrorCode.CHANGE_THE_FORMAT_FIRST, new IllegalArgumentException (), this.replacement [input.getChannelNum ()].getFormatInfo (), input.getFormatInfo ());
+            throw new SoundTransformRuntimeException (ReplacePartSoundTransformErrorCode.CHANGE_THE_FORMAT_FIRST, new IllegalArgumentException (), this.replacement [input.getChannelNum ()].getFormatInfo (), input.getFormatInfo ());
         }
     }
 

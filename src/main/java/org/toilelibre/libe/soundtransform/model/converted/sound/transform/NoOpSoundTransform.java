@@ -6,9 +6,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
  * Produces an exact copy of the input sound
  *
  */
-public class NoOpSoundTransformation implements SoundTransformation {
+public class NoOpSoundTransform implements SoundTransform<Sound, Sound> {
 
-    public NoOpSoundTransformation () {
+    public NoOpSoundTransform () {
     }
 
     private Sound noop (final Sound sound) {

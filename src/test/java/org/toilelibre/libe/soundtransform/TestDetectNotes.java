@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jO
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
@@ -35,7 +35,7 @@ public class TestDetectNotes extends SoundTransformTest {
             t [i] = (float) (value + Math.random () * twopercents - twopercents / 2);
         }
         ((ImportPackService<?>) $.select (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN))).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
-        new ShapeSoundTransformation ("default", "simple_piano", t, new FormatInfo (2, 44100.0f)).setObservers (new Slf4jObserver (), new Observer () {
+        new ShapeSoundTransform ("default", "simple_piano", t, new FormatInfo (2, 44100.0f)).setObservers (new Slf4jObserver (), new Observer () {
 
             @Override
             public void notify (final LogEvent logEvent) {

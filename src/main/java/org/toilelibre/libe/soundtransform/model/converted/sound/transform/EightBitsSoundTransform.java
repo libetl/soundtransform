@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
  * Leaves only one sample out of [step] ones, the others are set to 0.
  * The effect is to produce a sound that sounds like a video game console. (a good step value for a CD format is 25) 
  */
-public class EightBitsSoundTransformation implements SoundTransformation {
+public class EightBitsSoundTransform implements SoundTransform<Sound, Sound> {
 
     private final int step;
 
@@ -14,7 +14,7 @@ public class EightBitsSoundTransformation implements SoundTransformation {
      * Default constructor
      * @param step iteration step value
      */
-    public EightBitsSoundTransformation (final int step) {
+    public EightBitsSoundTransform (final int step) {
         this.step = step;
     }
 

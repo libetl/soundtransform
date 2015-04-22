@@ -2,14 +2,14 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.converted.soun
 
 import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 /**
  * Stores an array to know the volume at each step of the sound
  *
  */
-public class ComputeMagnitudeSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
+public class ComputeMagnitudeSoundTransform extends SimpleFrequencySoundTransform<Complex []> {
     private int          arraylength = 0;
     private final double step;
     private double []    magnitude;
@@ -18,7 +18,7 @@ public class ComputeMagnitudeSoundTransformation extends SimpleFrequencySoundTra
      * Default constructor
      * @param step1 iteration step value
      */
-    public ComputeMagnitudeSoundTransformation (final double step1) {
+    public ComputeMagnitudeSoundTransform (final double step1) {
         super ();
         this.step = step1;
     }

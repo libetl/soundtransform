@@ -1,10 +1,12 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+
+import se.jbee.inject.Array;
 
 final class DefaultCallTransformService extends AbstractLogAware<DefaultCallTransformService> implements CallTransformService<AbstractLogAware<DefaultCallTransformService>> {
 
@@ -18,27 +20,18 @@ final class DefaultCallTransformService extends AbstractLogAware<DefaultCallTran
      * org.toilelibre.libe.soundtransform.model.converted.sound.CallTransformService
      * #apply(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[],
      * org.toilelibre.libe.soundtransform.model.converted.sound.transform.
-     * SoundTransformation)
+     * SoundTransform)
      */
-    @Override
-    public Sound [] apply (final Sound [] input, final SoundTransformation... sts) throws SoundTransformException {
-        Sound [] output = new Sound [input.length];
-        int transformNumber = 0;
-        for (final SoundTransformation st : sts) {
-            for (int i = 0 ; i < input.length ; i++) {
-                this.log (new LogEvent (CallTransformServiceEventCode.TRANSFORM_STARTING, transformNumber + 1, sts.length, st.getClass ().getSimpleName (), i + 1, input.length));
-                if (st instanceof LogAware) {
-                    ((LogAware<?>) st).setObservers (this.observers);
-                }
-                output [i] = st.transform (output [i] == null ? input [i] : output [i]);
+    public <U, V> V [] apply (U [] input, SoundTransform<U, V> transform) throws SoundTransformException {
+        V [] output = (V[]) Array.newArrayInstance(Object[].class, input.length);
+        for (int i = 0 ; i < input.length ; i++) {
+            this.log (new LogEvent (CallTransformServiceEventCode.TRANSFORM_STARTING, transform.getClass ().getSimpleName (), i + 1, input.length));
+            if (transform instanceof LogAware) {
+                ((LogAware<?>) transform).setObservers (this.observers);
             }
-            transformNumber++;
-        }
-        if (sts.length == 0) {
-            output = input;
+            output [i] = transform.transform (input [i]);
         }
         this.log (new LogEvent (CallTransformServiceEventCode.TRANSFORMS_DONE));
         return output;
-
     }
 }

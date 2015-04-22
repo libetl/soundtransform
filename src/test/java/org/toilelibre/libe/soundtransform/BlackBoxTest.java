@@ -16,7 +16,7 @@ import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
@@ -36,7 +36,7 @@ public class BlackBoxTest extends SoundTransformTest {
         final InputStream is = new ToInputStream ().toStream (this.input);
         final StreamInfo streamInfo = new GetStreamInfo ().getStreamInfo (new ToInputStream ().toStream (this.input));
         Sound [] sounds = new ConvertFromInputStream ().fromInputStream (is);
-        sounds = new ApplySoundTransform ().apply (sounds, new EightBitsSoundTransformation (25));
+        sounds = new ApplySoundTransform ().apply (sounds, new EightBitsSoundTransform (25));
         final InputStream isOut = new ToInputStream ().toStream (sounds, streamInfo);
         new ExportAFile ().writeFile (isOut, this.output);
     }

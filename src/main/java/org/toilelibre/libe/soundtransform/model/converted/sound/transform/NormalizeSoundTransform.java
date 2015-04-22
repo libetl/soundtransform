@@ -8,15 +8,15 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
  * Raises the sound volume to match a certain percentage of the maximum possible level
  *
  */
-public class NormalizeSoundTransformation implements SoundTransformation {
+public class NormalizeSoundTransform implements SoundTransform<Sound, Sound> {
 
-    public enum NormalizeSoundTransformationErrorCode implements ErrorCode {
+    public enum NormalizeSoundTransformErrorCode implements ErrorCode {
 
         COEFFICIENT_IS_ABOVE_ONE ("The coefficient of the normalizer is above one"), COEFFICIENT_IS_BELOW_ZERO ("The coefficient of the normalizer is below zero");
 
         private final String messageFormat;
 
-        NormalizeSoundTransformationErrorCode (final String mF) {
+        NormalizeSoundTransformErrorCode (final String mF) {
             this.messageFormat = mF;
         }
 
@@ -34,16 +34,16 @@ public class NormalizeSoundTransformation implements SoundTransformation {
      * @param coefficient1 coefficient of the max level (0 <= coefficient <= 1)
      * @throws SoundTransformException The coefficient of the normalizer is above one or below zero
      */
-    public NormalizeSoundTransformation (final float coefficient1) throws SoundTransformException {
+    public NormalizeSoundTransform (final float coefficient1) throws SoundTransformException {
         this.coefficient = this.checkCoefficient (coefficient1);
     }
 
     private float checkCoefficient (final float coefficient1) throws SoundTransformException {
         if (coefficient1 > 1) {
-            throw new SoundTransformException (NormalizeSoundTransformationErrorCode.COEFFICIENT_IS_ABOVE_ONE, new IllegalArgumentException ());
+            throw new SoundTransformException (NormalizeSoundTransformErrorCode.COEFFICIENT_IS_ABOVE_ONE, new IllegalArgumentException ());
         }
         if (coefficient1 < 0) {
-            throw new SoundTransformException (NormalizeSoundTransformationErrorCode.COEFFICIENT_IS_BELOW_ZERO, new IllegalArgumentException ());
+            throw new SoundTransformException (NormalizeSoundTransformErrorCode.COEFFICIENT_IS_BELOW_ZERO, new IllegalArgumentException ());
         }
         return coefficient1;
     }
@@ -62,7 +62,7 @@ public class NormalizeSoundTransformation implements SoundTransformation {
         }
 
         // now find the result, with scaling:
-        final double maxValue = Math.pow (NormalizeSoundTransformation.NB_BYTE_VALUES, sound.getSampleSize ()) - 1;
+        final double maxValue = Math.pow (NormalizeSoundTransform.NB_BYTE_VALUES, sound.getSampleSize ()) - 1;
         final double ratio = maxValue / max;
         for (int i = 0 ; i < data.length ; i++) {
             final double rescaled = data [i] * ratio * this.coefficient;

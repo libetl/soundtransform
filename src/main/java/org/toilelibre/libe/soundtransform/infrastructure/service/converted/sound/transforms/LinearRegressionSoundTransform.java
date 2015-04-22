@@ -3,14 +3,14 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.converted.soun
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 
 /**
  * Smoothes a sound graph.
  * The effect is to remove the treble frequencies without any time-to-frequency domain transform
  * 
  */
-public class LinearRegressionSoundTransformation implements SoundTransformation {
+public class LinearRegressionSoundTransform implements SoundTransform<Sound, Sound> {
 
     private final int step;
 
@@ -18,7 +18,7 @@ public class LinearRegressionSoundTransformation implements SoundTransformation 
      * Default constructor
      * @param step1 iteration step value
      */
-    public LinearRegressionSoundTransformation (final int step1) {
+    public LinearRegressionSoundTransform (final int step1) {
         this.step = step1;
     }
 

@@ -4,7 +4,7 @@ import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 /**
@@ -12,7 +12,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
  * Change the volume of each frequencies range at each step of the sound
  * 
  */
-public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []> {
+public class EqualizerSoundTransform extends SimpleFrequencySoundTransform<Complex []> {
 
     private final double [] ranges;
     private final double [] amplification;
@@ -23,7 +23,7 @@ public class EqualizerSoundTransformation extends SimpleFrequencySoundTransforma
      * @param ranges1 the frequencies, in abscissa [0..20000]
      * @param amplification1 the amplification, in ordinate [0..1]
      */
-    public EqualizerSoundTransformation (final double [] ranges1, final double [] amplification1) {
+    public EqualizerSoundTransform (final double [] ranges1, final double [] amplification1) {
         super ();
         this.ranges = ranges1.clone ();
         this.amplification = amplification1.clone ();

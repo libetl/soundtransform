@@ -1,7 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -13,30 +12,26 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 /**
  * Uses a list of spectrums to convert them into a sound
  */
-public class SpectrumsToSoundSoundTransformation implements SoundTransformation {
+public class SpectrumsToSoundSoundTransform implements SoundTransform<Spectrum<Serializable> [], Sound> {
 
-    private final List<Spectrum<Serializable> []> spectrums;
     private final FourierTransformHelper<?>       fourierHelper;
     private final SoundAppender                   appender;
 
     /**
      * Default constructors
-     * @param spectrums1 the list of spectrums
      */
-    public SpectrumsToSoundSoundTransformation (final List<Spectrum<Serializable> []> spectrums1) {
+    public SpectrumsToSoundSoundTransform () {
         this.fourierHelper = $.select (FourierTransformHelper.class);
         this.appender = $.select (SoundAppender.class);
-        this.spectrums = spectrums1;
     }
 
     @Override
-    public Sound transform (final Sound input) throws SoundTransformException {
-        if (this.spectrums == null || this.spectrums.size () == 0) {
+    public Sound transform (final Spectrum<Serializable> [] spectrumChannel) throws SoundTransformException {
+        int roundedSampleRate = 2;
+        if (spectrumChannel == null || spectrumChannel.length == 0) {
             return null;
         }
-        final Spectrum<?> [] spectrumChannel = this.spectrums.get (input.getChannelNum ());
-        int roundedSampleRate = 2;
-        while (roundedSampleRate < this.spectrums.get (input.getChannelNum ()) [0].getSampleRate ()) {
+        while (roundedSampleRate < spectrumChannel [0].getSampleRate ()) {
             roundedSampleRate *= 2;
         }
         final Sound result = new Sound (new long [roundedSampleRate * spectrumChannel.length], spectrumChannel [0].getFormatInfo (), 0);

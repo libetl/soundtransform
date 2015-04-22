@@ -13,7 +13,7 @@ import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransformation;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
@@ -89,7 +89,7 @@ public class Sound2NoteTest extends SoundTransformTest {
         final InputStream ais = $.select (AudioFileService.class).streamFromFile (input);
 
         final Sound [] f4 = $.select (InputStreamToSoundService.class).fromInputStream (ais);
-        final PitchSoundTransformation pitcher = new PitchSoundTransformation (200);
+        final PitchSoundTransform pitcher = new PitchSoundTransform (200);
         final Sound f51 = pitcher.transform (f4 [0]);
         final Sound f52 = pitcher.transform (f4 [1]);
 

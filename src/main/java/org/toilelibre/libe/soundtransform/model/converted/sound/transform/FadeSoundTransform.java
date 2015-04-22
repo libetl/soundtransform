@@ -11,15 +11,15 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
  * (the sound volume gradually increases in the intro and gradually descreases in the outro) 
  *
  */
-public class FadeSoundTransformation implements SoundTransformation {
+public class FadeSoundTransform implements SoundTransform<Sound, Sound> {
 
-    public enum FadeSoundTransformationErrorCode implements ErrorCode {
+    public enum FadeSoundTransformErrorCode implements ErrorCode {
 
         FADE_LENGTH_LONGER_THAN_SOUND ("The fade length is longer than the sound itself (length : %1d, fade length : %2d)"), FADE_LENGTH_IS_BELOW_ZERO ("The expected fade length is less than 0");
 
         private final String messageFormat;
 
-        FadeSoundTransformationErrorCode (final String mF) {
+        FadeSoundTransformErrorCode (final String mF) {
             this.messageFormat = mF;
         }
 
@@ -38,14 +38,14 @@ public class FadeSoundTransformation implements SoundTransformation {
      * @param fadeIn1 true for fadeIn, false for fadeOut
      * @throws SoundTransformException The fade length is longer than the sound itself
      */
-    public FadeSoundTransformation (final int length1, final boolean fadeIn1) throws SoundTransformException {
+    public FadeSoundTransform (final int length1, final boolean fadeIn1) throws SoundTransformException {
         this.length = this.checkLength (length1);
         this.fadeIn = fadeIn1;
     }
 
     private int checkLength (final int length1) throws SoundTransformException {
         if (length1 < 0) {
-            throw new SoundTransformException (FadeSoundTransformationErrorCode.FADE_LENGTH_IS_BELOW_ZERO, new IllegalArgumentException ());
+            throw new SoundTransformException (FadeSoundTransformErrorCode.FADE_LENGTH_IS_BELOW_ZERO, new IllegalArgumentException ());
         }
         return length1;
     }
@@ -66,7 +66,7 @@ public class FadeSoundTransformation implements SoundTransformation {
     @Override
     public Sound transform (final Sound input) {
         if (this.length > input.getSamplesLength ()) {
-            throw new SoundTransformRuntimeException (FadeSoundTransformationErrorCode.FADE_LENGTH_LONGER_THAN_SOUND, new IllegalArgumentException (), this.length, input.getSamplesLength ());
+            throw new SoundTransformRuntimeException (FadeSoundTransformErrorCode.FADE_LENGTH_LONGER_THAN_SOUND, new IllegalArgumentException (), this.length, input.getSamplesLength ());
         }
         return this.fade (input);
     }

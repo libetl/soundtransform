@@ -7,13 +7,13 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransf
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 
-public abstract class AbstractFrequencySoundTransformation<T extends Serializable> extends AbstractLogAware<AbstractFrequencySoundTransformation<T>> implements SoundTransformation {
+public abstract class AbstractFrequencySoundTransform<T extends Serializable> extends AbstractLogAware<AbstractFrequencySoundTransform<T>> implements SoundTransform<Sound, Sound> {
 
     private static final double             LOG_2 = Math.log (2);
     private static final int                TWO   = 2;
     private final FourierTransformHelper<T> fourierTransformHelper;
 
-    public AbstractFrequencySoundTransformation (final FourierTransformHelper<T> helper1) {
+    public AbstractFrequencySoundTransform (final FourierTransformHelper<T> helper1) {
         this.fourierTransformHelper = helper1;
     }
 
@@ -22,7 +22,7 @@ public abstract class AbstractFrequencySoundTransformation<T extends Serializabl
     public abstract double getStep (double defaultValue);
 
     public int getWindowLength (final double freqmax) {
-        return (int) Math.pow (AbstractFrequencySoundTransformation.TWO, Math.ceil (Math.log (freqmax) / AbstractFrequencySoundTransformation.LOG_2));
+        return (int) Math.pow (AbstractFrequencySoundTransform.TWO, Math.ceil (Math.log (freqmax) / AbstractFrequencySoundTransform.LOG_2));
     }
 
     public abstract Sound initSound (Sound input);

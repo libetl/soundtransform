@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
  * Transforms a sound into a list of spectrums. Useful to display a visualizer.
  * 
  */
-public class SoundToSpectrumsSoundTransformation extends SimpleFrequencySoundTransformation<Serializable> {
+public class SoundToSpectrumsSoundTransform extends SimpleFrequencySoundTransform<Serializable> {
 
     private static final int                      TWO = 2;
     private int                                   step;
@@ -21,7 +21,7 @@ public class SoundToSpectrumsSoundTransformation extends SimpleFrequencySoundTra
     /**
      * Default constructor
      */
-    public SoundToSpectrumsSoundTransformation () {
+    public SoundToSpectrumsSoundTransform () {
         super ();
         this.spectrums = new ArrayList<Spectrum<Serializable> []> ();
     }
@@ -44,9 +44,9 @@ public class SoundToSpectrumsSoundTransformation extends SimpleFrequencySoundTra
     public Sound initSound (final Sound input) {
         this.index = 0;
         this.channel = input.getChannelNum ();
-        int roundedSize = SoundToSpectrumsSoundTransformation.TWO;
+        int roundedSize = SoundToSpectrumsSoundTransform.TWO;
         while (input.getSampleRate () > roundedSize) {
-            roundedSize *= SoundToSpectrumsSoundTransformation.TWO;
+            roundedSize *= SoundToSpectrumsSoundTransform.TWO;
         }
         this.step = roundedSize;
         final int spectrumsSize = (int) Math.ceil (input.getSamplesLength () * 1.0 / roundedSize);

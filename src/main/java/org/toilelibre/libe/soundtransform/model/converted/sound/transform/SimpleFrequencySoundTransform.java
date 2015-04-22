@@ -12,13 +12,13 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
  *
  *
  */
-public class SimpleFrequencySoundTransformation<T extends Serializable> extends AbstractFrequencySoundTransformation<T> {
+public class SimpleFrequencySoundTransform<T extends Serializable> extends AbstractFrequencySoundTransform<T> {
 
     @SuppressWarnings ("unchecked")
     /**
      * Default constructor
      */
-    public SimpleFrequencySoundTransformation () {
+    public SimpleFrequencySoundTransform () {
         super ($.select (FourierTransformHelper.class));
     }
 

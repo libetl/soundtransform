@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
  * Builds a string representation of a sound channel
  *
  */
-public class ToStringSoundTransformation implements SoundTransformation {
+public class ToStringSoundTransform implements SoundTransform<Sound, String> {
 
     private static final double NB_BYTE_VALUES = 1 << Byte.SIZE;
     private static final long   TWO            = 2;
@@ -21,7 +21,7 @@ public class ToStringSoundTransformation implements SoundTransformation {
      * @param length width of the string
      * @param height height of the string
      */
-    public ToStringSoundTransformation (final int length, final int height) {
+    public ToStringSoundTransform (final int length, final int height) {
         this.length = length;
         this.height = height;
     }
@@ -85,13 +85,13 @@ public class ToStringSoundTransformation implements SoundTransformation {
     }
 
     @Override
-    public Sound transform (final Sound input) {
+    public String transform (final Sound input) {
         this.maxPlotValue = 0d;
         this.minValuePlotted = -1;
         final double compression = input.getSamplesLength () * 1.0 / this.length;
         this.sb = new StringBuilder ();
         final float lastSample = input.getSamplesLength ();
-        final long maxMagn = (long) Math.pow (ToStringSoundTransformation.NB_BYTE_VALUES, input.getSampleSize ()) / ToStringSoundTransformation.TWO;
+        final long maxMagn = (long) Math.pow (ToStringSoundTransform.NB_BYTE_VALUES, input.getSampleSize ()) / ToStringSoundTransform.TWO;
         final int step = (int) lastSample / this.length;
         final int [] valuesOnPlot = this.prepareValuesOnPlot (input, step, maxMagn);
         for (int j = this.height ; j >= 0 ; j--) {
@@ -99,6 +99,6 @@ public class ToStringSoundTransformation implements SoundTransformation {
         }
         this.diplayFooter (input, compression);
 
-        return input;
+        return sb.toString();
     }
 }

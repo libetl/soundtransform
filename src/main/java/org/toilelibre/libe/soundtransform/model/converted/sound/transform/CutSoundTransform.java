@@ -9,14 +9,14 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
  *
  * The result of the method contains the rest of the sound, and the removed interval is not available from here. 
  */
-public class CutSoundTransformation implements SoundTransformation {
+public class CutSoundTransform implements SoundTransform<Sound, Sound> {
 
-    enum SoundCutSoundTransformationErrorCode implements ErrorCode {
+    enum SoundCutSoundTransformErrorCode implements ErrorCode {
         INDEXS_OUT_OF_BOUND ("The specified indexes are out of bound (maximum : %1d -> %2d , actual : %3d -> %4d)");
 
         private String messageFormat;
 
-        SoundCutSoundTransformationErrorCode (final String mF) {
+        SoundCutSoundTransformErrorCode (final String mF) {
             this.messageFormat = mF;
         }
 
@@ -35,7 +35,7 @@ public class CutSoundTransformation implements SoundTransformation {
      * @param start1 start of the interval
      * @param end1 end of the interval
      */
-    public CutSoundTransformation (final int start1, final int end1) {
+    public CutSoundTransform (final int start1, final int end1) {
         this.start = start1;
         this.end = end1;
     }
@@ -47,7 +47,7 @@ public class CutSoundTransformation implements SoundTransformation {
         final Sound result = new Sound (new long [newlength], input.getFormatInfo (), input.getChannelNum ());
 
         if (this.start > this.end || this.start < 0 || this.end >= input.getSamplesLength ()) {
-            throw new SoundTransformException (SoundCutSoundTransformationErrorCode.INDEXS_OUT_OF_BOUND, new IllegalArgumentException (), 0, input.getSamplesLength (), this.start, this.end);
+            throw new SoundTransformException (SoundCutSoundTransformErrorCode.INDEXS_OUT_OF_BOUND, new IllegalArgumentException (), 0, input.getSamplesLength (), this.start, this.end);
         }
 
         for (int i = 0 ; i < this.start ; i++) {
