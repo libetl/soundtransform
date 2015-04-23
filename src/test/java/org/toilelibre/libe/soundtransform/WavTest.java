@@ -27,7 +27,6 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFi
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReverseSoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpeedUpSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -197,7 +196,7 @@ public class WavTest extends SoundTransformTest {
         // WARN : quite long
         final Library library = $.select (Library.class);
         ((ImportPackService<?>) $.select (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN))).importPack (library, "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().apply (new ShapeSoundTransform ("default", "simple_piano")).exportToFile (this.output);
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100)).exportToFile (this.output);
 
     }
 
