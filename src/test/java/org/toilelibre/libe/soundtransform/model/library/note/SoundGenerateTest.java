@@ -50,7 +50,7 @@ public class SoundGenerateTest extends SoundTransformTest {
             signal [j] = (long) (Math.sin (j * soundfreq * 2 * Math.PI / samplerate) * 32768.0);
         }
         final Sound s = new Sound (signal, new FormatInfo (sampleInBytes, samplerate), 1);
-        final SoundTransform st = new SimpleFrequencySoundTransform<Complex []> ();
+        final SoundTransform<Sound, Sound> st = new SimpleFrequencySoundTransform<Complex []> ();
         st.transform (s);
 
     }
