@@ -889,8 +889,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientSoundImported shapeIntoSound (final String packName, final String instrumentName, final FormatInfo fi) throws SoundTransformException {
         final SoundTransform<float[], Sound> soundTransform = new ShapeSoundTransform (packName, instrumentName, fi);
+        List<float []> savedFreqs = this.freqs;
         this.cleanData ();
-        this.sounds = new ApplySoundTransform (this.getObservers ()).<float [], Sound>apply (this.freqs.toArray (new float [0] [0]), soundTransform);
+        this.sounds = new ApplySoundTransform (this.getObservers ()).<float [], Sound>apply (savedFreqs.toArray (new float [0] [0]), soundTransform);
         return this;
     }
 
