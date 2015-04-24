@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -1314,8 +1313,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientWithFreqs withFreqs (final List<float []> freqs1) {
         this.cleanData ();
-        this.freqs = new LinkedList<float []> ();
-        Collections.copy (this.freqs, freqs1);
+        this.freqs = new LinkedList<float []> (freqs1);
         return this;
     }
 
