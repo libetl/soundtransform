@@ -34,11 +34,11 @@ public class ShapeTest extends SoundTransformTest {
     @Test
     public void testShapeASimplePianoNoteAsAChordNote () throws SoundTransformException {
 
-        Sound [] sound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).withClasspathResource ("piano5g.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "chord_piano", new FormatInfo (2, 44100)).stopWithSounds ();
+        Sound [] sound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).withClasspathResource ("piano5g.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "chord_piano", new FormatInfo (2, 44100)).stopWithSound ();
         ((ImportPackService<?>) $.select (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN))).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
 
         final float frequency = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("output chord_note"), sound).getFrequency ();
-        FluentClient.start ().withSounds (sound).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        FluentClient.start ().withSound (sound).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
         new Slf4jObserver ().notify ("Output chord note should be around 387Hz, but is " + frequency + "Hz");
 
     }
@@ -46,11 +46,11 @@ public class ShapeTest extends SoundTransformTest {
     @Test
     public void testShapeASimplePianoNoteAsAChordNoteSameFrequency () throws SoundTransformException {
 
-        Sound [] sound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).withClasspathResource ("piano3e.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "chord_piano", new FormatInfo (2, 44100)).stopWithSounds ();
+        Sound [] sound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).withClasspathResource ("piano3e.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "chord_piano", new FormatInfo (2, 44100)).stopWithSound ();
         ((ImportPackService<?>) $.select (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN))).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
 
         final float frequency = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("output chord_note"), sound).getFrequency ();
-        FluentClient.start ().withSounds (sound).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        FluentClient.start ().withSound (sound).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
         new Slf4jObserver ().notify ("Output chord note should be around 332Hz, but is " + frequency + "Hz");
     }
 }

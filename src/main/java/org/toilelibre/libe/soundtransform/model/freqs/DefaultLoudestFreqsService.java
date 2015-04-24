@@ -1,5 +1,8 @@
 package org.toilelibre.libe.soundtransform.model.freqs;
 
+import java.util.Arrays;
+import java.util.List;
+
 final class DefaultLoudestFreqsService implements LoudestFreqsService {
 
     private static final float                 HALF  = 0.5f;
@@ -28,8 +31,12 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      * (float[])
      */
     @Override
-    public float [] adjust (final float [] freqs) {
-        return this.adjustFrequenciesProcessor.adjust (freqs);
+    public List<float []> adjust (final List<float []> freqs) {
+        float [] [] result = new float [freqs.size ()] [];
+        for (int i = 0 ; i < freqs.size () ; i ++){
+          result [i] = this.adjustFrequenciesProcessor.adjust (freqs.get (i));
+        }
+        return Arrays.asList (result);
     }
 
     /*
@@ -40,8 +47,12 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      * (float[], float)
      */
     @Override
-    public float [] compress (final float [] freqs, final float factor) {
-        return this.compressFrequenciesProcessor.compress (freqs, factor);
+    public List<float []> compress (final List<float []> freqs, final float factor) {
+        float [] [] result = new float [freqs.size ()] [];
+        for (int i = 0 ; i < freqs.size () ; i ++){
+          result [i] = this.compressFrequenciesProcessor.compress (freqs.get (i), factor);
+        }
+        return Arrays.asList (result);
     }
 
     /*
@@ -51,8 +62,12 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      * filterRange(float[], float, float)
      */
     @Override
-    public float [] filterRange (final float [] freqs, final float low, final float high) {
-        return this.filterFrequenciesProcessor.filter (freqs, low, high);
+    public List<float []> filterRange (final List<float []> freqs, final float low, final float high) {
+        float [] [] result = new float [freqs.size ()] [];
+        for (int i = 0 ; i < freqs.size () ; i ++){
+          result [i] = this.filterFrequenciesProcessor.filter (freqs.get (i), low, high);
+        }
+        return Arrays.asList (result);
     }
 
     /*
@@ -63,8 +78,12 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      * (float[], float[], int)
      */
     @Override
-    public float [] insertPart (final float [] freqs, final float [] subFreqs, final int start) {
-        return this.replaceFrequenciesProcessor.insertPart (freqs, subFreqs, start);
+    public List<float []> insertPart (final List<float []> freqs, final List<float []> subFreqs, final int start) {
+        float [] [] result = new float [freqs.size ()] [];
+        for (int i = 0 ; i < freqs.size () ; i ++){
+            result [i] = this.replaceFrequenciesProcessor.insertPart (freqs.get (i), subFreqs.get (i), start);
+        }
+        return Arrays.asList (result);
     }
 
     /*
@@ -75,8 +94,12 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      * (float[])
      */
     @Override
-    public float [] octaveDown (final float [] freqs) {
-        return this.changeOctaveProcessor.multFreqs (freqs, DefaultLoudestFreqsService.HALF);
+    public List<float []> octaveDown (final List<float []> freqs) {
+        float [] [] result = new float [freqs.size ()] [];
+        for (int i = 0 ; i < freqs.size () ; i ++){
+            result [i] = this.changeOctaveProcessor.multFreqs (freqs.get (i), DefaultLoudestFreqsService.HALF);
+        }
+        return Arrays.asList (result);
     }
 
     /*
@@ -87,8 +110,12 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      * (float[])
      */
     @Override
-    public float [] octaveUp (final float [] freqs) {
-        return this.changeOctaveProcessor.multFreqs (freqs, DefaultLoudestFreqsService.TWICE);
+    public List<float []> octaveUp (final List<float []> freqs) {
+        float [] [] result = new float [freqs.size ()] [];
+        for (int i = 0 ; i < freqs.size () ; i ++){
+            result [i] = this.changeOctaveProcessor.multFreqs (freqs.get (i), DefaultLoudestFreqsService.TWICE);
+        }
+        return Arrays.asList (result);
     }
 
     /*
@@ -98,7 +125,11 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      * replacePart(float[], float[], int)
      */
     @Override
-    public float [] replacePart (final float [] freqs, final float [] subFreqs, final int start) {
-        return this.replaceFrequenciesProcessor.replacePart (freqs, subFreqs, start);
+    public List<float []> replacePart (final List<float []> freqs, final List<float []> subFreqs, final int start) {
+        float [] [] result = new float [freqs.size ()] [];
+        for (int i = 0 ; i < freqs.size () ; i ++){
+            result [i] = this.replaceFrequenciesProcessor.replacePart (freqs.get (i), subFreqs.get (i), start);
+        }
+        return Arrays.asList (result);
     }
 }

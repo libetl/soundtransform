@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -70,7 +71,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     private Sound []                        sounds;
     private InputStream                     audioInputStream;
     private String                          sameDirectoryAsClasspathResource;
-    private float []                        freqs;
+    private List<float []>                  freqs;
     private FluentClientCommon []           parallelizedClients;
 
     private File                            file;
@@ -395,7 +396,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         final PeakFindSoundTransform<Serializable> peakFind = new PeakFindWithHPSSoundTransform<Serializable> (FluentClient.DEFAULT_STEP_VALUE);
         new ApplySoundTransform (this.getObservers ()).apply (this.sounds, peakFind);
         this.cleanData ();
-        this.freqs = peakFind.getLoudestFreqs ();
+        this.freqs = peakFind.getAllLoudestFreqs ();
         return this;
     }
 
@@ -474,7 +475,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @return the client, with a loudest frequencies float array
      */
     @Override
-    public FluentClientWithFreqs insertPart (final float [] subFreqs, final int start) {
+    public FluentClientWithFreqs insertPart (final List<float []> subFreqs, final int start) {
         this.freqs = new ChangeLoudestFreqs ().insertPart (this.freqs, subFreqs, start);
         return this;
     }
@@ -567,7 +568,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
         final FluentClientCommon [] clients = new FluentClientCommon [sounds1.length];
         for (int i = 0 ; i < sounds1.length ; i++) {
-            clients [i] = FluentClient.start ().withSounds (sounds1 [i]);
+            clients [i] = FluentClient.start ().withSound (sounds1 [i]);
         }
         return this.inParallel (op, timeoutInSeconds, clients);
     }
@@ -669,7 +670,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             threads were interrupted
      */
     @Override
-    public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final float []... freqs1) throws SoundTransformException {
+    public FluentClientWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final List<float []>... freqs1) throws SoundTransformException {
         final FluentClientCommon [] clients = new FluentClientCommon [freqs1.length];
         for (int i = 0 ; i < freqs1.length ; i++) {
             clients [i] = FluentClient.start ().withFreqs (freqs1 [i]);
@@ -776,7 +777,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         if (savedClients == null || savedClients.length == 0 || ((FluentClient) savedClients [0]).sounds == null) {
             throw new SoundTransformException (FluentClient.FluentClientErrorCode.MISSING_SOUND_IN_INPUT, new IllegalArgumentException ());
         }
-        this.sounds = ((FluentClient) savedClients [0]).stopWithSounds ();
+        this.sounds = ((FluentClient) savedClients [0]).stopWithSound ();
 
         for (int i = 1 ; i < savedClients.length ; i++) {
             final Sound [] otherSound = ((FluentClient) savedClients [i]).sounds;
@@ -864,7 +865,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *            index where to start the replacement
      * @return the client, with a loudest frequencies float array
      */
-    public FluentClientWithFreqs replacePart (final float [] subFreqs, final int start) {
+    public FluentClientWithFreqs replacePart (final List<float []> subFreqs, final int start) {
         this.freqs = new ChangeLoudestFreqs ().replacePart (this.freqs, subFreqs, start);
         return this;
     }
@@ -887,9 +888,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException could not call the soundtransform to shape the freqs
      */
     public FluentClientSoundImported shapeIntoSound (final String packName, final String instrumentName, final FormatInfo fi) throws SoundTransformException {
-        final SoundTransform<Sound, Sound> SoundTransform = new ShapeSoundTransform (packName, instrumentName, this.freqs, fi);
+        final SoundTransform<float[], Sound> soundTransform = new ShapeSoundTransform (packName, instrumentName, fi);
         this.cleanData ();
-        this.sounds = new ApplySoundTransform (this.getObservers ()).apply (new Sound [] { new Sound (new long [0], new FormatInfo (0, 0), 0) }, SoundTransform);
+        this.sounds = new ApplySoundTransform (this.getObservers ()).<float [], Sound>apply (this.freqs.toArray (new float [0] [0]), soundTransform);
         return this;
     }
 
@@ -962,8 +963,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Stops the client pipeline and returns the obtained loudest frequencies
      * @return loudest frequencies array
      */
-    public float [] stopWithFreqs () {
-        return this.freqs.clone ();
+    public List<float []> stopWithFreqs () {
+        return this.freqs;
     }
 
     /*
@@ -1024,7 +1025,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
             if (resultClass == float [].class) {
                 results [i++] = (T) ((FluentClient) fcc).stopWithFreqs ();
             } else if (resultClass == Sound [].class) {
-                results [i++] = (T) ((FluentClient) fcc).stopWithSounds ();
+                results [i++] = (T) ((FluentClient) fcc).stopWithSound ();
             } else if (resultClass == InputStream.class) {
                 results [i++] = (T) ((FluentClient) fcc).stopWithInputStream ();
             } else if (resultClass == File.class) {
@@ -1046,7 +1047,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Stops the client pipeline and returns the obtained sound
      * @return a sound value object
      */
-    public Sound [] stopWithSounds () {
+    public Sound [] stopWithSound () {
         return this.sounds.clone ();
     }
 
@@ -1123,7 +1124,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public FluentClientSoundImported withAMixedSound (final Sound []... sounds1) throws SoundTransformException {
         final FluentClientCommon [] clients = new FluentClientCommon [sounds1.length];
         for (int i = 0 ; i < sounds1.length ; i++) {
-            clients [i] = FluentClient.start ().withSounds (sounds1 [i]);
+            clients [i] = FluentClient.start ().withSound (sounds1 [i]);
         }
         this.parallelizedClients = clients;
         return this.mixAllInOneSound ();
@@ -1310,9 +1311,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @param freqs1 the loudest frequencies integer array
      * @return the client, with a loudest frequencies float array
      */
-    public FluentClientWithFreqs withFreqs (final float [] freqs1) {
+    public FluentClientWithFreqs withFreqs (final List<float []> freqs1) {
         this.cleanData ();
-        this.freqs = freqs1.clone ();
+        this.freqs = new LinkedList<float []> ();
+        Collections.copy (this.freqs, freqs1);
         return this;
     }
 
@@ -1383,7 +1385,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @param sounds1 the sound object
      * @return the client, with an imported sound
      */
-    public FluentClientSoundImported withSounds (final Sound [] sounds1) {
+    public FluentClientSoundImported withSound (final Sound [] sounds1) {
         this.cleanData ();
         this.sounds = sounds1.clone ();
         return this;

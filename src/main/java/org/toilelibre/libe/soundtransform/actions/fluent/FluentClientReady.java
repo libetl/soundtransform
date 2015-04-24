@@ -127,7 +127,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, List<float []>... freqs) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of classpathResources
@@ -290,7 +290,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *            the loudest frequencies float array
      * @return the client, with a loudest frequencies float array
      */
-    FluentClientWithFreqs withFreqs (float [] freqs);
+    FluentClientWithFreqs withFreqs (List<float []> freqs);
 
     /**
      * Tells the client to work first to open the microphone and to record a
@@ -350,7 +350,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *            the sound object
      * @return the client, with an imported sound
      */
-    FluentClientSoundImported withSounds (Sound [] sounds);
+    FluentClientSoundImported withSound (Sound [] sounds);
 
     /**
      * Tells the client to work first with a spectrum formatted sound.<br/>

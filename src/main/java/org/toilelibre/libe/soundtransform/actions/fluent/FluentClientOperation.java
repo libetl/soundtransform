@@ -104,12 +104,12 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
     }
 
     @Override
-    public float [] stopWithFreqs () {
+    public List<float []> stopWithFreqs () {
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
 
     @Override
-    public Sound [] stopWithSounds () {
+    public Sound [] stopWithSound () {
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
 
@@ -179,7 +179,7 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
     }
 
     @Override
-    public BuildableFluentClientOperationWithFreqs insertPart (final float [] subFreqs, final int start) {
+    public BuildableFluentClientOperationWithFreqs insertPart (final List<float []> subFreqs, final int start) {
         this.steps.add (new Step () {
 
             @Override
@@ -215,7 +215,7 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
     }
 
     @Override
-    public BuildableFluentClientOperationWithFreqs replacePart (final float [] subFreqs, final int start) {
+    public BuildableFluentClientOperationWithFreqs replacePart (final List<float []> subFreqs, final int start) {
         this.steps.add (new Step () {
 
             @Override
@@ -411,7 +411,7 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
     }
 
     @Override
-    public BuildableFluentClientOperationWithFreqs withFreqs (final float [] freqs) {
+    public BuildableFluentClientOperationWithFreqs withFreqs (final List<float []> freqs) {
         this.steps.add (new Step () {
 
             @Override
@@ -463,12 +463,12 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
     }
 
     @Override
-    public BuildableFluentClientOperationSoundImported withSounds (final Sound [] sounds) {
+    public BuildableFluentClientOperationSoundImported withSound (final Sound [] sounds) {
         this.steps.add (new Step () {
 
             @Override
             public void run (final FluentClientInterface client) throws SoundTransformException {
-                client.withSounds (sounds);
+                client.withSound (sounds);
             }
         });
 
@@ -719,7 +719,7 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
     }
 
     @Override
-    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final float []... freqs) throws SoundTransformException {
+    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final List<float []>... freqs) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override

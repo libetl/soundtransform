@@ -117,21 +117,21 @@ public class WavTest extends SoundTransformTest {
     @Test
     public void testInsert () throws SoundTransformException {
         final File input2 = new File (this.classLoader.getResource ("gpiano4.wav").getFile ());
-        final Sound [] sound2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (input2).convertIntoSound ().stopWithSounds ();
+        final Sound [] sound2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (input2).convertIntoSound ().stopWithSound ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().apply (new InsertPartSoundTransform (sound2, 1000)).exportToFile (this.output);
     }
 
     @Test
     public void testInsertAfterEnd () throws SoundTransformException {
         final File input2 = new File (this.classLoader.getResource ("gpiano4.wav").getFile ());
-        final Sound [] sound2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (input2).convertIntoSound ().stopWithSounds ();
+        final Sound [] sound2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (input2).convertIntoSound ().stopWithSound ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().apply (new InsertPartSoundTransform (sound2, 100000)).exportToFile (this.output);
     }
 
     @Test (expected = SoundTransformRuntimeException.class)
     public void testInsertWrongFormat () throws SoundTransformException {
         final File input2 = new File (this.classLoader.getResource ("piano3e.wav").getFile ());
-        final Sound [] sound2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (input2).convertIntoSound ().stopWithSounds ();
+        final Sound [] sound2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (input2).convertIntoSound ().stopWithSound ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().apply (new InsertPartSoundTransform (sound2, -100000)).exportToFile (this.output);
     }
 
@@ -145,7 +145,7 @@ public class WavTest extends SoundTransformTest {
     public void testMix () throws SoundTransformException {
         final File input1 = new File (this.classLoader.getResource ("gpiano3.wav").getFile ());
         final File input2 = new File (this.classLoader.getResource ("piano3e.wav").getFile ());
-        final Sound [] sound2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (input2).convertIntoSound ().stopWithSounds ();
+        final Sound [] sound2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (input2).convertIntoSound ().stopWithSound ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (input1).convertIntoSound ().apply (new MixSoundTransform (Arrays.<Sound []> asList (sound2))).exportToFile (this.output);
     }
 

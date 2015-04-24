@@ -132,7 +132,7 @@ public interface BuildableFluentClientOperationReady extends FluentClientReady, 
      *             threads were interrupted
      */
     @Override
-    BuildableFluentClientOperationWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs) throws SoundTransformException;
+    BuildableFluentClientOperationWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, List<float []>... freqs) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of classpathResources
@@ -305,7 +305,7 @@ public interface BuildableFluentClientOperationReady extends FluentClientReady, 
      * @return the client, with a loudest frequencies float array
      */
     @Override
-    BuildableFluentClientOperationWithFreqs withFreqs (float [] freqs);
+    BuildableFluentClientOperationWithFreqs withFreqs (List<float []> freqs);
 
     /**
      * Tells the client to work first to open the microphone and to record a
@@ -369,7 +369,7 @@ public interface BuildableFluentClientOperationReady extends FluentClientReady, 
      * @return the client, with an imported sound
      */
     @Override
-    BuildableFluentClientOperationSoundImported withSounds (Sound [] sounds);
+    BuildableFluentClientOperationSoundImported withSound (Sound [] sounds);
 
     /**
      * Tells the client to work first with a spectrum formatted sound.<br/>

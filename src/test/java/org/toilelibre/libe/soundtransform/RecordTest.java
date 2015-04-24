@@ -32,7 +32,7 @@ public class RecordTest extends SoundTransformTest {
     public void recordTwoSeconds () throws SoundTransformException {
         Sound [] sounds = null;
         try {
-            sounds = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 100000, 2, 48000, false, true, null)).importToSound ().stopWithSounds ();
+            sounds = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 100000, 2, 48000, false, true, null)).importToSound ().stopWithSound ();
         } catch (final SoundTransformException ste) {
             // "AUDIO_FORMAT_NOT_SUPPORTED" is thrown by oracle and
             // "TARGET_LINE_UNAVAILABLE" is thrown by openjdk
@@ -60,7 +60,7 @@ public class RecordTest extends SoundTransformTest {
             @Override
             public void run () {
                 try {
-                    final Sound sounds2 [] = FluentClient.start ().withRecordedInputStream (new StreamInfo (2, -1, 2, 48000, false, true, null), stop).importToSound ().stopWithSounds ();
+                    final Sound sounds2 [] = FluentClient.start ().withRecordedInputStream (new StreamInfo (2, -1, 2, 48000, false, true, null), stop).importToSound ().stopWithSound ();
                     sounds [0] = sounds2 [0];
                     sounds [1] = sounds2 [1];
                 } catch (final SoundTransformException ste) {

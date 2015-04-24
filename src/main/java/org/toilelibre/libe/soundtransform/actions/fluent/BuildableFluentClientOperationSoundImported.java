@@ -193,5 +193,5 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @return a sound value object
      */
     @Override
-    Sound [] stopWithSounds ();
+    Sound [] stopWithSound ();
 }

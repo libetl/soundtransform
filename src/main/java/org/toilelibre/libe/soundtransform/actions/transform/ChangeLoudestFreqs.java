@@ -1,34 +1,36 @@
 package org.toilelibre.libe.soundtransform.actions.transform;
 
+import java.util.List;
+
 import org.toilelibre.libe.soundtransform.actions.Action;
 
 public final class ChangeLoudestFreqs extends Action {
 
-    public float [] adjust (final float [] freqs) {
+    public List<float []> adjust (final List<float []> freqs) {
         return this.loudestFreqs.adjust (freqs);
     }
 
-    public float [] compress (final float [] freqs, final float factor) {
+    public List<float []> compress (final List<float []> freqs, final float factor) {
         return this.loudestFreqs.compress (freqs, factor);
     }
 
-    public float [] filterRange (final float [] freqs, final float low, final float high) {
+    public List<float []> filterRange (final List<float []> freqs, final float low, final float high) {
         return this.loudestFreqs.filterRange (freqs, low, high);
     }
 
-    public float [] insertPart (final float [] freqs, final float [] subFreqs, final int start) {
+    public List<float []> insertPart (final List<float []> freqs, final List<float []> subFreqs, final int start) {
         return this.loudestFreqs.insertPart (freqs, subFreqs, start);
     }
 
-    public float [] octaveDown (final float [] freqs) {
+    public List<float []> octaveDown (final List<float []> freqs) {
         return this.loudestFreqs.octaveDown (freqs);
     }
 
-    public float [] octaveUp (final float [] freqs) {
+    public List<float []> octaveUp (final List<float []> freqs) {
         return this.loudestFreqs.octaveUp (freqs);
     }
 
-    public float [] replacePart (final float [] freqs, final float [] subFreqs, final int start) {
+    public List<float []> replacePart (final List<float []> freqs, final List<float []> subFreqs, final int start) {
         return this.loudestFreqs.replacePart (freqs, subFreqs, start);
     }
 }

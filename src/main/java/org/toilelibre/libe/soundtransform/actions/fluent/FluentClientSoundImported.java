@@ -178,6 +178,6 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      *
      * @return a sound value object
      */
-    Sound [] stopWithSounds ();
+    Sound [] stopWithSound ();
 
 }

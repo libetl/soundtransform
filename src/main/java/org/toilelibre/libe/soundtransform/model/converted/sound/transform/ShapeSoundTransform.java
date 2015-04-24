@@ -20,7 +20,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
  * It uses a soundtransform to get the loudest frequencies, then it shapes a sound consisting of the notes heard in the freqs array.
  * If the constructor using a float array is used, only the shaping step will be processed
  */
-public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> implements SoundTransform<Sound, Sound> {
+public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> implements SoundTransform<float [], Sound> {
     public enum ShapeSoundTransformErrorCode implements ErrorCode {
 
         NO_LOUDEST_FREQS_IN_ATTRIBUTE ("No loudest freqs array passed in attribute"), NOT_AN_INSTRUMENT ("%1s is not a valid instrument"), NO_PACK_IN_PARAMETER ("No pack in parameter. Please instantiate a ShapeSoundTransform with a not null Pack");
@@ -68,27 +68,17 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
     private FormatInfo          formatInfo;
 
     /**
-     * Constructor for the two steps
-     * @param packName Pack name, should be already imported
-     * @param instrument instrument of the pack which will be used to shape the sound
-     */
-    public ShapeSoundTransform (final String packName, final String instrument) {
-        this.silence = new Silence ();
-        this.pack = $.select (Library.class).getPack (packName);
-        this.instrument = instrument;
-        this.soundAppender = $.select (SoundAppender.class);
-    }
-
-    /**
-     * Constructor only for the second step
+     * Default Constructor
      * @param packName Pack name, should be already imported
      * @param instrument instrument of the pack which will be used to shape the sound
      * @param freqs the loudest freqs array
      * @param formatInfo1 the format info
      */
-    public ShapeSoundTransform (final String packName, final String instrument, final float [] freqs, final FormatInfo formatInfo1) {
-        this (packName, instrument);
-        this.freqs = freqs.clone ();
+    public ShapeSoundTransform (final String packName, final String instrument, final FormatInfo formatInfo1) {
+        this.silence = new Silence ();
+        this.pack = $.select (Library.class).getPack (packName);
+        this.instrument = instrument;
+        this.soundAppender = $.select (SoundAppender.class);
         this.formatInfo = formatInfo1;
     }
 
@@ -121,7 +111,7 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
         return frequencyDidNotChangeBetweenIAndIMinusTwo && freqChangedAtIMinusThree && thereIsANewFrequencyValue;
     }
 
-    public Sound transform (final int step, final int channelNum, final int soundLength) throws SoundTransformException {
+    private Sound transform (final int step, final int channelNum, final int soundLength) throws SoundTransformException {
         final Sound builtSound = new Sound (new long [soundLength], this.formatInfo, channelNum);
         int lastBegining = 0;
         float lastFreq = 0;
@@ -143,7 +133,7 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
     }
 
     @Override
-    public Sound transform (final Sound sound) throws SoundTransformException {
+    public Sound transform (final float [] freqs1) throws SoundTransformException {
         if (this.pack == null) {
             throw new SoundTransformException (ShapeSoundTransformErrorCode.NO_PACK_IN_PARAMETER, new NullPointerException ());
         }
@@ -151,9 +141,10 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
         int channelNum = 0;
         int soundLength = 0;
 
-        if (this.freqs == null) {
+        if (freqs1 == null) {
             throw new SoundTransformException (ShapeSoundTransformErrorCode.NO_LOUDEST_FREQS_IN_ATTRIBUTE, new NullPointerException ());
         }
+        this.freqs = freqs1;
         if (soundLength == 0) {
             soundLength = step * this.freqs.length;
         }

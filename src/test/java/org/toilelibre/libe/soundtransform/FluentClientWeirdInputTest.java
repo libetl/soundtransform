@@ -43,7 +43,7 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
 
     @Test (expected = SoundTransformRuntimeException.class)
     public void replacePartOutOfBounds () throws SoundTransformException {
-        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransform (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSounds (), -100000))
+        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransform (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSound (), -100000))
         .exportToClasspathResource ("after.wav");
     }
 
@@ -55,7 +55,7 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
     @Test (expected = SoundTransformException.class)
     public void appendDifferentFormatsImpossible () throws SoundTransformException {
         try {
-            final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("piano3e.wav").convertIntoSound ().stopWithSounds ();
+            final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("piano3e.wav").convertIntoSound ().stopWithSound ();
             FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().append (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
             Assert.fail ("append should have failed");
         } catch (final SoundTransformException ste) {
@@ -171,7 +171,7 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
             Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
         }
         try {
-            FluentClientOperation.prepare ().withSounds (null).stopWithSounds ();
+            FluentClientOperation.prepare ().withSound (null).stopWithSound ();
             Assert.fail ("should have failed");
         } catch (final SoundTransformRuntimeException ste) {
             Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());

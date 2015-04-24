@@ -3,6 +3,8 @@ package org.toilelibre.libe.soundtransform;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
@@ -30,7 +32,7 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void appendTest () throws SoundTransformException {
-        final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().stopWithSounds ();
+        final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().stopWithSound ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().append (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
@@ -48,16 +50,17 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void compress () throws SoundTransformException {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18 };
-        final float [] array2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (array1).compress (2).stopWithFreqs ();
+        final float [] array2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (Arrays.asList (array1)).compress (2).stopWithFreqs ().get (0);
         Assert.assertArrayEquals (new float [] { 1.0f, 3.0f, 5.0f, 7.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f }, array2, 0);
     }
 
+    @SuppressWarnings ("unchecked")
     @Test
     public void canAskToDoALotOfThingsToTheFluentClientOperationAndNothingShouldBeDone () throws SoundTransformException {
         FluentClientOperation.prepare ().withAnObserver ().andAfterStart ().withAPack (null, new ByteArrayInputStream (new byte [0])).withAPack (null, "").withAPack (null, null, null, 0).withAudioInputStream (null).importToSound ().append (null).apply (null).changeFormat (null).cutSubSound (0, 0)
         .playIt ().changeFormat (null).exportToClasspathResource (null).playIt ().importToStream ().playIt ().importToSound ().exportToClasspathResourceWithSiblingResource (null, null).convertIntoSound ().exportToFile (null).convertIntoSound ().exportToStream ().importToSound ()
         .findLoudestFrequencies ().compress (0).filterRange (0, 0).insertPart (null, 0).octaveDown ().octaveUp ().replacePart (null, 0).shapeIntoSound (null, null, null).loop (0).mixWith (null).splitIntoSpectrums ().playIt ().extractSound ().andAfterStart ()
-        .inParallel (null, 0, new File ("")).mixAllInOneSound ().andAfterStart ().inParallel (null, 0, new float [0]).andAfterStart ().inParallel (null, 0, new ByteArrayInputStream (new byte [0])).andAfterStart ().inParallel (null, 0, new Sound [0]).andAfterStart ().inParallel (null, 0, "")
+        .inParallel (null, 0, new File ("")).mixAllInOneSound ().andAfterStart ().inParallel (null, 0, Arrays.asList (new float [0])).andAfterStart ().inParallel (null, 0, new ByteArrayInputStream (new byte [0])).andAfterStart ().inParallel (null, 0, new Sound [0]).andAfterStart ().inParallel (null, 0, "")
         .andAfterStart ().inParallel (null, 0, FluentClient.start ()).build ();
     }
 
@@ -111,7 +114,7 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         final float [] array2 = { 15, 16, 17, 18 };
 
-        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 15, 16, 17, 18, 5, 6, 7, 8 }, FluentClient.start ().withFreqs (array1).insertPart (array2, 4).stopWithFreqs (), 0);
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 15, 16, 17, 18, 5, 6, 7, 8 }, FluentClient.start ().withFreqs (Arrays.asList (array1)).insertPart (Arrays.asList (array2), 4).stopWithFreqs ().get (0), 0);
     }
 
     @Test
@@ -119,7 +122,7 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         final float [] array2 = { 15, 16, 17, 18 };
 
-        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18, 8 }, FluentClient.start ().withFreqs (array1).insertPart (array2, 7).stopWithFreqs (), 0);
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18, 8 }, FluentClient.start ().withFreqs (Arrays.asList (array1)).insertPart (Arrays.asList (array2), 7).stopWithFreqs ().get (0), 0);
     }
 
     @Test
@@ -127,7 +130,7 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         final float [] array2 = { 15, 16, 17, 18 };
 
-        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (array1).insertPart (array2, 11).stopWithFreqs (), 0);
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Arrays.asList (array1)).insertPart (Arrays.asList (array2), 11).stopWithFreqs ().get (0), 0);
     }
 
     @Test
@@ -137,14 +140,14 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void mixTest () throws SoundTransformException {
-        final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("piano3e.wav").convertIntoSound ().stopWithSounds ();
+        final Sound [] sounds2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("piano3e.wav").convertIntoSound ().stopWithSound ();
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().mixWith (sounds2).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     @Test
     public void mixTwoFilesAfterStart () throws SoundTransformException {
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
-        FluentClient.start ().withAMixedSound (FluentClient.start ().withClasspathResource ("piano1c.wav").convertIntoSound ().stopWithSounds (), FluentClient.start ().withClasspathResource ("piano8c.wav").convertIntoSound ().stopWithSounds ())
+        FluentClient.start ().withAMixedSound (FluentClient.start ().withClasspathResource ("piano1c.wav").convertIntoSound ().stopWithSound (), FluentClient.start ().withClasspathResource ("piano8c.wav").convertIntoSound ().stopWithSound ())
         .exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
@@ -185,24 +188,25 @@ public class FluentClientTest extends SoundTransformTest {
                 "piano1c.wav", "piano8c.wav").mixAllInOneSound ().exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
+    @SuppressWarnings ("unchecked")
     @Test
     public void mix2SoundsWith2FreqsArrays () throws SoundTransformException {
         final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json");
 
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
-        FluentClient.start ().withAPack ("default", packInputStream).withSounds (FluentClient.start ().inParallel (
+        FluentClient.start ().withAPack ("default", packInputStream).withSound (FluentClient.start ().inParallel (
                 // operations
                 FluentClientOperation.prepare ().convertIntoSound ().build (),
                 // timeout in seconds
                 5,
                 // classpath resources
-                "apiano3.wav", "apiano4.wav").mixAllInOneSound ().stopWithSounds ()).mixWith (FluentClient.start ().inParallel (
+                "apiano3.wav", "apiano4.wav").mixAllInOneSound ().stopWithSound ()).mixWith (FluentClient.start ().inParallel (
                         // operations
                         FluentClientOperation.prepare ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100f)).build (),
                         // timeout in seconds
                         5,
                         // classpath resources
-                        this.generateRandomFreqs (), this.generateRandomFreqs ()).mixAllInOneSound ().stopWithSounds ()).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+                        this.generateRandomFreqs (), this.generateRandomFreqs ()).mixAllInOneSound ().stopWithSound ()).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
 
     }
 
@@ -214,7 +218,7 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void noOpWithInsert () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().apply (new NoOpSoundTransform ())
-        .apply (new InsertPartSoundTransform (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().stopWithSounds (), 12000)).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        .apply (new InsertPartSoundTransform (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().stopWithSound (), 12000)).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     @Test
@@ -232,13 +236,13 @@ public class FluentClientTest extends SoundTransformTest {
         isInfo.hashCode ();
     }
 
-    public float [] generateRandomFreqs () {
+    public List<float []> generateRandomFreqs () {
         final RandomDataGenerator rdg = new RandomDataGenerator ();
         final float [] data = new float [655];
         for (int i = 0 ; i < data.length ; i++) {
             data [i] = (byte) rdg.nextInt (0, 20000);
         }
-        return data;
+        return Arrays.asList (data);
     }
 
     @Test
@@ -263,7 +267,7 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void replacePart () throws SoundTransformException {
-        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransform (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSounds (), 100000))
+        FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransform (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSound (), 100000))
         .exportToClasspathResource ("after.wav");
     }
 
@@ -272,7 +276,7 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         final float [] array2 = { 15, 16, 17, 18 };
 
-        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (array1).replacePart (array2, 4).stopWithFreqs (), 0);
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Arrays.asList (array1)).replacePart (Arrays.asList (array2), 4).stopWithFreqs ().get (0), 0);
     }
 
     @Test
@@ -280,7 +284,7 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         final float [] array2 = { 15, 16, 17, 18 };
 
-        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (array1).replacePart (array2, 7).stopWithFreqs (), 0);
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Arrays.asList (array1)).replacePart (Arrays.asList (array2), 7).stopWithFreqs ().get (0), 0);
     }
 
     @Test
@@ -288,7 +292,7 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         final float [] array2 = { 15, 16, 17, 18 };
 
-        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (array1).replacePart (array2, 11).stopWithFreqs (), 0);
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Arrays.asList (array1)).replacePart (Arrays.asList (array2), 11).stopWithFreqs ().get (0), 0);
     }
 
     // Exactly the same code run as WavTest.testShape
@@ -306,7 +310,7 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void spectrumTest () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().splitIntoSpectrums ().extractSound ().stopWithSounds ();
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().splitIntoSpectrums ().extractSound ().stopWithSound ();
     }
 
     @Test
@@ -326,7 +330,7 @@ public class FluentClientTest extends SoundTransformTest {
                 freqs [i++] = currentFreq;
             }
         }
-        final float [] freqsOutput = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (freqs).filterRange (0, 90).filterRange (500, 1000).stopWithFreqs ();
+        final float [] freqsOutput = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (Arrays.asList (freqs)).filterRange (0, 90).filterRange (500, 1000).stopWithFreqs ().get (0);
         for (i = 0 ; i < freqsOutput.length ; i++) {
             if (freqsOutput [i] > 0 && freqsOutput [i] <= 90 || freqsOutput [i] >= 500 && freqsOutput [i] <= 1000) {
                 org.junit.Assert.fail (freqsOutput [i] + " is not filtered in the freqs array (index " + i + ")");
@@ -353,7 +357,7 @@ public class FluentClientTest extends SoundTransformTest {
         }
         final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json");
         final FormatInfo fi = new FormatInfo (2, 48000);
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", packInputStream).withFreqs (freqs).shapeIntoSound ("default", "simple_piano", fi).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", packInputStream).withFreqs (Arrays.asList (freqs)).shapeIntoSound ("default", "simple_piano", fi).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     @Test

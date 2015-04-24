@@ -232,7 +232,7 @@ public interface FluentClientInterface {
      *            index where to start the insert
      * @return the client, with a loudest frequencies float array
      */
-    public abstract FluentClientWithFreqs insertPart (float [] subFreqs, int start);
+    public abstract FluentClientWithFreqs insertPart (List<float []> subFreqs, int start);
 
     /**
      * Runs asynchronously the same operations on a varargs of started
@@ -328,7 +328,7 @@ public interface FluentClientInterface {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, float []... freqs) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, List<float []>... freqs) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of clients
@@ -416,7 +416,7 @@ public interface FluentClientInterface {
      *            index where to start the replacement
      * @return the client, with a loudest frequencies float array
      */
-    public abstract FluentClientWithFreqs replacePart (float [] subFreqs, int start);
+    public abstract FluentClientWithFreqs replacePart (List<float []> subFreqs, int start);
 
     /**
      * Shapes these loudest frequencies array into a sound and set the converted
@@ -467,7 +467,7 @@ public interface FluentClientInterface {
      *
      * @return loudest frequencies array
      */
-    public abstract float [] stopWithFreqs ();
+    public abstract List<float []> stopWithFreqs ();
 
     /**
      * Stops the client pipeline and returns the obtained input stream
@@ -500,7 +500,7 @@ public interface FluentClientInterface {
      *
      * @return a sound value object
      */
-    public abstract Sound [] stopWithSounds ();
+    public abstract Sound [] stopWithSound ();
 
     /**
      * Stops the client pipeline and returns the obtained spectrums
@@ -660,7 +660,7 @@ public interface FluentClientInterface {
      *            the loudest frequencies integer array
      * @return the client, with a loudest frequencies float array
      */
-    public abstract FluentClientWithFreqs withFreqs (float [] freqs1);
+    public abstract FluentClientWithFreqs withFreqs (List<float []> freqs1);
 
     /**
      * Tells the client to work first to open the microphone and to record a
@@ -720,7 +720,7 @@ public interface FluentClientInterface {
      *            the sound object
      * @return the client, with an imported sound
      */
-    public abstract FluentClientSoundImported withSounds (Sound [] sound);
+    public abstract FluentClientSoundImported withSound (Sound [] sound);
 
     /**
      * Tells the client to work first with a spectrum formatted sound.<br/>

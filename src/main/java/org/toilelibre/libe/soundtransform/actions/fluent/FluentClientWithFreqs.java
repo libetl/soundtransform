@@ -1,5 +1,7 @@
 package org.toilelibre.libe.soundtransform.actions.fluent;
 
+import java.util.List;
+
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
@@ -48,7 +50,7 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *            index where to start the insert
      * @return the client, with a loudest frequencies float array
      */
-    FluentClientWithFreqs insertPart (float [] subFreqs, int start);
+    FluentClientWithFreqs insertPart (List<float []> subFreqs, int start);
 
     /**
      * Changes the loudest frequencies array to become one octave lower
@@ -74,7 +76,7 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *            index where to start the replacement
      * @return the client, with a loudest frequencies float array
      */
-    FluentClientWithFreqs replacePart (float [] subFreqs, int start);
+    FluentClientWithFreqs replacePart (List<float []> subFreqs, int start);
 
     /**
      * Shapes these loudest frequencies array into a sound and set the converted
@@ -98,6 +100,6 @@ public interface FluentClientWithFreqs extends FluentClientCommon {
      *
      * @return loudest frequencies array
      */
-    float [] stopWithFreqs ();
+    List<float []> stopWithFreqs ();
 
 }

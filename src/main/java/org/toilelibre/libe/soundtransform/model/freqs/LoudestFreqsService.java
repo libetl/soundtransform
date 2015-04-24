@@ -1,19 +1,21 @@
 package org.toilelibre.libe.soundtransform.model.freqs;
 
+import java.util.List;
+
 public interface LoudestFreqsService {
 
-    public abstract float [] adjust (float [] freqs);
+    public abstract List<float []> adjust (List<float []> freqs);
 
-    public abstract float [] compress (float [] freqs, float factor);
+    public abstract List<float []> compress (List<float []> freqs, float factor);
 
-    public abstract float [] filterRange (float [] freqs, float low, float high);
+    public abstract List<float []> filterRange (List<float []> freqs, float low, float high);
 
-    public abstract float [] insertPart (float [] freqs, float [] subFreqs, int start);
+    public abstract List<float []> insertPart (List<float []> freqs, List<float []> subFreqs, int start);
 
-    public abstract float [] octaveDown (float [] freqs);
+    public abstract List<float []> octaveDown (List<float []> freqs);
 
-    public abstract float [] octaveUp (float [] freqs);
+    public abstract List<float []> octaveUp (List<float []> freqs);
 
-    public abstract float [] replacePart (float [] freqs, float [] subFreqs, int start);
+    public abstract List<float []> replacePart (List<float []> freqs, List<float []> subFreqs, int start);
 
 }
