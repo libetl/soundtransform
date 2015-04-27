@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 /**
  * Mixes several sounds into a new sound
  * The sound channels will be re-sampled (up sampled or down sampled) to match the first sound format info.
- * The sounds samples will be summed. 
+ * The sounds samples will be summed.
  * Therefore, if the first sound is the opposite of the second one (sample1 [i] = -sample2 [i]), the sum will be 0. (there will be nothing to hear)
  *
  */
@@ -20,9 +20,9 @@ public class MixSoundTransform implements SoundTransform<Sound, Sound> {
 
     /**
      * Default constructor
-     * @param otherSounds1 sounds to mix with the first one (passed in the transform) 
-     *                     the transform expects to receive all the channels of each sound, 
-     *                     even if it will not use them all for the mix. 
+     * @param otherSounds1 sounds to mix with the first one (passed in the transform)
+     *                     the transform expects to receive all the channels of each sound,
+     *                     even if it will not use them all for the mix.
      *                     (the channelNum of the first sound will be used to match the other sounds channels
      *                     before the mix operation takes place)
      */

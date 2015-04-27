@@ -17,6 +17,6 @@ public abstract class SpectrumAccessor extends SoundToStringAccessor {
     }
 
     protected SpectrumToCepstrumHelper<Complex []> provideSpectrum2CepstrumHelper () {
-        return new NaiveSpectrum2CepstrumHelper ();
+        return new NaiveSpectrumToCepstrumHelper ();
     }
 }

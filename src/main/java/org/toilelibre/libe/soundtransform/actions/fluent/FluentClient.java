@@ -888,7 +888,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientSoundImported shapeIntoSound (final String packName, final String instrumentName, final FormatInfo fi) throws SoundTransformException {
         final SoundTransform<float[], Sound> soundTransform = new ShapeSoundTransform (packName, instrumentName, fi);
-        List<float []> savedFreqs = this.freqs;
+        final List<float []> savedFreqs = this.freqs;
         this.cleanData ();
         this.sound = new ApplySoundTransform (this.getObservers ()).<float [], Sound>apply (savedFreqs.toArray (new float [0] [0]), soundTransform);
         return this;
@@ -909,9 +909,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException {
         final SoundToSpectrumsSoundTransform sound2Spectrums = new SoundToSpectrumsSoundTransform ();
-        new ApplySoundTransform (this.getObservers ()).apply (this.sound, sound2Spectrums);
+        final Sound [] savedSound = this.sound;
         this.cleanData ();
-        this.spectrums = sound2Spectrums.getSpectrums ();
+        this.spectrums = Arrays.asList (new ApplySoundTransform (this.getObservers ()).apply (savedSound, sound2Spectrums));
         return this;
     }
 

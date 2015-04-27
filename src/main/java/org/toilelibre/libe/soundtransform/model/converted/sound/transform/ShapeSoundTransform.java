@@ -65,7 +65,7 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
     private final SoundAppender soundAppender;
     private final Silence       silence;
     private float []            freqs;
-    private FormatInfo          formatInfo;
+    private final FormatInfo          formatInfo;
 
     /**
      * Default Constructor
@@ -138,7 +138,7 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
             throw new SoundTransformException (ShapeSoundTransformErrorCode.NO_PACK_IN_PARAMETER, new NullPointerException ());
         }
         final int step = 100;
-        int channelNum = 0;
+        final int channelNum = 0;
         int soundLength = 0;
 
         if (freqs1 == null) {

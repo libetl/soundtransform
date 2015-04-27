@@ -5,7 +5,7 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 /**
- * Repeats a sound as another sound 
+ * Repeats a sound as another sound
  *
  */
 public class LoopSoundTransform implements SoundTransform<Sound, Sound> {

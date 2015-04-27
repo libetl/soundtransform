@@ -6,9 +6,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.Simple
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 /**
- * 
+ *
  * Equalizer which cuts the treble and the bass frequencies of a sound
- * 
+ *
  */
 public class GaussianEqualizerSoundTransform extends SimpleFrequencySoundTransform<Complex []> {
 

@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
 /**
  * Fade in / Fade out operation of a sound.
  * Ability to change the first part of a sound as an intro or the last part as an outro
- * (the sound volume gradually increases in the intro and gradually descreases in the outro) 
+ * (the sound volume gradually increases in the intro and gradually descreases in the outro)
  *
  */
 public class FadeSoundTransform implements SoundTransform<Sound, Sound> {

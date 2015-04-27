@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 /**
  * Removes a part of a sound
  *
- * The result of the method contains the rest of the sound, and the removed interval is not available from here. 
+ * The result of the method contains the rest of the sound, and the removed interval is not available from here.
  */
 public class CutSoundTransform implements SoundTransform<Sound, Sound> {
 

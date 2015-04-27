@@ -39,7 +39,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Simpl
     /**
      * Default constructor
      * @param note1 if true, the whole sound will be transformed at once to know the loudest freq.
-     *              therefore the array will be of size 1. 
+     *              therefore the array will be of size 1.
      */
     public PeakFindWithHPSSoundTransform (final boolean note1) {
         this ();
@@ -63,7 +63,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Simpl
      * Constructor not using the whole sound as a musical note
      * @param step1 the iteration step value
      * @param windowLength1 length of the spectrum used during each iteration (the highest the slowest)
-     */    
+     */
     public PeakFindWithHPSSoundTransform (final double step1, final int windowLength1) {
         this ();
         this.step = step1;

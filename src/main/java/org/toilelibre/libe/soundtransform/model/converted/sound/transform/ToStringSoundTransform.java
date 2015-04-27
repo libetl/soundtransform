@@ -99,6 +99,6 @@ public class ToStringSoundTransform implements SoundTransform<Sound, String> {
         }
         this.diplayFooter (input, compression);
 
-        return sb.toString();
+        return this.sb.toString();
     }
 }

@@ -8,9 +8,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.Simple
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 /**
- * 
+ *
  * Change the volume of each frequencies range at each step of the sound
- * 
+ *
  */
 public class EqualizerSoundTransform extends SimpleFrequencySoundTransform<Complex []> {
 

@@ -32,9 +32,9 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      */
     @Override
     public List<float []> adjust (final List<float []> freqs) {
-        float [] [] result = new float [freqs.size ()] [];
+        final float [] [] result = new float [freqs.size ()] [];
         for (int i = 0 ; i < freqs.size () ; i ++){
-          result [i] = this.adjustFrequenciesProcessor.adjust (freqs.get (i));
+            result [i] = this.adjustFrequenciesProcessor.adjust (freqs.get (i));
         }
         return Arrays.asList (result);
     }
@@ -48,9 +48,9 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      */
     @Override
     public List<float []> compress (final List<float []> freqs, final float factor) {
-        float [] [] result = new float [freqs.size ()] [];
+        final float [] [] result = new float [freqs.size ()] [];
         for (int i = 0 ; i < freqs.size () ; i ++){
-          result [i] = this.compressFrequenciesProcessor.compress (freqs.get (i), factor);
+            result [i] = this.compressFrequenciesProcessor.compress (freqs.get (i), factor);
         }
         return Arrays.asList (result);
     }
@@ -63,9 +63,9 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      */
     @Override
     public List<float []> filterRange (final List<float []> freqs, final float low, final float high) {
-        float [] [] result = new float [freqs.size ()] [];
+        final float [] [] result = new float [freqs.size ()] [];
         for (int i = 0 ; i < freqs.size () ; i ++){
-          result [i] = this.filterFrequenciesProcessor.filter (freqs.get (i), low, high);
+            result [i] = this.filterFrequenciesProcessor.filter (freqs.get (i), low, high);
         }
         return Arrays.asList (result);
     }
@@ -79,7 +79,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      */
     @Override
     public List<float []> insertPart (final List<float []> freqs, final List<float []> subFreqs, final int start) {
-        float [] [] result = new float [freqs.size ()] [];
+        final float [] [] result = new float [freqs.size ()] [];
         for (int i = 0 ; i < freqs.size () ; i ++){
             result [i] = this.replaceFrequenciesProcessor.insertPart (freqs.get (i), subFreqs.get (i), start);
         }
@@ -95,7 +95,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      */
     @Override
     public List<float []> octaveDown (final List<float []> freqs) {
-        float [] [] result = new float [freqs.size ()] [];
+        final float [] [] result = new float [freqs.size ()] [];
         for (int i = 0 ; i < freqs.size () ; i ++){
             result [i] = this.changeOctaveProcessor.multFreqs (freqs.get (i), DefaultLoudestFreqsService.HALF);
         }
@@ -111,7 +111,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      */
     @Override
     public List<float []> octaveUp (final List<float []> freqs) {
-        float [] [] result = new float [freqs.size ()] [];
+        final float [] [] result = new float [freqs.size ()] [];
         for (int i = 0 ; i < freqs.size () ; i ++){
             result [i] = this.changeOctaveProcessor.multFreqs (freqs.get (i), DefaultLoudestFreqsService.TWICE);
         }
@@ -126,7 +126,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      */
     @Override
     public List<float []> replacePart (final List<float []> freqs, final List<float []> subFreqs, final int start) {
-        float [] [] result = new float [freqs.size ()] [];
+        final float [] [] result = new float [freqs.size ()] [];
         for (int i = 0 ; i < freqs.size () ; i ++){
             result [i] = this.replaceFrequenciesProcessor.replacePart (freqs.get (i), subFreqs.get (i), start);
         }

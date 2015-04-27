@@ -7,7 +7,7 @@ import org.apache.commons.math3.transform.TransformType;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 
-final class NaiveSpectrum2CepstrumHelper implements SpectrumToCepstrumHelper<Complex []> {
+final class NaiveSpectrumToCepstrumHelper implements SpectrumToCepstrumHelper<Complex []> {
 
     @Override
     public Spectrum<Complex []> spectrumToCepstrum (final Spectrum<Complex []> spectrum) {

@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundT
 /**
  * Smoothes a sound graph.
  * The effect is to remove the treble frequencies without any time-to-frequency domain transform
- * 
+ *
  */
 public class LinearRegressionSoundTransform implements SoundTransform<Sound, Sound> {
 

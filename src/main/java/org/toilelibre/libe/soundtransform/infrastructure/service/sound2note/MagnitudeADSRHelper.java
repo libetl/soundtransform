@@ -92,11 +92,10 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
         return sustainIndex;
     }
 
-    private void ensureComputedMagnitudeArray (final Sound sound, final int step) {
+    private void ensureComputedMagnitudeArray (final Sound sound, final int step) throws SoundTransformException {
         if (this.magnitude == null) {
             final ComputeMagnitudeSoundTransform soundTransform = new ComputeMagnitudeSoundTransform (step);
-            soundTransform.transform (sound);
-            this.magnitude = soundTransform.getMagnitude ();
+            this.magnitude = soundTransform.transform (sound);
         }
     }
 }

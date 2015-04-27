@@ -5,7 +5,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.Simple
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 /**
- * 
+ *
  * Extracts only the frequency with the highest amplitude (not the loudest one)
  * and builds a sound with this single frequency at each step.
  *
