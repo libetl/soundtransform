@@ -12,13 +12,13 @@ final class CallHPSFrequencyHelper implements FrequencyHelper {
 
     @Override
     public float findFrequency (final Sound [] channels) throws SoundTransformException {
-        final PeakFindSoundTransform<Serializable> peak = new PeakFindWithHPSSoundTransform<Serializable> (true);
+        final PeakFindSoundTransform<Serializable, ?> peak = new PeakFindWithHPSSoundTransform<Serializable> (true);
         float value = 0;
         float volume = 0;
         for (final Sound channel : channels) {
-            peak.transform (channel);
+            float [] freqs = peak.transform (channel);
             if (volume < peak.getDetectedNoteVolume ()) {
-                value = peak.getLoudestFreqs () [0];
+                value = freqs [0];
                 volume = peak.getDetectedNoteVolume ();
             }
         }

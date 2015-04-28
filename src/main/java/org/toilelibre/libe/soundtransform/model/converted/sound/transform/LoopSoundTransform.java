@@ -30,7 +30,9 @@ public class LoopSoundTransform implements SoundTransform<Sound, Sound> {
 
     /**
      * Default constructor
-     * @param length1 length (in samples) of the repetition(s)
+     * 
+     * @param length1
+     *            length (in samples) of the repetition(s)
      */
     public LoopSoundTransform (final int length1) {
         this.length = length1;

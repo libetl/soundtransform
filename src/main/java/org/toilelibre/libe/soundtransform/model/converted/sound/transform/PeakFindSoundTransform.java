@@ -1,15 +1,13 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-public interface PeakFindSoundTransform<T extends Serializable> extends SoundTransform<Sound, Sound>, LogAware<AbstractLogAware<AbstractFrequencySoundTransform<T>>> {
+public interface PeakFindSoundTransform<T extends Serializable, U extends LogAware<U>> extends SoundTransform<Sound, float []>, LogAware<U> {
 
     public enum PeakFindSoundTransformEventCode implements EventCode {
 
@@ -34,9 +32,5 @@ public interface PeakFindSoundTransform<T extends Serializable> extends SoundTra
         }
     }
 
-    float [] getLoudestFreqs ();
-
     float getDetectedNoteVolume ();
-
-    List<float []> getAllLoudestFreqs ();
 }

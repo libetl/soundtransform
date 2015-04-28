@@ -2,156 +2,204 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
 /**
- * Finds the loudest frequencies array using the Harmonic Product Spectrum algorithm
+ * Finds the loudest frequencies array using the Harmonic Product Spectrum
+ * algorithm
  *
- * @param <T> The kind of object held inside a spectrum.
+ * @param <T>
+ *            The kind of object held inside a spectrum.
  */
-public class PeakFindWithHPSSoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T> implements PeakFindSoundTransform<T> {
+public class PeakFindWithHPSSoundTransform<T extends Serializable> extends AbstractLogAware<PeakFindWithHPSSoundTransform<T>> implements PeakFindSoundTransform<T, AbstractLogAware<PeakFindWithHPSSoundTransform<T>>> {
+    static class PeakFindWithHPSFrequencySoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T> {
 
-    private double                  step;
-    private List<float []>          allLoudestFreqs;
-    private float []                loudestfreqs;
-    private boolean                 note;
-    private float                   fsLimit;
-    private int                     windowLength;
-    private int                     soundLength;
-    private float                   detectedNoteVolume;
+        private double                  step;
+        private float []                loudestfreqs;
+        private boolean                 note;
+        private float                   fsLimit;
+        private int                     windowLength;
+        private int                     soundLength;
+        private float                   detectedNoteVolume;
 
-    private final SpectrumHelper<T> spectrumHelper;
+        private final SpectrumHelper<T> spectrumHelper;
 
-    @SuppressWarnings ("unchecked")
-    private PeakFindWithHPSSoundTransform () {
-        super ();
-        this.allLoudestFreqs = new LinkedList<float []> ();
-        this.spectrumHelper = $.select (SpectrumHelper.class);
+        public PeakFindWithHPSFrequencySoundTransform () {
+            this (false, 100, -1);
+        }
+
+        /**
+         * Default constructor
+         * 
+         * @param note1
+         *            if true, the whole sound will be transformed at once to
+         *            know the loudest freq. therefore the array will be of size
+         *            1.
+         */
+        public PeakFindWithHPSFrequencySoundTransform (final boolean note1) {
+            this (note1, 100, -1);
+        }
+
+        /**
+         * Constructor not using the whole sound as a musical note
+         * 
+         * @param step1
+         *            the iteration step value
+         */
+        public PeakFindWithHPSFrequencySoundTransform (final double step1) {
+            this (false, step1, -1);
+        }
+
+        /**
+         * Constructor not using the whole sound as a musical note
+         * 
+         * @param step1
+         *            the iteration step value
+         * @param windowLength1
+         *            length of the spectrum used during each iteration (the
+         *            highest the slowest)
+         */
+        @SuppressWarnings ("unchecked")
+        public PeakFindWithHPSFrequencySoundTransform (final boolean note1, final double step1, final int windowLength1) {
+            this.spectrumHelper = $.select (SpectrumHelper.class);
+            this.step = step1;
+            this.note = note1;
+            this.windowLength = windowLength1;
+        }
+
+        private float bestCandidate (final float [] peaks) {
+            int leftEdge = 0;
+            while (leftEdge < peaks.length && peaks [leftEdge] <= 30) {
+                leftEdge++;
+            }
+            int rightEdge = leftEdge;
+            while (rightEdge < peaks.length && Math.abs ((peaks [rightEdge] - peaks [leftEdge]) * 1.0 / peaks [rightEdge]) * 100.0 < 10) {
+                rightEdge++;
+            }
+            int sum = 0;
+            for (int i = leftEdge ; i < rightEdge ; i++) {
+                sum += peaks [i];
+            }
+
+            return rightEdge == leftEdge ? sum : sum * 1.0f / (rightEdge - leftEdge);
+        }
+
+        public float getDetectedNoteVolume () {
+            return this.detectedNoteVolume;
+        }
+
+        public float [] getLoudestFreqs () {
+            return this.loudestfreqs.clone ();
+        }
+
+        @Override
+        public double getStep (final double defaultValue) {
+            return this.step;
+        }
+
+        @Override
+        public int getWindowLength (final double freqmax) {
+            if (this.windowLength != -1) {
+                return this.windowLength;
+            }
+            return (int) Math.pow (2, Math.ceil (Math.log (this.fsLimit) / Math.log (2)));
+        }
+
+        @Override
+        public Sound initSound (final Sound input) {
+            if (this.note) {
+                this.step = input.getSamplesLength ();
+                this.fsLimit = input.getSamplesLength ();
+                this.loudestfreqs = new float [1];
+            } else {
+                this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
+                this.fsLimit = input.getSampleRate ();
+            }
+            this.soundLength = input.getSamplesLength ();
+            return super.initSound (input);
+        }
+
+        @Override
+        public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
+
+            final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.soundLength / this.step));
+            if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.soundLength / this.step))) {
+                this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.soundLength / this.step), percent));
+            }
+            float f0 = 0;
+
+            if (soundLevelInDB > 30 || this.note) {
+                final float [] peaks = new float [10];
+                for (int i = 1 ; i <= 10 ; i++) {
+                    peaks [i - 1] = this.spectrumHelper.f0 (fs, i);
+                }
+                Arrays.sort (peaks);
+                f0 = this.bestCandidate (peaks);
+            }
+
+            if (this.note) {
+                this.detectedNoteVolume = soundLevelInDB;
+            }
+            this.loudestfreqs [(int) (offset / this.step)] = f0;
+            return fs;
+        }
+    }
+
+    private PeakFindWithHPSFrequencySoundTransform<T> decoratedTransform;
+
+    public PeakFindWithHPSSoundTransform () {
+        this.decoratedTransform = new PeakFindWithHPSFrequencySoundTransform<T> ();
     }
 
     /**
      * Default constructor
-     * @param note1 if true, the whole sound will be transformed at once to know the loudest freq.
-     *              therefore the array will be of size 1.
+     * 
+     * @param note1
+     *            if true, the whole sound will be transformed at once to know
+     *            the loudest freq. therefore the array will be of size 1.
      */
     public PeakFindWithHPSSoundTransform (final boolean note1) {
-        this ();
-        this.note = note1;
-        this.step = 100;
-        this.windowLength = -1;
-        this.soundLength = -1;
+        this.decoratedTransform = new PeakFindWithHPSFrequencySoundTransform<T> (note1);
     }
 
     /**
      * Constructor not using the whole sound as a musical note
-     * @param step1 the iteration step value
+     * 
+     * @param step1
+     *            the iteration step value
      */
     public PeakFindWithHPSSoundTransform (final double step1) {
-        this ();
-        this.step = step1;
-        this.windowLength = -1;
+        this.decoratedTransform = new PeakFindWithHPSFrequencySoundTransform<T> (step1);
     }
 
     /**
      * Constructor not using the whole sound as a musical note
-     * @param step1 the iteration step value
-     * @param windowLength1 length of the spectrum used during each iteration (the highest the slowest)
+     * 
+     * @param step1
+     *            the iteration step value
+     * @param windowLength1
+     *            length of the spectrum used during each iteration (the highest
+     *            the slowest)
      */
-    public PeakFindWithHPSSoundTransform (final double step1, final int windowLength1) {
-        this ();
-        this.step = step1;
-        this.windowLength = windowLength1;
+    public PeakFindWithHPSSoundTransform (final boolean note1, final double step1, final int windowLength1) {
+        this.decoratedTransform = new PeakFindWithHPSFrequencySoundTransform<T> (note1, step1, windowLength1);
     }
 
-    private float bestCandidate (final float [] peaks) {
-        int leftEdge = 0;
-        while (leftEdge < peaks.length && peaks [leftEdge] <= 30) {
-            leftEdge++;
-        }
-        int rightEdge = leftEdge;
-        while (rightEdge < peaks.length && Math.abs ((peaks [rightEdge] - peaks [leftEdge]) * 1.0 / peaks [rightEdge]) * 100.0 < 10) {
-            rightEdge++;
-        }
-        int sum = 0;
-        for (int i = leftEdge ; i < rightEdge ; i++) {
-            sum += peaks [i];
-        }
-
-        return rightEdge == leftEdge ? sum : sum * 1.0f / (rightEdge - leftEdge);
+    @Override
+    public float [] transform (Sound input) throws SoundTransformException {
+        this.decoratedTransform.transform (input);
+        return this.decoratedTransform.getLoudestFreqs ();
     }
 
     @Override
     public float getDetectedNoteVolume () {
-        return this.detectedNoteVolume;
-    }
-
-    @Override
-    public float [] getLoudestFreqs () {
-        return this.loudestfreqs.clone ();
-    }
-
-    @Override
-    public List<float []> getAllLoudestFreqs () {
-        return this.allLoudestFreqs;
-    }
-
-    @Override
-    public double getStep (final double defaultValue) {
-        return this.step;
-    }
-
-    @Override
-    public int getWindowLength (final double freqmax) {
-        if (this.windowLength != -1) {
-            return this.windowLength;
-        }
-        return (int) Math.pow (2, Math.ceil (Math.log (this.fsLimit) / Math.log (2)));
-    }
-
-    @Override
-    public Sound initSound (final Sound input) {
-        if (this.note) {
-            this.step = input.getSamplesLength ();
-            this.fsLimit = input.getSamplesLength ();
-            this.loudestfreqs = new float [1];
-        } else {
-            this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
-            this.fsLimit = input.getSampleRate ();
-        }
-        this.allLoudestFreqs.add (this.loudestfreqs);
-        this.soundLength = input.getSamplesLength ();
-        return super.initSound (input);
-    }
-
-    @Override
-    public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
-
-        final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.soundLength / this.step));
-        if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.soundLength / this.step))) {
-            this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.soundLength / this.step), percent));
-        }
-        float f0 = 0;
-
-        if (soundLevelInDB > 30 || this.note) {
-            final float [] peaks = new float [10];
-            for (int i = 1 ; i <= 10 ; i++) {
-                peaks [i - 1] = this.spectrumHelper.f0 (fs, i);
-            }
-            Arrays.sort (peaks);
-            f0 = this.bestCandidate (peaks);
-        }
-
-        if (this.note) {
-            this.detectedNoteVolume = soundLevelInDB;
-        }
-        this.loudestfreqs [(int) (offset / this.step)] = f0;
-        return fs;
+        return this.decoratedTransform.getDetectedNoteVolume ();
     }
 }

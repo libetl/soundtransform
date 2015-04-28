@@ -14,8 +14,8 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
  */
 public class SpectrumsToSoundSoundTransform implements SoundTransform<Spectrum<Serializable> [], Sound> {
 
-    private final FourierTransformHelper<?>       fourierHelper;
-    private final SoundAppender                   appender;
+    private final FourierTransformHelper<?> fourierHelper;
+    private final SoundAppender             appender;
 
     /**
      * Default constructors

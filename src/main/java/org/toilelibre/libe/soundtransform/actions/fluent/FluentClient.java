@@ -110,7 +110,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #adjust()
@@ -123,7 +123,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #andAfterStart()
@@ -137,7 +137,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #append(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[])
@@ -150,7 +150,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #apply
@@ -171,9 +171,26 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
+    /**
+     * Apply one transform and stop the pipeline immediately after with a result
+     *
+     * @param st
+     *            the SoundTransform to apply
+     * @param resultClass
+     *            expected kind of result
+     * @return a result in the expected kind
+     * @throws SoundTransformException
+     *             if the transform does not work
+     */
+    @SuppressWarnings ("unchecked")
+    public <T> T [] applyAndStop (SoundTransform<Sound, T> st, Class<T> resultClass) throws SoundTransformException {
+        Object result = new ApplySoundTransform (this.getObservers ()).apply (this.sound, st);
+        return (T []) result;
+    }
+
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #changeFormat
@@ -206,7 +223,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #compress(float)
@@ -230,7 +247,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #convertIntoSound()
@@ -247,7 +264,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #cutSubSound(int, int)
@@ -259,7 +276,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #exportToClasspathResource(java.lang.String)
@@ -277,7 +294,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #exportToClasspathResourceWithSiblingResource(java.lang.String,
@@ -297,7 +314,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #exportToFile(java.io.File)
@@ -315,7 +332,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #exportToStream()
@@ -336,7 +353,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #extractSound()
@@ -351,8 +368,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         if (this.spectrums == null || this.spectrums.isEmpty () || this.spectrums.get (0).length == 0) {
             throw new SoundTransformException (FluentClientErrorCode.NO_SPECTRUM_IN_INPUT, new IllegalArgumentException ());
         }
-        @SuppressWarnings("unchecked")
-        final Sound [] sound1 = new ApplySoundTransform (this.getObservers ()).<Spectrum<Serializable> [], Sound>apply (this.spectrums.toArray (new Spectrum [0] [0]), new SpectrumsToSoundSoundTransform ());
+        @SuppressWarnings ("unchecked")
+        final Sound [] sound1 = new ApplySoundTransform (this.getObservers ()).<Spectrum<Serializable> [], Sound> apply (this.spectrums.toArray (new Spectrum [0] [0]), new SpectrumsToSoundSoundTransform ());
         this.cleanData ();
         this.sound = sound1;
         return this;
@@ -360,7 +377,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #extractSubSound(int, int)
@@ -372,7 +389,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #filterRange(float, float)
@@ -385,17 +402,17 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #findLoudestFrequencies()
      */
     @Override
     public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException {
-        final PeakFindSoundTransform<Serializable> peakFind = new PeakFindWithHPSSoundTransform<Serializable> (FluentClient.DEFAULT_STEP_VALUE);
-        new ApplySoundTransform (this.getObservers ()).apply (this.sound, peakFind);
+        final PeakFindSoundTransform<Serializable, ?> peakFind = new PeakFindWithHPSSoundTransform<Serializable> (FluentClient.DEFAULT_STEP_VALUE);
+        Sound [] savedSound = this.sound;
         this.cleanData ();
-        this.freqs = peakFind.getAllLoudestFreqs ();
+        this.freqs = Arrays.asList (new ApplySoundTransform (this.getObservers ()).apply (savedSound, peakFind));
         return this;
     }
 
@@ -410,7 +427,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #importToSound()
@@ -435,7 +452,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #importToStream()
@@ -458,7 +475,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #insertPart(float[], int)
@@ -481,7 +498,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #inParallel
@@ -538,7 +555,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #inParallel
@@ -574,7 +591,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #inParallel
@@ -609,7 +626,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #inParallel
@@ -644,7 +661,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #inParallel
@@ -679,7 +696,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #inParallel
@@ -714,7 +731,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #loop(int)
@@ -735,7 +752,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #mixWith
@@ -754,14 +771,14 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #mixAllInOneSound()
      */
     /**
-     * Uses the sound inside the nested clients to mix them all and to produce
-     * a single sound
+     * Uses the sound inside the nested clients to mix them all and to produce a
+     * single sound
      *
      * @return the client, with a sound imported
      * @throws SoundTransformException
@@ -788,7 +805,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #octaveDown()
@@ -801,7 +818,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #octaveUp()
@@ -814,7 +831,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #playIt()
@@ -848,7 +865,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #replacePart(float[], int)
@@ -871,7 +888,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #shapeIntoSound(java.lang.String, java.lang.String,
@@ -887,16 +904,16 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @throws SoundTransformException could not call the soundtransform to shape the freqs
      */
     public FluentClientSoundImported shapeIntoSound (final String packName, final String instrumentName, final FormatInfo fi) throws SoundTransformException {
-        final SoundTransform<float[], Sound> soundTransform = new ShapeSoundTransform (packName, instrumentName, fi);
+        final SoundTransform<float [], Sound> soundTransform = new ShapeSoundTransform (packName, instrumentName, fi);
         final List<float []> savedFreqs = this.freqs;
         this.cleanData ();
-        this.sound = new ApplySoundTransform (this.getObservers ()).<float [], Sound>apply (savedFreqs.toArray (new float [0] [0]), soundTransform);
+        this.sound = new ApplySoundTransform (this.getObservers ()).<float [], Sound> apply (savedFreqs.toArray (new float [0] [0]), soundTransform);
         return this;
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #splitIntoSpectrums()
@@ -917,7 +934,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #stopWithAPack(java.lang.String)
@@ -937,7 +954,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #stopWithFile()
@@ -953,7 +970,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #stopWithFreqs()
@@ -969,7 +986,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #stopWithInputStream()
@@ -985,7 +1002,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #stopWithObservers()
@@ -1001,7 +1018,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #stopWithResults(java.lang.Class)
@@ -1037,7 +1054,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #stopWithsound()
@@ -1053,7 +1070,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #stopWithSpectrums()
@@ -1069,7 +1086,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #stopWithStreamInfo()
@@ -1090,7 +1107,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withAnObserver
@@ -1132,7 +1149,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withAPack(java.lang.String, java.io.InputStream)
@@ -1158,7 +1175,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withAPack(java.lang.String, java.lang.Object, java.lang.Class, int)
@@ -1187,7 +1204,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withAPack(java.lang.String, java.lang.String)
@@ -1236,7 +1253,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withAudioInputStream(java.io.InputStream)
@@ -1256,7 +1273,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withClasspathResource(java.lang.String)
@@ -1281,7 +1298,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withFile(java.io.File)
@@ -1300,7 +1317,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withFreqs(float[])
@@ -1319,7 +1336,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withLimitedTimeRecordedInputStream
@@ -1333,7 +1350,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withRawInputStream(java.io.InputStream,
@@ -1357,7 +1374,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withRecordedInputStream
@@ -1372,7 +1389,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withsound
@@ -1392,7 +1409,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #withSpectrums(java.util.List)
@@ -1413,7 +1430,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #writeToClasspathResource(java.lang.String)
@@ -1435,7 +1452,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #writeToClasspathResourceWithSiblingResource(java.lang.String,
@@ -1459,7 +1476,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
      * #writeToFile(java.io.File)

@@ -39,7 +39,7 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
 
         });
         PowerMockito.whenNew (AudioTrack.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class, int.class)
-        .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
+                .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
         final InputStream inputStream = FluentClient.start ().withClasspathResource ("before.wav").importToStream ().stopWithInputStream ();
         final StreamInfo streamInfo = FluentClient.start ().withAudioInputStream (inputStream).stopWithStreamInfo ();
         final AndroidPlaySoundProcessor processor = new AndroidPlaySoundProcessor ();
@@ -68,7 +68,7 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
 
         });
         PowerMockito.whenNew (AudioTrack.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class, int.class)
-        .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
+                .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
         FluentClient.start ().withClasspathResource ("gpiano3.wav").convertIntoSound ().playIt ();
         Mockito.verify (audioTrack, Mockito.atLeast (1)).write (Matchers.any (byte [].class), Matchers.anyInt (), Matchers.anyInt ());
     }
@@ -87,7 +87,7 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
 
             });
             PowerMockito.whenNew (AudioTrack.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class, int.class)
-            .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
+                    .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
             final InputStream inputStream = this.generateRandomBytes ();
             final StreamInfo streamInfo = new StreamInfo (j, 100000, 2, 44100, false, true, null);
             final AndroidPlaySoundProcessor processor = new AndroidPlaySoundProcessor ();

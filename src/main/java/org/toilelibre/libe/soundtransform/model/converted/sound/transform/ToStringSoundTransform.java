@@ -18,8 +18,11 @@ public class ToStringSoundTransform implements SoundTransform<Sound, String> {
 
     /**
      * Default constructor
-     * @param length width of the string
-     * @param height height of the string
+     * 
+     * @param length
+     *            width of the string
+     * @param height
+     *            height of the string
      */
     public ToStringSoundTransform (final int length, final int height) {
         this.length = length;
@@ -99,6 +102,6 @@ public class ToStringSoundTransform implements SoundTransform<Sound, String> {
         }
         this.diplayFooter (input, compression);
 
-        return this.sb.toString();
+        return this.sb.toString ();
     }
 }

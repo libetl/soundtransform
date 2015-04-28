@@ -7,7 +7,8 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 /**
  * Removes a part of a sound
  *
- * The result of the method contains the rest of the sound, and the removed interval is not available from here.
+ * The result of the method contains the rest of the sound, and the removed
+ * interval is not available from here.
  */
 public class CutSoundTransform implements SoundTransform<Sound, Sound> {
 
@@ -32,8 +33,11 @@ public class CutSoundTransform implements SoundTransform<Sound, Sound> {
 
     /**
      * Default Constructor
-     * @param start1 start of the interval
-     * @param end1 end of the interval
+     * 
+     * @param start1
+     *            start of the interval
+     * @param end1
+     *            end of the interval
      */
     public CutSoundTransform (final int start1, final int end1) {
         this.start = start1;

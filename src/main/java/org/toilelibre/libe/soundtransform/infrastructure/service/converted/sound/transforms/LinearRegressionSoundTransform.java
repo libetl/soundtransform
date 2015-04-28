@@ -6,8 +6,8 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 
 /**
- * Smoothes a sound graph.
- * The effect is to remove the treble frequencies without any time-to-frequency domain transform
+ * Smoothes a sound graph. The effect is to remove the treble frequencies
+ * without any time-to-frequency domain transform
  *
  */
 public class LinearRegressionSoundTransform implements SoundTransform<Sound, Sound> {
@@ -16,7 +16,9 @@ public class LinearRegressionSoundTransform implements SoundTransform<Sound, Sou
 
     /**
      * Default constructor
-     * @param step1 iteration step value
+     * 
+     * @param step1
+     *            iteration step value
      */
     public LinearRegressionSoundTransform (final int step1) {
         this.step = step1;

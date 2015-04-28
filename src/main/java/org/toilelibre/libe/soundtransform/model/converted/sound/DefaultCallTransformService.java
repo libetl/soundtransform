@@ -15,7 +15,7 @@ final class DefaultCallTransformService extends AbstractLogAware<DefaultCallTran
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.converted.sound.CallTransformService
      * #apply(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[],
@@ -37,12 +37,11 @@ final class DefaultCallTransformService extends AbstractLogAware<DefaultCallTran
     }
 
     private <V> V [] typeArrayWithFirstClassValue (final Object [] untypedOutput) {
-        if (untypedOutput.length == 0){
+        if (untypedOutput.length == 0) {
             return null;
         }
         @SuppressWarnings ("unchecked")
-        final
-        V[] typedArray = (V []) Array.newInstance (untypedOutput [0].getClass (), untypedOutput.length);
+        final V [] typedArray = (V []) Array.newInstance (untypedOutput [0].getClass (), untypedOutput.length);
         System.arraycopy (untypedOutput, 0, typedArray, 0, untypedOutput.length);
         return typedArray;
     }

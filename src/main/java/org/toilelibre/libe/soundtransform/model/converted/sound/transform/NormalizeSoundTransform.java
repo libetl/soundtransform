@@ -5,7 +5,8 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 /**
- * Raises the sound volume to match a certain percentage of the maximum possible level
+ * Raises the sound volume to match a certain percentage of the maximum possible
+ * level
  *
  */
 public class NormalizeSoundTransform implements SoundTransform<Sound, Sound> {
@@ -31,8 +32,11 @@ public class NormalizeSoundTransform implements SoundTransform<Sound, Sound> {
 
     /**
      * Default constructor
-     * @param coefficient1 coefficient of the max level (0 <= coefficient <= 1)
-     * @throws SoundTransformException The coefficient of the normalizer is above one or below zero
+     * 
+     * @param coefficient1
+     *            coefficient of the max level (0 <= coefficient <= 1)
+     * @throws SoundTransformException
+     *             The coefficient of the normalizer is above one or below zero
      */
     public NormalizeSoundTransform (final float coefficient1) throws SoundTransformException {
         this.coefficient = this.checkCoefficient (coefficient1);

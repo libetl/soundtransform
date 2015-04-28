@@ -5,7 +5,8 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 /**
- * Cuts a part of a sound and returns it. The rest of the sound will not be available.
+ * Cuts a part of a sound and returns it. The rest of the sound will not be
+ * available.
  *
  */
 public class SubSoundExtractSoundTransform implements SoundTransform<Sound, Sound> {
@@ -30,8 +31,11 @@ public class SubSoundExtractSoundTransform implements SoundTransform<Sound, Soun
 
     /**
      * Default constructor
-     * @param start1 start index
-     * @param end1 end index
+     * 
+     * @param start1
+     *            start index
+     * @param end1
+     *            end index
      */
     public SubSoundExtractSoundTransform (final int start1, final int end1) {
         this.start = start1;

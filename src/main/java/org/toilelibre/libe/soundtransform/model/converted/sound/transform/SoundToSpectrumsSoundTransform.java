@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+
 /**
  * Transforms a sound into a list of spectrums. Useful to display a visualizer.
  *
@@ -12,10 +13,10 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 public class SoundToSpectrumsSoundTransform implements SoundTransform<Sound, Spectrum<Serializable> []> {
     class SoundToSpectrumsFrequencySoundTransform extends SimpleFrequencySoundTransform<Serializable> {
 
-        private static final int                      TWO = 2;
-        private int                                   step;
-        private Spectrum<Serializable> []             spectrums;
-        private int                                   index;
+        private static final int          TWO = 2;
+        private int                       step;
+        private Spectrum<Serializable> [] spectrums;
+        private int                       index;
 
         /**
          * Default constructor

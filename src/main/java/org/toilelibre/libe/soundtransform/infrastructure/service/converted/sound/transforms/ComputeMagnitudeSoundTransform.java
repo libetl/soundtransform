@@ -14,29 +14,41 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 public class ComputeMagnitudeSoundTransform implements SoundTransform<Sound, double []> {
     class ComputeMagnitudeFrequenciesSoundTransform extends SimpleFrequencySoundTransform<Complex []> {
 
-        private int arraylength;
-        private double [] magnitude;
+        private int          arraylength;
+        private double []    magnitude;
         private final double step;
 
         /**
          * Default constructor
-         * @param step1 iteration step value
+         * 
+         * @param step1
+         *            iteration step value
          */
         public ComputeMagnitudeFrequenciesSoundTransform (final double step1) {
             super ();
             this.step = step1;
         }
 
-        /* (non-Javadoc)
-         * @see org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform#getStep(double)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.toilelibre.libe.soundtransform.model.converted.sound.transform
+         * .SimpleFrequencySoundTransform#getStep(double)
          */
         @Override
         public double getStep (final double defaultValue) {
             return this.step;
         }
 
-        /* (non-Javadoc)
-         * @see org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform#initSound(org.toilelibre.libe.soundtransform.model.converted.sound.Sound)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.toilelibre.libe.soundtransform.model.converted.sound.transform
+         * .SimpleFrequencySoundTransform
+         * #initSound(org.toilelibre.libe.soundtransform
+         * .model.converted.sound.Sound)
          */
         @Override
         public Sound initSound (final Sound input) {
@@ -45,15 +57,20 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Sound, dou
             return super.initSound (input);
         }
 
-        /* (non-Javadoc)
-         * @see org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform#transformFrequencies(org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.toilelibre.libe.soundtransform.model.converted.sound.transform
+         * .SimpleFrequencySoundTransform
+         * #transformFrequencies(org.toilelibre.libe
+         * .soundtransform.model.converted.spectrum.Spectrum)
          */
         @Override
         public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
             this.magnitude [this.arraylength++] = this.computeMagnitude (fs);
             return super.transformFrequencies (fs);
         }
-
 
         /**
          * @return the magnitude
@@ -73,10 +90,9 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Sound, dou
 
     private final ComputeMagnitudeFrequenciesSoundTransform decoratedSoundTransform;
 
-    public ComputeMagnitudeSoundTransform (final int step){
+    public ComputeMagnitudeSoundTransform (final int step) {
         this.decoratedSoundTransform = new ComputeMagnitudeFrequenciesSoundTransform (step);
     }
-
 
     @Override
     public double [] transform (final Sound input) throws SoundTransformException {

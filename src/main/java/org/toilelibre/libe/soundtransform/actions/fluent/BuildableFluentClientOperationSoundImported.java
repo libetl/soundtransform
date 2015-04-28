@@ -36,6 +36,19 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
     BuildableFluentClientOperationSoundImported apply (SoundTransform<Sound, Sound> st) throws SoundTransformException;
 
     /**
+     * Apply one transform and stop immediately after with a result
+     *
+     * @param st
+     *            the SoundTransform to apply
+     * @param resultClass
+     *            expected kind of result
+     * @return a result in the expected kind
+     * @throws SoundTransformException
+     *             if the transform does not work
+     */
+    <T> T [] applyAndStop (SoundTransform<Sound, T> st, Class<T> resultClass) throws SoundTransformException;
+
+    /**
      * Changes the current imported sound to fit the expected format
      *
      * @param formatInfo

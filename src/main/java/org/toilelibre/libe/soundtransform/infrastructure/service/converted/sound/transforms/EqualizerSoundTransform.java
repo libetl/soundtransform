@@ -18,10 +18,13 @@ public class EqualizerSoundTransform extends SimpleFrequencySoundTransform<Compl
     private final double [] amplification;
 
     /**
-     * Default constructor.
-     * A mathematical representation of a curve amplification/freqs is asked in the parameters
-     * @param ranges1 the frequencies, in abscissa [0..20000]
-     * @param amplification1 the amplification, in ordinate [0..1]
+     * Default constructor. A mathematical representation of a curve
+     * amplification/freqs is asked in the parameters
+     * 
+     * @param ranges1
+     *            the frequencies, in abscissa [0..20000]
+     * @param amplification1
+     *            the amplification, in ordinate [0..1]
      */
     public EqualizerSoundTransform (final double [] ranges1, final double [] amplification1) {
         super ();

@@ -18,7 +18,7 @@ import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class FluentClientOperation implements BuildableFluentClientOperationSoundImported, BuildableFluentClientOperationReady, BuildableFluentClientOperationWithInputStream, BuildableFluentClientOperationWithFile, BuildableFluentClientOperationWithFreqs,
-BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
+        BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
 
     public abstract class Step {
         void run (final FluentClientInterface client) throws SoundTransformException {
@@ -512,6 +512,19 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
         });
 
         return this;
+    }
+
+    @Override
+    public <T> T [] applyAndStop (final SoundTransform<Sound, T> st, final Class<T> resultClass) throws SoundTransformException {
+        this.steps.add (new Step () {
+
+            @Override
+            public void run (final FluentClientInterface client) throws SoundTransformException {
+                client.applyAndStop (st, resultClass);
+            }
+        });
+
+        return null;
     }
 
     @Override

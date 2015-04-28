@@ -32,8 +32,12 @@ public class InsertPartSoundTransform implements SoundTransform<Sound, Sound> {
 
     /**
      * Default constructor
-     * @param subsound1 the sound to insert (only one sound is allowed, each element is a sound channel)
-     * @param start1 start index where to insert the sound
+     * 
+     * @param subsound1
+     *            the sound to insert (only one sound is allowed, each element
+     *            is a sound channel)
+     * @param start1
+     *            start index where to insert the sound
      */
     public InsertPartSoundTransform (final Sound [] subsound1, final int start1) {
         this.subsound = subsound1.clone ();

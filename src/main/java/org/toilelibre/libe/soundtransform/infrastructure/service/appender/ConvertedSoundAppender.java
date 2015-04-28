@@ -13,7 +13,7 @@ final class ConvertedSoundAppender implements SoundAppender {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
      * SoundAppenderI
      * #append(org.toilelibre.libe.soundtransform.model.converted.sound.Sound,
@@ -29,7 +29,7 @@ final class ConvertedSoundAppender implements SoundAppender {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
      * SoundAppenderI
      * #append(org.toilelibre.libe.soundtransform.model.converted.sound.Sound,
@@ -67,7 +67,7 @@ final class ConvertedSoundAppender implements SoundAppender {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
      * SoundAppender
      * #changeNbBytesPerSample(org.toilelibre.libe.soundtransform.model
@@ -86,7 +86,7 @@ final class ConvertedSoundAppender implements SoundAppender {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
      * SoundAppender
      * #downsampleWithRatio(org.toilelibre.libe.soundtransform.model
@@ -109,7 +109,7 @@ final class ConvertedSoundAppender implements SoundAppender {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.appender.
      * SoundAppender
      * #resizeToSampleRate(org.toilelibre.libe.soundtransform.model
