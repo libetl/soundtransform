@@ -150,7 +150,7 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
         if (freqs1 == null) {
             throw new SoundTransformException (ShapeSoundTransformErrorCode.NO_LOUDEST_FREQS_IN_ATTRIBUTE, new NullPointerException ());
         }
-        this.freqs = freqs1;
+        this.freqs = freqs1.clone();
         if (soundLength == 0) {
             soundLength = step * this.freqs.length;
         }

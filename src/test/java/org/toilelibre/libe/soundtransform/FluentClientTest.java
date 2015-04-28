@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -50,7 +50,7 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void compress () throws SoundTransformException {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18 };
-        final float [] array2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (Arrays.asList (array1)).compress (2).stopWithFreqs ().get (0);
+        final float [] array2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (Collections.singletonList (array1)).compress (2).stopWithFreqs ().get (0);
         Assert.assertArrayEquals (new float [] { 1.0f, 3.0f, 5.0f, 7.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f }, array2, 0);
     }
 
@@ -114,7 +114,7 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         final float [] array2 = { 15, 16, 17, 18 };
 
-        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 15, 16, 17, 18, 5, 6, 7, 8 }, FluentClient.start ().withFreqs (Arrays.asList (array1)).insertPart (Arrays.asList (array2), 4).stopWithFreqs ().get (0), 0);
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 15, 16, 17, 18, 5, 6, 7, 8 }, FluentClient.start ().withFreqs (Collections.singletonList (array1)).insertPart (Collections.singletonList (array2), 4).stopWithFreqs ().get (0), 0);
     }
 
     @Test
@@ -122,7 +122,7 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         final float [] array2 = { 15, 16, 17, 18 };
 
-        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18, 8 }, FluentClient.start ().withFreqs (Arrays.asList (array1)).insertPart (Arrays.asList (array2), 7).stopWithFreqs ().get (0), 0);
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18, 8 }, FluentClient.start ().withFreqs (Collections.singletonList (array1)).insertPart (Collections.singletonList (array2), 7).stopWithFreqs ().get (0), 0);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         final float [] array2 = { 15, 16, 17, 18 };
 
-        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Arrays.asList (array1)).insertPart (Arrays.asList (array2), 11).stopWithFreqs ().get (0), 0);
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Collections.singletonList (array1)).insertPart (Collections.singletonList (array2), 11).stopWithFreqs ().get (0), 0);
     }
 
     @Test
@@ -242,7 +242,7 @@ public class FluentClientTest extends SoundTransformTest {
         for (int i = 0 ; i < data.length ; i++) {
             data [i] = (byte) rdg.nextInt (0, 20000);
         }
-        return Arrays.asList (data);
+        return Collections.singletonList (data);
     }
 
     @Test
@@ -276,7 +276,7 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         final float [] array2 = { 15, 16, 17, 18 };
 
-        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Arrays.asList (array1)).replacePart (Arrays.asList (array2), 4).stopWithFreqs ().get (0), 0);
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Collections.singletonList (array1)).replacePart (Collections.singletonList (array2), 4).stopWithFreqs ().get (0), 0);
     }
 
     @Test
@@ -284,7 +284,7 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         final float [] array2 = { 15, 16, 17, 18 };
 
-        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Arrays.asList (array1)).replacePart (Arrays.asList (array2), 7).stopWithFreqs ().get (0), 0);
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Collections.singletonList (array1)).replacePart (Collections.singletonList (array2), 7).stopWithFreqs ().get (0), 0);
     }
 
     @Test
@@ -292,7 +292,7 @@ public class FluentClientTest extends SoundTransformTest {
         final float [] array1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         final float [] array2 = { 15, 16, 17, 18 };
 
-        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Arrays.asList (array1)).replacePart (Arrays.asList (array2), 11).stopWithFreqs ().get (0), 0);
+        org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Collections.singletonList (array1)).replacePart (Collections.singletonList (array2), 11).stopWithFreqs ().get (0), 0);
     }
 
     // Exactly the same code run as WavTest.testShape
@@ -330,7 +330,7 @@ public class FluentClientTest extends SoundTransformTest {
                 freqs [i++] = currentFreq;
             }
         }
-        final float [] freqsOutput = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (Arrays.asList (freqs)).filterRange (0, 90).filterRange (500, 1000).stopWithFreqs ().get (0);
+        final float [] freqsOutput = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (Collections.singletonList (freqs)).filterRange (0, 90).filterRange (500, 1000).stopWithFreqs ().get (0);
         for (i = 0 ; i < freqsOutput.length ; i++) {
             if (freqsOutput [i] > 0 && freqsOutput [i] <= 90 || freqsOutput [i] >= 500 && freqsOutput [i] <= 1000) {
                 org.junit.Assert.fail (freqsOutput [i] + " is not filtered in the freqs array (index " + i + ")");
@@ -357,7 +357,7 @@ public class FluentClientTest extends SoundTransformTest {
         }
         final InputStream packInputStream = Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json");
         final FormatInfo fi = new FormatInfo (2, 48000);
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", packInputStream).withFreqs (Arrays.asList (freqs)).shapeIntoSound ("default", "simple_piano", fi).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", packInputStream).withFreqs (Collections.singletonList (freqs)).shapeIntoSound ("default", "simple_piano", fi).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     @Test
