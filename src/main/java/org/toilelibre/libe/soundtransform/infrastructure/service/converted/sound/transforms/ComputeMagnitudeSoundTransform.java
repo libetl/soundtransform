@@ -12,7 +12,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
  *
  */
 public class ComputeMagnitudeSoundTransform implements SoundTransform<Sound, double []> {
-    class ComputeMagnitudeFrequenciesSoundTransform extends SimpleFrequencySoundTransform<Complex []> {
+    static class ComputeMagnitudeFrequenciesSoundTransform extends SimpleFrequencySoundTransform<Complex []> {
 
         private int arraylength;
         private double [] magnitude;

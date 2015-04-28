@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
  *
  */
 public class SoundToSpectrumsSoundTransform implements SoundTransform<Sound, Spectrum<Serializable> []> {
-    class SoundToSpectrumsFrequencySoundTransform extends SimpleFrequencySoundTransform<Serializable> {
+    static class SoundToSpectrumsFrequencySoundTransform extends SimpleFrequencySoundTransform<Serializable> {
 
         private static final int                      TWO = 2;
         private int                                   step;
