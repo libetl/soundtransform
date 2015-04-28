@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -60,7 +61,7 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClientOperation.prepare ().withAnObserver ().andAfterStart ().withAPack (null, new ByteArrayInputStream (new byte [0])).withAPack (null, "").withAPack (null, null, null, 0).withAudioInputStream (null).importToSound ().append (null).apply (null).changeFormat (null).cutSubSound (0, 0)
                 .playIt ().changeFormat (null).exportToClasspathResource (null).playIt ().importToStream ().playIt ().importToSound ().exportToClasspathResourceWithSiblingResource (null, null).convertIntoSound ().exportToFile (null).convertIntoSound ().exportToStream ().importToSound ()
                 .findLoudestFrequencies ().compress (0).filterRange (0, 0).insertPart (null, 0).octaveDown ().octaveUp ().replacePart (null, 0).shapeIntoSound (null, null, null).loop (0).mixWith (null).splitIntoSpectrums ().playIt ().extractSound ().andAfterStart ()
-                .inParallel (null, 0, new File ("")).mixAllInOneSound ().andAfterStart ().inParallel (null, 0, Arrays.asList (new float [0])).andAfterStart ().inParallel (null, 0, new ByteArrayInputStream (new byte [0])).andAfterStart ().inParallel (null, 0, new Sound [0]).andAfterStart ()
+                .inParallel (null, 0, new File ("")).mixAllInOneSound ().andAfterStart ().inParallel (null, 0, new LinkedList<float []> ()).andAfterStart ().inParallel (null, 0, new ByteArrayInputStream (new byte [0])).andAfterStart ().inParallel (null, 0, new Sound [0]).andAfterStart ()
                 .inParallel (null, 0, "").andAfterStart ().inParallel (null, 0, FluentClient.start ()).build ();
     }
 
