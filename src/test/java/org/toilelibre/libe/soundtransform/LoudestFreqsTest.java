@@ -1,6 +1,5 @@
 package org.toilelibre.libe.soundtransform;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.Test;
