@@ -20,7 +20,7 @@ public class EqualizerSoundTransform extends SimpleFrequencySoundTransform<Compl
     /**
      * Default constructor. A mathematical representation of a curve
      * amplification/freqs is asked in the parameters
-     * 
+     *
      * @param ranges1
      *            the frequencies, in abscissa [0..20000]
      * @param amplification1

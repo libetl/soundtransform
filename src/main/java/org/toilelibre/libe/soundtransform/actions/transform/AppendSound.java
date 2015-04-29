@@ -12,6 +12,6 @@ public final class AppendSound extends Action {
     }
 
     public Sound append (final Sound sound1, final Sound sound2) throws SoundTransformException {
-        return new Sound (this.modifySound.append (sound1.getChannels(), sound2.getChannels()));
+        return new Sound (this.modifySound.append (sound1.getChannels (), sound2.getChannels ()));
     }
 }

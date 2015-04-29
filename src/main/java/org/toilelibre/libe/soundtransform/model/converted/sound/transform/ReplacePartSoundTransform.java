@@ -31,18 +31,18 @@ public class ReplacePartSoundTransform implements SoundTransform<Channel, Channe
     }
 
     private final Channel [] replacement;
-    private final int      start;
+    private final int        start;
 
     /**
      * Default constructor
-     * 
+     *
      * @param replacement1
      *            replacement sound
      * @param start1
      *            start index
      */
     public ReplacePartSoundTransform (final Sound replacement1, final int start1) {
-        this.replacement = replacement1.getChannels();
+        this.replacement = replacement1.getChannels ();
         this.start = start1;
     }
 

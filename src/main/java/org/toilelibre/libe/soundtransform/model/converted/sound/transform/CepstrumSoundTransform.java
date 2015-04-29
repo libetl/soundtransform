@@ -30,7 +30,7 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
     static class CepstrumFrequencySoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T> {
 
         private final double                      step;
-        private List<float []>                    allLoudestFreqs;
+        private final List<float []>                    allLoudestFreqs;
         private float []                          loudestfreqs;
         private int                               index;
         private int                               length;
@@ -135,7 +135,7 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
     /**
      * Constructor with default values. The cepstrums will not be kept when
      * using the getCepstrums method
-     * 
+     *
      * @param note1
      *            if true, the loudest freqs array will contain a single element
      *            and the cepstrum will be made once, using the whole sound
@@ -146,7 +146,7 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
 
     /**
      * The cepstrums will not be kept when using the getCepstrums method
-     * 
+     *
      * @param step1
      *            the iteration step value (increasing the value will speed the
      *            transform but will be less precise)
@@ -157,7 +157,7 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
 
     /**
      * Constructor with every parameter specified
-     * 
+     *
      * @param step1
      *            the iteration step value (increasing the value will speed the
      *            transform but will be less precise)
@@ -171,7 +171,7 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
     }
 
     @Override
-    public float [] transform (Channel input) throws SoundTransformException {
+    public float [] transform (final Channel input) throws SoundTransformException {
         this.decoratedTransform.transform (input);
         return this.decoratedTransform.getLoudestFreqs ();
     }

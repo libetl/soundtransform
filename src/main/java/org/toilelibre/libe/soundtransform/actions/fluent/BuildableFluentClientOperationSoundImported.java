@@ -45,6 +45,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @throws SoundTransformException
      *             if the transform does not work
      */
+    @Override
     <T> T [] applyAndStop (SoundTransform<Channel, T> st) throws SoundTransformException;
 
     /**

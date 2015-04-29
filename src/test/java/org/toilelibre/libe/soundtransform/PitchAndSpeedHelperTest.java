@@ -36,8 +36,8 @@ public class PitchAndSpeedHelperTest extends SoundTransformTest {
         final Sound e3 = is2Sound.fromInputStream (ais);
         final SoundPitchAndTempoHelper helper = $.select (SoundPitchAndTempoHelper.class);
         final Channel [] e4 = new Channel [2];
-        e4 [0] = helper.pitchAndSetLength (e3.getChannels() [0], 200, 1);
-        e4 [1] = helper.pitchAndSetLength (e3.getChannels() [1], 200, 1);
+        e4 [0] = helper.pitchAndSetLength (e3.getChannels () [0], 200, 1);
+        e4 [1] = helper.pitchAndSetLength (e3.getChannels () [1], 200, 1);
 
         final InputStream ais2 = sound2Is.toStream (new Sound (e4), $.select (AudioFormatParser.class).getStreamInfo (ais));
         final File fDest = new File (new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ()).getParent () + "/after.wav");

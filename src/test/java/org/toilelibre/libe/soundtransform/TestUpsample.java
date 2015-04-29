@@ -25,9 +25,9 @@ public class TestUpsample extends SoundTransformTest {
         final File input = new File (classLoader.getResource ("piano2d.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
         final Sound inputSound = $.select (InputStreamToSoundService.class).fromInputStream ($.select (AudioFileService.class).streamFromFile (input));
-        final Channel [] outputChannels = new Channel [inputSound.getNumberOfChannels()];
-        for (int i = 0 ; i < inputSound.getNumberOfChannels() ; i++) {
-            Channel tmp = $.select (SoundAppender.class).changeNbBytesPerSample (inputSound.getChannels() [i], 2);
+        final Channel [] outputChannels = new Channel [inputSound.getNumberOfChannels ()];
+        for (int i = 0 ; i < inputSound.getNumberOfChannels () ; i++) {
+            Channel tmp = $.select (SoundAppender.class).changeNbBytesPerSample (inputSound.getChannels () [i], 2);
             tmp = $.select (SoundAppender.class).resizeToSampleRate (tmp, 44100);
             outputChannels [i] = tmp;
         }
@@ -44,11 +44,11 @@ public class TestUpsample extends SoundTransformTest {
         final File input = new File (classLoader.getResource ("gpiano3.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
         final Sound inputSound = $.select (InputStreamToSoundService.class).fromInputStream ($.select (AudioFileService.class).streamFromFile (input));
-        final Channel [] outputChannels = new Channel [inputSound.getNumberOfChannels()];
-        for (int i = 0 ; i < inputSound.getNumberOfChannels() ; i++) {
+        final Channel [] outputChannels = new Channel [inputSound.getNumberOfChannels ()];
+        for (int i = 0 ; i < inputSound.getNumberOfChannels () ; i++) {
             // Sound tmp = SoundAppender.changeNbBytesPerSample (inputSounds
             // [i], 2);
-            final Channel tmp = $.select (SoundAppender.class).resizeToSampleRate (inputSound.getChannels() [i], 44100);
+            final Channel tmp = $.select (SoundAppender.class).resizeToSampleRate (inputSound.getChannels () [i], 44100);
             outputChannels [i] = tmp;
         }
 

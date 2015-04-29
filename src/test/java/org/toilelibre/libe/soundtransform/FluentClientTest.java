@@ -59,10 +59,20 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void canAskToDoALotOfThingsToTheFluentClientOperationAndNothingShouldBeDone () throws SoundTransformException {
         FluentClientOperation.prepare ().withAnObserver ().andAfterStart ().withAPack (null, new ByteArrayInputStream (new byte [0])).withAPack (null, "").withAPack (null, null, null, 0).withAudioInputStream (null).importToSound ().append (null).apply (null).changeFormat (null).cutSubSound (0, 0)
-                .playIt ().changeFormat (null).exportToClasspathResource (null).playIt ().importToStream ().playIt ().importToSound ().exportToClasspathResourceWithSiblingResource (null, null).convertIntoSound ().exportToFile (null).convertIntoSound ().exportToStream ().importToSound ()
-                .findLoudestFrequencies ().compress (0).filterRange (0, 0).insertPart (null, 0).octaveDown ().octaveUp ().replacePart (null, 0).shapeIntoSound (null, null, null).loop (0).mixWith (null).splitIntoSpectrums ().playIt ().extractSound ().andAfterStart ()
-                .inParallel (null, 0, new File ("")).mixAllInOneSound ().andAfterStart ().inParallel (null, 0, new LinkedList<float []> ()).andAfterStart ().inParallel (null, 0, new ByteArrayInputStream (new byte [0])).andAfterStart ().inParallel (null, 0, new Sound (null)).andAfterStart ()
-                .inParallel (null, 0, "").andAfterStart ().inParallel (null, 0, FluentClient.start ()).build ();
+        .playIt ().changeFormat (null).exportToClasspathResource (null).playIt ().importToStream ().playIt ().importToSound ().exportToClasspathResourceWithSiblingResource (null, null).convertIntoSound ().exportToFile (null).convertIntoSound ().exportToStream ().importToSound ()
+        .findLoudestFrequencies ().compress (0).filterRange (0, 0).insertPart (null, 0).octaveDown ().octaveUp ().replacePart (null, 0).shapeIntoSound (null, null, null).loop (0).mixWith (null).splitIntoSpectrums ().playIt ().extractSound ().andAfterStart ()
+        .inParallel (null, 0, new File ("")).mixAllInOneSound ().andAfterStart ().inParallel (null, 0, new LinkedList<float []> ()).andAfterStart ().inParallel (null, 0, new ByteArrayInputStream (new byte [0])).andAfterStart ().inParallel (null, 0, new Sound (null)).andAfterStart ()
+        .inParallel (null, 0, "").andAfterStart ().inParallel (null, 0, FluentClient.start ()).build ();
+    }
+
+    @Test
+    public void processInParallel () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+        FluentClient.start ().inParallel (
+                FluentClientOperation.prepare ().importToStream ().importToSound ().append (FluentClient.start ().withClasspathResource ("piano5g.wav").convertIntoSound ().stopWithSound ()).apply (new EightBitsSoundTransform (25)).changeFormat (new FormatInfo (2, 44100)).cutSubSound (0, 1000)
+                .exportToStream ().playIt ().writeToClasspathResource ("after.wav").convertIntoSound ().findLoudestFrequencies ().filterRange (0, 1000).octaveDown ().octaveUp ().compress (0.5f).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100)).loop (8000)
+                .splitIntoSpectrums ().extractSound ().extractSubSound (0, 4000).mixWith (FluentClient.start ().withClasspathResource ("piano6a.wav").convertIntoSound ().stopWithSound ()).exportToClasspathResource ("after.wav").convertIntoSound ()
+                .exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav").build (), 10000, "piano1c.wav", "piano8c.wav");
     }
 
     @Test
@@ -149,14 +159,14 @@ public class FluentClientTest extends SoundTransformTest {
     public void mixTwoFilesAfterStart () throws SoundTransformException {
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
         FluentClient.start ().withAMixedSound (FluentClient.start ().withClasspathResource ("piano1c.wav").convertIntoSound ().stopWithSound (), FluentClient.start ().withClasspathResource ("piano8c.wav").convertIntoSound ().stopWithSound ())
-                .exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        .exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     @Test
     public void mixTwoFilesInParallel () throws SoundTransformException {
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
         FluentClient.start ().inParallel (
-        // operations
+                // operations
                 FluentClientOperation.prepare ().convertIntoSound ().build (),
                 // timeout in seconds
                 5,
@@ -169,7 +179,7 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
 
         FluentClient.start ().inParallel (
-        // operations
+                // operations
                 FluentClientOperation.prepare ().convertIntoSound ().apply (new EightBitsSoundTransform (25)).exportToClasspathResourceWithSiblingResource ("after%1d.wav", "before.wav").build (),
                 // timeout in seconds
                 5,
@@ -181,7 +191,7 @@ public class FluentClientTest extends SoundTransformTest {
     public void mix2SoundsWithAThirdOne () throws SoundTransformException {
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
         FluentClient.start ().inParallel (
-        // operations
+                // operations
                 FluentClientOperation.prepare ().convertIntoSound ().build (),
                 // timeout in seconds
                 5,
@@ -196,18 +206,18 @@ public class FluentClientTest extends SoundTransformTest {
 
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
         FluentClient.start ().withAPack ("default", packInputStream).withSound (FluentClient.start ().inParallel (
-        // operations
+                // operations
                 FluentClientOperation.prepare ().convertIntoSound ().build (),
                 // timeout in seconds
                 5,
                 // classpath resources
                 "apiano3.wav", "apiano4.wav").mixAllInOneSound ().stopWithSound ()).mixWith (FluentClient.start ().inParallel (
-        // operations
-                FluentClientOperation.prepare ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100f)).build (),
-                // timeout in seconds
-                5,
-                // classpath resources
-                this.generateRandomFreqs (), this.generateRandomFreqs ()).mixAllInOneSound ().stopWithSound ()).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+                        // operations
+                        FluentClientOperation.prepare ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100f)).build (),
+                        // timeout in seconds
+                        5,
+                        // classpath resources
+                        this.generateRandomFreqs (), this.generateRandomFreqs ()).mixAllInOneSound ().stopWithSound ()).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
 
     }
 
@@ -219,7 +229,7 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void noOpWithInsert () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().apply (new NoOpSoundTransform ())
-                .apply (new InsertPartSoundTransform (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().stopWithSound (), 12000)).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
+        .apply (new InsertPartSoundTransform (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().stopWithSound (), 12000)).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     @Test
@@ -269,7 +279,7 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void replacePart () throws SoundTransformException {
         FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransform (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSound (), 100000))
-                .exportToClasspathResource ("after.wav");
+        .exportToClasspathResource ("after.wav");
     }
 
     @Test

@@ -30,7 +30,7 @@ public class LoopSoundTransform implements SoundTransform<Channel, Channel> {
 
     /**
      * Default constructor
-     * 
+     *
      * @param length1
      *            length (in samples) of the repetition(s)
      */

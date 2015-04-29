@@ -62,7 +62,7 @@ public class SlowdownSoundTransform extends SimpleFrequencySoundTransform<Comple
     private static final int A_HUNDRED = 100;
 
     private final float      factor;
-    private Channel            sound;
+    private Channel          sound;
     private final int        step;
     private float            writeIfGreaterEqThan1;
     private int              additionalFrames;

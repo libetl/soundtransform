@@ -18,7 +18,7 @@ public class ToStringSoundTransform implements SoundTransform<Channel, String> {
 
     /**
      * Default constructor
-     * 
+     *
      * @param length
      *            width of the string
      * @param height

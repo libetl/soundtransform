@@ -9,10 +9,10 @@ import org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo;
 
 public class SimpleNote implements Note {
 
-    private final Channel []                  attack;
-    private final Channel []                  decay;
-    private final Channel []                  sustain;
-    private final Channel []                  release;
+    private final Channel []                attack;
+    private final Channel []                decay;
+    private final Channel []                sustain;
+    private final Channel []                release;
     private final SimpleNoteInfo            noteInfo;
     private final SoundPitchAndTempoService soundPitchAndTempoService;
 

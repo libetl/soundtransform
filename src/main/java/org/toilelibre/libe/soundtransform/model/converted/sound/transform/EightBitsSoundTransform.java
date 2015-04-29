@@ -13,7 +13,7 @@ public class EightBitsSoundTransform implements SoundTransform<Channel, Channel>
 
     /**
      * Default constructor
-     * 
+     *
      * @param step
      *            iteration step value
      */

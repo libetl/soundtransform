@@ -18,12 +18,12 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
  */
 public class MixSoundTransform implements SoundTransform<Channel, Channel> {
 
-    private final SoundAppender  soundAppender;
-    private final List<Sound> otherSounds;
+    private final SoundAppender soundAppender;
+    private final List<Sound>   otherSounds;
 
     /**
      * Default constructor
-     * 
+     *
      * @param otherSounds1
      *            sounds to mix with the first one (passed in the transform) the
      *            transform expects to receive all the channels of each sound,
@@ -40,7 +40,7 @@ public class MixSoundTransform implements SoundTransform<Channel, Channel> {
         this.soundAppender = $.select (SoundAppender.class);
         this.otherSounds = Collections.singletonList (otherSound);
     }
-    
+
     private Channel mix (final Channel firstSound, final Channel... sounds) {
         int maxlength = 0;
         final Channel [] ajustedSounds = new Channel [sounds.length + 1];
@@ -82,8 +82,8 @@ public class MixSoundTransform implements SoundTransform<Channel, Channel> {
         final Channel [] onlyOneChannelFromSounds = new Channel [this.otherSounds.size ()];
         int i = 0;
         for (final Sound sound : this.otherSounds) {
-            if (sound.getNumberOfChannels() > input.getChannelNum ()) {
-                onlyOneChannelFromSounds [i++] = sound.getChannels() [input.getChannelNum ()];
+            if (sound.getNumberOfChannels () > input.getChannelNum ()) {
+                onlyOneChannelFromSounds [i++] = sound.getChannels () [input.getChannelNum ()];
             }
         }
         return this.mix (input, onlyOneChannelFromSounds);

@@ -21,7 +21,7 @@ final class DefaultInputStreamToSoundService extends AbstractLogAware<DefaultInp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.model.inputstream.
      * InputStreamToSoundService#fromInputStream(java.io.InputStream)
      */
@@ -32,7 +32,7 @@ final class DefaultInputStreamToSoundService extends AbstractLogAware<DefaultInp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.model.inputstream.
      * InputStreamToSoundService#fromInputStream(java.io.InputStream,
      * org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo)
@@ -47,7 +47,7 @@ final class DefaultInputStreamToSoundService extends AbstractLogAware<DefaultInp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.model.inputstream.
      * InputStreamToSoundService#getStreamInfo(java.io.InputStream)
      */

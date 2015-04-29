@@ -31,7 +31,7 @@ public class SubSoundExtractSoundTransform implements SoundTransform<Channel, Ch
 
     /**
      * Default constructor
-     * 
+     *
      * @param start1
      *            start index
      * @param end1

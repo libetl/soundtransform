@@ -28,7 +28,7 @@ public class ShapeTest extends SoundTransformTest {
         final File input2 = new File (classLoader.getResource ("gpiano3.wav").getFile ());
         final Sound s1 = $.select (InputStreamToSoundService.class).fromInputStream ($.select (AudioFileService.class).streamFromFile (input1));
         final Sound s2 = $.select (InputStreamToSoundService.class).fromInputStream ($.select (AudioFileService.class).streamFromFile (input2));
-        $.select (SoundAppender.class).append (s2.getChannels() [0], 1000, s1.getChannels() [0]);
+        $.select (SoundAppender.class).append (s2.getChannels () [0], 1000, s1.getChannels () [0]);
     }
 
     @Test

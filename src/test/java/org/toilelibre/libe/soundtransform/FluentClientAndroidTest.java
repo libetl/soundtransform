@@ -23,32 +23,32 @@ public class FluentClientAndroidTest extends SoundTransformAndroidTest {
 
     private final Answer<InputStream> findAmongRFields = new Answer<InputStream> () {
 
-                                                           @Override
-                                                           public InputStream answer (final InvocationOnMock invocation) throws Throwable {
-                                                               final int id = invocation.getArgumentAt (0, int.class);
-                                                               for (final Field f : org.toilelibre.libe.soundtransform.R.raw.class.getDeclaredFields ()) {
+        @Override
+        public InputStream answer (final InvocationOnMock invocation) throws Throwable {
+            final int id = invocation.getArgumentAt (0, int.class);
+            for (final Field f : org.toilelibre.libe.soundtransform.R.raw.class.getDeclaredFields ()) {
 
-                                                                   try {
-                                                                       if (f.getInt (null) == id) {
-                                                                           InputStream result = Thread.currentThread ().getContextClassLoader ().getResourceAsStream (f.getName ());
-                                                                           if (result == null) {
-                                                                               result = Thread.currentThread ().getContextClassLoader ().getResourceAsStream (f.getName () + ".wav");
-                                                                           }
-                                                                           if (result == null) {
-                                                                               result = Thread.currentThread ().getContextClassLoader ().getResourceAsStream (f.getName () + ".json");
-                                                                           }
-                                                                           return result;
-                                                                       }
-                                                                   } catch (final IllegalArgumentException e) {
-                                                                       new Slf4jObserver (LogLevel.INFO).notify ("openRawResource : " + e);
-                                                                   } catch (final IllegalAccessException e) {
-                                                                       new Slf4jObserver (LogLevel.INFO).notify ("openRawResource : " + e);
-                                                                   }
-                                                               }
-                                                               throw new RuntimeException ("" + id);
-                                                           }
+                try {
+                    if (f.getInt (null) == id) {
+                        InputStream result = Thread.currentThread ().getContextClassLoader ().getResourceAsStream (f.getName ());
+                        if (result == null) {
+                            result = Thread.currentThread ().getContextClassLoader ().getResourceAsStream (f.getName () + ".wav");
+                        }
+                        if (result == null) {
+                            result = Thread.currentThread ().getContextClassLoader ().getResourceAsStream (f.getName () + ".json");
+                        }
+                        return result;
+                    }
+                } catch (final IllegalArgumentException e) {
+                    new Slf4jObserver (LogLevel.INFO).notify ("openRawResource : " + e);
+                } catch (final IllegalAccessException e) {
+                    new Slf4jObserver (LogLevel.INFO).notify ("openRawResource : " + e);
+                }
+            }
+            throw new RuntimeException ("" + id);
+        }
 
-                                                       };
+    };
 
     @Test (expected = SoundTransformException.class)
     public void loadPackWithMissingFile () throws SoundTransformException {

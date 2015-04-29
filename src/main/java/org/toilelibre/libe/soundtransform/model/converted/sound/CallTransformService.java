@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public interface CallTransformService<T> extends LogAware<T> {
-    
+
     public enum CallTransformServiceErrorCode implements ErrorCode {
 
         NOTHING_IN_INPUT ("Transform %3s, channel %4d/%5d");
@@ -24,7 +24,7 @@ public interface CallTransformService<T> extends LogAware<T> {
             return this.messageFormat;
         }
     }
-    
+
     public enum CallTransformServiceEventCode implements EventCode {
 
         TRANSFORM_STARTING (LogLevel.INFO, "Transform %3s, channel %4d/%5d"), TRANSFORMS_DONE (LogLevel.INFO, "Transforms done");

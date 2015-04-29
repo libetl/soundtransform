@@ -21,7 +21,7 @@ final class DefaultSoundToNoteService implements SoundToNoteService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.model.library.note.Sound2NoteService
      * #convert
@@ -30,7 +30,7 @@ final class DefaultSoundToNoteService implements SoundToNoteService {
      */
     @Override
     public Note convert (final SimpleNoteInfo noteInfo, final Sound sound) throws SoundTransformException {
-        final Channel channel1 = sound.getChannels() [0];
+        final Channel channel1 = sound.getChannels () [0];
 
         final Map<String, Object> noteInfoValues = new HashMap<String, Object> ();
 
@@ -41,7 +41,7 @@ final class DefaultSoundToNoteService implements SoundToNoteService {
         noteInfoValues.put (SimpleNoteInfo.FREQUENCY_KEY, noteInfo.hasFrequency () ? noteInfo.getFrequency () : this.frequencyHelper.findFrequency (sound.getChannels ()));
         noteInfoValues.put (SimpleNoteInfo.NAME_KEY, noteInfo.getName ());
 
-        return new SimpleNote (new SimpleNoteInfo (noteInfoValues), sound.getChannels());
+        return new SimpleNote (new SimpleNoteInfo (noteInfoValues), sound.getChannels ());
 
     }
 }

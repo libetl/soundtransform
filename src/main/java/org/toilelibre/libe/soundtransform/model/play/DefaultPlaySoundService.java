@@ -29,7 +29,7 @@ final class DefaultPlaySoundService<T extends Serializable> implements PlaySound
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.model.play.PlaySoundService#play(java
      * .io.InputStream)
@@ -41,7 +41,7 @@ final class DefaultPlaySoundService<T extends Serializable> implements PlaySound
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.model.play.PlaySoundService#play(org
      * .toilelibre.libe.soundtransform.model.converted.sound.Sound[])
@@ -49,7 +49,7 @@ final class DefaultPlaySoundService<T extends Serializable> implements PlaySound
     @Override
     public Object play (final Sound sound) throws SoundTransformException {
 
-        if (sound.getNumberOfChannels() == 0) {
+        if (sound.getNumberOfChannels () == 0) {
             return new Object ();
         }
 
@@ -59,7 +59,7 @@ final class DefaultPlaySoundService<T extends Serializable> implements PlaySound
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.toilelibre.libe.soundtransform.model.play.PlaySoundService#play(org
      * .toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum)

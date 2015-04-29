@@ -20,7 +20,7 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Channel, d
 
         /**
          * Default constructor
-         * 
+         *
          * @param step1
          *            iteration step value
          */
@@ -31,7 +31,7 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Channel, d
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * org.toilelibre.libe.soundtransform.model.converted.sound.transform
          * .SimpleFrequencySoundTransform#getStep(double)
@@ -43,7 +43,7 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Channel, d
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * org.toilelibre.libe.soundtransform.model.converted.sound.transform
          * .SimpleFrequencySoundTransform
@@ -59,7 +59,7 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Channel, d
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * org.toilelibre.libe.soundtransform.model.converted.sound.transform
          * .SimpleFrequencySoundTransform

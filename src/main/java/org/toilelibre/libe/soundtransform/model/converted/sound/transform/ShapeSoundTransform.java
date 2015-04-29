@@ -70,7 +70,7 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
 
     /**
      * Default Constructor
-     * 
+     *
      * @param packName
      *            Pack name, should be already imported
      * @param instrument
@@ -150,7 +150,7 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
         if (freqs1 == null) {
             throw new SoundTransformException (ShapeSoundTransformErrorCode.NO_LOUDEST_FREQS_IN_ATTRIBUTE, new NullPointerException ());
         }
-        this.freqs = freqs1.clone();
+        this.freqs = freqs1.clone ();
         if (soundLength == 0) {
             soundLength = step * this.freqs.length;
         }

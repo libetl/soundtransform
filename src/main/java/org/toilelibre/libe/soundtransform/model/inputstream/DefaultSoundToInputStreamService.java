@@ -20,12 +20,12 @@ final class DefaultSoundToInputStreamService extends AbstractLogAware<DefaultSou
     }
 
     private byte [] soundToByteArray (final Sound sound, final StreamInfo streamInfo) {
-        return this.frameProcessor.framesToByteArray (sound.getChannels(), streamInfo);
+        return this.frameProcessor.framesToByteArray (sound.getChannels (), streamInfo);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.model.inputstream.
      * SoundToInputStreamService
      * #toStream(org.toilelibre.libe.soundtransform.model

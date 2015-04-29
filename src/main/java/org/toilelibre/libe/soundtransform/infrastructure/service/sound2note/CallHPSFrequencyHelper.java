@@ -16,7 +16,7 @@ final class CallHPSFrequencyHelper implements FrequencyHelper {
         float value = 0;
         float volume = 0;
         for (final Channel channel : channels) {
-            float [] freqs = peak.transform (channel);
+            final float [] freqs = peak.transform (channel);
             if (volume < peak.getDetectedNoteVolume ()) {
                 value = freqs [0];
                 volume = peak.getDetectedNoteVolume ();

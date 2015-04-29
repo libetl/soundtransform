@@ -92,7 +92,7 @@ public class Sound2NoteTest extends SoundTransformTest {
         final Sound f4 = $.select (InputStreamToSoundService.class).fromInputStream (ais);
         final PitchSoundTransform pitcher = new PitchSoundTransform (200);
         final Channel f51 = pitcher.transform (f4.getChannels () [0]);
-        final Channel f52 = pitcher.transform (f4.getChannels ()  [1]);
+        final Channel f52 = pitcher.transform (f4.getChannels () [1]);
 
         final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("piano4e.wav"), new Sound (new Channel [] { f51, f52 }));
         new Slf4jObserver ().notify ("e' 4 : " + n.getFrequency () + "Hz, should be around 664Hz");

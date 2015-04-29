@@ -34,7 +34,7 @@ public class FadeSoundTransform implements SoundTransform<Channel, Channel> {
 
     /**
      * Default constructor
-     * 
+     *
      * @param length1
      *            length of the fade
      * @param fadeIn1

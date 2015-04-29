@@ -36,7 +36,7 @@ public class BlackBoxTest extends SoundTransformTest {
         final InputStream is = new ToInputStream ().toStream (this.input);
         final StreamInfo streamInfo = new GetStreamInfo ().getStreamInfo (new ToInputStream ().toStream (this.input));
         Sound sound = new ConvertFromInputStream ().fromInputStream (is);
-        sound = new Sound (new ApplySoundTransform ().apply (sound.getChannels(), new EightBitsSoundTransform (25)));
+        sound = new Sound (new ApplySoundTransform ().apply (sound.getChannels (), new EightBitsSoundTransform (25)));
         final InputStream isOut = new ToInputStream ().toStream (sound, streamInfo);
         new ExportAFile ().writeFile (isOut, this.output);
     }

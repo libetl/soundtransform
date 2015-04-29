@@ -37,7 +37,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
 
         /**
          * Default constructor
-         * 
+         *
          * @param note1
          *            if true, the whole sound will be transformed at once to
          *            know the loudest freq. therefore the array will be of size
@@ -49,7 +49,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
 
         /**
          * Constructor not using the whole sound as a musical note
-         * 
+         *
          * @param step1
          *            the iteration step value
          */
@@ -59,7 +59,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
 
         /**
          * Constructor not using the whole sound as a musical note
-         * 
+         *
          * @param step1
          *            the iteration step value
          * @param windowLength1
@@ -152,7 +152,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
         }
     }
 
-    private PeakFindWithHPSFrequencySoundTransform<T> decoratedTransform;
+    private final PeakFindWithHPSFrequencySoundTransform<T> decoratedTransform;
 
     public PeakFindWithHPSSoundTransform () {
         this.decoratedTransform = new PeakFindWithHPSFrequencySoundTransform<T> ();
@@ -160,7 +160,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
 
     /**
      * Default constructor
-     * 
+     *
      * @param note1
      *            if true, the whole sound will be transformed at once to know
      *            the loudest freq. therefore the array will be of size 1.
@@ -171,7 +171,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
 
     /**
      * Constructor not using the whole sound as a musical note
-     * 
+     *
      * @param step1
      *            the iteration step value
      */
@@ -181,7 +181,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
 
     /**
      * Constructor not using the whole sound as a musical note
-     * 
+     *
      * @param step1
      *            the iteration step value
      * @param windowLength1
@@ -193,7 +193,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
     }
 
     @Override
-    public float [] transform (Channel input) throws SoundTransformException {
+    public float [] transform (final Channel input) throws SoundTransformException {
         this.decoratedTransform.transform (input);
         return this.decoratedTransform.getLoudestFreqs ();
     }

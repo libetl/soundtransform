@@ -44,7 +44,7 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
     @Test (expected = SoundTransformRuntimeException.class)
     public void replacePartOutOfBounds () throws SoundTransformException {
         FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransform (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSound (), -100000))
-                .exportToClasspathResource ("after.wav");
+        .exportToClasspathResource ("after.wav");
     }
 
     @Test (expected = SoundTransformException.class)

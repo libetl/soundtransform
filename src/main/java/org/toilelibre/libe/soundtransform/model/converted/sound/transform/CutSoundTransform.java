@@ -33,7 +33,7 @@ public class CutSoundTransform implements SoundTransform<Channel, Channel> {
 
     /**
      * Default Constructor
-     * 
+     *
      * @param start1
      *            start of the interval
      * @param end1

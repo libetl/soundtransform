@@ -26,7 +26,7 @@ public class StreamInfo extends FormatInfo {
     }
 
     public static StreamInfo from (final FormatInfo fi, final Sound sound) {
-        return new StreamInfo (sound.getNumberOfChannels(), sound.getSamplesLength (), fi.getSampleSize (), fi.getSampleRate (), false, true, null);
+        return new StreamInfo (sound.getNumberOfChannels (), sound.getSamplesLength (), fi.getSampleSize (), fi.getSampleRate (), false, true, null);
     }
 
     public int getChannels () {

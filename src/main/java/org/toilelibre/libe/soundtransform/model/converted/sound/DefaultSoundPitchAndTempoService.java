@@ -12,7 +12,7 @@ final class DefaultSoundPitchAndTempoService implements SoundPitchAndTempoServic
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.toilelibre.libe.soundtransform.model.converted.sound.
      * SoundPitchAndTempoService
      * #callTransform(org.toilelibre.libe.soundtransform

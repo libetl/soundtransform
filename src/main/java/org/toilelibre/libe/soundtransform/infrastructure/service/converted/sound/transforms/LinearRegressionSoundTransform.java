@@ -16,7 +16,7 @@ public class LinearRegressionSoundTransform implements SoundTransform<Channel, C
 
     /**
      * Default constructor
-     * 
+     *
      * @param step1
      *            iteration step value
      */

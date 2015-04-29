@@ -15,7 +15,7 @@ public class PitchSoundTransform implements SoundTransform<Channel, Channel> {
 
     /**
      * Default constructor
-     * 
+     *
      * @param percent
      *            if < 100, the sound will contains more samples, therefore the
      *            sound will be pitched down, and the frequencies will be

@@ -47,8 +47,8 @@ public class RecordTest extends SoundTransformTest {
             }
         }
 
-        Assert.assertNotNull (sound.getChannels() [0]);
-        Assert.assertNotNull (sound.getChannels() [1]);
+        Assert.assertNotNull (sound.getChannels () [0]);
+        Assert.assertNotNull (sound.getChannels () [1]);
         Assert.assertNotEquals (sound.getSamplesLength (), 0);
     }
 
@@ -61,8 +61,8 @@ public class RecordTest extends SoundTransformTest {
             public void run () {
                 try {
                     final Sound sounds2 = FluentClient.start ().withRecordedInputStream (new StreamInfo (2, -1, 2, 48000, false, true, null), stop).importToSound ().stopWithSound ();
-                    channels [0] = sounds2.getChannels() [0];
-                    channels [1] = sounds2.getChannels() [1];
+                    channels [0] = sounds2.getChannels () [0];
+                    channels [1] = sounds2.getChannels () [1];
                 } catch (final SoundTransformException ste) {
                     // "AUDIO_FORMAT_NOT_SUPPORTED" is thrown by oracle and
                     // "TARGET_LINE_UNAVAILABLE" is thrown by openjdk

@@ -29,11 +29,11 @@ public class InsertPartSoundTransform implements SoundTransform<Channel, Channel
     }
 
     private final Channel [] subsound;
-    private final int      start;
+    private final int        start;
 
     /**
      * Default constructor
-     * 
+     *
      * @param subsound1
      *            the sound to insert (only one sound is allowed, each element
      *            is a sound channel)
@@ -41,7 +41,7 @@ public class InsertPartSoundTransform implements SoundTransform<Channel, Channel
      *            start index where to insert the sound
      */
     public InsertPartSoundTransform (final Sound subsound1, final int start1) {
-        this.subsound = subsound1.getChannels();
+        this.subsound = subsound1.getChannels ();
         this.start = start1;
     }
 
