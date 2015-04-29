@@ -172,7 +172,7 @@ Throws:
 #####   FluentClientReady.inParallel 
 
 ```java
-FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds) throws SoundTransformException
+FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound... sounds) throws SoundTransformException
 ```
 
 
@@ -885,7 +885,7 @@ Throws:
 #####   FluentClientSoundImported.mixWith
 
 ```java
-FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException
+FluentClientSoundImported mixWith (Sound sound) throws SoundTransformException
 ```
 
 
@@ -1324,7 +1324,7 @@ Mixes several sounds into a new sound The sound channels will be re-sampled (up 
 
  * **Constructor:**
 ```java
-public MixSoundTransform (List<Sound []> otherSounds)
+public MixSoundTransform (List<Sound> otherSounds)
 ```
 
 Default constructor the transform expects to receive all the channels of each sound, even if it will not use them all for the mix. (the channelNum of the first sound will be used to match the other sounds channels before the mix operation takes place)
@@ -1374,7 +1374,7 @@ Replaces a part of a sound with another sound The target sound must have the sam
 
  * **Constructor:**
 ```java
-public ReplacePartSoundTransform (Sound [] replacement, int start)
+public ReplacePartSoundTransform (Sound replacement, int start)
 ```
 
 Default constructor
