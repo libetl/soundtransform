@@ -1065,6 +1065,24 @@ Throws:
 
 #### 4. method flow stops
 
+#####   FluentClientSoundImported.applyAndStop
+
+```java
+<T> T [] applyAndStop (SoundTransform<Channel, T> transform, Class<T> resultClass) throws SoundTransformException;
+```
+
+
+Apply one transform and stop immediately after with a result
+
+Parameters:  
+`st` - the SoundTransform to apply
+
+Returns:  
+a result in the expected kind
+
+Throws:  
+`SoundTransformException` - if the transform does not work
+
 #####   FluentClient*.stopWithAPack
 
 ```java
