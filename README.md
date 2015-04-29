@@ -1068,14 +1068,14 @@ Throws:
 #####   FluentClientSoundImported.applyAndStop
 
 ```java
-<T> T [] applyAndStop (SoundTransform<Channel, T> transform, Class<T> resultClass) throws SoundTransformException;
+<T> T [] applyAndStop (SoundTransform<Channel, T> transform) throws SoundTransformException;
 ```
 
 
 Apply one transform and stop immediately after with a result
 
 Parameters:  
-`st` - the SoundTransform to apply
+`transform` - the SoundTransform to apply
 
 Returns:  
 a result in the expected kind

@@ -177,15 +177,12 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *
      * @param st
      *            the SoundTransform to apply
-     * @param resultClass
-     *            expected kind of result
      * @return a result in the expected kind
      * @throws SoundTransformException
      *             if the transform does not work
      */
     @SuppressWarnings ("unchecked")
-    public <T> T [] applyAndStop (SoundTransform<Channel, T> st, Class<T> resultClass) throws SoundTransformException {
-        resultClass.hashCode();
+    public <T> T [] applyAndStop (SoundTransform<Channel, T> st) throws SoundTransformException {
         Object result = new ApplySoundTransform (this.getObservers ()).apply (this.sound.getChannels(), st);
         return (T []) result;
     }

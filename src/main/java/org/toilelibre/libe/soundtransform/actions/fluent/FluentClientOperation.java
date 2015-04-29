@@ -75,7 +75,7 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     }
 
     @Override
-    public <T> T [] applyAndStop (final SoundTransform<Channel, T> st, final Class<T> resultClass) throws SoundTransformException {
+    public <T> T [] applyAndStop (final SoundTransform<Channel, T> st) throws SoundTransformException {
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
     

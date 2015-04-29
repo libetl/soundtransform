@@ -39,13 +39,11 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      *
      * @param st
      *            the SoundTransform to apply
-     * @param resultClass
-     *            expected kind of result
      * @return a result in the expected kind
      * @throws SoundTransformException
      *             if the transform does not work
      */
-    <T> T [] applyAndStop (SoundTransform<Channel, T> st, Class<T> resultClass) throws SoundTransformException;
+    <T> T [] applyAndStop (SoundTransform<Channel, T> st) throws SoundTransformException;
 
     /**
      * Changes the current imported sound to fit the expected format

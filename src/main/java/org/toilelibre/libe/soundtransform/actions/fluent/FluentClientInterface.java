@@ -69,7 +69,7 @@ public interface FluentClientInterface {
      * @throws SoundTransformException
      *             if the transform does not work
      */
-    public abstract <T> T [] applyAndStop (SoundTransform<Channel, T> st, Class<T> resultClass) throws SoundTransformException;
+    public abstract <T> T [] applyAndStop (SoundTransform<Channel, T> st) throws SoundTransformException;
 
     /**
      * Changes the current imported sound to fit the expected format
