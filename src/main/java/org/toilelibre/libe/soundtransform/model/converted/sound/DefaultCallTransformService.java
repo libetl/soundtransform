@@ -36,9 +36,9 @@ final class DefaultCallTransformService extends AbstractLogAware<DefaultCallTran
         return this.typeArrayWithFirstClassValue (untypedOutput);
     }
 
-    private <V> V [] typeArrayWithFirstClassValue (final Object [] untypedOutput) {
+    private <V> V [] typeArrayWithFirstClassValue (final Object [] untypedOutput) throws SoundTransformException {
         if (untypedOutput.length == 0) {
-            return null;
+            throw new SoundTransformException (CallTransformServiceErrorCode.NOTHING_IN_INPUT, new NullPointerException ());
         }
         @SuppressWarnings ("unchecked")
         final V [] typedArray = (V []) Array.newInstance (untypedOutput [0].getClass (), untypedOutput.length);

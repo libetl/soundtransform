@@ -1,13 +1,30 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
+import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 public interface CallTransformService<T> extends LogAware<T> {
+    
+    public enum CallTransformServiceErrorCode implements ErrorCode {
 
+        NOTHING_IN_INPUT ("Transform %3s, channel %4d/%5d");
+
+        private final String messageFormat;
+
+        CallTransformServiceErrorCode (final String mF) {
+            this.messageFormat = mF;
+        }
+
+        @Override
+        public String getMessageFormat () {
+            return this.messageFormat;
+        }
+    }
+    
     public enum CallTransformServiceEventCode implements EventCode {
 
         TRANSFORM_STARTING (LogLevel.INFO, "Transform %3s, channel %4d/%5d"), TRANSFORMS_DONE (LogLevel.INFO, "Transforms done");

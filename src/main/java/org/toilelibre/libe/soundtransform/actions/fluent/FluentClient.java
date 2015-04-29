@@ -185,6 +185,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @SuppressWarnings ("unchecked")
     public <T> T [] applyAndStop (SoundTransform<Channel, T> st, Class<T> resultClass) throws SoundTransformException {
+        resultClass.hashCode();
         Object result = new ApplySoundTransform (this.getObservers ()).apply (this.sound.getChannels(), st);
         return (T []) result;
     }
@@ -1042,7 +1043,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         for (final FluentClientCommon fcc : this.parallelizedClients) {
             if (resultClass == float [].class) {
                 results [i++] = (T) ((FluentClient) fcc).stopWithFreqs ();
-            } else if (resultClass == Channel [].class) {
+            } else if (resultClass == Sound.class) {
                 results [i++] = (T) ((FluentClient) fcc).stopWithSound ();
             } else if (resultClass == InputStream.class) {
                 results [i++] = (T) ((FluentClient) fcc).stopWithInputStream ();

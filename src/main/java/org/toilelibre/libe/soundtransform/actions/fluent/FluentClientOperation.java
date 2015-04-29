@@ -75,6 +75,11 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     }
 
     @Override
+    public <T> T [] applyAndStop (final SoundTransform<Channel, T> st, final Class<T> resultClass) throws SoundTransformException {
+        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
+    }
+    
+    @Override
     public Pack stopWithAPack (final String title) {
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
@@ -513,19 +518,6 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
         });
 
         return this;
-    }
-
-    @Override
-    public <T> T [] applyAndStop (final SoundTransform<Channel, T> st, final Class<T> resultClass) throws SoundTransformException {
-        this.steps.add (new Step () {
-
-            @Override
-            public void run (final FluentClientInterface client) throws SoundTransformException {
-                client.applyAndStop (st, resultClass);
-            }
-        });
-
-        return null;
     }
 
     @Override
