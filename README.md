@@ -13,7 +13,7 @@ Android & Pure Java library to shape a voice with an instrument.
 		- [2. start of the flow](#2-start-of-the-flow)
 		- [3. operations](#3-operations)
 		- [4. method flow stops](#4-method-flow-stops)
-- [SoundTransformation classes](#soundtransformation-classes)
+- [SoundTransform classes](#soundtransform-classes)
 	- [Time domain transforms](#time-domain-transforms)
 	- [Frequency domain transforms](#frequency-domain-transforms)
 
@@ -37,7 +37,7 @@ Android & Pure Java library to shape a voice with an instrument.
 * Replace x.x.x with the version you need (do not hesitate to use the latest one).
 * Make sure you have access to the FluentClient class in your project (try the autocompletion feature of your IDE if you have one)
 * Read the below documentation about the FluentClient facility
-* Have a look at the available SoundTransformation classes
+* Have a look at the available SoundTransform classes
 * Use the lib by yourself
 
 ## FluentClient
@@ -60,7 +60,7 @@ public void method (){
   setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
 
   //Apply a 8-bit transform on a wav and then export it to a wav
-  start ().withClasspathResource ("foo.wav").convertIntoSound ().apply (new EightBitsSoundTransformation (25)).exportToClasspathResource ("bar.wav");
+  start ().withClasspathResource ("foo.wav").convertIntoSound ().apply (new EightBitsSoundTransform (25)).exportToClasspathResource ("bar.wav");
 
   //Create a var to use the CD format
   FormatInfo cdFormatInfo = new FormatInfo (2, 44100.0);
@@ -72,7 +72,7 @@ public void method (){
   start ().withClasspathResource ("foo.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
  
   //Transform a sound into a an array of spectrums
-  start ().withSounds (sounds).splitIntoSpectrums ().stopWithSpectrums ();
+  start ().withSound (sound).splitIntoSpectrums ().stopWithSpectrums ();
 
   //Transform a lowfi wav file into a cd format wavfile
   start ().withClasspathResource ("lowfi.wav").convertIntoSound ().changeFormat (cdFormatInfo).exportToClasspathResource ("hifi.wav");
@@ -287,7 +287,7 @@ Throws:
 #####   FluentClientReady.withAMixedSound 
 
 ```java
-FluentClientSoundImported withAMixedSound (Sound []... sounds) throws SoundTransformException;
+FluentClientSoundImported withAMixedSound (Sound... sounds) throws SoundTransformException;
 ```
 
 
@@ -518,10 +518,10 @@ the client, with an input stream
 Throws:  
 `SoundTransformException` - the mic could not be read, the recorder could not start, or the buffer did not record anything
 
-#####   FluentClientReady.withSounds (just after start)
+#####   FluentClientReady.withSound (just after start)
 
 ```java
-FluentClientSoundImported withSounds (Sound [] sounds)
+FluentClientSoundImported withSound (Sound sounds)
 ```
 
 
@@ -576,13 +576,13 @@ the client, ready to start
 #####   FluentClientSoundImported.append
 
 ```java
-FluentClientSoundImported append (Sound [] sounds) throws SoundTransformException
+FluentClientSoundImported append (Sound sound) throws SoundTransformException
 ```
 
 Append the sound passed in parameter to the current sound stored in the client
 
 Parameters:  
-`sounds` - the sound to append the current sound to
+`sound` - the sound to append the current sound to
 
 Returns:  
 the client, with a sound imported
@@ -593,13 +593,14 @@ Throws:
 #####   FluentClientSoundImported.apply
 
 ```java
-FluentClientSoundImported apply (SoundTransformation st) throws SoundTransformException
+FluentClientSoundImported apply (SoundTransform<Channel, Channel> st) throws SoundTransformException
 ```
 
-Apply one transform and continue with the result sound
+Apply one transform and continue with the result sound.
+The SoundTransform should have Channel as input and Channel as output. To apply another transform, use applyAndStop.
 
 Parameters:  
-`st` - the SoundTransformation to apply
+`st` - the SoundTransform to apply
 
 Returns:  
 the client with a sound imported
@@ -1137,10 +1138,10 @@ Parameters:
 Returns:  
 an array of results
 
-#####   FluentClientSoundImported.stopWithSounds
+#####   FluentClientSoundImported.stopWithSound
 
 ```java
-Sound [] stopWithSounds ()
+Sound stopWithSound ()
 ```
 
 Stops the client pipeline and returns the obtained sound
@@ -1175,25 +1176,25 @@ a streamInfo object
 Throws:  
 `SoundTransformException` - could not read the StreamInfo from the current inputstream
 
-## SoundTransformation classes
-The SoundTransformation classes are a family of classes whose role is to process something on a single sound channel. 
+## SoundTransform classes
+The SoundTransform classes are a family of classes whose role is to process something on an object of an certain 'I' kind and to return another object of a certain 'O' kind (at least one of 'I' or 'O' must be 'Channel')
 
 The signature will contain this transform method for every class :
 ```java
-public Sound transform (Sound input) throws SoundTransformException;
+public O transform (I input) throws SoundTransformException;
 ```
 
 The simplest way to process a transform is to use the `FluentClientSoundImported.apply` method.
 
 Calling directly the transform method can do the trick, but don't forget to call it on each channel with exactly the same parameters, and to pass the list of your observers.
 
-Some of these classes only iterate over the samples once, changing some samples with a formula (for example EightBightSoundTransformation).
-Some others convert first the sound in the frequency domain before processing it (it uses a spectrum as input), like EqualizerSoundTransformation.
+Some of these classes only iterate over the samples once, changing some samples with a formula (for example EightBightSoundTransform).
+Some others convert first the sound in the frequency domain before processing it (it uses a spectrum as input), like EqualizerSoundTransform.
 
 ### Time domain transforms
-#### CutSoundTransformation
+#### CutSoundTransform
 ```java
-public class CutSoundTransformation implements SoundTransformation
+public class CutSoundTransform implements SoundTransform<Channel, Channel>
 ```
 
 Removes a part of a sound 
@@ -1202,7 +1203,7 @@ The result of the method contains the rest of the sound, and the removed interva
 
  * **Constructor:**
 ```java
-public CutSoundTransformation (int start, int end)
+public CutSoundTransform (int start, int end)
 ```
 
 Default Constructor
@@ -1211,32 +1212,32 @@ Default Constructor
    * `start` — start of the interval
    * `end` — end of the interval
 
-#### EightBitsSoundTransformation
+#### EightBitsSoundTransform
 ```java
-public class EightBitsSoundTransformation implements SoundTransformation
+public class EightBitsSoundTransform implements SoundTransform<Channel, Channel>
 ```
 
 Leaves only one sample out of [step] ones, the others are set to 0. The effect is to produce a sound that sounds like a video game console. (a good step value for a CD format is 25)
 
  * **Constructor:**
 ```java
-public EightBitsSoundTransformation (int step)
+public EightBitsSoundTransform (int step)
 ```
 
 Default constructor
 
  * **Parameters:** `step` — iteration step value
 
-#### FadeSoundTransformation
+#### FadeSoundTransform
 ```java
-public class FadeSoundTransformation implements SoundTransformation
+public class FadeSoundTransform implements SoundTransform<Channel, Channel>
 ```
 
 Fade in / Fade out operation of a sound. Ability to change the first part of a sound as an intro or the last part as an outro (the sound volume gradually increases in the intro and gradually descreases in the outro)
 
  * **Constructor:**
 ```java
-public FadeSoundTransformation (int length, boolean fadeIn) throws SoundTransformException
+public FadeSoundTransform (int length, boolean fadeIn) throws SoundTransformException
 ```
 
 Default constructor
@@ -1246,16 +1247,16 @@ Default constructor
    * `fadeIn` — true for fadeIn, false for fadeOut
  * **Exceptions:** `SoundTransformException` — The fade length is longer than the sound itself
 
-#### InsertPartSoundTransformation
+#### InsertPartSoundTransform
 ```java
-public class InsertPartSoundTransformation implements SoundTransformation
+public class InsertPartSoundTransform implements SoundTransform<Channel, Channel>
 ```
 
 Insert a sound into another
 
  * **Constructor:**
 ```java
-public InsertPartSoundTransformation (Sound [] subsound, int start)
+public InsertPartSoundTransform (Sound subsound, int start)
 ```
 
 Default constructor
@@ -1264,64 +1265,64 @@ Default constructor
    * `subsound` — the sound to insert (only one sound is allowed, each element is a sound channel)
    * `start` — start index where to insert the sound
 
-#### LinearRegressionSoundTransformation
+#### LinearRegressionSoundTransform
 ```java
-public class LinearRegressionSoundTransformation implements SoundTransformation
+public class LinearRegressionSoundTransform implements SoundTransform
 ```
 
 Smoothes a sound graph. The effect is to remove the treble frequencies without any time-to-frequency domain transform
 
  * **Constructor:**
 ```java
-public LinearRegressionSoundTransformation (int step)
+public LinearRegressionSoundTransform (int step)
 ```
 
 Default constructor
 
  * **Parameters:** `step` — iteration step value
 
-#### LoopSoundTransformation
+#### LoopSoundTransform
 ```java
-public class LoopSoundTransformation implements SoundTransformation
+public class LoopSoundTransform implements SoundTransform<Channel, Channel>
 ```
 
 Repeats a sound as another sound
 
  * **Constructor:**
 ```java
-public LoopSoundTransformation (int length)
+public LoopSoundTransform (int length)
 ```
 
 Default constructor
 
  * **Parameters:** `length` — length (in samples) of the repetition(s)
 
-#### MixSoundTransformation
+#### MixSoundTransform
 ```java
-public class MixSoundTransformation implements SoundTransformation
+public class MixSoundTransform implements SoundTransform<Channel, Channel>
 ```
 
 Mixes several sounds into a new sound The sound channels will be re-sampled (up sampled or down sampled) to match the first sound format info. The sounds samples will be summed. Therefore, if the first sound is the opposite of the second one (sample1 [i] = -sample2 [i]), the sum will be 0. (there will be nothing to hear)
 
  * **Constructor:**
 ```java
-public MixSoundTransformation (List<Sound []> otherSounds)
+public MixSoundTransform (List<Sound []> otherSounds)
 ```
 
 Default constructor the transform expects to receive all the channels of each sound, even if it will not use them all for the mix. (the channelNum of the first sound will be used to match the other sounds channels before the mix operation takes place)
 
  * **Parameters:** `otherSounds` — sounds to mix with the first one (passed in the transform)
 
-#### NormalizeSoundTransformation
+#### NormalizeSoundTransform
 ```java
-public class NormalizeSoundTransformation implements SoundTransformation
+public class NormalizeSoundTransform implements SoundTransform<Channel, Channel>
 ```
 
 Raises the sound volume to match a certain percentage of the maximum possible level
 
  * **Constructor:**
 ```java
-public NormalizeSoundTransformation (float coefficient) throws SoundTransformException
+public NormalizeSoundTransform (float coefficient) throws SoundTransformException
 ```
 
 Default constructor
@@ -1329,16 +1330,16 @@ Default constructor
  * **Parameters:** `coefficient` — coefficient of the max level (0 <= coefficient <= 1)
  * **Exceptions:** `SoundTransformException` — The coefficient of the normalizer is above one or below zero
 
-#### PitchSoundTransformation
+#### PitchSoundTransform
 ```java
-public class PitchSoundTransformation implements SoundTransformation
+public class PitchSoundTransform implements SoundTransform<Channel, Channel>
 ```
 
 Removes or adds some samples in the input sound according to the passed percent parameter. This will change the pitch of the sound (the frequencies will be shifted)
 
  * **Constructor:**
 ```java
-public PitchSoundTransformation (float percent)
+public PitchSoundTransform (float percent)
 ```
 
 Default constructor 
@@ -1346,16 +1347,16 @@ Default constructor
  * **Parameters:** `percent` — if < 100, the sound will contains more samples, therefore the sound will be pitched down, and the frequencies will be lowered, if = 100, nothing happens, if > 100, the sound will contains less samples, therefore the sound will be pitched up, and the frequencies will be higher
 
 
-#### ReplacePartSoundTransformation
+#### ReplacePartSoundTransform
 ```java
-public class ReplacePartSoundTransformation implements SoundTransformation
+public class ReplacePartSoundTransform implements SoundTransform<Channel, Channel>
 ```
 
 Replaces a part of a sound with another sound The target sound must have the same number of channels as the replacement, and the insert index must not be out of bounds
 
  * **Constructor:**
 ```java
-public ReplacePartSoundTransformation (Sound [] replacement, int start)
+public ReplacePartSoundTransform (Sound [] replacement, int start)
 ```
 
 Default constructor
@@ -1364,16 +1365,16 @@ Default constructor
    * `replacement` — replacement sound
    * `start` — start index
 
-#### SubSoundExtractSoundTransformation
+#### SubSoundExtractSoundTransform
 ```java
-public class SubSoundExtractSoundTransformation implements SoundTransformation
+public class SubSoundExtractSoundTransform implements SoundTransform<Channel, Channel>
 ```
 
 Cuts a part of a sound and returns it. The rest of the sound will not be available.
 
  * **Constructor:**
 ```java
-public SubSoundExtractSoundTransformation (int start, int end)
+public SubSoundExtractSoundTransform (int start, int end)
 ```
 
 Default constructor
@@ -1383,9 +1384,9 @@ Default constructor
    * `end` — end index
 
 ### Frequency domain transforms
-#### CepstrumSoundTransformation
+#### CepstrumSoundTransform
 ```java
-public class CepstrumSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T>
+public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogAware<CepstrumSoundTransform<T>> implements PeakFindSoundTransform<T, AbstractLogAware<CepstrumSoundTransform<T>>>
 ```
 
 Transforms a sound into a list of cepstrums (log modulus of the spectrums). Useful to get the f0 values of a sound (loudest freqs array). 
@@ -1394,17 +1395,19 @@ The obtained Spectrum are not really spectrums. They consist of a graph a quefre
 
 The peak can represent the f0 (if the FormatInfo of the input sound is adequate), but it is not faithful everytime. This method can detect wrong values.
 
+This is a PeakFindSoundTransform, therefore it is a SoundTransform<Channel, float []>.
+
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
  * **Constructors:**
 ```java
-public CepstrumSoundTransformation ()
+public CepstrumSoundTransform ()
 ```
 
 Constructor with default values. The cepstrums will not be kept when using the getCepstrums method
 
 ```java
-public CepstrumSoundTransformation (boolean note)
+public CepstrumSoundTransform (boolean note)
 ```
 
 Constructor with default values. The cepstrums will not be kept when using the getCepstrums method 
@@ -1412,7 +1415,7 @@ Constructor with default values. The cepstrums will not be kept when using the g
  * **Parameters:** `note` — if true, the loudest freqs array will contain a single element and the cepstrum will be made once, using the whole sound
 
 ```java
-public CepstrumSoundTransformation (double step)
+public CepstrumSoundTransform (double step)
 ```
 
 The cepstrums will not be kept when using the getCepstrums method
@@ -1420,36 +1423,26 @@ The cepstrums will not be kept when using the getCepstrums method
  * **Parameters:** `step` — the iteration step (increasing the value will speed the transform but will be less precise)
 
 ```java
-public CepstrumSoundTransformation (double step, boolean note)
+public CepstrumSoundTransform (double step, boolean note)
 ```
 
 The cepstrums will not be kept when using the getCepstrums method
-
- * **Parameters:**
-   * `step` — the iteration step (increasing the value will speed the transform but will be less precise)
-   * `note` — if true, the loudest freqs array will contain a single element and the cepstrum will be made once, using the whole sound
-
-```java
-public CepstrumSoundTransformation (double step, boolean keepCepstrums, boolean note)
-```
-
 Constructor with every parameter specified 
 
  * **Parameters:**
-   * `keepCepstrums` — if true, the cepstrums will all be saved after each call to the method transform This can cause a big memory leak if not used with care. Be vigilant.
    * `step` — the iteration step (increasing the value will speed the transform but will be less precise)
    * `note` — if true, the loudest freqs array will contain a single element and the cepstrum will be made once, using the whole sound
 
-##### EqualizerSoundTransformation
+##### EqualizerSoundTransform
 ```java
-public class EqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []>
+public class EqualizerSoundTransform extends SimpleFrequencySoundTransform<Complex []>
 ```
 
 Change the volume of each frequencies range at each step of the sound
 
  * **Constructor:**
 ```java
-public EqualizerSoundTransformation (double [] ranges, double [] amplification)
+public EqualizerSoundTransform (double [] ranges, double [] amplification)
 ```
 
 Default constructor. A mathematical representation of a curve amplification/freqs is asked in the parameters
@@ -1458,32 +1451,33 @@ Default constructor. A mathematical representation of a curve amplification/freq
    * `ranges` — the frequencies, in abscissa [0..20000]
    * `amplification` — the amplification, in ordinate [0..1]
 
-##### GaussianEqualizerSoundTransformation
+##### GaussianEqualizerSoundTransform
 ```java
-public class GaussianEqualizerSoundTransformation extends SimpleFrequencySoundTransformation<Complex []>
+public class GaussianEqualizerSoundTransform extends SimpleFrequencySoundTransform<Complex []>
 ```
 
 Equalizer which cuts the treble and the bass frequencies of a sound
 
  * **Constructor:**
 ```java
-public GaussianEqualizerSoundTransformation ()
+public GaussianEqualizerSoundTransform ()
 ```
 
 Default constructor
 
-##### PeakFindWithHPSSoundTransformation
+##### PeakFindWithHPSSoundTransform
 ```java
-public class PeakFindWithHPSSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T> implements PeakFindSoundTransformation<T>
+public class PeakFindWithHPSSoundTransform<T extends Serializable> extends AbstractLogAware<PeakFindWithHPSSoundTransform<T>> implements PeakFindSoundTransform<T, AbstractLogAware<PeakFindWithHPSSoundTransform<T>>> 
 ```
 
-Finds the loudest frequencies array using the Harmonic Product Spectrum algorithm
+Finds the loudest frequencies array using the Harmonic Product Spectrum algorithm.
+This is a PeakFindSoundTransform, therefore it is a SoundTransform<Channel, float []>.
 
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
  * **Constructors:**
 ```java
-public PeakFindWithHPSSoundTransformation (boolean note)
+public PeakFindWithHPSSoundTransform (boolean note)
 ```
 
 Default constructor therefore the array will be of size 1.
@@ -1491,7 +1485,7 @@ Default constructor therefore the array will be of size 1.
  * **Parameters:** `note` — if true, the whole sound will be transformed at once to know the loudest freq.
 
 ```java
-public PeakFindWithHPSSoundTransformation (double step)
+public PeakFindWithHPSSoundTransform (double step)
 ```
 
 Constructor not using the whole sound as a musical note
@@ -1499,7 +1493,7 @@ Constructor not using the whole sound as a musical note
  * **Parameters:** `step` — the iteration step value
 
 ```java
-public PeakFindWithHPSSoundTransformation (double step, int windowLength)
+public PeakFindWithHPSSoundTransform (double step, int windowLength)
 ```
 
 Constructor not using the whole sound as a musical note
@@ -1508,16 +1502,27 @@ Constructor not using the whole sound as a musical note
    * `step` — the iteration step value
    * `windowLength` — length of the spectrum used during each iteration (the highest the slowest)
 
-##### ShapeSoundTransformation
 ```java
-public class ShapeSoundTransformation extends AbstractLogAware<ShapeSoundTransformation> implements SoundTransformation
+public PeakFindWithHPSSoundTransform (boolean note, double step, int windowLength)
+```
+
+Full constructor with every parameter specified
+
+ * **Parameters:**
+   * `note` — if true, the whole sound will be transformed at once to know the loudest freq.
+   * `step` — the iteration step value
+   * `windowLength` — length of the spectrum used during each iteration (the highest the slowest)
+
+##### ShapeSoundTransform
+```java
+public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> implements SoundTransform<float [], Channel>
 ```
 
 Create a sound with notes matching the input sound loudest frequencies. It uses a soundtransform to get the loudest frequencies, then it shapes a sound consisting of the notes heard in the freqs array. If the constructor using a float array is used, only the shaping step will be processed
 
  * **Constructors:**
 ```java
-public ShapeSoundTransformation (String packName, String instrument)
+public ShapeSoundTransform (String packName, String instrument)
 ```
 
 Constructor for the two steps
@@ -1527,7 +1532,7 @@ Constructor for the two steps
    * `instrument` — instrument of the pack which will be used to shape the sound
 
 ```java
-public ShapeSoundTransformation (String packName, String instrument, float [] freqs, FormatInfo formatInfo)
+public ShapeSoundTransform (String packName, String instrument, float [] freqs, FormatInfo formatInfo)
 ```
 
 Constructor only for the second step
@@ -1538,30 +1543,30 @@ Constructor only for the second step
    * `freqs` — the loudest freqs array
    * `formatInfo` — the format info
 
-##### SimpleFrequencySoundTransformation
+##### SimpleFrequencySoundTransform
 ```java
-public class SimpleFrequencySoundTransformation<T extends Serializable> extends AbstractFrequencySoundTransformation<T>
+public class SimpleFrequencySoundTransform<T extends Serializable> extends AbstractFrequencySoundTransform<T>
 ```
 
 Simple proxy to avoid useless parameters in the overriden method
 
  * **Constructor:**
 ```java
-public SimpleFrequencySoundTransformation ()
+public SimpleFrequencySoundTransform ()
 ```
 
 Default constructor
 
-##### SlowdownSoundTransformation
+##### SlowdownSoundTransform
 ```java
-public class SlowdownSoundTransformation extends SimpleFrequencySoundTransformation<Complex []>
+public class SlowdownSoundTransform extends SimpleFrequencySoundTransform<Complex []>
 ```
 
 Builds a new sound, longer than the input, without shifting the frequencies
 
  * **Constructor:**
 ```java
-public SlowdownSoundTransformation (int step, float factor, int windowLength) throws SoundTransformException
+public SlowdownSoundTransform (int step, float factor, int windowLength) throws SoundTransformException
 ```
 
 Default constructor 
@@ -1573,9 +1578,9 @@ WARN : can fail for various reasons
    * `windowLength` — must be a power of 2 and must be >= 2 * step
  * **Exceptions:** `SoundTransformException` — if the constraint about the windowLength is not met
 
-##### SpeedUpSoundTransformation
+##### SpeedUpSoundTransform
 ```java
-public class SpeedUpSoundTransformation<T extends Serializable> extends SimpleFrequencySoundTransformation<T>
+public class SpeedUpSoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T>
 ```
 
 Builds a new sound, shorter than the input, without shifting the frequencies
@@ -1584,7 +1589,7 @@ Builds a new sound, shorter than the input, without shifting the frequencies
 
  * **Constructor:**
 ```java
-public SpeedUpSoundTransformation (int step, float factor)
+public SpeedUpSoundTransform (int step, float factor)
 ```
 
 Default constructor
