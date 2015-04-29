@@ -8,6 +8,6 @@ import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 
 public interface SoundToInputStreamService<T> extends LogAware<T> {
 
-    public abstract InputStream toStream (Sound [] channels, StreamInfo streamInfo) throws SoundTransformException;
+    public abstract InputStream toStream (Sound sound, StreamInfo streamInfo) throws SoundTransformException;
 
 }

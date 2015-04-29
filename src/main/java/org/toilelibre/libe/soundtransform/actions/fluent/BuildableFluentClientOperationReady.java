@@ -72,7 +72,7 @@ public interface BuildableFluentClientOperationReady extends FluentClientReady, 
      *             threads were interrupted
      */
     @Override
-    BuildableFluentClientOperationWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds) throws SoundTransformException;
+    BuildableFluentClientOperationWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound... sounds) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of inputStreams
@@ -180,7 +180,7 @@ public interface BuildableFluentClientOperationReady extends FluentClientReady, 
      *             the sound files are invalid
      */
     @Override
-    BuildableFluentClientOperationSoundImported withAMixedSound (Sound []... sounds) throws SoundTransformException;
+    BuildableFluentClientOperationSoundImported withAMixedSound (Sound... sounds) throws SoundTransformException;
 
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
@@ -364,12 +364,12 @@ public interface BuildableFluentClientOperationReady extends FluentClientReady, 
     /**
      * Tells the client to work first with a sound object
      *
-     * @param sounds
+     * @param sound
      *            the sound object
      * @return the client, with an imported sound
      */
     @Override
-    BuildableFluentClientOperationSoundImported withSound (Sound [] sounds);
+    BuildableFluentClientOperationSoundImported withSound (Sound sound);
 
     /**
      * Tells the client to work first with a spectrum formatted sound.<br/>

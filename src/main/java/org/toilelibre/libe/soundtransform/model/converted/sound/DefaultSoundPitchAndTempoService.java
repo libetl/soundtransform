@@ -19,7 +19,7 @@ final class DefaultSoundPitchAndTempoService implements SoundPitchAndTempoServic
      * .model.converted.sound.Sound, float, float)
      */
     @Override
-    public Sound callTransform (final Sound sound, final float percent, final float lengthInSeconds) throws SoundTransformException {
+    public Channel callTransform (final Channel sound, final float percent, final float lengthInSeconds) throws SoundTransformException {
         return this.helper.pitchAndSetLength (sound, percent, lengthInSeconds);
     }
 }

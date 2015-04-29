@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.frames;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
@@ -28,7 +28,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
      * org.toilelibre.libe.soundtransform.model.sound.Sound[], int, boolean,
      * boolean, long)
      */
-    public void byteArrayToFrame (final byte [] frame, final Sound [] sound, final int position, final boolean bigEndian, final boolean pcmSigned, final long neutral) {
+    public void byteArrayToFrame (final byte [] frame, final Channel [] sound, final int position, final boolean bigEndian, final boolean pcmSigned, final long neutral) {
         final long [] value = new long [sound.length];
         final int destination = bigEndian ? 0 : frame.length - 1;
         for (int j = 0 ; j < frame.length ; j++) {
@@ -66,7 +66,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
      * sound.Sound[], int, boolean, boolean)
      */
     @Override
-    public byte [] framesToByteArray (final Sound [] channels, final StreamInfo streamInfo) {
+    public byte [] framesToByteArray (final Channel [] channels, final StreamInfo streamInfo) {
         final boolean pcmSigned = streamInfo.isPcmSigned ();
         final boolean bigEndian = streamInfo.isBigEndian ();
         final int sampleSize = streamInfo.getSampleSize ();
@@ -95,9 +95,9 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
     }
 
     @Override
-    public Sound [] fromInputStream (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
+    public Channel [] fromInputStream (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
         this.log (new LogEvent (FrameProcessorEventCode.SOUND_INIT));
-        final Sound [] ret = this.initSound (ais, isInfo);
+        final Channel [] ret = this.initSound (ais, isInfo);
         this.log (new LogEvent (FrameProcessorEventCode.READ_START));
         this.writeSound (ais, isInfo, ret);
         this.closeInputStream (ais);
@@ -123,10 +123,10 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
         return (int) (position * ByteArrayFrameProcessor.PERCENT / length);
     }
 
-    private Sound [] initSound (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
-        final Sound [] ret = new Sound [isInfo.getChannels ()];
+    private Channel [] initSound (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
+        final Channel [] ret = new Channel [isInfo.getChannels ()];
         for (int channel = 0 ; channel < isInfo.getChannels () ; channel++) {
-            ret [channel] = new Sound (new long [this.findFrameLength (ais, isInfo)], isInfo, channel);
+            ret [channel] = new Channel (new long [this.findFrameLength (ais, isInfo)], isInfo, channel);
         }
         return ret;
     }
@@ -139,7 +139,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
         }
     }
 
-    private void writeSound (final InputStream ais, final StreamInfo isInfo, final Sound [] result) throws SoundTransformException {
+    private void writeSound (final InputStream ais, final StreamInfo isInfo, final Channel [] result) throws SoundTransformException {
         final long neutral = this.getNeutral (isInfo.getSampleSize ());
         final int frameLength = this.findFrameLength (ais, isInfo);
         for (int position = 0 ; position < frameLength ; position++) {

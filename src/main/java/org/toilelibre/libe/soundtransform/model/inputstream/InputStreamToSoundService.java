@@ -45,9 +45,9 @@ public interface InputStreamToSoundService<T> extends LogAware<T> {
         }
     }
 
-    public abstract Sound [] fromInputStream (InputStream ais) throws SoundTransformException;
+    public abstract Sound fromInputStream (InputStream ais) throws SoundTransformException;
 
-    public abstract Sound [] fromInputStream (InputStream ais, StreamInfo isInfo) throws SoundTransformException;
+    public abstract Sound fromInputStream (InputStream ais, StreamInfo isInfo) throws SoundTransformException;
 
     public abstract StreamInfo getStreamInfo (InputStream ais) throws SoundTransformException;
 

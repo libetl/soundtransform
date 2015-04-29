@@ -14,11 +14,11 @@ public final class ConvertFromInputStream extends Action {
         super (observers);
     }
 
-    public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {
+    public Sound fromInputStream (final InputStream ais) throws SoundTransformException {
         return this.is2Sound.fromInputStream (ais);
     }
 
-    public Sound [] fromInputStream (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
+    public Sound fromInputStream (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
         return this.is2Sound.fromInputStream (ais, isInfo);
     }
 }

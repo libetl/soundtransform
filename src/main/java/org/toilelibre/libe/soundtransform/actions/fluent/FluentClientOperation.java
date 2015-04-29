@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -109,7 +110,7 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     }
 
     @Override
-    public Sound [] stopWithSound () {
+    public Sound stopWithSound () {
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
 
@@ -324,7 +325,7 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     }
 
     @Override
-    public BuildableFluentClientOperationSoundImported withAMixedSound (final Sound []... sounds) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported withAMixedSound (final Sound... sounds) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -463,12 +464,12 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     }
 
     @Override
-    public BuildableFluentClientOperationSoundImported withSound (final Sound [] sounds) {
+    public BuildableFluentClientOperationSoundImported withSound (final Sound sound) {
         this.steps.add (new Step () {
 
             @Override
             public void run (final FluentClientInterface client) throws SoundTransformException {
-                client.withSound (sounds);
+                client.withSound (sound);
             }
         });
 
@@ -489,7 +490,7 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     }
 
     @Override
-    public BuildableFluentClientOperationSoundImported append (final Sound [] sound) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported append (final Sound sound) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -502,7 +503,7 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     }
 
     @Override
-    public BuildableFluentClientOperationSoundImported apply (final SoundTransform<Sound, Sound> st) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported apply (final SoundTransform<Channel, Channel> st) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -515,7 +516,7 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     }
 
     @Override
-    public <T> T [] applyAndStop (final SoundTransform<Sound, T> st, final Class<T> resultClass) throws SoundTransformException {
+    public <T> T [] applyAndStop (final SoundTransform<Channel, T> st, final Class<T> resultClass) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -658,7 +659,7 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     }
 
     @Override
-    public BuildableFluentClientOperationSoundImported mixWith (final Sound [] sound) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported mixWith (final Sound sound) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override
@@ -696,7 +697,7 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     }
 
     @Override
-    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final Sound []... sounds) throws SoundTransformException {
+    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final Sound... sounds) throws SoundTransformException {
         this.steps.add (new Step () {
 
             @Override

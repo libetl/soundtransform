@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -44,7 +45,7 @@ public interface FluentClientInterface {
      *             appending please ensure that both sounds have the same number
      *             of channels
      */
-    public abstract FluentClientSoundImported append (Sound [] sound) throws SoundTransformException;
+    public abstract FluentClientSoundImported append (Sound sound) throws SoundTransformException;
 
     /**
      * Apply one transform and continue with the result sound
@@ -55,7 +56,7 @@ public interface FluentClientInterface {
      * @throws SoundTransformException
      *             if the transform does not work
      */
-    public abstract FluentClientSoundImported apply (SoundTransform<Sound, Sound> st) throws SoundTransformException;
+    public abstract FluentClientSoundImported apply (SoundTransform<Channel, Channel> st) throws SoundTransformException;
 
     /**
      * Apply one transform and stop immediately after with a result
@@ -68,7 +69,7 @@ public interface FluentClientInterface {
      * @throws SoundTransformException
      *             if the transform does not work
      */
-    public abstract <T> T [] applyAndStop (SoundTransform<Sound, T> st, Class<T> resultClass) throws SoundTransformException;
+    public abstract <T> T [] applyAndStop (SoundTransform<Channel, T> st, Class<T> resultClass) throws SoundTransformException;
 
     /**
      * Changes the current imported sound to fit the expected format
@@ -284,7 +285,7 @@ public interface FluentClientInterface {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-    public abstract FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds) throws SoundTransformException;
+    public abstract FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound... sounds) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of clients
@@ -383,7 +384,7 @@ public interface FluentClientInterface {
      * @throws SoundTransformException
      *             if the sound is null or if there is a problem with the mix
      */
-    public abstract FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException;
+    public abstract FluentClientSoundImported mixWith (Sound sound) throws SoundTransformException;
 
     /**
      * Uses the sounds inside the nested clients to mix them all and to produce
@@ -513,7 +514,7 @@ public interface FluentClientInterface {
      *
      * @return a sound value object
      */
-    public abstract Sound [] stopWithSound ();
+    public abstract Sound stopWithSound ();
 
     /**
      * Stops the client pipeline and returns the obtained spectrums
@@ -555,7 +556,7 @@ public interface FluentClientInterface {
      * @throws SoundTransformException
      *             the sound files are invalid
      */
-    public abstract FluentClientSoundImported withAMixedSound (Sound []... sounds) throws SoundTransformException;
+    public abstract FluentClientSoundImported withAMixedSound (Sound... sounds) throws SoundTransformException;
 
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
@@ -733,7 +734,7 @@ public interface FluentClientInterface {
      *            the sound object
      * @return the client, with an imported sound
      */
-    public abstract FluentClientSoundImported withSound (Sound [] sound);
+    public abstract FluentClientSoundImported withSound (Sound sound);
 
     /**
      * Tells the client to work first with a spectrum formatted sound.<br/>

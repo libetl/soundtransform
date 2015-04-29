@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
@@ -8,7 +8,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
  * Repeats a sound as another sound
  *
  */
-public class LoopSoundTransform implements SoundTransform<Sound, Sound> {
+public class LoopSoundTransform implements SoundTransform<Channel, Channel> {
 
     enum LoopSoundTransformErrorCode implements ErrorCode {
         NOT_POSITIVE_VALUE ("The specified length is not positive (%1d)");
@@ -39,8 +39,8 @@ public class LoopSoundTransform implements SoundTransform<Sound, Sound> {
     }
 
     @Override
-    public Sound transform (final Sound input) throws SoundTransformException {
-        final Sound result = new Sound (new long [this.length], input.getFormatInfo (), input.getChannelNum ());
+    public Channel transform (final Channel input) throws SoundTransformException {
+        final Channel result = new Channel (new long [this.length], input.getFormatInfo (), input.getChannelNum ());
 
         if (this.length <= 0) {
             throw new SoundTransformException (LoopSoundTransformErrorCode.NOT_POSITIVE_VALUE, new IllegalArgumentException (), 0, this.length);

@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
  * level
  *
  */
-public class NormalizeSoundTransform implements SoundTransform<Sound, Sound> {
+public class NormalizeSoundTransform implements SoundTransform<Channel, Channel> {
 
     public enum NormalizeSoundTransformErrorCode implements ErrorCode {
 
@@ -52,7 +52,7 @@ public class NormalizeSoundTransform implements SoundTransform<Sound, Sound> {
         return coefficient1;
     }
 
-    private Sound normalize (final Sound sound) {
+    private Channel normalize (final Channel sound) {
         final long [] data = sound.getSamples ();
         final long [] newdata = new long [sound.getSamplesLength ()];
         // this is the raw audio data -- no header
@@ -74,11 +74,11 @@ public class NormalizeSoundTransform implements SoundTransform<Sound, Sound> {
         }
 
         // normalized result in newdata
-        return new Sound (newdata, sound.getFormatInfo (), sound.getChannelNum ());
+        return new Channel (newdata, sound.getFormatInfo (), sound.getChannelNum ());
     }
 
     @Override
-    public Sound transform (final Sound input) {
+    public Channel transform (final Channel input) {
         return this.normalize (input);
     }
 }

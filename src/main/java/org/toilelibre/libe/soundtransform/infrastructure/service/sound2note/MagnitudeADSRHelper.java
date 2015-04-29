@@ -6,7 +6,7 @@ import java.util.Collections;
 import org.apache.commons.math3.exception.NonMonotonicSequenceException;
 import org.apache.commons.math3.util.MathArrays;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.ComputeMagnitudeSoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
@@ -43,7 +43,7 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
     private double []        magnitude                     = null;
 
     @Override
-    public int findDecay (final Sound channel1, final int attack) throws SoundTransformException {
+    public int findDecay (final Channel channel1, final int attack) throws SoundTransformException {
         int decayIndex = attack;
         this.ensureComputedMagnitudeArray (channel1, MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER);
 
@@ -59,7 +59,7 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
     }
 
     @Override
-    public int findRelease (final Sound channel1) throws SoundTransformException {
+    public int findRelease (final Channel channel1) throws SoundTransformException {
         int releaseIndexFromReversed = 0;
         this.ensureComputedMagnitudeArray (channel1, MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER);
         final double [] reversed = new double [this.magnitude.length];
@@ -76,7 +76,7 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
     }
 
     @Override
-    public int findSustain (final Sound channel1, final int decay) throws SoundTransformException {
+    public int findSustain (final Channel channel1, final int decay) throws SoundTransformException {
         int sustainIndex = decay;
         this.ensureComputedMagnitudeArray (channel1, MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER);
 
@@ -92,7 +92,7 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
         return sustainIndex;
     }
 
-    private void ensureComputedMagnitudeArray (final Sound sound, final int step) throws SoundTransformException {
+    private void ensureComputedMagnitudeArray (final Channel sound, final int step) throws SoundTransformException {
         if (this.magnitude == null) {
             final ComputeMagnitudeSoundTransform soundTransform = new ComputeMagnitudeSoundTransform (step);
             this.magnitude = soundTransform.transform (sound);

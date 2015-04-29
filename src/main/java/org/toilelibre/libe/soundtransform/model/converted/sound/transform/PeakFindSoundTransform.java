@@ -2,12 +2,12 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.io.Serializable;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-public interface PeakFindSoundTransform<T extends Serializable, U extends LogAware<U>> extends SoundTransform<Sound, float []>, LogAware<U> {
+public interface PeakFindSoundTransform<T extends Serializable, U extends LogAware<U>> extends SoundTransform<Channel, float []>, LogAware<U> {
 
     public enum PeakFindSoundTransformEventCode implements EventCode {
 

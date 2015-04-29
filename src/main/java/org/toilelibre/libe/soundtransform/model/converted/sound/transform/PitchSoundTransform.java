@@ -1,13 +1,13 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 
 /**
  * Removes or adds some samples in the input sound according to the passed
  * percent parameter. This will change the pitch of the sound (the frequencies
  * will be shifted)
  */
-public class PitchSoundTransform implements SoundTransform<Sound, Sound> {
+public class PitchSoundTransform implements SoundTransform<Channel, Channel> {
 
     private static final float A_HUNDRED             = 100;
     private static final float DEFAULT_PERCENT_VALUE = 20;
@@ -27,10 +27,10 @@ public class PitchSoundTransform implements SoundTransform<Sound, Sound> {
         this.percent = percent;
     }
 
-    private Sound pitch (final Sound sound, final float percent) {
+    private Channel pitch (final Channel sound, final float percent) {
         final float total = PitchSoundTransform.A_HUNDRED;
         if (percent == total) {
-            return new Sound (sound.getSamples (), sound.getFormatInfo (), sound.getChannelNum ());
+            return new Channel (sound.getSamples (), sound.getFormatInfo (), sound.getChannelNum ());
         }
         final float nbSamples = sound.getSamplesLength ();
         final float nbFiltered = Math.abs (total * nbSamples / percent);
@@ -43,11 +43,11 @@ public class PitchSoundTransform implements SoundTransform<Sound, Sound> {
                 ret [j] = data [(int) i];
             }
         }
-        return new Sound (ret, sound.getFormatInfo (), sound.getChannelNum ());
+        return new Channel (ret, sound.getFormatInfo (), sound.getChannelNum ());
     }
 
     @Override
-    public Sound transform (final Sound input) {
+    public Channel transform (final Channel input) {
         return this.pitch (input, this.percent);
     }
 }

@@ -1,55 +1,28 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
-import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 
-public class Sound {
+public final class Sound {
 
-    private final long []    samples;
-    private final FormatInfo formatInfo;
-    private final int        channelNum;
-
-    public Sound (final long [] samples1, final FormatInfo fomatInfo1, final int channelNum1) {
-        super ();
-        this.samples = samples1;
-        this.formatInfo = fomatInfo1;
-        this.channelNum = channelNum1;
+    private final Channel [] channels;
+    
+    public Sound (Channel [] channels1){
+        this.channels = (channels1 == null ? new Channel [0] : channels1.clone ());
     }
 
-    public int getChannelNum () {
-        return this.channelNum;
+    public Channel [] getChannels () {
+        return this.channels.clone();
     }
 
-    public FormatInfo getFormatInfo () {
-        return this.formatInfo;
+    public int getNumberOfChannels () {
+        return this.channels.length;
     }
 
-    public long getSampleAt (final int i) {
-        return this.samples [i];
+    public int getSamplesLength (){
+        return channels.length == 0 ? 0 : channels [0].getSamplesLength ();
     }
-
-    public float getSampleRate () {
-        return this.formatInfo.getSampleRate ();
-    }
-
-    public long [] getSamples () {
-        return this.samples;
-    }
-
-    public int getSampleSize () {
-        return this.formatInfo.getSampleSize ();
-    }
-
-    public int getSamplesLength () {
-        return this.samples.length;
-    }
-
-    public void setSampleAt (final int i, final long value) {
-        this.samples [i] = value;
-    }
-
-    @Override
-    public String toString () {
-        return $.select (SoundToStringService.class).convert (this);
+    
+    public FormatInfo getFormatInfo() {
+        return channels.length == 0 ? null : channels [0].getFormatInfo ();
     }
 }

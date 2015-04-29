@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.model.play;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -46,13 +47,13 @@ final class DefaultPlaySoundService<T extends Serializable> implements PlaySound
      * .toilelibre.libe.soundtransform.model.converted.sound.Sound[])
      */
     @Override
-    public Object play (final Sound [] channels) throws SoundTransformException {
+    public Object play (final Sound sound) throws SoundTransformException {
 
-        if (channels.length == 0) {
+        if (sound.getNumberOfChannels() == 0) {
             return new Object ();
         }
 
-        final InputStream ais = this.sound2IsService.toStream (channels, StreamInfo.from (channels [0].getFormatInfo (), channels));
+        final InputStream ais = this.sound2IsService.toStream (sound, StreamInfo.from (sound.getFormatInfo (), sound));
         return this.processor.play (ais, this.is2SoundService.getStreamInfo (ais));
     }
 
@@ -65,6 +66,6 @@ final class DefaultPlaySoundService<T extends Serializable> implements PlaySound
      */
     @Override
     public Object play (final Spectrum<T> spectrum) throws SoundTransformException {
-        return this.play (new Sound [] { this.fourierTransformHelper.reverse (spectrum) });
+        return this.play (new Sound (new Channel [] { this.fourierTransformHelper.reverse (spectrum) }));
     }
 }

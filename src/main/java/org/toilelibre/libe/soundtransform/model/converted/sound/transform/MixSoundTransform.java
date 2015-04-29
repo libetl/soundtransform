@@ -1,8 +1,10 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 
@@ -14,10 +16,10 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
  * nothing to hear)
  *
  */
-public class MixSoundTransform implements SoundTransform<Sound, Sound> {
+public class MixSoundTransform implements SoundTransform<Channel, Channel> {
 
     private final SoundAppender  soundAppender;
-    private final List<Sound []> otherSounds;
+    private final List<Sound> otherSounds;
 
     /**
      * Default constructor
@@ -29,20 +31,25 @@ public class MixSoundTransform implements SoundTransform<Sound, Sound> {
      *            of the first sound will be used to match the other sounds
      *            channels before the mix operation takes place)
      */
-    public MixSoundTransform (final List<Sound []> otherSounds1) {
+    public MixSoundTransform (final List<Sound> otherSounds1) {
         this.soundAppender = $.select (SoundAppender.class);
         this.otherSounds = otherSounds1;
     }
 
-    private Sound mix (final Sound firstSound, final Sound... sounds) {
+    public MixSoundTransform (final Sound otherSound) {
+        this.soundAppender = $.select (SoundAppender.class);
+        this.otherSounds = Collections.singletonList (otherSound);
+    }
+    
+    private Channel mix (final Channel firstSound, final Channel... sounds) {
         int maxlength = 0;
-        final Sound [] ajustedSounds = new Sound [sounds.length + 1];
+        final Channel [] ajustedSounds = new Channel [sounds.length + 1];
         ajustedSounds [0] = firstSound;
         for (int i = 1 ; i < sounds.length + 1 ; i++) {
             ajustedSounds [i] = this.soundAppender.changeNbBytesPerSample (this.soundAppender.resizeToSampleRate (sounds [i - 1], firstSound.getSampleRate ()), firstSound.getSampleSize ());
         }
 
-        for (final Sound sound : ajustedSounds) {
+        for (final Channel sound : ajustedSounds) {
             maxlength = Math.max (maxlength, sound.getSamplesLength ());
         }
 
@@ -51,7 +58,7 @@ public class MixSoundTransform implements SoundTransform<Sound, Sound> {
         // find the max:
         double max = 0;
         for (int i = 0 ; i < maxlength ; i++) {
-            for (final Sound sound : ajustedSounds) {
+            for (final Channel sound : ajustedSounds) {
                 if (sound.getSamplesLength () > i) {
                     newdata [i] += sound.getSampleAt (i);
                 }
@@ -67,16 +74,16 @@ public class MixSoundTransform implements SoundTransform<Sound, Sound> {
         }
 
         // normalized result in newdata
-        return new Sound (newdata, firstSound.getFormatInfo (), firstSound.getChannelNum ());
+        return new Channel (newdata, firstSound.getFormatInfo (), firstSound.getChannelNum ());
     }
 
     @Override
-    public Sound transform (final Sound input) {
-        final Sound [] onlyOneChannelFromSounds = new Sound [this.otherSounds.size ()];
+    public Channel transform (final Channel input) {
+        final Channel [] onlyOneChannelFromSounds = new Channel [this.otherSounds.size ()];
         int i = 0;
-        for (final Sound [] sounds : this.otherSounds) {
-            if (sounds.length > input.getChannelNum ()) {
-                onlyOneChannelFromSounds [i++] = sounds [input.getChannelNum ()];
+        for (final Sound sound : this.otherSounds) {
+            if (sound.getNumberOfChannels() > input.getChannelNum ()) {
+                onlyOneChannelFromSounds [i++] = sound.getChannels() [input.getChannelNum ()];
             }
         }
         return this.mix (input, onlyOneChannelFromSounds);

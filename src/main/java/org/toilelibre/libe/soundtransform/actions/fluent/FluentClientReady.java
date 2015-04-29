@@ -70,7 +70,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound []... sounds) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound... sounds) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of inputStreams
@@ -172,7 +172,7 @@ public interface FluentClientReady extends FluentClientCommon {
      * @throws SoundTransformException
      *             the sound files are invalid
      */
-    FluentClientSoundImported withAMixedSound (Sound []... sounds) throws SoundTransformException;
+    FluentClientSoundImported withAMixedSound (Sound... sounds) throws SoundTransformException;
 
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
@@ -346,11 +346,11 @@ public interface FluentClientReady extends FluentClientCommon {
     /**
      * Tells the client to work first with a sound object
      *
-     * @param sounds
+     * @param sound
      *            the sound object
      * @return the client, with an imported sound
      */
-    FluentClientSoundImported withSound (Sound [] sounds);
+    FluentClientSoundImported withSound (Sound sound);
 
     /**
      * Tells the client to work first with a spectrum formatted sound.<br/>

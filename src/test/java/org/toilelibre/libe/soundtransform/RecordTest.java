@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -30,9 +31,9 @@ public class RecordTest extends SoundTransformTest {
 
     @Test
     public void recordTwoSeconds () throws SoundTransformException {
-        Sound [] sounds = null;
+        Sound sound = null;
         try {
-            sounds = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 100000, 2, 48000, false, true, null)).importToSound ().stopWithSound ();
+            sound = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 100000, 2, 48000, false, true, null)).importToSound ().stopWithSound ();
         } catch (final SoundTransformException ste) {
             // "AUDIO_FORMAT_NOT_SUPPORTED" is thrown by oracle and
             // "TARGET_LINE_UNAVAILABLE" is thrown by openjdk
@@ -46,23 +47,22 @@ public class RecordTest extends SoundTransformTest {
             }
         }
 
-        Assert.assertNotNull (sounds [0]);
-        Assert.assertNotNull (sounds [1]);
-        Assert.assertNotEquals (sounds [0].getSamplesLength (), 0);
-        Assert.assertNotEquals (sounds [1].getSamplesLength (), 0);
+        Assert.assertNotNull (sound.getChannels() [0]);
+        Assert.assertNotNull (sound.getChannels() [1]);
+        Assert.assertNotEquals (sound.getSamplesLength (), 0);
     }
 
     @Test
     public void recordTwoSecondsWithAStopObject () throws SoundTransformException {
         final Object stop = new Object ();
-        final Sound [] sounds = new Sound [2];
+        final Channel [] channels = new Channel [2];
         new Thread () {
             @Override
             public void run () {
                 try {
-                    final Sound sounds2 [] = FluentClient.start ().withRecordedInputStream (new StreamInfo (2, -1, 2, 48000, false, true, null), stop).importToSound ().stopWithSound ();
-                    sounds [0] = sounds2 [0];
-                    sounds [1] = sounds2 [1];
+                    final Sound sounds2 = FluentClient.start ().withRecordedInputStream (new StreamInfo (2, -1, 2, 48000, false, true, null), stop).importToSound ().stopWithSound ();
+                    channels [0] = sounds2.getChannels() [0];
+                    channels [1] = sounds2.getChannels() [1];
                 } catch (final SoundTransformException ste) {
                     // "AUDIO_FORMAT_NOT_SUPPORTED" is thrown by oracle and
                     // "TARGET_LINE_UNAVAILABLE" is thrown by openjdk
@@ -70,8 +70,8 @@ public class RecordTest extends SoundTransformTest {
                         // make the test succeeds because we are unable to test
                         // the record audio feature on a machine
                         // without microphone
-                        sounds [0] = new Sound (new long [1], new FormatInfo (2, 44100), 0);
-                        sounds [1] = new Sound (new long [1], new FormatInfo (2, 44100), 1);
+                        channels [0] = new Channel (new long [1], new FormatInfo (2, 44100), 0);
+                        channels [1] = new Channel (new long [1], new FormatInfo (2, 44100), 1);
                     } else {
                         throw new SoundTransformRuntimeException (ste);
                     }
@@ -91,9 +91,9 @@ public class RecordTest extends SoundTransformTest {
                 throw new SoundTransformException (RecordTestErrorCode.TEST_ERROR, e);
             }
         }
-        Assert.assertNotNull (sounds [0]);
-        Assert.assertNotNull (sounds [1]);
-        Assert.assertNotEquals (sounds [0].getSamplesLength (), 0);
-        Assert.assertNotEquals (sounds [1].getSamplesLength (), 0);
+        Assert.assertNotNull (channels [0]);
+        Assert.assertNotNull (channels [1]);
+        Assert.assertNotEquals (channels [0].getSamplesLength (), 0);
+        Assert.assertNotEquals (channels [1].getSamplesLength (), 0);
     }
 }

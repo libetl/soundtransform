@@ -1,7 +1,7 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms;
 
 import org.apache.commons.math3.complex.Complex;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -11,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
  * Stores an array to know the volume at each step of the sound
  *
  */
-public class ComputeMagnitudeSoundTransform implements SoundTransform<Sound, double []> {
+public class ComputeMagnitudeSoundTransform implements SoundTransform<Channel, double []> {
     static class ComputeMagnitudeFrequenciesSoundTransform extends SimpleFrequencySoundTransform<Complex []> {
 
         private int          arraylength;
@@ -51,7 +51,7 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Sound, dou
          * .model.converted.sound.Sound)
          */
         @Override
-        public Sound initSound (final Sound input) {
+        public Channel initSound (final Channel input) {
             this.arraylength = 0;
             this.magnitude = new double [(int) (input.getSamplesLength () / this.step + 1)];
             return super.initSound (input);
@@ -95,7 +95,7 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Sound, dou
     }
 
     @Override
-    public double [] transform (final Sound input) throws SoundTransformException {
+    public double [] transform (final Channel input) throws SoundTransformException {
         this.decoratedSoundTransform.transform (input);
         return this.decoratedSoundTransform.getMagnitude ();
     }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -113,7 +113,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
         }
 
         @Override
-        public Sound initSound (final Sound input) {
+        public Channel initSound (final Channel input) {
             if (this.note) {
                 this.step = input.getSamplesLength ();
                 this.fsLimit = input.getSamplesLength ();
@@ -193,7 +193,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
     }
 
     @Override
-    public float [] transform (Sound input) throws SoundTransformException {
+    public float [] transform (Channel input) throws SoundTransformException {
         this.decoratedTransform.transform (input);
         return this.decoratedTransform.getLoudestFreqs ();
     }

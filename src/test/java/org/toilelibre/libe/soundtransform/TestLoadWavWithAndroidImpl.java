@@ -155,8 +155,8 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
         org.junit.Assert.assertEquals (this.sToI (this.iToS (44100)), 44100);
         final String input = "RIFF1000WAVEfmt     " + '\1' + '\0' + '\1' + '\0' + this.iToS (44100) + this.iToS (0) + '\2' + '\0' + Character.toChars (16) [0] + '\0' + "data" + this.iToS (44);
         final byte [] byteArray = this.toBytes (input.toCharArray ());
-        final Sound [] sound = FluentClient.start ().withAudioInputStream (new ByteArrayInputStream (byteArray)).importToSound ().stopWithSound ();
-        org.junit.Assert.assertNotNull (sound);
+        final Sound sound = FluentClient.start ().withAudioInputStream (new ByteArrayInputStream (byteArray)).importToSound ().stopWithSound ();
+        org.junit.Assert.assertNotEquals (sound.getChannels ().length, 0);
     }
 
     @Test (expected = SoundTransformException.class)

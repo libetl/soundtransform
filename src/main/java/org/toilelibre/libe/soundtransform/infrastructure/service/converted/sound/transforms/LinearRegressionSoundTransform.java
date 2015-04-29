@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.converted.soun
 
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 
 /**
@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundT
  * without any time-to-frequency domain transform
  *
  */
-public class LinearRegressionSoundTransform implements SoundTransform<Sound, Sound> {
+public class LinearRegressionSoundTransform implements SoundTransform<Channel, Channel> {
 
     private final int step;
 
@@ -25,7 +25,7 @@ public class LinearRegressionSoundTransform implements SoundTransform<Sound, Sou
     }
 
     @Override
-    public Sound transform (final Sound input) {
+    public Channel transform (final Channel input) {
         final SplineInterpolator reg = new SplineInterpolator ();
         final double [] x = new double [input.getSamplesLength () / this.step];
         final double [] y = new double [input.getSamplesLength () / this.step];
@@ -38,7 +38,7 @@ public class LinearRegressionSoundTransform implements SoundTransform<Sound, Sou
 
         final PolynomialSplineFunction psf = reg.interpolate (x, y);
 
-        final Sound outputSound = new Sound (new long [input.getSamplesLength ()], input.getFormatInfo (), input.getChannelNum ());
+        final Channel outputSound = new Channel (new long [input.getSamplesLength ()], input.getFormatInfo (), input.getChannelNum ());
         for (int i = 0 ; i < input.getSamplesLength () ; i++) {
             if (i < x [x.length - 1]) {
                 outputSound.setSampleAt (i, (long) psf.value (i));

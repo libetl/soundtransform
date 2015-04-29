@@ -4,7 +4,7 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.AbstractFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -13,22 +13,22 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
 
     private static final float COEFFICIENT = 10.0f;
 
-    private Spectrum<Complex []> forwardPartOfTheSound (final Sound sound, final double [] transformeddata) {
+    private Spectrum<Complex []> forwardPartOfTheSound (final Channel sound, final double [] transformeddata) {
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         final Complex [] complexArray = fastFourierTransformer.transform (transformeddata, TransformType.FORWARD);
         return new Spectrum<Complex []> (complexArray, sound.getFormatInfo ());
     }
 
     @Override
-    public Sound reverse (final Spectrum<Complex []> spectrum) {
+    public Channel reverse (final Spectrum<Complex []> spectrum) {
         return this.reverse (spectrum, null);
     }
 
-    public Sound reverse (final Spectrum<Complex []> spectrum, final long [] output) {
+    public Channel reverse (final Spectrum<Complex []> spectrum, final long [] output) {
         return this.reverse (spectrum, output, 0);
     }
 
-    public Sound reverse (final Spectrum<Complex []> spectrum, final long [] output1, final int startOffset) {
+    public Channel reverse (final Spectrum<Complex []> spectrum, final long [] output1, final int startOffset) {
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
         long [] output = output1;
@@ -41,12 +41,12 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
                 output [index] = (long) Math.floor (complexArray [i].getReal ());
             }
         }
-        return new Sound (output, spectrum.getFormatInfo (), 0);
+        return new Channel (output, spectrum.getFormatInfo (), 0);
     }
 
     @Override
-    public Sound transform (final AbstractFrequencySoundTransform<Complex []> st, final Sound sound) {
-        final Sound output = st.initSound (sound);
+    public Channel transform (final AbstractFrequencySoundTransform<Complex []> st, final Channel sound) {
+        final Channel output = st.initSound (sound);
         final double sampleRate = sound.getSampleRate ();
         final double step = st.getStep (sampleRate);
         final int maxlength = st.getWindowLength (sampleRate);

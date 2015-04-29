@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.io.Serializable;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
@@ -42,7 +42,7 @@ public class SpeedUpSoundTransform<T extends Serializable> extends SimpleFrequen
     private static final int A_HUNDRED = 100;
 
     private final float      factor;
-    private Sound            sound;
+    private Channel            sound;
     private final int        step;
     private float            writeIfGreaterEqThanFactor;
 
@@ -72,9 +72,9 @@ public class SpeedUpSoundTransform<T extends Serializable> extends SimpleFrequen
     }
 
     @Override
-    public Sound initSound (final Sound input) {
+    public Channel initSound (final Channel input) {
         final long [] newdata = new long [(int) (input.getSamplesLength () / this.factor)];
-        this.sound = new Sound (newdata, input.getFormatInfo (), input.getChannelNum ());
+        this.sound = new Channel (newdata, input.getFormatInfo (), input.getChannelNum ());
         return this.sound;
     }
 

@@ -15,8 +15,8 @@ public class PlaySound extends Action {
         this.playSound.play (is);
     }
 
-    public void play (final Sound [] channels) throws SoundTransformException {
-        this.playSound.play (channels);
+    public void play (final Sound sound) throws SoundTransformException {
+        this.playSound.play (sound);
     }
 
     @SuppressWarnings ("unchecked")

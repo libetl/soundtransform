@@ -12,6 +12,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jO
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -88,12 +89,12 @@ public class Sound2NoteTest extends SoundTransformTest {
 
         final InputStream ais = $.select (AudioFileService.class).streamFromFile (input);
 
-        final Sound [] f4 = $.select (InputStreamToSoundService.class).fromInputStream (ais);
+        final Sound f4 = $.select (InputStreamToSoundService.class).fromInputStream (ais);
         final PitchSoundTransform pitcher = new PitchSoundTransform (200);
-        final Sound f51 = pitcher.transform (f4 [0]);
-        final Sound f52 = pitcher.transform (f4 [1]);
+        final Channel f51 = pitcher.transform (f4.getChannels () [0]);
+        final Channel f52 = pitcher.transform (f4.getChannels ()  [1]);
 
-        final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("piano4e.wav"), new Sound [] { f51, f52 });
+        final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("piano4e.wav"), new Sound (new Channel [] { f51, f52 }));
         new Slf4jObserver ().notify ("e' 4 : " + n.getFrequency () + "Hz, should be around 664Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 664 - 10 && n.getFrequency () < 664 + 10);
     }
@@ -133,8 +134,8 @@ public class Sound2NoteTest extends SoundTransformTest {
         for (int j = 0 ; j < length ; j++) {
             signal [j] = (long) (Math.sin (j * 440 * 2 * Math.PI / samplerate) * 32768.0);
         }
-        final Sound s = new Sound (signal, new FormatInfo (2, samplerate), 1);
-        final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("Sample A4 (440 Hz) Sound"), new Sound [] { s });
+        final Channel s = new Channel (signal, new FormatInfo (2, samplerate), 1);
+        final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("Sample A4 (440 Hz) Sound"), new Sound (new Channel [] { s }));
 
         new Slf4jObserver ().notify ("Sample A4 (440Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
         org.junit.Assert.assertTrue (n.getFrequency () > 440 - 10 && n.getFrequency () < 440 + 10);
@@ -153,8 +154,8 @@ public class Sound2NoteTest extends SoundTransformTest {
             for (int j = 0 ; j < length ; j++) {
                 signal [j] = (long) (Math.sin (j * notes [i] * 2 * Math.PI / samplerate) * 32768.0);
             }
-            final Sound s = new Sound (signal, new FormatInfo (2, samplerate), 1);
-            final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound"), new Sound [] { s });
+            final Channel s = new Channel (signal, new FormatInfo (2, samplerate), 1);
+            final Note n = $.select (SoundToNoteService.class).convert (new SimpleNoteInfo ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound"), new Sound (new Channel [] { s }));
 
             new Slf4jObserver ().notify ("Sample " + notesTitle [i] + "(" + notes [i] + "Hz) Sound, but frequency found was " + n.getFrequency () + "Hz");
             org.junit.Assert.assertTrue (n.getFrequency () > notes [i] - 10 && n.getFrequency () < notes [i] + 10);

@@ -11,7 +11,7 @@ public final class AppendSound extends Action {
         super (observers);
     }
 
-    public Sound [] append (final Sound [] sounds1, final Sound [] sounds2) throws SoundTransformException {
-        return this.modifySound.append (sounds1, sounds2);
+    public Sound append (final Sound sound1, final Sound sound2) throws SoundTransformException {
+        return new Sound (this.modifySound.append (sound1.getChannels(), sound2.getChannels()));
     }
 }

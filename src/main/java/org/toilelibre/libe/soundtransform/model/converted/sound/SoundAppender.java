@@ -5,18 +5,18 @@ import org.toilelibre.libe.soundtransform.model.library.note.Note;
 
 public interface SoundAppender {
 
-    public abstract void append (Sound origin, int usedarraylength, Sound... otherSounds);
+    public abstract void append (Channel origin, int usedarraylength, Channel... otherSounds);
 
-    public abstract int append (Sound origin, int usedarraylength, Sound otherSound);
+    public abstract int append (Channel origin, int usedarraylength, Channel otherSound);
 
-    public abstract Sound append (Sound sound, Sound sound2);
+    public abstract Channel append (Channel sound, Channel sound2);
 
-    public abstract void appendNote (Sound sound, Note note, double lastFreq, int indexInSound, int channelNum, float lengthInSeconds) throws SoundTransformException;
+    public abstract void appendNote (Channel sound, Note note, double lastFreq, int indexInSound, int channelNum, float lengthInSeconds) throws SoundTransformException;
 
-    public abstract Sound changeNbBytesPerSample (Sound sound, int newNbBytesPerSample);
+    public abstract Channel changeNbBytesPerSample (Channel sound, int newNbBytesPerSample);
 
-    public abstract Sound downsampleWithRatio (Sound sound, float ratio);
+    public abstract Channel downsampleWithRatio (Channel sound, float ratio);
 
-    public abstract Sound resizeToSampleRate (Sound sound, float newSampleRate);
+    public abstract Channel resizeToSampleRate (Channel sound, float newSampleRate);
 
 }

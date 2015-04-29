@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.io.Serializable;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
@@ -10,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
  * Transforms a sound into a list of spectrums. Useful to display a visualizer.
  *
  */
-public class SoundToSpectrumsSoundTransform implements SoundTransform<Sound, Spectrum<Serializable> []> {
+public class SoundToSpectrumsSoundTransform implements SoundTransform<Channel, Spectrum<Serializable> []> {
     static class SoundToSpectrumsFrequencySoundTransform extends SimpleFrequencySoundTransform<Serializable> {
 
         private static final int          TWO = 2;
@@ -40,7 +40,7 @@ public class SoundToSpectrumsSoundTransform implements SoundTransform<Sound, Spe
         }
 
         @Override
-        public Sound initSound (final Sound input) {
+        public Channel initSound (final Channel input) {
             this.index = 0;
             int roundedSize = SoundToSpectrumsFrequencySoundTransform.TWO;
             while (input.getSampleRate () > roundedSize) {
@@ -60,7 +60,7 @@ public class SoundToSpectrumsSoundTransform implements SoundTransform<Sound, Spe
     }
 
     @Override
-    public Spectrum<Serializable> [] transform (final Sound input) throws SoundTransformException {
+    public Spectrum<Serializable> [] transform (final Channel input) throws SoundTransformException {
         final SoundToSpectrumsFrequencySoundTransform soundTransform = new SoundToSpectrumsFrequencySoundTransform ();
         soundTransform.transform (input);
         return soundTransform.getSpectrums ();

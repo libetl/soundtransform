@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.appender;
 import java.io.Serializable;
 
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.SlowdownSoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpeedUpSoundTransform;
@@ -23,9 +23,9 @@ final class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelpe
     private static final int   HELPER_DEFAULT_WINDOW_LENGTH_VALUE = 2 * ConvertedSoundPitchAndTempoHelper.HELPER_DEFAULT_SLOWDOWN_STEP_VALUE;
 
     @Override
-    public Sound pitchAndSetLength (final Sound sound, final float percent, final float lengthInSeconds) throws SoundTransformException {
+    public Channel pitchAndSetLength (final Channel sound, final float percent, final float lengthInSeconds) throws SoundTransformException {
 
-        Sound result = sound;
+        Channel result = sound;
 
         final PitchSoundTransform pitcher = new PitchSoundTransform (percent);
         if (percent < ConvertedSoundPitchAndTempoHelper.THRESHOLD_DOWN_PITCH || percent > ConvertedSoundPitchAndTempoHelper.THRESHOLD_UP_PITCH) {

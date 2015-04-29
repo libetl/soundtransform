@@ -1,7 +1,7 @@
 package org.toilelibre.libe.soundtransform.model.library.note;
 
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 
 public abstract class FormulaNote implements Note {
 
@@ -46,18 +46,18 @@ public abstract class FormulaNote implements Note {
         return signal;
     }
 
-    private Sound generateFormulaNote (final float frequency, final float lengthInSeconds, final int channelnum, final float startAmplitude, final float endAmplitude) {
+    private Channel generateFormulaNote (final float frequency, final float lengthInSeconds, final int channelnum, final float startAmplitude, final float endAmplitude) {
         final int nbSamples = (int) (this.formatInfo.getSampleRate () * lengthInSeconds * 1.0);
-        return new Sound (this.generateLongArray (frequency, nbSamples, this.formatInfo.getSampleRate (), this.maxVal, startAmplitude, endAmplitude), this.formatInfo, channelnum);
+        return new Channel (this.generateLongArray (frequency, nbSamples, this.formatInfo.getSampleRate (), this.maxVal, startAmplitude, endAmplitude), this.formatInfo, channelnum);
     }
 
     @Override
-    public Sound getAttack (final float frequency, final int channelnum, final float lengthInSeconds) {
+    public Channel getAttack (final float frequency, final int channelnum, final float lengthInSeconds) {
         return this.generateFormulaNote (frequency, FormulaNote.ONE_TENTH * lengthInSeconds, channelnum, FormulaNote.ATTACK_START_AMPLITUDE, FormulaNote.ATTACK_END_AMPLITUDE);
     }
 
     @Override
-    public Sound getDecay (final float frequency, final int channelnum, final float lengthInSeconds) {
+    public Channel getDecay (final float frequency, final int channelnum, final float lengthInSeconds) {
         return this.generateFormulaNote (frequency, FormulaNote.ONE_FIFTH * lengthInSeconds, channelnum, FormulaNote.DECAY_START_AMPLITUDE, FormulaNote.DECAY_END_AMPLITUDE);
     }
 
@@ -70,12 +70,12 @@ public abstract class FormulaNote implements Note {
     public abstract String getName ();
 
     @Override
-    public Sound getRelease (final float frequency, final int channelnum, final float lengthInSeconds) {
+    public Channel getRelease (final float frequency, final int channelnum, final float lengthInSeconds) {
         return this.generateFormulaNote (frequency, FormulaNote.ONE_FIFTH * lengthInSeconds, channelnum, FormulaNote.RELEASE_START_AMPLITUDE, FormulaNote.RELEASE_END_AMPLITUDE);
     }
 
     @Override
-    public Sound getSustain (final float frequency, final int channelnum, final float lengthInSeconds) {
+    public Channel getSustain (final float frequency, final int channelnum, final float lengthInSeconds) {
         return this.generateFormulaNote (frequency, FormulaNote.ONE_HALF * lengthInSeconds, channelnum, FormulaNote.SUSTAIN_START_AMPLITUDE, FormulaNote.SUSTAIN_END_AMPLITUDE);
     }
 

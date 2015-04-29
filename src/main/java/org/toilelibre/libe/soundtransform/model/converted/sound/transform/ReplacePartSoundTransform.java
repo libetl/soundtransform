@@ -1,5 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
@@ -10,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
  * out of bounds
  *
  */
-public class ReplacePartSoundTransform implements SoundTransform<Sound, Sound> {
+public class ReplacePartSoundTransform implements SoundTransform<Channel, Channel> {
 
     public enum ReplacePartSoundTransformErrorCode implements ErrorCode {
 
@@ -29,7 +30,7 @@ public class ReplacePartSoundTransform implements SoundTransform<Sound, Sound> {
         }
     }
 
-    private final Sound [] replacement;
+    private final Channel [] replacement;
     private final int      start;
 
     /**
@@ -40,12 +41,12 @@ public class ReplacePartSoundTransform implements SoundTransform<Sound, Sound> {
      * @param start1
      *            start index
      */
-    public ReplacePartSoundTransform (final Sound [] replacement1, final int start1) {
-        this.replacement = replacement1.clone ();
+    public ReplacePartSoundTransform (final Sound replacement1, final int start1) {
+        this.replacement = replacement1.getChannels();
         this.start = start1;
     }
 
-    private void checks (final Sound input) {
+    private void checks (final Channel input) {
         if (this.start < 0) {
             throw new SoundTransformRuntimeException (ReplacePartSoundTransformErrorCode.START_INDEX_OUT_OF_BOUNDS, new IllegalArgumentException (), this.start);
         }
@@ -57,15 +58,15 @@ public class ReplacePartSoundTransform implements SoundTransform<Sound, Sound> {
         }
     }
 
-    private Sound replace (final Sound sound) {
+    private Channel replace (final Channel sound) {
         final long [] samples = new long [Math.max (sound.getSamplesLength (), this.start + this.replacement [sound.getChannelNum ()].getSamplesLength ())];
         System.arraycopy (sound.getSamples (), 0, samples, 0, sound.getSamplesLength ());
         System.arraycopy (this.replacement [sound.getChannelNum ()].getSamples (), 0, samples, this.start, this.replacement [sound.getChannelNum ()].getSamplesLength ());
-        return new Sound (samples, sound.getFormatInfo (), sound.getChannelNum ());
+        return new Channel (samples, sound.getFormatInfo (), sound.getChannelNum ());
     }
 
     @Override
-    public Sound transform (final Sound input) {
+    public Channel transform (final Channel input) {
         this.checks (input);
         return this.replace (input);
     }

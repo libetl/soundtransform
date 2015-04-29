@@ -26,15 +26,15 @@ public class ShapeTest extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input1 = new File (classLoader.getResource ("piano2d.wav").getFile ());
         final File input2 = new File (classLoader.getResource ("gpiano3.wav").getFile ());
-        final Sound [] s1 = $.select (InputStreamToSoundService.class).fromInputStream ($.select (AudioFileService.class).streamFromFile (input1));
-        final Sound [] s2 = $.select (InputStreamToSoundService.class).fromInputStream ($.select (AudioFileService.class).streamFromFile (input2));
-        $.select (SoundAppender.class).append (s2 [0], 1000, s1 [0]);
+        final Sound s1 = $.select (InputStreamToSoundService.class).fromInputStream ($.select (AudioFileService.class).streamFromFile (input1));
+        final Sound s2 = $.select (InputStreamToSoundService.class).fromInputStream ($.select (AudioFileService.class).streamFromFile (input2));
+        $.select (SoundAppender.class).append (s2.getChannels() [0], 1000, s1.getChannels() [0]);
     }
 
     @Test
     public void testShapeASimplePianoNoteAsAChordNote () throws SoundTransformException {
 
-        final Sound [] sound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).withClasspathResource ("piano5g.wav").convertIntoSound ().findLoudestFrequencies ()
+        final Sound sound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).withClasspathResource ("piano5g.wav").convertIntoSound ().findLoudestFrequencies ()
                 .shapeIntoSound ("default", "chord_piano", new FormatInfo (2, 44100)).stopWithSound ();
         ((ImportPackService<?>) $.select (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN))).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
 
@@ -47,7 +47,7 @@ public class ShapeTest extends SoundTransformTest {
     @Test
     public void testShapeASimplePianoNoteAsAChordNoteSameFrequency () throws SoundTransformException {
 
-        final Sound [] sound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).withClasspathResource ("piano3e.wav").convertIntoSound ().findLoudestFrequencies ()
+        final Sound sound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).withClasspathResource ("piano3e.wav").convertIntoSound ().findLoudestFrequencies ()
                 .shapeIntoSound ("default", "chord_piano", new FormatInfo (2, 44100)).stopWithSound ();
         ((ImportPackService<?>) $.select (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN))).importPack ($.select (Library.class), "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
 

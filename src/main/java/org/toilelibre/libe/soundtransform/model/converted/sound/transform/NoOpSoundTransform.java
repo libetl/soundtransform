@@ -1,17 +1,17 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 
 /**
  * Produces an exact copy of the input sound
  *
  */
-public class NoOpSoundTransform implements SoundTransform<Sound, Sound> {
+public class NoOpSoundTransform implements SoundTransform<Channel, Channel> {
 
     public NoOpSoundTransform () {
     }
 
-    private Sound noop (final Sound sound) {
+    private Channel noop (final Channel sound) {
         final long [] data = sound.getSamples ();
 
         // same array in newdata
@@ -19,11 +19,11 @@ public class NoOpSoundTransform implements SoundTransform<Sound, Sound> {
 
         System.arraycopy (data, 0, newdata, 0, data.length);
 
-        return new Sound (newdata, sound.getFormatInfo (), sound.getChannelNum ());
+        return new Channel (newdata, sound.getFormatInfo (), sound.getChannelNum ());
     }
 
     @Override
-    public Sound transform (final Sound input) {
+    public Channel transform (final Channel input) {
         return this.noop (input);
     }
 }

@@ -4,7 +4,7 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
@@ -62,7 +62,7 @@ public class SlowdownSoundTransform extends SimpleFrequencySoundTransform<Comple
     private static final int A_HUNDRED = 100;
 
     private final float      factor;
-    private Sound            sound;
+    private Channel            sound;
     private final int        step;
     private float            writeIfGreaterEqThan1;
     private int              additionalFrames;
@@ -131,9 +131,9 @@ public class SlowdownSoundTransform extends SimpleFrequencySoundTransform<Comple
     }
 
     @Override
-    public Sound initSound (final Sound input) {
+    public Channel initSound (final Channel input) {
         final long [] newdata = new long [(int) (input.getSamplesLength () * this.factor)];
-        this.sound = new Sound (newdata, input.getFormatInfo (), input.getChannelNum ());
+        this.sound = new Channel (newdata, input.getFormatInfo (), input.getChannelNum ());
         return this.sound;
     }
 

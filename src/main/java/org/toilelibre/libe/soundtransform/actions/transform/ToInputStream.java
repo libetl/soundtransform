@@ -19,7 +19,7 @@ public final class ToInputStream extends Action {
         return this.audioFile.streamFromFile (fOrigin);
     }
 
-    public InputStream toStream (final Sound [] channels, final StreamInfo streamInfo) throws SoundTransformException {
-        return this.sound2is.toStream (channels, streamInfo);
+    public InputStream toStream (final Sound sound, final StreamInfo streamInfo) throws SoundTransformException {
+        return this.sound2is.toStream (sound, streamInfo);
     }
 }

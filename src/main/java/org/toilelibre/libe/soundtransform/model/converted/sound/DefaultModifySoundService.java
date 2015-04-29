@@ -20,11 +20,11 @@ final class DefaultModifySoundService implements ModifySoundService {
      * org.toilelibre.libe.soundtransform.model.converted.sound.Sound[])
      */
     @Override
-    public Sound [] append (final Sound [] sounds1, final Sound [] sounds2) throws SoundTransformException {
+    public Channel [] append (final Channel [] sounds1, final Channel [] sounds2) throws SoundTransformException {
         if (sounds1.length != sounds2.length) {
             throw new SoundTransformException (ModifySoundServiceErrorCode.DIFFERENT_NUMBER_OF_CHANNELS, new IllegalArgumentException (), sounds1.length, sounds2.length);
         }
-        final Sound [] result = new Sound [sounds1.length];
+        final Channel [] result = new Channel [sounds1.length];
 
         for (int i = 0 ; i < sounds1.length ; i++) {
             result [i] = this.soundAppender.append (sounds1 [i], sounds2 [i]);
@@ -42,12 +42,12 @@ final class DefaultModifySoundService implements ModifySoundService {
      * [], org.toilelibre.libe.soundtransform.model.converted.FormatInfo)
      */
     @Override
-    public Sound [] changeFormat (final Sound [] input, final FormatInfo formatInfo) {
+    public Channel [] changeFormat (final Channel [] input, final FormatInfo formatInfo) {
         return this.changeFormat (input, formatInfo.getSampleSize (), (int) formatInfo.getSampleRate ());
     }
 
-    private Sound [] changeFormat (final Sound [] input, final int sampleSize, final int sampleRate) {
-        final Sound [] result = new Sound [input.length];
+    private Channel [] changeFormat (final Channel [] input, final int sampleSize, final int sampleRate) {
+        final Channel [] result = new Channel [input.length];
         for (int i = 0 ; i < input.length ; i++) {
             result [i] = input [i];
             result [i] = this.soundAppender.changeNbBytesPerSample (result [i], sampleSize);

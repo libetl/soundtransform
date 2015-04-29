@@ -4,5 +4,5 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public interface SoundPitchAndTempoHelper {
 
-    Sound pitchAndSetLength (Sound sound, float percent, float lengthInSeconds) throws SoundTransformException;
+    Channel pitchAndSetLength (Channel sound, float percent, float lengthInSeconds) throws SoundTransformException;
 }

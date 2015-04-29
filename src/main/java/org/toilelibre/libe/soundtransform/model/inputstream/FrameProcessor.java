@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.model.inputstream;
 
 import java.io.InputStream;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
@@ -49,8 +49,8 @@ public interface FrameProcessor<T> extends LogAware<T> {
         }
     }
 
-    public abstract byte [] framesToByteArray (Sound [] channels, StreamInfo streamInfo);
+    public abstract byte [] framesToByteArray (Channel [] channels, StreamInfo streamInfo);
 
-    public abstract Sound [] fromInputStream (InputStream ais, StreamInfo isInfo) throws SoundTransformException;
+    public abstract Channel [] fromInputStream (InputStream ais, StreamInfo isInfo) throws SoundTransformException;
 
 }

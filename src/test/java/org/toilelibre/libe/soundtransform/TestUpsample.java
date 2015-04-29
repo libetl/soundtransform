@@ -7,6 +7,7 @@ import java.io.InputStream;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -23,15 +24,15 @@ public class TestUpsample extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("piano2d.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-        final Sound [] inputSounds = $.select (InputStreamToSoundService.class).fromInputStream ($.select (AudioFileService.class).streamFromFile (input));
-        final Sound [] outputSounds = new Sound [inputSounds.length];
-        for (int i = 0 ; i < inputSounds.length ; i++) {
-            Sound tmp = $.select (SoundAppender.class).changeNbBytesPerSample (inputSounds [i], 2);
+        final Sound inputSound = $.select (InputStreamToSoundService.class).fromInputStream ($.select (AudioFileService.class).streamFromFile (input));
+        final Channel [] outputChannels = new Channel [inputSound.getNumberOfChannels()];
+        for (int i = 0 ; i < inputSound.getNumberOfChannels() ; i++) {
+            Channel tmp = $.select (SoundAppender.class).changeNbBytesPerSample (inputSound.getChannels() [i], 2);
             tmp = $.select (SoundAppender.class).resizeToSampleRate (tmp, 44100);
-            outputSounds [i] = tmp;
+            outputChannels [i] = tmp;
         }
 
-        final InputStream ais = $.select (SoundToInputStreamService.class).toStream (outputSounds, new StreamInfo (outputSounds.length, outputSounds [0].getSamplesLength (), 2, 44100, false, true, null));
+        final InputStream ais = $.select (SoundToInputStreamService.class).toStream (new Sound (outputChannels), new StreamInfo (outputChannels.length, outputChannels [0].getSamplesLength (), 2, 44100, false, true, null));
         $.select (AudioFileService.class).fileFromStream (ais, output);
 
     }
@@ -42,16 +43,16 @@ public class TestUpsample extends SoundTransformTest {
         final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
         final File input = new File (classLoader.getResource ("gpiano3.wav").getFile ());
         final File output = new File (new File (classLoader.getResource ("before.wav").getFile ()).getParent () + "/after.wav");
-        final Sound [] inputSounds = $.select (InputStreamToSoundService.class).fromInputStream ($.select (AudioFileService.class).streamFromFile (input));
-        final Sound [] outputSounds = new Sound [inputSounds.length];
-        for (int i = 0 ; i < inputSounds.length ; i++) {
+        final Sound inputSound = $.select (InputStreamToSoundService.class).fromInputStream ($.select (AudioFileService.class).streamFromFile (input));
+        final Channel [] outputChannels = new Channel [inputSound.getNumberOfChannels()];
+        for (int i = 0 ; i < inputSound.getNumberOfChannels() ; i++) {
             // Sound tmp = SoundAppender.changeNbBytesPerSample (inputSounds
             // [i], 2);
-            final Sound tmp = $.select (SoundAppender.class).resizeToSampleRate (inputSounds [i], 44100);
-            outputSounds [i] = tmp;
+            final Channel tmp = $.select (SoundAppender.class).resizeToSampleRate (inputSound.getChannels() [i], 44100);
+            outputChannels [i] = tmp;
         }
 
-        final InputStream ais = $.select (SoundToInputStreamService.class).toStream (outputSounds, new StreamInfo (outputSounds.length, outputSounds [0].getSamplesLength (), 2, 44100, false, true, null));
+        final InputStream ais = $.select (SoundToInputStreamService.class).toStream (new Sound (outputChannels), new StreamInfo (outputChannels.length, outputChannels [0].getSamplesLength (), 2, 44100, false, true, null));
 
         $.select (AudioFileService.class).fileFromStream (ais, output);
     }

@@ -1,7 +1,7 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.appender;
 
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.note.Note;
@@ -20,9 +20,9 @@ final class ConvertedSoundAppender implements SoundAppender {
      * int, org.toilelibre.libe.soundtransform.model.converted.sound.Sound)
      */
     @Override
-    public void append (final Sound origin, final int usedarraylength, final Sound... otherSounds) {
+    public void append (final Channel origin, final int usedarraylength, final Channel... otherSounds) {
         int offset = usedarraylength;
-        for (final Sound otherSound : otherSounds) {
+        for (final Channel otherSound : otherSounds) {
             offset = this.append (origin, offset, otherSound);
         }
     }
@@ -36,18 +36,18 @@ final class ConvertedSoundAppender implements SoundAppender {
      * int, org.toilelibre.libe.soundtransform.model.converted.sound.Sound)
      */
     @Override
-    public int append (final Sound origin, final int usedarraylength, final Sound otherSound) {
-        final Sound resultBeforeResize = this.changeNbBytesPerSample (otherSound, origin.getSampleSize ());
-        final Sound resultBeforeCopy = this.resizeToSampleRate (resultBeforeResize, origin.getSampleRate ());
+    public int append (final Channel origin, final int usedarraylength, final Channel otherSound) {
+        final Channel resultBeforeResize = this.changeNbBytesPerSample (otherSound, origin.getSampleSize ());
+        final Channel resultBeforeCopy = this.resizeToSampleRate (resultBeforeResize, origin.getSampleRate ());
         final int lastIndex = Math.min (origin.getSamplesLength (), usedarraylength + resultBeforeCopy.getSamplesLength ());
         System.arraycopy (resultBeforeCopy.getSamples (), 0, origin.getSamples (), usedarraylength, lastIndex - usedarraylength);
         return lastIndex;
     }
 
     @Override
-    public Sound append (final Sound sound1, final Sound sound2) {
-        final Sound sound2Ajusted = this.resizeToSampleRate (this.changeNbBytesPerSample (sound2, sound1.getSampleSize ()), sound1.getSampleRate ());
-        final Sound result = new Sound (new long [sound1.getSamplesLength () + sound2.getSamplesLength ()], sound1.getFormatInfo (), sound1.getChannelNum ());
+    public Channel append (final Channel sound1, final Channel sound2) {
+        final Channel sound2Ajusted = this.resizeToSampleRate (this.changeNbBytesPerSample (sound2, sound1.getSampleSize ()), sound1.getSampleRate ());
+        final Channel result = new Channel (new long [sound1.getSamplesLength () + sound2.getSamplesLength ()], sound1.getFormatInfo (), sound1.getChannelNum ());
 
         System.arraycopy (sound1.getSamples (), 0, result.getSamples (), 0, sound1.getSamplesLength ());
         System.arraycopy (sound2Ajusted.getSamples (), 0, result.getSamples (), sound1.getSamplesLength (), sound2Ajusted.getSamplesLength ());
@@ -56,12 +56,12 @@ final class ConvertedSoundAppender implements SoundAppender {
     }
 
     @Override
-    public void appendNote (final Sound sound, final Note note, final double lastFreq, final int indexInSound, final int channelNum, final float lengthInSeconds) throws SoundTransformException {
+    public void appendNote (final Channel sound, final Note note, final double lastFreq, final int indexInSound, final int channelNum, final float lengthInSeconds) throws SoundTransformException {
 
-        final Sound attack = note.getAttack ((int) lastFreq, channelNum, lengthInSeconds);
-        final Sound decay = note.getDecay ((int) lastFreq, channelNum, lengthInSeconds);
-        final Sound sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds);
-        final Sound release = note.getRelease ((int) lastFreq, channelNum, lengthInSeconds);
+        final Channel attack = note.getAttack ((int) lastFreq, channelNum, lengthInSeconds);
+        final Channel decay = note.getDecay ((int) lastFreq, channelNum, lengthInSeconds);
+        final Channel sustain = note.getSustain ((int) lastFreq, channelNum, lengthInSeconds);
+        final Channel release = note.getRelease ((int) lastFreq, channelNum, lengthInSeconds);
         this.append (sound, indexInSound, attack, decay, sustain, release);
     }
 
@@ -74,14 +74,14 @@ final class ConvertedSoundAppender implements SoundAppender {
      * .converted.sound.Sound, int)
      */
     @Override
-    public Sound changeNbBytesPerSample (final Sound sound, final int newNbBytesPerSample) {
+    public Channel changeNbBytesPerSample (final Channel sound, final int newNbBytesPerSample) {
         final long [] newsamples = new long [sound.getSamplesLength ()];
         final long oldMax = (long) (Math.pow (ConvertedSoundAppender.BYTE_NB_VALUES, sound.getSampleSize ()) / ConvertedSoundAppender.HALF);
         final long newMax = (long) (Math.pow (ConvertedSoundAppender.BYTE_NB_VALUES, newNbBytesPerSample) / ConvertedSoundAppender.HALF);
         for (int j = 0 ; j < sound.getSamplesLength () ; j++) {
             newsamples [j] = (long) (sound.getSampleAt (j) * 1.0 * newMax / oldMax);
         }
-        return new Sound (newsamples, new FormatInfo (newNbBytesPerSample, sound.getSampleRate ()), sound.getChannelNum ());
+        return new Channel (newsamples, new FormatInfo (newNbBytesPerSample, sound.getSampleRate ()), sound.getChannelNum ());
     }
 
     /*
@@ -93,7 +93,7 @@ final class ConvertedSoundAppender implements SoundAppender {
      * .converted.sound.Sound, float)
      */
     @Override
-    public Sound downsampleWithRatio (final Sound sound, final float ratio) {
+    public Channel downsampleWithRatio (final Channel sound, final float ratio) {
         float appendIfGreaterThanOrEqualsRatio = 0;
         int indexResult = 0;
         final long [] result = new long [(int) Math.ceil (sound.getSamplesLength () / ratio)];
@@ -104,7 +104,7 @@ final class ConvertedSoundAppender implements SoundAppender {
             }
             appendIfGreaterThanOrEqualsRatio += 1.0;
         }
-        return new Sound (result, new FormatInfo (sound.getSampleSize (), sound.getSampleRate () / ratio), sound.getChannelNum ());
+        return new Channel (result, new FormatInfo (sound.getSampleSize (), sound.getSampleRate () / ratio), sound.getChannelNum ());
     }
 
     /*
@@ -116,7 +116,7 @@ final class ConvertedSoundAppender implements SoundAppender {
      * .converted.sound.Sound, int)
      */
     @Override
-    public Sound resizeToSampleRate (final Sound sound, final float newfreq) {
+    public Channel resizeToSampleRate (final Channel sound, final float newfreq) {
         final float ratio = (float) (newfreq * 1.0 / sound.getSampleRate ());
         if (ratio > 1) {
             return this.upsampleWithRatio (sound, ratio);
@@ -127,7 +127,7 @@ final class ConvertedSoundAppender implements SoundAppender {
         return sound;
     }
 
-    private Sound upsampleWithRatio (final Sound sound, final float ratio) {
+    private Channel upsampleWithRatio (final Channel sound, final float ratio) {
         float appendWhileLessThanOrEqualsRatio = 0;
         int indexResult = 0;
         final long [] result = new long [(int) Math.ceil (sound.getSamplesLength () * (ratio + 1))];
@@ -143,6 +143,6 @@ final class ConvertedSoundAppender implements SoundAppender {
             outputLongArray = new long [indexResult];
             System.arraycopy (result, 0, outputLongArray, 0, indexResult);
         }
-        return new Sound (outputLongArray, new FormatInfo (sound.getSampleSize (), sound.getSampleRate () * ratio), sound.getChannelNum ());
+        return new Channel (outputLongArray, new FormatInfo (sound.getSampleSize (), sound.getSampleRate () * ratio), sound.getChannelNum ());
     }
 }

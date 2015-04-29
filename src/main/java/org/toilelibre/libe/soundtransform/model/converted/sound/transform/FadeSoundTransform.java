@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
@@ -11,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
  * increases in the intro and gradually descreases in the outro)
  *
  */
-public class FadeSoundTransform implements SoundTransform<Sound, Sound> {
+public class FadeSoundTransform implements SoundTransform<Channel, Channel> {
 
     public enum FadeSoundTransformErrorCode implements ErrorCode {
 
@@ -54,7 +54,7 @@ public class FadeSoundTransform implements SoundTransform<Sound, Sound> {
         return length1;
     }
 
-    private Sound fade (final Sound sound) {
+    private Channel fade (final Channel sound) {
         final long [] data = sound.getSamples ();
         final long [] newdata = data.clone ();
 
@@ -64,11 +64,11 @@ public class FadeSoundTransform implements SoundTransform<Sound, Sound> {
             newdata [realIndex] = (long) (data [realIndex] * ratio);
         }
 
-        return new Sound (newdata, sound.getFormatInfo (), sound.getChannelNum ());
+        return new Channel (newdata, sound.getFormatInfo (), sound.getChannelNum ());
     }
 
     @Override
-    public Sound transform (final Sound input) {
+    public Channel transform (final Channel input) {
         if (this.length > input.getSamplesLength ()) {
             throw new SoundTransformRuntimeException (FadeSoundTransformErrorCode.FADE_LENGTH_LONGER_THAN_SOUND, new IllegalArgumentException (), this.length, input.getSamplesLength ());
         }

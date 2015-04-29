@@ -28,16 +28,16 @@ public class BlackBoxTest extends SoundTransformTest {
 
     @Test
     public void callPlaySoundFromOutside () throws SoundTransformException {
-        new PlaySound ().play (new Sound [0]);
+        new PlaySound ().play (new Sound (null));
     }
 
     @Test
     public void callTransformFromOutside () throws SoundTransformException {
         final InputStream is = new ToInputStream ().toStream (this.input);
         final StreamInfo streamInfo = new GetStreamInfo ().getStreamInfo (new ToInputStream ().toStream (this.input));
-        Sound [] sounds = new ConvertFromInputStream ().fromInputStream (is);
-        sounds = new ApplySoundTransform ().apply (sounds, new EightBitsSoundTransform (25));
-        final InputStream isOut = new ToInputStream ().toStream (sounds, streamInfo);
+        Sound sound = new ConvertFromInputStream ().fromInputStream (is);
+        sound = new Sound (new ApplySoundTransform ().apply (sound.getChannels(), new EightBitsSoundTransform (25)));
+        final InputStream isOut = new ToInputStream ().toStream (sound, streamInfo);
         new ExportAFile ().writeFile (isOut, this.output);
     }
 

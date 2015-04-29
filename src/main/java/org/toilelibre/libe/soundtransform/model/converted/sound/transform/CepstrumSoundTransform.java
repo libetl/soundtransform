@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
@@ -77,7 +77,7 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
         }
 
         @Override
-        public Sound initSound (final Sound input) {
+        public Channel initSound (final Channel input) {
             this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
             this.index = 0;
             this.length = input.getSamplesLength ();
@@ -171,7 +171,7 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
     }
 
     @Override
-    public float [] transform (Sound input) throws SoundTransformException {
+    public float [] transform (Channel input) throws SoundTransformException {
         this.decoratedTransform.transform (input);
         return this.decoratedTransform.getLoudestFreqs ();
     }

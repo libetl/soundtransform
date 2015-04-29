@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -23,7 +23,7 @@ public class SoundToStringTest extends SoundTransformTest {
         final File input = new File (classLoader.getResource ("before.wav").getFile ());
 
         final InputStream ais = $.select (AudioFileService.class).streamFromFile (input);
-        final Sound s = $.select (InputStreamToSoundService.class).fromInputStream (ais) [0];
+        final Channel s = $.select (InputStreamToSoundService.class).fromInputStream (ais).getChannels () [0];
         new SimpleFrequencySoundTransform<Complex []> () {
 
             @Override
@@ -42,7 +42,7 @@ public class SoundToStringTest extends SoundTransformTest {
         final File input = new File (classLoader.getResource ("before.wav").getFile ());
 
         final InputStream ais = $.select (AudioFileService.class).streamFromFile (input);
-        new Slf4jObserver ().notify ($.select (InputStreamToSoundService.class).fromInputStream (ais) [0].toString ());
+        new Slf4jObserver ().notify ($.select (InputStreamToSoundService.class).fromInputStream (ais).getChannels () [0].toString ());
 
     }
 }

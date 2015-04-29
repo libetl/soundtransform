@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
  * available.
  *
  */
-public class SubSoundExtractSoundTransform implements SoundTransform<Sound, Sound> {
+public class SubSoundExtractSoundTransform implements SoundTransform<Channel, Channel> {
     enum SubSoundExtractSoundTransformErrorCode implements ErrorCode {
         INDEXS_OUT_OF_BOUND ("The specified indexes are out of bound (maximum : %1d -> %2d , actual : %3d -> %4d)");
 
@@ -43,8 +43,8 @@ public class SubSoundExtractSoundTransform implements SoundTransform<Sound, Soun
     }
 
     @Override
-    public Sound transform (final Sound input) throws SoundTransformException {
-        final Sound result = new Sound (new long [this.end - this.start], input.getFormatInfo (), input.getChannelNum ());
+    public Channel transform (final Channel input) throws SoundTransformException {
+        final Channel result = new Channel (new long [this.end - this.start], input.getFormatInfo (), input.getChannelNum ());
 
         if (this.start > this.end || this.start < 0 || this.end >= input.getSamplesLength ()) {
             throw new SoundTransformException (SubSoundExtractSoundTransformErrorCode.INDEXS_OUT_OF_BOUND, new IllegalArgumentException (), 0, input.getSamplesLength (), this.start, this.end);

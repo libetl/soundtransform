@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 import java.io.File;
 
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -20,7 +21,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      *             if the sound is null or if there is a problem with the
      *             appending
      */
-    FluentClientSoundImported append (Sound [] sound) throws SoundTransformException;
+    FluentClientSoundImported append (Sound sound) throws SoundTransformException;
 
     /**
      * Apply one transform and continue with the result sound
@@ -31,7 +32,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             if the transform does not work
      */
-    FluentClientSoundImported apply (SoundTransform<Sound, Sound> st) throws SoundTransformException;
+    FluentClientSoundImported apply (SoundTransform<Channel, Channel> st) throws SoundTransformException;
 
     /**
      * Apply one transform and stop immediately after with a result
@@ -44,7 +45,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             if the transform does not work
      */
-    <T> T [] applyAndStop (SoundTransform<Sound, T> st, Class<T> resultClass) throws SoundTransformException;
+    <T> T [] applyAndStop (SoundTransform<Channel, T> st, Class<T> resultClass) throws SoundTransformException;
 
     /**
      * Changes the current imported sound to fit the expected format
@@ -165,7 +166,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @throws SoundTransformException
      *             if the sound is null or if there is a problem with the mix
      */
-    FluentClientSoundImported mixWith (Sound [] sound) throws SoundTransformException;
+    FluentClientSoundImported mixWith (Sound sound) throws SoundTransformException;
 
     /**
      * Plays the current audio data
@@ -191,6 +192,6 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      *
      * @return a sound value object
      */
-    Sound [] stopWithSound ();
+    Sound stopWithSound ();
 
 }

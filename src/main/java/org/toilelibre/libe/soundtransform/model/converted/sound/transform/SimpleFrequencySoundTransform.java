@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 import java.io.Serializable;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
@@ -33,9 +33,9 @@ public class SimpleFrequencySoundTransform<T extends Serializable> extends Abstr
     }
 
     @Override
-    public Sound initSound (final Sound input) {
+    public Channel initSound (final Channel input) {
         final long [] newdata = new long [input.getSamplesLength ()];
-        return new Sound (newdata, input.getFormatInfo (), input.getChannelNum ());
+        return new Channel (newdata, input.getFormatInfo (), input.getChannelNum ());
     }
 
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs) {

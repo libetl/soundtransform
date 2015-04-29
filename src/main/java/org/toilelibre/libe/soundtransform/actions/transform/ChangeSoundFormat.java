@@ -12,7 +12,7 @@ public class ChangeSoundFormat extends Action {
         super (observers);
     }
 
-    public Sound [] changeFormat (final Sound [] input, final FormatInfo formatInfo) throws SoundTransformException {
-        return this.modifySound.changeFormat (input, formatInfo);
+    public Sound changeFormat (final Sound input, final FormatInfo formatInfo) throws SoundTransformException {
+        return new Sound (this.modifySound.changeFormat (input.getChannels(), formatInfo));
     }
 }

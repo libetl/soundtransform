@@ -16,7 +16,7 @@ final class DefaultSoundToStringService implements SoundToStringService {
      * #convert(org.toilelibre.libe.soundtransform.model.converted.sound.Sound)
      */
     @Override
-    public String convert (final Sound input) {
+    public String convert (final Channel input) {
         return this.helper.process (input);
     }
 }

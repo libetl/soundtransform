@@ -1,12 +1,12 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 
 /**
  * Builds a string representation of a sound channel
  *
  */
-public class ToStringSoundTransform implements SoundTransform<Sound, String> {
+public class ToStringSoundTransform implements SoundTransform<Channel, String> {
 
     private static final double NB_BYTE_VALUES = 1 << Byte.SIZE;
     private static final long   TWO            = 2;
@@ -29,7 +29,7 @@ public class ToStringSoundTransform implements SoundTransform<Sound, String> {
         this.height = height;
     }
 
-    private void diplayFooter (final Sound input, final double compression) {
+    private void diplayFooter (final Channel input, final double compression) {
         this.sb.append ("L");
         for (int i = 0 ; i < this.length ; i++) {
             this.sb.append ("-");
@@ -58,7 +58,7 @@ public class ToStringSoundTransform implements SoundTransform<Sound, String> {
 
     }
 
-    private int [] prepareValuesOnPlot (final Sound input, final int step, final long maxMagn) {
+    private int [] prepareValuesOnPlot (final Channel input, final int step, final long maxMagn) {
         final int [] valuesOnPlot = new int [this.length];
         for (int i = 0 ; i < valuesOnPlot.length ; i++) {
             double maxValue = 0;
@@ -82,13 +82,13 @@ public class ToStringSoundTransform implements SoundTransform<Sound, String> {
         return valuesOnPlot;
     }
 
-    public String toString (final Sound sound) {
+    public String toString (final Channel sound) {
         this.transform (sound);
         return this.sb.toString ();
     }
 
     @Override
-    public String transform (final Sound input) {
+    public String transform (final Channel input) {
         this.maxPlotValue = 0d;
         this.minValuePlotted = -1;
         final double compression = input.getSamplesLength () * 1.0 / this.length;

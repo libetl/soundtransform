@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -21,7 +21,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
  * consisting of the notes heard in the freqs array. If the constructor using a
  * float array is used, only the shaping step will be processed
  */
-public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> implements SoundTransform<float [], Sound> {
+public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> implements SoundTransform<float [], Channel> {
     public enum ShapeSoundTransformErrorCode implements ErrorCode {
 
         NO_LOUDEST_FREQS_IN_ATTRIBUTE ("No loudest freqs array passed in attribute"), NOT_AN_INSTRUMENT ("%1s is not a valid instrument"), NO_PACK_IN_PARAMETER ("No pack in parameter. Please instantiate a ShapeSoundTransform with a not null Pack");
@@ -117,8 +117,8 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
         return frequencyDidNotChangeBetweenIAndIMinusTwo && freqChangedAtIMinusThree && thereIsANewFrequencyValue;
     }
 
-    private Sound transform (final int step, final int channelNum, final int soundLength) throws SoundTransformException {
-        final Sound builtSound = new Sound (new long [soundLength], this.formatInfo, channelNum);
+    private Channel transform (final int step, final int channelNum, final int soundLength) throws SoundTransformException {
+        final Channel builtSound = new Channel (new long [soundLength], this.formatInfo, channelNum);
         int lastBegining = 0;
         float lastFreq = 0;
         boolean firstNote = true;
@@ -139,7 +139,7 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
     }
 
     @Override
-    public Sound transform (final float [] freqs1) throws SoundTransformException {
+    public Channel transform (final float [] freqs1) throws SoundTransformException {
         if (this.pack == null) {
             throw new SoundTransformException (ShapeSoundTransformErrorCode.NO_PACK_IN_PARAMETER, new NullPointerException ());
         }

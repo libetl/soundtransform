@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.model.inputstream;
 
 import java.io.InputStream;
 
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
@@ -25,7 +26,7 @@ final class DefaultInputStreamToSoundService extends AbstractLogAware<DefaultInp
      * InputStreamToSoundService#fromInputStream(java.io.InputStream)
      */
     @Override
-    public Sound [] fromInputStream (final InputStream ais) throws SoundTransformException {
+    public Sound fromInputStream (final InputStream ais) throws SoundTransformException {
         return this.fromInputStream (ais, this.audioFormatParser.getStreamInfo (ais));
     }
 
@@ -37,11 +38,11 @@ final class DefaultInputStreamToSoundService extends AbstractLogAware<DefaultInp
      * org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo)
      */
     @Override
-    public Sound [] fromInputStream (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
+    public Sound fromInputStream (final InputStream ais, final StreamInfo isInfo) throws SoundTransformException {
         this.log (new LogEvent (TransformInputStreamServiceEventCode.CONVERT_INTO_JAVA_OBJECT));
-        final Sound [] result = this.frameProcessor.fromInputStream (ais, isInfo);
+        final Channel [] result = this.frameProcessor.fromInputStream (ais, isInfo);
         this.log (new LogEvent (TransformInputStreamServiceEventCode.CONVERT_DONE));
-        return result;
+        return new Sound (result);
     }
 
     /*

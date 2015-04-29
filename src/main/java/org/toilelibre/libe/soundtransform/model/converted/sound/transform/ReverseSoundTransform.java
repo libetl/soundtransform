@@ -1,12 +1,12 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 
 /**
  * Make a new sound such as newsoundsamples [i] = soundsamples [length - i]
  *
  */
-public class ReverseSoundTransform implements SoundTransform<Sound, Sound> {
+public class ReverseSoundTransform implements SoundTransform<Channel, Channel> {
 
     /**
      * Default constructor
@@ -14,7 +14,7 @@ public class ReverseSoundTransform implements SoundTransform<Sound, Sound> {
     public ReverseSoundTransform () {
     }
 
-    private Sound reverse (final Sound sound) {
+    private Channel reverse (final Channel sound) {
         final long [] data = sound.getSamples ();
         final long [] newdata = new long [sound.getSamplesLength ()];
         // this is the raw audio data -- no header
@@ -23,11 +23,11 @@ public class ReverseSoundTransform implements SoundTransform<Sound, Sound> {
             newdata [i] = data [data.length - i - 1];
         }
         // normalized result in newdata
-        return new Sound (newdata, sound.getFormatInfo (), sound.getChannelNum ());
+        return new Channel (newdata, sound.getFormatInfo (), sound.getChannelNum ());
     }
 
     @Override
-    public Sound transform (final Sound input) {
+    public Channel transform (final Channel input) {
         return this.reverse (input);
     }
 }
