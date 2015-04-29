@@ -184,7 +184,7 @@ Parameters:
 `timeoutInSeconds` - a timeout value. After that, the operation will be stopped, even if it is still processing. 
                      You can choose Integer.MAX_VALUE as a value if you are convinced that it will finish.
                      
-`sounds` - a list of Sounds (each Sound object is a sound channel)
+`sounds` - a vararg of sounds
 
 Returns:  
 the client, with a list of clients inside holding a value each
@@ -294,7 +294,7 @@ FluentClientSoundImported withAMixedSound (Sound... sounds) throws SoundTransfor
 Tells the client to use the sounds passed in parameter by mixing them all into one
 
 Parameters:  
-`sounds` - a var-arg value of arrays of sounds (each value inside the arrays is a sound channel)
+`sounds` - a var-arg value of sounds
 
 Returns:  
 the client, with an imported sound
@@ -521,14 +521,14 @@ Throws:
 #####   FluentClientReady.withSound (just after start)
 
 ```java
-FluentClientSoundImported withSound (Sound sounds)
+FluentClientSoundImported withSound (Sound sound)
 ```
 
 
 Tells the client to work first with a sound object
 
 Parameters:  
-`sounds` - the sound object
+`sound` - the sound object
 
 Returns:  
 the client, with an imported sound
