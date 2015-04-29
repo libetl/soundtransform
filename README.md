@@ -1395,7 +1395,7 @@ The obtained Spectrum are not really spectrums. They consist of a graph a quefre
 
 The peak can represent the f0 (if the FormatInfo of the input sound is adequate), but it is not faithful everytime. This method can detect wrong values.
 
-This is a PeakFindSoundTransform, therefore it is a SoundTransform<Channel, float []>.
+This is a `PeakFindSoundTransform`, therefore it is a `SoundTransform<Channel, float []>`.
 
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
@@ -1471,7 +1471,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
 ```
 
 Finds the loudest frequencies array using the Harmonic Product Spectrum algorithm.
-This is a PeakFindSoundTransform, therefore it is a SoundTransform<Channel, float []>.
+This is a PeakFindSoundTransform, therefore it is a `SoundTransform<Channel, float []>`.
 
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
