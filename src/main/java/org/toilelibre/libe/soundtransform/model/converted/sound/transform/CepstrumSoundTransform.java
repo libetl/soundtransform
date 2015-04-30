@@ -1,8 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
@@ -30,7 +28,6 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
     static class CepstrumFrequencySoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T> {
 
         private final double                      step;
-        private final List<float []>                    allLoudestFreqs;
         private float []                          loudestfreqs;
         private int                               index;
         private int                               length;
@@ -49,15 +46,10 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
             this.note = note1;
             this.spectrum2CepstrumHelper = $.select (SpectrumToCepstrumHelper.class);
             this.spectrumHelper = $.select (SpectrumHelper.class);
-            this.allLoudestFreqs = new LinkedList<float []> ();
         }
 
         public float [] getLoudestFreqs () {
             return this.loudestfreqs.clone ();
-        }
-
-        public List<float []> getAllLoudestFreqs () {
-            return this.allLoudestFreqs;
         }
 
         @Override
@@ -86,7 +78,6 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
             } else {
                 this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
             }
-            this.allLoudestFreqs.add (this.loudestfreqs);
             return super.initSound (input);
         }
 
