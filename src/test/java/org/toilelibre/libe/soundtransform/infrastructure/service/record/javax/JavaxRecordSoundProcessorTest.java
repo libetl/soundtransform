@@ -23,6 +23,7 @@ import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 
@@ -48,6 +49,37 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         Assert.assertThat (is.available (), new GreaterThan<Integer> (0));
     }
 
+    @Test
+    public void mockRecordedSoundWithStopObject () throws Exception {
+        this.rule.hashCode ();
+        final byte [][] buffers = new byte [15] [1024];
+        for (int i = 0 ; i < 14 ; i++) {
+            new Random ().nextBytes (buffers [i]);
+        }
+        buffers [14] = new byte [0];
+        this.mockRecordSoundProcessor (buffers);
+        final Object stopObject = new Object ();
+        final InputStream [] is = new InputStream [1];
+        new Thread (){
+            public void run (){
+                try {
+                    is [0] = FluentClient.start ().withRecordedInputStream (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stopObject).stopWithInputStream ();
+                } catch (SoundTransformException e) {
+                    throw new RuntimeException (e);
+                } 
+            }
+        }.start ();
+
+        Thread.sleep (2000);
+        synchronized (stopObject) {
+            stopObject.notify ();
+        }
+        Thread.sleep (1000);
+       
+        Assert.assertThat (is [0].available (), new GreaterThan<Integer> (0));
+    }
+
+    
     private void mockRecordSoundProcessor (final byte [][] buffers) throws Exception {
         final TargetDataLine dataLine = Mockito.mock (TargetDataLine.class);
         Mockito.when (dataLine.getBufferSize ()).thenReturn (8192);
