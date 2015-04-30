@@ -89,7 +89,7 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClient.start ().inParallel (
                 FluentClientOperation.prepare ().importToSound ().build (),
                 5,
-                Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("piano1c.wav"), Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("piano8c.wav")).mixAllInOneSound ().stopWithSound ();
+                Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("piano1c.wav"), Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("piano8c.wav")).stopWithResults (InputStream.class);
     }
 
     @Test
@@ -97,7 +97,15 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClient.start ().inParallel (
                 FluentClientOperation.prepare ().convertIntoSound ().build (),
                 5,
-                new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano1c.wav").getFile ()), new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano8c.wav").getFile ())).mixAllInOneSound ().stopWithSound ();
+                new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano1c.wav").getFile ()), new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano8c.wav").getFile ())).stopWithResults (File.class);
+    }
+
+    @Test
+    public void soundsInParallel () throws SoundTransformException {
+        FluentClient.start ().inParallel (
+                FluentClientOperation.prepare ().exportToStream ().importToSound ().build (),
+                5,
+                FluentClient.start ().withClasspathResource ("piano1c.wav").convertIntoSound ().stopWithSound (), FluentClient.start ().withClasspathResource ("piano8c.wav").convertIntoSound ().stopWithSound ()).stopWithResults (Sound.class);
     }
 
     @Test
