@@ -84,6 +84,16 @@ public class FluentClientTest extends SoundTransformTest {
                 FluentClientOperation.prepare ().playIt (), 5000, "piano1c.wav", "piano8c.wav");
     }
     
+    @SuppressWarnings("unchecked")
+    @Test
+    public void freqsInParallel () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+        FluentClient.start ().inParallel (
+                FluentClientOperation.prepare ().octaveDown().build (),
+                5,
+                this.generateRandomFreqs(), this.generateRandomFreqs()).stopWithResults (List.class);
+    }
+    
     @Test
     public void inputStreamsInParallel () throws SoundTransformException {
         FluentClient.start ().inParallel (

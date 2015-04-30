@@ -1039,7 +1039,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         final T [] results = (T []) Array.newInstance (resultClass, this.parallelizedClients.length);
         int i = 0;
         for (final FluentClientCommon fcc : this.parallelizedClients) {
-            if (resultClass == float [].class) {
+            if (resultClass == List.class) {
                 results [i++] = (T) ((FluentClient) fcc).stopWithFreqs ();
             } else if (resultClass == Sound.class) {
                 results [i++] = (T) ((FluentClient) fcc).stopWithSound ();
