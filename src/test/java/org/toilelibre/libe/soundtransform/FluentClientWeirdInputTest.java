@@ -201,4 +201,11 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
         }
     }
 
+    @Test (expected=SoundTransformException.class)
+    public void mixAllInOneSoundOnlyWorksWithSounds () throws SoundTransformException {
+        FluentClient.start ().inParallel (
+                FluentClientOperation.prepare ().importToStream().build (),
+                5,
+                new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano1c.wav").getFile ()), new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano8c.wav").getFile ())).mixAllInOneSound ();
+    }
 }
