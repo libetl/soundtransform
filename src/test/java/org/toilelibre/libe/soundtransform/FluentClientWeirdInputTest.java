@@ -16,6 +16,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jO
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -134,6 +135,12 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
 
     @Test
     public void cannotAskToTheFluentClientOperationToReturnSomething () throws SoundTransformException {
+        try {
+            FluentClientOperation.prepare ().applyAndStop (new NoOpSoundTransform ());
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
+        }
         try {
             FluentClientOperation.prepare ().stopWithAPack ("default");
             Assert.fail ("should have failed");
