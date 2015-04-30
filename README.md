@@ -1151,7 +1151,7 @@ Stops the client pipeline and get all the values inside each nested client
 
 Parameters:  
 `resultClass` - You have to specify what type of result you expect.
-                the value can be one of this list : (Sound.class, InputStream.class, File.class, String.class, float [].class)
+                the value can be one of this list : (Sound.class, InputStream.class, File.class, String.class, List.class)
 
 Returns:  
 an array of results
