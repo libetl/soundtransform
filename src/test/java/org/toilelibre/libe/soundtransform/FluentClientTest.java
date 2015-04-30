@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,9 +71,17 @@ public class FluentClientTest extends SoundTransformTest {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
         FluentClient.start ().inParallel (
                 FluentClientOperation.prepare ().importToStream ().importToSound ().append (FluentClient.start ().withClasspathResource ("piano5g.wav").convertIntoSound ().stopWithSound ()).apply (new EightBitsSoundTransform (25)).changeFormat (new FormatInfo (2, 44100)).cutSubSound (0, 1000)
-                .exportToStream ().playIt ().writeToClasspathResource ("after.wav").convertIntoSound ().findLoudestFrequencies ().filterRange (0, 1000).octaveDown ().octaveUp ().compress (0.5f).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100)).loop (8000)
-                .splitIntoSpectrums ().extractSound ().extractSubSound (0, 4000).mixWith (FluentClient.start ().withClasspathResource ("piano6a.wav").convertIntoSound ().stopWithSound ()).exportToClasspathResource ("after.wav").convertIntoSound ()
+                .exportToStream ().writeToClasspathResource ("after.wav").convertIntoSound ().findLoudestFrequencies ().filterRange (0, 1000).octaveDown ().octaveUp ().compress (0.5f).replacePart(Arrays.asList (new float [] {166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132} , new float [] {166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132}), 0).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100)).loop (8000)
+                .splitIntoSpectrums ().extractSound ().extractSubSound (0, 4000).mixWith (FluentClient.start ().withClasspathResource ("piano6a.wav").convertIntoSound ().stopWithSound ()).mixWith (FluentClient.start ().withClasspathResource ("piano6a.wav").convertIntoSound ().stopWithSound ()).exportToClasspathResource ("after.wav").convertIntoSound ()
                 .exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav").build (), 10000, "piano1c.wav", "piano8c.wav");
+        
+    }
+
+    @Test
+    public void playInParallel () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+        FluentClient.start ().inParallel (
+                FluentClientOperation.prepare ().playIt (), 5000, "piano1c.wav", "piano8c.wav");
     }
 
     @Test
