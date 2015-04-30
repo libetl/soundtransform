@@ -123,51 +123,20 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
     }
 
     private CepstrumFrequencySoundTransform<T> decoratedTransform;
-
+    
     /**
-     * Constructor with default values. The cepstrums will not be kept when
-     * using the getCepstrums method
-     */
-    public CepstrumSoundTransform () {
-        this (100, false);
-    }
-
-    /**
-     * Constructor with default values. The cepstrums will not be kept when
-     * using the getCepstrums method
+     * Default Constructor
      *
-     * @param note1
+     * @param step
+     *            the iteration step value (increasing the value will speed the
+     *            transform but will be less precise)
+     * @param note
      *            if true, the loudest freqs array will contain a single element
      *            and the cepstrum will be made once, using the whole sound
      */
-    public CepstrumSoundTransform (final boolean note1) {
-        this (100, note1);
-    }
-
-    /**
-     * The cepstrums will not be kept when using the getCepstrums method
-     *
-     * @param step1
-     *            the iteration step value (increasing the value will speed the
-     *            transform but will be less precise)
-     */
-    public CepstrumSoundTransform (final double step1) {
-        this (step1, false);
-    }
-
-    /**
-     * Constructor with every parameter specified
-     *
-     * @param step1
-     *            the iteration step value (increasing the value will speed the
-     *            transform but will be less precise)
-     * @param note1
-     *            if true, the loudest freqs array will contain a single element
-     *            and the cepstrum will be made once, using the whole sound
-     */
-    public CepstrumSoundTransform (final double step1, final boolean note1) {
+    public CepstrumSoundTransform (final double step, final boolean note) {
         super ();
-        this.decoratedTransform = new CepstrumFrequencySoundTransform<T> (step1, note1);
+        this.decoratedTransform = new CepstrumFrequencySoundTransform<T> (step, note);
     }
 
     @Override
