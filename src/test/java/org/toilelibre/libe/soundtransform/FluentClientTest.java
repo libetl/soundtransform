@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -56,21 +55,11 @@ public class FluentClientTest extends SoundTransformTest {
         Assert.assertArrayEquals (new float [] { 1.0f, 3.0f, 5.0f, 7.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f }, array2, 0);
     }
 
-    @SuppressWarnings ("unchecked")
-    @Test
-    public void canAskToDoALotOfThingsToTheFluentClientOperationAndNothingShouldBeDone () throws SoundTransformException {
-        FluentClientOperation.prepare ().withAnObserver ().andAfterStart ().withAPack (null, new ByteArrayInputStream (new byte [0])).withAPack (null, "").withAPack (null, null, null, 0).withAudioInputStream (null).importToSound ().append (null).apply (null).changeFormat (null).cutSubSound (0, 0)
-        .playIt ().changeFormat (null).exportToClasspathResource (null).playIt ().importToStream ().playIt ().importToSound ().exportToClasspathResourceWithSiblingResource (null, null).convertIntoSound ().exportToFile (null).convertIntoSound ().exportToStream ().importToSound ()
-        .findLoudestFrequencies ().compress (0).filterRange (0, 0).insertPart (null, 0).octaveDown ().octaveUp ().replacePart (null, 0).shapeIntoSound (null, null, null).loop (0).mixWith (null).splitIntoSpectrums ().playIt ().extractSound ().andAfterStart ()
-        .inParallel (null, 0, new File ("")).mixAllInOneSound ().andAfterStart ().inParallel (null, 0, new LinkedList<float []> ()).andAfterStart ().inParallel (null, 0, new ByteArrayInputStream (new byte [0])).andAfterStart ().inParallel (null, 0, new Sound (null)).andAfterStart ()
-        .inParallel (null, 0, "").andAfterStart ().inParallel (null, 0, FluentClient.start ()).build ();
-    }
-
     @Test
     public void processInParallel () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
         FluentClient.start ().inParallel (
-                FluentClientOperation.prepare ().withAnObserver ().importToStream ().importToSound ().append (FluentClient.start ().withClasspathResource ("piano5g.wav").convertIntoSound ().stopWithSound ()).apply (new EightBitsSoundTransform (25)).changeFormat (new FormatInfo (2, 44100)).cutSubSound (0, 1000)
+                FluentClientOperation.prepare ().importToStream ().importToSound ().append (FluentClient.start ().withClasspathResource ("piano5g.wav").convertIntoSound ().stopWithSound ()).apply (new EightBitsSoundTransform (25)).changeFormat (new FormatInfo (2, 44100)).cutSubSound (0, 1000)
                 .exportToStream ().writeToClasspathResource ("after.wav").convertIntoSound ().findLoudestFrequencies ().filterRange (0, 1000).adjust ().octaveDown ().octaveUp ().compress (0.5f).replacePart (Arrays.asList (new float [] {166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132} , new float [] {166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132}), 0).insertPart (Arrays.asList (new float [] {332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132} , new float [] {332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 332, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132}), 0).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100)).loop (8000)
                 .splitIntoSpectrums ().extractSound ().extractSubSound (0, 4000).mixWith (FluentClient.start ().withClasspathResource ("piano6a.wav").convertIntoSound ().stopWithSound ()).mixWith (FluentClient.start ().withClasspathResource ("piano6a.wav").convertIntoSound ().stopWithSound ()).exportToClasspathResource ("after.wav").convertIntoSound ()
                 .exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav").importToStream ().writeToClasspathResourceWithSiblingResource ("after.wav", "before.wav").importToStream ().writeToFile (new File (Thread.currentThread ().getContextClassLoader ().getResource ("after.wav").getFile ())).convertIntoSound().exportToFile (new File (Thread.currentThread ().getContextClassLoader ().getResource ("after.wav").getFile ())).build (), 10000, "piano1c.wav", "piano8c.wav");

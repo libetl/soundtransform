@@ -1,8 +1,10 @@
 package org.toilelibre.libe.soundtransform;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -136,64 +138,154 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
     @Test
     public void cannotAskToTheFluentClientOperationToReturnSomething () throws SoundTransformException {
         try {
+            FluentClientOperation.prepare ().andAfterStart ();
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withAMixedSound ();
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withAnObserver ();
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withAPack (null, new ByteArrayInputStream (new byte [0]));
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withAPack (null, "");
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withAPack (null, null, null, 0);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withAudioInputStream (null);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withClasspathResource (null);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withFile (null);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withFreqs (null);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withLimitedTimeRecordedInputStream (null);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withRawInputStream (null, null);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withRecordedInputStream (null, null);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withSound (null);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
+            FluentClientOperation.prepare ().withSpectrums (null);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+        try {
             FluentClientOperation.prepare ().applyAndStop (new NoOpSoundTransform ());
             Assert.fail ("should have failed");
         } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
         }
         try {
             FluentClientOperation.prepare ().stopWithAPack ("default");
             Assert.fail ("should have failed");
         } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
         }
         try {
-            FluentClientOperation.prepare ().withFile (null).stopWithFile ();
+            FluentClientOperation.prepare ().stopWithFile ();
             Assert.fail ("should have failed");
         } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
         }
         try {
-            FluentClientOperation.prepare ().withFreqs (null).stopWithFreqs ();
+            FluentClientOperation.prepare ().stopWithFreqs ();
             Assert.fail ("should have failed");
         } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
         }
         try {
-            FluentClientOperation.prepare ().withAudioInputStream (null).stopWithInputStream ();
+            FluentClientOperation.prepare ().stopWithInputStream ();
             Assert.fail ("should have failed");
         } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
         }
         try {
             FluentClientOperation.prepare ().stopWithObservers ();
             Assert.fail ("should have failed");
         } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
         }
         try {
             FluentClientOperation.prepare ().inParallel (null, 0, "").stopWithResults (Object.class);
             Assert.fail ("should have failed");
         } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
         }
         try {
-            FluentClientOperation.prepare ().withSound (null).stopWithSound ();
+            FluentClientOperation.prepare ().stopWithSound ();
             Assert.fail ("should have failed");
         } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
         }
         try {
-            FluentClientOperation.prepare ().withSpectrums (null).stopWithSpectrums ();
+            FluentClientOperation.prepare ().stopWithSpectrums ();
             Assert.fail ("should have failed");
         } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
         }
         try {
-            FluentClientOperation.prepare ().withAudioInputStream (null).stopWithStreamInfo ();
+            FluentClientOperation.prepare ().stopWithStreamInfo ();
             Assert.fail ("should have failed");
         } catch (final SoundTransformRuntimeException ste) {
-            Assert.assertEquals (FluentClientOperationErrorCode.NOT_POSSIBLE_IN_AN_OPERATION, ste.getErrorCode ());
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
         }
 
     }
@@ -214,5 +306,20 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
                 FluentClientOperation.prepare ().importToStream().build (),
                 5,
                 new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano1c.wav").getFile ()), new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano8c.wav").getFile ())).mixAllInOneSound ();
+    }
+
+    @SuppressWarnings ("unchecked")
+    @Test
+    public void canAskToDoALotOfThingsToTheFluentClientOperationAndNothingShouldBeDone () throws SoundTransformException {
+        FluentClientOperation.prepare ().importToSound ().append (null).apply (null).changeFormat (null).cutSubSound (0, 0)
+        .playIt ().changeFormat (null).exportToClasspathResource (null).playIt ().importToStream ().playIt ().importToSound ().exportToClasspathResourceWithSiblingResource (null, null).convertIntoSound ().exportToFile (null).convertIntoSound ().exportToStream ().importToSound ()
+        .findLoudestFrequencies ().compress (0).filterRange (0, 0).insertPart (null, 0).octaveDown ().octaveUp ().replacePart (null, 0).shapeIntoSound (null, null, null).loop (0).mixWith (null).splitIntoSpectrums ().playIt ().extractSound ();
+        
+        FluentClientOperation.prepare ().inParallel (null, 0, new File ("")).mixAllInOneSound ();
+        FluentClientOperation.prepare ().inParallel (null, 0, new LinkedList<float []> ());
+        FluentClientOperation.prepare ().inParallel (null, 0, new ByteArrayInputStream (new byte [0]));
+        FluentClientOperation.prepare ().inParallel (null, 0, new Sound (null));
+        FluentClientOperation.prepare ().inParallel (null, 0, "");
+        FluentClientOperation.prepare ().inParallel (null, 0, FluentClient.start ()).build ();
     }
 }
