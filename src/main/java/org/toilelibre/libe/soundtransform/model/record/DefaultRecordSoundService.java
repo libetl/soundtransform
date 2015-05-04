@@ -59,7 +59,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
                 }
             }
         }.start ();
-        return this.processor.recordRawInputStream (this.audioFormatParser.audioFormatfromStreamInfo (streamInfo), stop);
+        return this.recordRawInputStream (streamInfo, stop);
     }
 
 }
