@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,10 +17,12 @@ import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation.FluentClientOperationErrorCode;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransform.ShapeSoundTransformErrorCode;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
@@ -321,5 +324,26 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
         FluentClientOperation.prepare ().inParallel (null, 0, new Sound (null));
         FluentClientOperation.prepare ().inParallel (null, 0, "");
         FluentClientOperation.prepare ().inParallel (null, 0, FluentClient.start ()).build ();
+    }
+    
+    @Test (expected = SoundTransformException.class)
+    public void shapeWithoutPack () throws SoundTransformException {
+        try {
+            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("apack", "anInstrument", new FormatInfo (2, 44100));
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (ShapeSoundTransformErrorCode.NO_PACK_IN_PARAMETER, ste.getErrorCode ());
+            throw ste;
+        }
+    }
+    
+    @Test (expected = SoundTransformException.class)
+    public void shapeWithNullFreqs () throws SoundTransformException {
+        try {
+            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (Collections.<float []>singletonList (null)).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100));
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (ShapeSoundTransformErrorCode.NO_LOUDEST_FREQS_IN_ATTRIBUTE, ste.getErrorCode ());
+            throw ste;
+        }
     }
 }
