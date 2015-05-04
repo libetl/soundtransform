@@ -346,4 +346,15 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
             throw ste;
         }
     }
+    
+    @Test (expected = SoundTransformException.class)
+    public void shapeNotAnInstrument () throws SoundTransformException {
+        try {
+            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFreqs (Collections.<float []>singletonList (new float [] { 120, 120, 120, 120, 120})).shapeIntoSound ("default", "notaninstrument", new FormatInfo (2, 44100));
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (ShapeSoundTransformErrorCode.NOT_AN_INSTRUMENT, ste.getErrorCode ());
+            throw ste;
+        }
+    }
 }
