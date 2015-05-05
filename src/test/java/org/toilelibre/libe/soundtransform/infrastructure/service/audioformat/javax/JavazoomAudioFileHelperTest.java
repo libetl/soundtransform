@@ -32,6 +32,26 @@ public class JavazoomAudioFileHelperTest {
     }
     
     @Test (expected = SoundTransformException.class)
+    public void getAudioInputSreamFromWavInputStreamNotAMP3FileWithMP3Ext () throws SoundTransformException {
+        try {
+            new JavazoomAudioFileHelper ().getAudioInputStream (Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("notamp3file.mp3"));
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (AudioFileHelperErrorCode.WRONG_TYPE, ste.getErrorCode ());
+            throw ste;
+        }
+    }
+    
+    @Test (expected = SoundTransformException.class)
+    public void getAudioInputSreamFromWavInputStreamAlmostEmptyFileWithMP3Ext () throws SoundTransformException {
+        try {
+            new JavazoomAudioFileHelper ().getAudioInputStream (Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("almostemptyfile.mp3"));
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (AudioFileHelperErrorCode.COULD_NOT_CONVERT, ste.getErrorCode ());
+            throw ste;
+        }
+    }
+    
+    @Test (expected = SoundTransformException.class)
     public void getAudioInputSreamFromWavInputStreamUnsupportedAudioFileException () throws SoundTransformException {
         try {
             new JavazoomAudioFileHelper ().getAudioInputStream (Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json"));
@@ -77,6 +97,16 @@ public class JavazoomAudioFileHelperTest {
             throw new RuntimeException (e);
         } catch (SoundTransformException ste) {
             Assert.assertEquals (AudioFileHelperErrorCode.COULD_NOT_CONVERT, ste.getErrorCode ());
+            throw ste;
+        }
+    }
+    
+    @Test (expected = SoundTransformException.class)
+    public void toStreamButNoAudioFormat () throws SoundTransformException {
+        try {
+            new JavazoomAudioFileHelper ().toStream (new byte [0], "notAnAudioFormatObject");
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ, ste.getErrorCode ());
             throw ste;
         }
     }
