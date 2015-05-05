@@ -123,7 +123,18 @@ public class JavazoomAudioFileHelperTest {
             throw ste;
         }
     }
-
+    @Test (expected = SoundTransformException.class)
+    public void writeInputStreamBadAudioInputStream () throws SoundTransformException {
+        InputStream ais = new JavazoomAudioFileHelper ().getAudioInputStream (new File (Thread.currentThread ().getContextClassLoader ().getResource ("mp3test.mp3").getFile ()));
+        try {
+            new JavazoomAudioFileHelper ().writeInputStream (ais, 
+                new File ("sftp://notafile"));
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (AudioFileHelperErrorCode.COULD_NOT_CONVERT, ste.getErrorCode ());
+            throw ste;
+        }
+    }
+    
     @Test (expected = SoundTransformException.class)
     public void writeInputStreamNotAudioInputStream () throws SoundTransformException {
         InputStream is = null;
