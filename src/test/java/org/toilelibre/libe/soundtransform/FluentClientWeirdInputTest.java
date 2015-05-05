@@ -2,6 +2,8 @@ package org.toilelibre.libe.soundtransform;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +28,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeS
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
+import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService.ImportPackServiceErrorCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 import android.content.Context;
 
@@ -356,5 +360,35 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
             Assert.assertEquals (ShapeSoundTransformErrorCode.NOT_AN_INSTRUMENT, ste.getErrorCode ());
             throw ste;
         }
+    }
+    
+    @Test (expected = SoundTransformException.class)
+    public void importEmptyPack () throws SoundTransformException {
+        try {
+            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("nullInputStreamPack", (InputStream)null);        
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (ImportPackServiceErrorCode.EMPTY_INPUT_STREAM, ste.getErrorCode ());
+            throw ste;
+        }
+    }
+    
+    @Test (expected = SoundTransformException.class)
+    public void importInvalidPack () throws SoundTransformException {
+        InputStream is = Mockito.mock (InputStream.class);
+        try {
+            Mockito.when (is.read (Mockito.any (byte [].class))).thenThrow (new IOException ("Could not read from InputStream"));
+            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("nullInputStreamPack", is);        
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (ImportPackServiceErrorCode.INVALID_INPUT_STREAM, ste.getErrorCode ());
+            throw ste;
+        } catch (IOException e) {
+            throw new RuntimeException (e);
+        }
+    }
+
+    @Test
+    public void importANonExistingTechnicalInstrument () throws SoundTransformException {
+        Observer observer = Mockito.mock (Observer.class);
+        FluentClient.start ().withAnObserver (observer).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("wrongtechnicalinstrument.json"));
     }
 }
