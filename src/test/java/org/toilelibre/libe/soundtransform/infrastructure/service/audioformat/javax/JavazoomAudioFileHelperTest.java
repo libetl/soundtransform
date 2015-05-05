@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
 
@@ -16,8 +17,10 @@ import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper.AudioFileHelperErrorCode;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 @PrepareForTest ({ JavazoomAudioFileHelper.class, File.class, MpegAudioFileReader.class })
 public class JavazoomAudioFileHelperTest {
@@ -27,6 +30,7 @@ public class JavazoomAudioFileHelperTest {
 
     @Test (expected = SoundTransformException.class)
     public void getAudioInputSreamFromWavFileIOException () throws SoundTransformException {
+        rule.hashCode ();
         try {
             new JavazoomAudioFileHelper ().getAudioInputStream (new File ("notAFile"));
         } catch (SoundTransformException ste) {
@@ -62,13 +66,23 @@ public class JavazoomAudioFileHelperTest {
     
     @Test (expected = SoundTransformException.class)
     public void getAudioInputSreamFromWavInputStreamFromMP3IOException () throws SoundTransformException {
+        InputStream is = null;
         try {
-            new JavazoomAudioFileHelper ().getAudioInputStream (new FileInputStream (File.createTempFile ("soundtransform", "wav")));
+            is = new FileInputStream (File.createTempFile ("soundtransform", "wav"));
+            new JavazoomAudioFileHelper ().getAudioInputStream (is);
         } catch (SoundTransformException ste) {
             Assert.assertEquals (AudioFileHelperErrorCode.COULD_NOT_CONVERT, ste.getErrorCode ());
             throw ste;
         } catch (Exception e) {
             throw new RuntimeException (e);
+        } finally {
+            if (is != null) {
+                  try {
+                    is.close ();
+                } catch (IOException e) {
+                    new Slf4jObserver (LogLevel.ERROR).notify ("warn : exception when closing a stream, in a test " + e);
+                }
+            }
         }
     }
     
@@ -112,14 +126,24 @@ public class JavazoomAudioFileHelperTest {
 
     @Test (expected = SoundTransformException.class)
     public void writeInputStreamNotAudioInputStream () throws SoundTransformException {
+        InputStream is = null;
         try {
-            new JavazoomAudioFileHelper ().writeInputStream (new ByteArrayInputStream ("".getBytes ()), File.createTempFile ("soundtransform", "wav"));
+            is = new ByteArrayInputStream ("".getBytes ("UTF-8"));
+            new JavazoomAudioFileHelper ().writeInputStream (is, File.createTempFile ("soundtransform", "wav"));
         } catch (IOException e) {
             throw new RuntimeException (e);
         } catch (SoundTransformException ste) {
             Assert.assertEquals (AudioFileHelperErrorCode.COULD_NOT_CONVERT, ste.getErrorCode ());
             throw ste;
-        }
+        } finally {
+            if (is != null) {
+                try {
+                  is.close ();
+              } catch (IOException e) {
+                  new Slf4jObserver (LogLevel.ERROR).notify ("warn : exception when closing a stream, in a test " + e);
+              }
+          }
+      }
     }
     
     @Test (expected = SoundTransformException.class)
