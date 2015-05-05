@@ -71,8 +71,12 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         }.start ();
 
         Thread.sleep (2000);
+        boolean notified = false;
         synchronized (stopObject) {
-            stopObject.notify ();
+            while (!notified) {
+                stopObject.notify ();
+                notified = true;
+            }
         }
         Thread.sleep (1000);
        
