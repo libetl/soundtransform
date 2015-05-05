@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.ja
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
@@ -45,12 +46,24 @@ public class JavazoomAudioFileHelperTest {
     }
     
     @Test (expected = SoundTransformException.class)
-    public void getAudioInputSreamFromWavInputStreamFromMP3IOException () throws SoundTransformException {
+    public void getAudioInputSreamFromWavFileFromMP3IOException () throws SoundTransformException {
         try {
             MpegAudioFileReader mock = Mockito.mock (MpegAudioFileReader.class);
             Mockito.when (mock.getAudioInputStream (Mockito.any (File.class))).thenThrow (new IOException ());
             PowerMockito.whenNew (MpegAudioFileReader.class).withNoArguments().thenReturn (mock);
             new JavazoomAudioFileHelper ().getAudioInputStream (new File (Thread.currentThread ().getContextClassLoader ().getResource ("mp3test.mp3").getFile ()));
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (AudioFileHelperErrorCode.COULD_NOT_CONVERT, ste.getErrorCode ());
+            throw ste;
+        } catch (Exception e) {
+            throw new RuntimeException (e);
+        }
+    }
+    
+    @Test (expected = SoundTransformException.class)
+    public void getAudioInputSreamFromWavInputStreamFromMP3IOException () throws SoundTransformException {
+        try {
+            new JavazoomAudioFileHelper ().getAudioInputStream (new FileInputStream (File.createTempFile ("soundtransform", "wav")));
         } catch (SoundTransformException ste) {
             Assert.assertEquals (AudioFileHelperErrorCode.COULD_NOT_CONVERT, ste.getErrorCode ());
             throw ste;
