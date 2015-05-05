@@ -1,7 +1,10 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.javax;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
@@ -23,30 +26,36 @@ final class JavazoomAudioFileHelper implements AudioFileHelper {
     private static final int STEREO           = 2;
 
     private void convertIntoWavFile (final File inputFile, final File tempFile) throws SoundTransformException {
+        final AudioFileReader afr = this.getMpegAudioFileReader ();
+        final AudioInputStream ais = this.getAudioInputStreamFromAudioFileReader (afr, inputFile);
+        final AudioFormat cdFormat = new AudioFormat (JavazoomAudioFileHelper.HIGH_SAMPLE_RATE, JavazoomAudioFileHelper.TWO_BYTES_SAMPLE, JavazoomAudioFileHelper.STEREO, true, false);
+        final AudioInputStream decodedAis = this.getDecodedAudioInputStream (cdFormat, ais);
+        this.writeInputStream (decodedAis, tempFile);
+    }
+
+    private File createSoundTransformTempFile () throws SoundTransformException {
         try {
-            final AudioFileReader afr = this.getMpegAudioFileReader ();
-            final AudioInputStream ais = afr.getAudioInputStream (inputFile);
-            final AudioFormat cdFormat = new AudioFormat (JavazoomAudioFileHelper.HIGH_SAMPLE_RATE, JavazoomAudioFileHelper.TWO_BYTES_SAMPLE, JavazoomAudioFileHelper.STEREO, true, false);
-            final AudioInputStream decodedAis = this.getDecodedAudioInputStream (cdFormat, ais);
-            AudioSystem.write (decodedAis, AudioFileFormat.Type.WAVE, tempFile);
-        } catch (final IOException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
-        } catch (final UnsupportedAudioFileException e) {
+            return File.createTempFile ("soundtransform", ".wav");
+        } catch (IOException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CREATE_A_TEMP_FILE, e);
+        }
+    }
+
+    private AudioInputStream getAudioInputStreamFromAudioFileReader (final AudioFileReader afr, final File inputFile) throws SoundTransformException {
+        try {
+            return afr.getAudioInputStream (inputFile);
+        } catch (UnsupportedAudioFileException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.WRONG_TYPE, e, inputFile.getName ());
+        } catch (IOException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
         }
     }
 
-    private AudioInputStream getDecodedAudioInputStream (final AudioFormat cdFormat, final AudioInputStream ais) throws SoundTransformException {
-        return new javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream (cdFormat, ais);
-    }
-
     private InputStream getAudioInputSreamFromWavFile (final File readFile) throws SoundTransformException {
         try {
-            return AudioSystem.getAudioInputStream (readFile);
-        } catch (final UnsupportedAudioFileException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, readFile.getName ());
-        } catch (final IOException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, readFile.getName ());
+            return this.getAudioInputStream (new BufferedInputStream (new FileInputStream (readFile)));
+        } catch (FileNotFoundException e) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, readFile.getPath ());
         }
     }
 
@@ -55,17 +64,9 @@ final class JavazoomAudioFileHelper implements AudioFileHelper {
         File readFile = inputFile;
         if (inputFile.getName ().toLowerCase (Locale.getDefault ()).endsWith (".mp3")) {
             File tempFile;
-            try {
-                tempFile = File.createTempFile ("soundtransform", ".wav");
-                this.convertIntoWavFile (inputFile, tempFile);
-                readFile = tempFile;
-                return AudioSystem.getAudioInputStream (readFile);
-            } catch (final IOException e) {
-                throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CREATE_A_TEMP_FILE, e);
-            } catch (final UnsupportedAudioFileException e) {
-                throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
-            }
-
+            tempFile = this.createSoundTransformTempFile ();
+            this.convertIntoWavFile (inputFile, tempFile);
+            readFile = tempFile;
         }
         return this.getAudioInputSreamFromWavFile (readFile);
     }
@@ -75,10 +76,14 @@ final class JavazoomAudioFileHelper implements AudioFileHelper {
         try {
             return AudioSystem.getAudioInputStream (rawInputStream);
         } catch (final UnsupportedAudioFileException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e);
+            throw new SoundTransformException (AudioFileHelperErrorCode.WRONG_TYPE, e, rawInputStream.toString ());
         } catch (final IOException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e);
         }
+    }
+    
+    private AudioInputStream getDecodedAudioInputStream (final AudioFormat cdFormat, final AudioInputStream ais) throws SoundTransformException {
+        return new javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream (cdFormat, ais);
     }
 
     private AudioFileReader getMpegAudioFileReader () throws SoundTransformException {
