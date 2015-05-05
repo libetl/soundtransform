@@ -31,10 +31,6 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
 
         private final SpectrumHelper<T> spectrumHelper;
 
-        public PeakFindWithHPSFrequencySoundTransform () {
-            this (false, 100, -1);
-        }
-
         /**
          * Default constructor
          *
@@ -153,10 +149,6 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
     }
 
     private final PeakFindWithHPSFrequencySoundTransform<T> decoratedTransform;
-
-    public PeakFindWithHPSSoundTransform () {
-        this.decoratedTransform = new PeakFindWithHPSFrequencySoundTransform<T> ();
-    }
 
     /**
      * Default constructor
