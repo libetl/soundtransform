@@ -50,7 +50,7 @@ public class JavazoomAudioFileHelperTest {
             MpegAudioFileReader mock = Mockito.mock (MpegAudioFileReader.class);
             Mockito.when (mock.getAudioInputStream (Mockito.any (File.class))).thenThrow (new IOException ());
             PowerMockito.whenNew (MpegAudioFileReader.class).withNoArguments().thenReturn (mock);
-            new JavazoomAudioFileHelper ().getAudioInputStream (new File (Thread.currentThread ().getContextClassLoader ().getResource ("almostemptyfile.mp3").getFile ()));
+            new JavazoomAudioFileHelper ().getAudioInputStream (new File (Thread.currentThread ().getContextClassLoader ().getResource ("mp3test.mp3").getFile ()));
         } catch (SoundTransformException ste) {
             Assert.assertEquals (AudioFileHelperErrorCode.COULD_NOT_CONVERT, ste.getErrorCode ());
             throw ste;
