@@ -18,8 +18,11 @@ import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation.F
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.CallTransformService.CallTransformServiceErrorCode;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransform.ShapeSoundTransformErrorCode;
@@ -125,6 +128,16 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
             Assert.fail ("Should have failed with an unknown classpath resource folder");
         } catch (final SoundTransformException ste) {
             Assert.assertEquals (ste.getErrorCode (), FluentClientErrorCode.CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE);
+        }
+    }
+    
+    @Test (expected = SoundTransformException.class)
+    public void nothingInInput () throws SoundTransformException {
+        try {
+            FluentClient.start ().withSound (new Sound (new Channel [0])).apply (new EightBitsSoundTransform (25));
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (CallTransformServiceErrorCode.NOTHING_IN_INPUT, ste.getErrorCode ());
+            throw ste;
         }
     }
 

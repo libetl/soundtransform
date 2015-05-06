@@ -11,7 +11,7 @@ public interface CallTransformService<T> extends LogAware<T> {
 
     public enum CallTransformServiceErrorCode implements ErrorCode {
 
-        NOTHING_IN_INPUT ("Transform %3s, channel %4d/%5d");
+        NOTHING_IN_INPUT ("Nothing in input of the service");
 
         private final String messageFormat;
 
