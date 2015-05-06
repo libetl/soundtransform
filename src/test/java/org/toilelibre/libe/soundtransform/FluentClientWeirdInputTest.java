@@ -388,7 +388,6 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
 
     @Test
     public void importANonExistingTechnicalInstrument () throws SoundTransformException {
-        Observer observer = Mockito.mock (Observer.class);
-        FluentClient.start ().withAnObserver (observer).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("wrongtechnicalinstrument.json"));
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("wrongtechnicalinstrument.json"));
     }
 }
