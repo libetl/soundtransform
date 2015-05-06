@@ -28,7 +28,7 @@ import org.toilelibre.libe.soundtransform.model.library.pack.Range;
 import org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-public class Sound2NoteTest extends SoundTransformTest {
+public class SoundToNoteTest extends SoundTransformTest {
 
     @Test
     public void fileNotFound () throws SoundTransformException {
@@ -83,7 +83,7 @@ public class Sound2NoteTest extends SoundTransformTest {
 
     @Test
     public void shouldBeTwiceTheF0ValuePiano4F () throws SoundTransformException {
-        final ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
+        final ClassLoader classLoader = SoundToNoteTest.class.getClassLoader ();
         final URL fileURL = classLoader.getResource ("piano3e.wav");
         final File input = new File (fileURL.getFile ());
 
@@ -101,7 +101,7 @@ public class Sound2NoteTest extends SoundTransformTest {
 
     @Test
     public void shouldNotBeTwiceTheF0ValuePiano1C () throws SoundTransformException {
-        final ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
+        final ClassLoader classLoader = SoundToNoteTest.class.getClassLoader ();
         final URL fileURL = classLoader.getResource ("piano1c.wav");
         final File input = new File (fileURL.getFile ());
 
@@ -114,7 +114,7 @@ public class Sound2NoteTest extends SoundTransformTest {
 
     @Test
     public void shouldNotBeTwiceTheF0ValuePiano4F () throws SoundTransformException {
-        final ClassLoader classLoader = Sound2NoteTest.class.getClassLoader ();
+        final ClassLoader classLoader = SoundToNoteTest.class.getClassLoader ();
         final URL fileURL = classLoader.getResource ("piano4f.wav");
         final File input = new File (fileURL.getFile ());
 
