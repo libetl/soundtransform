@@ -60,13 +60,14 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         this.mockRecordSoundProcessor (buffers);
         final Object stopObject = new Object ();
         final InputStream [] is = new InputStream [1];
-        new Thread (){
-            public void run (){
+        new Thread () {
+            @Override
+            public void run () {
                 try {
                     is [0] = FluentClient.start ().withRecordedInputStream (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stopObject).stopWithInputStream ();
-                } catch (SoundTransformException e) {
+                } catch (final SoundTransformException e) {
                     throw new RuntimeException (e);
-                } 
+                }
             }
         }.start ();
 
@@ -79,11 +80,10 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
             }
         }
         Thread.sleep (1000);
-       
+
         Assert.assertThat (is [0].available (), new GreaterThan<Integer> (0));
     }
 
-    
     private void mockRecordSoundProcessor (final byte [][] buffers) throws Exception {
         final TargetDataLine dataLine = Mockito.mock (TargetDataLine.class);
         Mockito.when (dataLine.getBufferSize ()).thenReturn (8192);

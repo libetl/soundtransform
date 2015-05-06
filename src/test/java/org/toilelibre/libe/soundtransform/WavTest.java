@@ -77,18 +77,18 @@ public class WavTest extends SoundTransformTest {
             }
         }
     }
-    
+
     @Test
     public void peakFindTestWithNotDefaultWindowLength () throws SoundTransformException {
-        File file = new File (this.classLoader.getResource ("piano1c.wav").getFile ());
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (new PeakFindWithHPSSoundTransform<Serializable> (true, 100 , 1024));
+        final File file = new File (this.classLoader.getResource ("piano1c.wav").getFile ());
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (new PeakFindWithHPSSoundTransform<Serializable> (true, 100, 1024));
     }
-    
+
     @Test
     public void testShortSoundCepstrum () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().extractSubSound (0, 4000).applyAndStop (new CepstrumSoundTransform<Serializable> (100, true));
     }
-    
+
     @Test
     public void testLongSoundCepstrum () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ().extractSubSound (0, 4000).applyAndStop (new CepstrumSoundTransform<Serializable> (100, false));

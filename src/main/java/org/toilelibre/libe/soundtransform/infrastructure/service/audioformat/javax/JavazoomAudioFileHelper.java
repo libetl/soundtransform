@@ -36,7 +36,7 @@ final class JavazoomAudioFileHelper implements AudioFileHelper {
     private File createSoundTransformTempFile () throws SoundTransformException {
         try {
             return File.createTempFile ("soundtransform", ".wav");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CREATE_A_TEMP_FILE, e);
         }
     }
@@ -44,9 +44,9 @@ final class JavazoomAudioFileHelper implements AudioFileHelper {
     private AudioInputStream getAudioInputStreamFromAudioFileReader (final AudioFileReader afr, final File inputFile) throws SoundTransformException {
         try {
             return afr.getAudioInputStream (inputFile);
-        } catch (UnsupportedAudioFileException e) {
+        } catch (final UnsupportedAudioFileException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.WRONG_TYPE, e, inputFile.getName ());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
         }
     }
@@ -54,7 +54,7 @@ final class JavazoomAudioFileHelper implements AudioFileHelper {
     private InputStream getAudioInputSreamFromWavFile (final File readFile) throws SoundTransformException {
         try {
             return this.getAudioInputStream (new BufferedInputStream (new FileInputStream (readFile)));
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, readFile.getPath ());
         }
     }
@@ -81,7 +81,7 @@ final class JavazoomAudioFileHelper implements AudioFileHelper {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e);
         }
     }
-    
+
     private AudioInputStream getDecodedAudioInputStream (final AudioFormat cdFormat, final AudioInputStream ais) throws SoundTransformException {
         return new javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream (cdFormat, ais);
     }

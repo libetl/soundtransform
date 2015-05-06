@@ -49,6 +49,7 @@ public interface ImportPackService<T> extends LogAware<T> {
             return this.messageFormat;
         }
     }
+
     public abstract Pack getAPack (Library library, String title);
 
     public abstract void importPack (Library library, String title, InputStream inputStream) throws SoundTransformException;

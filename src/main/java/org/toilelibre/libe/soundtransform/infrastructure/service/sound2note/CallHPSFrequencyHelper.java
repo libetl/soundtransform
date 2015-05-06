@@ -16,7 +16,7 @@ final class CallHPSFrequencyHelper implements FrequencyHelper {
         final PeakFindSoundTransform<Serializable, ?> peak = new PeakFindWithHPSSoundTransform<Serializable> (true);
         float value = 0;
         float volume = 0;
-        for (final Channel channel : sound.getChannels()) {
+        for (final Channel channel : sound.getChannels ()) {
             final float [] freqs = peak.transform (channel);
             if (volume < peak.getDetectedNoteVolume ()) {
                 value = freqs [0];

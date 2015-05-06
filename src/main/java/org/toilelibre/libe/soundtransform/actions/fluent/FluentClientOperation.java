@@ -18,8 +18,8 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class FluentClientOperation implements BuildableFluentClientOperationSoundImported, BuildableFluentClientOperationReady, BuildableFluentClientOperationWithInputStream, BuildableFluentClientOperationWithFile, BuildableFluentClientOperationWithFreqs,
-BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
+public class FluentClientOperation implements BuildableFluentClientOperationSoundImported, BuildableFluentClientOperationWithInputStream, BuildableFluentClientOperationWithFile, BuildableFluentClientOperationWithFreqs, BuildableFluentClientOperationWithParallelizedClients,
+BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
 
     public abstract class Step {
         void run (final FluentClientInterface client) throws SoundTransformException {
@@ -34,8 +34,7 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
 
     public enum FluentClientOperationErrorCode implements ErrorCode {
 
-        NO_RETURN_IN_AN_OPERATION ("An operation cannot return something"),
-        NO_WITH_IN_AN_OPERATION ("An operation cannot use something else than the current data");
+        NO_RETURN_IN_AN_OPERATION ("An operation cannot return something"), NO_RESTART_IN_AN_OPERATION ("An operation cannot use something else than the current data");
 
         private final String messageFormat;
 
@@ -64,8 +63,13 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
     }
 
     @Override
-    public FluentClientOperation andAfterStart () {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
+    public BuildableFluentClientOperationReady andAfterStart () {
+        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_RESTART_IN_AN_OPERATION, new UnsupportedOperationException ());
+    }
+
+    @Override
+    public BuildableFluentClientOperationSoundImported mixAllInOneSound () throws SoundTransformException {
+        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_RESTART_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
 
     @Override
@@ -118,76 +122,6 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
         throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, new UnsupportedOperationException ());
     }
 
-    @Override
-    public FluentClientOperation withAnObserver (final Observer... observers) {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public BuildableFluentClientOperationSoundImported withAMixedSound (final Sound... sounds) throws SoundTransformException {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public FluentClientOperation withAPack (final String packName, final InputStream jsonStream) throws SoundTransformException {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public FluentClientOperation withAPack (final String packName, final Object context, final Class<?> rClass, final int packJsonId) throws SoundTransformException {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public FluentClientOperation withAPack (final String packName, final String jsonContent) throws SoundTransformException {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithInputStream withAudioInputStream (final InputStream is) {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithFile withClasspathResource (final String resource) throws SoundTransformException {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithFile withFile (final File file) {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithFreqs withFreqs (final List<float []> freqs) {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithInputStream withRawInputStream (final InputStream is, final StreamInfo isInfo) throws SoundTransformException {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithInputStream withRecordedInputStream (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public BuildableFluentClientOperationSoundImported withSound (final Sound sound) {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithSpectrums withSpectrums (final List<Spectrum<Serializable> []> spectrums) {
-        throw new SoundTransformRuntimeException (FluentClientOperationErrorCode.NO_WITH_IN_AN_OPERATION, new UnsupportedOperationException ());
-    }
-    
     @Override
     public BuildableFluentClientOperationSoundImported extractSound () throws SoundTransformException {
         this.steps.add (new Step () {
@@ -525,19 +459,6 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
     }
 
     @Override
-    public BuildableFluentClientOperationSoundImported mixAllInOneSound () throws SoundTransformException {
-        this.steps.add (new Step () {
-
-            @Override
-            public void run (final FluentClientInterface client) throws SoundTransformException {
-                client.mixAllInOneSound ();
-            }
-        });
-
-        return this;
-    }
-
-    @Override
     public BuildableFluentClientOperationSoundImported mixWith (final Sound sound) throws SoundTransformException {
         this.steps.add (new Step () {
 
@@ -560,78 +481,6 @@ BuildableFluentClientOperationWithParallelizedClients, BuildableFluentClientOper
             }
         });
 
-        return this;
-    }
-
-    @Override
-    public <T extends FluentClientCommon> BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
-        this.steps.add (new Step () {
-
-            @Override
-            public void run (final FluentClientInterface client) throws SoundTransformException {
-                client.inParallel (op, timeoutInSeconds, clients);
-            }
-        });
-        return this;
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final Sound... sounds) throws SoundTransformException {
-        this.steps.add (new Step () {
-
-            @Override
-            public void run (final FluentClientInterface client) throws SoundTransformException {
-                client.inParallel (op, timeoutInSeconds, sounds);
-            }
-        });
-        return this;
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final InputStream... inputStreams) throws SoundTransformException {
-        this.steps.add (new Step () {
-
-            @Override
-            public void run (final FluentClientInterface client) throws SoundTransformException {
-                client.inParallel (op, timeoutInSeconds, inputStreams);
-            }
-        });
-        return this;
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final File... files) throws SoundTransformException {
-        this.steps.add (new Step () {
-
-            @Override
-            public void run (final FluentClientInterface client) throws SoundTransformException {
-                client.inParallel (op, timeoutInSeconds, files);
-            }
-        });
-        return this;
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final List<float []>... freqs) throws SoundTransformException {
-        this.steps.add (new Step () {
-
-            @Override
-            public void run (final FluentClientInterface client) throws SoundTransformException {
-                client.inParallel (op, timeoutInSeconds, freqs);
-            }
-        });
-        return this;
-    }
-
-    @Override
-    public BuildableFluentClientOperationWithParallelizedClients inParallel (final FluentClientOperation op, final int timeoutInSeconds, final String... classpathResources) throws SoundTransformException {
-        this.steps.add (new Step () {
-
-            @Override
-            public void run (final FluentClientInterface client) throws SoundTransformException {
-                client.inParallel (op, timeoutInSeconds, classpathResources);
-            }
-        });
         return this;
     }
 

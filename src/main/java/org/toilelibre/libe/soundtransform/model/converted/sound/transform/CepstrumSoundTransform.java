@@ -113,8 +113,8 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
         }
     }
 
-    private CepstrumFrequencySoundTransform<T> decoratedTransform;
-    
+    private final CepstrumFrequencySoundTransform<T> decoratedTransform;
+
     /**
      * Default Constructor
      *
