@@ -75,7 +75,7 @@ public class JavaxPlaySoundProcessorTest extends SoundTransformTest {
 
         }.start ();
 
-        FluentClient.start ().withClasspathResource ("before.wav").importToStream ().playIt ();
+        FluentClient.start ().withClasspathResource ("gpiano3.wav").playIt ().convertIntoSound ().splitIntoSpectrums ().playIt ().extractSound ().playIt ().exportToStream ().playIt ();
         Mockito.verify (clip).stop ();
         Mockito.verify (clip).close ();
     }

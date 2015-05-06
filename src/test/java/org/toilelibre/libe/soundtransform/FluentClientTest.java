@@ -283,7 +283,7 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void playIt () throws SoundTransformException {
         try {
-            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").playIt ().convertIntoSound ().playIt ().exportToStream ().playIt ();
+            FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").playIt ().convertIntoSound ().splitIntoSpectrums ().playIt ().extractSound ().playIt ().exportToStream ().playIt ();
         } catch (final PlaySoundException pse) {
             new Slf4jObserver ().notify ("This build environment cannot play a sound (ignoring) " + pse);
         }
