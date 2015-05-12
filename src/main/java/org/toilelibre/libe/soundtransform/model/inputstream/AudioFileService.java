@@ -14,4 +14,6 @@ public interface AudioFileService<T> extends LogAware<T> {
 
     public abstract void fileFromStream (InputStream ais2, File fDest) throws SoundTransformException;
 
+    public abstract InputStream streamFromInputStream (InputStream is) throws SoundTransformException;
+
 }
