@@ -54,4 +54,11 @@ final class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileSer
     public void fileFromStream (final InputStream ais2, final File fDest) throws SoundTransformException {
         this.audioFileHelper.writeInputStream (ais2, fDest);
     }
+
+    @Override
+    public InputStream streamFromInputStream (final InputStream is) throws SoundTransformException {
+        final InputStream ais = this.audioFileHelper.getAudioInputStream (is);
+        final StreamInfo si = this.audioFormatParser.getStreamInfo (ais);
+        return this.streamFromRawStream (ais, si);
+    }
 }
