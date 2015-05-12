@@ -57,19 +57,14 @@ final class DefaultAddNoteService extends AbstractLogAware<DefaultAddNoteService
     @Override
     public void addNote (final Range range, final SimpleNoteInfo noteInfo) throws SoundTransformException {
         final URL completeURL = this.getURL (noteInfo.getName ());
-        try {
-            if (completeURL == null) {
-                this.log (new LogEvent (AddNoteEventCode.FILE_NOT_FOUND, noteInfo.getName ()));
-                return;
-            }
-            final String completeFileName = completeURL.getFile ();
-            final File file = new File (completeFileName);
-            final Note n = this.sound2NoteService.convert (noteInfo, this.inputStreamToSoundService.fromInputStream (this.convertAudioFileService.streamFromFile (file)));
-            range.put (n.getFrequency (), n);
-        } catch (final IllegalArgumentException e) {
-            throw new SoundTransformException (AddNoteErrorCode.COULD_NOT_BE_PARSED, e, noteInfo.getName ());
+        if (completeURL == null) {
+            this.log (new LogEvent (AddNoteEventCode.FILE_NOT_FOUND, noteInfo.getName ()));
+            return;
         }
-
+        final String completeFileName = completeURL.getFile ();
+        final File file = new File (completeFileName);
+        final Note n = this.sound2NoteService.convert (noteInfo, this.inputStreamToSoundService.fromInputStream (this.convertAudioFileService.streamFromFile (file)));
+        range.put (n.getFrequency (), n);
     }
 
     private URL getURL (final String fileName) {
