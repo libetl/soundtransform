@@ -72,16 +72,21 @@ final class DefaultAddNoteService extends AbstractLogAware<DefaultAddNoteService
         URL completeURL = classLoader.getResource (fileName);
         if (completeURL == null) {
             this.log (new LogEvent (AddNoteEventCode.NOT_A_CLASSPATH_RESOURCE, fileName));
-            try {
-                final File tmpFile = new File (fileName);
-                if (tmpFile.exists ()) {
-                    completeURL = tmpFile.toURI ().toURL ();
-                }
-            } catch (final MalformedURLException e) {
-                this.log (new LogEvent (AddNoteEventCode.NOT_A_FILESYSTEM_ENTRY, fileName, e));
-            }
+            completeURL = this.getURLOfAnAbsoluteFileName (fileName);
         }
         return completeURL;
+    }
+
+    private URL getURLOfAnAbsoluteFileName (String fileName) {
+        try {
+            final File tmpFile = new File (fileName);
+            if (tmpFile.exists () && tmpFile.toURI ().isAbsolute ()) {
+                return tmpFile.toURI ().toURL ();
+            }
+        } catch (final MalformedURLException e) {
+            this.log (new LogEvent (AddNoteEventCode.NOT_A_FILESYSTEM_ENTRY, fileName, e));
+        }
+        return null;
     }
 
     @Override
