@@ -308,6 +308,21 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
 
     @Test
     public void importANonExistingTechnicalInstrument () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("wrongtechnicalinstrument.json"));
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("wrongtechnicalinstrument", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("wrongtechnicalinstrument.json"));
+    }
+    
+    @Test (expected = SoundTransformException.class)
+    public void cutSoundBeforeZero () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().cutSubSound (-1000, 1000);
+    }
+
+    @Test (expected = SoundTransformException.class)
+    public void cutSoundStartAfterEnd () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().cutSubSound (2000, 1000);
+    }
+
+    @Test (expected = SoundTransformException.class)
+    public void cutSoundEndOutOfBounds () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().cutSubSound (3000, 300000);
     }
 }

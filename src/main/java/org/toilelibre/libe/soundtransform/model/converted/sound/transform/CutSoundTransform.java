@@ -48,11 +48,10 @@ public class CutSoundTransform implements SoundTransform<Channel, Channel> {
     public Channel transform (final Channel input) throws SoundTransformException {
         final int delta = this.end - this.start;
         final int newlength = input.getSamplesLength () - delta;
-        final Channel result = new Channel (new long [newlength], input.getFormatInfo (), input.getChannelNum ());
-
         if (this.start > this.end || this.start < 0 || this.end >= input.getSamplesLength ()) {
             throw new SoundTransformException (SoundCutSoundTransformErrorCode.INDEXS_OUT_OF_BOUND, new IllegalArgumentException (), 0, input.getSamplesLength (), this.start, this.end);
         }
+        final Channel result = new Channel (new long [newlength], input.getFormatInfo (), input.getChannelNum ());
 
         for (int i = 0 ; i < this.start ; i++) {
             result.setSampleAt (i, input.getSampleAt (i));
