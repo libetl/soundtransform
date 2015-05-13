@@ -18,6 +18,7 @@ import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
@@ -76,6 +77,7 @@ public class JavaxPlaySoundProcessorTest extends SoundTransformTest {
         }.start ();
 
         FluentClient.start ().withClasspathResource ("gpiano3.wav").playIt ().convertIntoSound ().splitIntoSpectrums ().playIt ().extractSound ().playIt ().exportToStream ().playIt ();
+        FluentClient.start ().inParallel (FluentClientOperation.prepare ().playIt ().build (), 10, FluentClient.start ().withClasspathResource ("gpiano3.wav"));
         Mockito.verify (clip).stop ();
         Mockito.verify (clip).close ();
     }
