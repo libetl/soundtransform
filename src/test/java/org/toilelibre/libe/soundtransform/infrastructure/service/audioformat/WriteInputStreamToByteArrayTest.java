@@ -14,11 +14,10 @@ public class WriteInputStreamToByteArrayTest {
     public void errorWhileReadingStream () throws SoundTransformException {
         try {
             final WriteInputStreamToByteArray writer = new WriteInputStreamToByteArray ();
-            InputStream failingInputStream = Mockito.mock (InputStream.class);
+            final InputStream failingInputStream = Mockito.mock (InputStream.class);
             try {
-                Mockito.when (failingInputStream.read (Mockito.any (byte [].class), Mockito.any (int.class), Mockito.any (int.class))).thenThrow (
-                        new IOException ("Forced failure"));
-            } catch (IOException e) {
+                Mockito.when (failingInputStream.read (Mockito.any (byte [].class), Mockito.any (int.class), Mockito.any (int.class))).thenThrow (new IOException ("Forced failure"));
+            } catch (final IOException e) {
                 throw new RuntimeException (e);
             }
             writer.convertToByteArray (failingInputStream);

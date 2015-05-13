@@ -18,10 +18,10 @@ import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation.F
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
+import org.toilelibre.libe.soundtransform.model.converted.sound.CallTransformService.CallTransformServiceErrorCode;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.ModifySoundService;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.CallTransformService.CallTransformServiceErrorCode;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransform;
@@ -130,12 +130,12 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
             Assert.assertEquals (ste.getErrorCode (), FluentClientErrorCode.CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE);
         }
     }
-    
+
     @Test (expected = SoundTransformException.class)
     public void nothingInInput () throws SoundTransformException {
         try {
             FluentClient.start ().withSound (new Sound (new Channel [0])).apply (new EightBitsSoundTransform (25));
-        } catch (SoundTransformException ste) {
+        } catch (final SoundTransformException ste) {
             Assert.assertEquals (CallTransformServiceErrorCode.NOTHING_IN_INPUT, ste.getErrorCode ());
             throw ste;
         }
@@ -204,12 +204,21 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
         } catch (final SoundTransformRuntimeException ste) {
             Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
         }
+
+        try {
+            FluentClientOperation.prepare ().stopWithResults (Sound.class);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException ste) {
+            Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
+        }
+
         try {
             FluentClientOperation.prepare ().stopWithSound ();
             Assert.fail ("should have failed");
         } catch (final SoundTransformRuntimeException ste) {
             Assert.assertEquals (FluentClientOperationErrorCode.NO_RETURN_IN_AN_OPERATION, ste.getErrorCode ());
         }
+
         try {
             FluentClientOperation.prepare ().stopWithSpectrums ();
             Assert.fail ("should have failed");
@@ -310,7 +319,7 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
     public void importANonExistingTechnicalInstrument () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("wrongtechnicalinstrument", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("wrongtechnicalinstrument.json"));
     }
-    
+
     @Test (expected = SoundTransformException.class)
     public void cutSoundBeforeZero () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().cutSubSound (-1000, 1000);

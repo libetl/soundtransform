@@ -14,6 +14,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformAndroidTest;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
@@ -70,6 +71,25 @@ public class AndroidPlaySoundProcessorTest extends SoundTransformAndroidTest {
         PowerMockito.whenNew (AudioTrack.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class, int.class)
         .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
         FluentClient.start ().withClasspathResource ("gpiano3.wav").playIt ().convertIntoSound ().splitIntoSpectrums ().playIt ().extractSound ().playIt ().exportToStream ().playIt ();
+        Mockito.verify (audioTrack, Mockito.atLeast (1)).write (Matchers.any (byte [].class), Matchers.anyInt (), Matchers.anyInt ());
+    }
+
+    @Test
+    public void playAMockedSoundInParallel () throws Exception {
+        this.rule.hashCode ();
+        final AudioTrack audioTrack = Mockito.mock (AudioTrack.class);
+        Mockito.when (audioTrack.getPlaybackHeadPosition ()).thenAnswer (new Answer<Integer> () {
+            int i = 0;
+
+            @Override
+            public Integer answer (final InvocationOnMock invocation) throws Throwable {
+                return Math.min (5, this.i++ / 2);
+            }
+
+        });
+        PowerMockito.whenNew (AudioTrack.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class, int.class)
+        .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
+        FluentClient.start ().inParallel (FluentClientOperation.prepare ().playIt ().build (), 10, FluentClient.start ().withClasspathResource ("gpiano3.wav"));
         Mockito.verify (audioTrack, Mockito.atLeast (1)).write (Matchers.any (byte [].class), Matchers.anyInt (), Matchers.anyInt ());
     }
 
