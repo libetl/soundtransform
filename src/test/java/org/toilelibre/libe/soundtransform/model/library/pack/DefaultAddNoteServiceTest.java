@@ -13,4 +13,20 @@ public class DefaultAddNoteServiceTest {
     public void addNoteWithInvalidInputStream () throws SoundTransformException, UnsupportedEncodingException {
         $.select (AddNoteService.class).addNote (new Range (), new SimpleNoteInfo (""), new ByteArrayInputStream ("dfsqfdsqfdsqdfdfqsqsdf".getBytes ("UTF-8")));
     }
+
+    @Test (expected = SoundTransformException.class)
+    public void addNoteWithValidAbsoluteFile () throws SoundTransformException, UnsupportedEncodingException {
+        $.select (AddNoteService.class).addNote (new Range (), new SimpleNoteInfo ("/dev/null"));
+    }
+    
+    @Test
+    public void addNoteWithInvalidRelativeFile () throws SoundTransformException, UnsupportedEncodingException {
+        $.select (AddNoteService.class).addNote (new Range (), new SimpleNoteInfo ("unknownfile.txt"));
+    }
+    
+    @Test (expected = SoundTransformException.class)
+    public void addNoteWithValidRelativeFile () throws SoundTransformException, UnsupportedEncodingException {
+        $.select (AddNoteService.class).addNote (new Range (), new SimpleNoteInfo ("pom.xml"));
+    }
+
 }
