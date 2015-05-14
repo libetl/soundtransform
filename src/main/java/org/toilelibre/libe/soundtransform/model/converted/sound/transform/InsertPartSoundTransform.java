@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 
 /**
- * Insert a sound into another
+ * Inserts a sound into another
  *
  */
 public class InsertPartSoundTransform implements SoundTransform<Channel, Channel> {

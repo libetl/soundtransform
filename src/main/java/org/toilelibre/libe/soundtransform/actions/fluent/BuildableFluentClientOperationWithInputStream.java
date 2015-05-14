@@ -9,8 +9,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 public interface BuildableFluentClientOperationWithInputStream extends FluentClientWithInputStream, BuildableFluentClientOperation {
 
     /**
-     * Uses the current input stream object to convert it into a sound (with one
-     * or more channels)
+     * Uses the current input stream object to convert it into a sound 
      *
      * @return the client, with a sound imported
      * @throws SoundTransformException

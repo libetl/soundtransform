@@ -172,10 +172,13 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
     }
 
     /**
-     * Constructor not using the whole sound as a musical note
+     * Full constructor with every parameter specified
      *
      * @param step1
      *            the iteration step value
+     * @param note1
+     *            if true, the whole sound will be transformed at once to know
+     *            the loudest freq. therefore the array will be of size 1.
      * @param windowLength1
      *            length of the spectrum used during each iteration (the highest
      *            the slowest)

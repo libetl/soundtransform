@@ -109,7 +109,7 @@ static void setDefaultObserversValue (Observer... defaultObservers)
 ```
 
 
-Set the passed observers as the default value when a FluentClient is started
+Sets the passed observers as the default value when a FluentClient is started
 
 It can be useful if you are going to use the FluentClient several times but you want to declare the subscribed observers only once
  
@@ -389,7 +389,7 @@ the client, ready to start
 Throws:  
 `SoundTransformException` - the json content is invalid, the json format is not correct, or some sound files are missing
 
-#####   FluentClientReady.withAudioInputStream (just after start)
+#####   FluentClientReady.withAudioInputStream
 
 ```java
 FluentClientWithInputStream withAudioInputStream (InputStream ais)
@@ -405,7 +405,7 @@ Parameters:
 Returns:  
 the client, with an input stream
 
-#####   FluentClientReady.withClasspathResource (just after start)
+#####   FluentClientReady.withClasspathResource
 
 ```java
 FluentClientWithFile withClasspathResource (String resource) throws SoundTransformException
@@ -423,7 +423,7 @@ the client, with a file
 Throws:  
 `SoundTransformException` - the classpath resource was not found
 
-#####   FluentClientReady.withFile (just after start)
+#####   FluentClientReady.withFile
 
 ```java
 FluentClientWithFile withFile (File file)
@@ -438,7 +438,7 @@ Parameters:
 Returns:  
 the client, with a file
 
-#####   FluentClientReady.withFreqs (just after start)
+#####   FluentClientReady.withFreqs
 
 ```java
 FluentClientWithFreqs withFreqs (float [] freqs)
@@ -453,14 +453,14 @@ Parameters:
 Returns:  
 the client, with a loudest frequencies float array
 
-#####   FluentClientReady.withLimitedTimeRecordedInputStream (just after start)
+#####   FluentClientReady.withLimitedTimeRecordedInputStream
 
 ```java
 FluentClientWithInputStream withLimitedTimeRecordedInputStream (StreamInfo streamInfo) throws SoundTransformException
 ```
 
 
-Tells the client to work first to open the microphone and to record a sound
+Tells the client to open the microphone and to record a sound
 The result will be of an InputStream type.
 The recording time will be the one passed in the streamInfo
 
@@ -473,7 +473,7 @@ the client, with an input stream
 Throws:  
 `SoundTransformException` - the mic could not be read, the recorder could not start, or the buffer did not record anything
 
-#####   FluentClientReady.withRawInputStream (just after start)
+#####   FluentClientReady.withRawInputStream
 
 ```java
 FluentClientWithInputStream withRawInputStream (InputStream is, StreamInfo isInfo) throws SoundTransformException
@@ -494,14 +494,14 @@ the client, with an input stream
 Throws:  
 `SoundTransformException` - the input stream cannot be read, or the conversion did not work
 
-#####   FluentClientReady.withRecordedInputStream (just after start)
+#####   FluentClientReady.withRecordedInputStream
 
 ```java
 FluentClientWithInputStream withRecordedInputStream (StreamInfo streamInfo, Object stop) throws SoundTransformException
 ```
 
 
-Tells the client to work first to open the microphone and to record a sound
+Tells the client to open the microphone and to record a sound
 The result will be of an InputStream type.
 The frameLength in the streamInfo will be ignored
 
@@ -518,7 +518,7 @@ the client, with an input stream
 Throws:  
 `SoundTransformException` - the mic could not be read, the recorder could not start, or the buffer did not record anything
 
-#####   FluentClientReady.withSound (just after start)
+#####   FluentClientReady.withSound
 
 ```java
 FluentClientSoundImported withSound (Sound sound)
@@ -533,7 +533,7 @@ Parameters:
 Returns:  
 the client, with an imported sound
 
-#####   FluentClientReady.withSpectrums (just after start)
+#####   FluentClientReady.withSpectrums
 
 ```java
 FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable> []> spectrums)
@@ -557,7 +557,8 @@ the client, with the spectrums
 FluentClientWithFreqs adjust ()
 ```
 
-Adjust the loudest freqs array to match exactly the piano notes frequencies
+
+Adjusts the loudest freqs array to match exactly the piano notes frequencies
 
 Returns:  
 the client, with a loudest frequencies float array
@@ -567,6 +568,7 @@ the client, with a loudest frequencies float array
 ```java
 FluentClientReady andAfterStart ()
 ```
+
 
 Start over the client : reset the state and the value objects nested in the client
 
@@ -579,7 +581,8 @@ the client, ready to start
 FluentClientSoundImported append (Sound sound) throws SoundTransformException
 ```
 
-Append the sound passed in parameter to the current sound stored in the client
+
+Appends the sound passed in parameter to the current sound stored in the client
 
 Parameters:  
 `sound` - the sound to append the current sound to
@@ -596,7 +599,8 @@ Throws:
 FluentClientSoundImported apply (SoundTransform<Channel, Channel> st) throws SoundTransformException
 ```
 
-Apply one transform and continue with the result sound.
+
+Applies one transform and continues with the result sound.
 The SoundTransform should have Channel as input and Channel as output. To apply another transform, use applyAndStop.
 
 Parameters:  
@@ -613,6 +617,7 @@ Throws:
 ```java
 FluentClientSoundImported changeFormat (FormatInfo formatInfo) throws SoundTransformException
 ```
+
 
 Changes the current imported sound to fit the expected format
 
@@ -664,7 +669,7 @@ FluentClientSoundImported cutSubSound (int start, int end) throws SoundTransform
 ```
   
 
-Splice a part of the sound between the sample \#start and the sample \#end
+Splices a part of the sound between the sample \#start and the sample \#end
 
 Parameters:  
 `start` - the first sample to cut
@@ -770,7 +775,7 @@ FluentClientSoundImported extractSubSound (int start, int end) throws SoundTrans
 ```
 
 
-Extract a part of the sound between the sample \#start and the sample \#end
+Extracts a part of the sound between the sample \#start and the sample \#end
 
 Parameters:  
 `start` - the first sample to extract
@@ -790,7 +795,7 @@ FluentClientWithFreqs filterRange (float low, float high)
 ```
 
 
-Remove the values between low and high in the loudest freqs array (replace them by 0)
+Removes the values between low and high in the loudest freqs array (replace them by 0)
 
 Parameters:  
 `low` - low frequency (first one to avoid)
@@ -824,7 +829,7 @@ FluentClientSoundImported importToSound () throws SoundTransformException
 ```
 
 
-Uses the current input stream object to convert it into a sound (with one or more channels)
+Uses the current input stream object to convert it into a sound
 
 Returns:  
 the client, with a sound imported
@@ -839,7 +844,7 @@ FluentClientWithInputStream importToStream () throws SoundTransformException
 ```
 
 
-Opens the current file and convert it into an InputStream, ready to be read (or to be written to a file)
+Opens the current file and converts it into an InputStream, ready to be read (or to be written to a file)
 
 Returns:  
 the client, with an inputStream
@@ -854,7 +859,7 @@ FluentClientWithFreqs insertPart (float [] subFreqs, int start)
 ```
 
 
-Add some new values in the loudest freqs array from the "start" index (add the values of subfreqs)
+Adds some new values in the loudest freqs array from the "start" index (add the values of subfreqs)
 
 Parameters:  
 `subFreqs` - loudest freqs array to insert
@@ -871,7 +876,7 @@ FluentClientSoundImported loop (int length) throws SoundTransformException
 ```
 
 
-Extract a part of the sound between the sample \#start and the sample \#end
+Extracts a part of the sound between the sample \#start and the sample \#end
 
 Parameters:  
 `length` - the number of samples of the result sound
@@ -960,7 +965,7 @@ FluentClientWithFreqs replacePart (float [] subFreqs, int start)
 ```
 
 
-Replace some of the values of the loudest freqs array from the "start" index (replace them by the values of subfreqs)
+Replaces some of the values of the loudest freqs array from the "start" index (replaces them by the values of subfreqs)
 
 Parameters:  
 `subFreqs` - replacement loudest freqs array
@@ -1072,7 +1077,7 @@ Throws:
 ```
 
 
-Apply one transform and stop immediately after with a result
+Applies one transform and stops immediately after with a result
 
 Parameters:  
 `transform` - the SoundTransform to apply
@@ -1244,7 +1249,7 @@ public EightBitsSoundTransform (int step)
 
 Default constructor
 
- * **Parameters:** `step` — iteration step value
+ * **Parameter:** `step` — iteration step value
 
 #### FadeSoundTransform
 ```java
@@ -1263,14 +1268,14 @@ Default constructor
  * **Parameters:**
    * `length` — length of the fade
    * `fadeIn` — true for fadeIn, false for fadeOut
- * **Exceptions:** `SoundTransformException` — The fade length is longer than the sound itself
+ * **Exception:** `SoundTransformException` — The fade length is longer than the sound itself
 
 #### InsertPartSoundTransform
 ```java
 public class InsertPartSoundTransform implements SoundTransform<Channel, Channel>
 ```
 
-Insert a sound into another
+Inserts a sound into another
 
  * **Constructor:**
 ```java
@@ -1297,7 +1302,7 @@ public LinearRegressionSoundTransform (int step)
 
 Default constructor
 
- * **Parameters:** `step` — iteration step value
+ * **Parameter:** `step` — iteration step value
 
 #### LoopSoundTransform
 ```java
@@ -1313,7 +1318,7 @@ public LoopSoundTransform (int length)
 
 Default constructor
 
- * **Parameters:** `length` — length (in samples) of the repetition(s)
+ * **Parameter:** `length` — length (in samples) of the repetition(s)
 
 #### MixSoundTransform
 ```java
@@ -1329,7 +1334,7 @@ public MixSoundTransform (List<Sound> otherSounds)
 
 Default constructor the transform expects to receive all the channels of each sound, even if it will not use them all for the mix. (the channelNum of the first sound will be used to match the other sounds channels before the mix operation takes place)
 
- * **Parameters:** `otherSounds` — sounds to mix with the first one (passed in the transform)
+ * **Parameter:** `otherSounds` — sounds to mix with the first one (passed in the transform)
 
 #### NormalizeSoundTransform
 ```java
@@ -1345,8 +1350,8 @@ public NormalizeSoundTransform (float coefficient) throws SoundTransformExceptio
 
 Default constructor
 
- * **Parameters:** `coefficient` — coefficient of the max level (0 <= coefficient <= 1)
- * **Exceptions:** `SoundTransformException` — The coefficient of the normalizer is above one or below zero
+ * **Parameter:** `coefficient` — coefficient of the max level (0 <= coefficient <= 1)
+ * **Exception:** `SoundTransformException` — The coefficient of the normalizer is above one or below zero
 
 #### PitchSoundTransform
 ```java
@@ -1362,7 +1367,7 @@ public PitchSoundTransform (float percent)
 
 Default constructor 
 
- * **Parameters:** `percent` — if < 100, the sound will contains more samples, therefore the sound will be pitched down, and the frequencies will be lowered, if = 100, nothing happens, if > 100, the sound will contains less samples, therefore the sound will be pitched up, and the frequencies will be higher
+ * **Parameter:** `percent` — if < 100, the sound will contains more samples, therefore the sound will be pitched down, and the frequencies will be lowered, if = 100, nothing happens, if > 100, the sound will contains less samples, therefore the sound will be pitched up, and the frequencies will be higher
 
 
 #### ReplacePartSoundTransform
@@ -1417,29 +1422,7 @@ This is a `PeakFindSoundTransform`, therefore it is a `SoundTransform<Channel, f
 
  * **Parameters:** `<T>` — The kind of object held inside a spectrum.
 
- * **Constructors:**
-```java
-public CepstrumSoundTransform ()
-```
-
-Constructor with default values. The cepstrums will not be kept when using the getCepstrums method
-
-```java
-public CepstrumSoundTransform (boolean note)
-```
-
-Constructor with default values. The cepstrums will not be kept when using the getCepstrums method 
-
- * **Parameters:** `note` — if true, the loudest freqs array will contain a single element and the cepstrum will be made once, using the whole sound
-
-```java
-public CepstrumSoundTransform (double step)
-```
-
-The cepstrums will not be kept when using the getCepstrums method
-
- * **Parameters:** `step` — the iteration step (increasing the value will speed the transform but will be less precise)
-
+ * **Constructor:**
 ```java
 public CepstrumSoundTransform (double step, boolean note)
 ```
@@ -1491,16 +1474,16 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
 Finds the loudest frequencies array using the Harmonic Product Spectrum algorithm.
 This is a PeakFindSoundTransform, therefore it is a `SoundTransform<Channel, float []>`.
 
- * **Parameters:** `<T>` — The kind of object held inside a spectrum.
+ * **Parameter:** `<T>` — The kind of object held inside a spectrum.
 
  * **Constructors:**
 ```java
 public PeakFindWithHPSSoundTransform (boolean note)
 ```
 
-Default constructor therefore the array will be of size 1.
+Default constructor 
 
- * **Parameters:** `note` — if true, the whole sound will be transformed at once to know the loudest freq.
+ * **Parameter:** `note` — if true, the whole sound will be transformed at once to know the loudest freq, therefore the array will be of size 1.
 
 ```java
 public PeakFindWithHPSSoundTransform (double step)
@@ -1508,17 +1491,7 @@ public PeakFindWithHPSSoundTransform (double step)
 
 Constructor not using the whole sound as a musical note
 
- * **Parameters:** `step` — the iteration step value
-
-```java
-public PeakFindWithHPSSoundTransform (double step, int windowLength)
-```
-
-Constructor not using the whole sound as a musical note
-
- * **Parameters:**
-   * `step` — the iteration step value
-   * `windowLength` — length of the spectrum used during each iteration (the highest the slowest)
+ * **Parameter:** `step` — the iteration step value
 
 ```java
 public PeakFindWithHPSSoundTransform (boolean note, double step, int windowLength)
@@ -1536,29 +1509,18 @@ Full constructor with every parameter specified
 public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> implements SoundTransform<float [], Channel>
 ```
 
-Create a sound with notes matching the input sound loudest frequencies. It uses a soundtransform to get the loudest frequencies, then it shapes a sound consisting of the notes heard in the freqs array. If the constructor using a float array is used, only the shaping step will be processed
+Create a sound with notes matching the input sound loudest frequencies. It shapes a sound consisting of the notes heard in the freqs array. 
 
- * **Constructors:**
-```java
-public ShapeSoundTransform (String packName, String instrument)
-```
-
-Constructor for the two steps
-
- * **Parameters:**
-   * `packName` — Pack name, should be already imported
-   * `instrument` — instrument of the pack which will be used to shape the sound
-
+ * **Constructor:**
 ```java
 public ShapeSoundTransform (String packName, String instrument, float [] freqs, FormatInfo formatInfo)
 ```
 
-Constructor only for the second step
+Default Constructor
 
  * **Parameters:**
    * `packName` — Pack name, should be already imported
    * `instrument` — instrument of the pack which will be used to shape the sound
-   * `freqs` — the loudest freqs array
    * `formatInfo` — the format info
 
 ##### SimpleFrequencySoundTransform
@@ -1566,7 +1528,7 @@ Constructor only for the second step
 public class SimpleFrequencySoundTransform<T extends Serializable> extends AbstractFrequencySoundTransform<T>
 ```
 
-Simple proxy to avoid useless parameters in the overriden method
+Simple proxy to avoid useless parameters in the overriden method. It is made to be subclassed by your own soundtransform class
 
  * **Constructor:**
 ```java
@@ -1594,7 +1556,7 @@ WARN : can fail for various reasons
    * `step` — must be > that the f0 of the sound. Else it will not fail but will produce a bad sound
    * `factor` — the slowdown factor
    * `windowLength` — must be a power of 2 and must be >= 2 * step
- * **Exceptions:** `SoundTransformException` — if the constraint about the windowLength is not met
+ * **Exception:** `SoundTransformException` — if the constraint about the windowLength is not met
 
 ##### SpeedUpSoundTransform
 ```java
@@ -1603,7 +1565,7 @@ public class SpeedUpSoundTransform<T extends Serializable> extends SimpleFrequen
 
 Builds a new sound, shorter than the input, without shifting the frequencies
 
- * **Parameters:** `<T>` — The kind of object held inside a spectrum.
+ * **Parameter:** `<T>` — The kind of object held inside a spectrum.
 
  * **Constructor:**
 ```java

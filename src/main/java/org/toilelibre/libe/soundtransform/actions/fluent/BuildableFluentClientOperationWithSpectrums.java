@@ -21,7 +21,7 @@ public interface BuildableFluentClientOperationWithSpectrums extends FluentClien
     BuildableFluentClientOperationSoundImported extractSound () throws SoundTransformException;
 
     /**
-     * Plays the current audio data and (if needed) convert it temporarily to a
+     * Plays the current audio data and (if needed) converts it temporarily to a
      * sound
      *
      * @return the client, with the spectrums list

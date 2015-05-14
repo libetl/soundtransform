@@ -293,7 +293,7 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientWithFreqs withFreqs (List<float []> freqs);
 
     /**
-     * Tells the client to work first to open the microphone and to record a
+     * Tells the client to open the microphone and to record a
      * sound The result will be of an InputStream type The recording time will
      * be the one passed in the streamInfo
      *
@@ -325,7 +325,7 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientWithInputStream withRawInputStream (InputStream inputStream, StreamInfo streamInfo) throws SoundTransformException;
 
     /**
-     * Tells the client to work first to open the microphone and to record a
+     * Tells the client to open the microphone and to record a
      * sound The result will be of an InputStream type The frameLength in the
      * streamInfo will be ignored
      *

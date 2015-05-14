@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public interface BuildableFluentClientOperationWithFreqs extends FluentClientWithFreqs, BuildableFluentClientOperation {
     /**
-     * Adjust the loudest freqs array to match exactly the piano notes
+     * Adjusts the loudest freqs array to match exactly the piano notes
      * frequencies
      *
      * @return the client, with a loudest frequencies float array
@@ -30,7 +30,7 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
     BuildableFluentClientOperationWithFreqs compress (float factor);
 
     /**
-     * Remove the values between low and high in the loudest freqs array
+     * Removes the values between low and high in the loudest freqs array
      * (replace them by 0)
      *
      * @param low
@@ -43,7 +43,7 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
     BuildableFluentClientOperationWithFreqs filterRange (float low, float high);
 
     /**
-     * Add some new values in the loudest freqs array from the "start" index
+     * Adds some new values in the loudest freqs array from the "start" index
      * (add the values of subfreqs)
      *
      * @param subFreqs
@@ -72,7 +72,7 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
     BuildableFluentClientOperationWithFreqs octaveUp ();
 
     /**
-     * Replace some of the values of the loudest freqs array from the "start"
+     * Replaces some of the values of the loudest freqs array from the "start"
      * index (replace them by the values of subfreqs)
      *
      * @param subFreqs

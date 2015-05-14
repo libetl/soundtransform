@@ -10,7 +10,6 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
 
     /**
      * Uses the current available spectrums objects to convert them into a sound
-     * (with one or more channels)
      *
      * @return the client, with a sound imported
      * @throws SoundTransformException
@@ -20,7 +19,7 @@ public interface FluentClientWithSpectrums extends FluentClientCommon {
     FluentClientSoundImported extractSound () throws SoundTransformException;
 
     /**
-     * Plays the current audio data and (if needed) convert it temporarily to a
+     * Plays the current audio data and (if needed) converts it temporarily to a
      * sound
      *
      * @return the client, with the spectrums list

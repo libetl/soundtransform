@@ -11,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 public interface FluentClientSoundImported extends FluentClientCommon {
 
     /**
-     * Append the sound passed in parameter to the current sound stored in the
+     * Appends the sound passed in parameter to the current sound stored in the
      * client
      *
      * @param sound
@@ -24,7 +24,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientSoundImported append (Sound sound) throws SoundTransformException;
 
     /**
-     * Apply one transform and continue with the result sound
+     * Applies one transform and continue with the result sound
      *
      * @param st
      *            the SoundTransform to apply
@@ -35,7 +35,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientSoundImported apply (SoundTransform<Channel, Channel> st) throws SoundTransformException;
 
     /**
-     * Apply one transform and stop immediately after with a result
+     * Applies one transform and stop immediately after with a result
      *
      * @param st
      *            the SoundTransform to apply
@@ -56,7 +56,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientSoundImported changeFormat (FormatInfo formatInfo) throws SoundTransformException;
 
     /**
-     * Splice a part of the sound between the sample #start and the sample #end
+     * Splices a part of the sound between the sample #start and the sample #end
      *
      * @param start
      *            the first sample to cut
@@ -118,7 +118,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientWithInputStream exportToStream () throws SoundTransformException;
 
     /**
-     * Extract a part of the sound between the sample #start and the sample #end
+     * Extracts a part of the sound between the sample #start and the sample #end
      *
      * @param start
      *            the first sample to extract
@@ -144,7 +144,7 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException;
 
     /**
-     * Extract a part of the sound between the sample #start and the sample #end
+     * Extracts a part of the sound between the sample #start and the sample #end
      *
      * @param length
      *            the number of samples of the result sound

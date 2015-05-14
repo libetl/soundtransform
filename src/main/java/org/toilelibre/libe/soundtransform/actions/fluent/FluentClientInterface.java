@@ -12,7 +12,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 public interface FluentClientInterface {
 
     /**
-     * Adjust the loudest freqs array to match exactly the piano notes
+     * Adjusts the loudest freqs array to match exactly the piano notes
      * frequencies
      *
      * @return the client, with a loudest frequencies float array
@@ -28,7 +28,7 @@ public interface FluentClientInterface {
     public abstract FluentClientReady andAfterStart ();
 
     /**
-     * Append the sound passed in parameter to the current sound stored in the
+     * Appends the sound passed in parameter to the current sound stored in the
      * client
      *
      * @param sound
@@ -42,7 +42,7 @@ public interface FluentClientInterface {
     public abstract FluentClientSoundImported append (Sound sound) throws SoundTransformException;
 
     /**
-     * Apply one transform and continue with the result sound
+     * Applies one transform and continue with the result sound
      *
      * @param st
      *            the SoundTransform to apply
@@ -53,7 +53,7 @@ public interface FluentClientInterface {
     public abstract FluentClientSoundImported apply (SoundTransform<Channel, Channel> st) throws SoundTransformException;
 
     /**
-     * Apply one transform and stop immediately after with a result
+     * Applies one transform and stop immediately after with a result
      *
      * @param st
      *            the SoundTransform to apply
@@ -99,7 +99,7 @@ public interface FluentClientInterface {
     public abstract FluentClientSoundImported convertIntoSound () throws SoundTransformException;
 
     /**
-     * Splice a part of the sound between the sample #start and the sample #end
+     * Splices a part of the sound between the sample #start and the sample #end
      *
      * @param start
      *            the first sample to cut
@@ -172,7 +172,7 @@ public interface FluentClientInterface {
     public abstract FluentClientSoundImported extractSound () throws SoundTransformException;
 
     /**
-     * Extract a part of the sound between the sample #start and the sample #end
+     * Extracts a part of the sound between the sample #start and the sample #end
      *
      * @param start
      *            the first sample to extract
@@ -185,7 +185,7 @@ public interface FluentClientInterface {
     public abstract FluentClientSoundImported extractSubSound (int start, int end) throws SoundTransformException;
 
     /**
-     * Remove the values between low and high in the loudest freqs array
+     * Removes the values between low and high in the loudest freqs array
      * (replace them by 0)
      *
      * @param low
@@ -211,8 +211,7 @@ public interface FluentClientInterface {
     public abstract FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException;
 
     /**
-     * Uses the current input stream object to convert it into a sound (with one
-     * or more channels)
+     * Uses the current input stream object to convert it into a sound 
      *
      * @return the client, with a sound imported
      * @throws SoundTransformException
@@ -231,7 +230,7 @@ public interface FluentClientInterface {
     public abstract FluentClientWithInputStream importToStream () throws SoundTransformException;
 
     /**
-     * Add some new values in the loudest freqs array from the "start" index
+     * Adds some new values in the loudest freqs array from the "start" index
      * (add the values of subfreqs)
      *
      * @param subFreqs
@@ -243,7 +242,7 @@ public interface FluentClientInterface {
     public abstract FluentClientWithFreqs insertPart (List<float []> subFreqs, int start);
 
     /**
-     * Extract a part of the sound between the sample #start and the sample #end
+     * Extracts a part of the sound between the sample #start and the sample #end
      *
      * @param length
      *            the number of samples of the result sound
@@ -280,7 +279,7 @@ public interface FluentClientInterface {
     public abstract FluentClientWithFreqs octaveUp ();
 
     /**
-     * Plays the current audio data and (if needed) convert it temporarily to a
+     * Plays the current audio data and (if needed) converts it temporarily to a
      * sound
      *
      * @return the client, in its current state.
@@ -290,7 +289,7 @@ public interface FluentClientInterface {
     public abstract FluentClientInterface playIt () throws SoundTransformException;
 
     /**
-     * Replace some of the values of the loudest freqs array from the "start"
+     * Replaces some of the values of the loudest freqs array from the "start"
      * index (replace them by the values of subfreqs)
      *
      * @param subFreqs

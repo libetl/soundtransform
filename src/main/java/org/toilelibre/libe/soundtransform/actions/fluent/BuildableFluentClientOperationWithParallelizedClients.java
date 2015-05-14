@@ -16,7 +16,7 @@ public interface BuildableFluentClientOperationWithParallelizedClients extends F
     BuildableFluentClientOperationSoundImported mixAllInOneSound () throws SoundTransformException;
 
     /**
-     * Stops the client pipeline and get all the values inside each nested
+     * Stops the client pipeline and gets all the values inside each nested
      * client
      *
      * @param resultClass

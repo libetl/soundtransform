@@ -11,7 +11,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 public interface BuildableFluentClientOperationSoundImported extends FluentClientSoundImported, BuildableFluentClientOperation {
 
     /**
-     * Append the sound passed in parameter to the current sound stored in the
+     * Appends the sound passed in parameter to the current sound stored in the
      * client
      *
      * @param sound
@@ -25,7 +25,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
     BuildableFluentClientOperationSoundImported append (Sound sound) throws SoundTransformException;
 
     /**
-     * Apply one transform and continue with the result sound
+     * Applies one transform and continues with the result sound
      *
      * @param st
      *            the SoundTransform to apply
@@ -37,7 +37,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
     BuildableFluentClientOperationSoundImported apply (SoundTransform<Channel, Channel> st) throws SoundTransformException;
 
     /**
-     * Apply one transform and stop immediately after with a result
+     * Applies one transform and stops immediately after with a result
      *
      * @param st
      *            the SoundTransform to apply
@@ -60,7 +60,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
     BuildableFluentClientOperationSoundImported changeFormat (FormatInfo formatInfo) throws SoundTransformException;
 
     /**
-     * Splice a part of the sound between the sample #start and the sample #end
+     * Splices a part of the sound between the sample #start and the sample #end
      *
      * @param start
      *            the first sample to cut

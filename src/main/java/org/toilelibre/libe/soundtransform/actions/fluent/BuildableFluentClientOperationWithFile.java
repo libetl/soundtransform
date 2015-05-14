@@ -18,7 +18,7 @@ public interface BuildableFluentClientOperationWithFile extends FluentClientWith
     BuildableFluentClientOperationSoundImported convertIntoSound () throws SoundTransformException;
 
     /**
-     * Opens the current file and convert it into an InputStream, ready to be
+     * Opens the current file and converts it into an InputStream, ready to be
      * read (or to be written to a file)
      *
      * @return the client, with an inputStream
@@ -29,7 +29,7 @@ public interface BuildableFluentClientOperationWithFile extends FluentClientWith
     BuildableFluentClientOperationWithInputStream importToStream () throws SoundTransformException;
 
     /**
-     * Plays the current audio data and convert it temporarily into a sound
+     * Plays the current audio data, converting it temporarily into a sound
      *
      * @return the client, with a file
      * @throws SoundTransformException

@@ -85,7 +85,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     /**
-     * Set the passed observers as the default value when a FluentClient is
+     * Sets the passed observers as the default value when a FluentClient is
      * started
      *
      * It can be useful if you are going to use the FluentClient several times
@@ -101,7 +101,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     /**
-     * Startup the client
+     * Start up the client
      *
      * @return the client, ready to start
      */
@@ -109,25 +109,23 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return new FluentClient ();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Adjusts the loudest freqs array to match exactly the piano notes
+     * frequencies
      *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #adjust()
+     * @return the client, with a loudest frequencies float array
      */
     @Override
     public FluentClientWithFreqs adjust () {
         this.freqs = new ChangeLoudestFreqs ().adjust (this.freqs);
         return this;
     }
-
-    /*
-     * (non-Javadoc)
+    
+    /**
+     * Start over the client : reset the state and the value objects nested in
+     * the client
      *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #andAfterStart()
+     * @return the client, ready to start
      */
     @Override
     public FluentClientReady andAfterStart () {
@@ -135,13 +133,17 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.cleanObservers ();
         return this;
     }
-
-    /*
-     * (non-Javadoc)
+    
+    /**
+     * Appends the sound passed in parameter to the current sound stored in the
+     * client
      *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #append(org.toilelibre.libe.soundtransform.model.converted.sound.Sound[])
+     * @param sound
+     *            the sound to append the current sound to
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     *             if the sound is null or if there is a problem with the
+     *             appending
      */
     @Override
     public FluentClientSoundImported append (final Sound sound1) throws SoundTransformException {
@@ -149,18 +151,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #apply
-     * (org.toilelibre.libe.soundtransform.model.converted.sound.transform.
-     * SoundTransform)
-     */
     @Override
     /**
-     * Apply one transform and continue with the result sound
+     * Applies one transform and continues with the result sound
      * @param st the SoundTransform to apply
      * @return the client with a sound imported
      * @throws SoundTransformException if the transform does not work
@@ -173,7 +166,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     /**
-     * Apply one transform and stop the pipeline immediately after with a result
+     * Applies one transform and stops the pipeline immediately after with a result
      *
      * @param st
      *            the SoundTransform to apply
@@ -188,14 +181,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return (T []) result;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #changeFormat
-     * (org.toilelibre.libe.soundtransform.model.converted.FormatInfo)
-     */
     @Override
     public FluentClientSoundImported changeFormat (final FormatInfo formatInfo) throws SoundTransformException {
         this.sound = new ChangeSoundFormat (this.getObservers ()).changeFormat (this.sound, formatInfo);
@@ -203,7 +188,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     /**
-     * Reset the state of the FluentClient
+     * Resets the state of the FluentClient
      */
     private void cleanData () {
         this.sound = null;
@@ -215,19 +200,12 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     /**
-     * Reset the list of the subscribed observers
+     * Resets the list of the subscribed observers
      */
     private void cleanObservers () {
         this.observers = FluentClient.defaultObservers;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #compress(float)
-     */
     @Override
     /**
      * Compresses the loudest freq array (speedup or slowdown) When shaped into
@@ -245,13 +223,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #convertIntoSound()
-     */
     @Override
     /**
      * Shortcut for importToStream ().importToSound () : Conversion from a File to a Sound
@@ -261,26 +232,23 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public FluentClientSoundImported convertIntoSound () throws SoundTransformException {
         return this.importToStream ().importToSound ();
     }
-
-    /*
-     * (non-Javadoc)
+    
+    /**
+     * Splices a part of the sound between the sample #start and the sample #end
      *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #cutSubSound(int, int)
+     * @param start
+     *            the first sample to cut
+     * @param end
+     *            the last sample to cut
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     *             if the indexes are out of bound
      */
     @Override
     public FluentClientSoundImported cutSubSound (final int start, final int end) throws SoundTransformException {
         return this.apply (new CutSoundTransform (start, end));
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #exportToClasspathResource(java.lang.String)
-     */
     @Override
     /**
      * Shortcut for exportToStream ().writeToClasspathResource (resource) : Conversion from a Sound to a File
@@ -292,14 +260,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.exportToStream ().writeToClasspathResource (resource);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #exportToClasspathResourceWithSiblingResource(java.lang.String,
-     * java.lang.String)
-     */
     @Override
     /**
      * Shortcut for exportToStream ().writeToClasspathResourceWithSiblingResource (resource, siblingResource)
@@ -312,13 +272,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.exportToStream ().writeToClasspathResourceWithSiblingResource (resource, siblingResource);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #exportToFile(java.io.File)
-     */
     @Override
     /**
      * Shortcut for exportToStream ().writeToFile (file)
@@ -330,13 +283,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.exportToStream ().writeToFile (file1);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #exportToStream()
-     */
     @Override
     /**
      * Uses the current imported sound and converts it into an InputStream, ready to be written to a file (or to be read again)
@@ -350,14 +296,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.audioInputStream = audioInputStream1;
         return this;
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #extractSound()
-     */
+    
     @Override
     /**
      * Uses the current available spectrums objects to convert them into a sound (with one or more channels)
@@ -375,24 +314,31 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Extracts a part of the sound between the sample #start and the sample #end
      *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #extractSubSound(int, int)
+     * @param start
+     *            the first sample to extract
+     * @param end
+     *            the last sample to extract
+     * @return the client, with a sound imported
+     * @throws SoundTransformException
+     *             if the indexes are out of bound
      */
     @Override
     public FluentClientSoundImported extractSubSound (final int start, final int end) throws SoundTransformException {
         return this.apply (new SubSoundExtractSoundTransform (start, end));
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Removes the values between low and high in the loudest freqs array
+     * (replace them by 0)
      *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #filterRange(float, float)
+     * @param low
+     *            low frequency (first one to avoid)
+     * @param high
+     *            high frequency (last one to avoid)
+     * @return the client, with a loudest frequencies float array
      */
     @Override
     public FluentClientWithFreqs filterRange (final float low, final float high) {
@@ -400,12 +346,16 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Will invoke a soundtransform to find the loudest frequencies of the
+     * sound, chronologically Caution : the original sound will be lost, and it
+     * will be impossible to revert this conversion. When shaped into a sound,
+     * the new sound will only sounds like the instrument you shaped the freqs
+     * with
      *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #findLoudestFrequencies()
+     * @return the client, with a loudest frequencies integer array
+     * @throws SoundTransformException
+     *             if the convert fails
      */
     @Override
     public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException {
@@ -425,16 +375,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.observers.toArray (new Observer [this.observers.size ()]);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #importToSound()
-     */
     @Override
     /**
-     * Uses the current input stream object to convert it into a sound (with one or more channels)
+     * Uses the current input stream object to convert it into a sound
      * @return the client, with a sound imported
      * @throws SoundTransformException the inputStream is invalid, or the convert did not work
      */
@@ -450,16 +393,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #importToStream()
-     */
     @Override
     /**
-     * Opens the current file and convert it into an InputStream, ready to be read (or to be written to a file)
+     * Opens the current file and converts it into an InputStream, ready to be read (or to be written to a file)
      * @return the client, with an inputStream
      * @throws SoundTransformException the current file is not valid, or the conversion did not work
      */
@@ -472,16 +408,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.audioInputStream = inputStream;
         return this;
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #insertPart(float[], int)
-     */
+    
     /**
-     * Add some new values in the loudest freqs array from the "start" index
+     * Adds some new values in the loudest freqs array from the "start" index
      * (add the values of subfreqs)
      *
      * @param subFreqs
@@ -496,15 +425,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #inParallel
-     * (org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation,
-     * int, T)
-     */
     /**
      * Runs asynchronously the same operations on a varargs of started
      * FluentClients
@@ -553,15 +473,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #inParallel
-     * (org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation,
-     * int, org.toilelibre.libe.soundtransform.model.converted.sound.Sound)
-     */
     /**
      * Alias for the inParallel method using a list of clients
      *
@@ -589,15 +500,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.inParallel (op, timeoutInSeconds, clients);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #inParallel
-     * (org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation,
-     * int, java.io.InputStream)
-     */
     /**
      * Alias for the inParallel method using a list of clients
      *
@@ -624,15 +526,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.inParallel (op, timeoutInSeconds, clients);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #inParallel
-     * (org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation,
-     * int, java.io.File)
-     */
     /**
      * Alias for the inParallel method using a list of clients
      *
@@ -659,15 +552,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.inParallel (op, timeoutInSeconds, clients);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #inParallel
-     * (org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation,
-     * int, float)
-     */
     /**
      * Alias for the inParallel method using a list of clients
      *
@@ -694,15 +578,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.inParallel (op, timeoutInSeconds, clients);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #inParallel
-     * (org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation,
-     * int, java.lang.String)
-     */
     /**
      * Alias for the inParallel method using a list of clients
      *
@@ -729,15 +604,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.inParallel (op, timeoutInSeconds, clients);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #loop(int)
-     */
     /**
-     * Extract a part of the sound between the sample #start and the sample #end
+     * Extracts a part of the sound between the sample #start and the sample #end
      *
      * @param length
      *            the number of samples of the result sound
@@ -750,14 +618,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.apply (new LoopSoundTransform (length));
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #mixWith
-     * (org.toilelibre.libe.soundtransform.model.converted.sound.Sound[])
-     */
     @Override
     /**
      * Combines the current sound with another sound. The operation is not reversible
@@ -769,13 +629,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.apply (new MixSoundTransform (Arrays.<Sound> asList (sound1)));
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #mixAllInOneSound()
-     */
     /**
      * Uses the sound inside the nested clients to mix them all and to produce a
      * single sound
@@ -803,12 +656,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Changes the loudest frequencies array to become one octave lower
      *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #octaveDown()
+     * @return the client, with a loudest frequencies float array
      */
     @Override
     public FluentClientWithFreqs octaveDown () {
@@ -816,12 +667,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Changes the loudest frequencies array to become one octave upper
      *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #octaveUp()
+     * @return the client, with a loudest frequencies float array
      */
     @Override
     public FluentClientWithFreqs octaveUp () {
@@ -829,13 +678,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #playIt()
-     */
     @Override
     /**
      * Plays the current audio data and (if needed) convert it temporarily to a sound
@@ -863,16 +705,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #replacePart(float[], int)
-     */
     @Override
     /**
-     * Replace some of the values of the loudest freqs array from the "start"
+     * Replaces some of the values of the loudest freqs array from the "start"
      * index (replace them by the values of subfreqs)
      *
      * @param subFreqs
@@ -886,14 +721,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #shapeIntoSound(java.lang.String, java.lang.String,
-     * org.toilelibre.libe.soundtransform.model.converted.FormatInfo)
-     */
     @Override
     /**
      * Shapes these loudest frequencies array into a sound and set the converted sound in the pipeline
@@ -910,14 +737,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.sound = new Sound (new ApplySoundTransform (this.getObservers ()).<float [], Channel> apply (savedFreqs.toArray (new float [0] [0]), soundTransform));
         return this;
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #splitIntoSpectrums()
-     */
+    
     @Override
     /**
      * Uses the current sound to pick its spectrums and set that as the current data in the pipeline
@@ -932,13 +752,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #stopWithAPack(java.lang.String)
-     */
     /**
      * Stops the client pipeline and returns the pack whose title is in
      * parameter
@@ -952,13 +765,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return new ImportAPackIntoTheLibrary (this.getObservers ()).getPack (title);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #stopWithFile()
-     */
     @Override
     /**
      * Stops the client pipeline and returns the obtained file
@@ -968,13 +774,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.file;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #stopWithFreqs()
-     */
     @Override
     /**
      * Stops the client pipeline and returns the obtained loudest frequencies
@@ -984,13 +783,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.freqs;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #stopWithInputStream()
-     */
     @Override
     /**
      * Stops the client pipeline and returns the obtained input stream
@@ -1000,13 +792,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.audioInputStream;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #stopWithObservers()
-     */
     @Override
     /**
      * Stops the client pipeline and returns the currently subscribed observers
@@ -1016,13 +801,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.getObservers ();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #stopWithResults(java.lang.Class)
-     */
     /**
      * Stops the client pipeline and get all the values inside each nested
      * client
@@ -1052,13 +830,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return results;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #stopWithsound()
-     */
     @Override
     /**
      * Stops the client pipeline and returns the obtained sound
@@ -1067,14 +838,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public Sound stopWithSound () {
         return this.sound;
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #stopWithSpectrums()
-     */
+    
     @Override
     /**
      * Stops the client pipeline and returns the obtained spectrums
@@ -1084,13 +848,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.spectrums;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #stopWithStreamInfo()
-     */
     @Override
     /**
      * Stops the client pipeline and returns the obtained stream info
@@ -1105,14 +862,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return new GetStreamInfo (this.getObservers ()).getStreamInfo (this.audioInputStream);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withAnObserver
-     * (org.toilelibre.libe.soundtransform.model.observer.Observer)
-     */
     @Override
     /**
      * Tells the client to add an observer that will be notified of different kind of updates
@@ -1147,13 +896,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.mixAllInOneSound ();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withAPack(java.lang.String, java.io.InputStream)
-     */
     @Override
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
@@ -1172,14 +914,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         new ImportAPackIntoTheLibrary (this.getObservers ()).importAPack (packName, jsonStream);
         return this;
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withAPack(java.lang.String, java.lang.Object, java.lang.Class, int)
-     */
+    
     @Override
     /**
      * Tells the client to work with a pack. Uses the context object to find the resource from the R object
@@ -1202,13 +937,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withAPack(java.lang.String, java.lang.String)
-     */
     @Override
     /**
      * Tells the client to work with a pack. Reads the whole string content. A
@@ -1251,13 +979,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withAudioInputStream(java.io.InputStream)
-     */
     @Override
     /**
      * Tells the client to work first with an InputStream. It will not be read yet<br/>
@@ -1271,13 +992,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withClasspathResource(java.lang.String)
-     */
     @Override
     /**
      * Tells the client to work first with a classpath resource. It will be converted in a File
@@ -1295,14 +1009,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.sameDirectoryAsClasspathResource = this.file.getParent ();
         return this;
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withFile(java.io.File)
-     */
+    
     @Override
     /**
      * Tells the client to work first with a file. It will not be read yet
@@ -1314,14 +1021,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.file = file1;
         return this;
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withFreqs(float[])
-     */
+    
     @Override
     /**
      * Tells the client to work first with a loudest frequencies float array. It will not be used yet
@@ -1333,29 +1033,25 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.freqs = new LinkedList<float []> (freqs1);
         return this;
     }
-
-    /*
-     * (non-Javadoc)
+    
+    /**
+     * Tells the client to open the microphone and to record a
+     * sound The result will be of an InputStream type The recording time will
+     * be the one passed in the streamInfo
      *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withLimitedTimeRecordedInputStream
-     * (org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo)
+     * @param streamInfo
+     *            the future input stream info
+     * @return the client, with an input stream
+     * @throws SoundTransformException
+     *             the mic could not be read, the recorder could not start, or
+     *             the buffer did not record anything
      */
     @Override
     public FluentClientWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException {
         this.cleanData ();
         return this.withRawInputStream (new RecordSound ().recordLimitedTimeRawInputStream (streamInfo), streamInfo);
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withRawInputStream(java.io.InputStream,
-     * org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo)
-     */
+    
     @Override
     /**
      * Tells the client to work first with a byte array InputStream or any readable DataInputStream.
@@ -1372,29 +1068,29 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Tells the client to open the microphone and to record a
+     * sound The result will be of an InputStream type The frameLength in the
+     * streamInfo will be ignored
      *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withRecordedInputStream
-     * (org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo,
-     * java.lang.Object)
+     * /!\ : blocking method, the `stop.notify` method must be called in another
+     * thread.
+     *
+     * @param streamInfo
+     *            the future input stream info
+     * @param stop
+     *            the method notify must be called to stop the recording
+     * @return the client, with an input stream
+     * @throws SoundTransformException
+     *             the mic could not be read, the recorder could not start, or
+     *             the buffer did not record anything
      */
     @Override
     public FluentClientWithInputStream withRecordedInputStream (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
         this.cleanData ();
         return this.withRawInputStream (new RecordSound ().recordRawInputStream (streamInfo, stop), streamInfo);
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withsound
-     * (org.toilelibre.libe.soundtransform.model.converted.sound.Sound[])
-     */
+    
     @Override
     /**
      * Tells the client to work first with a sound object
@@ -1407,13 +1103,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #withSpectrums(java.util.List)
-     */
     @Override
     /**
      * Tells the client to work first with a spectrum formatted sound.<br/>
@@ -1428,13 +1117,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #writeToClasspathResource(java.lang.String)
-     */
     @Override
     /**
      * Writes the current InputStream in a classpath resource in the same folder as a previously imported classpath resource.
@@ -1450,14 +1132,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.writeToFile (new File (this.sameDirectoryAsClasspathResource + "/" + resource));
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #writeToClasspathResourceWithSiblingResource(java.lang.String,
-     * java.lang.String)
-     */
     @Override
     /**
      * Writes the current InputStream in a classpath resource in the same folder as a the sibling resource.
@@ -1474,13 +1148,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this.writeToFile (new File (this.sameDirectoryAsClasspathResource + "/" + resource));
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.toilelibre.libe.soundtransform.actions.fluent.FluentClientInterface
-     * #writeToFile(java.io.File)
-     */
     @Override
     /**
      * Writes the current InputStream in a file
