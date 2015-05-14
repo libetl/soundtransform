@@ -16,8 +16,8 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 /**
- * Create a sound with notes matching the input sound loudest frequencies. It shapes a sound
- * consisting of the notes heard in the freqs array.
+ * Create a sound with notes matching the input sound loudest frequencies. It
+ * shapes a sound consisting of the notes heard in the freqs array.
  */
 public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> implements SoundTransform<float [], Channel> {
     public enum ShapeSoundTransformErrorCode implements ErrorCode {

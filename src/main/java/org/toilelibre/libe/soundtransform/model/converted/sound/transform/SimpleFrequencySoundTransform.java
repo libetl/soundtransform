@@ -8,7 +8,8 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransf
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
 /**
- * Simple proxy to avoid useless parameters in the overriden method. It is made to be subclassed by your own soundtransform class
+ * Simple proxy to avoid useless parameters in the overriden method. It is made
+ * to be subclassed by your own soundtransform class
  *
  *
  */

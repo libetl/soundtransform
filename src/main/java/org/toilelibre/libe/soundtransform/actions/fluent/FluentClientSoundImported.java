@@ -118,7 +118,8 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientWithInputStream exportToStream () throws SoundTransformException;
 
     /**
-     * Extracts a part of the sound between the sample #start and the sample #end
+     * Extracts a part of the sound between the sample #start and the sample
+     * #end
      *
      * @param start
      *            the first sample to extract
@@ -144,7 +145,8 @@ public interface FluentClientSoundImported extends FluentClientCommon {
     FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException;
 
     /**
-     * Extracts a part of the sound between the sample #start and the sample #end
+     * Extracts a part of the sound between the sample #start and the sample
+     * #end
      *
      * @param length
      *            the number of samples of the result sound

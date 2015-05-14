@@ -293,9 +293,9 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientWithFreqs withFreqs (List<float []> freqs);
 
     /**
-     * Tells the client to open the microphone and to record a
-     * sound The result will be of an InputStream type The recording time will
-     * be the one passed in the streamInfo
+     * Tells the client to open the microphone and to record a sound The result
+     * will be of an InputStream type The recording time will be the one passed
+     * in the streamInfo
      *
      * @param streamInfo
      *            the future input stream info
@@ -325,9 +325,9 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientWithInputStream withRawInputStream (InputStream inputStream, StreamInfo streamInfo) throws SoundTransformException;
 
     /**
-     * Tells the client to open the microphone and to record a
-     * sound The result will be of an InputStream type The frameLength in the
-     * streamInfo will be ignored
+     * Tells the client to open the microphone and to record a sound The result
+     * will be of an InputStream type The frameLength in the streamInfo will be
+     * ignored
      *
      * /!\ : blocking method, the `stop.notify` method must be called in another
      * thread.

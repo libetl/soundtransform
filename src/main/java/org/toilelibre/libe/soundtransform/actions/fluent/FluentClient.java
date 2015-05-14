@@ -120,7 +120,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.freqs = new ChangeLoudestFreqs ().adjust (this.freqs);
         return this;
     }
-    
+
     /**
      * Start over the client : reset the state and the value objects nested in
      * the client
@@ -133,7 +133,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.cleanObservers ();
         return this;
     }
-    
+
     /**
      * Appends the sound passed in parameter to the current sound stored in the
      * client
@@ -166,7 +166,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     /**
-     * Applies one transform and stops the pipeline immediately after with a result
+     * Applies one transform and stops the pipeline immediately after with a
+     * result
      *
      * @param st
      *            the SoundTransform to apply
@@ -232,7 +233,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public FluentClientSoundImported convertIntoSound () throws SoundTransformException {
         return this.importToStream ().importToSound ();
     }
-    
+
     /**
      * Splices a part of the sound between the sample #start and the sample #end
      *
@@ -296,7 +297,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.audioInputStream = audioInputStream1;
         return this;
     }
-    
+
     @Override
     /**
      * Uses the current available spectrums objects to convert them into a sound (with one or more channels)
@@ -315,7 +316,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     /**
-     * Extracts a part of the sound between the sample #start and the sample #end
+     * Extracts a part of the sound between the sample #start and the sample
+     * #end
      *
      * @param start
      *            the first sample to extract
@@ -408,7 +410,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.audioInputStream = inputStream;
         return this;
     }
-    
+
     /**
      * Adds some new values in the loudest freqs array from the "start" index
      * (add the values of subfreqs)
@@ -605,7 +607,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     /**
-     * Extracts a part of the sound between the sample #start and the sample #end
+     * Extracts a part of the sound between the sample #start and the sample
+     * #end
      *
      * @param length
      *            the number of samples of the result sound
@@ -737,7 +740,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.sound = new Sound (new ApplySoundTransform (this.getObservers ()).<float [], Channel> apply (savedFreqs.toArray (new float [0] [0]), soundTransform));
         return this;
     }
-    
+
     @Override
     /**
      * Uses the current sound to pick its spectrums and set that as the current data in the pipeline
@@ -838,7 +841,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public Sound stopWithSound () {
         return this.sound;
     }
-    
+
     @Override
     /**
      * Stops the client pipeline and returns the obtained spectrums
@@ -914,7 +917,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         new ImportAPackIntoTheLibrary (this.getObservers ()).importAPack (packName, jsonStream);
         return this;
     }
-    
+
     @Override
     /**
      * Tells the client to work with a pack. Uses the context object to find the resource from the R object
@@ -1009,7 +1012,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.sameDirectoryAsClasspathResource = this.file.getParent ();
         return this;
     }
-    
+
     @Override
     /**
      * Tells the client to work first with a file. It will not be read yet
@@ -1021,7 +1024,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.file = file1;
         return this;
     }
-    
+
     @Override
     /**
      * Tells the client to work first with a loudest frequencies float array. It will not be used yet
@@ -1033,11 +1036,11 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.freqs = new LinkedList<float []> (freqs1);
         return this;
     }
-    
+
     /**
-     * Tells the client to open the microphone and to record a
-     * sound The result will be of an InputStream type The recording time will
-     * be the one passed in the streamInfo
+     * Tells the client to open the microphone and to record a sound The result
+     * will be of an InputStream type The recording time will be the one passed
+     * in the streamInfo
      *
      * @param streamInfo
      *            the future input stream info
@@ -1051,7 +1054,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.cleanData ();
         return this.withRawInputStream (new RecordSound ().recordLimitedTimeRawInputStream (streamInfo), streamInfo);
     }
-    
+
     @Override
     /**
      * Tells the client to work first with a byte array InputStream or any readable DataInputStream.
@@ -1069,9 +1072,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     /**
-     * Tells the client to open the microphone and to record a
-     * sound The result will be of an InputStream type The frameLength in the
-     * streamInfo will be ignored
+     * Tells the client to open the microphone and to record a sound The result
+     * will be of an InputStream type The frameLength in the streamInfo will be
+     * ignored
      *
      * /!\ : blocking method, the `stop.notify` method must be called in another
      * thread.
@@ -1090,7 +1093,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.cleanData ();
         return this.withRawInputStream (new RecordSound ().recordRawInputStream (streamInfo, stop), streamInfo);
     }
-    
+
     @Override
     /**
      * Tells the client to work first with a sound object

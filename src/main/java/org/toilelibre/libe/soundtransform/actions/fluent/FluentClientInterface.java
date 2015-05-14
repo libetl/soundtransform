@@ -172,7 +172,8 @@ public interface FluentClientInterface {
     public abstract FluentClientSoundImported extractSound () throws SoundTransformException;
 
     /**
-     * Extracts a part of the sound between the sample #start and the sample #end
+     * Extracts a part of the sound between the sample #start and the sample
+     * #end
      *
      * @param start
      *            the first sample to extract
@@ -211,7 +212,7 @@ public interface FluentClientInterface {
     public abstract FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException;
 
     /**
-     * Uses the current input stream object to convert it into a sound 
+     * Uses the current input stream object to convert it into a sound
      *
      * @return the client, with a sound imported
      * @throws SoundTransformException
@@ -242,7 +243,8 @@ public interface FluentClientInterface {
     public abstract FluentClientWithFreqs insertPart (List<float []> subFreqs, int start);
 
     /**
-     * Extracts a part of the sound between the sample #start and the sample #end
+     * Extracts a part of the sound between the sample #start and the sample
+     * #end
      *
      * @param length
      *            the number of samples of the result sound
