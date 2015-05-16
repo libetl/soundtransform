@@ -72,7 +72,7 @@ public class ReduceNoiseSoundTransform extends SimpleFrequencySoundTransform<Com
     }
 
     private double getMaxAbs (final int sampleSize) {
-        return Math.pow (BYTE_NB_VALUES, sampleSize + 1) * this.percentOfMaxVolumeThreshold / ReduceNoiseSoundTransform.HIGH_BOUND;
+        return Math.pow (ReduceNoiseSoundTransform.BYTE_NB_VALUES, sampleSize + 1) * this.percentOfMaxVolumeThreshold / ReduceNoiseSoundTransform.HIGH_BOUND;
     }
 
     private float oneIfTrueElseZero (final boolean condition) {
