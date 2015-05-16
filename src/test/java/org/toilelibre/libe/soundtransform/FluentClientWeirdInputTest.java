@@ -15,6 +15,7 @@ import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient.FluentClientErrorCode;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation.FluentClientOperationErrorCode;
+import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.ReduceNoiseSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
@@ -333,5 +334,17 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
     @Test (expected = SoundTransformException.class)
     public void cutSoundEndOutOfBounds () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().cutSubSound (3000, 300000);
+    }
+    
+    @Test (expected = SoundTransformException.class)
+    public void testReduceNoiseBelow0 () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ()
+        .apply (new ReduceNoiseSoundTransform (-30));
+    }
+    
+    @Test (expected = SoundTransformException.class)
+    public void testReduceNoiseAbove100 () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ()
+        .apply (new ReduceNoiseSoundTransform (130));
     }
 }
