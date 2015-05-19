@@ -805,6 +805,9 @@ Parameters:
 Returns:  
 the client, with a loudest frequencies float array
 
+Throws:  
+`SoundTransformException` - can occur if low is greater than or equal to high
+
 #####   FluentClientSoundImported.findLoudestFrequencies
 
 ```java
@@ -1011,6 +1014,27 @@ the client, with the spectrums
 
 Throws:  
 `SoundTransformException` - could not convert the sound into some spectrums
+
+
+#####   FluentClientWithFreqs.surroundInRange
+
+```java
+FluentClientWithFreqs surroundInRange (float low, float high)
+```
+
+
+Changes the loudest frequencies so every value is between low and high
+
+Parameters:  
+`low` - lowest frequency of the range
+
+`high` - highest frequency of the range
+
+Returns:  
+the client, with a loudest frequencies float array
+
+Throws:  
+`SoundTransformException` - can occur if low is greater than or equal to high
 
 #####   FluentClientWithInputStream.writeToClasspathResource
 
@@ -1503,6 +1527,25 @@ Full constructor with every parameter specified
    * `note` — if true, the whole sound will be transformed at once to know the loudest freq.
    * `step` — the iteration step value
    * `windowLength` — length of the spectrum used during each iteration (the highest the slowest)
+
+##### ReduceNoiseSoundTransform
+```java
+public class ReduceNoiseSoundTransform extends SimpleFrequencySoundTransform<Complex []>
+```
+
+Set a frequency volume to 0 if the volume is below a threshold
+
+ * **Constructor:**
+```java
+public ReduceNoiseSoundTransform (float percentOfMaxVolumeThreshold)
+```
+
+Default constructor
+
+ * **Parameters:**
+   * `percentOfMaxVolumeThreshold` — percent of max volume threshold
+
+ * **Exception:** `SoundTransformException` — if the percentOfMaxVolumeThreshold param is not between 0 and 100%
 
 ##### ShapeSoundTransform
 ```java

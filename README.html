@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>README.html</title>
+<title>/mnt/data/lionel/Documents/workspace/soundtransform/.README.md.html</title>
 
 
 <style type="text/css">
@@ -1065,6 +1065,7 @@ function setDocumentScrollTop(ypos)
 <p>Parameters:<br /> <code>low</code> - low frequency (first one to avoid)</p> 
 <p><code>high</code> - high frequency (last one to avoid)</p> 
 <p>Returns:<br /> the client, with a loudest frequencies float array</p> 
+<p>Throws:<br /> <code>SoundTransformException</code> - can occur if low is greater than or equal to high</p> 
 <h5> <a id="user-content-fluentclientsoundimportedfindloudestfrequencies" class="anchor" href="#fluentclientsoundimportedfindloudestfrequencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>FluentClientSoundImported.findLoudestFrequencies</h5> 
 <div class="highlight highlight-java">
  <pre><span class="pl-smi">FluentClientWithFreqs</span> findLoudestFrequencies () throws <span class="pl-smi">SoundTransformException</span></pre>
@@ -1161,6 +1162,15 @@ function setDocumentScrollTop(ypos)
 <p>Uses the current sound to pick its spectrums and set that as the current data in the pipeline</p> 
 <p>Returns:<br /> the client, with the spectrums</p> 
 <p>Throws:<br /> <code>SoundTransformException</code> - could not convert the sound into some spectrums</p> 
+<h5> <a id="user-content-fluentclientwithfreqssurroundinrange" class="anchor" href="#fluentclientwithfreqssurroundinrange" aria-hidden="true"><span class="octicon octicon-link"></span></a>FluentClientWithFreqs.surroundInRange</h5> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-smi">FluentClientWithFreqs</span> surroundInRange (<span class="pl-k">float</span> low, <span class="pl-k">float</span> high)</pre>
+</div> 
+<p>Changes the loudest frequencies so every value is between low and high</p> 
+<p>Parameters:<br /> <code>low</code> - lowest frequency of the range</p> 
+<p><code>high</code> - highest frequency of the range</p> 
+<p>Returns:<br /> the client, with a loudest frequencies float array</p> 
+<p>Throws:<br /> <code>SoundTransformException</code> - can occur if low is greater than or equal to high</p> 
 <h5> <a id="user-content-fluentclientwithinputstreamwritetoclasspathresource" class="anchor" href="#fluentclientwithinputstreamwritetoclasspathresource" aria-hidden="true"><span class="octicon octicon-link"></span></a>FluentClientWithInputStream.writeToClasspathResource</h5> 
 <div class="highlight highlight-java">
  <pre><span class="pl-smi">FluentClientWithFile</span> writeToClasspathResource (<span class="pl-smi">String</span> resource) throws <span class="pl-smi">SoundTransformException</span></pre>
@@ -1539,6 +1549,25 @@ function setDocumentScrollTop(ypos)
    <li> <code>step</code> — the iteration step value</li> 
    <li> <code>windowLength</code> — length of the spectrum used during each iteration (the highest the slowest)</li> 
   </ul> </li> 
+</ul> 
+<h5> <a id="user-content-reducenoisesoundtransform" class="anchor" href="#reducenoisesoundtransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>ReduceNoiseSoundTransform</h5> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">ReduceNoiseSoundTransform</span> <span class="pl-k">extends</span> <span class="pl-e">SimpleFrequencySoundTransform&lt;<span class="pl-smi">Complex</span> [</span>]&gt;</pre>
+</div> 
+<p>Set a frequency volume to 0 if the volume is below a threshold</p> 
+<ul> 
+ <li><strong>Constructor:</strong></li> 
+</ul> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-k">public</span> <span class="pl-smi">ReduceNoiseSoundTransform</span> (<span class="pl-k">float</span> percentOfMaxVolumeThreshold)</pre>
+</div> 
+<p>Default constructor</p> 
+<ul> 
+ <li> <p><strong>Parameters:</strong></p> 
+  <ul> 
+   <li> <code>percentOfMaxVolumeThreshold</code> — percent of max volume threshold</li> 
+  </ul> </li> 
+ <li><p><strong>Exception:</strong> <code>SoundTransformException</code> — if the percentOfMaxVolumeThreshold param is not between 0 and 100%</p></li> 
 </ul> 
 <h5> <a id="user-content-shapesoundtransform" class="anchor" href="#shapesoundtransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>ShapeSoundTransform</h5> 
 <div class="highlight highlight-java">

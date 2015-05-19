@@ -37,12 +37,11 @@ public class ReduceNoiseSoundTransform extends SimpleFrequencySoundTransform<Com
     private float percentOfMaxVolumeThreshold;
 
     /**
-     * Default constructor. A mathematical representation of a curve
-     * amplification/freqs is asked in the parameters
+     * Default constructor. 
      *
      * @param percentOfMaxVolumeThreshold
      *            percent of max volume threshold (between 0 and 100%)
-     * @throws SoundTransformException if the param is not between 0 and 100%
+     * @throws SoundTransformException if the percentOfMaxVolumeThreshold param is not between 0 and 100%
      */
     public ReduceNoiseSoundTransform (final float percentOfMaxVolumeThreshold1) throws SoundTransformException {
         super ();
