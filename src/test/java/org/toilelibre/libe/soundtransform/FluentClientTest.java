@@ -72,6 +72,7 @@ public class FluentClientTest extends SoundTransformTest {
                 .convertIntoSound ()
                 .findLoudestFrequencies ()
                 .filterRange (0, 1000)
+                .surroundInRange (0, 1000)
                 .adjust ()
                 .octaveDown ()
                 .octaveUp ()
