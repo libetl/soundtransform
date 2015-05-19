@@ -14,6 +14,7 @@ import org.toilelibre.libe.soundtransform.model.freqs.ChangeOctaveProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.CompressFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.FilterFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.ReplaceFrequenciesProcessor;
+import org.toilelibre.libe.soundtransform.model.freqs.SurroundInRangeProcessor;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
@@ -55,6 +56,7 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
         super.bind (FilterFrequenciesProcessor.class).to (this.provideFilterFrequenciesProcessor ());
         super.bind (ReplaceFrequenciesProcessor.class).to (this.provideReplaceFrequenciesProcessor ());
         super.bind (CompressFrequenciesProcessor.class).to (this.provideCompressFrequenciesProcessor ());
+        super.bind (SurroundInRangeProcessor.class).to (this.provideSurroundInRangeFrequenciesProcessor());
 
         for (final Entry<Class<? extends Object>, Class<? extends Object>> serviceClassEntry : this.usedImpls.entrySet ()) {
             @SuppressWarnings ("unchecked")

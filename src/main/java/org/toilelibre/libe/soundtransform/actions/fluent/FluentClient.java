@@ -341,9 +341,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @param high
      *            high frequency (last one to avoid)
      * @return the client, with a loudest frequencies float array
+     * @throws SoundTransformException can occur if low is greater than or equal to high
      */
     @Override
-    public FluentClientWithFreqs filterRange (final float low, final float high) {
+    public FluentClientWithFreqs filterRange (final float low, final float high) throws SoundTransformException {
         this.freqs = new ChangeLoudestFreqs ().filterRange (this.freqs, low, high);
         return this;
     }
@@ -865,6 +866,22 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return new GetStreamInfo (this.getObservers ()).getStreamInfo (this.audioInputStream);
     }
 
+    /**
+     * Changes the loudest frequencies so every value is between low and high
+     * 
+     * @param low lowest frequency of the range
+     * @param high highest frequency of the range
+     *
+     * @return the client, with a loudest frequencies float array
+
+     * @throws SoundTransformException can occur if low is greater than or equal to high
+     */
+    @Override
+    public FluentClientWithFreqs surroundInRange (final float low, final float high) throws SoundTransformException {
+        this.freqs = new ChangeLoudestFreqs ().surroundInRange (this.freqs, low, high);
+        return this;
+    }
+    
     @Override
     /**
      * Tells the client to add an observer that will be notified of different kind of updates

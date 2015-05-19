@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.actions.transform;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.actions.Action;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 public final class ChangeLoudestFreqs extends Action {
 
@@ -14,7 +15,7 @@ public final class ChangeLoudestFreqs extends Action {
         return this.loudestFreqs.compress (freqs, factor);
     }
 
-    public List<float []> filterRange (final List<float []> freqs, final float low, final float high) {
+    public List<float []> filterRange (final List<float []> freqs, final float low, final float high) throws SoundTransformException {
         return this.loudestFreqs.filterRange (freqs, low, high);
     }
 
@@ -32,5 +33,9 @@ public final class ChangeLoudestFreqs extends Action {
 
     public List<float []> replacePart (final List<float []> freqs, final List<float []> subFreqs, final int start) {
         return this.loudestFreqs.replacePart (freqs, subFreqs, start);
+    }
+
+    public List<float []> surroundInRange (final List<float []> freqs, final float low, final float high) throws SoundTransformException {
+        return this.loudestFreqs.surroundInRange (freqs, low, high);
     }
 }

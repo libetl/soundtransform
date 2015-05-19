@@ -6,6 +6,7 @@ import org.toilelibre.libe.soundtransform.model.freqs.ChangeOctaveProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.CompressFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.FilterFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.ReplaceFrequenciesProcessor;
+import org.toilelibre.libe.soundtransform.model.freqs.SurroundInRangeProcessor;
 
 public abstract class FreqsAccessor extends FrameProcessorAccessor {
 
@@ -27,6 +28,10 @@ public abstract class FreqsAccessor extends FrameProcessorAccessor {
 
     protected ReplaceFrequenciesProcessor provideReplaceFrequenciesProcessor () {
         return new SimpleReplaceFrequenciesProcessor ();
+    }
+
+    protected SurroundInRangeProcessor provideSurroundInRangeFrequenciesProcessor () {
+        return new SimpleSurroundInOctaveProcessor ();
     }
 
 }

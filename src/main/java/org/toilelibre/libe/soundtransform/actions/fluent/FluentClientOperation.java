@@ -485,6 +485,19 @@ BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
     }
 
     @Override
+    public BuildableFluentClientOperationWithFreqs surroundInRange (final float low, final float high) throws SoundTransformException {
+        this.steps.add (new Step () {
+
+            @Override
+            public void run (final FluentClientInterface client) throws SoundTransformException {
+                client.surroundInRange (low, high);
+            }
+        });
+
+        return this;
+    }
+
+    @Override
     public FluentClientOperation build () {
         return this;
     }

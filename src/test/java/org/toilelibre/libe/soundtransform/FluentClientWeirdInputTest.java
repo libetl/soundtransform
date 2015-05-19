@@ -59,6 +59,16 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
     }
 
     @Test (expected = SoundTransformException.class)
+    public void filterRangeOutOfBounds () throws SoundTransformException {
+        FluentClient.start ().withClasspathResource ("piano3e.wav").convertIntoSound ().findLoudestFrequencies().filterRange(400, 300);
+    }
+
+    @Test (expected = SoundTransformException.class)
+    public void surroundInRangeOutOfBounds () throws SoundTransformException {
+        FluentClient.start ().withClasspathResource ("piano3e.wav").convertIntoSound ().findLoudestFrequencies().surroundInRange(400, 300);
+    }
+
+    @Test (expected = SoundTransformException.class)
     public void subsoundOutOfBounds () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (-100000, 200000).exportToClasspathResource ("after.wav");
     }
@@ -255,7 +265,7 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
     @Test
     public void canAskToDoALotOfThingsToTheFluentClientOperationAndNothingShouldBeDone () throws SoundTransformException {
         FluentClientOperation.prepare ().importToSound ().append (null).apply (null).changeFormat (null).cutSubSound (0, 0).playIt ().changeFormat (null).exportToClasspathResource (null).playIt ().importToStream ().playIt ().importToSound ().exportToClasspathResourceWithSiblingResource (null, null)
-        .convertIntoSound ().exportToFile (null).convertIntoSound ().exportToStream ().importToSound ().findLoudestFrequencies ().compress (0).filterRange (0, 0).insertPart (null, 0).octaveDown ().octaveUp ().replacePart (null, 0).shapeIntoSound (null, null, null).loop (0).mixWith (null)
+        .convertIntoSound ().exportToFile (null).convertIntoSound ().exportToStream ().importToSound ().findLoudestFrequencies ().compress (0).filterRange (0, 0).insertPart (null, 0).octaveDown ().octaveUp ().surroundInRange(0, 1).replacePart (null, 0).shapeIntoSound (null, null, null).loop (0).mixWith (null)
         .splitIntoSpectrums ().playIt ().extractSound ();
 
     }

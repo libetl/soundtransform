@@ -194,8 +194,10 @@ public interface FluentClientInterface {
      * @param high
      *            high frequency (last one to avoid)
      * @return the client, with a loudest frequencies float array
+     * 
+     * @throws SoundTransformException can occur if low is greater than or equal to high
      */
-    public abstract FluentClientWithFreqs filterRange (float low, float high);
+    public abstract FluentClientWithFreqs filterRange (float low, float high) throws SoundTransformException;
 
     /**
      * Will invoke a soundtransform to find the loudest frequencies of the
@@ -328,6 +330,18 @@ public interface FluentClientInterface {
      *             could not convert the sound into some spectrums
      */
     public abstract FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException;
+    
+    /**
+     * Changes the loudest frequencies so every value is between low and high
+     * 
+     * @param low lowest frequency of the range
+     * @param high highest frequency of the range
+     *
+     * @return the client, with a loudest frequencies float array
+
+     * @throws SoundTransformException can occur if low is greater than or equal to high
+     */
+    public abstract FluentClientWithFreqs surroundInRange (final float low, final float high) throws SoundTransformException;
 
     /**
      * Writes the current InputStream in a classpath resource in the same folder

@@ -3,6 +3,8 @@ package org.toilelibre.libe.soundtransform.model.freqs;
 import java.util.Arrays;
 import java.util.List;
 
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+
 final class DefaultLoudestFreqsService implements LoudestFreqsService {
 
     private static final float                 HALF  = 0.5f;
@@ -12,15 +14,17 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
     private final AdjustFrequenciesProcessor   adjustFrequenciesProcessor;
     private final FilterFrequenciesProcessor   filterFrequenciesProcessor;
     private final ReplaceFrequenciesProcessor  replaceFrequenciesProcessor;
+    private final SurroundInRangeProcessor     surroundInRangeProcessor;
     private final CompressFrequenciesProcessor compressFrequenciesProcessor;
 
     public DefaultLoudestFreqsService (final ChangeOctaveProcessor changeOctaveProcessor1, final AdjustFrequenciesProcessor adjustFrequenciesProcessor1, final FilterFrequenciesProcessor filterFrequenciesProcessor1, final ReplaceFrequenciesProcessor replaceFrequenciesProcessor1,
-            final CompressFrequenciesProcessor compressFrequenciesProcessor1) {
+            final CompressFrequenciesProcessor compressFrequenciesProcessor1, SurroundInRangeProcessor surroundInRangeProcessor1) {
         this.changeOctaveProcessor = changeOctaveProcessor1;
         this.adjustFrequenciesProcessor = adjustFrequenciesProcessor1;
         this.filterFrequenciesProcessor = filterFrequenciesProcessor1;
         this.replaceFrequenciesProcessor = replaceFrequenciesProcessor1;
         this.compressFrequenciesProcessor = compressFrequenciesProcessor1;
+        this.surroundInRangeProcessor = surroundInRangeProcessor1;
     }
 
     /*
@@ -62,7 +66,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
      * filterRange(float[], float, float)
      */
     @Override
-    public List<float []> filterRange (final List<float []> freqs, final float low, final float high) {
+    public List<float []> filterRange (final List<float []> freqs, final float low, final float high) throws SoundTransformException {
         final float [][] result = new float [freqs.size ()] [];
         for (int i = 0 ; i < freqs.size () ; i++) {
             result [i] = this.filterFrequenciesProcessor.filter (freqs.get (i), low, high);
@@ -129,6 +133,15 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
         final float [][] result = new float [freqs.size ()] [];
         for (int i = 0 ; i < freqs.size () ; i++) {
             result [i] = this.replaceFrequenciesProcessor.replacePart (freqs.get (i), subFreqs.get (i), start);
+        }
+        return Arrays.asList (result);
+    }
+
+    @Override
+    public List<float[]> surroundInRange(List<float[]> freqs, float low, float high) throws SoundTransformException {
+        final float [][] result = new float [freqs.size ()] [];
+        for (int i = 0 ; i < freqs.size () ; i++) {
+            result [i] = this.surroundInRangeProcessor.surroundFreqsInRange (freqs.get (i), low, high);
         }
         return Arrays.asList (result);
     }

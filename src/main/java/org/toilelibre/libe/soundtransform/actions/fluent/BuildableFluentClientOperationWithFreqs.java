@@ -109,4 +109,17 @@ public interface BuildableFluentClientOperationWithFreqs extends FluentClientWit
      */
     @Override
     List<float []> stopWithFreqs ();
+    
+    /**
+     * Changes the loudest frequencies so every value is between low and high
+     * 
+     * @param low lowest frequency of the range
+     * @param high highest frequency of the range
+     *
+     * @return the client, with a loudest frequencies float array
+
+     * @throws SoundTransformException can occur if low is greater than or equal to high
+     */
+    BuildableFluentClientOperationWithFreqs surroundInRange (final float low, final float high) throws SoundTransformException;
+    
 }
