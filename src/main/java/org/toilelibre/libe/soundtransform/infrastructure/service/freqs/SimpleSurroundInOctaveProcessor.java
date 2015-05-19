@@ -6,7 +6,7 @@ import org.toilelibre.libe.soundtransform.model.freqs.SurroundInRangeProcessor;
 final class SimpleSurroundInOctaveProcessor implements SurroundInRangeProcessor {
 
     private static final float OCTAVE_HALF = 1.5f;
-    private static final float TWICE = 2f;
+    private static final float TWO = 2f;
     
     @Override
     public float[] surroundFreqsInRange(float[] freqs, final float low, final float high) throws SoundTransformException {
@@ -23,14 +23,14 @@ final class SimpleSurroundInOctaveProcessor implements SurroundInRangeProcessor 
     private float surroundFreqInRange(float inputValue, final float low, final float high) {
         float result = inputValue;
         while (result < low) {
-            result *= 2.0;
+            result *= SimpleSurroundInOctaveProcessor.TWO;
         }
         while (result > high) {
-            result /= 2.0;
+            result /= SimpleSurroundInOctaveProcessor.TWO;
         }
         
-        while (result < low && result * TWICE > high){
-            result *= OCTAVE_HALF;
+        while (result < low && result * SimpleSurroundInOctaveProcessor.TWO > high){
+            result *= SimpleSurroundInOctaveProcessor.OCTAVE_HALF;
         }
         return result;
     }
