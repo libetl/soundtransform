@@ -40,6 +40,9 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @param st
      *            the SoundTransform to apply
      * @return a result in the expected kind
+     * 
+     * @param <T> the output type of the transform and the array component type of the returned value
+     *
      * @throws SoundTransformException
      *             if the transform does not work
      */
@@ -51,9 +54,8 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      * @param formatInfo
      *            the new expected format
      * @return the client, with a sound imported
-     * @throws SoundTransformException
      */
-    FluentClientSoundImported changeFormat (FormatInfo formatInfo) throws SoundTransformException;
+    FluentClientSoundImported changeFormat (FormatInfo formatInfo);
 
     /**
      * Splices a part of the sound between the sample #start and the sample #end

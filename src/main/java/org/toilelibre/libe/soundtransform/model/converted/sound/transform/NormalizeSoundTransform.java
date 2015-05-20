@@ -34,7 +34,7 @@ public class NormalizeSoundTransform implements SoundTransform<Channel, Channel>
      * Default constructor
      *
      * @param coefficient1
-     *            coefficient of the max level (0 <= coefficient <= 1)
+     *            coefficient of the max level (0 &lt;= coefficient &lt;= 1)
      * @throws SoundTransformException
      *             The coefficient of the normalizer is above one or below zero
      */

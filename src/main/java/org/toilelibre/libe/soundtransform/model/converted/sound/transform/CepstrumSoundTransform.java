@@ -16,10 +16,10 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
  * Transforms a sound into a list of cepstrums (log modulus of the spectrums).
  * Useful to get the f0 values of a sound (loudest freqs array).
  *
- * The obtained Spectrum are not really spectrums. They consist of a graph a
- * quefrencies (and not frequencies).<br/>
- * The peak can represent the f0 (if the FormatInfo of the input sound is
- * adequate), but it is not faithful everytime.<br/>
+ * <p>The obtained Spectrum are not really spectrums. They consist of a graph a
+ * quefrencies (and not frequencies).</p>
+ * <p>The peak can represent the f0 (if the FormatInfo of the input sound is
+ * adequate), but it is not faithful everytime.</p>
  * This method can detect wrong values.
  *
  * @param <T>

@@ -94,7 +94,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @param defaultObservers1
      *            one or more observer(s)
      *
-     * @return the client, in its current state.
      */
     public static void setDefaultObservers (final Observer... defaultObservers1) {
         FluentClient.defaultObservers = new LinkedList<Observer> (Arrays.<Observer> asList (defaultObservers1));
@@ -138,7 +137,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Appends the sound passed in parameter to the current sound stored in the
      * client
      *
-     * @param sound
+     * @param sound1
      *            the sound to append the current sound to
      * @return the client, with a sound imported
      * @throws SoundTransformException
@@ -171,6 +170,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *
      * @param st
      *            the SoundTransform to apply
+     * 
+     * @param <T> the output type of the transform and the array component type of the returned value
      * @return a result in the expected kind
      * @throws SoundTransformException
      *             if the transform does not work
@@ -181,9 +182,16 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         final Object result = new ApplySoundTransform (this.getObservers ()).apply (this.sound.getChannels (), st);
         return (T []) result;
     }
-
+    
+    /**
+     * Changes the current imported sound to fit the expected format
+     *
+     * @param formatInfo
+     *            the new expected format
+     * @return the client, with a sound imported
+     */
     @Override
-    public FluentClientSoundImported changeFormat (final FormatInfo formatInfo) throws SoundTransformException {
+    public FluentClientSoundImported changeFormat (final FormatInfo formatInfo) {
         this.sound = new ChangeSoundFormat (this.getObservers ()).changeFormat (this.sound, formatInfo);
         return this;
     }
@@ -432,7 +440,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Runs asynchronously the same operations on a varargs of started
      * FluentClients
      *
-     * @param op
+     * @param operation
      *            a list of operation to apply
      * @param timeoutInSeconds
      *            a timeout value. After that, the operation will be stopped,
@@ -486,8 +494,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *            even if it is still processing. You can choose
      *            Integer.MAX_VALUE as a value if you are convinced that it will
      *            finish.
-     * @param sound1
-     *            a list of sound (each Sound object is a sound channel)
+     * @param sounds
+     *            a list of sound
      * @return the client, with a list of clients inside holding a value each
      * @throws SoundTransformException
      *             can happen if there was a problem during the flow, or if the

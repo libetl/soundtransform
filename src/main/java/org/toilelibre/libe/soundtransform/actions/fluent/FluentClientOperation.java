@@ -342,7 +342,7 @@ BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
     }
 
     @Override
-    public BuildableFluentClientOperationSoundImported changeFormat (final FormatInfo formatInfo) throws SoundTransformException {
+    public BuildableFluentClientOperationSoundImported changeFormat (final FormatInfo formatInfo) {
         this.steps.add (new Step () {
 
             @Override

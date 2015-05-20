@@ -22,6 +22,9 @@ public interface FluentClientWithParallelizedClients extends FluentClientCommon 
      *            You have to specify what type of result you expect. the value
      *            can be one of this list : (Sound.class, InputStream.class,
      *            File.class, String.class, float [].class)
+     *
+     * @param <T> the array component type of the returned value
+     *
      * @return an array of results
      */
     <T> T [] stopWithResults (Class<T> resultClass);

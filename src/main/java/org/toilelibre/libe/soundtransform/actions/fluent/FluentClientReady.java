@@ -46,6 +46,10 @@ public interface FluentClientReady extends FluentClientCommon {
      *            finish.
      * @param clients
      *            a list of started FluentClients
+     *
+     * @param <T>
+     *            the FluentClients choosen type
+     *
      * @return the client, with a list of clients inside holding a value each
      * @throws SoundTransformException
      *             can happen if there was a problem during the flow, or if the
@@ -149,9 +153,9 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
 
     /**
-     * Tells the client to add an observer that will be notified of different
+     * <p>Tells the client to add an observer that will be notified of different
      * kind of updates from the library. It is ok to call withAnObserver several
-     * times.<br/>
+     * times. </p>
      * If the andAfterStart method is called, the subscribed observers are
      * removed
      *
@@ -193,6 +197,8 @@ public interface FluentClientReady extends FluentClientCommon {
      * Tells the client to work with a pack. Uses the context object to find the
      * resource from the R object passed in parameter
      *
+     * @param packName
+     *            the name of the pack
      * @param context
      *            the Android context (should be an instance of
      *            `android.content.Context`, but left as Object so the
@@ -211,8 +217,8 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientReady withAPack (String packName, Object context, Class<?> rClass, int packJsonId) throws SoundTransformException;
 
     /**
-     * Tells the client to work with a pack. Reads the whole string content. A
-     * pattern must be followed in the jsonContent to enable the import.<br/>
+     * <p>Tells the client to work with a pack. Reads the whole string content. A
+     * pattern must be followed in the jsonContent to enable the import.</p>
      *
      * Here is the format allowed in the file
      *
@@ -250,8 +256,8 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientReady withAPack (String packName, String jsonContent) throws SoundTransformException;
 
     /**
-     * Tells the client to work first with an InputStream. It will not be read
-     * yet<br/>
+     * <p>Tells the client to work first with an InputStream. It will not be read
+     * yet</p>
      * The passed inputStream must own a format metadata object. Therefore it
      * must be an AudioInputStream.
      *
@@ -307,9 +313,9 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException;
 
     /**
-     * Tells the client to work first with a byte array InputStream or any
+     * <p>Tells the client to work first with a byte array InputStream or any
      * readable DataInputStream. It will be read and transformed into an
-     * AudioInputStream<br/>
+     * AudioInputStream</p>
      * The passed inputStream must not contain any metadata piece of
      * information.
      *
@@ -353,7 +359,7 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientSoundImported withSound (Sound sound);
 
     /**
-     * Tells the client to work first with a spectrum formatted sound.<br/>
+     * <p>Tells the client to work first with a spectrum formatted sound.</p>
      * The spectrums inside must be in a list (each item must correspond to a
      * channel) The spectrums are ordered in an array in chronological order
      *

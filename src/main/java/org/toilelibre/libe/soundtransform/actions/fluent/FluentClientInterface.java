@@ -57,8 +57,7 @@ public interface FluentClientInterface {
      *
      * @param st
      *            the SoundTransform to apply
-     * @param resultClass
-     *            expected kind of result
+     * @param <T> the output type of the transform and the array component type of the returned value
      * @return a result in the expected kind
      * @throws SoundTransformException
      *             if the transform does not work
@@ -71,9 +70,8 @@ public interface FluentClientInterface {
      * @param formatInfo
      *            the new expected format
      * @return the client, with a sound imported
-     * @throws SoundTransformException
      */
-    public abstract FluentClientSoundImported changeFormat (FormatInfo formatInfo) throws SoundTransformException;
+    public abstract FluentClientSoundImported changeFormat (FormatInfo formatInfo);
 
     /**
      * Compresses the loudest freq array (speedup or slowdown) When shaped into
@@ -200,10 +198,10 @@ public interface FluentClientInterface {
     public abstract FluentClientWithFreqs filterRange (float low, float high) throws SoundTransformException;
 
     /**
-     * Will invoke a soundtransform to find the loudest frequencies of the
-     * sound, chronologically<br/>
-     * Caution : the original sound will be lost, and it will be impossible to
-     * revert this conversion.<br/>
+     * <p>Will invoke a soundtransform to find the loudest frequencies of the
+     * sound, chronologically</p>
+     * <p>Caution : the original sound will be lost, and it will be impossible to
+     * revert this conversion.</p>
      * When shaped into a sound, the new sound will only sounds like the
      * instrument you shaped the freqs with
      *

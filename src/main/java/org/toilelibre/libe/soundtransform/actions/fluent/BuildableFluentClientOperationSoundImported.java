@@ -41,6 +41,9 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      *
      * @param st
      *            the SoundTransform to apply
+     * 
+     * @param <T> the output type of the transform and the array component type of the returned value
+     *
      * @return a result in the expected kind
      * @throws SoundTransformException
      *             if the transform does not work
@@ -54,10 +57,9 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      * @param formatInfo
      *            the new expected format
      * @return the client, with a sound imported
-     * @throws SoundTransformException
      */
     @Override
-    BuildableFluentClientOperationSoundImported changeFormat (FormatInfo formatInfo) throws SoundTransformException;
+    BuildableFluentClientOperationSoundImported changeFormat (FormatInfo formatInfo);
 
     /**
      * Splices a part of the sound between the sample #start and the sample #end

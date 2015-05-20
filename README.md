@@ -628,7 +628,7 @@ Returns:
 the client, with a sound imported
 
 Throws:  
-`SoundTransformException`
+`SoundTransformException` - if the transform does not work
 
 #####   FluentClientWithFreqs.compress
 

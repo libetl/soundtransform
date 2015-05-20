@@ -39,7 +39,7 @@ public class ReduceNoiseSoundTransform extends SimpleFrequencySoundTransform<Com
     /**
      * Default constructor. 
      *
-     * @param percentOfMaxVolumeThreshold
+     * @param percentOfMaxVolumeThreshold1
      *            percent of max volume threshold (between 0 and 100%)
      * @throws SoundTransformException if the percentOfMaxVolumeThreshold param is not between 0 and 100%
      */
