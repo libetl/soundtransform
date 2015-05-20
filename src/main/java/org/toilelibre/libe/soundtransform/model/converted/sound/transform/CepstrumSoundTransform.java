@@ -143,7 +143,7 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
     }
 
     @Override
-    public CepstrumSoundTransform<T> setObservers(Observer... observers1) {
+    public CepstrumSoundTransform<T> setObservers (Observer... observers1) {
         this.decoratedTransform.setObservers (observers1);
         return this;
     }
