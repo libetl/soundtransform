@@ -10,6 +10,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelpe
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 /**
  * Finds the loudest frequencies array using the Harmonic Product Spectrum
@@ -197,4 +198,11 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
     public float getDetectedNoteVolume () {
         return this.decoratedTransform.getDetectedNoteVolume ();
     }
+
+    @Override
+    public PeakFindWithHPSSoundTransform<T> setObservers(Observer... observers1) {
+        this.decoratedTransform.setObservers (observers1);
+        return this;
+    }
+
 }

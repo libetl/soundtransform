@@ -10,6 +10,7 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCep
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 /**
  * Transforms a sound into a list of cepstrums (log modulus of the spectrums).
@@ -140,5 +141,12 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
     public float getDetectedNoteVolume () {
         return this.decoratedTransform.getDetectedNoteVolume ();
     }
+
+    @Override
+    public CepstrumSoundTransform<T> setObservers(Observer... observers1) {
+        this.decoratedTransform.setObservers (observers1);
+        return this;
+    }
+
 
 }
