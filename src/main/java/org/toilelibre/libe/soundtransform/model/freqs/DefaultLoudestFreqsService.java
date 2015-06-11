@@ -18,7 +18,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
     private final CompressFrequenciesProcessor compressFrequenciesProcessor;
 
     public DefaultLoudestFreqsService (final ChangeOctaveProcessor changeOctaveProcessor1, final AdjustFrequenciesProcessor adjustFrequenciesProcessor1, final FilterFrequenciesProcessor filterFrequenciesProcessor1, final ReplaceFrequenciesProcessor replaceFrequenciesProcessor1,
-            final CompressFrequenciesProcessor compressFrequenciesProcessor1, SurroundInRangeProcessor surroundInRangeProcessor1) {
+            final CompressFrequenciesProcessor compressFrequenciesProcessor1, final SurroundInRangeProcessor surroundInRangeProcessor1) {
         this.changeOctaveProcessor = changeOctaveProcessor1;
         this.adjustFrequenciesProcessor = adjustFrequenciesProcessor1;
         this.filterFrequenciesProcessor = filterFrequenciesProcessor1;
@@ -138,7 +138,7 @@ final class DefaultLoudestFreqsService implements LoudestFreqsService {
     }
 
     @Override
-    public List<float[]> surroundInRange(List<float[]> freqs, float low, float high) throws SoundTransformException {
+    public List<float []> surroundInRange (final List<float []> freqs, final float low, final float high) throws SoundTransformException {
         final float [][] result = new float [freqs.size ()] [];
         for (int i = 0 ; i < freqs.size () ; i++) {
             result [i] = this.surroundInRangeProcessor.surroundFreqsInRange (freqs.get (i), low, high);

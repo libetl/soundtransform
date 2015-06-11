@@ -153,9 +153,11 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
 
     /**
-     * <p>Tells the client to add an observer that will be notified of different
+     * <p>
+     * Tells the client to add an observer that will be notified of different
      * kind of updates from the library. It is ok to call withAnObserver several
-     * times. </p>
+     * times.
+     * </p>
      * If the andAfterStart method is called, the subscribed observers are
      * removed
      *
@@ -217,8 +219,10 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientReady withAPack (String packName, Object context, Class<?> rClass, int packJsonId) throws SoundTransformException;
 
     /**
-     * <p>Tells the client to work with a pack. Reads the whole string content. A
-     * pattern must be followed in the jsonContent to enable the import.</p>
+     * <p>
+     * Tells the client to work with a pack. Reads the whole string content. A
+     * pattern must be followed in the jsonContent to enable the import.
+     * </p>
      *
      * Here is the format allowed in the file
      *
@@ -256,8 +260,10 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientReady withAPack (String packName, String jsonContent) throws SoundTransformException;
 
     /**
-     * <p>Tells the client to work first with an InputStream. It will not be read
-     * yet</p>
+     * <p>
+     * Tells the client to work first with an InputStream. It will not be read
+     * yet
+     * </p>
      * The passed inputStream must own a format metadata object. Therefore it
      * must be an AudioInputStream.
      *
@@ -313,9 +319,11 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientWithInputStream withLimitedTimeRecordedInputStream (final StreamInfo streamInfo) throws SoundTransformException;
 
     /**
-     * <p>Tells the client to work first with a byte array InputStream or any
+     * <p>
+     * Tells the client to work first with a byte array InputStream or any
      * readable DataInputStream. It will be read and transformed into an
-     * AudioInputStream</p>
+     * AudioInputStream
+     * </p>
      * The passed inputStream must not contain any metadata piece of
      * information.
      *
@@ -359,7 +367,9 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientSoundImported withSound (Sound sound);
 
     /**
-     * <p>Tells the client to work first with a spectrum formatted sound.</p>
+     * <p>
+     * Tells the client to work first with a spectrum formatted sound.
+     * </p>
      * The spectrums inside must be in a list (each item must correspond to a
      * channel) The spectrums are ordered in an array in chronological order
      *

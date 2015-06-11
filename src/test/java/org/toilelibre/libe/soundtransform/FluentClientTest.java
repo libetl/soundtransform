@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.InsertPartSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
@@ -70,6 +72,8 @@ public class FluentClientTest extends SoundTransformTest {
                 .exportToStream ()
                 .writeToClasspathResource ("after.wav")
                 .convertIntoSound ()
+                .findLoudestFrequencies (new PeakFindWithHPSSoundTransform<Serializable> (100))
+                .shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100))
                 .findLoudestFrequencies ()
                 .filterRange (0, 1000)
                 .surroundInRange (0, 1000)

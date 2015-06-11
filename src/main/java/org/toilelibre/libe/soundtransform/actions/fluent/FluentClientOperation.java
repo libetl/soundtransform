@@ -9,6 +9,7 @@ import java.util.List;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
@@ -439,6 +440,19 @@ BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
             @Override
             public void run (final FluentClientInterface client) throws SoundTransformException {
                 client.findLoudestFrequencies ();
+            }
+        });
+
+        return this;
+    }
+
+    @Override
+    public BuildableFluentClientOperationWithFreqs findLoudestFrequencies (final PeakFindSoundTransform<?, ?> peakFindSoundTransform) throws SoundTransformException {
+        this.steps.add (new Step () {
+
+            @Override
+            public void run (final FluentClientInterface client) throws SoundTransformException {
+                client.findLoudestFrequencies (peakFindSoundTransform);
             }
         });
 

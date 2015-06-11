@@ -170,8 +170,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *
      * @param st
      *            the SoundTransform to apply
-     * 
-     * @param <T> the output type of the transform and the array component type of the returned value
+     *
+     * @param <T>
+     *            the output type of the transform and the array component type
+     *            of the returned value
      * @return a result in the expected kind
      * @throws SoundTransformException
      *             if the transform does not work
@@ -182,7 +184,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         final Object result = new ApplySoundTransform (this.getObservers ()).apply (this.sound.getChannels (), st);
         return (T []) result;
     }
-    
+
     /**
      * Changes the current imported sound to fit the expected format
      *
@@ -349,7 +351,8 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @param high
      *            high frequency (last one to avoid)
      * @return the client, with a loudest frequencies float array
-     * @throws SoundTransformException can occur if low is greater than or equal to high
+     * @throws SoundTransformException
+     *             can occur if low is greater than or equal to high
      */
     @Override
     public FluentClientWithFreqs filterRange (final float low, final float high) throws SoundTransformException {
@@ -374,6 +377,28 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         final Channel [] savedChannels = this.sound.getChannels ();
         this.cleanData ();
         this.freqs = Arrays.asList (new ApplySoundTransform (this.getObservers ()).apply (savedChannels, peakFind));
+        return this;
+    }
+
+    /**
+     * Will invoke the provided soundtransform to find the loudest frequencies
+     * of the sound, chronologically Caution : the original sound will be lost,
+     * and it will be impossible to revert this conversion. When shaped into a
+     * sound, the new sound will only sounds like the instrument you shaped the
+     * freqs with
+     *
+     * @param peakFindSoundTransform
+     *            your sound transform instance
+     *
+     * @return the client, with a loudest frequencies integer array
+     * @throws SoundTransformException
+     *             if the convert fails
+     */
+    @Override
+    public FluentClientWithFreqs findLoudestFrequencies (final PeakFindSoundTransform<?, ?> peakFindSoundTransform) throws SoundTransformException {
+        final Channel [] savedChannels = this.sound.getChannels ();
+        this.cleanData ();
+        this.freqs = Arrays.asList (new ApplySoundTransform (this.getObservers ()).apply (savedChannels, peakFindSoundTransform));
         return this;
     }
 
@@ -876,20 +901,23 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /**
      * Changes the loudest frequencies so every value is between low and high
-     * 
-     * @param low lowest frequency of the range
-     * @param high highest frequency of the range
+     *
+     * @param low
+     *            lowest frequency of the range
+     * @param high
+     *            highest frequency of the range
      *
      * @return the client, with a loudest frequencies float array
-
-     * @throws SoundTransformException can occur if low is greater than or equal to high
+     *
+     * @throws SoundTransformException
+     *             can occur if low is greater than or equal to high
      */
     @Override
     public FluentClientWithFreqs surroundInRange (final float low, final float high) throws SoundTransformException {
         this.freqs = new ChangeLoudestFreqs ().surroundInRange (this.freqs, low, high);
         return this;
     }
-    
+
     @Override
     /**
      * Tells the client to add an observer that will be notified of different kind of updates

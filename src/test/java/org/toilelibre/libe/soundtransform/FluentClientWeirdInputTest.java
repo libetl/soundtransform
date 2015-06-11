@@ -60,12 +60,12 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
 
     @Test (expected = SoundTransformException.class)
     public void filterRangeOutOfBounds () throws SoundTransformException {
-        FluentClient.start ().withClasspathResource ("piano3e.wav").convertIntoSound ().findLoudestFrequencies().filterRange(400, 300);
+        FluentClient.start ().withClasspathResource ("piano3e.wav").convertIntoSound ().findLoudestFrequencies ().filterRange (400, 300);
     }
 
     @Test (expected = SoundTransformException.class)
     public void surroundInRangeOutOfBounds () throws SoundTransformException {
-        FluentClient.start ().withClasspathResource ("piano3e.wav").convertIntoSound ().findLoudestFrequencies().surroundInRange(400, 300);
+        FluentClient.start ().withClasspathResource ("piano3e.wav").convertIntoSound ().findLoudestFrequencies ().surroundInRange (400, 300);
     }
 
     @Test (expected = SoundTransformException.class)
@@ -265,8 +265,8 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
     @Test
     public void canAskToDoALotOfThingsToTheFluentClientOperationAndNothingShouldBeDone () throws SoundTransformException {
         FluentClientOperation.prepare ().importToSound ().append (null).apply (null).changeFormat (null).cutSubSound (0, 0).playIt ().changeFormat (null).exportToClasspathResource (null).playIt ().importToStream ().playIt ().importToSound ().exportToClasspathResourceWithSiblingResource (null, null)
-        .convertIntoSound ().exportToFile (null).convertIntoSound ().exportToStream ().importToSound ().findLoudestFrequencies ().compress (0).filterRange (0, 0).insertPart (null, 0).octaveDown ().octaveUp ().surroundInRange(0, 1).replacePart (null, 0).shapeIntoSound (null, null, null).loop (0).mixWith (null)
-        .splitIntoSpectrums ().playIt ().extractSound ();
+        .convertIntoSound ().exportToFile (null).convertIntoSound ().exportToStream ().importToSound ().findLoudestFrequencies (null).shapeIntoSound (null, null, null).findLoudestFrequencies ().compress (0).filterRange (0, 0).insertPart (null, 0).octaveDown ().octaveUp ()
+        .surroundInRange (0, 1).replacePart (null, 0).shapeIntoSound (null, null, null).loop (0).mixWith (null).splitIntoSpectrums ().playIt ().extractSound ();
 
     }
 
@@ -345,16 +345,14 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
     public void cutSoundEndOutOfBounds () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().cutSubSound (3000, 300000);
     }
-    
+
     @Test (expected = SoundTransformException.class)
     public void testReduceNoiseBelow0 () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ()
-        .apply (new ReduceNoiseSoundTransform (-30));
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().apply (new ReduceNoiseSoundTransform (-30));
     }
-    
+
     @Test (expected = SoundTransformException.class)
     public void testReduceNoiseAbove100 () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ()
-        .apply (new ReduceNoiseSoundTransform (130));
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().apply (new ReduceNoiseSoundTransform (130));
     }
 }

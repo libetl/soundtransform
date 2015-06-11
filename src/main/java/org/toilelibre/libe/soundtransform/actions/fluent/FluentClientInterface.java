@@ -6,6 +6,7 @@ import java.util.List;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
@@ -57,7 +58,9 @@ public interface FluentClientInterface {
      *
      * @param st
      *            the SoundTransform to apply
-     * @param <T> the output type of the transform and the array component type of the returned value
+     * @param <T>
+     *            the output type of the transform and the array component type
+     *            of the returned value
      * @return a result in the expected kind
      * @throws SoundTransformException
      *             if the transform does not work
@@ -192,16 +195,21 @@ public interface FluentClientInterface {
      * @param high
      *            high frequency (last one to avoid)
      * @return the client, with a loudest frequencies float array
-     * 
-     * @throws SoundTransformException can occur if low is greater than or equal to high
+     *
+     * @throws SoundTransformException
+     *             can occur if low is greater than or equal to high
      */
     public abstract FluentClientWithFreqs filterRange (float low, float high) throws SoundTransformException;
 
     /**
-     * <p>Will invoke a soundtransform to find the loudest frequencies of the
-     * sound, chronologically</p>
-     * <p>Caution : the original sound will be lost, and it will be impossible to
-     * revert this conversion.</p>
+     * <p>
+     * Will invoke a soundtransform to find the loudest frequencies of the
+     * sound, chronologically
+     * </p>
+     * <p>
+     * Caution : the original sound will be lost, and it will be impossible to
+     * revert this conversion.
+     * </p>
      * When shaped into a sound, the new sound will only sounds like the
      * instrument you shaped the freqs with
      *
@@ -210,6 +218,19 @@ public interface FluentClientInterface {
      *             if the convert fails
      */
     public abstract FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException;
+
+    /**
+     * Will invoke a soundtransform to find the loudest frequencies of the
+     * sound, chronologically Caution : the original sound will be lost, and it
+     * will be impossible to revert this conversion. When shaped into a sound,
+     * the new sound will only sounds like the instrument you shaped the freqs
+     * with
+     *
+     * @return the client, with a loudest frequencies integer array
+     * @throws SoundTransformException
+     *             if the convert fails
+     */
+    public abstract FluentClientWithFreqs findLoudestFrequencies (PeakFindSoundTransform<?, ?> peakFindSoundTransform) throws SoundTransformException;
 
     /**
      * Uses the current input stream object to convert it into a sound
@@ -328,16 +349,19 @@ public interface FluentClientInterface {
      *             could not convert the sound into some spectrums
      */
     public abstract FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException;
-    
+
     /**
      * Changes the loudest frequencies so every value is between low and high
-     * 
-     * @param low lowest frequency of the range
-     * @param high highest frequency of the range
+     *
+     * @param low
+     *            lowest frequency of the range
+     * @param high
+     *            highest frequency of the range
      *
      * @return the client, with a loudest frequencies float array
-
-     * @throws SoundTransformException can occur if low is greater than or equal to high
+     *
+     * @throws SoundTransformException
+     *             can occur if low is greater than or equal to high
      */
     public abstract FluentClientWithFreqs surroundInRange (final float low, final float high) throws SoundTransformException;
 

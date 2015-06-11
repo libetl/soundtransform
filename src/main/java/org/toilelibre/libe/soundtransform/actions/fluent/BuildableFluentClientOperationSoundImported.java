@@ -5,6 +5,7 @@ import java.io.File;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
@@ -41,8 +42,10 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      *
      * @param st
      *            the SoundTransform to apply
-     * 
-     * @param <T> the output type of the transform and the array component type of the returned value
+     *
+     * @param <T>
+     *            the output type of the transform and the array component type
+     *            of the returned value
      *
      * @return a result in the expected kind
      * @throws SoundTransformException
@@ -155,6 +158,20 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      */
     @Override
     BuildableFluentClientOperationWithFreqs findLoudestFrequencies () throws SoundTransformException;
+
+    /**
+     * Will invoke a soundtransform to find the loudest frequencies of the
+     * sound, chronologically Caution : the original sound will be lost, and it
+     * will be impossible to revert this conversion. When shaped into a sound,
+     * the new sound will only sounds like the instrument you shaped the freqs
+     * with
+     *
+     * @return the client, with a loudest frequencies integer array
+     * @throws SoundTransformException
+     *             if the convert fails
+     */
+    @Override
+    BuildableFluentClientOperationWithFreqs findLoudestFrequencies (PeakFindSoundTransform<?, ?> peakFindSoundTransform) throws SoundTransformException;
 
     /**
      * Extract a part of the sound between the sample #start and the sample #end

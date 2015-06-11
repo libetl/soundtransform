@@ -56,7 +56,7 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
         super.bind (FilterFrequenciesProcessor.class).to (this.provideFilterFrequenciesProcessor ());
         super.bind (ReplaceFrequenciesProcessor.class).to (this.provideReplaceFrequenciesProcessor ());
         super.bind (CompressFrequenciesProcessor.class).to (this.provideCompressFrequenciesProcessor ());
-        super.bind (SurroundInRangeProcessor.class).to (this.provideSurroundInRangeFrequenciesProcessor());
+        super.bind (SurroundInRangeProcessor.class).to (this.provideSurroundInRangeFrequenciesProcessor ());
 
         for (final Entry<Class<? extends Object>, Class<? extends Object>> serviceClassEntry : this.usedImpls.entrySet ()) {
             @SuppressWarnings ("unchecked")

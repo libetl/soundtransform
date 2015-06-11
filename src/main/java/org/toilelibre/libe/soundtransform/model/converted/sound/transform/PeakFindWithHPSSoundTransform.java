@@ -200,7 +200,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
     }
 
     @Override
-    public PeakFindWithHPSSoundTransform<T> setObservers (Observer... observers1) {
+    public PeakFindWithHPSSoundTransform<T> setObservers (final Observer... observers1) {
         this.decoratedTransform.setObservers (observers1);
         return this;
     }

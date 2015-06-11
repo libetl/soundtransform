@@ -19,6 +19,7 @@ public interface SurroundInRangeProcessor {
             return this.messageFormat;
         }
     }
+
     float [] surroundFreqsInRange (float [] freqs, float low, float high) throws SoundTransformException;
 
 }

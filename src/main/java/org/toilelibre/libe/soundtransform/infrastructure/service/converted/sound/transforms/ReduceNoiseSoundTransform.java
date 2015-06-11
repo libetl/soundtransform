@@ -15,10 +15,10 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
  */
 public class ReduceNoiseSoundTransform extends SimpleFrequencySoundTransform<Complex []> {
 
-    private static final float LOW_BOUND = 0;
-    private static final float HIGH_BOUND = 100;
+    private static final float LOW_BOUND      = 0;
+    private static final float HIGH_BOUND     = 100;
     private static final float BYTE_NB_VALUES = 1 << 8;
-    
+
     public enum ReduceNoiseSoundTransformErrorCode implements ErrorCode {
 
         NOT_A_PERCENT_VALUE ("Not a percent value : %1f");
@@ -34,24 +34,26 @@ public class ReduceNoiseSoundTransform extends SimpleFrequencySoundTransform<Com
             return this.messageFormat;
         }
     }
-    private float percentOfMaxVolumeThreshold;
+
+    private final float percentOfMaxVolumeThreshold;
 
     /**
-     * Default constructor. 
+     * Default constructor.
      *
      * @param percentOfMaxVolumeThreshold1
      *            percent of max volume threshold (between 0 and 100%)
-     * @throws SoundTransformException if the percentOfMaxVolumeThreshold param is not between 0 and 100%
+     * @throws SoundTransformException
+     *             if the percentOfMaxVolumeThreshold param is not between 0 and
+     *             100%
      */
     public ReduceNoiseSoundTransform (final float percentOfMaxVolumeThreshold1) throws SoundTransformException {
         super ();
-        this.percentOfMaxVolumeThreshold = this.checkPercent(percentOfMaxVolumeThreshold1);
+        this.percentOfMaxVolumeThreshold = this.checkPercent (percentOfMaxVolumeThreshold1);
     }
 
     private float checkPercent (final float percentOfMaxVolumeThreshold1) throws SoundTransformException {
         if (percentOfMaxVolumeThreshold1 < ReduceNoiseSoundTransform.LOW_BOUND || percentOfMaxVolumeThreshold1 > ReduceNoiseSoundTransform.HIGH_BOUND) {
-            throw new SoundTransformException (ReduceNoiseSoundTransformErrorCode.NOT_A_PERCENT_VALUE, new OutOfRangeException (percentOfMaxVolumeThreshold1,
-                    ReduceNoiseSoundTransform.LOW_BOUND, ReduceNoiseSoundTransform.HIGH_BOUND), percentOfMaxVolumeThreshold1);
+            throw new SoundTransformException (ReduceNoiseSoundTransformErrorCode.NOT_A_PERCENT_VALUE, new OutOfRangeException (percentOfMaxVolumeThreshold1, ReduceNoiseSoundTransform.LOW_BOUND, ReduceNoiseSoundTransform.HIGH_BOUND), percentOfMaxVolumeThreshold1);
         }
         return percentOfMaxVolumeThreshold1;
     }

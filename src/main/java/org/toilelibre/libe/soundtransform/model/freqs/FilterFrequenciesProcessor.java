@@ -19,6 +19,7 @@ public interface FilterFrequenciesProcessor {
             return this.messageFormat;
         }
     }
+
     float [] filter (float [] freqs, float low, float high) throws SoundTransformException;
 
 }

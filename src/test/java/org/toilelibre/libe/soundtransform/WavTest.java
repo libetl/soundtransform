@@ -200,10 +200,9 @@ public class WavTest extends SoundTransformTest {
 
     @Test
     public void testReduceNoise () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ()
-        .apply (new ReduceNoiseSoundTransform (30)).exportToFile (this.output);
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ().apply (new ReduceNoiseSoundTransform (30)).exportToFile (this.output);
     }
-    
+
     @Test
     public void testRemoveLowFreqs () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ()
@@ -221,6 +220,16 @@ public class WavTest extends SoundTransformTest {
         final Library library = $.select (Library.class);
         ((ImportPackService<?>) $.select (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN))).importPack (library, "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.shortInput).convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100)).exportToFile (this.output);
+
+    }
+
+    @Test
+    public void testShapeMaximumLikelihood () throws SoundTransformException {
+        // WARN : quite long
+        final Library library = $.select (Library.class);
+        ((ImportPackService<?>) $.select (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN))).importPack (library, "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ().findLoudestFrequencies (new MaximumLikelihoodSoundTransform (48000, 100, 100, 880)).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100))
+        .exportToFile (this.output);
 
     }
 
