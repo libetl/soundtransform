@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.freqs;
 
-final class PianoFrequency {
+public final class PianoFrequency {
     public static enum PianoValues {
 
         C8 (PianoFrequency.C8N), B7 (PianoFrequency.B7N), A7 (PianoFrequency.A7N), G7 (PianoFrequency.G7N), F7 (PianoFrequency.F7N), E7 (PianoFrequency.E7N), D7 (PianoFrequency.D7N), C7 (PianoFrequency.C7N), B6 (PianoFrequency.B6N), A6 (PianoFrequency.A6N), G6 (PianoFrequency.G6N), F6 (
