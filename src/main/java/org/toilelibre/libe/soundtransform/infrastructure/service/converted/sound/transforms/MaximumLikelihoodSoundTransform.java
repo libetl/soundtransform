@@ -6,8 +6,10 @@ import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.PianoFrequency;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform.PeakFindSoundTransformEventCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 
@@ -107,6 +109,10 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
     public float [] transform (final Channel input) throws SoundTransformException {
         float [] loudestFreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
         for (int momentOfTheSound = 0 ; momentOfTheSound < input.getSamplesLength () ; momentOfTheSound += this.step) {
+            final int percent = (int) Math.floor (100.0 * (momentOfTheSound / this.step) / (input.getSamplesLength () / this.step));
+            if (percent > Math.floor (100.0 * ((momentOfTheSound - this.step) / this.step) / (input.getSamplesLength () / this.step))) {
+                this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, (int) (momentOfTheSound / this.step), (int) Math.ceil (input.getSamplesLength () / this.step), percent));
+            }
             this.transformMoment (input, momentOfTheSound, Math.min (momentOfTheSound + this.window, input.getSamplesLength () - 1), loudestFreqs);
         }
         return loudestFreqs;
@@ -150,11 +156,6 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
     @Override
     public float getDetectedNoteVolume () {
         return DEFAULT_NOTE_VOLUME_UNKNOWN_VALUE;
-    }
-
-    @Override
-    public MaximumLikelihoodSoundTransform setObservers (Observer... observers1) {
-        return this;
     }
 
 
