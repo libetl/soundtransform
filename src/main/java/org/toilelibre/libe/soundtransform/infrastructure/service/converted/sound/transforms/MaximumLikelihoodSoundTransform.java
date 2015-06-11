@@ -12,6 +12,8 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
 public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLikelihoodSoundTransform> implements PeakFindSoundTransform<Serializable, AbstractLogAware<MaximumLikelihoodSoundTransform>> {
 
+    private static final double A_HUNDRED_PERCENT = 100.0;
+
     static class WeightIntegralFunction implements UnivariateFunction {
 
         private final double [] inputDoubles;
@@ -103,8 +105,8 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
     public float [] transform (final Channel input) throws SoundTransformException {
         final float [] loudestFreqs = new float [input.getSamplesLength () / this.step + 1];
         for (int momentOfTheSound = 0 ; momentOfTheSound < input.getSamplesLength () ; momentOfTheSound += this.step) {
-            final int percent = (int) Math.floor (100.0 * (momentOfTheSound / this.step) / (input.getSamplesLength () / this.step));
-            if (percent > Math.floor (100.0 * ((momentOfTheSound - this.step) / this.step) / (input.getSamplesLength () / this.step))) {
+            final int percent = (int) Math.floor (MaximumLikelihoodSoundTransform.A_HUNDRED_PERCENT * (momentOfTheSound / this.step) / (input.getSamplesLength () / this.step));
+            if (percent > Math.floor (MaximumLikelihoodSoundTransform.A_HUNDRED_PERCENT * ((momentOfTheSound - this.step) / this.step) / (input.getSamplesLength () / this.step))) {
                 this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, momentOfTheSound / this.step, (int) Math.ceil (input.getSamplesLength () / this.step), percent));
             }
             this.transformMoment (input, momentOfTheSound, Math.min (momentOfTheSound + this.window, input.getSamplesLength () - 1), loudestFreqs);
