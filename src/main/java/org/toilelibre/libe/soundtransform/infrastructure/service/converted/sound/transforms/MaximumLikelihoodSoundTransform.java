@@ -10,6 +10,16 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
+/**
+ * Peak find algorithm using the Maximum Likelihood method :
+ * sums k values each t step. When the k values are at their max, then t is near t0.
+ * Finally, f0 is 1 / t0
+ * 
+ * Useful to get the f0 values of a sound (loudest freqs array).
+ * 
+ * As this Peak find algorithm is processed in the time domain rather than the 
+ * frequency domain, the getDetectedNoteVolume will return an arbitrary, not reliable value.
+ **/
 public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLikelihoodSoundTransform> implements PeakFindSoundTransform<Serializable, AbstractLogAware<MaximumLikelihoodSoundTransform>> {
 
     private static final double A_HUNDRED_PERCENT = 100.0;
@@ -89,9 +99,19 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
     /**
      * Default Constructor
      *
-     * @param step
+     * @param window1
+     *            the samples window length picked at each iteration. This param 
+     *            can be equal to the sample rate
+     * @param step1
      *            the iteration step value (increasing the value will speed the
      *            transform but will be less precise)
+     * @param minFreq1
+     *            the detection will start with this value as the lowest possible
+     *            detected frequency. It is advised not to choose 0 to avoid detecting
+     *            bad freqs in a noisy sound
+     * @param maxFreq1
+     *            the detection will start with this value as the highest possible
+     *            detected frequency
      */
     public MaximumLikelihoodSoundTransform (final int window1, final int step1, final int minFreq1, final int maxFreq1) {
         super ();
