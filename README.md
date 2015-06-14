@@ -1362,6 +1362,35 @@ Default constructor
 
  * **Parameter:** `length` — length (in samples) of the repetition(s)
 
+#### MaximumLikelihoodSoundTransform
+```java
+public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLikelihoodSoundTransform> implements PeakFindSoundTransform<Serializable, AbstractLogAware<MaximumLikelihoodSoundTransform>>
+```
+
+Peak find algorithm using the Maximum Likelihood method :
+sums k values each t step. When the k values are at their max, then t is near t0.
+Finally, f0 is 1 / t0
+
+Useful to get the f0 values of a sound (loudest freqs array).
+
+As this Peak find algorithm is processed in the time domain rather than the 
+frequency domain, the getDetectedNoteVolume will return an arbitrary, not reliable value.
+
+This is a `PeakFindSoundTransform`, therefore it is a `SoundTransform<Channel, float []>`.
+
+ * **Constructor:**
+```java
+public MaximumLikelihoodSoundTransform (final int window, final int step, final int minFreq, final int maxFreq)
+```
+
+Default constructor
+
+ * **Parameters:**
+   * `window` — the samples window length picked at each iteration. This param can be equal to the sample rate
+   * `step` — the iteration step (increasing the value will speed the transform but will be less precise)
+   * `minFreq` — the detection will start with this value as the lowest possible detected frequency. It is advised not to choose 0 to avoid detecting bad freqs in a noisy sound
+   * `maxFreq` — the detection will start with this value as the highest possible detected frequency
+
 #### MixSoundTransform
 ```java
 public class MixSoundTransform implements SoundTransform<Channel, Channel>
@@ -1469,8 +1498,7 @@ This is a `PeakFindSoundTransform`, therefore it is a `SoundTransform<Channel, f
 public CepstrumSoundTransform (double step, boolean note)
 ```
 
-The cepstrums will not be kept when using the getCepstrums method
-Constructor with every parameter specified 
+Default Constructor
 
  * **Parameters:**
    * `step` — the iteration step (increasing the value will speed the transform but will be less precise)
