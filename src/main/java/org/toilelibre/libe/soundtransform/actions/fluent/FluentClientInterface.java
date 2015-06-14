@@ -226,6 +226,9 @@ public interface FluentClientInterface {
      * the new sound will only sounds like the instrument you shaped the freqs
      * with
      *
+     * @param peakFindSoundTransform a sound transform whose role is to find
+     *        the loudest freqs array
+     * 
      * @return the client, with a loudest frequencies integer array
      * @throws SoundTransformException
      *             if the convert fails
