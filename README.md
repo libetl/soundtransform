@@ -825,6 +825,24 @@ the client, with a loudest frequencies float array
 Throws:  
 `SoundTransformException` - if the convert fails
 
+```java
+FluentClientWithFreqs findLoudestFrequencies (PeakFindSoundTransform<?, ?> peakFindSoundTransform) throws SoundTransformException
+```
+
+
+Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically
+ Caution : the original sound will be lost, and it will be impossible to revert this conversion.
+ When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with
+
+Parameter:  
+`peakFindSoundTransform` - a sound transform whose role is to find the loudest freqs array
+
+Returns:  
+the client, with a loudest frequencies float array
+
+Throws:  
+`SoundTransformException` - if the convert fails
+
 #####   FluentClientWithInputStream.importToSound
 
 ```java
