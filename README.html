@@ -640,7 +640,7 @@ function setDocumentScrollTop(ypos)
 </head>
 <body class="markdown-body">
 <h1> <a id="user-content-soundtransform" class="anchor" href="#soundtransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>soundtransform</h1> 
-<h1> <a id="user-content----" class="anchor" href="#---" aria-hidden="true"><span class="octicon octicon-link"></span></a> <a href="https://travis-ci.org/libetl/soundtransform"><img src="https://camo.githubusercontent.com/cf7d34c10102fa81c74237ea9329e63e0f03194f/68747470733a2f2f7472617669732d63692e6f72672f6c696265746c2f736f756e647472616e73666f726d2e7376673f6272616e63683d6d6173746572" alt="Build Status" data-canonical-src="https://travis-ci.org/libetl/soundtransform.svg?branch=master" style="max-width:100%;" /></a> <a href="https://coveralls.io/r/libetl/soundtransform"><img src="https://camo.githubusercontent.com/6b9e6cc91bc353e51fb46836c2de2ddaaf08d123/68747470733a2f2f636f766572616c6c732e696f2f7265706f732f6c696265746c2f736f756e647472616e73666f726d2f62616467652e737667" alt="Coverage Status" data-canonical-src="https://coveralls.io/repos/libetl/soundtransform/badge.svg" style="max-width:100%;" /></a> <a href="https://android-arsenal.com/api?level=8"><img src="https://camo.githubusercontent.com/9f829f66a30fbb502fd2f44198dddfabe497b97a/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4150492d382532422d627269676874677265656e2e7376673f7374796c653d666c6174" alt="API" data-canonical-src="https://img.shields.io/badge/API-8%2B-brightgreen.svg?style=flat" style="max-width:100%;" /></a> <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://camo.githubusercontent.com/9282e5a4b432908233d35ab9df17bbddb227d157/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c6963656e63652d4170616368652532304c6963656e6365253230253238322e302532392d626c75652e737667" alt="Licence" data-canonical-src="https://img.shields.io/badge/licence-Apache%20Licence%20%282.0%29-blue.svg" style="max-width:100%;" /></a> </h1> 
+<h1> <a id="user-content-----" class="anchor" href="#----" aria-hidden="true"><span class="octicon octicon-link"></span></a> <a href="http://search.maven.org/#browse%7C1267098955"><img src="https://camo.githubusercontent.com/2ac29835270ead9fc5fcafe417bfc41099846e5f/68747470733a2f2f696d672e736869656c64732e696f2f6d6176656e2d63656e7472616c2f762f6f72672e746f696c652d6c696272652e6c6962652f736f756e647472616e73666f726d2e737667" alt="Maven Central" data-canonical-src="https://img.shields.io/maven-central/v/org.toile-libre.libe/soundtransform.svg" style="max-width:100%;" /></a> <a href="https://travis-ci.org/libetl/soundtransform"><img src="https://camo.githubusercontent.com/cf7d34c10102fa81c74237ea9329e63e0f03194f/68747470733a2f2f7472617669732d63692e6f72672f6c696265746c2f736f756e647472616e73666f726d2e7376673f6272616e63683d6d6173746572" alt="Build Status" data-canonical-src="https://travis-ci.org/libetl/soundtransform.svg?branch=master" style="max-width:100%;" /></a> <a href="https://coveralls.io/r/libetl/soundtransform"><img src="https://camo.githubusercontent.com/6b9e6cc91bc353e51fb46836c2de2ddaaf08d123/68747470733a2f2f636f766572616c6c732e696f2f7265706f732f6c696265746c2f736f756e647472616e73666f726d2f62616467652e737667" alt="Coverage Status" data-canonical-src="https://coveralls.io/repos/libetl/soundtransform/badge.svg" style="max-width:100%;" /></a> <a href="https://android-arsenal.com/api?level=8"><img src="https://camo.githubusercontent.com/9f829f66a30fbb502fd2f44198dddfabe497b97a/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4150492d382532422d627269676874677265656e2e7376673f7374796c653d666c6174" alt="API" data-canonical-src="https://img.shields.io/badge/API-8%2B-brightgreen.svg?style=flat" style="max-width:100%;" /></a> <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://camo.githubusercontent.com/9282e5a4b432908233d35ab9df17bbddb227d157/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c6963656e63652d4170616368652532304c6963656e6365253230253238322e302532392d626c75652e737667" alt="Licence" data-canonical-src="https://img.shields.io/badge/licence-Apache%20Licence%20%282.0%29-blue.svg" style="max-width:100%;" /></a> </h1> 
 <p>Android &amp; Pure Java library to shape a voice with an instrument.</p> 
 <p><strong>Table of Contents</strong> </p> 
 <ul> 
@@ -1073,6 +1073,13 @@ function setDocumentScrollTop(ypos)
 <p>Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically Caution : the original sound will be lost, and it will be impossible to revert this conversion. When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with</p> 
 <p>Returns:<br /> the client, with a loudest frequencies float array</p> 
 <p>Throws:<br /> <code>SoundTransformException</code> - if the convert fails</p> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-smi">FluentClientWithFreqs</span> findLoudestFrequencies (<span class="pl-k">PeakFindSoundTransform&lt;?, ?&gt;</span> peakFindSoundTransform) throws <span class="pl-smi">SoundTransformException</span></pre>
+</div> 
+<p>Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically Caution : the original sound will be lost, and it will be impossible to revert this conversion. When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with</p> 
+<p>Parameter:<br /> <code>peakFindSoundTransform</code> - a sound transform whose role is to find the loudest freqs array</p> 
+<p>Returns:<br /> the client, with a loudest frequencies float array</p> 
+<p>Throws:<br /> <code>SoundTransformException</code> - if the convert fails</p> 
 <h5> <a id="user-content-fluentclientwithinputstreamimporttosound" class="anchor" href="#fluentclientwithinputstreamimporttosound" aria-hidden="true"><span class="octicon octicon-link"></span></a>FluentClientWithInputStream.importToSound</h5> 
 <div class="highlight highlight-java">
  <pre><span class="pl-smi">FluentClientSoundImported</span> importToSound () throws <span class="pl-smi">SoundTransformException</span></pre>
@@ -1376,6 +1383,30 @@ function setDocumentScrollTop(ypos)
 <ul> 
  <li> <strong>Parameter:</strong> <code>length</code> — length (in samples) of the repetition(s)</li> 
 </ul> 
+<h4> <a id="user-content-maximumlikelihoodsoundtransform" class="anchor" href="#maximumlikelihoodsoundtransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>MaximumLikelihoodSoundTransform</h4> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">MaximumLikelihoodSoundTransform</span> <span class="pl-k">extends</span> <span class="pl-e">AbstractLogAware&lt;<span class="pl-smi">MaximumLikelihoodSoundTransform</span>&gt;</span> <span class="pl-k">implements</span> <span class="pl-e">PeakFindSoundTransform&lt;<span class="pl-smi">Serializable</span>, <span class="pl-k">AbstractLogAware&lt;<span class="pl-smi">MaximumLikelihoodSoundTransform</span>&gt;</span>&gt;</span></pre>
+</div> 
+<p>Peak find algorithm using the Maximum Likelihood method : sums k values each t step. When the k values are at their max, then t is near t0. Finally, f0 is 1 / t0</p> 
+<p>Useful to get the f0 values of a sound (loudest freqs array).</p> 
+<p>As this Peak find algorithm is processed in the time domain rather than the frequency domain, the getDetectedNoteVolume will return an arbitrary, not reliable value.</p> 
+<p>This is a <code>PeakFindSoundTransform</code>, therefore it is a <code>SoundTransform&lt;Channel, float []&gt;</code>.</p> 
+<ul> 
+ <li><strong>Constructor:</strong></li> 
+</ul> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-k">public</span> <span class="pl-smi">MaximumLikelihoodSoundTransform</span> (<span class="pl-k">final</span> <span class="pl-k">int</span> window, <span class="pl-k">final</span> <span class="pl-k">int</span> step, <span class="pl-k">final</span> <span class="pl-k">int</span> minFreq, <span class="pl-k">final</span> <span class="pl-k">int</span> maxFreq)</pre>
+</div> 
+<p>Default constructor</p> 
+<ul> 
+ <li> <strong>Parameters:</strong> 
+  <ul> 
+   <li> <code>window</code> — the samples window length picked at each iteration. This param can be equal to the sample rate</li> 
+   <li> <code>step</code> — the iteration step (increasing the value will speed the transform but will be less precise)</li> 
+   <li> <code>minFreq</code> — the detection will start with this value as the lowest possible detected frequency. It is advised not to choose 0 to avoid detecting bad freqs in a noisy sound</li> 
+   <li> <code>maxFreq</code> — the detection will start with this value as the highest possible detected frequency</li> 
+  </ul> </li> 
+</ul> 
 <h4> <a id="user-content-mixsoundtransform" class="anchor" href="#mixsoundtransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>MixSoundTransform</h4> 
 <div class="highlight highlight-java">
  <pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">MixSoundTransform</span> <span class="pl-k">implements</span> <span class="pl-e">SoundTransform&lt;<span class="pl-smi">Channel</span>, <span class="pl-smi">Channel</span>&gt;</span></pre>
@@ -1476,7 +1507,7 @@ function setDocumentScrollTop(ypos)
 <div class="highlight highlight-java">
  <pre><span class="pl-k">public</span> <span class="pl-smi">CepstrumSoundTransform</span> (<span class="pl-k">double</span> step, <span class="pl-k">boolean</span> note)</pre>
 </div> 
-<p>The cepstrums will not be kept when using the getCepstrums method Constructor with every parameter specified </p> 
+<p>Default Constructor</p> 
 <ul> 
  <li> <strong>Parameters:</strong> 
   <ul> 
