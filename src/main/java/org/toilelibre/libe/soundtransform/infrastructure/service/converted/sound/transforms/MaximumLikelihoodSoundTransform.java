@@ -2,7 +2,6 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.converted.soun
 
 import java.io.Serializable;
 
-import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.PianoFrequency;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
@@ -24,23 +23,28 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
 
     private static final double A_HUNDRED_PERCENT = 100.0;
 
-    static class WeightIntegralFunction implements UnivariateFunction {
+    static class WeightIntegralFunction {
 
-        private final double [] inputDoubles;
+        private final long [] inputSamples;
+        private int startSample;
+        private int endSample;
+        private int length;
 
-        public WeightIntegralFunction (final double [] inputDoubles1) {
-            this.inputDoubles = inputDoubles1.clone ();
+        public WeightIntegralFunction (final Channel input, final int startSample1, final int endSample1) {
+            this.inputSamples = input.getSamples () ;
+            this.startSample = startSample1;
+            this.endSample = endSample1;
+            this.length = endSample - startSample;
         }
 
-        @Override
         public double value (final double choosenPeriod) {
-            final int choosenPeriodsInSignal = (int) (this.inputDoubles.length / choosenPeriod);
-            final int moduloAfterLastPeriod = (int) (this.inputDoubles.length % choosenPeriod);
+            final int choosenPeriodsInSignal = (int) (this.length / choosenPeriod);
+            final int moduloAfterLastPeriod = (int) (this.length % choosenPeriod);
             return this.sumOfRanges (choosenPeriodsInSignal + 1, (int) choosenPeriod, 0, moduloAfterLastPeriod) + this.sumOfRanges (choosenPeriodsInSignal, (int) choosenPeriod, moduloAfterLastPeriod, choosenPeriod);
         }
 
         private double sumOfRanges (final int n, final int t, final int startOfInterval, final double endOfInterval) {
-            final SignalSumFunction sumFunction = new SignalSumFunction (this.inputDoubles, t);
+            final SignalSumFunction sumFunction = new SignalSumFunction (this.inputSamples, t, this.startSample, this.endSample);
             double sum = 0;
             for (int k = startOfInterval ; k <= endOfInterval ; k++) {
                 final double valueOfK = sumFunction.value (k);
@@ -51,30 +55,35 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
 
     }
 
-    static class SignalSumFunction implements UnivariateFunction {
+    static class SignalSumFunction {
 
         private final int       choosenPeriod;
         private final int       moduloAfterLastPeriod;
-        private final double [] inputDoubles;
+        private final long [] inputSamples;
         private final int       choosenPeriodsInSignal;
+        private int startSample;
+        private int endSample;
+        private int length;
 
-        public SignalSumFunction (final double [] inputDoubles1, final int choosenPeriod1) {
-            this.inputDoubles = inputDoubles1.clone ();
+        public SignalSumFunction (final long [] inputSamples1, final int choosenPeriod1, final int startSample1, final int endSample1) {
+            this.inputSamples = inputSamples1;
             this.choosenPeriod = choosenPeriod1;
-            this.choosenPeriodsInSignal = this.inputDoubles.length / this.choosenPeriod;
-            this.moduloAfterLastPeriod = this.inputDoubles.length % this.choosenPeriod;
+            this.startSample = startSample1;
+            this.endSample = endSample1;
+            this.length = endSample - startSample;
+            this.choosenPeriodsInSignal = this.length / this.choosenPeriod;
+            this.moduloAfterLastPeriod = this.length % this.choosenPeriod;
         }
 
-        @Override
         public double value (final double t) {
             return t < this.moduloAfterLastPeriod ? this.sumOfNPlusOne (t) : this.sumOfN (t);
         }
 
         private double sumOfN (final double t) {
-            return SignalSumFunction.sumImplementation (this.inputDoubles, this.choosenPeriodsInSignal, this.choosenPeriod, (int) t);
+            return SignalSumFunction.sumImplementation (this.inputSamples, this.choosenPeriodsInSignal, this.choosenPeriod, (int) t);
         }
 
-        private static double sumImplementation (final double [] input, final int n, final int p, final int t) {
+        private static double sumImplementation (final long [] input, final int n, final int p, final int t) {
             double sum = 0;
             for (int k = 0 ; k < n ; k++) {
                 final int index = t + k * p;
@@ -84,7 +93,7 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
         }
 
         private double sumOfNPlusOne (final double t) {
-            return SignalSumFunction.sumImplementation (this.inputDoubles, this.choosenPeriodsInSignal + 1, this.choosenPeriod, (int) t);
+            return SignalSumFunction.sumImplementation (this.inputSamples, this.choosenPeriodsInSignal + 1, this.choosenPeriod, (int) (t + this.startSample));
         }
 
     }
@@ -156,17 +165,9 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
     }
 
     private double computeSum (final Channel input, final int startSample, final int endSample, final int choosenPeriod) {
-        final double [] samplesAsDoubleArray = this.findSamplesAsDoubleArray (input, startSample, endSample);
-        return new WeightIntegralFunction (samplesAsDoubleArray).value (choosenPeriod);
+        return new WeightIntegralFunction (input, startSample, endSample).value (choosenPeriod);
     }
 
-    private double [] findSamplesAsDoubleArray (final Channel input, final int startSample, final int endSample) {
-        final double [] samples = new double [endSample - startSample + 1];
-        for (int copyIndex = startSample ; copyIndex < endSample ; copyIndex++) {
-            samples [copyIndex - startSample] = input.getSampleAt (copyIndex);
-        }
-        return samples;
-    }
 
     @Override
     public float getDetectedNoteVolume () {
