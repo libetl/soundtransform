@@ -58,7 +58,7 @@ public class WavTest extends SoundTransformTest {
         for (final File file : files) {
             final PeakFindSoundTransform<Serializable, ?> cepstrum = new CepstrumSoundTransform<Serializable> (100, true);
             final PeakFindSoundTransform<Serializable, ?> hps = new HarmonicProductSpectrumSoundTransform<Serializable> (true);
-            final PeakFindSoundTransform<Serializable, ?> maxlikelihood = new MaximumLikelihoodSoundTransform (48000, 100, 100, 800);
+            final PeakFindSoundTransform<Serializable, ?> maxlikelihood = new MaximumLikelihoodSoundTransform (48000, 10000, 100, 800);
             final float [][] freqscepstrum11025 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (cepstrum);
             final float [][] freqshps11025 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (hps);
             final float [][] freqsmaxlikelihood11025 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().apply (new PralongAndCarlileSoundTransform ()).applyAndStop (maxlikelihood);

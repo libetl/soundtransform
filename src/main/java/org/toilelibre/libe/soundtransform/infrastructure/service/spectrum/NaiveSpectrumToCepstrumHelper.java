@@ -9,11 +9,13 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCep
 
 final class NaiveSpectrumToCepstrumHelper implements SpectrumToCepstrumHelper<Complex []> {
 
+    private static final double A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS = 10.0;
+
     @Override
     public Spectrum<Complex []> spectrumToCepstrum (final Spectrum<Complex []> spectrum) {
         final Spectrum<Complex []> logSpectrum = new Spectrum<Complex []> (spectrum.getState (), spectrum.getFormatInfo ());
         for (int i = 0 ; i < logSpectrum.getState ().length ; i++) {
-            logSpectrum.getState () [i] = new Complex (Math.log (1 + spectrum.getState () [i].abs ()));
+            logSpectrum.getState () [i] = new Complex (Math.log (1 + A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS * spectrum.getState () [i].abs ()));
         }
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 
