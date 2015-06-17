@@ -21,6 +21,8 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CepstrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.FadeSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HammingWindowSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HanningWindowSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.InsertPartSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransform;
@@ -48,37 +50,6 @@ public class WavTest extends SoundTransformTest {
     @Test
     public void test8bits () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ().apply (new EightBitsSoundTransform (25)).exportToFile (this.output);
-    }
-
-    @Test
-    public void peakFindTest () throws SoundTransformException {
-        final File [] files = { new File (this.classLoader.getResource ("piano1c.wav").getFile ()), new File (this.classLoader.getResource ("piano2d.wav").getFile ()), new File (this.classLoader.getResource ("piano3e.wav").getFile ()),
-                new File (this.classLoader.getResource ("piano4f.wav").getFile ()), new File (this.classLoader.getResource ("piano5g.wav").getFile ()), new File (this.classLoader.getResource ("piano6a.wav").getFile ()), new File (this.classLoader.getResource ("piano7b.wav").getFile ()),
-                new File (this.classLoader.getResource ("piano8c.wav").getFile ()) };
-        for (final File file : files) {
-            final PeakFindSoundTransform<Serializable, ?> cepstrum = new CepstrumSoundTransform<Serializable> (100, true);
-            final PeakFindSoundTransform<Serializable, ?> hps = new HarmonicProductSpectrumSoundTransform<Serializable> (true);
-            final PeakFindSoundTransform<Serializable, ?> maxlikelihood = new MaximumLikelihoodSoundTransform (48000, 10000, 100, 800);
-            final float [][] freqscepstrum11025 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (cepstrum);
-            final float [][] freqshps11025 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (hps);
-            final float [][] freqsmaxlikelihood11025 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().apply (new PralongAndCarlileSoundTransform ()).applyAndStop (maxlikelihood);
-            final float [][] freqscepstrum22050 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().changeFormat (new FormatInfo (2, 22050)).applyAndStop (cepstrum);
-            final float [][] freqshps22050 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().changeFormat (new FormatInfo (2, 22050)).applyAndStop (hps);
-            final float [][] freqsmaxlikelihood22050 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().changeFormat (new FormatInfo (2, 22050)).apply (new PralongAndCarlileSoundTransform ()).applyAndStop (maxlikelihood);
-            final float [][] freqscepstrum44100 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().changeFormat (new FormatInfo (2, 44100)).applyAndStop (cepstrum);
-            final float [][] freqshps44100 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().changeFormat (new FormatInfo (2, 44100)).applyAndStop (hps);
-            final float [][] freqsmaxlikelihood44100 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().changeFormat (new FormatInfo (2, 44100)).apply (new PralongAndCarlileSoundTransform ()).applyAndStop (maxlikelihood);
-            new Slf4jObserver (LogLevel.INFO).notify ("Peak find with the file " + file.getName () + " : ");
-            for (int i = 0 ; i < freqscepstrum11025.length ; i++) {
-                new Slf4jObserver (LogLevel.INFO).notify ("                        channel " + i + "   : cepstrum(11025) -> " + freqscepstrum11025 [i] [0] + ", hps(11025) -> " + freqshps11025 [i] [0] + ", maxlikelihood(11025) -> " + freqsmaxlikelihood11025 [i] [0]);
-            }
-            for (int i = 0 ; i < freqscepstrum22050.length ; i++) {
-                new Slf4jObserver (LogLevel.INFO).notify ("                        channel " + i + "   : cepstrum(22050) -> " + freqscepstrum22050 [i] [0] + ", hps(22050) -> " + freqshps22050 [i] [0] + ", maxlikelihood(22050) -> " + freqsmaxlikelihood22050 [i] [0]);
-            }
-            for (int i = 0 ; i < freqscepstrum44100.length ; i++) {
-                new Slf4jObserver (LogLevel.INFO).notify ("                        channel " + i + "   : cepstrum(44100) -> " + freqscepstrum44100 [i] [0] + ", hps(44100) -> " + freqshps44100 [i] [0] + ", maxlikelihood(44100) -> " + freqsmaxlikelihood44100 [i] [0]);
-            }
-        }
     }
 
     @Test

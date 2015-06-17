@@ -69,9 +69,9 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
         @Override
         public int getWindowLength (final double freqmax) {
             if (this.note) {
-                return (int) Math.pow (2, Math.ceil (Math.log (this.length) / Math.log (2)));
+                return (int) Math.pow (2, Math.ceil (Math.log (this.length) / Math.log (2)) + 1);
             }
-            return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)));
+            return (int) Math.pow (2, Math.ceil (Math.log (freqmax) / Math.log (2)) + 1);
         }
 
         @Override
