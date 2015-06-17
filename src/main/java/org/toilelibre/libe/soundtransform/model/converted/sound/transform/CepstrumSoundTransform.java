@@ -38,8 +38,9 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
         private int                               length;
         private final SpectrumToCepstrumHelper<T> spectrum2CepstrumHelper;
         private final SpectrumHelper<T>           spectrumHelper;
-        private static final int                  MIN_VOICE_FREQ = 40;
-        private static final int                  MAX_VOICE_FREQ = 1000;
+        private static final int                  MIN_VOICE_FREQ = 10;
+        private static final int                  MAX_VOICE_FREQ = 4000;
+        private static final float                A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS = 0.6f;
         private final boolean                     note;
 
         private float                             detectedNoteVolume;
@@ -108,8 +109,10 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
         private float findLoudestFreqFromCepstrum (final Spectrum<T> fscep) {
             final float spectrumLength = this.spectrumHelper.getLengthOfSpectrum (fscep);
             final float timelapseInTheCepstrum = spectrumLength * 1.0f / fscep.getSampleRate ();
-            final float maxIndex = this.spectrumHelper.getMaxIndex (fscep, CepstrumFrequencySoundTransform.MIN_VOICE_FREQ, CepstrumFrequencySoundTransform.MAX_VOICE_FREQ);
-            final float t0 = maxIndex / spectrumLength * timelapseInTheCepstrum;
+            final double maxValue = this.spectrumHelper.getMaxValue (fscep, CepstrumFrequencySoundTransform.MIN_VOICE_FREQ, CepstrumFrequencySoundTransform.MAX_VOICE_FREQ);
+            final double thresholdValue = maxValue - (1 - A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS) * maxValue * maxValue;
+            final float maxIndex1 = this.spectrumHelper.getFirstPeak (fscep,  CepstrumFrequencySoundTransform.MIN_VOICE_FREQ, CepstrumFrequencySoundTransform.MAX_VOICE_FREQ, thresholdValue);
+            final float t0 = maxIndex1 / spectrumLength * timelapseInTheCepstrum;
             return 1.0f / t0;
         }
 

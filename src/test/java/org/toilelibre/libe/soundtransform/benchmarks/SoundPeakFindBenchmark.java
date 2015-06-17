@@ -20,7 +20,7 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CepstrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
@@ -51,7 +51,7 @@ public class SoundPeakFindBenchmark {
     
     @Benchmark
     public float [] [] hps (){
-        return this.applyOrThrowRuntimeException (new PeakFindWithHPSSoundTransform<Serializable> (false));
+        return this.applyOrThrowRuntimeException (new HarmonicProductSpectrumSoundTransform<Serializable> (false));
     }
 
     @Benchmark

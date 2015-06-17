@@ -1536,9 +1536,9 @@ public GaussianEqualizerSoundTransform ()
 
 Default constructor
 
-##### PeakFindWithHPSSoundTransform
+##### HarmonicProductSpectrumSoundTransform
 ```java
-public class PeakFindWithHPSSoundTransform<T extends Serializable> extends AbstractLogAware<PeakFindWithHPSSoundTransform<T>> implements PeakFindSoundTransform<T, AbstractLogAware<PeakFindWithHPSSoundTransform<T>>> 
+public class HarmonicProductSpectrumSoundTransform<T extends Serializable> extends AbstractLogAware<HarmonicProductSpectrumSoundTransform<T>> implements PeakFindSoundTransform<T, AbstractLogAware<HarmonicProductSpectrumSoundTransform<T>>> 
 ```
 
 Finds the loudest frequencies array using the Harmonic Product Spectrum algorithm.
@@ -1548,7 +1548,7 @@ This is a PeakFindSoundTransform, therefore it is a `SoundTransform<Channel, flo
 
  * **Constructors:**
 ```java
-public PeakFindWithHPSSoundTransform (boolean note)
+public HarmonicProductSpectrumSoundTransform (boolean note)
 ```
 
 Default constructor 
@@ -1556,7 +1556,7 @@ Default constructor
  * **Parameter:** `note` — if true, the whole sound will be transformed at once to know the loudest freq, therefore the array will be of size 1.
 
 ```java
-public PeakFindWithHPSSoundTransform (double step)
+public HarmonicProductSpectrumSoundTransform (double step)
 ```
 
 Constructor not using the whole sound as a musical note
@@ -1564,7 +1564,7 @@ Constructor not using the whole sound as a musical note
  * **Parameter:** `step` — the iteration step value
 
 ```java
-public PeakFindWithHPSSoundTransform (boolean note, double step, int windowLength)
+public HarmonicProductSpectrumSoundTransform (boolean note, double step, int windowLength)
 ```
 
 Full constructor with every parameter specified

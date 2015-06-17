@@ -22,7 +22,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.InsertPartSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
@@ -72,7 +72,7 @@ public class FluentClientTest extends SoundTransformTest {
                 .exportToStream ()
                 .writeToClasspathResource ("after.wav")
                 .convertIntoSound ()
-                .findLoudestFrequencies (new PeakFindWithHPSSoundTransform<Serializable> (100))
+                .findLoudestFrequencies (new HarmonicProductSpectrumSoundTransform<Serializable> (100))
                 .shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100))
                 .findLoudestFrequencies ()
                 .filterRange (0, 1000)

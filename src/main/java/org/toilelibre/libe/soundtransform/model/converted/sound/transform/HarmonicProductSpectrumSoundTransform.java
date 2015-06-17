@@ -19,8 +19,10 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
  * @param <T>
  *            The kind of object held inside a spectrum.
  */
-public class PeakFindWithHPSSoundTransform<T extends Serializable> extends AbstractLogAware<PeakFindWithHPSSoundTransform<T>> implements PeakFindSoundTransform<T, AbstractLogAware<PeakFindWithHPSSoundTransform<T>>> {
-    static class PeakFindWithHPSFrequencySoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T> {
+public class HarmonicProductSpectrumSoundTransform<T extends Serializable> extends AbstractLogAware<HarmonicProductSpectrumSoundTransform<T>> implements PeakFindSoundTransform<T, AbstractLogAware<HarmonicProductSpectrumSoundTransform<T>>> {
+    private static final int TWICE = 2;
+
+    static class HarmonicProductSpectrumFrequencySoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T> {
 
         private double                  step;
         private float []                loudestfreqs;
@@ -40,7 +42,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
          *            know the loudest freq. therefore the array will be of size
          *            1.
          */
-        public PeakFindWithHPSFrequencySoundTransform (final boolean note1) {
+        public HarmonicProductSpectrumFrequencySoundTransform (final boolean note1) {
             this (note1, 100, -1);
         }
 
@@ -50,7 +52,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
          * @param step1
          *            the iteration step value
          */
-        public PeakFindWithHPSFrequencySoundTransform (final double step1) {
+        public HarmonicProductSpectrumFrequencySoundTransform (final double step1) {
             this (false, step1, -1);
         }
 
@@ -64,7 +66,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
          *            highest the slowest)
          */
         @SuppressWarnings ("unchecked")
-        public PeakFindWithHPSFrequencySoundTransform (final boolean note1, final double step1, final int windowLength1) {
+        public HarmonicProductSpectrumFrequencySoundTransform (final boolean note1, final double step1, final int windowLength1) {
             this.spectrumHelper = $.select (SpectrumHelper.class);
             this.step = step1;
             this.note = note1;
@@ -133,9 +135,10 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
             float f0 = 0;
 
             if (soundLevelInDB > 30 || this.note) {
+
                 final float [] peaks = new float [10];
                 for (int i = 1 ; i <= 10 ; i++) {
-                    peaks [i - 1] = this.spectrumHelper.f0 (fs, i);
+                    peaks [i - 1] = this.f0 (fs, i);
                 }
                 Arrays.sort (peaks);
                 f0 = this.bestCandidate (peaks);
@@ -147,9 +150,25 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
             this.loudestfreqs [(int) (offset / this.step)] = f0;
             return fs;
         }
+        
+        /**
+         * Find the f0 (fundamental frequency) using the Harmonic Product Spectrum
+         *
+         * @param fs
+         *            spectrum at a specific time
+         * @param hpsfactor
+         *            number of times to multiply the frequencies together
+         * @return a fundamental frequency (in Hz)
+         */
+        public float f0 (final Spectrum<T> fs, final int hpsfactor) {
+            final Spectrum<T> productOfMultiples = this.spectrumHelper.productOfMultiples (fs, hpsfactor);
+            final int spectrumLength = this.spectrumHelper.getLengthOfSpectrum (fs);
+            final int maxIndex = this.spectrumHelper.getMaxIndex (productOfMultiples, 0, spectrumLength / hpsfactor);
+            return this.spectrumHelper.freqFromSampleRate (maxIndex, spectrumLength * HarmonicProductSpectrumSoundTransform.TWICE / hpsfactor, fs.getSampleRate ());
+        }
     }
 
-    private final PeakFindWithHPSFrequencySoundTransform<T> decoratedTransform;
+    private final HarmonicProductSpectrumFrequencySoundTransform<T> decoratedTransform;
 
     /**
      * Default constructor
@@ -158,8 +177,8 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
      *            if true, the whole sound will be transformed at once to know
      *            the loudest freq. therefore the array will be of size 1.
      */
-    public PeakFindWithHPSSoundTransform (final boolean note1) {
-        this.decoratedTransform = new PeakFindWithHPSFrequencySoundTransform<T> (note1);
+    public HarmonicProductSpectrumSoundTransform (final boolean note1) {
+        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (note1);
     }
 
     /**
@@ -168,8 +187,8 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
      * @param step1
      *            the iteration step value
      */
-    public PeakFindWithHPSSoundTransform (final double step1) {
-        this.decoratedTransform = new PeakFindWithHPSFrequencySoundTransform<T> (step1);
+    public HarmonicProductSpectrumSoundTransform (final double step1) {
+        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (step1);
     }
 
     /**
@@ -184,8 +203,8 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
      *            length of the spectrum used during each iteration (the highest
      *            the slowest)
      */
-    public PeakFindWithHPSSoundTransform (final boolean note1, final double step1, final int windowLength1) {
-        this.decoratedTransform = new PeakFindWithHPSFrequencySoundTransform<T> (note1, step1, windowLength1);
+    public HarmonicProductSpectrumSoundTransform (final boolean note1, final double step1, final int windowLength1) {
+        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (note1, step1, windowLength1);
     }
 
     @Override
@@ -200,7 +219,7 @@ public class PeakFindWithHPSSoundTransform<T extends Serializable> extends Abstr
     }
 
     @Override
-    public PeakFindWithHPSSoundTransform<T> setObservers (final Observer... observers1) {
+    public HarmonicProductSpectrumSoundTransform<T> setObservers (final Observer... observers1) {
         this.decoratedTransform.setObservers (observers1);
         return this;
     }

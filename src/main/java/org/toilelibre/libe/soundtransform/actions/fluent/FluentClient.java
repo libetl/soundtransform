@@ -32,7 +32,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CutSou
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.LoopSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundToSpectrumsSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
@@ -373,7 +373,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     public FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException {
-        final PeakFindSoundTransform<Serializable, ?> peakFind = new PeakFindWithHPSSoundTransform<Serializable> (FluentClient.DEFAULT_STEP_VALUE);
+        final PeakFindSoundTransform<Serializable, ?> peakFind = new HarmonicProductSpectrumSoundTransform<Serializable> (FluentClient.DEFAULT_STEP_VALUE);
         final Channel [] savedChannels = this.sound.getChannels ();
         this.cleanData ();
         this.freqs = Arrays.asList (new ApplySoundTransform (this.getObservers ()).apply (savedChannels, peakFind));

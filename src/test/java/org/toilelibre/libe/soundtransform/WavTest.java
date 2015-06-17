@@ -25,7 +25,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSou
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NormalizeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindWithHPSSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReverseSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
@@ -56,13 +56,13 @@ public class WavTest extends SoundTransformTest {
                 new File (this.classLoader.getResource ("piano8c.wav").getFile ()) };
         for (final File file : files) {
             final PeakFindSoundTransform<Serializable, ?> cepstrum = new CepstrumSoundTransform<Serializable> (100, true);
-            final PeakFindSoundTransform<Serializable, ?> hps = new PeakFindWithHPSSoundTransform<Serializable> (true);
+            final PeakFindSoundTransform<Serializable, ?> hps = new HarmonicProductSpectrumSoundTransform<Serializable> (true);
             final PeakFindSoundTransform<Serializable, ?> maxlikelihood = new MaximumLikelihoodSoundTransform (48000, 100, 100, 800);
             final PeakFindSoundTransform<Serializable, ?> cepstrum22050 = new CepstrumSoundTransform<Serializable> (100, true);
-            final PeakFindSoundTransform<Serializable, ?> hps22050 = new PeakFindWithHPSSoundTransform<Serializable> (true);
+            final PeakFindSoundTransform<Serializable, ?> hps22050 = new HarmonicProductSpectrumSoundTransform<Serializable> (true);
             final PeakFindSoundTransform<Serializable, ?> maxlikelihood22050 = new MaximumLikelihoodSoundTransform (48000, 100, 100, 800);
             final PeakFindSoundTransform<Serializable, ?> cepstrum44100 = new CepstrumSoundTransform<Serializable> (100, true);
-            final PeakFindSoundTransform<Serializable, ?> hps44100 = new PeakFindWithHPSSoundTransform<Serializable> (true);
+            final PeakFindSoundTransform<Serializable, ?> hps44100 = new HarmonicProductSpectrumSoundTransform<Serializable> (true);
             final PeakFindSoundTransform<Serializable, ?> maxlikelihood44100 = new MaximumLikelihoodSoundTransform (48000, 100, 100, 800);
             final float [][] freqscepstrum11025 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (cepstrum);
             final float [][] freqshps11025 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (hps);
@@ -89,7 +89,7 @@ public class WavTest extends SoundTransformTest {
     @Test
     public void peakFindTestWithNotDefaultWindowLength () throws SoundTransformException {
         final File file = new File (this.classLoader.getResource ("piano1c.wav").getFile ());
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (new PeakFindWithHPSSoundTransform<Serializable> (true, 100, 1024));
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (new HarmonicProductSpectrumSoundTransform<Serializable> (true, 100, 1024));
     }
 
     @Test

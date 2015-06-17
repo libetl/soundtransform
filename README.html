@@ -1546,9 +1546,9 @@ function setDocumentScrollTop(ypos)
  <pre><span class="pl-k">public</span> <span class="pl-smi">GaussianEqualizerSoundTransform</span> ()</pre>
 </div> 
 <p>Default constructor</p> 
-<h5> <a id="user-content-peakfindwithhpssoundtransform" class="anchor" href="#peakfindwithhpssoundtransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>PeakFindWithHPSSoundTransform</h5> 
+<h5> <a id="user-content-harmonicproductspectrumsoundtransform" class="anchor" href="#harmonicproductspectrumsoundtransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>HarmonicProductSpectrumSoundTransform</h5> 
 <div class="highlight highlight-java">
- <pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">PeakFindWithHPSSoundTransform</span>&lt;T <span class="pl-k">extends</span> <span class="pl-e">Serializable</span>&gt; extends <span class="pl-e">AbstractLogAware&lt;<span class="pl-k">PeakFindWithHPSSoundTransform&lt;<span class="pl-smi">T</span>&gt;</span>&gt;</span> <span class="pl-k">implements</span> <span class="pl-e">PeakFindSoundTransform&lt;<span class="pl-smi">T</span>, <span class="pl-k">AbstractLogAware&lt;<span class="pl-k">PeakFindWithHPSSoundTransform&lt;<span class="pl-smi">T</span>&gt;</span>&gt;</span>&gt;</span> </pre>
+ <pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">HarmonicProductSpectrumSoundTransform</span>&lt;T <span class="pl-k">extends</span> <span class="pl-e">Serializable</span>&gt; extends <span class="pl-e">AbstractLogAware&lt;<span class="pl-k">HarmonicProductSpectrumSoundTransform&lt;<span class="pl-smi">T</span>&gt;</span>&gt;</span> <span class="pl-k">implements</span> <span class="pl-e">PeakFindSoundTransform&lt;<span class="pl-smi">T</span>, <span class="pl-k">AbstractLogAware&lt;<span class="pl-k">HarmonicProductSpectrumSoundTransform&lt;<span class="pl-smi">T</span>&gt;</span>&gt;</span>&gt;</span> </pre>
 </div> 
 <p>Finds the loudest frequencies array using the Harmonic Product Spectrum algorithm. This is a PeakFindSoundTransform, therefore it is a <code>SoundTransform&lt;Channel, float []&gt;</code>.</p> 
 <ul> 
@@ -1556,21 +1556,21 @@ function setDocumentScrollTop(ypos)
  <li><p><strong>Constructors:</strong></p></li> 
 </ul> 
 <div class="highlight highlight-java">
- <pre><span class="pl-k">public</span> <span class="pl-smi">PeakFindWithHPSSoundTransform</span> (<span class="pl-k">boolean</span> note)</pre>
+ <pre><span class="pl-k">public</span> <span class="pl-smi">HarmonicProductSpectrumSoundTransform</span> (<span class="pl-k">boolean</span> note)</pre>
 </div> 
 <p>Default constructor </p> 
 <ul> 
  <li> <strong>Parameter:</strong> <code>note</code> — if true, the whole sound will be transformed at once to know the loudest freq, therefore the array will be of size 1.</li> 
 </ul> 
 <div class="highlight highlight-java">
- <pre><span class="pl-k">public</span> <span class="pl-smi">PeakFindWithHPSSoundTransform</span> (<span class="pl-k">double</span> step)</pre>
+ <pre><span class="pl-k">public</span> <span class="pl-smi">HarmonicProductSpectrumSoundTransform</span> (<span class="pl-k">double</span> step)</pre>
 </div> 
 <p>Constructor not using the whole sound as a musical note</p> 
 <ul> 
  <li> <strong>Parameter:</strong> <code>step</code> — the iteration step value</li> 
 </ul> 
 <div class="highlight highlight-java">
- <pre><span class="pl-k">public</span> <span class="pl-smi">PeakFindWithHPSSoundTransform</span> (<span class="pl-k">boolean</span> note, <span class="pl-k">double</span> step, <span class="pl-k">int</span> windowLength)</pre>
+ <pre><span class="pl-k">public</span> <span class="pl-smi">HarmonicProductSpectrumSoundTransform</span> (<span class="pl-k">boolean</span> note, <span class="pl-k">double</span> step, <span class="pl-k">int</span> windowLength)</pre>
 </div> 
 <p>Full constructor with every parameter specified</p> 
 <ul> 

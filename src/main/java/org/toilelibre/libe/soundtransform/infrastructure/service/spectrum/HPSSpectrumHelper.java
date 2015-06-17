@@ -14,20 +14,6 @@ final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
 
     }
 
-    /**
-     * Find the f0 (fundamental frequency) using the Harmonic Product Spectrum
-     *
-     * @param fs
-     *            spectrum at a specific time
-     * @param hpsfactor
-     *            number of times to multiply the frequencies together
-     * @return a fundamental frequency (in Hz)
-     */
-    @Override
-    public float f0 (final Spectrum<Complex []> fs, final int hpsfactor) {
-        return this.freqFromSampleRate (this.getMaxIndex (this.hps (fs, hpsfactor), 0, fs.getState ().length / hpsfactor), fs.getState ().length * HPSSpectrumHelper.TWICE / hpsfactor, fs.getSampleRate ());
-    }
-
     @Override
     public float freqFromSampleRate (final float freq, final int sqr2length, final float sampleRate) {
         return (int) (freq * HPSSpectrumHelper.TWICE * 1.0 * sampleRate / sqr2length);
@@ -52,9 +38,33 @@ final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
         }
         return maxIndex;
     }
+    
+    @Override
+    public double getMaxValue (final Spectrum<Complex []> fs, final int low, final int high) {
+        return fs.getState () [this.getMaxIndex (fs, low, high)].abs ();
+    }
 
     @Override
-    public Spectrum<Complex []> hps (final Spectrum<Complex []> fs, final int factor) {
+    public int getFirstPeak (Spectrum<Complex []> fs, int low, int high, double thresholdValue) {
+        double max = 0;
+        int maxIndex = 0;
+        final int reallow = low == 0 ? 1 : low;
+        final int realhigh = Math.min (high, fs.getState ().length);
+        int i = reallow;
+        while (fs.getState () [i].abs () < thresholdValue){
+            i++;
+        }
+        while (i < realhigh && fs.getState () [i].abs () >= thresholdValue){
+            if (max < fs.getState () [i].abs ()) {
+                max = fs.getState () [i].abs ();
+                maxIndex = i;
+            }
+            i++;
+        }
+        return maxIndex;
+    }
+    
+    public Spectrum<Complex []> productOfMultiples (final Spectrum<Complex []> fs, final int factor) {
         final int max = fs.getState ().length / factor;
         final Complex [] result = new Complex [max];
         for (int i = 0 ; i < max ; i++) {
