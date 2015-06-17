@@ -23,8 +23,8 @@ public class ViewCepstrumIDETest {
 
     @Test
     public void viewCepstrumOfPianoNotes () throws SoundTransformException {
-        Chart chart = this.getChart (new String [] { "C4", "D4", "E4", "F4", "G4", "A5", "B5", "C5" }, $.select (SpectrumToCepstrumHelper.class)
-                .spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano1c.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
+        Chart chart = this.getChart (new String [] { "C4", "D4", "E4", "F4", "G4", "A5", "B5", "C5" }, 
+                $.select (SpectrumToCepstrumHelper.class).spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano1c.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
                 $.select (SpectrumToCepstrumHelper.class).spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano2d.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
                 $.select (SpectrumToCepstrumHelper.class).spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano3e.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
                 $.select (SpectrumToCepstrumHelper.class).spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano4f.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
