@@ -1,5 +1,7 @@
 package org.toilelibre.libe.soundtransform.idetests;
 
+import java.awt.Color;
+
 import org.apache.commons.math3.complex.Complex;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -103,7 +105,13 @@ public class ViewCepstrumIDETest {
                 yData  [j] [i] = (i > 10 && i < fs [j].getState ().length - 10 ? fs [j].getState () [i].abs () : 0);
             }
         }
-        return QuickChart.getChart ("Cepstrums", "hz", "ampl", notes, xData, yData);
+        Chart chart = QuickChart.getChart ("Cepstrums", "f (Hz)", "ampl", notes, xData, yData);
+        chart.setBackgroundColor (Color.BLACK);
+        chart.setLegendBackgroundColor (Color.BLACK);
+        chart.setForegroundColor (Color.BLACK);
+        chart.setGridLinesColor (Color.LIGHT_GRAY);
+        chart.setFontColor (Color.WHITE);
+        return chart;
 
     }
 }
