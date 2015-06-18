@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.LevelSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.MaximumLikelihoodSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.PralongAndCarlileSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
@@ -28,13 +29,13 @@ public class PeakFindClassesScoreTest {
                 new File (classLoader.getResource ("piano8c.wav").getFile ()) };
         
 
-        final int [] expectedValues = {260, 293, 332, 344, 387, 451, 499, 524};
+        final int [] expectedValues = {260, 293, 329, 349, 391, 440, 493, 523};
         int expectedValuesIndex = 0;
         int cepstrumScore = 0;
         int hpsScore = 0;
         int maxLikelihoodScore = 0;
         for (final File file : files) {
-            final SoundTransform<Channel, float []> cepstrum = new CepstrumSoundTransform<Serializable> (300, true);
+            final SoundTransform<Channel, float []> cepstrum = new CompositeSoundTransform<Channel, Channel, float []> (new LevelSoundTransform (4000), new CepstrumSoundTransform<Serializable> (300, true));
             final SoundTransform<Channel, float []> hps = new HarmonicProductSpectrumSoundTransform<Serializable> (true);
             final SoundTransform<Channel, float []> maxlikelihood = new CompositeSoundTransform<Channel, Channel, float []> (new BlackmanHarrisWindowSoundTransform (), new CompositeSoundTransform<Channel, Channel, float []> (new PralongAndCarlileSoundTransform (), new MaximumLikelihoodSoundTransform (24000, 4000, 100, 800)));
             final float [][] freqscepstrum11025 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (cepstrum);
@@ -49,43 +50,43 @@ public class PeakFindClassesScoreTest {
             new Slf4jObserver (LogLevel.INFO).notify ("Peak find with the file " + file.getName () + " : ");
             for (int i = 0 ; i < freqscepstrum11025.length ; i++) {
                 new Slf4jObserver (LogLevel.INFO).notify ("                        channel " + i + "   : cepstrum(11025) -> " + freqscepstrum11025 [i] [0] + ", hps(11025) -> " + freqshps11025 [i] [0] + ", maxlikelihood(11025) -> " + freqsmaxlikelihood11025 [i] [0]);
-                if (Math.abs (freqscepstrum11025 [i] [0] - expectedValues [expectedValuesIndex]) < 10){
+                if (Math.abs (freqscepstrum11025 [i] [0] - expectedValues [expectedValuesIndex]) < 15){
                     cepstrumScore++;
                 }
-                if (Math.abs (freqshps11025 [i] [0] - expectedValues [expectedValuesIndex]) < 10){
+                if (Math.abs (freqshps11025 [i] [0] - expectedValues [expectedValuesIndex]) < 15){
                     hpsScore++;
                 }
-                if (Math.abs (freqsmaxlikelihood11025 [i] [0] - expectedValues [expectedValuesIndex]) < 10){
+                if (Math.abs (freqsmaxlikelihood11025 [i] [0] - expectedValues [expectedValuesIndex]) < 15){
                     maxLikelihoodScore++;
                 }
             }
             for (int i = 0 ; i < freqscepstrum22050.length ; i++) {
                 new Slf4jObserver (LogLevel.INFO).notify ("                        channel " + i + "   : cepstrum(22050) -> " + freqscepstrum22050 [i] [0] + ", hps(22050) -> " + freqshps22050 [i] [0] + ", maxlikelihood(22050) -> " + freqsmaxlikelihood22050 [i] [0]);
-                if (Math.abs (freqscepstrum22050 [i] [0] - expectedValues [expectedValuesIndex]) < 10){
+                if (Math.abs (freqscepstrum22050 [i] [0] - expectedValues [expectedValuesIndex]) < 15){
                     cepstrumScore++;
                 }
-                if (Math.abs (freqshps22050 [i] [0] - expectedValues [expectedValuesIndex]) < 10){
+                if (Math.abs (freqshps22050 [i] [0] - expectedValues [expectedValuesIndex]) < 15){
                     hpsScore++;
                 }
-                if (Math.abs (freqsmaxlikelihood22050 [i] [0] - expectedValues [expectedValuesIndex]) < 10){
+                if (Math.abs (freqsmaxlikelihood22050 [i] [0] - expectedValues [expectedValuesIndex]) < 15){
                     maxLikelihoodScore++;
                 }
             }
             for (int i = 0 ; i < freqscepstrum44100.length ; i++) {
                 new Slf4jObserver (LogLevel.INFO).notify ("                        channel " + i + "   : cepstrum(44100) -> " + freqscepstrum44100 [i] [0] + ", hps(44100) -> " + freqshps44100 [i] [0] + ", maxlikelihood(44100) -> " + freqsmaxlikelihood44100 [i] [0]);
-                if (Math.abs (freqscepstrum44100 [i] [0] - expectedValues [expectedValuesIndex]) < 10){
+                if (Math.abs (freqscepstrum44100 [i] [0] - expectedValues [expectedValuesIndex]) < 15){
                     cepstrumScore++;
                 }
-                if (Math.abs (freqshps44100 [i] [0] - expectedValues [expectedValuesIndex]) < 10){
+                if (Math.abs (freqshps44100 [i] [0] - expectedValues [expectedValuesIndex]) < 15){
                     hpsScore++;
                 }
-                if (Math.abs (freqsmaxlikelihood44100 [i] [0] - expectedValues [expectedValuesIndex]) < 10){
+                if (Math.abs (freqsmaxlikelihood44100 [i] [0] - expectedValues [expectedValuesIndex]) < 15){
                     maxLikelihoodScore++;
                 }
             }
             expectedValuesIndex++;
         }
-        new Slf4jObserver (LogLevel.INFO).notify ("Scores : cepstrum -> " + cepstrumScore / 48.0 * 100 + 
-                "%, hps -> " + hpsScore / 48.0 * 100 + "%, maxLikelihood -> " + maxLikelihoodScore / 48.0 * 100 + "%");       
+        new Slf4jObserver (LogLevel.INFO).notify ("Scores : cepstrum -> " + String.format ("%2.2f", cepstrumScore / 48.0 * 100) + 
+                "%, hps -> " + String.format ("%2.2f", hpsScore / 48.0 * 100) + "%, maxLikelihood -> " + String.format ("%2.2f", maxLikelihoodScore / 48.0 * 100) + "%");       
     }
 }
