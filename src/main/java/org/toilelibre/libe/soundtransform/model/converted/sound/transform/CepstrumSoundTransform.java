@@ -39,7 +39,7 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
         private final SpectrumToCepstrumHelper<T> spectrum2CepstrumHelper;
         private final SpectrumHelper<T>           spectrumHelper;
         private static final int                  MIN_VOICE_FREQ = 10;
-        private static final int                  MAX_VOICE_FREQ = 4000;
+        private static final int                  MAX_VOICE_FREQ = 8000;
         private static final float                A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS = 0.6f;
         private final boolean                     note;
 
