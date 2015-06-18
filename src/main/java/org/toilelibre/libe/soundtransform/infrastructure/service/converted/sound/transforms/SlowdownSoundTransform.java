@@ -20,7 +20,7 @@ public class SlowdownSoundTransform extends SimpleFrequencySoundTransform<Comple
 
     public enum SlowdownSoundTransformErrorCode implements ErrorCode {
 
-        WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_STEP ("Window length is lower than twice the step value (%1i < 2 * %2i)"), WINDOW_LENGTH_IS_NOT_A_POWER_OF_2 ("Window length is not a power of 2 (%1d)");
+        WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_STEP ("Window length is lower than twice the step value (%1d < 2 * %2d)"), WINDOW_LENGTH_IS_NOT_A_POWER_OF_2 ("Window length is not a power of 2 (%1d)");
 
         private final String messageFormat;
 
