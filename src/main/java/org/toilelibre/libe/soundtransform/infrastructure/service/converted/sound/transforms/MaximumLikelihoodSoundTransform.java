@@ -87,7 +87,7 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
             double sum = 0;
             for (int k = 0 ; k < n ; k++) {
                 final int index = t + k * p;
-                sum += index < input.length ? input [index] : 0;
+                sum += index < input.length ? Math.abs (input [index]) : 0;
             }
             return sum * 1.0 / n;
         }
