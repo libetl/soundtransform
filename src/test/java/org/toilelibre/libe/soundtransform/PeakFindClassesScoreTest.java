@@ -31,18 +31,38 @@ public class PeakFindClassesScoreTest {
         final int [] expectedValues = { 260, 293, 329, 349, 391, 440, 493, 523 };
         final int nbChannels = 2;
         final int allowedDelta = 15;
-        float total = 0;
-
-        int expectedValuesIndex = 0;
         final Map<String, Integer> peakFindMethodsScore = new HashMap<String, Integer> ();
         final Map<String, SoundTransform<Channel, float []>> peakFindMethods = new HashMap<String, SoundTransform<Channel, float []>> ();
-        peakFindMethods.put ("cepstrum", new CompositeSoundTransform<Channel, Channel, float []> (new LevelSoundTransform (4000), new CepstrumSoundTransform<Serializable> (300, true)));
-        peakFindMethods.put ("hps", new HarmonicProductSpectrumSoundTransform<Serializable> (true));
-        peakFindMethods.put ("maxlikelihood", new CompositeSoundTransform<Channel, Channel, float []> (new BlackmanHarrisWindowSoundTransform (), new CompositeSoundTransform<Channel, Channel, float []> (new PralongAndCarlileSoundTransform (), new MaximumLikelihoodSoundTransform (24000, 4000, 100,
-                800))));
-        peakFindMethodsScore.put ("cepstrum", 0);
-        peakFindMethodsScore.put ("hps", 0);
-        peakFindMethodsScore.put ("maxlikelihood", 0);
+
+        this.addKnownMethods (peakFindMethods, peakFindMethodsScore);
+
+        final float total = this.loopAndReturnTotal (classpathResources, testedFormats, expectedValues, nbChannels, allowedDelta, peakFindMethodsScore, peakFindMethods);
+
+        this.answerScores (peakFindMethodsScore, total);
+    }
+
+    private void addKnownMethods (final Map<String, SoundTransform<Channel, float []>> peakFindMethods, final Map<String, Integer> peakFindMethodsScore) {
+        this.addMethod (peakFindMethods, peakFindMethodsScore, "cepstrum", new CompositeSoundTransform<Channel, Channel, float []> (new LevelSoundTransform (4000), new CepstrumSoundTransform<Serializable> (300, true)));
+        this.addMethod (peakFindMethods, peakFindMethodsScore, "hps", new HarmonicProductSpectrumSoundTransform<Serializable> (true));
+        this.addMethod (peakFindMethods, peakFindMethodsScore, "maxlikelihood", new CompositeSoundTransform<Channel, Channel, float []> (new BlackmanHarrisWindowSoundTransform (), new CompositeSoundTransform<Channel, Channel, float []> (new PralongAndCarlileSoundTransform (),
+                new MaximumLikelihoodSoundTransform (24000, 4000, 100, 800))));
+    }
+
+    private void answerScores (final Map<String, Integer> peakFindMethodsScore, final float total) {
+        final StringBuffer scoresStringBuffer = new StringBuffer ("Scores : ");
+        boolean first = true;
+        for (final Entry<String, Integer> scoreEntry : peakFindMethodsScore.entrySet ()) {
+            scoresStringBuffer.append ((first ? "" : ", ") + scoreEntry.getKey () + " -> " + String.format ("%2.2f", scoreEntry.getValue () / total * 100) + "%");
+            first = false;
+        }
+
+        new Slf4jObserver (LogLevel.INFO).notify (scoresStringBuffer.toString ());
+    }
+
+    private float loopAndReturnTotal (final String [] classpathResources, final FormatInfo [] testedFormats, final int [] expectedValues, final int nbChannels, final int allowedDelta, final Map<String, Integer> peakFindMethodsScore,
+            final Map<String, SoundTransform<Channel, float []>> peakFindMethods) throws SoundTransformException {
+        float total = 0;
+        int expectedValuesIndex = 0;
         for (final String classpathResource : classpathResources) {
             new Slf4jObserver (LogLevel.INFO).notify ("Peak find with the file " + classpathResource + " : ");
             for (final FormatInfo formatInfo : testedFormats) {
@@ -63,14 +83,11 @@ public class PeakFindClassesScoreTest {
             }
             expectedValuesIndex++;
         }
+        return total;
+    }
 
-        final StringBuffer scoresStringBuffer = new StringBuffer ("Scores : ");
-        boolean first = true;
-        for (final Entry<String, Integer> scoreEntry : peakFindMethodsScore.entrySet ()) {
-            scoresStringBuffer.append ((first ? "" : ", ") + scoreEntry.getKey () + " -> " + String.format ("%2.2f", scoreEntry.getValue () / total * 100) + "%");
-            first = false;
-        }
-
-        new Slf4jObserver (LogLevel.INFO).notify (scoresStringBuffer.toString ());
+    private void addMethod (final Map<String, SoundTransform<Channel, float []>> peakFindMethods, final Map<String, Integer> peakFindMethodsScore, final String key, final SoundTransform<Channel, float []> soundTransform) {
+        peakFindMethods.put (key, soundTransform);
+        peakFindMethodsScore.put (key, 0);
     }
 }
