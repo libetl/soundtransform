@@ -659,8 +659,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     /**
      * Converts a stereo sound into a mono sound with the channels mixed
      *
-     * @param sound
-     *            the sound to merge
      * @return the client, with a sound imported
      * @throws SoundTransformException
      *             if the sound is null or if the sound is not stereo

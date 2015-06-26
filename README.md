@@ -918,9 +918,6 @@ FluentClientSoundImported mergeChannels () throws SoundTransformException
 
 Converts a stereo sound into a mono sound with the channels mixed
 
-Parameters:  
-`sound` - the sound to merge
-
 Returns:  
 the client, with a sound imported
 
