@@ -22,6 +22,9 @@ final class SimpleSurroundInOctaveProcessor implements SurroundInRangeProcessor 
 
     private float surroundFreqInRange (final float inputValue, final float low, final float high) {
         float result = inputValue;
+        if (result == 0){
+            return 0;
+        }
         while (result < low) {
             result *= SimpleSurroundInOctaveProcessor.TWO;
         }
