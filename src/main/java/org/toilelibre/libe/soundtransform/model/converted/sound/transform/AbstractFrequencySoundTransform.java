@@ -20,6 +20,8 @@ public abstract class AbstractFrequencySoundTransform<T extends Serializable> ex
     public abstract int getOffsetFromASimpleLoop (int i, double step);
 
     public abstract double getStep (double defaultValue);
+    
+    public abstract boolean isReverseNecessary ();
 
     public int getWindowLength (final double freqmax) {
         return (int) Math.pow (AbstractFrequencySoundTransform.TWO, Math.ceil (Math.log (freqmax) / AbstractFrequencySoundTransform.LOG_2));
@@ -29,7 +31,7 @@ public abstract class AbstractFrequencySoundTransform<T extends Serializable> ex
 
     @Override
     public final Channel transform (final Channel sound) {
-        return this.fourierTransformHelper.transform (this, sound);
+        return this.fourierTransformHelper.transform (this, sound, this.isReverseNecessary ());
     }
 
     public abstract Spectrum<T> transformFrequencies (Spectrum<T> fs, int offset, int powOf2NearestLength, int length, float soundLevelInDB);

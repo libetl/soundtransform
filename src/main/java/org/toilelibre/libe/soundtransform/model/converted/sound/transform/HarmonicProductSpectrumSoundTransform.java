@@ -167,6 +167,11 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
             final int maxIndex = this.spectrumHelper.getMaxIndex (productOfMultiples, 0, spectrumLength / hpsfactor);
             return this.spectrumHelper.freqFromSampleRate (maxIndex, spectrumLength * HarmonicProductSpectrumSoundTransform.TWICE / hpsfactor, fs.getSampleRate ());
         }
+
+        @Override
+        public boolean isReverseNecessary () {
+            return false;
+        }
     }
 
     private final HarmonicProductSpectrumFrequencySoundTransform<T> decoratedTransform;
@@ -224,5 +229,4 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
         this.decoratedTransform.setObservers (observers1);
         return this;
     }
-
 }

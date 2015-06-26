@@ -59,4 +59,9 @@ public class SimpleFrequencySoundTransform<T extends Serializable> extends Abstr
     public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevel) {
         return this.transformFrequencies (fs, offset, powOf2NearestLength, length);
     }
+
+    @Override
+    public boolean isReverseNecessary () {
+        return true;
+    }
 }

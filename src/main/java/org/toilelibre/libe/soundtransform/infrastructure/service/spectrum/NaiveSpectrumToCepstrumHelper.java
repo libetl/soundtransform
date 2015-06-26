@@ -13,12 +13,13 @@ final class NaiveSpectrumToCepstrumHelper implements SpectrumToCepstrumHelper<Co
 
     @Override
     public Spectrum<Complex []> spectrumToCepstrum (final Spectrum<Complex []> spectrum) {
-        final Spectrum<Complex []> logSpectrum = new Spectrum<Complex []> (spectrum.getState (), spectrum.getFormatInfo ());
-        for (int i = 0 ; i < logSpectrum.getState ().length ; i++) {
-            logSpectrum.getState () [i] = new Complex (Math.log (1 + NaiveSpectrumToCepstrumHelper.A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS * spectrum.getState () [i].abs ()));
+        final double [] logSpectrumReals = new double [spectrum.getState ().length];
+        
+        for (int i = 0 ; i < logSpectrumReals.length ; i++) {
+            logSpectrumReals [i] = Math.log (1 + NaiveSpectrumToCepstrumHelper.A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS * spectrum.getState () [i].abs ());
         }
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
 
-        return new Spectrum<Complex []> (fastFourierTransformer.transform (logSpectrum.getState (), TransformType.INVERSE), logSpectrum.getFormatInfo ());
+        return new Spectrum<Complex []> (fastFourierTransformer.transform (logSpectrumReals, TransformType.INVERSE), spectrum.getFormatInfo ());
     }
 }

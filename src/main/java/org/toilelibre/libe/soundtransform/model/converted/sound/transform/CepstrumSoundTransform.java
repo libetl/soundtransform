@@ -88,6 +88,11 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
         }
 
         @Override
+        public boolean isReverseNecessary () {
+            return false;
+        }
+
+        @Override
         public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
             final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.length / this.step));

@@ -45,7 +45,7 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
     }
 
     @Override
-    public Channel transform (final AbstractFrequencySoundTransform<Complex []> st, final Channel sound) {
+    public Channel transform (final AbstractFrequencySoundTransform<Complex []> st, final Channel sound, boolean needsReverse) {
         final Channel output = st.initSound (sound);
         final double sampleRate = sound.getSampleRate ();
         final double step = st.getStep (sampleRate);
@@ -63,7 +63,9 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
             if (result == null) {
                 continue;
             }
-            this.reverse (result, newdata, i + st.getOffsetFromASimpleLoop (i, sampleRate));
+            if (needsReverse) {
+                this.reverse (result, newdata, i + st.getOffsetFromASimpleLoop (i, sampleRate));
+            }
         }
         return output;
     }
