@@ -484,7 +484,7 @@ BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
 
         return this;
     }
-    
+
     @Override
     public BuildableFluentClientOperationSoundImported mixWith (final Sound sound) throws SoundTransformException {
         this.steps.add (new Step () {

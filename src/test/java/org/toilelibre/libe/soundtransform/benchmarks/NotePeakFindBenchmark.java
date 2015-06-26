@@ -19,8 +19,8 @@ import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientSoundImport
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.MaximumLikelihoodSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CepstrumSoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
@@ -31,43 +31,43 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 @Fork (value = 10)
 @Measurement (iterations = 40, time = 5, timeUnit = TimeUnit.SECONDS)
 public class NotePeakFindBenchmark {
-    
+
     private FluentClientSoundImported client;
 
     @Setup
     public void init () {
-        File file = new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano1c.wav").getFile ());
+        final File file = new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano1c.wav").getFile ());
         try {
             this.client = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ();
-        } catch (SoundTransformException e) {
+        } catch (final SoundTransformException e) {
             throw new RuntimeException (e);
         }
     }
-    
+
     @Benchmark
-    public float [] [] cepstrum (){
+    public float [][] cepstrum () {
         return this.applyOrThrowRuntimeException (new CepstrumSoundTransform<Serializable> (100, true));
     }
-    
+
     @Benchmark
-    public float [] [] hps (){
+    public float [][] hps () {
         return this.applyOrThrowRuntimeException (new HarmonicProductSpectrumSoundTransform<Serializable> (true));
     }
 
     @Benchmark
-    public float [] [] maxlikelihood (){
+    public float [][] maxlikelihood () {
         return this.applyOrThrowRuntimeException (new MaximumLikelihoodSoundTransform (48000, 4000, 100, 800));
     }
 
-    private float [] [] applyOrThrowRuntimeException (PeakFindSoundTransform<Serializable, ?> peakFindSoundTransform) {
+    private float [][] applyOrThrowRuntimeException (final PeakFindSoundTransform<Serializable, ?> peakFindSoundTransform) {
         try {
             return this.apply (peakFindSoundTransform);
-        } catch (SoundTransformException e) {
+        } catch (final SoundTransformException e) {
             throw new RuntimeException (e);
         }
     }
-    
-    private float [] [] apply (PeakFindSoundTransform<Serializable, ?> peakFindSoundTransform) throws SoundTransformException {
+
+    private float [][] apply (final PeakFindSoundTransform<Serializable, ?> peakFindSoundTransform) throws SoundTransformException {
         return this.client.applyAndStop (peakFindSoundTransform);
     }
 

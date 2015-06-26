@@ -38,23 +38,23 @@ final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
         }
         return maxIndex;
     }
-    
+
     @Override
     public double getMaxValue (final Spectrum<Complex []> fs, final int low, final int high) {
         return fs.getState () [this.getMaxIndex (fs, low, high)].abs ();
     }
 
     @Override
-    public int getFirstPeak (Spectrum<Complex []> fs, int low, int high, double thresholdValue) {
+    public int getFirstPeak (final Spectrum<Complex []> fs, final int low, final int high, final double thresholdValue) {
         double max = 0;
         int maxIndex = 0;
         final int reallow = low == 0 ? 1 : low;
         final int realhigh = Math.min (high, fs.getState ().length);
         int i = reallow;
-        while (fs.getState () [i].abs () < thresholdValue){
+        while (fs.getState () [i].abs () < thresholdValue) {
             i++;
         }
-        while (i < realhigh && fs.getState () [i].abs () >= thresholdValue){
+        while (i < realhigh && fs.getState () [i].abs () >= thresholdValue) {
             if (max < fs.getState () [i].abs ()) {
                 max = fs.getState () [i].abs ();
                 maxIndex = i;
@@ -63,7 +63,8 @@ final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
         }
         return maxIndex;
     }
-    
+
+    @Override
     public Spectrum<Complex []> productOfMultiples (final Spectrum<Complex []> fs, final int factor) {
         final int max = fs.getState ().length / factor;
         final Complex [] result = new Complex [max];

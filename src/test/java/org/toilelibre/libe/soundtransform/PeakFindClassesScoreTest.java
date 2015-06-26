@@ -27,7 +27,7 @@ public class PeakFindClassesScoreTest {
     public void peakFindTest () throws SoundTransformException {
 
         final String [] classpathResources = { "piano1c.wav", "piano2d.wav", "piano3e.wav", "piano4f.wav", "piano5g.wav", "piano6a.wav", "piano7b.wav", "piano8c.wav" };
-        final FormatInfo [] testedFormats = { new FormatInfo (2, 11025), new FormatInfo (2, 22050), new FormatInfo (2, 44100)  };
+        final FormatInfo [] testedFormats = { new FormatInfo (2, 11025), new FormatInfo (2, 22050), new FormatInfo (2, 44100) };
         final int [] expectedValues = { 260, 293, 329, 349, 391, 440, 493, 523 };
         final String [] notes = { "C3", "D3", "E3", "F3", "G3", "A4", "B4", "C4" };
         final int nbChannels = 1;

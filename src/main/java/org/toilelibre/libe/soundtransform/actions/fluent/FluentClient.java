@@ -29,10 +29,10 @@ import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CutSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.LoopSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundToSpectrumsSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
@@ -387,8 +387,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * sound, the new sound will only sounds like the instrument you shaped the
      * freqs with
      *
-     * @param peakFindSoundTransform a sound transform whose role is to find
-     *        the loudest freqs array
+     * @param peakFindSoundTransform
+     *            a sound transform whose role is to find the loudest freqs
+     *            array
      *
      * @return the client, with a loudest frequencies integer array
      * @throws SoundTransformException
@@ -654,20 +655,23 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public FluentClientSoundImported loop (final int length) throws SoundTransformException {
         return this.apply (new LoopSoundTransform (length));
     }
-    
+
     /**
      * Converts a stereo sound into a mono sound with the channels mixed
      *
-     * @param sound the sound to merge
+     * @param sound
+     *            the sound to merge
      * @return the client, with a sound imported
-     * @throws SoundTransformException if the sound is null or if the sound is not stereo
+     * @throws SoundTransformException
+     *             if the sound is null or if the sound is not stereo
      */
+    @Override
     public FluentClientSoundImported mergeChannels () throws SoundTransformException {
         if (this.sound.getNumberOfChannels () != 2) {
             throw new SoundTransformException (FluentClientErrorCode.STEREO_SOUND_EXPECTED, new IllegalArgumentException ());
         }
-        Sound channel1AsASound = new Sound (new Channel [] {this.sound.getChannels () [0]});
-        Sound channel2AsASound = new Sound (new Channel [] {this.sound.getChannels () [1]});
+        final Sound channel1AsASound = new Sound (new Channel [] { this.sound.getChannels () [0] });
+        final Sound channel2AsASound = new Sound (new Channel [] { this.sound.getChannels () [1] });
         this.sound = channel1AsASound;
         return this.apply (new MixSoundTransform (Arrays.<Sound> asList (channel2AsASound)));
     }

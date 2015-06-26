@@ -10,14 +10,15 @@ import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
 /**
- * Peak find algorithm using the Maximum Likelihood method :
- * sums k values each t step. When the k values are at their max, then t is near t0.
- * Finally, f0 is 1 / t0
- * 
+ * Peak find algorithm using the Maximum Likelihood method : sums k values each
+ * t step. When the k values are at their max, then t is near t0. Finally, f0 is
+ * 1 / t0
+ *
  * Useful to get the f0 values of a sound (loudest freqs array).
- * 
- * As this Peak find algorithm is processed in the time domain rather than the 
- * frequency domain, the getDetectedNoteVolume will return an arbitrary, not reliable value.
+ *
+ * As this Peak find algorithm is processed in the time domain rather than the
+ * frequency domain, the getDetectedNoteVolume will return an arbitrary, not
+ * reliable value.
  **/
 public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLikelihoodSoundTransform> implements PeakFindSoundTransform<Serializable, AbstractLogAware<MaximumLikelihoodSoundTransform>> {
 
@@ -26,15 +27,15 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
     static class WeightIntegralFunction {
 
         private final long [] inputSamples;
-        private int startSample;
-        private int endSample;
-        private int length;
+        private final int           startSample;
+        private final int           endSample;
+        private final int           length;
 
         public WeightIntegralFunction (final Channel input, final int startSample1, final int endSample1) {
-            this.inputSamples = input.getSamples () ;
+            this.inputSamples = input.getSamples ();
             this.startSample = startSample1;
             this.endSample = endSample1;
-            this.length = endSample - startSample;
+            this.length = this.endSample - this.startSample;
         }
 
         public double value (final double choosenPeriod) {
@@ -57,20 +58,20 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
 
     static class SignalSumFunction {
 
-        private final int       choosenPeriod;
-        private final int       moduloAfterLastPeriod;
+        private final int     choosenPeriod;
+        private final int     moduloAfterLastPeriod;
         private final long [] inputSamples;
-        private final int       choosenPeriodsInSignal;
-        private int startSample;
-        private int endSample;
-        private int length;
+        private final int     choosenPeriodsInSignal;
+        private final int           startSample;
+        private final int           endSample;
+        private final int           length;
 
         public SignalSumFunction (final long [] inputSamples1, final int choosenPeriod1, final int startSample1, final int endSample1) {
             this.inputSamples = inputSamples1;
             this.choosenPeriod = choosenPeriod1;
             this.startSample = startSample1;
             this.endSample = endSample1;
-            this.length = endSample - startSample;
+            this.length = this.endSample - this.startSample;
             this.choosenPeriodsInSignal = this.length / this.choosenPeriod;
             this.moduloAfterLastPeriod = this.length % this.choosenPeriod;
         }
@@ -109,18 +110,18 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
      * Default Constructor
      *
      * @param window1
-     *            the samples window length picked at each iteration. This param 
+     *            the samples window length picked at each iteration. This param
      *            can be equal to the sample rate
      * @param step1
      *            the iteration step value (increasing the value will speed the
      *            transform but will be less precise)
      * @param minFreq1
-     *            the detection will start with this value as the lowest possible
-     *            detected frequency. It is advised not to choose 0 to avoid detecting
-     *            bad freqs in a noisy sound
+     *            the detection will start with this value as the lowest
+     *            possible detected frequency. It is advised not to choose 0 to
+     *            avoid detecting bad freqs in a noisy sound
      * @param maxFreq1
-     *            the detection will start with this value as the highest possible
-     *            detected frequency
+     *            the detection will start with this value as the highest
+     *            possible detected frequency
      */
     public MaximumLikelihoodSoundTransform (final int window1, final int step1, final int minFreq1, final int maxFreq1) {
         super ();
@@ -167,7 +168,6 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
     private double computeSum (final Channel input, final int startSample, final int endSample, final int choosenPeriod) {
         return new WeightIntegralFunction (input, startSample, endSample).value (choosenPeriod);
     }
-
 
     @Override
     public float getDetectedNoteVolume () {

@@ -5,13 +5,11 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public abstract class AbstractWindowSoundTransform implements SoundTransform<Channel, Channel> {
 
-    
     @Override
-    public Channel transform (Channel sound) throws SoundTransformException {
+    public Channel transform (final Channel sound) throws SoundTransformException {
 
         final long [] data = sound.getSamples ();
         final long [] newdata = new long [sound.getSamplesLength ()];
-
 
         // now find the result, with scaling:
         for (int i = 0 ; i < data.length ; i++) {

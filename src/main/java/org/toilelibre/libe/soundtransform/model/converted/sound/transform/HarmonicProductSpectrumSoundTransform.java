@@ -150,9 +150,10 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
             this.loudestfreqs [(int) (offset / this.step)] = f0;
             return fs;
         }
-        
+
         /**
-         * Find the f0 (fundamental frequency) using the Harmonic Product Spectrum
+         * Find the f0 (fundamental frequency) using the Harmonic Product
+         * Spectrum
          *
          * @param fs
          *            spectrum at a specific time

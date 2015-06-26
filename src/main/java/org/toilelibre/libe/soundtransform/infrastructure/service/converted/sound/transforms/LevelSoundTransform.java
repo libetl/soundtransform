@@ -7,15 +7,15 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 public class LevelSoundTransform implements SoundTransform<Channel, Channel> {
 
     private static final double NB_BYTE_VALUES = 1 << Byte.SIZE;
-    private int step;
+    private final int                 step;
 
     public LevelSoundTransform (final int step1) {
         this.step = step1;
     }
-    
+
     @Override
-    public Channel transform (Channel input) throws SoundTransformException {
-        double [] magnitudes = new ComputeMagnitudeSoundTransform (this.step).transform (input);
+    public Channel transform (final Channel input) throws SoundTransformException {
+        final double [] magnitudes = new ComputeMagnitudeSoundTransform (this.step).transform (input);
 
         final long [] data = input.getSamples ();
         final long [] newdata = new long [input.getSamplesLength ()];
@@ -24,7 +24,7 @@ public class LevelSoundTransform implements SoundTransform<Channel, Channel> {
 
         // now find the result, with scaling:
         for (int i = 0 ; i < data.length ; i++) {
-            int currentMagnitudeIndex = (int) (i * 1.0 / this.step);
+            final int currentMagnitudeIndex = (int) (i * 1.0 / this.step);
             final double rescaled = data [i] / magnitudes [currentMagnitudeIndex] * maxMagnitude;
             newdata [i] = (long) Math.floor (rescaled);
         }

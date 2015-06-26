@@ -226,9 +226,10 @@ public interface FluentClientInterface {
      * the new sound will only sounds like the instrument you shaped the freqs
      * with
      *
-     * @param peakFindSoundTransform a sound transform whose role is to find
-     *        the loudest freqs array
-     * 
+     * @param peakFindSoundTransform
+     *            a sound transform whose role is to find the loudest freqs
+     *            array
+     *
      * @return the client, with a loudest frequencies integer array
      * @throws SoundTransformException
      *             if the convert fails
@@ -288,7 +289,7 @@ public interface FluentClientInterface {
      *             if the sound is null or if the sound is already mono
      */
     public abstract FluentClientSoundImported mergeChannels () throws SoundTransformException;
-    
+
     /**
      * Combines the current sound with another sound. The operation is not
      * reversible
