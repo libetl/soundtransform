@@ -660,6 +660,7 @@ function setDocumentScrollTop(ypos)
   <ul> 
    <li><a href="#time-domain-transforms">Time domain transforms</a></li> 
    <li><a href="#frequency-domain-transforms">Frequency domain transforms</a></li> 
+   <li><a href="#window-transforms">Window transforms</a></li> 
   </ul> </li> 
 </ul> 
 <h2> <a id="user-content-how-to-use-the-library" class="anchor" href="#how-to-use-the-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use the library</h2> 
@@ -1110,6 +1111,14 @@ function setDocumentScrollTop(ypos)
 <p>Parameters:<br /> <code>length</code> - the number of samples of the result sound</p> 
 <p>Returns:<br /> the client, with a sound imported</p> 
 <p>Throws:<br /> <code>SoundTransformException</code> - if the length is not positive</p> 
+<h5> <a id="user-content-fluentclientsoundimportedmergechannels" class="anchor" href="#fluentclientsoundimportedmergechannels" aria-hidden="true"><span class="octicon octicon-link"></span></a>FluentClientSoundImported.mergeChannels</h5> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-smi">FluentClientSoundImported</span> mergeChannels () throws <span class="pl-smi">SoundTransformException</span></pre>
+</div> 
+<p>Converts a stereo sound into a mono sound with the channels mixed</p> 
+<p>Parameters:<br /> <code>sound</code> - the sound to merge</p> 
+<p>Returns:<br /> the client, with a sound imported</p> 
+<p>Throws:<br /> <code>SoundTransformException</code> - if the sound is null or if the sound is already mono</p> 
 <h5> <a id="user-content-fluentclientsoundimportedmixwith" class="anchor" href="#fluentclientsoundimportedmixwith" aria-hidden="true"><span class="octicon octicon-link"></span></a>FluentClientSoundImported.mixWith</h5> 
 <div class="highlight highlight-java">
  <pre><span class="pl-smi">FluentClientSoundImported</span> mixWith (<span class="pl-smi">Sound</span> sound) throws <span class="pl-smi">SoundTransformException</span></pre>
@@ -1672,6 +1681,44 @@ function setDocumentScrollTop(ypos)
    <li> <code>step</code> — iteration step value</li> 
    <li> <code>factor</code> — factor of compression (e.g. 2 means : twice as short)</li> 
   </ul> </li> 
-</ul>
+</ul> 
+<h3> <a id="user-content-window-transforms" class="anchor" href="#window-transforms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Window transforms</h3> 
+<p>A window transform is used to improve a frequency domain transform (on a musical note) so the transform is not impacted by a varying signal over time. Each of these transform extends the class <code>AbstractWindowSoundTransform</code></p> 
+<h4> <a id="user-content-blackmanharriswindowsoundtransform" class="anchor" href="#blackmanharriswindowsoundtransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>BlackmanHarrisWindowSoundTransform</h4> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-k">public</span> <span class="pl-k">final</span> <span class="pl-k">class</span> <span class="pl-en">BlackmanHarrisWindowSoundTransform</span> <span class="pl-k">extends</span> <span class="pl-e">AbstractWindowSoundTransform</span> </pre>
+</div> 
+<p>Blackman Harris window : <code>0.35875 - 0.48829 cos (2πx) + 0.14128 cos (4πx) - 0.01168 cos (6πx)</code></p> 
+<ul> 
+ <li><strong>Constructor:</strong></li> 
+</ul> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-k">public</span> <span class="pl-smi">BlackmanHarrisWindowSoundTransform</span> ()</pre>
+</div> 
+<p>Default Constructor</p> 
+<h4> <a id="user-content-hammingwindowsoundtransform" class="anchor" href="#hammingwindowsoundtransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>HammingWindowSoundTransform</h4> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-k">public</span> <span class="pl-k">final</span> <span class="pl-k">class</span> <span class="pl-en">HammingWindowSoundTransform</span> <span class="pl-k">extends</span> <span class="pl-e">AbstractWindowSoundTransform</span> </pre>
+</div> 
+<p>Hamming window : <code>0.54 - 0.46 cos (2πx)</code></p> 
+<ul> 
+ <li><strong>Constructor:</strong></li> 
+</ul> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-k">public</span> <span class="pl-smi">HammingWindowSoundTransform</span> ()</pre>
+</div> 
+<p>Default Constructor</p> 
+<h4> <a id="user-content-hanningwindowsoundtransform" class="anchor" href="#hanningwindowsoundtransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>HanningWindowSoundTransform</h4> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-k">public</span> <span class="pl-k">final</span> <span class="pl-k">class</span> <span class="pl-en">HanningWindowSoundTransform</span> <span class="pl-k">extends</span> <span class="pl-e">AbstractWindowSoundTransform</span> </pre>
+</div> 
+<p>Hanning window : <code>0.5 ( 1 - cos (2πx))</code></p> 
+<ul> 
+ <li><strong>Constructor:</strong></li> 
+</ul> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-k">public</span> <span class="pl-smi">HanningWindowSoundTransform</span> ()</pre>
+</div> 
+<p>Default Constructor</p>
 </body>
 </html>

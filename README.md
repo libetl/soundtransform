@@ -16,6 +16,7 @@ Android & Pure Java library to shape a voice with an instrument.
 - [SoundTransform classes](#soundtransform-classes)
 	- [Time domain transforms](#time-domain-transforms)
 	- [Frequency domain transforms](#frequency-domain-transforms)
+	- [Window transforms](#window-transforms)
 
 ## How to use the library
 * Insert the aar into your project dependencies :
@@ -908,6 +909,24 @@ the client, with a sound imported
 Throws:  
 `SoundTransformException` - if the length is not positive
 
+#####   FluentClientSoundImported.mergeChannels
+
+```java
+FluentClientSoundImported mergeChannels () throws SoundTransformException
+```
+
+
+Converts a stereo sound into a mono sound with the channels mixed
+
+Parameters:  
+`sound` - the sound to merge
+
+Returns:  
+the client, with a sound imported
+
+Throws:  
+`SoundTransformException` - if the sound is null or if the sound is already mono
+
 #####   FluentClientSoundImported.mixWith
 
 ```java
@@ -1666,3 +1685,49 @@ Default constructor
  * **Parameters:**
    * `step` — iteration step value
    * `factor` — factor of compression (e.g. 2 means : twice as short)
+
+### Window transforms
+A window transform is used to improve a frequency domain transform (on a musical note) so the transform is not impacted by a varying signal over time.
+Each of these transform extends the class `AbstractWindowSoundTransform`
+
+#### BlackmanHarrisWindowSoundTransform
+```java
+public final class BlackmanHarrisWindowSoundTransform extends AbstractWindowSoundTransform 
+```
+
+Blackman Harris window : `0.35875 - 0.48829 cos (2πx) + 0.14128 cos (4πx) - 0.01168 cos (6πx)`
+
+ * **Constructor:**
+```java
+public BlackmanHarrisWindowSoundTransform ()
+```
+
+Default Constructor
+
+#### HammingWindowSoundTransform
+```java
+public final class HammingWindowSoundTransform extends AbstractWindowSoundTransform 
+```
+
+Hamming window : `0.54 - 0.46 cos (2πx)`
+
+ * **Constructor:**
+```java
+public HammingWindowSoundTransform ()
+```
+
+Default Constructor
+
+#### HanningWindowSoundTransform
+```java
+public final class HanningWindowSoundTransform extends AbstractWindowSoundTransform 
+```
+
+Hanning window : `0.5 ( 1 - cos (2πx))`
+
+ * **Constructor:**
+```java
+public HanningWindowSoundTransform ()
+```
+
+Default Constructor
