@@ -51,7 +51,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public enum FluentClientErrorCode implements ErrorCode {
 
         PROBLEM_WITH_SIMULTANEOUS_FLOWS ("Problem with simultaneous flows : %1s"), MISSING_SOUND_IN_INPUT ("Missing sound in input"), INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE (
-                "This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input");
+                "This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input"), STEREO_SOUND_EXPECTED ("A stereo sound was expected");
 
         private final String messageFormat;
 
@@ -653,6 +653,23 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     @Override
     public FluentClientSoundImported loop (final int length) throws SoundTransformException {
         return this.apply (new LoopSoundTransform (length));
+    }
+    
+    /**
+     * Converts a stereo sound into a mono sound with the channels mixed
+     *
+     * @param sound the sound to merge
+     * @return the client, with a sound imported
+     * @throws SoundTransformException if the sound is null or if the sound is not stereo
+     */
+    public FluentClientSoundImported mergeChannels () throws SoundTransformException {
+        if (this.sound.getNumberOfChannels () != 2) {
+            throw new SoundTransformException (FluentClientErrorCode.STEREO_SOUND_EXPECTED, new IllegalArgumentException ());
+        }
+        Sound channel1AsASound = new Sound (new Channel [] {this.sound.getChannels () [0]});
+        Sound channel2AsASound = new Sound (new Channel [] {this.sound.getChannels () [1]});
+        this.sound = channel1AsASound;
+        return this.apply (new MixSoundTransform (Arrays.<Sound> asList (channel2AsASound)));
     }
 
     @Override

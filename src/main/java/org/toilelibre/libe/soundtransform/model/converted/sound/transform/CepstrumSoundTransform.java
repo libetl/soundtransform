@@ -110,9 +110,9 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
             final float spectrumLength = this.spectrumHelper.getLengthOfSpectrum (fscep);
             final float timelapseInTheCepstrum = spectrumLength * 1.0f / fscep.getSampleRate ();
             final double maxValue = this.spectrumHelper.getMaxValue (fscep, CepstrumFrequencySoundTransform.MIN_VOICE_FREQ, CepstrumFrequencySoundTransform.MAX_VOICE_FREQ);
-            final double thresholdValue = maxValue - (1 - A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS) * maxValue * maxValue;
-            final float maxIndex1 = this.spectrumHelper.getFirstPeak (fscep,  CepstrumFrequencySoundTransform.MIN_VOICE_FREQ, CepstrumFrequencySoundTransform.MAX_VOICE_FREQ, thresholdValue);
-            final float t0 = maxIndex1 / spectrumLength * timelapseInTheCepstrum;
+            final double thresholdValue = maxValue - (1 - CepstrumFrequencySoundTransform.A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS) * maxValue * maxValue;
+            final float maxIndex = this.spectrumHelper.getFirstPeak (fscep, CepstrumFrequencySoundTransform.MIN_VOICE_FREQ, CepstrumFrequencySoundTransform.MAX_VOICE_FREQ, thresholdValue);
+            final float t0 = maxIndex / spectrumLength * timelapseInTheCepstrum;
             return 1.0f / t0;
         }
 

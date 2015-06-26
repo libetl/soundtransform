@@ -27,22 +27,23 @@ public class PeakFindClassesScoreTest {
     public void peakFindTest () throws SoundTransformException {
 
         final String [] classpathResources = { "piano1c.wav", "piano2d.wav", "piano3e.wav", "piano4f.wav", "piano5g.wav", "piano6a.wav", "piano7b.wav", "piano8c.wav" };
-        final FormatInfo [] testedFormats = { new FormatInfo (2, 11025), new FormatInfo (2, 22050), new FormatInfo (2, 44100) };
+        final FormatInfo [] testedFormats = { new FormatInfo (2, 11025), new FormatInfo (2, 22050), new FormatInfo (2, 44100)  };
         final int [] expectedValues = { 260, 293, 329, 349, 391, 440, 493, 523 };
-        final int nbChannels = 2;
+        final String [] notes = { "C3", "D3", "E3", "F3", "G3", "A4", "B4", "C4" };
+        final int nbChannels = 1;
         final int allowedDelta = 15;
         final Map<String, Integer> peakFindMethodsScore = new HashMap<String, Integer> ();
         final Map<String, SoundTransform<Channel, float []>> peakFindMethods = new HashMap<String, SoundTransform<Channel, float []>> ();
 
         this.addKnownMethods (peakFindMethods, peakFindMethodsScore);
 
-        final float total = this.loopAndReturnTotal (classpathResources, testedFormats, expectedValues, nbChannels, allowedDelta, peakFindMethodsScore, peakFindMethods);
+        final float total = this.loopAndReturnTotal (classpathResources, testedFormats, expectedValues, notes, nbChannels, allowedDelta, peakFindMethodsScore, peakFindMethods);
 
         this.answerScores (peakFindMethodsScore, total);
     }
 
     private void addKnownMethods (final Map<String, SoundTransform<Channel, float []>> peakFindMethods, final Map<String, Integer> peakFindMethodsScore) {
-        this.addMethod (peakFindMethods, peakFindMethodsScore, "cepstrum", new CompositeSoundTransform<Channel, Channel, float []> (new LevelSoundTransform (4000), new CepstrumSoundTransform<Serializable> (300, true)));
+        this.addMethod (peakFindMethods, peakFindMethodsScore, "cepstrum", new CompositeSoundTransform<Channel, Channel, float []> (new LevelSoundTransform (300), new CepstrumSoundTransform<Serializable> (300, true)));
         this.addMethod (peakFindMethods, peakFindMethodsScore, "hps", new HarmonicProductSpectrumSoundTransform<Serializable> (true));
         this.addMethod (peakFindMethods, peakFindMethodsScore, "maxlikelihood", new CompositeSoundTransform<Channel, Channel, float []> (new BlackmanHarrisWindowSoundTransform (), new CompositeSoundTransform<Channel, Channel, float []> (new PralongAndCarlileSoundTransform (),
                 new MaximumLikelihoodSoundTransform (24000, 4000, 100, 800))));
@@ -59,19 +60,19 @@ public class PeakFindClassesScoreTest {
         new Slf4jObserver (LogLevel.INFO).notify (scoresStringBuffer.toString ());
     }
 
-    private float loopAndReturnTotal (final String [] classpathResources, final FormatInfo [] testedFormats, final int [] expectedValues, final int nbChannels, final int allowedDelta, final Map<String, Integer> peakFindMethodsScore,
+    private float loopAndReturnTotal (final String [] classpathResources, final FormatInfo [] testedFormats, final int [] expectedValues, final String [] notes, final int nbChannels, final int allowedDelta, final Map<String, Integer> peakFindMethodsScore,
             final Map<String, SoundTransform<Channel, float []>> peakFindMethods) throws SoundTransformException {
         float total = 0;
         int expectedValuesIndex = 0;
         for (final String classpathResource : classpathResources) {
-            new Slf4jObserver (LogLevel.INFO).notify ("Peak find with the file " + classpathResource + " : ");
+            new Slf4jObserver (LogLevel.INFO).notify ("Peak find with the file " + classpathResource + " ( " + notes [expectedValuesIndex] + " = " + expectedValues [expectedValuesIndex] + "Hz ) : ");
             for (final FormatInfo formatInfo : testedFormats) {
                 for (int channel = 0 ; channel < nbChannels ; channel++) {
                     final StringBuffer channelStringBuffer = new StringBuffer ("                        channel " + channel + "   : ");
                     boolean first = true;
                     for (final Entry<String, SoundTransform<Channel, float []>> methodEntry : peakFindMethods.entrySet ()) {
-                        final float [][] freqs = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource (classpathResource).convertIntoSound ().changeFormat (formatInfo).applyAndStop (methodEntry.getValue ());
-                        channelStringBuffer.append ((first ? "" : ", ") + methodEntry.getKey () + "(" + formatInfo.getSampleRate () + ") -> " + freqs [channel] [0]);
+                        final float [][] freqs = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource (classpathResource).convertIntoSound ().changeFormat (formatInfo).mergeChannels ().applyAndStop (methodEntry.getValue ());
+                        channelStringBuffer.append ((first ? "" : ", ") + methodEntry.getKey () + "(" + formatInfo.getSampleSize () + ", " + formatInfo.getSampleRate () + ") -> " + freqs [channel] [0]);
                         first = false;
                         if (Math.abs (freqs [channel] [0] - expectedValues [expectedValuesIndex]) < allowedDelta) {
                             peakFindMethodsScore.put (methodEntry.getKey (), peakFindMethodsScore.get (methodEntry.getKey ()) + 1);

@@ -473,6 +473,19 @@ BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
     }
 
     @Override
+    public BuildableFluentClientOperationSoundImported mergeChannels () throws SoundTransformException {
+        this.steps.add (new Step () {
+
+            @Override
+            public void run (final FluentClientInterface client) throws SoundTransformException {
+                client.mergeChannels ();
+            }
+        });
+
+        return this;
+    }
+    
+    @Override
     public BuildableFluentClientOperationSoundImported mixWith (final Sound sound) throws SoundTransformException {
         this.steps.add (new Step () {
 

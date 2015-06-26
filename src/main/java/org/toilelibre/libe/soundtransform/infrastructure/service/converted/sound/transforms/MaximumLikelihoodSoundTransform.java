@@ -157,7 +157,7 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
                 foundValue = sum;
             }
         }
-        loudestFreqs [startSample / this.step] = foundPeak;
+        loudestFreqs [(int) (startSample * 1.0 / this.step)] = foundPeak;
     }
 
     private int periodToLength (final Channel input, final float period) {
