@@ -38,8 +38,8 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
         private int                               length;
         private final SpectrumToCepstrumHelper<T> spectrum2CepstrumHelper;
         private final SpectrumHelper<T>           spectrumHelper;
-        private static final int                  MIN_VOICE_FREQ                     = 10;
-        private static final int                  MAX_VOICE_FREQ                     = 8000;
+        private static final int                  MIN_VOICE_FREQ                     = 100;
+        private static final int                  MAX_VOICE_FREQ                     = 1000;
         private static final float                A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS = 0.6f;
         private final boolean                     note;
 
@@ -111,14 +111,26 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
             return fscep;
         }
 
-        private float findLoudestFreqFromCepstrum (final Spectrum<T> fscep) {
-            final float spectrumLength = this.spectrumHelper.getLengthOfSpectrum (fscep);
-            final float timelapseInTheCepstrum = spectrumLength * 1.0f / fscep.getSampleRate ();
-            final double maxValue = this.spectrumHelper.getMaxValue (fscep, CepstrumFrequencySoundTransform.MIN_VOICE_FREQ, CepstrumFrequencySoundTransform.MAX_VOICE_FREQ);
+        private float findLoudestFreqFromCepstrum (final Spectrum<T> cepstrum) {
+            final int high = (int) this.frequencyToCepstrumIndex (CepstrumFrequencySoundTransform.MIN_VOICE_FREQ, cepstrum);
+            final int low = (int) this.frequencyToCepstrumIndex (CepstrumFrequencySoundTransform.MAX_VOICE_FREQ, cepstrum);
+            
+            final double maxValue = this.spectrumHelper.getMaxValue (cepstrum, low, high);
             final double thresholdValue = maxValue - (1 - CepstrumFrequencySoundTransform.A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS) * maxValue * maxValue;
-            final float maxIndex = this.spectrumHelper.getFirstPeak (fscep, CepstrumFrequencySoundTransform.MIN_VOICE_FREQ, CepstrumFrequencySoundTransform.MAX_VOICE_FREQ, thresholdValue);
-            final float t0 = maxIndex / spectrumLength * timelapseInTheCepstrum;
-            return 1.0f / t0;
+            final float maxIndex = this.spectrumHelper.getFirstPeak (cepstrum, low, high, thresholdValue);
+            return this.cepstrumIndexToFrequency ((int) maxIndex, cepstrum);
+        }
+
+        private float frequencyToCepstrumIndex (int frequency, final Spectrum<T> cepstrum) {
+            final float spectrumLength = this.spectrumHelper.getLengthOfSpectrum (cepstrum);
+            final float timelapseInTheCepstrum = spectrumLength * 1.0f / cepstrum.getSampleRate ();
+            return (float) (1.0 * spectrumLength / (frequency * timelapseInTheCepstrum));
+        }
+
+        private float cepstrumIndexToFrequency (int quefrency, final Spectrum<T> cepstrum) {
+            final float spectrumLength = this.spectrumHelper.getLengthOfSpectrum (cepstrum);
+            final float timelapseInTheCepstrum = spectrumLength * 1.0f / cepstrum.getSampleRate ();
+            return (float) (1.0 / (quefrency / spectrumLength * timelapseInTheCepstrum));
         }
 
         public float getDetectedNoteVolume () {

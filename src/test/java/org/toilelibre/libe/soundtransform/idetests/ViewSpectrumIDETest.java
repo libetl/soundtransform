@@ -40,6 +40,12 @@ public class ViewSpectrumIDETest {
     }
 
     @Test
+    public void viewHA3PlusC3 () throws SoundTransformException {
+        final Chart chart = this.getChart (new String [] { "A3 (221Hz) + C3 (260Hz)" }, FluentClient.start ().withClasspathResource ("gpiano3.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]);
+        new SwingWrapper (chart).displayChart ();
+    }
+    
+    @Test
     public void viewF3 () throws SoundTransformException {
         final Chart chart = this.getChart (new String [] { "F3 (349Hz)" }, FluentClient.start ().withClasspathResource ("piano4f.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]);
         new SwingWrapper (chart).displayChart ();
