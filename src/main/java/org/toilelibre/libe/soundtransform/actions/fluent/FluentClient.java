@@ -214,7 +214,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Resets the list of the subscribed observers
      */
     private void cleanObservers () {
-        this.observers = FluentClient.defaultObservers;
+        this.observers = new LinkedList<Observer> (FluentClient.defaultObservers);
     }
 
     @Override
