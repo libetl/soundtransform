@@ -65,8 +65,8 @@ final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
     }
 
     @Override
-    public Spectrum<Complex []> productOfMultiples (final Spectrum<Complex []> fs, final int factor) {
-        final int max = fs.getState ().length / factor;
+    public Spectrum<Complex []> productOfMultiples (final Spectrum<Complex []> fs, final int factor, final float partOfTheSpectrumToRead) {
+        final int max = (int) (fs.getState ().length * partOfTheSpectrumToRead / factor);
         final Complex [] result = new Complex [max];
         for (int i = 0 ; i < max ; i++) {
             double val = fs.getState () [i].abs ();

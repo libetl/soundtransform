@@ -23,6 +23,7 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
     private static final int TWICE = 2;
 
     static class HarmonicProductSpectrumFrequencySoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T> {
+        private static final float PART_OF_THE_SPECTRUM_TO_READ = 0.1f; //2000Hz if the spectrum is 20000Hz long
 
         private double                  step;
         private float []                loudestfreqs;
@@ -162,9 +163,9 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
          * @return a fundamental frequency (in Hz)
          */
         public float f0 (final Spectrum<T> fs, final int hpsfactor) {
-            final Spectrum<T> productOfMultiples = this.spectrumHelper.productOfMultiples (fs, hpsfactor);
+            final Spectrum<T> productOfMultiples = this.spectrumHelper.productOfMultiples (fs, hpsfactor, HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ);
             final int spectrumLength = this.spectrumHelper.getLengthOfSpectrum (fs);
-            final int maxIndex = this.spectrumHelper.getMaxIndex (productOfMultiples, 0, spectrumLength / hpsfactor);
+            final int maxIndex = this.spectrumHelper.getMaxIndex (productOfMultiples, 0, (int) (spectrumLength * HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ) / hpsfactor);
             return this.spectrumHelper.freqFromSampleRate (maxIndex, spectrumLength * HarmonicProductSpectrumSoundTransform.TWICE / hpsfactor, fs.getSampleRate ());
         }
 

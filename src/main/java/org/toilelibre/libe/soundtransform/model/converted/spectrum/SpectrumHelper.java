@@ -10,7 +10,7 @@ public interface SpectrumHelper<T> {
 
     int getFirstPeak (Spectrum<T> fs, int min, int max, double thresholdValue);
 
-    Spectrum<T> productOfMultiples (Spectrum<T> fs, int factor);
+    Spectrum<T> productOfMultiples (Spectrum<T> fs, int factor, float partOfTheSpectrumToRead);
 
     int getLengthOfSpectrum (Spectrum<T> fs);
 
