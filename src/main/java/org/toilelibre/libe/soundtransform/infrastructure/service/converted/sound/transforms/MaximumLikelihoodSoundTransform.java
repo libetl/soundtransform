@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.PianoFrequency;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.BlackmanHarrisWindowSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
@@ -26,7 +27,7 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
 
     static class WeightIntegralFunction {
 
-        private final long [] inputSamples;
+        private final long []       inputSamples;
         private final int           startSample;
         private final int           endSample;
         private final int           length;
@@ -133,13 +134,14 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
 
     @Override
     public float [] transform (final Channel input) throws SoundTransformException {
+        Channel windowedInput = new BlackmanHarrisWindowSoundTransform ().transformWholeChannel (input);
         final float [] loudestFreqs = new float [input.getSamplesLength () / this.step + 1];
         for (int momentOfTheSound = 0 ; momentOfTheSound < input.getSamplesLength () ; momentOfTheSound += this.step) {
             final int percent = (int) Math.floor (MaximumLikelihoodSoundTransform.A_HUNDRED_PERCENT * (momentOfTheSound / this.step) / (input.getSamplesLength () / this.step));
             if (percent > Math.floor (MaximumLikelihoodSoundTransform.A_HUNDRED_PERCENT * ((momentOfTheSound - this.step) / this.step) / (input.getSamplesLength () / this.step))) {
                 this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, momentOfTheSound / this.step, (int) Math.ceil (input.getSamplesLength () / this.step), percent));
             }
-            this.transformMoment (input, momentOfTheSound, Math.min (momentOfTheSound + this.window, input.getSamplesLength () - 1), loudestFreqs);
+            this.transformMoment (windowedInput, momentOfTheSound, Math.min (momentOfTheSound + this.window, input.getSamplesLength () - 1), loudestFreqs);
         }
         return loudestFreqs;
     }

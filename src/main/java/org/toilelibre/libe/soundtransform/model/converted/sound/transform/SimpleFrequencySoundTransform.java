@@ -34,6 +34,11 @@ public class SimpleFrequencySoundTransform<T extends Serializable> extends Abstr
     }
 
     @Override
+    public AbstractWindowSoundTransform getWindowTransform () {
+        return new NoOpWindowSoundTransform ();
+    }
+    
+    @Override
     public Channel initSound (final Channel input) {
         final long [] newdata = new long [input.getSamplesLength ()];
         return new Channel (newdata, input.getFormatInfo (), input.getChannelNum ());

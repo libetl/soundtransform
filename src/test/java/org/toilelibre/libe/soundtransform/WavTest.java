@@ -2,13 +2,17 @@ package org.toilelibre.libe.soundtransform;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Arrays;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.EqualizerSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.GaussianEqualizerSoundTransform;
+import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.LevelSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.LinearRegressionSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.MaximumLikelihoodSoundTransform;
+import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.PralongAndCarlileSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.PurifySoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.ReduceNoiseSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.SlowdownSoundTransform;
@@ -186,14 +190,28 @@ public class WavTest extends SoundTransformTest {
     }
 
     @Test
-    public void testShapeMaximumLikelihood () throws SoundTransformException {
+    public void testShapeCepstrum () throws SoundTransformException {
         // WARN : quite long
         final Library library = $.select (Library.class);
         ((ImportPackService<?>) $.select (ImportPackService.class).setObservers (new Slf4jObserver (LogLevel.WARN))).importPack (library, "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ().findLoudestFrequencies (new MaximumLikelihoodSoundTransform (48000, 100, 100, 880)).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100))
-        .exportToFile (this.output);
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.VERBOSE)).withFile (this.input).convertIntoSound ().apply (new LevelSoundTransform (300)).findLoudestFrequencies (new CepstrumSoundTransform<Serializable> (100, false)).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100)).exportToFile (this.output);
 
     }
+
+
+    @Test
+    @Ignore
+    public void compareLoudestFreqsArray () throws SoundTransformException {
+        // WARN : quite long
+        Sound sound = FluentClient.start ().withFile (this.shortInput).convertIntoSound ().apply (new LevelSoundTransform (100)).apply (new NormalizeSoundTransform (1)).stopWithSound ();
+        String s1 = Arrays.toString (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.VERBOSE)).withSound (sound).findLoudestFrequencies (new HarmonicProductSpectrumSoundTransform<Serializable> (true)).stopWithFreqs ().get (0)).replaceAll ("(\\[| )([0-9])\\.([0-9])(\\]|,)", "$100$2.$300$4").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9]),", " $1$2$3.$400,").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9]),", " $1$2$3.$4$50,").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9])([0-9])([0-9]*),", " $1$2$3.$4$5$6,");
+        String s2 = Arrays.toString (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.VERBOSE)).withSound (sound).findLoudestFrequencies (new CepstrumSoundTransform<Serializable> (1, true)).stopWithFreqs ().get (0)).replaceAll ("(\\[| )([0-9])\\.([0-9])(\\]|,)", "$100$2.$300$4").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9]),", " $1$2$3.$400,").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9]),", " $1$2$3.$4$50,").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9])([0-9])([0-9]*),", " $1$2$3.$4$5$6,");
+        String s3 = Arrays.toString (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.VERBOSE)).withSound (sound).apply (new PralongAndCarlileSoundTransform ()).findLoudestFrequencies (new MaximumLikelihoodSoundTransform (sound.getSamplesLength (), sound.getSamplesLength () + 1, 0, 500)).stopWithFreqs ().get (0)).replaceAll ("(\\[| )([0-9])\\.([0-9])(\\]|,)", "$100$2.$300$4").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9]),", " $1$2$3.$400,").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9]),", " $1$2$3.$4$50,").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9])([0-9])([0-9]*),", " $1$2$3.$4$5$6,");
+        new Slf4jObserver (LogLevel.INFO).notify (s1);
+        new Slf4jObserver (LogLevel.INFO).notify (s2);
+        new Slf4jObserver (LogLevel.INFO).notify (s3);
+    }
+    
 
     @Test
     public void testSlowdown () throws SoundTransformException {

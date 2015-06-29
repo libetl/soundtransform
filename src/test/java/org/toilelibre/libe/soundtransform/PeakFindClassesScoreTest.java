@@ -13,7 +13,6 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.BlackmanHarrisWindowSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CepstrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CompositeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
@@ -43,10 +42,10 @@ public class PeakFindClassesScoreTest {
     }
 
     private void addKnownMethods (final Map<String, SoundTransform<Channel, float []>> peakFindMethods, final Map<String, Integer> peakFindMethodsScore) {
-        this.addMethod (peakFindMethods, peakFindMethodsScore, "cepstrum", new CompositeSoundTransform<Channel, Channel, float []> (new LevelSoundTransform (300), new CepstrumSoundTransform<Serializable> (300, true)));
+        this.addMethod (peakFindMethods, peakFindMethodsScore, "cepstrum", new CompositeSoundTransform<Channel, Channel, float []> (new LevelSoundTransform (300), new CepstrumSoundTransform<Serializable> (1, true)));
         this.addMethod (peakFindMethods, peakFindMethodsScore, "hps", new HarmonicProductSpectrumSoundTransform<Serializable> (true));
-        this.addMethod (peakFindMethods, peakFindMethodsScore, "maxlikelihood", new CompositeSoundTransform<Channel, Channel, float []> (new BlackmanHarrisWindowSoundTransform (), new CompositeSoundTransform<Channel, Channel, float []> (new PralongAndCarlileSoundTransform (),
-                new MaximumLikelihoodSoundTransform (24000, 4000, 100, 800))));
+        this.addMethod (peakFindMethods, peakFindMethodsScore, "maxlikelihood", new CompositeSoundTransform<Channel, Channel, float []> (new PralongAndCarlileSoundTransform (),
+                new MaximumLikelihoodSoundTransform (8000, 8000, 100, 800)));
     }
 
     private void answerScores (final Map<String, Integer> peakFindMethodsScore, final float total) {

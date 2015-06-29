@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.io.Serializable;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.PianoFrequency;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -38,9 +39,11 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
         private int                               length;
         private final SpectrumToCepstrumHelper<T> spectrum2CepstrumHelper;
         private final SpectrumHelper<T>           spectrumHelper;
-        private static final int                  MIN_VOICE_FREQ                     = 100;
-        private static final int                  MAX_VOICE_FREQ                     = 1000;
+        private static final float                MIN_VOICE_FREQ                     = PianoFrequency.PianoValues.E2.getFrequency ();
+        private static final float                MAX_VOICE_FREQ                     = PianoFrequency.PianoValues.C6.getFrequency ();
         private static final float                A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS = 0.6f;
+        private static final float                UNLIKELY_TO_BE_HEARD_DELTA         = 50;
+        private static final float                SOUND_LEVEL_THRESHOLD_IN_DB        = 30;
         private final boolean                     note;
 
         private float                             detectedNoteVolume;
@@ -76,7 +79,6 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
 
         @Override
         public Channel initSound (final Channel input) {
-            this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
             this.index = 0;
             this.length = input.getSamplesLength ();
             if (this.note) {
@@ -102,13 +104,17 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
 
             final Spectrum<T> fscep = this.spectrum2CepstrumHelper.spectrumToCepstrum (fs);
 
-            this.loudestfreqs [this.index] = this.findLoudestFreqFromCepstrum (fscep);
+            this.loudestfreqs [this.index] = this.checkIfLikelyToBeHeard (soundLevelInDB, this.findLoudestFreqFromCepstrum (fscep));
             this.index++;
 
             if (this.note) {
                 this.detectedNoteVolume = soundLevelInDB;
             }
             return fscep;
+        }
+
+        private float checkIfLikelyToBeHeard (float soundlevelInDb, float possibleLoudestFreq) {
+            return soundlevelInDb < CepstrumFrequencySoundTransform.SOUND_LEVEL_THRESHOLD_IN_DB || Math.abs (CepstrumFrequencySoundTransform.MAX_VOICE_FREQ - possibleLoudestFreq) < CepstrumFrequencySoundTransform.UNLIKELY_TO_BE_HEARD_DELTA ? 0 : possibleLoudestFreq;
         }
 
         private float findLoudestFreqFromCepstrum (final Spectrum<T> cepstrum) {
@@ -121,7 +127,7 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
             return this.cepstrumIndexToFrequency ((int) maxIndex, cepstrum);
         }
 
-        private float frequencyToCepstrumIndex (int frequency, final Spectrum<T> cepstrum) {
+        private float frequencyToCepstrumIndex (float frequency, final Spectrum<T> cepstrum) {
             final float spectrumLength = this.spectrumHelper.getLengthOfSpectrum (cepstrum);
             final float timelapseInTheCepstrum = spectrumLength * 1.0f / cepstrum.getSampleRate ();
             return (float) (1.0 * spectrumLength / (frequency * timelapseInTheCepstrum));

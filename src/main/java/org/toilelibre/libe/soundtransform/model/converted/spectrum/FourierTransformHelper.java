@@ -9,5 +9,5 @@ public interface FourierTransformHelper<T extends Serializable> {
 
     public Channel reverse (Spectrum<T> spectrum);
 
-    public Channel transform (AbstractFrequencySoundTransform<T> st, Channel sound, boolean needsReverse);
+    public Channel transform (AbstractFrequencySoundTransform<T> st, Channel sound);
 }

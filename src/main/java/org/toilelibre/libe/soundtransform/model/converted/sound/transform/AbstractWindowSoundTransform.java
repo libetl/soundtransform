@@ -1,26 +1,33 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
-import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-public abstract class AbstractWindowSoundTransform implements SoundTransform<Channel, Channel> {
+
+public abstract class AbstractWindowSoundTransform implements SoundTransform<Double, Double> {
 
     @Override
-    public Channel transform (final Channel sound) throws SoundTransformException {
+    /**
+     * @param progress is equal to iteration / sound.getSampleslength () - 1
+     */
+    public Double transform (final Double progress) {
+
+        return this.applyFunction (progress);
+    }
+
+    public Channel transformWholeChannel (final Channel sound) {
 
         final long [] data = sound.getSamples ();
         final long [] newdata = new long [sound.getSamplesLength ()];
 
         // now find the result, with scaling:
         for (int i = 0 ; i < data.length ; i++) {
-            final double rescaled = data [i] * this.applyFunction (i, data.length);
-            newdata [i] = (long) Math.floor (rescaled);
+            final double rescaled = data [i] * this.applyFunction (i * 1.0 / (data.length - 1));
+            newdata [i] = (long) rescaled;
         }
 
         // normalized result in newdata
         return new Channel (newdata, sound.getFormatInfo (), sound.getChannelNum ());
     }
-
-    protected abstract double applyFunction (int iteration, int length);
+    protected abstract double applyFunction (double progress);
 
 }
