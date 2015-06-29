@@ -127,7 +127,7 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
         }
 
         @Override
-        public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
+        public Spectrum<T> transformFrequencies (final double [] [] spectrumAsDoubles, final float sampleRate, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
             final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.soundLength / this.step));
             if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.soundLength / this.step))) {
@@ -139,7 +139,7 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
 
                 final float [] peaks = new float [10];
                 for (int i = 1 ; i <= 10 ; i++) {
-                    peaks [i - 1] = this.f0 (fs, i);
+                    peaks [i - 1] = this.f0 (spectrumAsDoubles, sampleRate, i);
                 }
                 Arrays.sort (peaks);
                 f0 = this.bestCandidate (peaks);
@@ -149,7 +149,7 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
                 this.detectedNoteVolume = soundLevelInDB;
             }
             this.loudestfreqs [(int) (offset / this.step)] = f0;
-            return fs;
+            return null;
         }
 
         /**
@@ -162,16 +162,21 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
          *            number of times to multiply the frequencies together
          * @return a fundamental frequency (in Hz)
          */
-        public float f0 (final Spectrum<T> fs, final int hpsfactor) {
-            final Spectrum<T> productOfMultiples = this.spectrumHelper.productOfMultiples (fs, hpsfactor, HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ);
-            final int spectrumLength = this.spectrumHelper.getLengthOfSpectrum (fs);
+        public float f0 (final double [] [] spectrumAsDoubles, final float sampleRate, final int hpsfactor) {
+            double [] productOfMultiples = this.spectrumHelper.productOfMultiples (spectrumAsDoubles, sampleRate, hpsfactor, HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ);
+            final int spectrumLength = spectrumAsDoubles [0].length;
             final int maxIndex = this.spectrumHelper.getMaxIndex (productOfMultiples, 0, (int) (spectrumLength * HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ) / hpsfactor);
-            return this.spectrumHelper.freqFromSampleRate (maxIndex, spectrumLength * HarmonicProductSpectrumSoundTransform.TWICE / hpsfactor, fs.getSampleRate ());
+            return this.spectrumHelper.freqFromSampleRate (maxIndex, spectrumLength * HarmonicProductSpectrumSoundTransform.TWICE / hpsfactor, sampleRate);
         }
 
         @Override
         public boolean isReverseNecessary () {
             return false;
+        }
+        
+        @Override
+        public boolean rawSpectrumPrefered () {
+            return true;
         }
     }
 

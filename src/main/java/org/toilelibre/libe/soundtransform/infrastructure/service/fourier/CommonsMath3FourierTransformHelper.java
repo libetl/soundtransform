@@ -20,6 +20,13 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
         return new Spectrum<Complex []> (complexArray, sound.getFormatInfo ());
     }
 
+
+    private double [][] forwardPartOfTheSoundInPlace (Channel sound, double [] transformeddata) {
+        final double [] [] result = new double [] [] {transformeddata,  new double [transformeddata.length]};
+        FastFourierTransformer.transformInPlace (result, DftNormalization.STANDARD, TransformType.FORWARD);
+        return result;
+    }
+    
     @Override
     public Channel reverse (final Spectrum<Complex []> spectrum) {
         return this.reverse (spectrum, null);
@@ -63,12 +70,27 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
         final int iterationLength = Math.min (maxlength, data.length - i);
         final double amplitude = this.writeTransformedDataAndReturnAmplitude (targetSoundTransform.getWindowTransform (), transformeddata, data, i, (int) step, iterationLength);
         final float volumeInDb = (float) (CommonsMath3FourierTransformHelper.COEFFICIENT * Math.log10 (amplitude));
+
+        if (targetSoundTransform.rawSpectrumPrefered ()) {
+            this.loopInPlace (targetSoundTransform, sound, newdata, transformeddata, i, maxlength, iterationLength, volumeInDb);
+        } else {
+            this.loopForTransform (targetSoundTransform, sound, newdata, transformeddata, i, maxlength, iterationLength, volumeInDb);
+        }
+    }
+
+    private void loopInPlace (AbstractFrequencySoundTransform<Complex []> targetSoundTransform, Channel sound, long [] newdata, double [] transformeddata, int i, int maxlength, int iterationLength, float volumeInDb) {
+        double [] [] spectrumInDoubles = this.forwardPartOfTheSoundInPlace (sound, transformeddata);
+        targetSoundTransform.transformFrequencies (spectrumInDoubles, sound.getSampleRate (), i, maxlength, iterationLength, volumeInDb);
+    }
+
+    private void loopForTransform (final AbstractFrequencySoundTransform<Complex []> targetSoundTransform, final Channel sound, final long [] newdata, final double [] transformeddata, int i, final int maxlength, final int iterationLength, final float volumeInDb) {
         final Spectrum<Complex []> spectrum = this.forwardPartOfTheSound (sound, transformeddata);
         final Spectrum<Complex []> result = targetSoundTransform.transformFrequencies (spectrum, i, maxlength, iterationLength, volumeInDb);
         if (result == null) {
             return;
         }
-        if (targetSoundTransform.isReverseNecessary ()) {
+        
+        if (targetSoundTransform.isReverseNecessary ()){
             this.reverse (result, newdata, i + targetSoundTransform.getOffsetFromASimpleLoop (i, sound.getSampleRate ()));
         }
     }

@@ -14,4 +14,8 @@ public interface SpectrumHelper<T> {
 
     int getLengthOfSpectrum (Spectrum<T> fs);
 
+    double [] productOfMultiples (double [][] spectrumAsDoubles, float sampleRate, int hpsfactor, float partOfTheSpectrumToRead);
+
+    int getMaxIndex (double [] array, int min, int max);
+
 }
