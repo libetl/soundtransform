@@ -139,7 +139,7 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
         for (int momentOfTheSound = 0 ; momentOfTheSound < input.getSamplesLength () ; momentOfTheSound += this.step) {
             final int percent = (int) Math.floor (MaximumLikelihoodSoundTransform.A_HUNDRED_PERCENT * (momentOfTheSound * 1.0 / this.step) / (input.getSamplesLength () * 1.0 / this.step));
             if (percent > Math.floor (MaximumLikelihoodSoundTransform.A_HUNDRED_PERCENT * ((momentOfTheSound - this.step) * 1.0 / this.step) / (input.getSamplesLength () * 1.0 / this.step))) {
-                this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, momentOfTheSound * 1.0 / this.step, (int) Math.ceil (input.getSamplesLength () * 1.0 / this.step), percent));
+                this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, momentOfTheSound / this.step, (int) Math.ceil (input.getSamplesLength () * 1.0 / this.step), percent));
             }
             this.transformMoment (windowedInput, momentOfTheSound, Math.min (momentOfTheSound + this.window, input.getSamplesLength () - 1), loudestFreqs);
         }
