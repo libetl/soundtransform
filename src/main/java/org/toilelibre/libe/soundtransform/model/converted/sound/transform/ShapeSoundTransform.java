@@ -59,6 +59,8 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
         }
     }
 
+    private static final int THREE = 3;
+
     private final Pack          pack;
     private final String        instrument;
     private final SoundAppender soundAppender;
@@ -97,9 +99,9 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
     }
 
     private boolean freqHasChanged (final int index1, final int index2) {
-        final float freq1 = index1 < 0 ? 0 : this.freqs [index1];
-        final float freq2 = index1 < 0 ? 0 : this.freqs [index2];
-        return this.freqHasChanged(freq1, freq2);
+        final float freq1 = index1 < 0 || index1 > this.freqs.length - 1 ? 0 : this.freqs [index1];
+        final float freq2 = index2 < 0 || index2 > this.freqs.length - 1 ? 0 : this.freqs [index2];
+        return this.freqHasChanged (freq1, freq2) || index1 > this.freqs.length - 1 || index2 > this.freqs.length - 1;
     }
     
     private boolean freqHasChanged (final float freq1, final float freq2) {
@@ -128,13 +130,16 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
 
     private Channel transform (final int step, final int channelNum, final int soundLength) throws SoundTransformException {
         final Channel builtSound = new Channel (new long [soundLength], this.formatInfo, channelNum);
-        int i = 0;
-        while (i + 3 < this.freqs.length) {
-            int noteStart = this.findNextNoteStart (i) - 3;
-            int noteEnd = this.findNextNoteStart (noteStart + 3 + 1) - 3;
+        int noteStart = 0;
+        int noteEnd = 0;
+        while (noteStart + ShapeSoundTransform.THREE  + 1 < this.freqs.length) {
+            noteStart = this.findNextNoteStart (noteEnd) - ShapeSoundTransform.THREE;
+            noteEnd = noteStart;
+            while (!this.freqHasChanged (noteStart, noteEnd)) {
+                noteEnd = this.findNextNoteStart (noteEnd + ShapeSoundTransform.THREE + 1) - ShapeSoundTransform.THREE;
+            }
             noteEnd = noteEnd + 3 < this.freqs.length ? noteEnd : this.freqs.length - 1;
-            i = noteEnd;
-            final float lengthInSeconds = (noteEnd - noteStart < 1 ? this.freqs [i] * step : (noteEnd - 1 - noteStart) * step * 1.0f) / this.formatInfo.getSampleRate ();
+            final float lengthInSeconds = (noteEnd - 1 - noteStart) * step * 1.0f / this.formatInfo.getSampleRate ();
             final Note note = this.findNote (this.freqs [noteEnd - 1], (int) this.formatInfo.getSampleRate (), noteEnd, noteStart);
             this.soundAppender.appendNote (builtSound, note, this.freqs [noteEnd - 1], step * noteStart, channelNum, lengthInSeconds);
         }
