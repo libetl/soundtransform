@@ -23,7 +23,7 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
     private static final int TWICE = 2;
 
     static class HarmonicProductSpectrumFrequencySoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T> {
-        private static final float PART_OF_THE_SPECTRUM_TO_READ = 0.2f; //2000Hz if the spectrum is 20000Hz long
+        private static final float DEFAULT_PART_OF_THE_SPECTRUM_TO_READ = 1.0f; //2000Hz if the spectrum is 20000Hz long
 
         private double                  step;
         private float []                loudestfreqs;
@@ -32,6 +32,7 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
         private int                     windowLength;
         private int                     soundLength;
         private float                   detectedNoteVolume;
+        private float                   partOfTheSpectrumToRead;
 
         private final SpectrumHelper<T> spectrumHelper;
 
@@ -48,7 +49,7 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
          *            use double array of arrays instead of spectrums
          */
         public HarmonicProductSpectrumFrequencySoundTransform (final boolean note1, final boolean useRawData1) {
-            this (note1, 100, -1, useRawData1);
+            this (note1, 100, -1, useRawData1, HarmonicProductSpectrumFrequencySoundTransform.DEFAULT_PART_OF_THE_SPECTRUM_TO_READ);
         }
 
         /**
@@ -60,9 +61,38 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
          *            use double array of arrays instead of spectrums
          */
         public HarmonicProductSpectrumFrequencySoundTransform (final double step1, final boolean useRawData1) {
-            this (false, step1, -1, useRawData1);
+            this (false, step1, -1, useRawData1, HarmonicProductSpectrumFrequencySoundTransform.DEFAULT_PART_OF_THE_SPECTRUM_TO_READ);
         }
 
+        /**
+         * Default constructor
+         *
+         * @param note1
+         *            if true, the whole sound will be transformed at once to
+         *            know the loudest freq. therefore the array will be of size
+         *            1.
+         * @param useRawData1
+         *            use double array of arrays instead of spectrums
+         * @param partOfTheSpectrumToRead1
+         *            read only the leftmost part of each spectrum (by partOfTheSpectrumToRead1 * 100 percent of the spectrum)
+         */
+        public HarmonicProductSpectrumFrequencySoundTransform (final boolean note1, final boolean useRawData1, final float partOfTheSpectrumToRead1) {
+            this (note1, 100, -1, useRawData1, partOfTheSpectrumToRead1);
+        }
+
+        /**
+         * Constructor not using the whole sound as a musical note
+         *
+         * @param step1
+         *            the iteration step value
+         * @param useRawData1
+         *            use double array of arrays instead of spectrums
+         * @param partOfTheSpectrumToRead1
+         *            read only the leftmost part of each spectrum (by partOfTheSpectrumToRead1 * 100 percent of the spectrum)
+         */
+        public HarmonicProductSpectrumFrequencySoundTransform (final double step1, final boolean useRawData1, final float partOfTheSpectrumToRead1) {
+            this (false, step1, -1, useRawData1, partOfTheSpectrumToRead1);
+        }
         /**
          * Constructor not using the whole sound as a musical note
          *
@@ -75,12 +105,13 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
          *            use double array of arrays instead of spectrums
          */
         @SuppressWarnings ("unchecked")
-        public HarmonicProductSpectrumFrequencySoundTransform (final boolean note1, final double step1, final int windowLength1, final boolean useRawData1) {
+        public HarmonicProductSpectrumFrequencySoundTransform (final boolean note1, final double step1, final int windowLength1, final boolean useRawData1, final float partOfTheSpectrumToRead1) {
             this.spectrumHelper = $.select (SpectrumHelper.class);
             this.step = step1;
             this.note = note1;
             this.windowLength = windowLength1;
             this.useRawData = useRawData1;
+            this.partOfTheSpectrumToRead = partOfTheSpectrumToRead1;
         }
 
         private float bestCandidate (final float [] peaks) {
@@ -191,16 +222,16 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
         }
 
         private float f0WithRawData (double [] [] spectrumAsDoubles, float sampleRate, int hpsfactor) {
-            double [] productOfMultiples = this.spectrumHelper.productOfMultiples (spectrumAsDoubles, sampleRate, hpsfactor, HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ);
+            double [] productOfMultiples = this.spectrumHelper.productOfMultiples (spectrumAsDoubles, sampleRate, hpsfactor, this.partOfTheSpectrumToRead);
             final int spectrumLength = spectrumAsDoubles [0].length;
-            final int maxIndex = this.spectrumHelper.getMaxIndex (productOfMultiples, 0, (int) (spectrumLength * HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ) / hpsfactor);
+            final int maxIndex = this.spectrumHelper.getMaxIndex (productOfMultiples, 0, (int) (spectrumLength * this.partOfTheSpectrumToRead) / hpsfactor);
             return this.spectrumHelper.freqFromSampleRate (maxIndex, spectrumLength * HarmonicProductSpectrumSoundTransform.TWICE / hpsfactor, sampleRate);
         }
 
         private float f0WithSpectrum (Spectrum<T> spectrum, int hpsfactor) {
-            final Spectrum<T> productOfMultiples = this.spectrumHelper.productOfMultiples (spectrum, hpsfactor, HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ);
+            final Spectrum<T> productOfMultiples = this.spectrumHelper.productOfMultiples (spectrum, hpsfactor, this.partOfTheSpectrumToRead);
             final int spectrumLength = this.spectrumHelper.getLengthOfSpectrum (spectrum);
-            final int maxIndex = this.spectrumHelper.getMaxIndex (productOfMultiples, 0, (int) (spectrumLength * HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ) / hpsfactor);
+            final int maxIndex = this.spectrumHelper.getMaxIndex (productOfMultiples, 0, (int) (spectrumLength * this.partOfTheSpectrumToRead) / hpsfactor);
             return this.spectrumHelper.freqFromSampleRate (maxIndex, spectrumLength * HarmonicProductSpectrumSoundTransform.TWICE / hpsfactor, spectrum.getSampleRate ());
         }
 
@@ -241,6 +272,35 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
     public HarmonicProductSpectrumSoundTransform (final double step1, final boolean useRawData1) {
         this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (step1, useRawData1);
     }
+    
+    /**
+     * Default constructor
+     *
+     * @param note1
+     *            if true, the whole sound will be transformed at once to know
+     *            the loudest freq. therefore the array will be of size 1.
+     * @param useRawData1
+     *            use double array of arrays instead of spectrums
+     * @param partOfTheSpectrumToRead1
+     *            read only the leftmost part of each spectrum (by partOfTheSpectrumToRead1 * 100 percent of the spectrum)
+     */
+    public HarmonicProductSpectrumSoundTransform (final boolean note1, final boolean useRawData1, final float partOfTheSpectrumToRead1) {
+        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (note1, useRawData1, partOfTheSpectrumToRead1);
+    }
+
+    /**
+     * Constructor not using the whole sound as a musical note
+     *
+     * @param step1
+     *            the iteration step value
+     * @param useRawData1
+     *            use double array of arrays instead of spectrums
+     * @param partOfTheSpectrumToRead1
+     *            read only the leftmost part of each spectrum (by partOfTheSpectrumToRead1 * 100 percent of the spectrum)
+     */
+    public HarmonicProductSpectrumSoundTransform (final double step1, final boolean useRawData1, final float partOfTheSpectrumToRead1) {
+        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (step1, useRawData1, partOfTheSpectrumToRead1);
+    }
 
     /**
      * Full constructor with every parameter specified
@@ -255,9 +315,11 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
      *            the slowest)
      * @param useRawData1
      *            use double array of arrays instead of spectrums
+     * @param partOfTheSpectrumToRead1
+     *            read only the leftmost part of each spectrum (by partOfTheSpectrumToRead1 * 100 percent of the spectrum)
      */
-    public HarmonicProductSpectrumSoundTransform (final boolean note1, final double step1, final int windowLength1, final boolean useRawData1) {
-        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (note1, step1, windowLength1, useRawData1);
+    public HarmonicProductSpectrumSoundTransform (final boolean note1, final double step1, final int windowLength1, final boolean useRawData1, final float partOfTheSpectrumToRead1) {
+        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (note1, step1, windowLength1, useRawData1, partOfTheSpectrumToRead1);
     }
 
     @Override

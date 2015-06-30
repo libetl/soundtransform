@@ -28,7 +28,6 @@ BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
         }
 
         void run (final FluentClientInterface client, final int invocationNumber) throws SoundTransformException {
-            ("" + invocationNumber).hashCode ();
             this.run (client);
         }
     }

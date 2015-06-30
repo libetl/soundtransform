@@ -55,7 +55,7 @@ public class WavTest extends SoundTransformTest {
     @Test
     public void peakFindTestWithNotDefaultWindowLength () throws SoundTransformException {
         final File file = new File (this.classLoader.getResource ("piano1c.wav").getFile ());
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (new HarmonicProductSpectrumSoundTransform<Serializable> (true, 100, 1024, false));
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (file).convertIntoSound ().applyAndStop (new HarmonicProductSpectrumSoundTransform<Serializable> (true, 100, 1024, false, 0.2f));
     }
 
     @Test

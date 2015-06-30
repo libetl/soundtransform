@@ -51,7 +51,7 @@ public class SoundPeakFindBenchmark {
 
     @Benchmark
     public float [][] hps () {
-        return this.applyOrThrowRuntimeException (new HarmonicProductSpectrumSoundTransform<Serializable> (false, false));
+        return this.applyOrThrowRuntimeException (new HarmonicProductSpectrumSoundTransform<Serializable> (false, true));
     }
 
     @Benchmark
