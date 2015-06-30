@@ -65,25 +65,24 @@ public class SimpleFrequencySoundTransform<T extends Serializable> extends Abstr
         return this.transformFrequencies (fs, offset, powOf2NearestLength, length);
     }
     
-    public Spectrum<T> transformFrequencies (final double [] [] spectrumAsDoubles, final float sampleRate) {
-        return null;
+    public void transformFrequencies (final double [] [] spectrumAsDoubles, final float sampleRate) {
     }
 
-    public Spectrum<T> transformFrequencies (final double [] [] spectrumAsDoubles, final float sampleRate, final int offset) {
-        return this.transformFrequencies (spectrumAsDoubles, sampleRate);
+    public void transformFrequencies (final double [] [] spectrumAsDoubles, final float sampleRate, final int offset) {
+        this.transformFrequencies (spectrumAsDoubles, sampleRate);
     }
 
-    public Spectrum<T> transformFrequencies (final double [] [] spectrumAsDoubles, final float sampleRate, final int offset, final int powOf2NearestLength) {
-        return this.transformFrequencies (spectrumAsDoubles, sampleRate, offset);
+    public void transformFrequencies (final double [] [] spectrumAsDoubles, final float sampleRate, final int offset, final int powOf2NearestLength) {
+        this.transformFrequencies (spectrumAsDoubles, sampleRate, offset);
     }
 
-    public Spectrum<T> transformFrequencies (final double [] [] spectrumAsDoubles, final float sampleRate, final int offset, final int powOf2NearestLength, final int length) {
-        return this.transformFrequencies (spectrumAsDoubles, sampleRate, offset, powOf2NearestLength);
+    public void transformFrequencies (final double [] [] spectrumAsDoubles, final float sampleRate, final int offset, final int powOf2NearestLength, final int length) {
+        this.transformFrequencies (spectrumAsDoubles, sampleRate, offset, powOf2NearestLength);
     }
 
     @Override
-    public Spectrum<T> transformFrequencies (final double [] [] spectrumAsDoubles, final float sampleRate, final int offset, final int powOf2NearestLength, final int length, final float soundLevel) {
-        return this.transformFrequencies (spectrumAsDoubles, sampleRate, offset, powOf2NearestLength, length);
+    public void transformFrequencies (final double [] [] spectrumAsDoubles, final float sampleRate, final int offset, final int powOf2NearestLength, final int length, final float soundLevel) {
+        this.transformFrequencies (spectrumAsDoubles, sampleRate, offset, powOf2NearestLength, length);
     }
 
     @Override

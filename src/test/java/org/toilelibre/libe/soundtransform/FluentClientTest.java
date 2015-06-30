@@ -72,7 +72,7 @@ public class FluentClientTest extends SoundTransformTest {
                 .exportToStream ()
                 .writeToClasspathResource ("after.wav")
                 .convertIntoSound ()
-                .findLoudestFrequencies (new HarmonicProductSpectrumSoundTransform<Serializable> (100))
+                .findLoudestFrequencies (new HarmonicProductSpectrumSoundTransform<Serializable> (100, false))
                 .shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100))
                 .findLoudestFrequencies ()
                 .filterRange (0, 1000)

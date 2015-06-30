@@ -41,6 +41,6 @@ public abstract class AbstractFrequencySoundTransform<T extends Serializable> ex
     public abstract Spectrum<T> transformFrequencies (Spectrum<T> fs, int offset, int powOf2NearestLength, int length, float soundLevelInDB);
     
 
-    public abstract Spectrum<T> transformFrequencies (double [] [] spectrumAsDoubles, final float sampleRate, int offset, int powOf2NearestLength, int length, float soundLevelInDB);
+    public abstract void transformFrequencies (double [] [] spectrumAsDoubles, final float sampleRate, int offset, int powOf2NearestLength, int length, float soundLevelInDB);
 
 }

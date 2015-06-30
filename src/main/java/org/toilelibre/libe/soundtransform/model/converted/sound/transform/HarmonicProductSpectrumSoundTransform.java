@@ -35,6 +35,8 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
 
         private final SpectrumHelper<T> spectrumHelper;
 
+        private final boolean           useRawData;
+
         /**
          * Default constructor
          *
@@ -42,9 +44,11 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
          *            if true, the whole sound will be transformed at once to
          *            know the loudest freq. therefore the array will be of size
          *            1.
+         * @param useRawData1
+         *            use double array of arrays instead of spectrums
          */
-        public HarmonicProductSpectrumFrequencySoundTransform (final boolean note1) {
-            this (note1, 100, -1);
+        public HarmonicProductSpectrumFrequencySoundTransform (final boolean note1, final boolean useRawData1) {
+            this (note1, 100, -1, useRawData1);
         }
 
         /**
@@ -52,9 +56,11 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
          *
          * @param step1
          *            the iteration step value
+         * @param useRawData1
+         *            use double array of arrays instead of spectrums
          */
-        public HarmonicProductSpectrumFrequencySoundTransform (final double step1) {
-            this (false, step1, -1);
+        public HarmonicProductSpectrumFrequencySoundTransform (final double step1, final boolean useRawData1) {
+            this (false, step1, -1, useRawData1);
         }
 
         /**
@@ -65,13 +71,16 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
          * @param windowLength1
          *            length of the spectrum used during each iteration (the
          *            highest the slowest)
+         * @param useRawData1
+         *            use double array of arrays instead of spectrums
          */
         @SuppressWarnings ("unchecked")
-        public HarmonicProductSpectrumFrequencySoundTransform (final boolean note1, final double step1, final int windowLength1) {
+        public HarmonicProductSpectrumFrequencySoundTransform (final boolean note1, final double step1, final int windowLength1, final boolean useRawData1) {
             this.spectrumHelper = $.select (SpectrumHelper.class);
             this.step = step1;
             this.note = note1;
             this.windowLength = windowLength1;
+            this.useRawData = useRawData1;
         }
 
         private float bestCandidate (final float [] peaks) {
@@ -127,7 +136,17 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
         }
 
         @Override
-        public Spectrum<T> transformFrequencies (final double [] [] spectrumAsDoubles, final float sampleRate, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
+        public Spectrum<T> transformFrequencies (final Spectrum<T> spectrum, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
+            this.transformFrequencies (spectrum, spectrum.getSampleRate (), offset, powOf2NearestLength, length, soundLevelInDB);
+            return null;
+        }
+
+        @Override
+        public void transformFrequencies (final double [] [] spectrum, final float sampleRate, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
+            this.transformFrequencies ((Object)spectrum, sampleRate, offset, powOf2NearestLength, length, soundLevelInDB);
+        }
+        
+        public void transformFrequencies (final Object spectrum, final float sampleRate, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
             final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.soundLength / this.step));
             if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.soundLength / this.step))) {
@@ -139,7 +158,7 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
 
                 final float [] peaks = new float [10];
                 for (int i = 1 ; i <= 10 ; i++) {
-                    peaks [i - 1] = this.f0 (spectrumAsDoubles, sampleRate, i);
+                    peaks [i - 1] = this.f0 (spectrum, sampleRate, i);
                 }
                 Arrays.sort (peaks);
                 f0 = this.bestCandidate (peaks);
@@ -149,7 +168,7 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
                 this.detectedNoteVolume = soundLevelInDB;
             }
             this.loudestfreqs [(int) (offset / this.step)] = f0;
-            return null;
+
         }
 
         /**
@@ -158,15 +177,31 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
          *
          * @param fs
          *            spectrum at a specific time
+         * @param sampleRate if the passed spectrum is in raw data (as a double [] [])
          * @param hpsfactor
          *            number of times to multiply the frequencies together
          * @return a fundamental frequency (in Hz)
          */
-        public float f0 (final double [] [] spectrumAsDoubles, final float sampleRate, final int hpsfactor) {
+        @SuppressWarnings ("unchecked")
+        public float f0 (final Object spectrum, final float sampleRate, final int hpsfactor) {
+            if (spectrum instanceof Spectrum){
+                return this.f0WithSpectrum ((Spectrum<T>)spectrum, hpsfactor);
+            }
+            return this.f0WithRawData ((double [] []) spectrum, sampleRate, hpsfactor);
+        }
+
+        private float f0WithRawData (double [] [] spectrumAsDoubles, float sampleRate, int hpsfactor) {
             double [] productOfMultiples = this.spectrumHelper.productOfMultiples (spectrumAsDoubles, sampleRate, hpsfactor, HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ);
             final int spectrumLength = spectrumAsDoubles [0].length;
             final int maxIndex = this.spectrumHelper.getMaxIndex (productOfMultiples, 0, (int) (spectrumLength * HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ) / hpsfactor);
             return this.spectrumHelper.freqFromSampleRate (maxIndex, spectrumLength * HarmonicProductSpectrumSoundTransform.TWICE / hpsfactor, sampleRate);
+        }
+
+        private float f0WithSpectrum (Spectrum<T> spectrum, int hpsfactor) {
+            final Spectrum<T> productOfMultiples = this.spectrumHelper.productOfMultiples (spectrum, hpsfactor, HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ);
+            final int spectrumLength = this.spectrumHelper.getLengthOfSpectrum (spectrum);
+            final int maxIndex = this.spectrumHelper.getMaxIndex (productOfMultiples, 0, (int) (spectrumLength * HarmonicProductSpectrumFrequencySoundTransform.PART_OF_THE_SPECTRUM_TO_READ) / hpsfactor);
+            return this.spectrumHelper.freqFromSampleRate (maxIndex, spectrumLength * HarmonicProductSpectrumSoundTransform.TWICE / hpsfactor, spectrum.getSampleRate ());
         }
 
         @Override
@@ -176,7 +211,7 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
         
         @Override
         public boolean rawSpectrumPrefered () {
-            return true;
+            return this.useRawData;
         }
     }
 
@@ -188,9 +223,11 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
      * @param note1
      *            if true, the whole sound will be transformed at once to know
      *            the loudest freq. therefore the array will be of size 1.
+     * @param useRawData1
+     *            use double array of arrays instead of spectrums
      */
-    public HarmonicProductSpectrumSoundTransform (final boolean note1) {
-        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (note1);
+    public HarmonicProductSpectrumSoundTransform (final boolean note1, final boolean useRawData1) {
+        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (note1, useRawData1);
     }
 
     /**
@@ -198,9 +235,11 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
      *
      * @param step1
      *            the iteration step value
+     * @param useRawData1
+     *            use double array of arrays instead of spectrums
      */
-    public HarmonicProductSpectrumSoundTransform (final double step1) {
-        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (step1);
+    public HarmonicProductSpectrumSoundTransform (final double step1, final boolean useRawData1) {
+        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (step1, useRawData1);
     }
 
     /**
@@ -214,9 +253,11 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
      * @param windowLength1
      *            length of the spectrum used during each iteration (the highest
      *            the slowest)
+     * @param useRawData1
+     *            use double array of arrays instead of spectrums
      */
-    public HarmonicProductSpectrumSoundTransform (final boolean note1, final double step1, final int windowLength1) {
-        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (note1, step1, windowLength1);
+    public HarmonicProductSpectrumSoundTransform (final boolean note1, final double step1, final int windowLength1, final boolean useRawData1) {
+        this.decoratedTransform = new HarmonicProductSpectrumFrequencySoundTransform<T> (note1, step1, windowLength1, useRawData1);
     }
 
     @Override

@@ -51,7 +51,7 @@ public class NotePeakFindBenchmark {
 
     @Benchmark
     public float [][] hps () {
-        return this.applyOrThrowRuntimeException (new HarmonicProductSpectrumSoundTransform<Serializable> (true));
+        return this.applyOrThrowRuntimeException (new HarmonicProductSpectrumSoundTransform<Serializable> (true, false));
     }
 
     @Benchmark
