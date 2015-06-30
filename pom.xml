@@ -178,6 +178,7 @@
 							<goal>exec</goal>
 						</goals>
 						<configuration>
+							<skip>${skipJmh}</skip>
 							<classpathScope>test</classpathScope>
 							<executable>java</executable>
 							<arguments>
@@ -346,5 +347,6 @@
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<skipJmh>false</skipJmh>
 	</properties>
 </project>
