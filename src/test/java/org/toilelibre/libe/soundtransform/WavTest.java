@@ -181,7 +181,7 @@ public class WavTest extends SoundTransformTest {
     public void testShape () throws SoundTransformException {
         // WARN : quite long
         FluentClient.start ().withAPack ( "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100)).exportToFile (this.output);
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ().findLoudestFrequencies ( new HarmonicProductSpectrumSoundTransform<Serializable> (100, true, 0.1f)).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100)).exportToFile (this.output);
 
     }
 
