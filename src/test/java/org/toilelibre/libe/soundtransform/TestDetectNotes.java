@@ -91,6 +91,6 @@ public class TestDetectNotes extends SoundTransformTest {
                 messages.add (logEvent.toString ());
             }
         }).transform (t);
-        Assert.assertTrue (messages.get (0).endsWith (" between  3/  7 and    7/    7"));
+        Assert.assertTrue (messages.get (0).endsWith (" between  3/  7 and    6/    7"));
     }
 }
