@@ -1564,23 +1564,27 @@ This is a PeakFindSoundTransform, therefore it is a `SoundTransform<Channel, flo
 
  * **Constructors:**
 ```java
-public HarmonicProductSpectrumSoundTransform (boolean note)
+public HarmonicProductSpectrumSoundTransform (boolean note, boolean useRawData)
 ```
 
 Default constructor 
 
- * **Parameter:** `note` — if true, the whole sound will be transformed at once to know the loudest freq, therefore the array will be of size 1.
+ * **Parameters:** 
+   * `note` — if true, the whole sound will be transformed at once to know the loudest freq, therefore the array will be of size 1.
+   * `useRawData`— use double array of arrays instead of spectrums (fasten the transform)
 
 ```java
-public HarmonicProductSpectrumSoundTransform (double step)
+public HarmonicProductSpectrumSoundTransform (double step, boolean useRawData)
 ```
 
 Constructor not using the whole sound as a musical note
 
- * **Parameter:** `step` — the iteration step value
+ * **Parameters:** 
+   * `step` — the iteration step value
+   * `useRawData`— use double array of arrays instead of spectrums (fasten the transform)
 
 ```java
-public HarmonicProductSpectrumSoundTransform (boolean note, double step, int windowLength)
+public HarmonicProductSpectrumSoundTransform (boolean note, double step, int windowLength, boolean useRawData)
 ```
 
 Full constructor with every parameter specified
@@ -1589,6 +1593,7 @@ Full constructor with every parameter specified
    * `note` — if true, the whole sound will be transformed at once to know the loudest freq.
    * `step` — the iteration step value
    * `windowLength` — length of the spectrum used during each iteration (the highest the slowest)
+   * `useRawData`— use double array of arrays instead of spectrums (fasten the transform)
 
 ##### ReduceNoiseSoundTransform
 ```java
