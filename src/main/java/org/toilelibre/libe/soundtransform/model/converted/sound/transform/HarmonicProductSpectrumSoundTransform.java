@@ -23,7 +23,8 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
     private static final int TWICE = 2;
 
     static class HarmonicProductSpectrumFrequencySoundTransform<T extends Serializable> extends SimpleFrequencySoundTransform<T> {
-        private static final float DEFAULT_PART_OF_THE_SPECTRUM_TO_READ = 1.0f; //2000Hz if the spectrum is 20000Hz long
+        //2000Hz if the spectrum is 20000Hz long
+        private static final float DEFAULT_PART_OF_THE_SPECTRUM_TO_READ = 1.0f;
 
         private double                  step;
         private float []                loudestfreqs;

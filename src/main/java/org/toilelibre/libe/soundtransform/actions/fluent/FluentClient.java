@@ -48,6 +48,7 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums, FluentClientInterface {
 
+
     public enum FluentClientErrorCode implements ErrorCode {
 
         PROBLEM_WITH_SIMULTANEOUS_FLOWS ("Problem with simultaneous flows : %1s"), MISSING_SOUND_IN_INPUT ("Missing sound in input"), INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE (
@@ -66,6 +67,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     }
 
     private static final int                DEFAULT_STEP_VALUE = 100;
+    private static final int                STEREO             = 2;
     private static List<Observer>           defaultObservers   = new LinkedList<Observer> ();
 
     private Sound                           sound;
@@ -665,7 +667,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     @Override
     public FluentClientSoundImported mergeChannels () throws SoundTransformException {
-        if (this.sound.getNumberOfChannels () != 2) {
+        if (this.sound.getNumberOfChannels () != FluentClient.STEREO) {
             throw new SoundTransformException (FluentClientErrorCode.STEREO_SOUND_EXPECTED, new IllegalArgumentException ());
         }
         final Sound channel1AsASound = new Sound (new Channel [] { this.sound.getChannels () [0] });

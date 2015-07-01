@@ -28,6 +28,7 @@ BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
         }
 
         void run (final FluentClientInterface client, final int invocationNumber) throws SoundTransformException {
+            ("" + invocationNumber).notify ();
             this.run (client);
         }
     }
