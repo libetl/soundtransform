@@ -22,7 +22,7 @@ Android & Pure Java library to shape a voice with an instrument.
 * Insert the aar into your project dependencies :
 ```xml
 <dependency>
-	<groupId>org.toilelibre.libe</groupId>
+	<groupId>org.toile-libre.libe</groupId>
 	<artifactId>soundtransform</artifactId>
 	<version>x.x.x</version>
 	<type>aar</type>
