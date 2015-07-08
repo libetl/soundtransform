@@ -1,24 +1,24 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.record.javax;
 
-import java.io.ByteArrayOutputStream;
-
 import javax.sound.sampled.TargetDataLine;
+
+import org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter.BytesExporterFromThread;
 
 final class TargetDataLineReaderThread extends Thread {
     /**
      *
      */
     private final TargetDataLine        dataLine;
-    private final ByteArrayOutputStream baos;
     private boolean                     isRecording = false;
+    private BytesExporterFromThread<?>  exporter;
     private static final int            FIVE        = 5;
 
     /**
      * @param dataLine1
      */
-    TargetDataLineReaderThread (final TargetDataLine dataLine1) {
+    TargetDataLineReaderThread (final TargetDataLine dataLine1, BytesExporterFromThread<?> exporter1) {
         this.dataLine = dataLine1;
-        this.baos = new ByteArrayOutputStream ();
+        this.exporter = exporter1;
     }
 
     public void stopRecording () {
@@ -33,11 +33,8 @@ final class TargetDataLineReaderThread extends Thread {
             // Read the next chunk of data from the TargetDataLine.
             final int numBytesRead = this.dataLine.read (data, 0, data.length);
             // Save this chunk of data.
-            this.baos.write (data, 0, numBytesRead);
+            this.exporter.export (data, numBytesRead);
         }
     }
 
-    public ByteArrayOutputStream getOutputStream () {
-        return this.baos;
-    }
 }

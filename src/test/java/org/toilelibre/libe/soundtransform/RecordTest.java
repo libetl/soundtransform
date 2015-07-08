@@ -3,10 +3,12 @@ package org.toilelibre.libe.soundtransform;
 import org.junit.Assert;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
@@ -95,5 +97,15 @@ public class RecordTest extends SoundTransformTest {
         Assert.assertNotNull (channels [1]);
         Assert.assertNotEquals (channels [0].getSamplesLength (), 0);
         Assert.assertNotEquals (channels [1].getSamplesLength (), 0);
+    }
+    
+    @Test
+    public void recordAndProcessAtTheSameTime () throws SoundTransformException {
+        Object stop = new Object ();
+        FluentClient.start ().recordProcessAndTransformInBackgroundTask (new StreamInfo (2, -1, 2, 44100, false, true, null), stop, 
+                FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build ()
+                , Sound.class);
+        
+        
     }
 }

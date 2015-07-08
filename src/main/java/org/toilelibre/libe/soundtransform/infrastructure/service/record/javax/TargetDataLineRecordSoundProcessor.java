@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.record.javax;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -10,8 +11,13 @@ import javax.sound.sampled.DataLine.Info;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter.BytesExporterFromThread;
+import org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter.OutputAsByteArrayOutputStream;
+import org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter.OutputAsByteBuffer;
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 
 final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
@@ -32,6 +38,10 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         }
     }
 
+    private static final int DEFAULT_BUFFER_SIZE      = 32;
+
+    private static final int DEFAULT_BYTE_BUFFER_SIZE = 16384;
+
     private TargetDataLine             line;
     private TargetDataLineReaderThread readerThread;
 
@@ -46,10 +56,12 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         }
         final AudioFormat audioFormat = (AudioFormat) audioFormat1;
 
-        this.startRecording (audioFormat);
+        OutputAsByteArrayOutputStream bytesExporter = $.select (OutputAsByteArrayOutputStream.class);
+        bytesExporter.init (TargetDataLineRecordSoundProcessor.DEFAULT_BUFFER_SIZE);
+        this.startRecording (audioFormat, bytesExporter);
         this.waitForStop (stop);
         this.stopRecording ();
-        return new ByteArrayInputStream (this.readerThread.getOutputStream ().toByteArray ());
+        return new ByteArrayInputStream (bytesExporter.getOutput ().toByteArray ());
     }
 
     /**
@@ -71,7 +83,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         }
     }
 
-    private void startRecording (final AudioFormat audioFormat) throws SoundTransformException {
+    private <T> void startRecording (final AudioFormat audioFormat, BytesExporterFromThread<T> exporter) throws SoundTransformException {
         // format is an AudioFormat object
         final DataLine.Info info = new DataLine.Info (TargetDataLine.class, audioFormat);
 
@@ -89,7 +101,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
 
         // Begin audio capture.
         this.line.start ();
-        this.readerThread = new TargetDataLineReaderThread (this.line);
+        this.readerThread = new TargetDataLineReaderThread (this.line, exporter);
         this.readerThread.start ();
     }
 
@@ -103,7 +115,6 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         } catch (final LineUnavailableException ex) {
             throw new SoundTransformException (TargetDataLineRecordSoundProcessorErrorCode.TARGET_LINE_UNAVAILABLE, ex);
         }
-
     }
 
     private void stopRecording () {
@@ -113,4 +124,27 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         this.line.close ();
     }
 
+    @Override
+    public ByteBuffer startRecordingAndReturnByteBuffer (final Object audioFormat1, final Object stop) throws SoundTransformException {
+        if (!(audioFormat1 instanceof AudioFormat)) {
+            throw new SoundTransformException (TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_EXPECTED, new IllegalArgumentException ());
+        }
+        final AudioFormat audioFormat = (AudioFormat) audioFormat1;
+
+        OutputAsByteBuffer bytesExporter = $.select (OutputAsByteBuffer.class);
+        bytesExporter.init (TargetDataLineRecordSoundProcessor.DEFAULT_BYTE_BUFFER_SIZE);
+        this.startRecording (audioFormat, bytesExporter);
+
+        new Thread () {
+            public void run () {
+                try {
+                    TargetDataLineRecordSoundProcessor.this.waitForStop (stop);
+                    TargetDataLineRecordSoundProcessor.this.stopRecording ();
+                } catch (SoundTransformException soundTransformException) {
+                    throw new SoundTransformRuntimeException (soundTransformException);
+                }
+            }
+        }.start ();
+        return bytesExporter.getOutput ();
+    }
 }

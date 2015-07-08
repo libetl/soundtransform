@@ -1,9 +1,9 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.record.android;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.toilelibre.libe.soundtransform.infrastructure.service.record.android.AndroidRecordSoundProcessor.AndroidRecordSoundProcessorErrorCode;
+import org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter.BytesExporterFromThread;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 
 import android.media.AudioRecord;
@@ -17,21 +17,17 @@ final class AndroidRecorderThread extends Thread {
      *
      */
     private final AudioRecord           audioRecord;
-    private final ByteArrayOutputStream baos;
     private boolean                     recording;
+    private BytesExporterFromThread<?>  bytesExporter;
 
     /**
      * @param bufferSize
      * @param androidRecordSoundProcessor
+     * @param bytesExporter1
      */
-    AndroidRecorderThread (final AudioRecord audioRecord1, final int bufferSize) {
+    AndroidRecorderThread (final AudioRecord audioRecord1, final int bufferSize, final BytesExporterFromThread<?> bytesExporter1) {
         this.audioRecord = audioRecord1;
-        this.baos = new ByteArrayOutputStream (bufferSize);
-
-    }
-
-    public ByteArrayOutputStream getOutputStream () {
-        return this.baos;
+        this.bytesExporter = bytesExporter1;
     }
 
     @Override
@@ -67,7 +63,7 @@ final class AndroidRecorderThread extends Thread {
             if (this.audioRecord.getRecordingState () != AudioRecord.STATE_UNINITIALIZED) {
                 final int read = this.audioRecord.read (sData, 0, sData.length);
                 if (read > 0) {
-                    this.baos.write (this.short2byte (sData), 0, read * AndroidRecorderThread.TWO);
+                    this.bytesExporter.export (this.short2byte (sData), read * AndroidRecorderThread.TWO);
                 } else if (read == 0) {
                     this.recording = false;
                 }

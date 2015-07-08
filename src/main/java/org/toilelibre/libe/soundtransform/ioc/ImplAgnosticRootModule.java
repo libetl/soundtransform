@@ -2,6 +2,8 @@ package org.toilelibre.libe.soundtransform.ioc;
 
 import java.util.Map.Entry;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter.OutputAsByteArrayOutputStream;
+import org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter.OutputAsByteBuffer;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundToStringHelper;
@@ -57,6 +59,9 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
         super.bind (ReplaceFrequenciesProcessor.class).to (this.provideReplaceFrequenciesProcessor ());
         super.bind (CompressFrequenciesProcessor.class).to (this.provideCompressFrequenciesProcessor ());
         super.bind (SurroundInRangeProcessor.class).to (this.provideSurroundInRangeFrequenciesProcessor ());
+        
+        super.bind (OutputAsByteArrayOutputStream.class).to (this.providerByteArrayOutputStreamExporter ());
+        super.bind (OutputAsByteBuffer.class).to (this.providerByteBufferOutputStreamExporter ());
 
         for (final Entry<Class<? extends Object>, Class<? extends Object>> serviceClassEntry : this.usedImpls.entrySet ()) {
             @SuppressWarnings ("unchecked")

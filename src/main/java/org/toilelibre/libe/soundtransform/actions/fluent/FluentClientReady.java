@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -55,7 +56,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-    <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException;
+    <T extends FluentClientCommon, O> FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of sounds
@@ -74,7 +75,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound... sounds) throws SoundTransformException;
+     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound... sounds) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of inputStreams
@@ -93,7 +94,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException;
+     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of files
@@ -112,7 +113,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException;
+     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of freqs
@@ -131,7 +132,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, List<float []>... freqs) throws SoundTransformException;
+     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, List<float []>... freqs) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of classpathResources
@@ -150,7 +151,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
+     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
 
     /**
      * <p>
@@ -274,6 +275,14 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientWithInputStream withAudioInputStream (InputStream inputStream);
 
     /**
+     * This with method accepts a buffer but does not change it
+     * @param byteBuffer1 the byte buffer
+     * @param streamInfo1 the expected stream info
+     * @return the client, with a Byte Buffer
+     */
+    FluentClientWithByteBuffer withByteBuffer (ByteBuffer byteBuffer1, StreamInfo streamInfo1);
+    
+    /**
      * Tells the client to work first with a classpath resource. It will be
      * converted in a File
      *
@@ -378,5 +387,27 @@ public interface FluentClientReady extends FluentClientCommon {
      * @return the client, with the spectrums
      */
     FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable> []> spectrums);
+    
+    /**
+     * Tells the client to open the microphone and to record a sound. 
+     * A flow of operations will be executed since the very start of the recording
+     *
+     * /!\ : blocking method, the `stop.notify` method must be called in another
+     * thread.
+     *
+     * @param streamInfo
+     *            the future input stream info
+     * @param stop
+     *            the method notify must be called to stop the recording
+     * @param operation
+     *            a flow of operation to execute while recording
+     * @param returnType
+     *            expected result class
+     * @return a list of results of the expected type
+     * @throws SoundTransformException
+     *             the mic could not be read, the recorder could not start, or
+     *             the buffer did not record anything
+     */
+     <T> List<T> recordProcessAndTransformInBackgroundTask (StreamInfo streamInfo, Object stop, FluentClientOperation operation, final Class<T> returnType) throws SoundTransformException;
 
 }

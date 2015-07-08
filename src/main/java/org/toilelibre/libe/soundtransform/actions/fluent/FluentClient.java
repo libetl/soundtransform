@@ -1,10 +1,12 @@
 package org.toilelibre.libe.soundtransform.actions.fluent;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation.Step;
+import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation.FluentClientOperationRunnable;
 import org.toilelibre.libe.soundtransform.actions.notes.ImportAPackIntoTheLibrary;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
 import org.toilelibre.libe.soundtransform.actions.record.RecordSound;
@@ -41,18 +43,18 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SubSou
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums, FluentClientInterface {
+public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums, FluentClientWithByteBuffer, FluentClientInterface {
 
 
     public enum FluentClientErrorCode implements ErrorCode {
 
         PROBLEM_WITH_SIMULTANEOUS_FLOWS ("Problem with simultaneous flows : %1s"), MISSING_SOUND_IN_INPUT ("Missing sound in input"), INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE (
-                "This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input"), STEREO_SOUND_EXPECTED ("A stereo sound was expected");
+                "This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input"), STEREO_SOUND_EXPECTED ("A stereo sound was expected"),
+                ERROR_WHILE_WAITING_FOR_A_NEW_BUFFER ("Error while waiting for a new buffer");
 
         private final String messageFormat;
 
@@ -81,6 +83,9 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     private List<Spectrum<Serializable> []> spectrums;
 
     private List<Observer>                  observers;
+    
+    private ByteBuffer                      byteBuffer;
+    private StreamInfo                      streamInfoOfBuffer;
 
     private FluentClient () {
         this.andAfterStart ();
@@ -204,12 +209,14 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * Resets the state of the FluentClient
      */
     private void cleanData () {
-        this.sound = null;
         this.audioInputStream = null;
+        this.byteBuffer = null;
         this.file = null;
         this.freqs = null;
-        this.spectrums = null;
         this.parallelizedClients = null;
+        this.sound = null;
+        this.spectrums = null;
+        this.streamInfoOfBuffer = null;
     }
 
     /**
@@ -483,23 +490,12 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             threads were interrupted
      */
     @Override
-    public <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (final FluentClientOperation operation, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
+    public <T extends FluentClientCommon, O> FluentClientWithParallelizedClients inParallel (final FluentClientOperation operation, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
         final ExecutorService threadService = Executors.newFixedThreadPool (clients.length);
         for (int i = 0 ; i < clients.length ; i++) {
             final FluentClientCommon client = clients [i];
             final int invocationNumber = i;
-            threadService.submit (new Runnable () {
-                @Override
-                public void run () {
-                    for (final Step step : operation.getSteps ()) {
-                        try {
-                            step.run ((FluentClientInterface) client, invocationNumber);
-                        } catch (final SoundTransformException ste) {
-                            throw new SoundTransformRuntimeException (ste);
-                        }
-                    }
-                }
-            });
+            threadService.submit (new FluentClientOperationRunnable (operation, (FluentClientInterface) client, invocationNumber));
         }
         try {
             threadService.shutdown ();
@@ -511,7 +507,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.parallelizedClients = clients;
         return this;
     }
-
+    
     /**
      * Alias for the inParallel method using a list of clients
      *
@@ -765,6 +761,30 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     /**
+     * Reads the available bytes in the ByteBuffer to extract an InputStream for further operations.
+     * Warn : this will not read the whole buffer if it is under processing.
+     * The result inputStream will only save what the buffer contains at the precise moment of the call
+     * 
+     * @return a client, with an input stream
+     * @throws SoundTransformException if the import into inputstream fails
+     */
+    public FluentClientWithInputStream readBuffer () throws SoundTransformException {
+        boolean waited = false;
+        synchronized (this.byteBuffer) {
+            try {
+                while (!waited){
+                    this.byteBuffer.wait ();
+                    waited = true;
+                }
+            } catch (InterruptedException e) {
+                throw new SoundTransformException (FluentClientErrorCode.ERROR_WHILE_WAITING_FOR_A_NEW_BUFFER, e);
+            }
+        }
+        return this.withRawInputStream (new ByteArrayInputStream (this.byteBuffer.array ()), this.streamInfoOfBuffer);
+    }
+    
+    @Override
+    /**
      * Replaces some of the values of the loudest freqs array from the "start"
      * index (replace them by the values of subfreqs)
      *
@@ -823,6 +843,14 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return new ImportAPackIntoTheLibrary (this.getObservers ()).getPack (title);
     }
 
+    /**
+     * Stops the client pipeline and returns the original byte buffer
+     * @return a byte buffer object
+     */
+    public ByteBuffer stopWithByteBuffer () throws SoundTransformException {
+        return this.byteBuffer;
+    }
+    
     @Override
     /**
      * Stops the client pipeline and returns the obtained file
@@ -875,19 +903,26 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         final T [] results = (T []) Array.newInstance (resultClass, this.parallelizedClients.length);
         int i = 0;
         for (final FluentClientCommon fcc : this.parallelizedClients) {
-            if (resultClass == List.class) {
-                results [i++] = (T) ((FluentClient) fcc).stopWithFreqs ();
-            } else if (resultClass == Sound.class) {
-                results [i++] = (T) ((FluentClient) fcc).stopWithSound ();
-            } else if (resultClass == InputStream.class) {
-                results [i++] = (T) ((FluentClient) fcc).stopWithInputStream ();
-            } else if (resultClass == File.class) {
-                results [i++] = (T) ((FluentClient) fcc).stopWithFile ();
-            }
+            results [i++] = ((FluentClient) fcc).getResult (resultClass);
         }
         return results;
     }
 
+    @SuppressWarnings ("unchecked")
+    public <T> T getResult (final Class<T> resultClass) {
+        T result = null;
+        if (resultClass == List.class) {
+            result = (T) (this).stopWithFreqs ();
+        } else if (resultClass == Sound.class) {
+            result = (T) (this).stopWithSound ();
+        } else if (resultClass == InputStream.class) {
+            result = (T) (this).stopWithInputStream ();
+        } else if (resultClass == File.class) {
+            result = (T) (this).stopWithFile ();
+        }
+        return result;
+    }
+    
     @Override
     /**
      * Stops the client pipeline and returns the obtained sound
@@ -1071,6 +1106,20 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     @Override
     /**
+     * This with method accepts a buffer but does not change it
+     * @param byteBuffer1 the byte buffer
+     * @param streamInfo1 the expected stream info
+     * @return the client, with a Byte Buffer
+     */
+    public FluentClientWithByteBuffer withByteBuffer (final ByteBuffer byteBuffer1, final StreamInfo streamInfo1) {
+        this.cleanData ();
+        this.byteBuffer = byteBuffer1;
+        this.streamInfoOfBuffer = streamInfo1;
+        return this;
+    }
+    
+    @Override
+    /**
      * Tells the client to work first with a classpath resource. It will be converted in a File
      * @param resource a classpath resource that must exist
      * @return the client, with a file
@@ -1143,6 +1192,32 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.cleanData ();
         this.audioInputStream = new InputStreamToAudioInputStream (this.getObservers ()).transformRawInputStream (is, isInfo);
         return this;
+    }
+
+    /**
+     * Tells the client to open the microphone and to record a sound. 
+     * A flow of operations will be executed since the very start of the recording
+     *
+     * /!\ : blocking method, the `stop.notify` method must be called in another
+     * thread.
+     *
+     * @param streamInfo
+     *            the future input stream info
+     * @param stop
+     *            the method notify must be called to stop the recording
+     * @param operation
+     *            a flow of operation to execute while recording
+     * @param returnType
+     *            expected result class
+     * @return a list of results of the expected type
+     * @throws SoundTransformException
+     *             the mic could not be read, the recorder could not start, or
+     *             the buffer did not record anything
+     */
+    @Override
+    public <T> List<T> recordProcessAndTransformInBackgroundTask (final StreamInfo streamInfo, final Object stop, final FluentClientOperation operation, final Class<T> returnType) throws SoundTransformException {
+        this.cleanData ();
+        return new RecordSound ().recordAndProcess (streamInfo, stop, operation, returnType);
     }
 
     /**

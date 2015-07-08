@@ -359,6 +359,32 @@ public class FluentClientTest extends SoundTransformTest {
         org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Collections.singletonList (array1)).replacePart (Collections.singletonList (array2), 11).stopWithFreqs ().get (0), 0);
     }
 
+    @Test
+    public void recordAnd8BitAtTheSameTime () throws SoundTransformException {
+        Object stop = new Object ();
+        List<Sound> eightBitSounds = FluentClient.start ().recordProcessAndTransformInBackgroundTask (new StreamInfo (1, -1, 2, 44100, false, true, null),  
+                stop, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class);
+        
+        try {
+            Thread.sleep (2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException (e);
+        }
+        
+        synchronized (stop) {
+            stop.notify ();
+        }
+        
+        try {
+            Thread.sleep (100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException (e);
+        }
+        
+        org.junit.Assert.assertNotNull (eightBitSounds);
+        org.junit.Assert.assertNotEquals (eightBitSounds.size (), 0);
+    }
+    
     // Exactly the same code run as WavTest.testShape
     @Test
     public void shapeASoundTest () throws SoundTransformException {
