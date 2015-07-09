@@ -53,13 +53,13 @@ public class NormalizeSoundTransform implements SoundTransform<Channel, Channel>
     }
 
     private Channel normalize (final Channel sound) {
-        final long [] data = sound.getSamples ();
+        
         final long [] newdata = new long [sound.getSamplesLength ()];
         // this is the raw audio data -- no header
 
         // find the max:
         double max = 0;
-        for (final long element : data) {
+        for (final long element : sound.getSamples ()) {
             if (Math.abs (element) > max) {
                 max = Math.abs (element);
             }
@@ -68,8 +68,8 @@ public class NormalizeSoundTransform implements SoundTransform<Channel, Channel>
         // now find the result, with scaling:
         final double maxValue = Math.pow (NormalizeSoundTransform.NB_BYTE_VALUES, sound.getSampleSize ()) - 1;
         final double ratio = maxValue / max;
-        for (int i = 0 ; i < data.length ; i++) {
-            final double rescaled = data [i] * ratio * this.coefficient;
+        for (int i = 0 ; i < sound.getSamplesLength () ; i++) {
+            final double rescaled = sound.getSampleAt (i) * ratio * this.coefficient;
             newdata [i] = (long) Math.floor (rescaled);
         }
 

@@ -490,7 +490,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             threads were interrupted
      */
     @Override
-    public <T extends FluentClientCommon, O> FluentClientWithParallelizedClients inParallel (final FluentClientOperation operation, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
+    public <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (final FluentClientOperation operation, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
         final ExecutorService threadService = Executors.newFixedThreadPool (clients.length);
         for (int i = 0 ; i < clients.length ; i++) {
             final FluentClientCommon client = clients [i];

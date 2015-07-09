@@ -32,24 +32,24 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
         return this.reverse (spectrum, null);
     }
 
-    public Channel reverse (final Spectrum<Complex []> spectrum, final long [] output) {
+    public Channel reverse (final Spectrum<Complex []> spectrum, final Channel output) {
         return this.reverse (spectrum, output, 0);
     }
 
-    public Channel reverse (final Spectrum<Complex []> spectrum, final long [] output1, final int startOffset) {
+    public Channel reverse (final Spectrum<Complex []> spectrum, Channel output, final int startOffset) {
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
-        long [] output = output1;
+
         if (output == null) {
-            output = new long [complexArray.length];
+            output = new Channel (new long [complexArray.length], spectrum.getFormatInfo (), 0);
         }
         for (int i = 0 ; i < complexArray.length ; i++) {
             final int index = i + startOffset;
-            if (index < output.length && output [index] == 0) {
-                output [index] = (long) Math.floor (complexArray [i].getReal ());
+            if (index < output.getSamplesLength () && output.getSampleAt (index) == 0) {
+                output.setSampleAt (index, (long) Math.floor (complexArray [i].getReal ()));
             }
         }
-        return new Channel (output, spectrum.getFormatInfo (), 0);
+        return output;
     }
 
     @Override
@@ -58,17 +58,16 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
         // double [] is mandatory to pass it to the common math method
         final double [] transformeddata = new double [targetSoundTransform.getWindowLength (sound.getSampleRate ())];
         for (int i = 0 ; i < sound.getSamplesLength () ; i += targetSoundTransform.getStep (sound.getSampleRate ())) {
-            this.stepInto (targetSoundTransform, sound, output.getSamples (), transformeddata, i);
+            this.stepInto (targetSoundTransform, sound, output, transformeddata, i);
         }
         return output;
     }
 
-    private void stepInto (final AbstractFrequencySoundTransform<Complex []> targetSoundTransform, final Channel sound, final long [] newdata, final double [] transformeddata, int i) {
+    private void stepInto (final AbstractFrequencySoundTransform<Complex []> targetSoundTransform, final Channel sound, final Channel output, final double [] transformeddata, int i) {
         final double step = targetSoundTransform.getStep (sound.getSampleRate ());
-        final long [] data = sound.getSamples ();
         final int maxlength = targetSoundTransform.getWindowLength (sound.getSampleRate ());
-        final int iterationLength = Math.min (maxlength, data.length - i);
-        final double amplitude = this.writeTransformedDataAndReturnAmplitude (targetSoundTransform.getWindowTransform (), transformeddata, data, i, (int) step, iterationLength);
+        final int iterationLength = Math.min (maxlength, sound.getSamplesLength () - i);
+        final double amplitude = this.writeTransformedDataAndReturnAmplitude (targetSoundTransform.getWindowTransform (), transformeddata, sound, i, (int) step, iterationLength);
         final float volumeInDb = (float) (CommonsMath3FourierTransformHelper.COEFFICIENT * Math.log10 (amplitude));
 
         if (targetSoundTransform.rawSpectrumPrefered ()) {
@@ -83,12 +82,12 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
             }
             
             if (targetSoundTransform.isReverseNecessary ()){
-                this.reverse (result, newdata, i + targetSoundTransform.getOffsetFromASimpleLoop (i, sound.getSampleRate ()));
+                this.reverse (result, output, i + targetSoundTransform.getOffsetFromASimpleLoop (i, sound.getSampleRate ()));
             }
         }
     }
 
-    private double writeTransformedDataAndReturnAmplitude (final AbstractWindowSoundTransform windowSoundTransform, final double [] transformeddata, final long [] data, final int i, final int step, final int iterationLength) {
+    private double writeTransformedDataAndReturnAmplitude (final AbstractWindowSoundTransform windowSoundTransform, final double [] transformeddata, final Channel channel, final int i, final int step, final int iterationLength) {
         long maxValue = 0;
         long minValue = Long.MAX_VALUE;
         for (int j = i ; j < i + iterationLength ; j++) {
@@ -96,14 +95,14 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
                 // maxValue and minValue are used to detect if the current
                 // transformed sample
                 // is a sound or not
-                if (maxValue < data [j]) {
-                    maxValue = data [j];
+                if (maxValue < channel.getSampleAt (j)) {
+                    maxValue = channel.getSampleAt (j);
                 }
-                if (minValue > data [j]) {
-                    minValue = data [j];
+                if (minValue > channel.getSampleAt (j)) {
+                    minValue = channel.getSampleAt (j);
                 }
             }
-            transformeddata [j - i] = windowSoundTransform.transform ((j - i) / (iterationLength - 1.0)) * data [j];
+            transformeddata [j - i] = windowSoundTransform.transform ((j - i) / (iterationLength - 1.0)) * channel.getSampleAt (j);
         }
         return Math.abs (maxValue - minValue);
     }

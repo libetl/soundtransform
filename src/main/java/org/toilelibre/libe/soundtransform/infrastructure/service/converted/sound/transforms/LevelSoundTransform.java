@@ -17,15 +17,14 @@ public class LevelSoundTransform implements SoundTransform<Channel, Channel> {
     public Channel transform (final Channel input) throws SoundTransformException {
         final double [] magnitudes = new ComputeMagnitudeSoundTransform (this.step).transform (input);
 
-        final long [] data = input.getSamples ();
         final long [] newdata = new long [input.getSamplesLength ()];
 
         final double maxMagnitude = Math.pow (LevelSoundTransform.NB_BYTE_VALUES, input.getSampleSize ()) - 1;
 
         // now find the result, with scaling:
-        for (int i = 0 ; i < data.length ; i++) {
+        for (int i = 0 ; i < input.getSamplesLength () ; i++) {
             final int currentMagnitudeIndex = (int) (i * 1.0 / this.step);
-            final double rescaled = data [i] / magnitudes [currentMagnitudeIndex] * maxMagnitude;
+            final double rescaled = input.getSampleAt (i) / magnitudes [currentMagnitudeIndex] * maxMagnitude;
             newdata [i] = (long) Math.floor (rescaled);
         }
 

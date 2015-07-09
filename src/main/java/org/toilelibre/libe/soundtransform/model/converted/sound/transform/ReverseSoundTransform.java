@@ -15,12 +15,12 @@ public class ReverseSoundTransform implements SoundTransform<Channel, Channel> {
     }
 
     private Channel reverse (final Channel sound) {
-        final long [] data = sound.getSamples ();
+        
         final long [] newdata = new long [sound.getSamplesLength ()];
         // this is the raw audio data -- no header
 
-        for (int i = 0 ; i < data.length ; i++) {
-            newdata [i] = data [data.length - i - 1];
+        for (int i = 0 ; i < sound.getSamplesLength () ; i++) {
+            newdata [i] = sound.getSampleAt (sound.getSamplesLength () - i - 1);
         }
         // normalized result in newdata
         return new Channel (newdata, sound.getFormatInfo (), sound.getChannelNum ());

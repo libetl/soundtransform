@@ -44,7 +44,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
         }
 
         for (int i = 0 ; i < sound.length ; i++) {
-            sound [i].getSamples () [position] = value [i] - neutral;
+            sound [i].setSampleAt (position, value [i] - neutral);
         }
     }
 
@@ -71,7 +71,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
         final boolean bigEndian = streamInfo.isBigEndian ();
         final int sampleSize = streamInfo.getSampleSize ();
 
-        final int length = channels.length * sampleSize * channels [0].getSamples ().length;
+        final int length = channels.length * sampleSize * channels [0].getSamplesLength ();
         final byte [] data = new byte [length];
 
         double value = 0;
@@ -82,8 +82,8 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
             final int numByte = i % sampleSize;
             final int currentChannel = i / sampleSize % channels.length;
             final int currentFrame = i / (sampleSize * channels.length);
-            if (numByte == 0 && channels [currentChannel].getSamples ().length > currentFrame) {
-                value = channels [currentChannel].getSamples () [currentFrame] + neutral;
+            if (numByte == 0 && channels [currentChannel].getSamplesLength () > currentFrame) {
+                value = channels [currentChannel].getSampleAt (currentFrame) + neutral;
                 rightShift = 0;
             }
             byteValueSigned = (byte) (((int) value >> rightShift * Byte.SIZE & ByteArrayFrameProcessor.MAX_BYTE_VALUE) + (pcmSigned ? Byte.MIN_VALUE : 0));

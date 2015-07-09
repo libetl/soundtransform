@@ -56,7 +56,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-    <T extends FluentClientCommon, O> FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException;
+    <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, T... clients) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of sounds
@@ -403,6 +403,8 @@ public interface FluentClientReady extends FluentClientCommon {
      *            a flow of operation to execute while recording
      * @param returnType
      *            expected result class
+     * @param <T>
+     *            the result component type
      * @return a list of results of the expected type
      * @throws SoundTransformException
      *             the mic could not be read, the recorder could not start, or

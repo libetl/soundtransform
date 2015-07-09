@@ -16,12 +16,12 @@ public abstract class AbstractWindowSoundTransform implements SoundTransform<Dou
 
     public Channel transformWholeChannel (final Channel sound) {
 
-        final long [] data = sound.getSamples ();
+        
         final long [] newdata = new long [sound.getSamplesLength ()];
 
         // now find the result, with scaling:
-        for (int i = 0 ; i < data.length ; i++) {
-            final double rescaled = data [i] * this.applyFunction (i * 1.0 / (data.length - 1));
+        for (int i = 0 ; i < sound.getSamplesLength () ; i++) {
+            final double rescaled = sound.getSampleAt (i) * this.applyFunction (i * 1.0 / (sound.getSamplesLength () - 1));
             newdata [i] = (long) rescaled;
         }
 
