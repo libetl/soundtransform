@@ -101,17 +101,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         buffers [14] = new byte [0];
         this.mockRecordSoundProcessor (buffers);
         final Object stopObject = new Object ();
-        final List<Sound> list = new LinkedList<Sound> ();
-        new Thread () {
-            @Override
-            public void run () {
-                try {
-                    list.addAll (FluentClient.start ().recordProcessAndTransformInBackgroundTask (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stopObject, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class));
-                } catch (final SoundTransformException e) {
-                    throw new RuntimeException (e);
-                }
-            }
-        }.start ();
+        final List<Sound> list = FluentClient.start ().recordProcessAndTransformInBackgroundTask (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stopObject, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class);
 
         Thread.sleep (4000);
         boolean notified = false;
