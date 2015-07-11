@@ -19,8 +19,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
 
     enum DefaultRecordSoundServiceErrorCode implements ErrorCode {
 
-        NOT_ABLE ("Not able to wait for a recording (%1s)"),
-        PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING ("Problem while reading the buffer in a continuous recording");
+        NOT_ABLE ("Not able to wait for a recording (%1s)"), PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING ("Problem while reading the buffer in a continuous recording");
 
         private final String messageFormat;
 
@@ -78,33 +77,57 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         final ByteBuffer targetByteBuffer = this.startRecordingAndReturnByteBuffer (streamInfo, stop);
         final List<InputStream> streamsFromBuffer = new ArrayList<InputStream> ();
         final List<O> results = new ArrayList<O> ();
-        new Thread () {
-            public void run (){
-                synchronized (stop) {
-                    boolean stopped = false;
-                    while (!stopped){
+
+        final Thread streamReader = this.getStreamReader (streamInfo, operation, returnType, targetByteBuffer, streamsFromBuffer, results);
+        streamReader.start ();
+        try {
+            Thread.sleep (100);
+        } catch (InterruptedException e) {
+            throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e));
+        }
+
+        this.stopDetector (stop, streamReader).start ();
+
+        return results;
+    }
+
+    private Thread stopDetector (final Object stop, final Thread streamReader) {
+        return new Thread () {
+            public void run () {
+                boolean stopped = false;
+                while (!stopped) {
+                    stopped = true;
+                    synchronized (stop) {
                         try {
-                            InputStream inputStream = FluentClient.start ().withByteBuffer (targetByteBuffer, streamInfo).readBuffer ().stopWithInputStream ();
-                            if (inputStream.available () > 0){
-                                streamsFromBuffer.add (inputStream);
-                                FluentClient targetFluentClient = (FluentClient) FluentClient.start ().withRawInputStream (inputStream, streamInfo);
-                                new FluentClientOperation.FluentClientOperationRunnable (operation, targetFluentClient, 1).run ();
-                                results.add (targetFluentClient.getResult (returnType));
-                            }
-                            stop.wait (1);
+                            stop.wait ();
+                            streamReader.interrupt ();
                         } catch (InterruptedException e) {
-                            stopped = true;
-                        } catch (IOException e) {
-                            throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING, e));
-                        } catch (SoundTransformException e) {
-                            throw new SoundTransformRuntimeException (e);
+                            streamReader.interrupt ();
                         }
                     }
+                    streamReader.interrupt ();
                 }
-                
             }
-        }.start ();
-        
-        return results;
+        };
+    }
+
+    private <O> Thread getStreamReader (final StreamInfo streamInfo, final FluentClientOperation operation, final Class<O> returnType, final ByteBuffer targetByteBuffer, final List<InputStream> streamsFromBuffer, final List<O> results) {
+        return new Thread () {
+            public void run () {
+                try {
+                    InputStream inputStream = FluentClient.start ().withByteBuffer (targetByteBuffer, streamInfo).readBuffer ().stopWithInputStream ();
+                    if (inputStream.available () > 0) {
+                        streamsFromBuffer.add (inputStream);
+                        FluentClient targetFluentClient = (FluentClient) FluentClient.start ().withRawInputStream (inputStream, streamInfo);
+                        new FluentClientOperation.FluentClientOperationRunnable (operation, targetFluentClient, 1).run ();
+                        results.add (targetFluentClient.getResult (returnType));
+                    }
+                } catch (IOException e) {
+                    throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING, e));
+                } catch (SoundTransformException e) {
+                    throw new SoundTransformRuntimeException (e);
+                }
+            }
+        };
     }
 }
