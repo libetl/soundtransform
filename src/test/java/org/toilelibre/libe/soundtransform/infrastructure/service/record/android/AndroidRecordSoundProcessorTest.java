@@ -141,13 +141,17 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
         final List<Sound> list = FluentClient.start ().recordProcessAndTransformInBackgroundTask (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stop, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class);
 
         try {
-            Thread.sleep (2000);
+            Thread.sleep (4000);
         } catch (InterruptedException e) {
             throw new RuntimeException (e);
         }
-    
+
+        boolean notified = false;
         synchronized (stop) {
-            stop.notify ();
+            while (!notified) {
+                stop.notify ();
+                notified = true;
+            }
         }
     
         try {
