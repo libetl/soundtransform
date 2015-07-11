@@ -151,7 +151,7 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
         }
     
         try {
-            Thread.sleep (100);
+            Thread.sleep (4000);
         } catch (InterruptedException e) {
             throw new RuntimeException (e);
         }

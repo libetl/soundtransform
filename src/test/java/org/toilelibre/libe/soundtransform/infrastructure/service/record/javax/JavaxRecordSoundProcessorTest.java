@@ -121,7 +121,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
                 notified = true;
             }
         }
-        Thread.sleep (1000);
+        Thread.sleep (4000);
 
         Assert.assertThat (list, new IsNot<List<Sound>> (new IsNull<List<Sound>> ()));
         Assert.assertNotEquals (list.size (), 0);
