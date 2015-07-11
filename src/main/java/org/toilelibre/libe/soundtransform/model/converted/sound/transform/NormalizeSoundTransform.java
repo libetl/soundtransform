@@ -59,9 +59,9 @@ public class NormalizeSoundTransform implements SoundTransform<Channel, Channel>
 
         // find the max:
         double max = 0;
-        for (final long element : sound.getSamples ()) {
-            if (Math.abs (element) > max) {
-                max = Math.abs (element);
+        for (int i = 0 ; i < sound.getSamplesLength () ; i++) {
+            if (Math.abs (sound.getSampleAt (i)) > max) {
+                max = Math.abs (sound.getSampleAt (i));
             }
         }
 

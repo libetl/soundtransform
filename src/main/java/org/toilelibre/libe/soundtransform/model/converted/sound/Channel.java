@@ -1,5 +1,7 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
+import java.util.Arrays;
+
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 
@@ -32,8 +34,8 @@ public class Channel {
         return this.formatInfo.getSampleRate ();
     }
 
-    public long [] getSamples () {
-        return this.samples;
+    public String viewSamplesArray () {
+        return Arrays.toString (this.samples);
     }
 
     public int getSampleSize () {
@@ -51,5 +53,21 @@ public class Channel {
     @Override
     public String toString () {
         return $.select (SoundToStringService.class).convert (this);
+    }
+
+    public void copyTo (long [] samples) {
+        this.copyTo (this.samples, 0, 0, this.getSamplesLength ());
+    }
+    
+    public void copyTo (Channel channel) {
+        this.copyTo (channel.samples);
+    }
+    
+    public void copyTo (long [] samples, int srcPos, int dstPos, int length) {
+        System.arraycopy (this.samples, srcPos, samples, dstPos, length);
+    }
+    
+    public void copyTo (Channel channel, int srcPos, int dstPos, int length) {
+        this.copyTo (channel.samples, srcPos, dstPos, length);
     }
 }

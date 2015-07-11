@@ -362,29 +362,36 @@ public class FluentClientTest extends SoundTransformTest {
     @Test
     public void recordAnd8BitAtTheSameTime () throws SoundTransformException {
         Object stop = new Object ();
-        List<Sound> eightBitSounds = FluentClient.start ().recordProcessAndTransformInBackgroundTask (new StreamInfo (1, -1, 2, 44100, false, true, null),  
-                stop, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class);
-        
         try {
-            Thread.sleep (2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException (e);
-        }
+            List<Sound> eightBitSounds = FluentClient.start ().recordProcessAndTransformInBackgroundTask (new StreamInfo (1, -1, 2, 44100, false, true, null),  
+                    stop, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class);
         
-        synchronized (stop) {
-            stop.notify ();
-        }
+            try {
+                Thread.sleep (2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException (e);
+            }
         
-        try {
-            Thread.sleep (100);
-        } catch (InterruptedException e) {
-            throw new RuntimeException (e);
-        }
+            synchronized (stop) {
+                stop.notify ();
+            }
         
-        org.junit.Assert.assertNotNull (eightBitSounds);
-        org.junit.Assert.assertNotEquals (eightBitSounds.size (), 0);
+            try {
+                Thread.sleep (100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException (e);
+            }
+        
+            org.junit.Assert.assertNotNull (eightBitSounds);
+            org.junit.Assert.assertNotEquals (eightBitSounds.size (), 0);
+        } catch (SoundTransformException ste){
+            if ("AUDIO_FORMAT_NOT_SUPPORTED".equals (ste.getErrorCode ().name ()) || "TARGET_LINE_UNAVAILABLE".equals (ste.getErrorCode ().name ())) {
+                return;
+            } else {
+                Assert.fail ("Could not record anything (" + ste + ")");
+            }
+        }
     }
-    
     // Exactly the same code run as WavTest.testShape
     @Test
     public void shapeASoundTest () throws SoundTransformException {

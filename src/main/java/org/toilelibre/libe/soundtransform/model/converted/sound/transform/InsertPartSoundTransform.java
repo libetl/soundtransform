@@ -58,12 +58,11 @@ public class InsertPartSoundTransform implements SoundTransform<Channel, Channel
     }
 
     private Channel insertIn (final Channel sound) {
-        final long [] subsamples = this.subsound [sound.getChannelNum ()].getSamples ();
-        final long [] samples = new long [Math.max (this.start, sound.getSamplesLength ()) + subsamples.length];
-        System.arraycopy (sound.getSamples (), 0, samples, 0, Math.min (this.start, sound.getSamplesLength ()));
-        System.arraycopy (subsamples, 0, samples, this.start, subsamples.length);
+        final long [] samples = new long [Math.max (this.start, sound.getSamplesLength ()) + this.subsound [sound.getChannelNum ()].getSamplesLength ()];
+        sound.copyTo (samples, 0, 0, Math.min (this.start, sound.getSamplesLength ()));
+        this.subsound [sound.getChannelNum ()].copyTo (samples, 0, this.start, this.subsound [sound.getChannelNum ()].getSamplesLength ());
         if (sound.getSamplesLength () - this.start > 0) {
-            System.arraycopy (sound.getSamples (), this.start, samples, this.start + subsamples.length, sound.getSamplesLength () - this.start);
+            sound.copyTo (samples, this.start, this.start + this.subsound [sound.getChannelNum ()].getSamplesLength (), sound.getSamplesLength () - this.start);
         }
         return new Channel (samples, sound.getFormatInfo (), sound.getChannelNum ());
     }

@@ -60,8 +60,8 @@ public class ReplacePartSoundTransform implements SoundTransform<Channel, Channe
 
     private Channel replace (final Channel sound) {
         final long [] samples = new long [Math.max (sound.getSamplesLength (), this.start + this.replacement [sound.getChannelNum ()].getSamplesLength ())];
-        System.arraycopy (sound.getSamples (), 0, samples, 0, sound.getSamplesLength ());
-        System.arraycopy (this.replacement [sound.getChannelNum ()].getSamples (), 0, samples, this.start, this.replacement [sound.getChannelNum ()].getSamplesLength ());
+        sound.copyTo (samples);
+        this.replacement [sound.getChannelNum ()].copyTo (samples, 0, this.start, this.replacement [sound.getChannelNum ()].getSamplesLength ());
         return new Channel (samples, sound.getFormatInfo (), sound.getChannelNum ());
     }
 

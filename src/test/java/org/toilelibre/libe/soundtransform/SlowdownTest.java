@@ -1,7 +1,5 @@
 package org.toilelibre.libe.soundtransform;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.SlowdownSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
@@ -18,6 +16,6 @@ public class SlowdownTest extends SoundTransformTest {
         final Channel testsound = new Channel (testarray, new FormatInfo (1, testarray.length), 1);
         final SlowdownSoundTransform est = new SlowdownSoundTransform (2, 2, 4);
         final Channel resultsound = est.transform (testsound);
-        new Slf4jObserver ().notify (Arrays.toString (resultsound.getSamples ()));
+        new Slf4jObserver ().notify (resultsound.viewSamplesArray ());
     }
 }

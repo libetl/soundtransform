@@ -1,7 +1,5 @@
 package org.toilelibre.libe.soundtransform;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.EqualizerSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
@@ -17,6 +15,6 @@ public class EqualizerTest extends SoundTransformTest {
         final Channel testsound = new Channel (testarray, new FormatInfo (1, testarray.length), 1);
         final EqualizerSoundTransform est = new EqualizerSoundTransform (new double [] { 0, 4, 8 }, new double [] { 1, 1, 1 });
         final Channel resultsound = est.transform (testsound);
-        new Slf4jObserver ().notify (Arrays.toString (resultsound.getSamples ()));
+        new Slf4jObserver ().notify (resultsound.viewSamplesArray ());
     }
 }

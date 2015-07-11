@@ -40,7 +40,7 @@ final class ConvertedSoundAppender implements SoundAppender {
         final Channel resultBeforeResize = this.changeNbBytesPerSample (otherSound, origin.getSampleSize ());
         final Channel resultBeforeCopy = this.resizeToSampleRate (resultBeforeResize, origin.getSampleRate ());
         final int lastIndex = Math.min (origin.getSamplesLength (), usedarraylength + resultBeforeCopy.getSamplesLength ());
-        System.arraycopy (resultBeforeCopy.getSamples (), 0, origin.getSamples (), usedarraylength, lastIndex - usedarraylength);
+        resultBeforeCopy.copyTo (origin, 0, usedarraylength, lastIndex - usedarraylength);
         return lastIndex;
     }
 
@@ -49,8 +49,8 @@ final class ConvertedSoundAppender implements SoundAppender {
         final Channel sound2Ajusted = this.resizeToSampleRate (this.changeNbBytesPerSample (sound2, sound1.getSampleSize ()), sound1.getSampleRate ());
         final Channel result = new Channel (new long [sound1.getSamplesLength () + sound2.getSamplesLength ()], sound1.getFormatInfo (), sound1.getChannelNum ());
 
-        System.arraycopy (sound1.getSamples (), 0, result.getSamples (), 0, sound1.getSamplesLength ());
-        System.arraycopy (sound2Ajusted.getSamples (), 0, result.getSamples (), sound1.getSamplesLength (), sound2Ajusted.getSamplesLength ());
+        sound1.copyTo (result);
+        sound2Ajusted.copyTo (result, 0, sound1.getSamplesLength (), sound2Ajusted.getSamplesLength ());
 
         return result;
     }

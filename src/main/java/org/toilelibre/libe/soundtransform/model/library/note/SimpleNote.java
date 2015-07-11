@@ -93,7 +93,7 @@ public class SimpleNote implements Note {
         long [] newsamples = new long [0];
         if (beginning < end) {
             newsamples = new long [end - beginning];
-            System.arraycopy (input.getSamples (), beginning, newsamples, 0, end - beginning);
+            input.copyTo (newsamples, beginning, 0, end - beginning);
         }
         return new Channel (newsamples, input.getFormatInfo (), input.getChannelNum ());
     }

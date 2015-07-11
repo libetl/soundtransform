@@ -30,7 +30,7 @@ public class PitchSoundTransform implements SoundTransform<Channel, Channel> {
     private Channel pitch (final Channel sound, final float percent) {
         final float total = PitchSoundTransform.A_HUNDRED;
         if (percent == total) {
-            return new Channel (sound.getSamples (), sound.getFormatInfo (), sound.getChannelNum ());
+            return sound;
         }
         final float nbSamples = sound.getSamplesLength ();
         final float nbFiltered = Math.abs (total * nbSamples / percent);

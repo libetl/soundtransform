@@ -27,13 +27,13 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
 
     static class WeightIntegralFunction {
 
-        private final long []       inputSamples;
+        private final Channel       input;
         private final int           startSample;
         private final int           endSample;
         private final int           length;
 
-        public WeightIntegralFunction (final Channel input, final int startSample1, final int endSample1) {
-            this.inputSamples = input.getSamples ();
+        public WeightIntegralFunction (final Channel input1, final int startSample1, final int endSample1) {
+            this.input = input1;
             this.startSample = startSample1;
             this.endSample = endSample1;
             this.length = this.endSample - this.startSample;
@@ -46,7 +46,7 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
         }
 
         private double sumOfRanges (final int n, final int t, final int startOfInterval, final double endOfInterval) {
-            final SignalSumFunction sumFunction = new SignalSumFunction (this.inputSamples, t, this.startSample, this.endSample);
+            final SignalSumFunction sumFunction = new SignalSumFunction (this.input, t, this.startSample, this.endSample);
             double sum = 0;
             for (int k = startOfInterval ; k <= endOfInterval ; k++) {
                 final double valueOfK = sumFunction.value (k);
@@ -61,14 +61,14 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
 
         private final int     choosenPeriod;
         private final int     moduloAfterLastPeriod;
-        private final long [] inputSamples;
+        private final Channel input;
         private final int     choosenPeriodsInSignal;
         private final int           startSample;
         private final int           endSample;
         private final int           length;
 
-        public SignalSumFunction (final long [] inputSamples1, final int choosenPeriod1, final int startSample1, final int endSample1) {
-            this.inputSamples = inputSamples1;
+        public SignalSumFunction (final Channel input1, final int choosenPeriod1, final int startSample1, final int endSample1) {
+            this.input = input1;
             this.choosenPeriod = choosenPeriod1;
             this.startSample = startSample1;
             this.endSample = endSample1;
@@ -82,20 +82,20 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
         }
 
         private double sumOfN (final double t) {
-            return SignalSumFunction.sumImplementation (this.inputSamples, this.choosenPeriodsInSignal, this.choosenPeriod, (int) t);
+            return SignalSumFunction.sumImplementation (this.input, this.choosenPeriodsInSignal, this.choosenPeriod, (int) t);
         }
 
-        private static double sumImplementation (final long [] input, final int n, final int p, final int t) {
+        private static double sumImplementation (final Channel input, final int n, final int p, final int t) {
             double sum = 0;
             for (int k = 0 ; k < n ; k++) {
                 final int index = t + k * p;
-                sum += index < input.length ? Math.abs (input [index]) : 0;
+                sum += index < input.getSamplesLength () ? Math.abs (input.getSampleAt (index)) : 0;
             }
             return sum * 1.0 / n;
         }
 
         private double sumOfNPlusOne (final double t) {
-            return SignalSumFunction.sumImplementation (this.inputSamples, this.choosenPeriodsInSignal + 1, this.choosenPeriod, (int) (t + this.startSample));
+            return SignalSumFunction.sumImplementation (this.input, this.choosenPeriodsInSignal + 1, this.choosenPeriod, (int) (t + this.startSample));
         }
 
     }
