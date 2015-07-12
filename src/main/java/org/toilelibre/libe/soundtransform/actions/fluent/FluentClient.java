@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -82,8 +81,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     private List<Spectrum<Serializable> []> spectrums;
 
     private List<Observer>                  observers;
-    
-    private ByteBuffer                      byteBuffer;
 
     private FluentClient () {
         this.andAfterStart ();
@@ -208,7 +205,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     private void cleanData () {
         this.audioInputStream = null;
-        this.byteBuffer = null;
         this.file = null;
         this.freqs = null;
         this.parallelizedClients = null;
@@ -814,14 +810,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     @Override
     public Pack stopWithAPack (final String title) {
         return new ImportAPackIntoTheLibrary (this.getObservers ()).getPack (title);
-    }
-
-    /**
-     * Stops the client pipeline and returns the original byte buffer
-     * @return a byte buffer object
-     */
-    public ByteBuffer stopWithByteBuffer () throws SoundTransformException {
-        return this.byteBuffer;
     }
     
     @Override
