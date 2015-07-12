@@ -18,6 +18,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.record.RunnableWithInputStream;
 
 public class FluentClientOperation implements BuildableFluentClientOperationSoundImported, BuildableFluentClientOperationWithInputStream, BuildableFluentClientOperationWithFile, BuildableFluentClientOperationWithFreqs, BuildableFluentClientOperationWithParallelizedClients,
         BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
@@ -33,7 +34,7 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
         }
     }
 
-    public static class FluentClientOperationRunnable implements Runnable {
+    public static class FluentClientOperationRunnable implements RunnableWithInputStream {
 
         private FluentClientOperation operation;
         private FluentClientInterface clientInterface;
@@ -54,6 +55,13 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
                     throw new SoundTransformRuntimeException(ste);
                 }
             }
+        }
+
+        @Override
+        public <T> T runWithInputStreamAndGetResult (final InputStream inputStream, final StreamInfo streamInfo, Class<T> resultClass) throws SoundTransformException {
+            this.clientInterface = (FluentClientInterface) FluentClient.start ().withRawInputStream (inputStream, streamInfo);
+            this.run ();
+            return ((FluentClient) this.clientInterface).getResult (resultClass);
         }
     }
 

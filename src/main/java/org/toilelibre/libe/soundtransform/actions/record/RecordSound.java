@@ -19,6 +19,6 @@ public class RecordSound extends Action {
     }
     
     public <T> List<T> recordAndProcess (final StreamInfo streamInfo, final Object stop, final FluentClientOperation operation, final Class<T> returnType) throws SoundTransformException {
-        return this.recordSound.<T>recordAndProcess (streamInfo, stop, operation, returnType);
+        return this.recordSound.<T>recordAndProcess (streamInfo, stop, new FluentClientOperation.FluentClientOperationRunnable (operation, null, 1), returnType);
     }
 }

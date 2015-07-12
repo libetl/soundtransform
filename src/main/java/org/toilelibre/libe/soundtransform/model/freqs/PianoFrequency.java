@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.freqs;
+package org.toilelibre.libe.soundtransform.model.freqs;
 
 public final class PianoFrequency {
     public static enum PianoValues {

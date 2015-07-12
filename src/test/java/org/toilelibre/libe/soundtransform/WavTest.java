@@ -11,7 +11,6 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.GaussianEqualizerSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.LevelSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.LinearRegressionSoundTransform;
-import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.MaximumLikelihoodSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.PralongAndCarlileSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.PurifySoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.ReduceNoiseSoundTransform;
@@ -25,6 +24,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightB
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.FadeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.InsertPartSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MaximumLikelihoodSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MixSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NormalizeSoundTransform;

@@ -1,12 +1,10 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms;
+package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.io.Serializable;
 
-import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.PianoFrequency;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.BlackmanHarrisWindowSoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.freqs.PianoFrequency;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 
@@ -27,10 +25,10 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
 
     static class WeightIntegralFunction {
 
-        private final Channel       input;
-        private final int           startSample;
-        private final int           endSample;
-        private final int           length;
+        private final Channel input;
+        private final int     startSample;
+        private final int     endSample;
+        private final int     length;
 
         public WeightIntegralFunction (final Channel input1, final int startSample1, final int endSample1) {
             this.input = input1;
@@ -63,9 +61,9 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
         private final int     moduloAfterLastPeriod;
         private final Channel input;
         private final int     choosenPeriodsInSignal;
-        private final int           startSample;
-        private final int           endSample;
-        private final int           length;
+        private final int     startSample;
+        private final int     endSample;
+        private final int     length;
 
         public SignalSumFunction (final Channel input1, final int choosenPeriod1, final int startSample1, final int endSample1) {
             this.input = input1;

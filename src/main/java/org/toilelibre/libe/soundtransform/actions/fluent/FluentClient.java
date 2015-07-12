@@ -1,6 +1,5 @@
 package org.toilelibre.libe.soundtransform.actions.fluent;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -47,7 +46,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
-public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums, FluentClientWithByteBuffer, FluentClientInterface {
+public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums, FluentClientInterface {
 
 
     public enum FluentClientErrorCode implements ErrorCode {
@@ -85,7 +84,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     private List<Observer>                  observers;
     
     private ByteBuffer                      byteBuffer;
-    private StreamInfo                      streamInfoOfBuffer;
 
     private FluentClient () {
         this.andAfterStart ();
@@ -216,7 +214,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.parallelizedClients = null;
         this.sound = null;
         this.spectrums = null;
-        this.streamInfoOfBuffer = null;
     }
 
     /**
@@ -758,30 +755,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         }
         return this;
     }
-
-    @Override
-    /**
-     * Reads the available bytes in the ByteBuffer to extract an InputStream for further operations.
-     * Warn : this will not read the whole buffer if it is under processing.
-     * The result inputStream will only save what the buffer contains at the precise moment of the call
-     * 
-     * @return a client, with an input stream
-     * @throws SoundTransformException if the import into inputstream fails
-     */
-    public FluentClientWithInputStream readBuffer () throws SoundTransformException {
-        boolean waited = false;
-        synchronized (this.byteBuffer) {
-            try {
-                while (!waited){
-                    this.byteBuffer.wait ();
-                    waited = true;
-                }
-            } catch (InterruptedException e) {
-                throw new SoundTransformException (FluentClientErrorCode.ERROR_WHILE_WAITING_FOR_A_NEW_BUFFER, e);
-            }
-        }
-        return this.withRawInputStream (new ByteArrayInputStream (this.byteBuffer.array ()), this.streamInfoOfBuffer);
-    }
     
     @Override
     /**
@@ -1101,20 +1074,6 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public FluentClientWithInputStream withAudioInputStream (final InputStream ais) {
         this.cleanData ();
         this.audioInputStream = ais;
-        return this;
-    }
-
-    @Override
-    /**
-     * This with method accepts a buffer but does not change it
-     * @param byteBuffer1 the byte buffer
-     * @param streamInfo1 the expected stream info
-     * @return the client, with a Byte Buffer
-     */
-    public FluentClientWithByteBuffer withByteBuffer (final ByteBuffer byteBuffer1, final StreamInfo streamInfo1) {
-        this.cleanData ();
-        this.byteBuffer = byteBuffer1;
-        this.streamInfoOfBuffer = streamInfo1;
         return this;
     }
     

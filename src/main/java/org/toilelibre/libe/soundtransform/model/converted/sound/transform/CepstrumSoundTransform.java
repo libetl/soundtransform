@@ -2,13 +2,13 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 import java.io.Serializable;
 
-import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.PianoFrequency;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.freqs.PianoFrequency;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;

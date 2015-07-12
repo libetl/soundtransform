@@ -1,16 +1,16 @@
 package org.toilelibre.libe.soundtransform.model.record;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
-import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
@@ -36,10 +36,12 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
     private static final float         MS_PER_SECOND = 1000.0f;
     private final RecordSoundProcessor processor;
     private final AudioFormatParser    audioFormatParser;
+    private final AudioFileService<?>  audioFileService;
 
-    public DefaultRecordSoundService (final RecordSoundProcessor processor1, final AudioFormatParser audioFormatParser1) {
+    public DefaultRecordSoundService (final RecordSoundProcessor processor1, final AudioFormatParser audioFormatParser1, final AudioFileService<?> audioFileService1) {
         this.processor = processor1;
         this.audioFormatParser = audioFormatParser1;
+        this.audioFileService = audioFileService1;
 
     }
 
@@ -73,12 +75,12 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
     }
 
     @Override
-    public <O> List<O> recordAndProcess (final StreamInfo streamInfo, final Object stop, final FluentClientOperation operation, final Class<O> returnType) throws SoundTransformException {
+    public <O> List<O> recordAndProcess (final StreamInfo streamInfo, final Object stop, final RunnableWithInputStream runnable, final Class<O> returnType) throws SoundTransformException {
         final ByteBuffer targetByteBuffer = this.startRecordingAndReturnByteBuffer (streamInfo, stop);
         final List<InputStream> streamsFromBuffer = new ArrayList<InputStream> ();
         final List<O> results = new ArrayList<O> ();
 
-        final Thread streamReader = this.getStreamReader (streamInfo, operation, returnType, targetByteBuffer, streamsFromBuffer, results);
+        final Thread streamReader = this.getStreamReader (streamInfo, runnable, returnType, targetByteBuffer, streamsFromBuffer, results);
         streamReader.start ();
         try {
             Thread.sleep (100);
@@ -111,16 +113,15 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         };
     }
 
-    private <O> Thread getStreamReader (final StreamInfo streamInfo, final FluentClientOperation operation, final Class<O> returnType, final ByteBuffer targetByteBuffer, final List<InputStream> streamsFromBuffer, final List<O> results) {
+    private <O> Thread getStreamReader (final StreamInfo streamInfo, final RunnableWithInputStream runnable, final Class<O> returnType, final ByteBuffer targetByteBuffer, final List<InputStream> streamsFromBuffer, final List<O> results) {
         return new Thread () {
             public void run () {
                 try {
-                    InputStream inputStream = FluentClient.start ().withByteBuffer (targetByteBuffer, streamInfo).readBuffer ().stopWithInputStream ();
+                    DefaultRecordSoundService.this.waitForNewBytes (targetByteBuffer);
+                    InputStream inputStream = DefaultRecordSoundService.this.audioFileService.streamFromRawStream (new ByteArrayInputStream (targetByteBuffer.array ()), streamInfo);
                     if (inputStream.available () > 0) {
                         streamsFromBuffer.add (inputStream);
-                        FluentClient targetFluentClient = (FluentClient) FluentClient.start ().withRawInputStream (inputStream, streamInfo);
-                        new FluentClientOperation.FluentClientOperationRunnable (operation, targetFluentClient, 1).run ();
-                        results.add (targetFluentClient.getResult (returnType));
+                        results.add (runnable.runWithInputStreamAndGetResult (inputStream, streamInfo, returnType));
                     }
                 } catch (IOException e) {
                     throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING, e));
@@ -129,5 +130,19 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
                 }
             }
         };
+    }
+
+    private void waitForNewBytes (final ByteBuffer targetByteBuffer) throws SoundTransformException {
+        boolean waited = false;
+        synchronized (targetByteBuffer) {
+            try {
+                while (!waited){
+                    targetByteBuffer.wait ();
+                    waited = true;
+                }
+            } catch (InterruptedException e) {
+                throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e));
+            }
+        }
     }
 }

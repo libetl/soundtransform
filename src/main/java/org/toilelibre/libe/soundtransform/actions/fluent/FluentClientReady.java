@@ -3,7 +3,6 @@ package org.toilelibre.libe.soundtransform.actions.fluent;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -274,14 +273,6 @@ public interface FluentClientReady extends FluentClientCommon {
      */
     FluentClientWithInputStream withAudioInputStream (InputStream inputStream);
 
-    /**
-     * This with method accepts a buffer but does not change it
-     * @param byteBuffer1 the byte buffer
-     * @param streamInfo1 the expected stream info
-     * @return the client, with a Byte Buffer
-     */
-    FluentClientWithByteBuffer withByteBuffer (ByteBuffer byteBuffer1, StreamInfo streamInfo1);
-    
     /**
      * Tells the client to work first with a classpath resource. It will be
      * converted in a File
