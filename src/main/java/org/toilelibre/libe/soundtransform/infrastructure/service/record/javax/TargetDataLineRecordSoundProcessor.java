@@ -11,14 +11,14 @@ import javax.sound.sampled.DataLine.Info;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
-import org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter.BytesExporterFromThread;
-import org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter.OutputAsByteArrayOutputStream;
-import org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter.OutputAsByteBuffer;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
+import org.toilelibre.libe.soundtransform.model.record.exporter.BytesExporterFromThread;
+import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteArrayOutputStream;
+import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteBuffer;
 
 final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
 

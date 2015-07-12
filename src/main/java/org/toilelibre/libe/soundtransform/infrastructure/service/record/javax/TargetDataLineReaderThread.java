@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.record.javax;
 
 import javax.sound.sampled.TargetDataLine;
 
-import org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter.BytesExporterFromThread;
+import org.toilelibre.libe.soundtransform.model.record.exporter.BytesExporterFromThread;
 
 final class TargetDataLineReaderThread extends Thread {
     /**

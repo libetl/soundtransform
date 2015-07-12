@@ -2,6 +2,9 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.record.exporte
 
 import java.io.ByteArrayOutputStream;
 
+import org.toilelibre.libe.soundtransform.model.record.exporter.BytesExporterFromThread;
+import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteArrayOutputStream;
+
 class ByteArrayOutputStreamExporter implements BytesExporterFromThread<ByteArrayOutputStream>, OutputAsByteArrayOutputStream {
 
     private ByteArrayOutputStream outputStream;

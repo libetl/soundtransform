@@ -3,8 +3,8 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.record.android
 import java.io.IOException;
 
 import org.toilelibre.libe.soundtransform.infrastructure.service.record.android.AndroidRecordSoundProcessor.AndroidRecordSoundProcessorErrorCode;
-import org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter.BytesExporterFromThread;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
+import org.toilelibre.libe.soundtransform.model.record.exporter.BytesExporterFromThread;
 
 import android.media.AudioRecord;
 

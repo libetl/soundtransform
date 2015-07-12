@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.record.exporter;
+package org.toilelibre.libe.soundtransform.model.record.exporter;
 
 import java.nio.ByteBuffer;
 
