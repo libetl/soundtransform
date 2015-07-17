@@ -363,7 +363,7 @@ public class FluentClientTest extends SoundTransformTest {
     public void recordAnd8BitAtTheSameTime () throws SoundTransformException {
         Object stop = new Object ();
         try {
-            List<Sound> eightBitSounds = FluentClient.start ().recordProcessAndTransformInBackgroundTask (new StreamInfo (1, -1, 2, 44100, false, true, null),  
+            List<Sound> eightBitSounds = FluentClient.start ().inParallelWhileRecordingASound (new StreamInfo (1, -1, 2, 44100, false, true, null),  
                     stop, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class);
         
             try {

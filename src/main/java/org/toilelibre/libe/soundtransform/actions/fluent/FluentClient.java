@@ -631,7 +631,32 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         }
         return this.inParallel (op, timeoutInSeconds, clients);
     }
-
+    /**
+     * Tells the client to open the microphone and to record a sound. 
+     * A flow of operations will be executed since the very start of the recording
+     *
+     * /!\ : blocking method, the `stop.notify` method must be called in another
+     * thread.
+     *
+     * @param streamInfo
+     *            the future input stream info
+     * @param stop
+     *            the method notify must be called to stop the recording
+     * @param operation
+     *            a flow of operation to execute while recording
+     * @param returnType
+     *            expected result class
+     * @return a list of results of the expected type
+     * @throws SoundTransformException
+     *             the mic could not be read, the recorder could not start, or
+     *             the buffer did not record anything
+     */
+    @Override
+    public <T> List<T> inParallelWhileRecordingASound (final StreamInfo streamInfo, final Object stop, final FluentClientOperation operation, final Class<T> returnType) throws SoundTransformException {
+        this.cleanData ();
+        return new RecordSound ().recordAndProcess (streamInfo, stop, operation, returnType);
+    }
+    
     /**
      * Extracts a part of the sound between the sample #start and the sample
      * #end
@@ -935,6 +960,36 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return this;
     }
 
+    /**
+     * Tells the client to open the microphone, to start recording a sound and
+     * to return in the pipeline The result will be a Segmented sound 
+     * (a sound consisting of several mono sounds).
+     * The frameLength in the streamInfo will be ignored. 
+     * The further actions are started just after the start of the 
+     * recording.
+     *
+     * /!\ : It is your responsibility to call stop.notify () in another thread, 
+     * else the recording will not finish
+     * /!\ : This method should only be used if the next operation costs more
+     * time than the recording itself. In any other case, use the 
+     * withRecordedInputStream method. 
+     *
+     * @param streamInfo
+     *            the future input stream info
+     * @param stop
+     *            the method notify must be called to stop the recording
+     * @return the client, with an input stream
+     * @throws SoundTransformException
+     *             the mic could not be read, the recorder could not start, or
+     *             the buffer did not record anything
+     */
+    @Override
+    public FluentClientSoundImported whileRecordingASound (StreamInfo streamInfo, Object stop) throws SoundTransformException {
+        this.cleanData ();
+        this.sound = new RecordSound ().startRecordingASound (streamInfo, stop);
+        return this;
+    }
+    
     @Override
     /**
      * Tells the client to add an observer that will be notified of different kind of updates
@@ -1140,33 +1195,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.audioInputStream = new InputStreamToAudioInputStream (this.getObservers ()).transformRawInputStream (is, isInfo);
         return this;
     }
-
-    /**
-     * Tells the client to open the microphone and to record a sound. 
-     * A flow of operations will be executed since the very start of the recording
-     *
-     * /!\ : blocking method, the `stop.notify` method must be called in another
-     * thread.
-     *
-     * @param streamInfo
-     *            the future input stream info
-     * @param stop
-     *            the method notify must be called to stop the recording
-     * @param operation
-     *            a flow of operation to execute while recording
-     * @param returnType
-     *            expected result class
-     * @return a list of results of the expected type
-     * @throws SoundTransformException
-     *             the mic could not be read, the recorder could not start, or
-     *             the buffer did not record anything
-     */
-    @Override
-    public <T> List<T> recordProcessAndTransformInBackgroundTask (final StreamInfo streamInfo, final Object stop, final FluentClientOperation operation, final Class<T> returnType) throws SoundTransformException {
-        this.cleanData ();
-        return new RecordSound ().recordAndProcess (streamInfo, stop, operation, returnType);
-    }
-
+    
     /**
      * Tells the client to open the microphone and to record a sound The result
      * will be of an InputStream type The frameLength in the streamInfo will be

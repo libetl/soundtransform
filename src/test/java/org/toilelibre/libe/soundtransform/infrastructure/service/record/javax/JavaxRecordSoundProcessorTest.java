@@ -27,6 +27,7 @@ import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -100,7 +101,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         buffers [14] = new byte [0];
         this.mockRecordSoundProcessor (buffers);
         final Object stopObject = new Object ();
-        final List<Sound> list = FluentClient.start ().recordProcessAndTransformInBackgroundTask (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stopObject, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class);
+        final List<Sound> list = FluentClient.start ().inParallelWhileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stopObject, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class);
 
         Thread.sleep (4000);
         boolean notified = false;
@@ -114,6 +115,49 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
         Assert.assertThat (list, new IsNot<List<Sound>> (new IsNull<List<Sound>> ()));
         Assert.assertNotEquals (list.size (), 0);
+    }
+
+    @Test
+    public void shapeAndMockRecordedSoundInParallel () throws Exception {
+        this.rule.hashCode ();
+        final byte [][] buffers = new byte [15] [1024];
+        for (int i = 0 ; i < 14 ; i++) {
+            new Random ().nextBytes (buffers [i]);
+        }
+        buffers [14] = new byte [0];
+        this.mockRecordSoundProcessor (buffers);
+
+        final Object stop = new Object ();
+        new Thread (){
+            
+            public void run () {
+                try {
+                    Thread.sleep (4000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException (e);
+                }
+
+                boolean notified = false;
+                synchronized (stop) {
+                    while (!notified) {
+                        stop.notify ();
+                        notified = true;
+                    }
+                }
+            }
+            
+        }.start ();
+        
+        Sound resultSound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stop).findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100f)).stopWithSound ();
+        try {
+            Thread.sleep (4000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException (e);
+        }
+        Assert.assertThat (resultSound, new IsNot<Sound> (new IsNull<Sound> ()));
+        Assert.assertNotNull (resultSound.getChannels ());
+        Assert.assertEquals (resultSound.getChannels ().length, 1);
+        Assert.assertNotEquals (resultSound.getChannels () [0].getSamplesLength (), 0);
     }
     
     private void mockRecordSoundProcessor (final byte [][] buffers) throws Exception {

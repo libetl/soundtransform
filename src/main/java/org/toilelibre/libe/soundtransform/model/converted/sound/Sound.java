@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.model.converted.sound;
 
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 
-public final class Sound {
+public class Sound {
 
     private final Channel [] channels;
 

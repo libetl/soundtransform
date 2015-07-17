@@ -339,6 +339,31 @@ public interface FluentClientReady extends FluentClientCommon {
     FluentClientWithInputStream withRawInputStream (InputStream inputStream, StreamInfo streamInfo) throws SoundTransformException;
 
     /**
+     * Tells the client to open the microphone, to start recording a sound and
+     * to return in the pipeline The result will be a Segmented sound 
+     * (a sound consisting of several mono sounds).
+     * The frameLength in the streamInfo will be ignored. 
+     * The further actions are started just after the start of the 
+     * recording.
+     *
+     * /!\ : It is your responsibility to call stop.notify () in another thread, 
+     * else the recording will not finish
+     * /!\ : This method should only be used if the next operation costs more
+     * time than the recording itself. In any other case, use the 
+     * withRecordedInputStream method. 
+     *
+     * @param streamInfo
+     *            the future input stream info
+     * @param stop
+     *            the method notify must be called to stop the recording
+     * @return the client, with an input stream
+     * @throws SoundTransformException
+     *             the mic could not be read, the recorder could not start, or
+     *             the buffer did not record anything
+     */
+    FluentClientSoundImported whileRecordingASound (final StreamInfo streamInfo, Object stop) throws SoundTransformException;
+
+    /**
      * Tells the client to open the microphone and to record a sound The result
      * will be of an InputStream type The frameLength in the streamInfo will be
      * ignored
@@ -401,6 +426,6 @@ public interface FluentClientReady extends FluentClientCommon {
      *             the mic could not be read, the recorder could not start, or
      *             the buffer did not record anything
      */
-     <T> List<T> recordProcessAndTransformInBackgroundTask (StreamInfo streamInfo, Object stop, FluentClientOperation operation, final Class<T> returnType) throws SoundTransformException;
+     <T> List<T> inParallelWhileRecordingASound (StreamInfo streamInfo, Object stop, FluentClientOperation operation, final Class<T> returnType) throws SoundTransformException;
 
 }

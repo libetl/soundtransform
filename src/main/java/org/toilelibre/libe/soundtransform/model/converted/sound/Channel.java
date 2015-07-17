@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 
 public class Channel {
 
-    private final long []    samples;
+    protected final long []  samples;
     private final FormatInfo formatInfo;
     private final int        channelNum;
 
