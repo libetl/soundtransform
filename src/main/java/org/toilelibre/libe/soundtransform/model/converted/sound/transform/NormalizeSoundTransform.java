@@ -53,7 +53,7 @@ public class NormalizeSoundTransform implements SoundTransform<Channel, Channel>
     }
 
     private Channel normalize (final Channel sound) {
-        
+
         final long [] newdata = new long [sound.getSamplesLength ()];
         // this is the raw audio data -- no header
 

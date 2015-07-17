@@ -31,7 +31,7 @@ public class TestDetectNotes extends SoundTransformTest {
         for (int i = 1100 ; i < 1600 ; i++) {
             t [i] = (float) (value + Math.random () * twopercents - twopercents / 2);
         }
-        FluentClient.start ().withAPack ( "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+        FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
         new ShapeSoundTransform ("default", "simple_piano", new FormatInfo (2, 44100.0f)).setObservers (new Slf4jObserver (), new Observer () {
 
             @Override
@@ -43,7 +43,7 @@ public class TestDetectNotes extends SoundTransformTest {
         Assert.assertTrue (messages.get (1).endsWith (" between 800/2000 and 1000/ 2000"));
         Assert.assertTrue (messages.get (2).endsWith (" between 1100/2000 and 1600/ 2000"));
     }
-    
+
     @Test
     public void testAvoidZeros1 () throws SoundTransformException {
         final int value = 200;
@@ -62,8 +62,8 @@ public class TestDetectNotes extends SoundTransformTest {
         for (int i = 250 ; i < 350 ; i++) {
             t [i] = 0.0f;
         }
-        
-        FluentClient.start ().withAPack ( "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+
+        FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
         new ShapeSoundTransform ("default", "simple_piano", new FormatInfo (2, 44100.0f)).setObservers (new Slf4jObserver (), new Observer () {
 
             @Override
@@ -76,14 +76,13 @@ public class TestDetectNotes extends SoundTransformTest {
         Assert.assertTrue (messages.get (2).endsWith (" between 800/2000 and 1000/ 2000"));
         Assert.assertTrue (messages.get (3).endsWith (" between 1100/2000 and 1600/ 2000"));
     }
-    
 
     @Test
     public void testAvoidZeros2 () throws SoundTransformException {
         final List<String> messages = new LinkedList<String> ();
-        final float [] t = {0, 0, 117, 220, 221, 220, 222};
-        
-        FluentClient.start ().withAPack ( "default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+        final float [] t = { 0, 0, 117, 220, 221, 220, 222 };
+
+        FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
         new ShapeSoundTransform ("default", "simple_piano", new FormatInfo (2, 44100.0f)).setObservers (new Slf4jObserver (), new Observer () {
 
             @Override

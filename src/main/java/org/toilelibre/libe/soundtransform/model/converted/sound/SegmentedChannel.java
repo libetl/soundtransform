@@ -7,7 +7,6 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 
-
 public class SegmentedChannel extends Channel {
 
     enum SegmentedChannelErrorCode implements ErrorCode {
@@ -25,18 +24,19 @@ public class SegmentedChannel extends Channel {
         }
 
     }
-    private static final String THIS_CHANNEL_IS_SEGMENTED_AND_CANNOT_BE_DISPLAYED = null;
-    private List<Sound> channelParts;
 
-    public SegmentedChannel (FormatInfo formatInfo, final List<Sound> sounds) {
+    private static final String THIS_CHANNEL_IS_SEGMENTED_AND_CANNOT_BE_DISPLAYED = null;
+    private final List<Sound>         channelParts;
+
+    public SegmentedChannel (final FormatInfo formatInfo, final List<Sound> sounds) {
         super (null, formatInfo, 0);
         this.channelParts = sounds;
     }
 
     @Override
-    public long getSampleAt (int index) {
-        int channelPartIndex = this.getChannelPartIndex (index);
-        int samplesIndex = this.getSamplesIndex (index);
+    public long getSampleAt (final int index) {
+        final int channelPartIndex = this.getChannelPartIndex (index);
+        final int samplesIndex = this.getSamplesIndex (index);
 
         return this.channelParts.get (channelPartIndex).getChannels () [0].getSampleAt (samplesIndex);
     }
@@ -50,12 +50,11 @@ public class SegmentedChannel extends Channel {
     public String toString () {
         return SegmentedChannel.THIS_CHANNEL_IS_SEGMENTED_AND_CANNOT_BE_DISPLAYED;
     }
-    
-    private int getChannelPartIndex (int index){
+
+    private int getChannelPartIndex (final int index) {
         int realIndex = index;
         int channelPartIndex = 0;
-        while (channelPartIndex < this.channelParts.size () &&
-                realIndex > this.channelParts.get (channelPartIndex).getSamplesLength ()) {
+        while (channelPartIndex < this.channelParts.size () && realIndex > this.channelParts.get (channelPartIndex).getSamplesLength ()) {
             realIndex -= this.channelParts.get (channelPartIndex).getSamplesLength ();
             channelPartIndex++;
         }
@@ -65,11 +64,10 @@ public class SegmentedChannel extends Channel {
         return channelPartIndex;
     }
 
-    private int getSamplesIndex (int index){
+    private int getSamplesIndex (final int index) {
         int realIndex = index;
         int channelPartIndex = 0;
-        while (channelPartIndex < this.channelParts.size () &&
-                realIndex > this.channelParts.get (channelPartIndex).getSamplesLength ()) {
+        while (channelPartIndex < this.channelParts.size () && realIndex > this.channelParts.get (channelPartIndex).getSamplesLength ()) {
             realIndex -= this.channelParts.get (channelPartIndex).getSamplesLength ();
             channelPartIndex++;
         }
@@ -88,36 +86,36 @@ public class SegmentedChannel extends Channel {
     }
 
     @Override
-    public void setSampleAt (int index, long value) {
-        int channelPartIndex = this.getChannelPartIndex (index);
-        int samplesIndex = this.getSamplesIndex (index);
-        
+    public void setSampleAt (final int index, final long value) {
+        final int channelPartIndex = this.getChannelPartIndex (index);
+        final int samplesIndex = this.getSamplesIndex (index);
+
         this.channelParts.get (channelPartIndex).getChannels () [0].setSampleAt (samplesIndex, value);
     }
 
     @Override
-    public void copyTo (long [] samples) {
+    public void copyTo (final long [] samples) {
         this.copyTo (samples, 0, 0, this.getSamplesLength ());
     }
 
     @Override
-    public void copyTo (Channel channel) {
+    public void copyTo (final Channel channel) {
         this.copyTo (channel.samples, 0, 0, this.getSamplesLength ());
     }
 
     @Override
-    public void copyTo (long [] samples, int srcPos, int dstPos, int length) {
+    public void copyTo (final long [] samples, final int srcPos, final int dstPos, final int length) {
         int dstPos1 = dstPos;
-        int channelPartIndex = this.getChannelPartIndex (srcPos);
-        int samplesIndex = this.getSamplesIndex (srcPos);
+        final int channelPartIndex = this.getChannelPartIndex (srcPos);
+        final int samplesIndex = this.getSamplesIndex (srcPos);
         for (int i = channelPartIndex ; i < this.channelParts.size () ; i++) {
-            this.channelParts.get (i).getChannels () [0].copyTo (samples, (i == channelPartIndex ? samplesIndex : 0), dstPos1, this.channelParts.get (i).getChannels () [0].getSamplesLength ());
+            this.channelParts.get (i).getChannels () [0].copyTo (samples, i == channelPartIndex ? samplesIndex : 0, dstPos1, this.channelParts.get (i).getChannels () [0].getSamplesLength ());
             dstPos1 += this.channelParts.get (i).getChannels () [0].getSamplesLength ();
         }
     }
 
     @Override
-    public void copyTo (Channel channel, int srcPos, int dstPos, int length) {
+    public void copyTo (final Channel channel, final int srcPos, final int dstPos, final int length) {
         this.copyTo (channel.samples, srcPos, dstPos, length);
     }
 

@@ -47,12 +47,10 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums, FluentClientInterface {
 
-
     public enum FluentClientErrorCode implements ErrorCode {
 
         PROBLEM_WITH_SIMULTANEOUS_FLOWS ("Problem with simultaneous flows : %1s"), MISSING_SOUND_IN_INPUT ("Missing sound in input"), INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE (
-                "This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input"), STEREO_SOUND_EXPECTED ("A stereo sound was expected"),
-                ERROR_WHILE_WAITING_FOR_A_NEW_BUFFER ("Error while waiting for a new buffer");
+                "This client did not read a classpath resouce at the start"), NO_SPECTRUM_IN_INPUT ("No spectrum in input"), STEREO_SOUND_EXPECTED ("A stereo sound was expected"), ERROR_WHILE_WAITING_FOR_A_NEW_BUFFER ("Error while waiting for a new buffer");
 
         private final String messageFormat;
 
@@ -500,7 +498,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.parallelizedClients = clients;
         return this;
     }
-    
+
     /**
      * Alias for the inParallel method using a list of clients
      *
@@ -631,9 +629,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         }
         return this.inParallel (op, timeoutInSeconds, clients);
     }
+
     /**
-     * Tells the client to open the microphone and to record a sound. 
-     * A flow of operations will be executed since the very start of the recording
+     * Tells the client to open the microphone and to record a sound. A flow of
+     * operations will be executed since the very start of the recording
      *
      * /!\ : blocking method, the `stop.notify` method must be called in another
      * thread.
@@ -656,7 +655,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.cleanData ();
         return new RecordSound ().recordAndProcess (streamInfo, stop, operation, returnType);
     }
-    
+
     /**
      * Extracts a part of the sound between the sample #start and the sample
      * #end
@@ -776,7 +775,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         }
         return this;
     }
-    
+
     @Override
     /**
      * Replaces some of the values of the loudest freqs array from the "start"
@@ -836,7 +835,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public Pack stopWithAPack (final String title) {
         return new ImportAPackIntoTheLibrary (this.getObservers ()).getPack (title);
     }
-    
+
     @Override
     /**
      * Stops the client pipeline and returns the obtained file
@@ -898,17 +897,17 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
     public <T> T getResult (final Class<T> resultClass) {
         T result = null;
         if (resultClass == List.class) {
-            result = (T) (this).stopWithFreqs ();
+            result = (T) this.stopWithFreqs ();
         } else if (resultClass == Sound.class) {
-            result = (T) (this).stopWithSound ();
+            result = (T) this.stopWithSound ();
         } else if (resultClass == InputStream.class) {
-            result = (T) (this).stopWithInputStream ();
+            result = (T) this.stopWithInputStream ();
         } else if (resultClass == File.class) {
-            result = (T) (this).stopWithFile ();
+            result = (T) this.stopWithFile ();
         }
         return result;
     }
-    
+
     @Override
     /**
      * Stops the client pipeline and returns the obtained sound
@@ -962,17 +961,15 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
 
     /**
      * Tells the client to open the microphone, to start recording a sound and
-     * to return in the pipeline The result will be a Segmented sound 
-     * (a sound consisting of several mono sounds).
-     * The frameLength in the streamInfo will be ignored. 
-     * The further actions are started just after the start of the 
-     * recording.
+     * to return in the pipeline The result will be a Segmented sound (a sound
+     * consisting of several mono sounds). The frameLength in the streamInfo
+     * will be ignored. The further actions are started just after the start of
+     * the recording.
      *
-     * /!\ : It is your responsibility to call stop.notify () in another thread, 
-     * else the recording will not finish
-     * /!\ : This method should only be used if the next operation costs more
-     * time than the recording itself. In any other case, use the 
-     * withRecordedInputStream method. 
+     * /!\ : It is your responsibility to call stop.notify () in another thread,
+     * else the recording will not finish /!\ : This method should only be used
+     * if the next operation costs more time than the recording itself. In any
+     * other case, use the withRecordedInputStream method.
      *
      * @param streamInfo
      *            the future input stream info
@@ -984,12 +981,12 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             the buffer did not record anything
      */
     @Override
-    public FluentClientSoundImported whileRecordingASound (StreamInfo streamInfo, Object stop) throws SoundTransformException {
+    public FluentClientSoundImported whileRecordingASound (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
         this.cleanData ();
         this.sound = new RecordSound ().startRecordingASound (streamInfo, stop);
         return this;
     }
-    
+
     @Override
     /**
      * Tells the client to add an observer that will be notified of different kind of updates
@@ -1119,7 +1116,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.audioInputStream = ais;
         return this;
     }
-    
+
     @Override
     /**
      * Tells the client to work first with a classpath resource. It will be converted in a File
@@ -1195,7 +1192,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         this.audioInputStream = new InputStreamToAudioInputStream (this.getObservers ()).transformRawInputStream (is, isInfo);
         return this;
     }
-    
+
     /**
      * Tells the client to open the microphone and to record a sound The result
      * will be of an InputStream type The frameLength in the streamInfo will be

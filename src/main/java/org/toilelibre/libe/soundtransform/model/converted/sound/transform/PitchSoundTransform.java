@@ -35,7 +35,7 @@ public class PitchSoundTransform implements SoundTransform<Channel, Channel> {
         final float nbSamples = sound.getSamplesLength ();
         final float nbFiltered = Math.abs (total * nbSamples / percent);
         final float incr = nbSamples / nbFiltered;
-        
+
         final long [] ret = new long [(int) nbFiltered];
         for (float i = 0 ; i < incr * nbFiltered ; i += incr) {
             final int j = (int) (i / incr);

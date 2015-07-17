@@ -59,7 +59,7 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
         }
     }
 
-    private static final int THREE = 3;
+    private static final int    THREE = 3;
 
     private final Pack          pack;
     private final String        instrument;
@@ -103,26 +103,24 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
         final float freq2 = index2 < 0 || index2 > this.freqs.length - 1 ? 0 : this.freqs [index2];
         return this.freqHasChanged (freq1, freq2) || index1 > this.freqs.length - 1 || index2 > this.freqs.length - 1;
     }
-    
+
     private boolean freqHasChanged (final float freq1, final float freq2) {
         return Math.abs (freq1 - freq2) > freq1 * 5.0 / 100;
     }
 
-
     private boolean noteHasChanged (final int i) {
-        final boolean freqChangedAtI = this.freqHasChanged (i - 1,  i);
-        final boolean freqChangedAtIMinusOne = this.freqHasChanged (i - 2,  i - 1);
-        final boolean freqChangedAtIMinusTwo = this.freqHasChanged (i - 3,  i - 2);
-        final boolean freqChangedAtIMinusThree = this.freqHasChanged (i - 4,  i - 3);
+        final boolean freqChangedAtI = this.freqHasChanged (i - 1, i);
+        final boolean freqChangedAtIMinusOne = this.freqHasChanged (i - 2, i - 1);
+        final boolean freqChangedAtIMinusTwo = this.freqHasChanged (i - 3, i - 2);
+        final boolean freqChangedAtIMinusThree = this.freqHasChanged (i - 4, i - 3);
         final boolean frequencyDidNotChangeBetweenIAndIMinusTwo = !freqChangedAtI && !freqChangedAtIMinusOne && !freqChangedAtIMinusTwo;
 
         return frequencyDidNotChangeBetweenIAndIMinusTwo && freqChangedAtIMinusThree;
     }
 
-
     private int findNextNoteStart (final int startIndex) {
         int result = startIndex;
-        while (result < this.freqs.length && !this.noteHasChanged (result)){
+        while (result < this.freqs.length && !this.noteHasChanged (result)) {
             result++;
         }
         return result;
@@ -132,7 +130,7 @@ public class ShapeSoundTransform extends AbstractLogAware<ShapeSoundTransform> i
         final Channel builtSound = new Channel (new long [soundLength], this.formatInfo, channelNum);
         int noteStart = 0;
         int noteEnd = 0;
-        while (noteStart + ShapeSoundTransform.THREE  + 1 < this.freqs.length) {
+        while (noteStart + ShapeSoundTransform.THREE + 1 < this.freqs.length) {
             noteStart = this.findNextNoteStart (noteEnd) - ShapeSoundTransform.THREE;
             noteEnd = noteStart;
             while (!this.freqHasChanged (noteStart, noteEnd)) {

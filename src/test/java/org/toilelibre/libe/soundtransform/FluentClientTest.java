@@ -361,30 +361,29 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void recordAnd8BitAtTheSameTime () throws SoundTransformException {
-        Object stop = new Object ();
+        final Object stop = new Object ();
         try {
-            List<Sound> eightBitSounds = FluentClient.start ().inParallelWhileRecordingASound (new StreamInfo (1, -1, 2, 44100, false, true, null),  
-                    stop, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class);
-        
+            final List<Sound> eightBitSounds = FluentClient.start ().inParallelWhileRecordingASound (new StreamInfo (1, -1, 2, 44100, false, true, null), stop, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class);
+
             try {
                 Thread.sleep (2000);
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 throw new RuntimeException (e);
             }
-        
+
             synchronized (stop) {
                 stop.notify ();
             }
-        
+
             try {
                 Thread.sleep (100);
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 throw new RuntimeException (e);
             }
-        
+
             org.junit.Assert.assertNotNull (eightBitSounds);
             org.junit.Assert.assertNotEquals (eightBitSounds.size (), 0);
-        } catch (SoundTransformException ste){
+        } catch (final SoundTransformException ste) {
             if ("AUDIO_FORMAT_NOT_SUPPORTED".equals (ste.getErrorCode ().name ()) || "TARGET_LINE_UNAVAILABLE".equals (ste.getErrorCode ().name ())) {
                 return;
             } else {
@@ -392,6 +391,7 @@ public class FluentClientTest extends SoundTransformTest {
             }
         }
     }
+
     // Exactly the same code run as WavTest.testShape
     @Test
     public void shapeASoundTest () throws SoundTransformException {

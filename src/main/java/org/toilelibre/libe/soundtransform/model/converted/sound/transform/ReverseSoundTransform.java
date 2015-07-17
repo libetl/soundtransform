@@ -15,7 +15,7 @@ public class ReverseSoundTransform implements SoundTransform<Channel, Channel> {
     }
 
     private Channel reverse (final Channel sound) {
-        
+
         final long [] newdata = new long [sound.getSamplesLength ()];
         // this is the raw audio data -- no header
 

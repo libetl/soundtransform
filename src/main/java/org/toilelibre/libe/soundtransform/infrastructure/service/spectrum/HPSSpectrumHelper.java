@@ -39,7 +39,6 @@ final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
         return maxIndex;
     }
 
-
     @Override
     public int getMaxIndex (final double [] array, final int low, final int high) {
         double max = 0;
@@ -54,7 +53,7 @@ final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
         }
         return maxIndex;
     }
-    
+
     @Override
     public double getMaxValue (final Spectrum<Complex []> fs, final int low, final int high) {
         return fs.getState () [this.getMaxIndex (fs, low, high)].abs ();
@@ -95,18 +94,16 @@ final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
         }
         return new Spectrum<Complex []> (result, new FormatInfo (fs.getSampleSize (), fs.getSampleRate () / factor));
     }
-    
-
 
     @Override
-    public double [] productOfMultiples (final double [] [] fs, final float sampleRate, final int factor, final float partOfTheSpectrumToRead) {
+    public double [] productOfMultiples (final double [][] fs, final float sampleRate, final int factor, final float partOfTheSpectrumToRead) {
         final int max = (int) (fs [0].length * partOfTheSpectrumToRead / factor);
         final double [] result = new double [max];
         for (int i = 0 ; i < max ; i++) {
             double val = Math.sqrt (fs [0] [i] * fs [0] [i] + fs [1] [i] * fs [1] [i]);
             for (int j = 1 ; j < factor ; j++) {
                 if (i * factor < sampleRate / HPSSpectrumHelper.HALF && i * factor < fs [0].length) {
-                    val *= Math.sqrt (fs [0] [i * factor] * fs[0] [i * factor] + fs [1] [i * factor] * fs [1] [i * factor]);
+                    val *= Math.sqrt (fs [0] [i * factor] * fs [0] [i * factor] + fs [1] [i * factor] * fs [1] [i * factor]);
                 }
             }
             result [i] = val;

@@ -120,7 +120,6 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
         Assert.assertThat (is.available (), new GreaterThan<Integer> (0));
     }
 
-
     @Test
     public void mockRecordedAndProcessedSound () throws Exception {
         final AudioRecord audioRecord = Mockito.mock (AudioRecord.class);
@@ -137,13 +136,13 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
                 return invocation.callRealMethod ();
             }
         });
-        Object stop = new Object ();
+        final Object stop = new Object ();
         PowerMockito.whenNew (AudioRecord.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class).withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioRecord);
         final List<Sound> list = FluentClient.start ().inParallelWhileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stop, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class);
 
         try {
             Thread.sleep (4000);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new RuntimeException (e);
         }
 
@@ -154,10 +153,10 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
                 notified = true;
             }
         }
-    
+
         try {
             Thread.sleep (4000);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new RuntimeException (e);
         }
         Assert.assertThat (list, new IsNot<List<Sound>> (new IsNull<List<Sound>> ()));
@@ -182,12 +181,13 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
             }
         });
         final Object stop = new Object ();
-        new Thread (){
-            
+        new Thread () {
+
+            @Override
             public void run () {
                 try {
                     Thread.sleep (4000);
-                } catch (InterruptedException e) {
+                } catch (final InterruptedException e) {
                     throw new RuntimeException (e);
                 }
 
@@ -199,17 +199,18 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
                     }
                 }
             }
-            
+
         }.start ();
-        
-        Sound resultSound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stop).findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100f)).stopWithSound ();
+
+        final Sound resultSound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stop).findLoudestFrequencies ()
+                .shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100f)).stopWithSound ();
 
         Assert.assertThat (resultSound, new IsNot<Sound> (new IsNull<Sound> ()));
         Assert.assertNotNull (resultSound.getChannels ());
         Assert.assertEquals (resultSound.getChannels ().length, 1);
         Assert.assertNotEquals (resultSound.getChannels () [0].getSamplesLength (), 0);
     }
-    
+
     @Test
     public void earlyEndOfSink () throws Exception {
         final AudioRecord audioRecord = Mockito.mock (AudioRecord.class);

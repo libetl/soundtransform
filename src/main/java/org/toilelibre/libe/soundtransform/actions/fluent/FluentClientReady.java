@@ -74,7 +74,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound... sounds) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, Sound... sounds) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of inputStreams
@@ -93,7 +93,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, InputStream... inputStreams) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of files
@@ -112,7 +112,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of freqs
@@ -131,7 +131,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, List<float []>... freqs) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, List<float []>... freqs) throws SoundTransformException;
 
     /**
      * Alias for the inParallel method using a list of classpathResources
@@ -150,7 +150,7 @@ public interface FluentClientReady extends FluentClientCommon {
      *             can happen if there was a problem during the flow, or if the
      *             threads were interrupted
      */
-     FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
+    FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, String... classpathResources) throws SoundTransformException;
 
     /**
      * <p>
@@ -340,17 +340,15 @@ public interface FluentClientReady extends FluentClientCommon {
 
     /**
      * Tells the client to open the microphone, to start recording a sound and
-     * to return in the pipeline The result will be a Segmented sound 
-     * (a sound consisting of several mono sounds).
-     * The frameLength in the streamInfo will be ignored. 
-     * The further actions are started just after the start of the 
-     * recording.
+     * to return in the pipeline The result will be a Segmented sound (a sound
+     * consisting of several mono sounds). The frameLength in the streamInfo
+     * will be ignored. The further actions are started just after the start of
+     * the recording.
      *
-     * /!\ : It is your responsibility to call stop.notify () in another thread, 
-     * else the recording will not finish
-     * /!\ : This method should only be used if the next operation costs more
-     * time than the recording itself. In any other case, use the 
-     * withRecordedInputStream method. 
+     * /!\ : It is your responsibility to call stop.notify () in another thread,
+     * else the recording will not finish /!\ : This method should only be used
+     * if the next operation costs more time than the recording itself. In any
+     * other case, use the withRecordedInputStream method.
      *
      * @param streamInfo
      *            the future input stream info
@@ -403,10 +401,10 @@ public interface FluentClientReady extends FluentClientCommon {
      * @return the client, with the spectrums
      */
     FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable> []> spectrums);
-    
+
     /**
-     * Tells the client to open the microphone and to record a sound. 
-     * A flow of operations will be executed since the very start of the recording
+     * Tells the client to open the microphone and to record a sound. A flow of
+     * operations will be executed since the very start of the recording
      *
      * /!\ : blocking method, the `stop.notify` method must be called in another
      * thread.
@@ -426,6 +424,6 @@ public interface FluentClientReady extends FluentClientCommon {
      *             the mic could not be read, the recorder could not start, or
      *             the buffer did not record anything
      */
-     <T> List<T> inParallelWhileRecordingASound (StreamInfo streamInfo, Object stop, FluentClientOperation operation, final Class<T> returnType) throws SoundTransformException;
+    <T> List<T> inParallelWhileRecordingASound (StreamInfo streamInfo, Object stop, FluentClientOperation operation, final Class<T> returnType) throws SoundTransformException;
 
 }

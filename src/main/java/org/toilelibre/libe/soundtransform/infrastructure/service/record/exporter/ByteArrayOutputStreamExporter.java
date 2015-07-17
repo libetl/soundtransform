@@ -12,15 +12,17 @@ class ByteArrayOutputStreamExporter implements BytesExporterFromThread<ByteArray
     public ByteArrayOutputStreamExporter () {
     }
 
-    public void init (int bufferSize) {
+    @Override
+    public void init (final int bufferSize) {
         this.outputStream = new ByteArrayOutputStream (bufferSize);
     }
-    
+
     @Override
-    public void export (byte [] byteArray, int readSize) {
+    public void export (final byte [] byteArray, final int readSize) {
         this.outputStream.write (byteArray, 0, readSize);
     }
 
+    @Override
     public ByteArrayOutputStream getOutput () {
         return this.outputStream;
     }

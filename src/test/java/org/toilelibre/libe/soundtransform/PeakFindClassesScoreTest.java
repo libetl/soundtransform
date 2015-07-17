@@ -45,8 +45,7 @@ public class PeakFindClassesScoreTest {
         this.addMethod (peakFindMethods, peakFindMethodsScore, "cepstrum", new CompositeSoundTransform<Channel, Channel, float []> (new LevelSoundTransform (300), new CepstrumSoundTransform<Serializable> (1, true)));
         this.addMethod (peakFindMethods, peakFindMethodsScore, "hps", new HarmonicProductSpectrumSoundTransform<Serializable> (true, false));
         this.addMethod (peakFindMethods, peakFindMethodsScore, "hpsWithRawSpectrums", new HarmonicProductSpectrumSoundTransform<Serializable> (true, true));
-        this.addMethod (peakFindMethods, peakFindMethodsScore, "maxlikelihood", new CompositeSoundTransform<Channel, Channel, float []> (new PralongAndCarlileSoundTransform (),
-                new MaximumLikelihoodSoundTransform (8000, 8000, 100, 800)));
+        this.addMethod (peakFindMethods, peakFindMethodsScore, "maxlikelihood", new CompositeSoundTransform<Channel, Channel, float []> (new PralongAndCarlileSoundTransform (), new MaximumLikelihoodSoundTransform (8000, 8000, 100, 800)));
     }
 
     private void answerScores (final Map<String, Integer> peakFindMethodsScore, final float total) {

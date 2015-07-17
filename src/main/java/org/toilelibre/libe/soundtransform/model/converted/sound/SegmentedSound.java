@@ -4,12 +4,10 @@ import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 
-
-
 public class SegmentedSound extends Sound {
 
-    public SegmentedSound (FormatInfo formatInfo, List<Sound> sounds) {
-        super (new Channel [] {new SegmentedChannel (formatInfo, sounds)});
+    public SegmentedSound (final FormatInfo formatInfo, final List<Sound> sounds) {
+        super (new Channel [] { new SegmentedChannel (formatInfo, sounds) });
     }
 
 }

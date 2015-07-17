@@ -2,7 +2,7 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
 public final class HammingWindowSoundTransform extends AbstractWindowSoundTransform {
 
-    private static final int TWO = 2;
+    private static final int    TWO    = 2;
     private static final double COEFF2 = 0.46;
     private static final double COEFF1 = 0.54;
 

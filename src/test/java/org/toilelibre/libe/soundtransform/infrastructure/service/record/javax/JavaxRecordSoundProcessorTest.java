@@ -90,7 +90,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
         Assert.assertThat (is [0].available (), new GreaterThan<Integer> (0));
     }
-    
+
     @Test
     public void mockRecordAndProcessSoundWithStopObject () throws Exception {
         this.rule.hashCode ();
@@ -128,12 +128,13 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         this.mockRecordSoundProcessor (buffers);
 
         final Object stop = new Object ();
-        new Thread (){
-            
+        new Thread () {
+
+            @Override
             public void run () {
                 try {
                     Thread.sleep (4000);
-                } catch (InterruptedException e) {
+                } catch (final InterruptedException e) {
                     throw new RuntimeException (e);
                 }
 
@@ -145,13 +146,14 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
                     }
                 }
             }
-            
+
         }.start ();
-        
-        Sound resultSound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stop).findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100f)).stopWithSound ();
+
+        final Sound resultSound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stop).findLoudestFrequencies ()
+                .shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100f)).stopWithSound ();
         try {
             Thread.sleep (4000);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new RuntimeException (e);
         }
         Assert.assertThat (resultSound, new IsNot<Sound> (new IsNull<Sound> ()));
@@ -159,7 +161,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         Assert.assertEquals (resultSound.getChannels ().length, 1);
         Assert.assertNotEquals (resultSound.getChannels () [0].getSamplesLength (), 0);
     }
-    
+
     private void mockRecordSoundProcessor (final byte [][] buffers) throws Exception {
         final TargetDataLine dataLine = Mockito.mock (TargetDataLine.class);
         Mockito.when (dataLine.getBufferSize ()).thenReturn (8192);

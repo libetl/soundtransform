@@ -38,9 +38,9 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         }
     }
 
-    private static final int DEFAULT_BUFFER_SIZE      = 32;
+    private static final int           DEFAULT_BUFFER_SIZE      = 32;
 
-    private static final int DEFAULT_BYTE_BUFFER_SIZE = 16384;
+    private static final int           DEFAULT_BYTE_BUFFER_SIZE = 16384;
 
     private TargetDataLine             line;
     private TargetDataLineReaderThread readerThread;
@@ -56,7 +56,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         }
         final AudioFormat audioFormat = (AudioFormat) audioFormat1;
 
-        OutputAsByteArrayOutputStream bytesExporter = $.select (OutputAsByteArrayOutputStream.class);
+        final OutputAsByteArrayOutputStream bytesExporter = $.select (OutputAsByteArrayOutputStream.class);
         bytesExporter.init (TargetDataLineRecordSoundProcessor.DEFAULT_BUFFER_SIZE);
         this.startRecording (audioFormat, bytesExporter);
         this.waitForStop (stop);
@@ -83,7 +83,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         }
     }
 
-    private <T> void startRecording (final AudioFormat audioFormat, BytesExporterFromThread<T> exporter) throws SoundTransformException {
+    private <T> void startRecording (final AudioFormat audioFormat, final BytesExporterFromThread<T> exporter) throws SoundTransformException {
         // format is an AudioFormat object
         final DataLine.Info info = new DataLine.Info (TargetDataLine.class, audioFormat);
 
@@ -131,16 +131,17 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         }
         final AudioFormat audioFormat = (AudioFormat) audioFormat1;
 
-        OutputAsByteBuffer bytesExporter = $.select (OutputAsByteBuffer.class);
+        final OutputAsByteBuffer bytesExporter = $.select (OutputAsByteBuffer.class);
         bytesExporter.init (TargetDataLineRecordSoundProcessor.DEFAULT_BYTE_BUFFER_SIZE);
         this.startRecording (audioFormat, bytesExporter);
 
         new Thread () {
+            @Override
             public void run () {
                 try {
                     TargetDataLineRecordSoundProcessor.this.waitForStop (stop);
                     TargetDataLineRecordSoundProcessor.this.stopRecording ();
-                } catch (SoundTransformException soundTransformException) {
+                } catch (final SoundTransformException soundTransformException) {
                     throw new SoundTransformRuntimeException (soundTransformException);
                 }
             }

@@ -30,5 +30,4 @@ public interface FluentClientCommon {
      */
     Observer [] stopWithObservers ();
 
-
 }

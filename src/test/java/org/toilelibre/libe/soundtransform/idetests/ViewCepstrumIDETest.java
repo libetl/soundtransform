@@ -20,14 +20,15 @@ import com.xeiam.xchart.SwingWrapper;
  *
  */
 @SuppressWarnings ("unchecked")
-@Ignore //to run the tests, comment this line, and keep the tests debugging
+@Ignore
+// to run the tests, comment this line, and keep the tests debugging
 // after being run
 public class ViewCepstrumIDETest {
 
     @Test
     public void viewCepstrumOfPianoNotes () throws SoundTransformException {
-        final Chart chart = this.getChart (new String [] { "C3", "D3", "E3", "F3", "G3", "A4", "B4", "C4" }, $.select (SpectrumToCepstrumHelper.class)
-                .spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano1c.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
+        final Chart chart = this.getChart (new String [] { "C3", "D3", "E3", "F3", "G3", "A4", "B4", "C4" },
+                $.select (SpectrumToCepstrumHelper.class).spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano1c.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
                 $.select (SpectrumToCepstrumHelper.class).spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano2d.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
                 $.select (SpectrumToCepstrumHelper.class).spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano3e.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
                 $.select (SpectrumToCepstrumHelper.class).spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano4f.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
@@ -100,7 +101,7 @@ public class ViewCepstrumIDETest {
         final Spectrum<Complex []> cepstrum = $.select (SpectrumToCepstrumHelper.class).spectrumToCepstrum (spectrum);
         new SwingWrapper (this.getChart (new String [] { "A3 (221Hz) + C3 (260Hz)" }, cepstrum)).displayChart ();
     }
-    
+
     private Chart getChart (final String [] notes, final Spectrum<Complex []>... fs) {
         final double [] xData = new double [fs [0].getState ().length];
         final double [][] yData = new double [fs.length] [fs [0].getState ().length];

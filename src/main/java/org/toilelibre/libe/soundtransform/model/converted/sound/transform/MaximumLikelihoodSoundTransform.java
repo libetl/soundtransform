@@ -132,7 +132,7 @@ public class MaximumLikelihoodSoundTransform extends AbstractLogAware<MaximumLik
 
     @Override
     public float [] transform (final Channel input) throws SoundTransformException {
-        Channel windowedInput = new BlackmanHarrisWindowSoundTransform ().transformWholeChannel (input);
+        final Channel windowedInput = new BlackmanHarrisWindowSoundTransform ().transformWholeChannel (input);
         final float [] loudestFreqs = new float [input.getSamplesLength () / this.step + 1];
         for (int momentOfTheSound = 0 ; momentOfTheSound < input.getSamplesLength () ; momentOfTheSound += this.step) {
             final int percent = (int) Math.floor (MaximumLikelihoodSoundTransform.A_HUNDRED_PERCENT * (momentOfTheSound * 1.0 / this.step) / (input.getSamplesLength () * 1.0 / this.step));

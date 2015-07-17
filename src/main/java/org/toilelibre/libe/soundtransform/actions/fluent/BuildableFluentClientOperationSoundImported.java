@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFi
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-public interface BuildableFluentClientOperationSoundImported  extends FluentClientSoundImported, BuildableFluentClientOperation {
+public interface BuildableFluentClientOperationSoundImported extends FluentClientSoundImported, BuildableFluentClientOperation {
 
     /**
      * Appends the sound passed in parameter to the current sound stored in the
@@ -23,7 +23,7 @@ public interface BuildableFluentClientOperationSoundImported  extends FluentClie
      *             appending
      */
     @Override
-    BuildableFluentClientOperationSoundImported  append (Sound sound) throws SoundTransformException;
+    BuildableFluentClientOperationSoundImported append (Sound sound) throws SoundTransformException;
 
     /**
      * Applies one transform and continues with the result sound
@@ -35,7 +35,7 @@ public interface BuildableFluentClientOperationSoundImported  extends FluentClie
      *             if the transform does not work
      */
     @Override
-    BuildableFluentClientOperationSoundImported  apply (SoundTransform<Channel, Channel> st) throws SoundTransformException;
+    BuildableFluentClientOperationSoundImported apply (SoundTransform<Channel, Channel> st) throws SoundTransformException;
 
     /**
      * Applies one transform and stops immediately after with a result

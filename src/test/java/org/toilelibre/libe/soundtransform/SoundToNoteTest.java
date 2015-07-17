@@ -65,7 +65,7 @@ public class SoundToNoteTest extends SoundTransformTest {
             }
         };
         new Slf4jObserver ().notify ("Loading Packs");
-        FluentClient.start().withAPack("default",  Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+        FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
         final Pack pack = $.select (Library.class).getPack ("default");
         for (final Entry<String, Range> packEntry : pack.entrySet ()) {
             for (final Entry<Float, Note> noteEntry : packEntry.getValue ().entrySet ()) {

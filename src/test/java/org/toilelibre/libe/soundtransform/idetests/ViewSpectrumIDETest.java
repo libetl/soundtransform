@@ -17,7 +17,8 @@ import com.xeiam.xchart.Chart;
 import com.xeiam.xchart.QuickChart;
 import com.xeiam.xchart.SwingWrapper;
 
-@Ignore //to run the tests, comment this line, and keep the tests debugging
+@Ignore
+// to run the tests, comment this line, and keep the tests debugging
 // after being run
 public class ViewSpectrumIDETest {
 
@@ -44,7 +45,7 @@ public class ViewSpectrumIDETest {
         final Chart chart = this.getChart (new String [] { "A3 (221Hz) + C3 (260Hz)" }, FluentClient.start ().withClasspathResource ("gpiano3.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]);
         new SwingWrapper (chart).displayChart ();
     }
-    
+
     @Test
     public void viewF3 () throws SoundTransformException {
         final Chart chart = this.getChart (new String [] { "F3 (349Hz)" }, FluentClient.start ().withClasspathResource ("piano4f.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]);
@@ -77,11 +78,11 @@ public class ViewSpectrumIDETest {
 
     @Test
     public void viewAll () throws SoundTransformException {
-        final Chart chart = this.getChart (new String [] { "C3", "D3", "E3", "F3", "G3", "A4", "B4", "C4" }, FluentClient.start ().withClasspathResource ("piano1c.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0], FluentClient.start ().withClasspathResource ("piano2d.wav")
-                .convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0], FluentClient.start ().withClasspathResource ("piano3e.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0], FluentClient.start ().withClasspathResource ("piano4f.wav")
-                .convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0], FluentClient.start ().withClasspathResource ("piano5g.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0], FluentClient.start ().withClasspathResource ("piano6a.wav")
-                .convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0], FluentClient.start ().withClasspathResource ("piano7b.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0], FluentClient.start ().withClasspathResource ("piano8c.wav")
-                .convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]);
+        final Chart chart = this.getChart (new String [] { "C3", "D3", "E3", "F3", "G3", "A4", "B4", "C4" }, FluentClient.start ().withClasspathResource ("piano1c.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0],
+                FluentClient.start ().withClasspathResource ("piano2d.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0], FluentClient.start ().withClasspathResource ("piano3e.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0],
+                FluentClient.start ().withClasspathResource ("piano4f.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0], FluentClient.start ().withClasspathResource ("piano5g.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0],
+                FluentClient.start ().withClasspathResource ("piano6a.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0], FluentClient.start ().withClasspathResource ("piano7b.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0],
+                FluentClient.start ().withClasspathResource ("piano8c.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]);
         new SwingWrapper (chart).displayChart ();
     }
 

@@ -11,13 +11,14 @@ class ByteBufferExporter implements BytesExporterFromThread<ByteBuffer>, OutputA
 
     public ByteBufferExporter () {
     }
-    
-    public void init (int bufferSize) {
+
+    @Override
+    public void init (final int bufferSize) {
         this.buffer = ByteBuffer.allocate (bufferSize);
     }
 
     @Override
-    public void export (byte [] byteArray, int readSize) {
+    public void export (final byte [] byteArray, final int readSize) {
         this.buffer.rewind ();
         this.buffer.put (byteArray, 0, readSize);
         synchronized (this.buffer) {
@@ -25,6 +26,7 @@ class ByteBufferExporter implements BytesExporterFromThread<ByteBuffer>, OutputA
         }
     }
 
+    @Override
     public ByteBuffer getOutput () {
         return this.buffer;
     }

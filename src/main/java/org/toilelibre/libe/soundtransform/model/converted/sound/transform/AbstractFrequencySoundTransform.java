@@ -20,11 +20,11 @@ public abstract class AbstractFrequencySoundTransform<T extends Serializable> ex
     public abstract int getOffsetFromASimpleLoop (int i, double step);
 
     public abstract double getStep (double defaultValue);
-    
+
     public abstract boolean isReverseNecessary ();
-    
+
     public abstract boolean rawSpectrumPrefered ();
-    
+
     public abstract AbstractWindowSoundTransform getWindowTransform ();
 
     public int getWindowLength (final double freqmax) {
@@ -39,8 +39,7 @@ public abstract class AbstractFrequencySoundTransform<T extends Serializable> ex
     }
 
     public abstract Spectrum<T> transformFrequencies (Spectrum<T> fs, int offset, int powOf2NearestLength, int length, float soundLevelInDB);
-    
 
-    public abstract void transformFrequencies (double [] [] spectrumAsDoubles, final float sampleRate, int offset, int powOf2NearestLength, int length, float soundLevelInDB);
+    public abstract void transformFrequencies (double [][] spectrumAsDoubles, final float sampleRate, int offset, int powOf2NearestLength, int length, float soundLevelInDB);
 
 }

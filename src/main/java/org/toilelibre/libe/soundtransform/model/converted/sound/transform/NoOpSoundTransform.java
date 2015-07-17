@@ -12,7 +12,6 @@ public class NoOpSoundTransform implements SoundTransform<Channel, Channel> {
     }
 
     private Channel noop (final Channel sound) {
-        
 
         // same array in newdata
         final long [] newdata = new long [sound.getSamplesLength ()];

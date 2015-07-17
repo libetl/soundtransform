@@ -18,12 +18,12 @@ public class RecordSound extends Action {
     public InputStream recordLimitedTimeRawInputStream (final StreamInfo streamInfo) throws SoundTransformException {
         return this.recordSound.recordLimitedTimeRawInputStream (streamInfo);
     }
-    
+
     public <T> List<T> recordAndProcess (final StreamInfo streamInfo, final Object stop, final FluentClientOperation operation, final Class<T> returnType) throws SoundTransformException {
-        return this.recordSound.<T>recordAndProcess (streamInfo, stop, new FluentClientOperation.FluentClientOperationRunnable (operation, null, 1), returnType);
+        return this.recordSound.<T> recordAndProcess (streamInfo, stop, new FluentClientOperation.FluentClientOperationRunnable (operation, null, 1), returnType);
     }
 
-    public Sound startRecordingASound (StreamInfo streamInfo, Object stop) throws SoundTransformException {
+    public Sound startRecordingASound (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
         return this.recordSound.startRecordingASound (streamInfo, stop);
     }
 }

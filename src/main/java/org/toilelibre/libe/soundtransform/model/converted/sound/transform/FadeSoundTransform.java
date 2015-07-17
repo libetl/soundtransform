@@ -55,7 +55,7 @@ public class FadeSoundTransform implements SoundTransform<Channel, Channel> {
     }
 
     private Channel fade (final Channel sound) {
-        
+
         final long [] newdata = new long [sound.getSamplesLength ()];
         sound.copyTo (newdata);
 

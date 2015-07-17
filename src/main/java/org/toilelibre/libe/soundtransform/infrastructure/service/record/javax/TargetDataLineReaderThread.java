@@ -8,15 +8,15 @@ final class TargetDataLineReaderThread extends Thread {
     /**
      *
      */
-    private final TargetDataLine        dataLine;
-    private boolean                     isRecording = false;
-    private BytesExporterFromThread<?>  exporter;
-    private static final int            FIVE        = 5;
+    private final TargetDataLine       dataLine;
+    private boolean                    isRecording = false;
+    private final BytesExporterFromThread<?> exporter;
+    private static final int           FIVE        = 5;
 
     /**
      * @param dataLine1
      */
-    TargetDataLineReaderThread (final TargetDataLine dataLine1, BytesExporterFromThread<?> exporter1) {
+    TargetDataLineReaderThread (final TargetDataLine dataLine1, final BytesExporterFromThread<?> exporter1) {
         this.dataLine = dataLine1;
         this.exporter = exporter1;
     }

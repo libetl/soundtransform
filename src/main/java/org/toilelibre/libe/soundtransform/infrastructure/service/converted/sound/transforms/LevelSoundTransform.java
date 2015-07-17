@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 public class LevelSoundTransform implements SoundTransform<Channel, Channel> {
 
     private static final double NB_BYTE_VALUES = 1 << Byte.SIZE;
-    private final int                 step;
+    private final int           step;
 
     public LevelSoundTransform (final int step1) {
         this.step = step1;

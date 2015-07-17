@@ -113,27 +113,27 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
             return fscep;
         }
 
-        private float checkIfLikelyToBeHeard (float soundlevelInDb, float possibleLoudestFreq) {
+        private float checkIfLikelyToBeHeard (final float soundlevelInDb, final float possibleLoudestFreq) {
             return soundlevelInDb < CepstrumFrequencySoundTransform.SOUND_LEVEL_THRESHOLD_IN_DB || Math.abs (CepstrumFrequencySoundTransform.MAX_VOICE_FREQ - possibleLoudestFreq) < CepstrumFrequencySoundTransform.UNLIKELY_TO_BE_HEARD_DELTA ? 0 : possibleLoudestFreq;
         }
 
         private float findLoudestFreqFromCepstrum (final Spectrum<T> cepstrum) {
             final int high = (int) this.frequencyToCepstrumIndex (CepstrumFrequencySoundTransform.MIN_VOICE_FREQ, cepstrum);
             final int low = (int) this.frequencyToCepstrumIndex (CepstrumFrequencySoundTransform.MAX_VOICE_FREQ, cepstrum);
-            
+
             final double maxValue = this.spectrumHelper.getMaxValue (cepstrum, low, high);
             final double thresholdValue = maxValue - (1 - CepstrumFrequencySoundTransform.A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS) * maxValue * maxValue;
             final float maxIndex = this.spectrumHelper.getFirstPeak (cepstrum, low, high, thresholdValue);
             return this.cepstrumIndexToFrequency ((int) maxIndex, cepstrum);
         }
 
-        private float frequencyToCepstrumIndex (float frequency, final Spectrum<T> cepstrum) {
+        private float frequencyToCepstrumIndex (final float frequency, final Spectrum<T> cepstrum) {
             final float spectrumLength = this.spectrumHelper.getLengthOfSpectrum (cepstrum);
             final float timelapseInTheCepstrum = spectrumLength * 1.0f / cepstrum.getSampleRate ();
             return (float) (1.0 * spectrumLength / (frequency * timelapseInTheCepstrum));
         }
 
-        private float cepstrumIndexToFrequency (int quefrency, final Spectrum<T> cepstrum) {
+        private float cepstrumIndexToFrequency (final int quefrency, final Spectrum<T> cepstrum) {
             final float spectrumLength = this.spectrumHelper.getLengthOfSpectrum (cepstrum);
             final float timelapseInTheCepstrum = spectrumLength * 1.0f / cepstrum.getSampleRate ();
             return (float) (1.0 / (quefrency / spectrumLength * timelapseInTheCepstrum));

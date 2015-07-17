@@ -59,7 +59,7 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
         super.bind (ReplaceFrequenciesProcessor.class).to (this.provideReplaceFrequenciesProcessor ());
         super.bind (CompressFrequenciesProcessor.class).to (this.provideCompressFrequenciesProcessor ());
         super.bind (SurroundInRangeProcessor.class).to (this.provideSurroundInRangeFrequenciesProcessor ());
-        
+
         super.bind (OutputAsByteArrayOutputStream.class).to (this.providerByteArrayOutputStreamExporter ());
         super.bind (OutputAsByteBuffer.class).to (this.providerByteBufferOutputStreamExporter ());
 

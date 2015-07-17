@@ -61,12 +61,12 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         }
     }
 
-    private static final int TWICE = 2;
+    private static final int              TWICE = 2;
 
-    private int                   bufferSize;
-    private AudioRecord           recorder;
+    private int                           bufferSize;
+    private AudioRecord                   recorder;
 
-    private AndroidRecorderThread recordingThread;
+    private AndroidRecorderThread         recordingThread;
     private OutputAsByteArrayOutputStream bytesExporter;
 
     public AudioRecord findAudioRecorder (final StreamInfo streamInfo) throws SoundTransformException {
@@ -114,7 +114,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
 
         this.recorder = this.findAudioRecorder (streamInfo);
         this.bytesExporter = $.select (OutputAsByteArrayOutputStream.class);
-        this.recordingThread = new AndroidRecorderThread (this.recorder, this.bufferSize, bytesExporter);
+        this.recordingThread = new AndroidRecorderThread (this.recorder, this.bufferSize, this.bytesExporter);
         this.bytesExporter.init (AndroidRecordSoundProcessor.TWICE * this.bufferSize);
         this.recorder.startRecording ();
         this.recordingThread.start ();
@@ -135,17 +135,18 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         }
         final StreamInfo streamInfo = (StreamInfo) audioFormat;
         this.recorder = this.findAudioRecorder (streamInfo);
-        OutputAsByteBuffer bytesExporter = $.select (OutputAsByteBuffer.class);
+        final OutputAsByteBuffer bytesExporter = $.select (OutputAsByteBuffer.class);
         bytesExporter.init (this.bufferSize);
         this.recordingThread = new AndroidRecorderThread (this.recorder, this.bufferSize, bytesExporter);
         this.recorder.startRecording ();
         this.recordingThread.start ();
         new Thread () {
+            @Override
             public void run () {
                 try {
                     AndroidRecordSoundProcessor.this.waitForStop (stop);
                     AndroidRecordSoundProcessor.this.stopRecording ();
-                } catch (SoundTransformException soundTransformException) {
+                } catch (final SoundTransformException soundTransformException) {
                     throw new SoundTransformRuntimeException (soundTransformException);
                 }
             }

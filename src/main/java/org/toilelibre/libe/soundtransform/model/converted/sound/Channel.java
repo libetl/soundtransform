@@ -55,19 +55,19 @@ public class Channel {
         return $.select (SoundToStringService.class).convert (this);
     }
 
-    public void copyTo (long [] samples) {
+    public void copyTo (final long [] samples) {
         this.copyTo (this.samples, 0, 0, this.getSamplesLength ());
     }
-    
-    public void copyTo (Channel channel) {
+
+    public void copyTo (final Channel channel) {
         this.copyTo (channel.samples);
     }
-    
-    public void copyTo (long [] samples, int srcPos, int dstPos, int length) {
+
+    public void copyTo (final long [] samples, final int srcPos, final int dstPos, final int length) {
         System.arraycopy (this.samples, srcPos, samples, dstPos, length);
     }
-    
-    public void copyTo (Channel channel, int srcPos, int dstPos, int length) {
+
+    public void copyTo (final Channel channel, final int srcPos, final int dstPos, final int length) {
         this.copyTo (channel.samples, srcPos, dstPos, length);
     }
 }
