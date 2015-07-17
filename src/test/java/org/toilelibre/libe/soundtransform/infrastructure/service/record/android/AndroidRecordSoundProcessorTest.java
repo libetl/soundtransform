@@ -18,6 +18,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.record.android.AndroidRecordSoundProcessor.AndroidRecordSoundProcessorErrorCode;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformAndroidTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
@@ -202,13 +203,11 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
 
         }.start ();
 
-        final Sound resultSound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stop).findLoudestFrequencies ()
-                .shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100f)).stopWithSound ();
+        final List<float []> resultFloats = FluentClient.start ().whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stop).findLoudestFrequencies ().stopWithFreqs ();
 
-        Assert.assertThat (resultSound, new IsNot<Sound> (new IsNull<Sound> ()));
-        Assert.assertNotNull (resultSound.getChannels ());
-        Assert.assertEquals (resultSound.getChannels ().length, 1);
-        Assert.assertNotEquals (resultSound.getChannels () [0].getSamplesLength (), 0);
+        Assert.assertThat (resultFloats, new IsNot<List<float []>> (new IsNull<List<float []>> ()));
+        Assert.assertNotEquals (resultFloats.size (), 0);
+        Assert.assertNotEquals (resultFloats.get (0).length, 0);
     }
 
     @Test
