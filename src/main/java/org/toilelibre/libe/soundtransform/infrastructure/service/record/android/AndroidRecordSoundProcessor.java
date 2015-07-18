@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.record.android;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
@@ -13,6 +14,7 @@ import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.observer.EventCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
+import org.toilelibre.libe.soundtransform.model.record.exporter.BytesExporterFromThread;
 import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteArrayOutputStream;
 import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteBuffer;
 
@@ -67,7 +69,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
     private AudioRecord                   recorder;
 
     private AndroidRecorderThread         recordingThread;
-    private OutputAsByteArrayOutputStream bytesExporter;
+    private BytesExporterFromThread<?>    bytesExporter;
 
     public AudioRecord findAudioRecorder (final StreamInfo streamInfo) throws SoundTransformException {
         final int audioFormat = streamInfo.getSampleSize () == 1 ? AudioFormat.ENCODING_PCM_8BIT : AudioFormat.ENCODING_PCM_16BIT;
@@ -93,7 +95,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         this.startRecording (streamInfo);
         this.waitForStop (stop);
         this.stopRecording ();
-        return new ByteArrayInputStream (this.bytesExporter.getOutput ().toByteArray ());
+        return new ByteArrayInputStream (((ByteArrayOutputStream) this.bytesExporter.getOutput ()).toByteArray ());
     }
 
     private void waitForStop (final Object stop) throws SoundTransformException {
@@ -136,8 +138,8 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         }
         final StreamInfo streamInfo = (StreamInfo) audioFormat;
         this.recorder = this.findAudioRecorder (streamInfo);
-        final OutputAsByteBuffer outputAsByteBuffer = $.select (OutputAsByteBuffer.class);
-        bytesExporter.init (this.bufferSize);
+        this.bytesExporter = $.select (OutputAsByteBuffer.class);
+        this.bytesExporter.init (this.bufferSize);
         this.recordingThread = new AndroidRecorderThread (this.recorder, bytesExporter);
         this.recorder.startRecording ();
         this.recordingThread.start ();
@@ -152,6 +154,6 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
                 }
             }
         }.start ();
-        return outputAsByteBuffer.getOutput ();
+        return (ByteBuffer) this.bytesExporter.getOutput ();
     }
 }
