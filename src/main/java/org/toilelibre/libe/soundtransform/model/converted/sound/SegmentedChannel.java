@@ -106,11 +106,16 @@ public class SegmentedChannel extends Channel {
     @Override
     public void copyTo (final long [] samples, final int srcPos, final int dstPos, final int length) {
         int dstPos1 = dstPos;
+        int remainingLength = length;
         final int channelPartIndex = this.getChannelPartIndex (srcPos);
         final int samplesIndex = this.getSamplesIndex (srcPos);
-        for (int i = channelPartIndex ; i < this.channelParts.size () ; i++) {
-            this.channelParts.get (i).getChannels () [0].copyTo (samples, i == channelPartIndex ? samplesIndex : 0, dstPos1, this.channelParts.get (i).getChannels () [0].getSamplesLength ());
+        int i = channelPartIndex; 
+        while (i < this.channelParts.size () && remainingLength > 0) {
+            this.channelParts.get (i).getChannels () [0].copyTo (samples, i == channelPartIndex ? samplesIndex : 0, dstPos1, 
+                    Math.min (this.channelParts.get (i).getChannels () [0].getSamplesLength (), remainingLength));
             dstPos1 += this.channelParts.get (i).getChannels () [0].getSamplesLength ();
+            remainingLength -= this.channelParts.get (i).getChannels () [0].getSamplesLength ();
+            i++;
         }
     }
 
