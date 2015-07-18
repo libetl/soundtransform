@@ -114,7 +114,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
 
         this.recorder = this.findAudioRecorder (streamInfo);
         this.bytesExporter = $.select (OutputAsByteArrayOutputStream.class);
-        this.recordingThread = new AndroidRecorderThread (this.recorder, this.bufferSize, this.bytesExporter);
+        this.recordingThread = new AndroidRecorderThread (this.recorder, this.bytesExporter);
         this.bytesExporter.init (AndroidRecordSoundProcessor.TWICE * this.bufferSize);
         this.recorder.startRecording ();
         this.recordingThread.start ();
@@ -136,9 +136,9 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         }
         final StreamInfo streamInfo = (StreamInfo) audioFormat;
         this.recorder = this.findAudioRecorder (streamInfo);
-        final OutputAsByteBuffer bytesExporter = $.select (OutputAsByteBuffer.class);
+        final OutputAsByteBuffer outputAsByteBuffer = $.select (OutputAsByteBuffer.class);
         bytesExporter.init (this.bufferSize);
-        this.recordingThread = new AndroidRecorderThread (this.recorder, this.bufferSize, bytesExporter);
+        this.recordingThread = new AndroidRecorderThread (this.recorder, bytesExporter);
         this.recorder.startRecording ();
         this.recordingThread.start ();
         new Thread () {
@@ -152,6 +152,6 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
                 }
             }
         }.start ();
-        return bytesExporter.getOutput ();
+        return outputAsByteBuffer.getOutput ();
     }
 }

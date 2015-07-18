@@ -37,6 +37,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
     }
 
     private static final float           MS_PER_SECOND = 1000.0f;
+    private static final long ARBITRARY_SLEEP_TIME_TO_ENSURE_THE_STREAMING_IS_INITIALIZED = 10;
     private final RecordSoundProcessor   processor;
     private final AudioFormatParser      audioFormatParser;
     private final AudioFileService<?>    audioFileService;
@@ -87,7 +88,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         final Thread streamReader = this.getStreamReader (streamInfo, runnable, returnType, targetByteBuffer, streamsFromBuffer, results);
         streamReader.start ();
         try {
-            Thread.sleep (100);
+            Thread.sleep (DefaultRecordSoundService.ARBITRARY_SLEEP_TIME_TO_ENSURE_THE_STREAMING_IS_INITIALIZED);
         } catch (final InterruptedException e) {
             throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e));
         }
@@ -158,7 +159,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
 
             @Override
             public void run () {
-
+                throw new UnsupportedOperationException ();
             }
 
             @SuppressWarnings ("unchecked")

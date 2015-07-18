@@ -36,19 +36,20 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
     }
 
     public Channel reverse (final Spectrum<Complex []> spectrum, Channel output, final int startOffset) {
+        Channel output1 = output;
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);
 
         if (output == null) {
-            output = new Channel (new long [complexArray.length], spectrum.getFormatInfo (), 0);
+            output1 = new Channel (new long [complexArray.length], spectrum.getFormatInfo (), 0);
         }
         for (int i = 0 ; i < complexArray.length ; i++) {
             final int index = i + startOffset;
-            if (index < output.getSamplesLength () && output.getSampleAt (index) == 0) {
-                output.setSampleAt (index, (long) Math.floor (complexArray [i].getReal ()));
+            if (index < output1.getSamplesLength () && output1.getSampleAt (index) == 0) {
+                output1.setSampleAt (index, (long) Math.floor (complexArray [i].getReal ()));
             }
         }
-        return output;
+        return output1;
     }
 
     @Override

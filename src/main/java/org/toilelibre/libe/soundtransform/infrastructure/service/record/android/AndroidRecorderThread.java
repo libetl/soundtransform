@@ -25,7 +25,7 @@ final class AndroidRecorderThread extends Thread {
      * @param androidRecordSoundProcessor
      * @param bytesExporter1
      */
-    AndroidRecorderThread (final AudioRecord audioRecord1, final int bufferSize, final BytesExporterFromThread<?> bytesExporter1) {
+    AndroidRecorderThread (final AudioRecord audioRecord1, final BytesExporterFromThread<?> bytesExporter1) {
         this.audioRecord = audioRecord1;
         this.bytesExporter = bytesExporter1;
     }

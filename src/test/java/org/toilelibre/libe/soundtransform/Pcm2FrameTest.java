@@ -2,7 +2,6 @@ package org.toilelibre.libe.soundtransform;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Arrays;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Assert;
@@ -26,14 +25,12 @@ public class Pcm2FrameTest extends SoundTransformTest {
         for (int i = 0 ; i < data.length ; i++) {
             data [i] = (byte) rdg.nextInt (Byte.MIN_VALUE, Byte.MAX_VALUE);
         }
-        new Slf4jObserver ().notify (Arrays.toString (data));
         final InputStreamToSoundService<?> ts = (InputStreamToSoundService<?>) $.select (InputStreamToSoundService.class).setObservers (new Slf4jObserver (LogLevel.WARN));
         final InputStream bais = new ByteArrayInputStream (data);
         final StreamInfo streamInfo = new StreamInfo (2, data.length / 4, 2, 44100.0f, false, true, null);
         final Sound sound = ts.fromInputStream (bais, streamInfo);
 
         final byte [] out = $.select (FrameProcessor.class).framesToByteArray (sound.getChannels (), streamInfo);
-        new Slf4jObserver ().notify (Arrays.toString (out));
         Assert.assertArrayEquals (data, out);
     }
 }
