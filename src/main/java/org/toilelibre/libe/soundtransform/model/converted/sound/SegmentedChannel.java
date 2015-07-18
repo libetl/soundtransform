@@ -25,7 +25,7 @@ public class SegmentedChannel extends Channel {
 
     }
 
-    private static final String THIS_CHANNEL_IS_SEGMENTED_AND_CANNOT_BE_DISPLAYED = null;
+    public static final String THIS_CHANNEL_IS_SEGMENTED_AND_CANNOT_BE_DISPLAYED = "This channel is segmented and cannot be displayed";
     private final List<Sound>         channelParts;
 
     public SegmentedChannel (final FormatInfo formatInfo, final List<Sound> sounds) {
