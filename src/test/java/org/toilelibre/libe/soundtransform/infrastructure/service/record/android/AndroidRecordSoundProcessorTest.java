@@ -18,10 +18,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
-import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.record.android.AndroidRecordSoundProcessor.AndroidRecordSoundProcessorErrorCode;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformAndroidTest;
-import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -150,7 +148,7 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
         boolean notified = false;
         synchronized (stop) {
             while (!notified) {
-                stop.notify ();
+                stop.notifyAll ();
                 notified = true;
             }
         }
@@ -195,7 +193,7 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
                 boolean notified = false;
                 synchronized (stop) {
                     while (!notified) {
-                        stop.notify ();
+                        stop.notifyAll ();
                         notified = true;
                     }
                 }

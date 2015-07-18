@@ -126,6 +126,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
             this.recorder.stop ();
             this.recorder.release ();
         }
+        this.recordingThread.stop ();
     }
 
     @Override
