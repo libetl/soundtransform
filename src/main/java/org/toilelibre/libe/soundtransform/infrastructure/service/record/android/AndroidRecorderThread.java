@@ -70,4 +70,8 @@ final class AndroidRecorderThread extends Thread {
             }
         }
     }
+
+    public void stopRecording () {
+        this.recording = false;        
+    }
 }
