@@ -54,7 +54,7 @@ public class SegmentedChannel extends Channel {
     private int getChannelPartIndex (final int index) {
         int realIndex = index;
         int channelPartIndex = 0;
-        while (channelPartIndex < this.channelParts.size () && realIndex > this.channelParts.get (channelPartIndex).getSamplesLength ()) {
+        while (channelPartIndex < this.channelParts.size () && realIndex >= this.channelParts.get (channelPartIndex).getSamplesLength ()) {
             realIndex -= this.channelParts.get (channelPartIndex).getSamplesLength ();
             channelPartIndex++;
         }
@@ -67,7 +67,7 @@ public class SegmentedChannel extends Channel {
     private int getSamplesIndex (final int index) {
         int realIndex = index;
         int channelPartIndex = 0;
-        while (channelPartIndex < this.channelParts.size () && realIndex > this.channelParts.get (channelPartIndex).getSamplesLength ()) {
+        while (channelPartIndex < this.channelParts.size () && realIndex >= this.channelParts.get (channelPartIndex).getSamplesLength ()) {
             realIndex -= this.channelParts.get (channelPartIndex).getSamplesLength ();
             channelPartIndex++;
         }

@@ -17,6 +17,9 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.observer.EventCode;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoundService> implements RecordSoundService<AbstractLogAware<DefaultRecordSoundService>> {
 
@@ -35,9 +38,30 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
             return this.messageFormat;
         }
     }
+    public enum DefaultRecordSoundServiceEventCode implements EventCode {
+        STREAM_READER_STOPPED (LogLevel.INFO, "Stream reader stopped");
 
+        private final String   messageFormat;
+        private final LogLevel logLevel;
+
+        DefaultRecordSoundServiceEventCode (final LogLevel ll, final String mF) {
+            this.messageFormat = mF;
+            this.logLevel = ll;
+        }
+
+        @Override
+        public LogLevel getLevel () {
+            return this.logLevel;
+        }
+
+        @Override
+        public String getMessageFormat () {
+            return this.messageFormat;
+        }
+
+    }
     private static final float           MS_PER_SECOND = 1000.0f;
-    private static final long ARBITRARY_SLEEP_TIME_TO_ENSURE_THE_STREAMING_IS_INITIALIZED = 10;
+    private static final long ARBITRARY_SLEEP_TIME_TO_ENSURE_THE_STREAMING_IS_INITIALIZED = 1000;
     private final RecordSoundProcessor   processor;
     private final AudioFormatParser      audioFormatParser;
     private final AudioFileService<?>    audioFileService;
@@ -65,7 +89,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
                 try {
                     Thread.sleep (millis);
                 } catch (final InterruptedException e) {
-                    throw new SoundTransformRuntimeException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e);
+                    throw new SoundTransformRuntimeException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e, e.getMessage ());
                 }
                 synchronized (stop) {
                     stop.notify ();
@@ -90,7 +114,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         try {
             Thread.sleep (DefaultRecordSoundService.ARBITRARY_SLEEP_TIME_TO_ENSURE_THE_STREAMING_IS_INITIALIZED);
         } catch (final InterruptedException e) {
-            throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e));
+            throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e, e.getMessage ()));
         }
 
         this.stopDetector (stop, streamReader).start ();
@@ -123,17 +147,19 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         return new Thread () {
             @Override
             public void run () {
-                try {
-                    DefaultRecordSoundService.this.waitForNewBytes (targetByteBuffer);
-                    final InputStream inputStream = DefaultRecordSoundService.this.audioFileService.streamFromRawStream (new ByteArrayInputStream (targetByteBuffer.array ()), streamInfo);
-                    if (inputStream.available () > 0) {
-                        streamsFromBuffer.add (inputStream);
-                        results.add (runnable.runWithInputStreamAndGetResult (inputStream, streamInfo, returnType));
+                while (true) {
+                    try {
+                        DefaultRecordSoundService.this.waitForNewBytes (targetByteBuffer);
+                        final InputStream inputStream = DefaultRecordSoundService.this.audioFileService.streamFromRawStream (new ByteArrayInputStream (targetByteBuffer.array ()), streamInfo);
+                        if (inputStream.available () > 0) {
+                            streamsFromBuffer.add (inputStream);
+                            results.add (runnable.runWithInputStreamAndGetResult (inputStream, streamInfo, returnType));
+                        }
+                    } catch (final IOException e) {
+                        throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING, e));
+                    } catch (final SoundTransformException e) {
+                        throw new SoundTransformRuntimeException (e);
                     }
-                } catch (final IOException e) {
-                    throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING, e));
-                } catch (final SoundTransformException e) {
-                    throw new SoundTransformRuntimeException (e);
                 }
             }
         };
@@ -148,7 +174,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
                     waited = true;
                 }
             } catch (final InterruptedException e) {
-                throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e));
+                this.log (new LogEvent (DefaultRecordSoundServiceEventCode.STREAM_READER_STOPPED, e));
             }
         }
     }

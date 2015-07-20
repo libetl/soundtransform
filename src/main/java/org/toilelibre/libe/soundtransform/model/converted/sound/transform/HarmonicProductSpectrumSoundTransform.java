@@ -31,13 +31,15 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
         private boolean                 note;
         private float                   fsLimit;
         private int                     windowLength;
-        private int                     soundLength;
         private float                   detectedNoteVolume;
         private float                   partOfTheSpectrumToRead;
+
+        private Channel                 input;
 
         private final SpectrumHelper<T> spectrumHelper;
 
         private final boolean           useRawData;
+
 
         /**
          * Default constructor
@@ -157,17 +159,17 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
         }
 
         @Override
-        public Channel initSound (final Channel input) {
+        public Channel initSound (final Channel input1) {
+            this.input = input1;
             if (this.note) {
-                this.step = input.getSamplesLength ();
-                this.fsLimit = input.getSamplesLength ();
+                this.step = input1.getSamplesLength ();
+                this.fsLimit = input1.getSamplesLength ();
                 this.loudestfreqs = new float [1];
             } else {
-                this.loudestfreqs = new float [(int) (input.getSamplesLength () / this.step) + 1];
-                this.fsLimit = input.getSampleRate ();
+                this.loudestfreqs = new float [(int) (input1.getSamplesLength () / this.step) + 1];
+                this.fsLimit = input1.getSampleRate ();
             }
-            this.soundLength = input.getSamplesLength ();
-            return super.initSound (input);
+            return super.initSound (input1);
         }
 
         @Override
@@ -183,9 +185,9 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
 
         public void transformFrequencies (final Object spectrum, final float sampleRate, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
-            final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.soundLength / this.step));
-            if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.soundLength / this.step))) {
-                this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.soundLength / this.step), percent));
+            final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.input.getSamplesLength () / this.step));
+            if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.input.getSamplesLength () / this.step))) {
+                this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.input.getSamplesLength () / this.step), percent));
             }
             float f0 = 0;
 
@@ -202,8 +204,17 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
             if (this.note) {
                 this.detectedNoteVolume = soundLevelInDB;
             }
+            this.ensureArrayLengthIsCorrect (offset);
             this.loudestfreqs [(int) (offset / this.step)] = f0;
 
+        }
+
+        private void ensureArrayLengthIsCorrect (int offset) {
+            if ((int) (offset / this.step) >= this.loudestfreqs.length) {
+                float [] backupedArray = this.loudestfreqs;
+                this.loudestfreqs = new float [(int) (this.input.getSamplesLength () / this.step) + 1];
+                System.arraycopy (backupedArray, 0, this.loudestfreqs, 0, backupedArray.length);
+            }
         }
 
         /**
