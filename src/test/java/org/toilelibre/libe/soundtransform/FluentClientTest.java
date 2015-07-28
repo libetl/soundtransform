@@ -359,7 +359,6 @@ public class FluentClientTest extends SoundTransformTest {
         org.junit.Assert.assertArrayEquals (new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 15, 16, 17, 18 }, FluentClient.start ().withFreqs (Collections.singletonList (array1)).replacePart (Collections.singletonList (array2), 11).stopWithFreqs ().get (0), 0);
     }
 
-
     // Exactly the same code run as WavTest.testShape
     @Test
     public void shapeASoundTest () throws SoundTransformException {

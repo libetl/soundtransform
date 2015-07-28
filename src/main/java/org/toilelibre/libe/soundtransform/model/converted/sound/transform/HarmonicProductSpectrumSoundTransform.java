@@ -40,7 +40,6 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
 
         private final boolean           useRawData;
 
-
         /**
          * Default constructor
          *
@@ -209,9 +208,9 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
 
         }
 
-        private void ensureArrayLengthIsCorrect (int offset) {
+        private void ensureArrayLengthIsCorrect (final int offset) {
             if ((int) (offset / this.step) >= this.loudestfreqs.length) {
-                float [] backupedArray = this.loudestfreqs;
+                final float [] backupedArray = this.loudestfreqs;
                 this.loudestfreqs = new float [(int) (this.input.getSamplesLength () / this.step) + 1];
                 System.arraycopy (backupedArray, 0, this.loudestfreqs, 0, backupedArray.length);
             }

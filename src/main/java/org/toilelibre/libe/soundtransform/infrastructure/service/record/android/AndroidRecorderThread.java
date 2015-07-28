@@ -10,14 +10,14 @@ import android.media.AudioRecord;
 
 final class AndroidRecorderThread extends Thread {
 
-    private static final int           ARBITRARY_BUFFER = 8192;
-    private static final int           EIGHT            = 8;
-    private static final int           TWO              = 2;
+    private static final int                 ARBITRARY_BUFFER = 8192;
+    private static final int                 EIGHT            = 8;
+    private static final int                 TWO              = 2;
     /**
      *
      */
-    private final AudioRecord          audioRecord;
-    private boolean                    recording;
+    private final AudioRecord                audioRecord;
+    private boolean                          recording;
     private final BytesExporterFromThread<?> bytesExporter;
 
     /**
@@ -73,6 +73,6 @@ final class AndroidRecorderThread extends Thread {
     }
 
     public void stopRecording () {
-        this.recording = false;        
+        this.recording = false;
     }
 }

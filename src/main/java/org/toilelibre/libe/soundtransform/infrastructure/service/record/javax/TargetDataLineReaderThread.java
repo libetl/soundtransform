@@ -8,10 +8,10 @@ final class TargetDataLineReaderThread extends Thread {
     /**
      *
      */
-    private final TargetDataLine       dataLine;
-    private boolean                    isRecording = false;
+    private final TargetDataLine             dataLine;
+    private boolean                          isRecording = false;
     private final BytesExporterFromThread<?> exporter;
-    private static final int           FIVE        = 5;
+    private static final int                 FIVE        = 5;
 
     /**
      * @param dataLine1

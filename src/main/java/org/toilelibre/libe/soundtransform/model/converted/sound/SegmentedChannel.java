@@ -26,7 +26,7 @@ public class SegmentedChannel extends Channel {
     }
 
     public static final String THIS_CHANNEL_IS_SEGMENTED_AND_CANNOT_BE_DISPLAYED = "This channel is segmented and cannot be displayed";
-    private final List<Sound>         channelParts;
+    private final List<Sound>  channelParts;
 
     public SegmentedChannel (final FormatInfo formatInfo, final List<Sound> sounds) {
         super (null, formatInfo, 0);
@@ -109,10 +109,9 @@ public class SegmentedChannel extends Channel {
         int remainingLength = length;
         final int channelPartIndex = this.getChannelPartIndex (srcPos);
         final int samplesIndex = this.getSamplesIndex (srcPos);
-        int i = channelPartIndex; 
+        int i = channelPartIndex;
         while (i < this.channelParts.size () && remainingLength > 0) {
-            this.channelParts.get (i).getChannels () [0].copyTo (samples, i == channelPartIndex ? samplesIndex : 0, dstPos1, 
-                    Math.min (this.channelParts.get (i).getChannels () [0].getSamplesLength (), remainingLength));
+            this.channelParts.get (i).getChannels () [0].copyTo (samples, i == channelPartIndex ? samplesIndex : 0, dstPos1, Math.min (this.channelParts.get (i).getChannels () [0].getSamplesLength (), remainingLength));
             dstPos1 += this.channelParts.get (i).getChannels () [0].getSamplesLength ();
             remainingLength -= this.channelParts.get (i).getChannels () [0].getSamplesLength ();
             i++;

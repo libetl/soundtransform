@@ -628,7 +628,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         }
         return this.inParallel (op, timeoutInSeconds, clients);
     }
-    
+
     /**
      * Extracts a part of the sound between the sample #start and the sample
      * #end

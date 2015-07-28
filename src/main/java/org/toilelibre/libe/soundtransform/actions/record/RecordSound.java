@@ -16,7 +16,7 @@ public class RecordSound extends Action {
     public InputStream recordLimitedTimeRawInputStream (final StreamInfo streamInfo) throws SoundTransformException {
         return this.recordSound.recordLimitedTimeRawInputStream (streamInfo);
     }
-    
+
     public Sound startRecordingASound (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
         return this.recordSound.startRecordingASound (streamInfo, stop);
     }

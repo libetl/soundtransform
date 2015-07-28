@@ -28,7 +28,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         private final RecordSoundProcessor processor;
         private final Object               stop;
 
-        private StopProperlyThread (RecordSoundProcessor processor, Object stop) {
+        private StopProperlyThread (final RecordSoundProcessor processor, final Object stop) {
             this.processor = processor;
             this.stop = stop;
             this.setName (this.getClass ().getSimpleName ());
@@ -37,7 +37,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         @Override
         public void run () {
             try {
-                processor.stopProperly (stop);
+                this.processor.stopProperly (this.stop);
             } catch (final SoundTransformException soundTransformException) {
                 throw new SoundTransformRuntimeException (soundTransformException);
             }
@@ -83,13 +83,13 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         }
     }
 
-    private static final int              TWICE = 2;
+    private static final int           TWICE = 2;
 
-    private int                           bufferSize;
-    private AudioRecord                   recorder;
+    private int                        bufferSize;
+    private AudioRecord                recorder;
 
-    private AndroidRecorderThread         recordingThread;
-    private BytesExporterFromThread<?>    bytesExporter;
+    private AndroidRecorderThread      recordingThread;
+    private BytesExporterFromThread<?> bytesExporter;
 
     public AudioRecord findAudioRecorder (final StreamInfo streamInfo) throws SoundTransformException {
         final int audioFormat = streamInfo.getSampleSize () == 1 ? AudioFormat.ENCODING_PCM_8BIT : AudioFormat.ENCODING_PCM_16BIT;
@@ -113,7 +113,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         }
         final StreamInfo streamInfo = (StreamInfo) streamInfo1;
         this.startRecording (streamInfo);
-        this.stopProperly(stop);
+        this.stopProperly (stop);
         return new ByteArrayInputStream (((ByteArrayOutputStream) this.bytesExporter.getOutput ()).toByteArray ());
     }
 
@@ -155,7 +155,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         this.waitForStop (stop);
         this.stopRecording ();
     }
-    
+
     @Override
     public ByteBuffer startRecordingAndReturnByteBuffer (final Object audioFormat, final Object stop) throws SoundTransformException {
         final RecordSoundProcessor processor = this;
@@ -166,7 +166,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         this.recorder = this.findAudioRecorder (streamInfo);
         this.bytesExporter = $.select (OutputAsByteBuffer.class);
         this.bytesExporter.init (this.bufferSize);
-        this.recordingThread = new AndroidRecorderThread (this.recorder, bytesExporter);
+        this.recordingThread = new AndroidRecorderThread (this.recorder, this.bytesExporter);
         this.recorder.startRecording ();
         this.recordingThread.start ();
         new StopProperlyThread (processor, stop).start ();

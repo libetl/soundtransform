@@ -204,8 +204,9 @@ public class WavTest extends SoundTransformTest {
         final String s1 = Arrays.toString (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.VERBOSE)).withSound (sound).findLoudestFrequencies (new HarmonicProductSpectrumSoundTransform<Serializable> (true, false)).stopWithFreqs ().get (0))
                 .replaceAll ("(\\[| )([0-9])\\.([0-9])(\\]|,)", "$100$2.$300$4").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9]),", " $1$2$3.$400,").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9]),", " $1$2$3.$4$50,")
                 .replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9])([0-9])([0-9]*),", " $1$2$3.$4$5$6,");
-        final String s2 = Arrays.toString (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.VERBOSE)).withSound (sound).findLoudestFrequencies (new CepstrumSoundTransform<Serializable> (1, true)).stopWithFreqs ().get (0)).replaceAll ("(\\[| )([0-9])\\.([0-9])(\\]|,)", "$100$2.$300$4")
-                .replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9]),", " $1$2$3.$400,").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9]),", " $1$2$3.$4$50,").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9])([0-9])([0-9]*),", " $1$2$3.$4$5$6,");
+        final String s2 = Arrays.toString (FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.VERBOSE)).withSound (sound).findLoudestFrequencies (new CepstrumSoundTransform<Serializable> (1, true)).stopWithFreqs ().get (0))
+                .replaceAll ("(\\[| )([0-9])\\.([0-9])(\\]|,)", "$100$2.$300$4").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9]),", " $1$2$3.$400,").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9]),", " $1$2$3.$4$50,")
+                .replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9])([0-9])([0-9]*),", " $1$2$3.$4$5$6,");
         final String s3 = Arrays
                 .toString (
                         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.VERBOSE)).withSound (sound).apply (new PralongAndCarlileSoundTransform ()).findLoudestFrequencies (new MaximumLikelihoodSoundTransform (sound.getSamplesLength (), sound.getSamplesLength () + 1, 0, 500))

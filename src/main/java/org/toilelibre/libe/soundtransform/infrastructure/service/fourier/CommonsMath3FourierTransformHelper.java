@@ -35,7 +35,7 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
         return this.reverse (spectrum, output, 0);
     }
 
-    public Channel reverse (final Spectrum<Complex []> spectrum, Channel output, final int startOffset) {
+    public Channel reverse (final Spectrum<Complex []> spectrum, final Channel output, final int startOffset) {
         Channel output1 = output;
         final FastFourierTransformer fastFourierTransformer = new FastFourierTransformer (DftNormalization.STANDARD);
         final Complex [] complexArray = fastFourierTransformer.transform (spectrum.getState (), TransformType.INVERSE);

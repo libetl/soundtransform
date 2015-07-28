@@ -26,7 +26,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         private final Object               stop;
         private final RecordSoundProcessor processor;
 
-        private StopProperlyThread (Object stop, RecordSoundProcessor processor) {
+        private StopProperlyThread (final Object stop, final RecordSoundProcessor processor) {
             this.stop = stop;
             this.processor = processor;
             this.setName (this.getClass ().getSimpleName ());
@@ -35,7 +35,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         @Override
         public void run () {
             try {
-                processor.stopProperly (stop);
+                this.processor.stopProperly (this.stop);
             } catch (final SoundTransformException soundTransformException) {
                 throw new SoundTransformRuntimeException (soundTransformException);
             }
@@ -79,7 +79,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         final OutputAsByteArrayOutputStream bytesExporter = $.select (OutputAsByteArrayOutputStream.class);
         bytesExporter.init (TargetDataLineRecordSoundProcessor.DEFAULT_BUFFER_SIZE);
         this.startRecording (audioFormat, bytesExporter);
-        this.stopProperly(stop);
+        this.stopProperly (stop);
         return new ByteArrayInputStream (bytesExporter.getOutput ().toByteArray ());
     }
 
