@@ -10,4 +10,6 @@ public interface RecordSoundProcessor {
     InputStream recordRawInputStream (Object audioFormat, Object stop) throws SoundTransformException;
 
     ByteBuffer startRecordingAndReturnByteBuffer (Object audioFormat, Object stop) throws SoundTransformException;
+
+    void stopProperly (Object stop) throws SoundTransformException;
 }

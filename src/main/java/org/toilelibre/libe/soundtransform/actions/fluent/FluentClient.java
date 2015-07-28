@@ -12,7 +12,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation.FluentClientOperationRunnable;
 import org.toilelibre.libe.soundtransform.actions.notes.ImportAPackIntoTheLibrary;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
 import org.toilelibre.libe.soundtransform.actions.record.RecordSound;
@@ -629,33 +628,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         }
         return this.inParallel (op, timeoutInSeconds, clients);
     }
-
-    /**
-     * Tells the client to open the microphone and to record a sound. A flow of
-     * operations will be executed since the very start of the recording
-     *
-     * /!\ : blocking method, the `stop.notify` method must be called in another
-     * thread.
-     *
-     * @param streamInfo
-     *            the future input stream info
-     * @param stop
-     *            the method notify must be called to stop the recording
-     * @param operation
-     *            a flow of operation to execute while recording
-     * @param returnType
-     *            expected result class
-     * @return a list of results of the expected type
-     * @throws SoundTransformException
-     *             the mic could not be read, the recorder could not start, or
-     *             the buffer did not record anything
-     */
-    @Override
-    public <T> List<T> inParallelWhileRecordingASound (final StreamInfo streamInfo, final Object stop, final FluentClientOperation operation, final Class<T> returnType) throws SoundTransformException {
-        this.cleanData ();
-        return new RecordSound ().recordAndProcess (streamInfo, stop, operation, returnType);
-    }
-
+    
     /**
      * Extracts a part of the sound between the sample #start and the sample
      * #end

@@ -1,7 +1,6 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.record.javax;
 
 import java.io.InputStream;
-import java.util.List;
 import java.util.Random;
 
 import javax.sound.sampled.DataLine.Info;
@@ -24,12 +23,10 @@ import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
-import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
@@ -91,31 +88,6 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         Assert.assertThat (is [0].available (), new GreaterThan<Integer> (0));
     }
 
-    @Test
-    public void mockRecordAndProcessSoundWithStopObject () throws Exception {
-        this.rule.hashCode ();
-        final byte [][] buffers = new byte [15] [1024];
-        for (int i = 0 ; i < 14 ; i++) {
-            new Random ().nextBytes (buffers [i]);
-        }
-        buffers [14] = new byte [0];
-        this.mockRecordSoundProcessor (buffers);
-        final Object stopObject = new Object ();
-        final List<Sound> list = FluentClient.start ().inParallelWhileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stopObject, FluentClientOperation.prepare ().importToSound ().apply (new EightBitsSoundTransform (25)).build (), Sound.class);
-
-        Thread.sleep (4000);
-        boolean notified = false;
-        synchronized (stopObject) {
-            while (!notified) {
-                stopObject.notify ();
-                notified = true;
-            }
-        }
-        Thread.sleep (4000);
-
-        Assert.assertThat (list, new IsNot<List<Sound>> (new IsNull<List<Sound>> ()));
-        Assert.assertNotEquals (list.size (), 0);
-    }
 
     @Test
     public void shapeAndMockRecordedSoundInParallel () throws Exception {
@@ -141,7 +113,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
                 boolean notified = false;
                 synchronized (stop) {
                     while (!notified) {
-                        stop.notify ();
+                        stop.notifyAll ();
                         notified = true;
                     }
                 }
@@ -151,11 +123,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
         final Sound resultSound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stop).findLoudestFrequencies ()
                 .shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100f)).stopWithSound ();
-        try {
-            Thread.sleep (4000);
-        } catch (final InterruptedException e) {
-            throw new RuntimeException (e);
-        }
+        
         Assert.assertThat (resultSound, new IsNot<Sound> (new IsNull<Sound> ()));
         Assert.assertNotNull (resultSound.getChannels ());
         Assert.assertEquals (resultSound.getChannels ().length, 1);

@@ -93,8 +93,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         }
         final StreamInfo streamInfo = (StreamInfo) streamInfo1;
         this.startRecording (streamInfo);
-        this.waitForStop (stop);
-        this.stopRecording ();
+        this.stopProperly(stop);
         return new ByteArrayInputStream (((ByteArrayOutputStream) this.bytesExporter.getOutput ()).toByteArray ());
     }
 
@@ -132,7 +131,14 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
     }
 
     @Override
+    public void stopProperly (final Object stop) throws SoundTransformException {
+        this.waitForStop (stop);
+        this.stopRecording ();
+    }
+    
+    @Override
     public ByteBuffer startRecordingAndReturnByteBuffer (final Object audioFormat, final Object stop) throws SoundTransformException {
+        final RecordSoundProcessor processor = this;
         if (!(audioFormat instanceof StreamInfo)) {
             throw new SoundTransformException (AndroidRecordSoundProcessorErrorCode.STREAM_INFO_EXPECTED, new IllegalArgumentException ());
         }
@@ -147,8 +153,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
             @Override
             public void run () {
                 try {
-                    AndroidRecordSoundProcessor.this.waitForStop (stop);
-                    AndroidRecordSoundProcessor.this.stopRecording ();
+                    processor.stopProperly (stop);
                 } catch (final SoundTransformException soundTransformException) {
                     throw new SoundTransformRuntimeException (soundTransformException);
                 }

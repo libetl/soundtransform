@@ -103,13 +103,11 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         return this.processor.startRecordingAndReturnByteBuffer (this.audioFormatParser.audioFormatfromStreamInfo (streamInfo), stop);
     }
 
-    @Override
-    public <O> List<O> recordAndProcess (final StreamInfo streamInfo, final Object stop, final RunnableWithInputStream runnable, final Class<O> returnType) throws SoundTransformException {
+    private List<Sound> recordInBackgroundTask (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
         final ByteBuffer targetByteBuffer = this.startRecordingAndReturnByteBuffer (streamInfo, stop);
-        final List<InputStream> streamsFromBuffer = new ArrayList<InputStream> ();
-        final List<O> results = new ArrayList<O> ();
+        final List<Sound> results = new ArrayList<Sound> ();
 
-        final Thread streamReader = this.getStreamReader (streamInfo, runnable, returnType, targetByteBuffer, streamsFromBuffer, results);
+        final Thread streamReader = this.getStreamReader (streamInfo, targetByteBuffer, results);
         streamReader.start ();
         try {
             Thread.sleep (DefaultRecordSoundService.ARBITRARY_SLEEP_TIME_TO_ENSURE_THE_STREAMING_IS_INITIALIZED);
@@ -117,43 +115,65 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
             throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e, e.getMessage ()));
         }
 
-        this.stopDetector (stop, streamReader).start ();
+        this.stopDetector (stop, streamReader, targetByteBuffer).start ();
 
         return results;
     }
 
-    private Thread stopDetector (final Object stop, final Thread streamReader) {
+    private Thread stopDetector (final Object stop, final Thread streamReader, final ByteBuffer targetByteBuffer) {
         return new Thread () {
             @Override
             public void run () {
-                boolean stopped = false;
-                while (!stopped) {
-                    stopped = true;
-                    synchronized (stop) {
-                        try {
+                synchronized (stop) {
+                    try {
+                        boolean waited = false;
+                        while (!waited) {
                             stop.wait ();
-                            streamReader.interrupt ();
-                        } catch (final InterruptedException e) {
-                            streamReader.interrupt ();
+                            waited = true;
                         }
+                        synchronized (targetByteBuffer){
+                            if (waited) {
+                                targetByteBuffer.notifyAll ();
+                            }
+                        }
+                        streamReader.interrupt ();
+                    } catch (final InterruptedException e) {
+                        targetByteBuffer.notify();
+                        streamReader.interrupt ();
                     }
-                    streamReader.interrupt ();
                 }
+                streamReader.interrupt ();
             }
         };
     }
 
-    private <O> Thread getStreamReader (final StreamInfo streamInfo, final RunnableWithInputStream runnable, final Class<O> returnType, final ByteBuffer targetByteBuffer, final List<InputStream> streamsFromBuffer, final List<O> results) {
+    private Thread getStreamReader (final StreamInfo streamInfo, final ByteBuffer targetByteBuffer, final List<Sound> results) {
+        final AudioFileService<?> audioFileService1 = this.audioFileService;
+        final InputStreamToSoundService<?> isToSoundService1 = this.isToSoundService;
         return new Thread () {
+
+
+            private void waitForNewBytes (final ByteBuffer targetByteBuffer) throws SoundTransformException {
+                boolean waited = false;
+                synchronized (targetByteBuffer) {
+                    try {
+                        while (!waited) {
+                            targetByteBuffer.wait ();
+                            waited = true;
+                        }
+                    } catch (final InterruptedException e) {
+                        new LogEvent (DefaultRecordSoundServiceEventCode.STREAM_READER_STOPPED, e);
+                    }
+                }
+            }
             @Override
             public void run () {
                 while (true) {
                     try {
-                        DefaultRecordSoundService.this.waitForNewBytes (targetByteBuffer);
-                        final InputStream inputStream = DefaultRecordSoundService.this.audioFileService.streamFromRawStream (new ByteArrayInputStream (targetByteBuffer.array ()), streamInfo);
+                        this.waitForNewBytes (targetByteBuffer);
+                        final InputStream inputStream = audioFileService1.streamFromRawStream (new ByteArrayInputStream (targetByteBuffer.array ()), streamInfo);
                         if (inputStream.available () > 0) {
-                            streamsFromBuffer.add (inputStream);
-                            results.add (runnable.runWithInputStreamAndGetResult (inputStream, streamInfo, returnType));
+                            results.add (isToSoundService1.fromInputStream (inputStream, streamInfo));
                         }
                     } catch (final IOException e) {
                         throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING, e));
@@ -165,35 +185,9 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         };
     }
 
-    private void waitForNewBytes (final ByteBuffer targetByteBuffer) throws SoundTransformException {
-        boolean waited = false;
-        synchronized (targetByteBuffer) {
-            try {
-                while (!waited) {
-                    targetByteBuffer.wait ();
-                    waited = true;
-                }
-            } catch (final InterruptedException e) {
-                this.log (new LogEvent (DefaultRecordSoundServiceEventCode.STREAM_READER_STOPPED, e));
-            }
-        }
-    }
 
     @Override
     public Sound startRecordingASound (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
-        final RunnableWithInputStream convertIntoSound = new RunnableWithInputStream () {
-
-            @Override
-            public void run () {
-                throw new UnsupportedOperationException ();
-            }
-
-            @SuppressWarnings ("unchecked")
-            @Override
-            public <T> T runWithInputStreamAndGetResult (final InputStream inputStream, final StreamInfo streamInfo, final Class<T> returnType) throws SoundTransformException {
-                return (T) DefaultRecordSoundService.this.isToSoundService.fromInputStream (inputStream, streamInfo);
-            }
-        };
-        return new SegmentedSound (streamInfo, this.recordAndProcess (streamInfo, stop, convertIntoSound, Sound.class));
+        return new SegmentedSound (streamInfo, this.recordInBackgroundTask (streamInfo, stop));
     }
 }

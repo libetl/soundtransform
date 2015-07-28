@@ -18,7 +18,6 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
-import org.toilelibre.libe.soundtransform.model.record.RunnableWithInputStream;
 
 public class FluentClientOperation implements BuildableFluentClientOperationSoundImported, BuildableFluentClientOperationWithInputStream, BuildableFluentClientOperationWithFile, BuildableFluentClientOperationWithFreqs, BuildableFluentClientOperationWithParallelizedClients,
 BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
@@ -29,39 +28,7 @@ BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
         }
 
         void run (final FluentClientInterface client, final int invocationNumber) throws SoundTransformException {
-            ("" + invocationNumber).substring (0);
             this.run (client);
-        }
-    }
-
-    public static class FluentClientOperationRunnable implements RunnableWithInputStream {
-
-        private final FluentClientOperation operation;
-        private FluentClientInterface clientInterface;
-        private final int                   clientId;
-
-        public FluentClientOperationRunnable (final FluentClientOperation operation1, final FluentClientInterface clientInterface1, final int clientId1) {
-            this.operation = operation1;
-            this.clientInterface = clientInterface1;
-            this.clientId = clientId1;
-        }
-
-        @Override
-        public void run () {
-            for (final FluentClientOperation.Step step : this.operation.getSteps ()) {
-                try {
-                    step.run (this.clientInterface, this.clientId);
-                } catch (final SoundTransformException ste) {
-                    throw new SoundTransformRuntimeException (ste);
-                }
-            }
-        }
-
-        @Override
-        public <T> T runWithInputStreamAndGetResult (final InputStream inputStream, final StreamInfo streamInfo, final Class<T> resultClass) throws SoundTransformException {
-            this.clientInterface = (FluentClientInterface) FluentClient.start ().withRawInputStream (inputStream, streamInfo);
-            this.run ();
-            return ((FluentClient) this.clientInterface).getResult (resultClass);
         }
     }
 

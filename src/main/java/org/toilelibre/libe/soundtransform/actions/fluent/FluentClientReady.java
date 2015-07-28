@@ -402,28 +402,4 @@ public interface FluentClientReady extends FluentClientCommon {
      */
     FluentClientWithSpectrums withSpectrums (List<Spectrum<Serializable> []> spectrums);
 
-    /**
-     * Tells the client to open the microphone and to record a sound. A flow of
-     * operations will be executed since the very start of the recording
-     *
-     * /!\ : blocking method, the `stop.notify` method must be called in another
-     * thread.
-     *
-     * @param streamInfo
-     *            the future input stream info
-     * @param stop
-     *            the method notify must be called to stop the recording
-     * @param operation
-     *            a flow of operation to execute while recording
-     * @param returnType
-     *            expected result class
-     * @param <T>
-     *            the result component type
-     * @return a list of results of the expected type
-     * @throws SoundTransformException
-     *             the mic could not be read, the recorder could not start, or
-     *             the buffer did not record anything
-     */
-    <T> List<T> inParallelWhileRecordingASound (StreamInfo streamInfo, Object stop, FluentClientOperation operation, final Class<T> returnType) throws SoundTransformException;
-
 }

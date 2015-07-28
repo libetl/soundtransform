@@ -59,9 +59,18 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         final OutputAsByteArrayOutputStream bytesExporter = $.select (OutputAsByteArrayOutputStream.class);
         bytesExporter.init (TargetDataLineRecordSoundProcessor.DEFAULT_BUFFER_SIZE);
         this.startRecording (audioFormat, bytesExporter);
+        this.stopProperly(stop);
+        return new ByteArrayInputStream (bytesExporter.getOutput ().toByteArray ());
+    }
+
+    /**
+     * @param stop
+     * @throws SoundTransformException
+     */
+    @Override
+    public void stopProperly (final Object stop) throws SoundTransformException {
         this.waitForStop (stop);
         this.stopRecording ();
-        return new ByteArrayInputStream (bytesExporter.getOutput ().toByteArray ());
     }
 
     /**
@@ -126,6 +135,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
 
     @Override
     public ByteBuffer startRecordingAndReturnByteBuffer (final Object audioFormat1, final Object stop) throws SoundTransformException {
+        final RecordSoundProcessor processor = this;
         if (!(audioFormat1 instanceof AudioFormat)) {
             throw new SoundTransformException (TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_EXPECTED, new IllegalArgumentException ());
         }
@@ -139,8 +149,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
             @Override
             public void run () {
                 try {
-                    TargetDataLineRecordSoundProcessor.this.waitForStop (stop);
-                    TargetDataLineRecordSoundProcessor.this.stopRecording ();
+                    processor.stopProperly (stop);
                 } catch (final SoundTransformException soundTransformException) {
                     throw new SoundTransformRuntimeException (soundTransformException);
                 }
