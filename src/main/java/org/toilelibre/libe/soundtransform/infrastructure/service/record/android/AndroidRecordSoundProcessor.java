@@ -24,6 +24,26 @@ import android.media.MediaRecorder.AudioSource;
 
 final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundProcessor> implements RecordSoundProcessor {
 
+    private static class StopProperlyThread extends Thread {
+        private final RecordSoundProcessor processor;
+        private final Object               stop;
+
+        private StopProperlyThread (RecordSoundProcessor processor, Object stop) {
+            this.processor = processor;
+            this.stop = stop;
+            this.setName (this.getClass ().getSimpleName ());
+        }
+
+        @Override
+        public void run () {
+            try {
+                processor.stopProperly (stop);
+            } catch (final SoundTransformException soundTransformException) {
+                throw new SoundTransformRuntimeException (soundTransformException);
+            }
+        }
+    }
+
     public enum AndroidRecordSoundProcessorEvent implements EventCode {
 
         NOT_ABLE_TO_READ (LogLevel.ERROR, "Not able to read the recorded data");
@@ -149,16 +169,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         this.recordingThread = new AndroidRecorderThread (this.recorder, bytesExporter);
         this.recorder.startRecording ();
         this.recordingThread.start ();
-        new Thread () {
-            @Override
-            public void run () {
-                try {
-                    processor.stopProperly (stop);
-                } catch (final SoundTransformException soundTransformException) {
-                    throw new SoundTransformRuntimeException (soundTransformException);
-                }
-            }
-        }.start ();
+        new StopProperlyThread (processor, stop).start ();
         return (ByteBuffer) this.bytesExporter.getOutput ();
     }
 }

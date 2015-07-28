@@ -28,6 +28,7 @@ final class AndroidRecorderThread extends Thread {
     AndroidRecorderThread (final AudioRecord audioRecord1, final BytesExporterFromThread<?> bytesExporter1) {
         this.audioRecord = audioRecord1;
         this.bytesExporter = bytesExporter1;
+        this.setName (this.getClass ().getSimpleName ());
     }
 
     @Override

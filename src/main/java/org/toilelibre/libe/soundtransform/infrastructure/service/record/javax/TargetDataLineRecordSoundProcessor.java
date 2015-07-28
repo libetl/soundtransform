@@ -22,6 +22,26 @@ import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteBuff
 
 final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
 
+    private static class StopProperlyThread extends Thread {
+        private final Object               stop;
+        private final RecordSoundProcessor processor;
+
+        private StopProperlyThread (Object stop, RecordSoundProcessor processor) {
+            this.stop = stop;
+            this.processor = processor;
+            this.setName (this.getClass ().getSimpleName ());
+        }
+
+        @Override
+        public void run () {
+            try {
+                processor.stopProperly (stop);
+            } catch (final SoundTransformException soundTransformException) {
+                throw new SoundTransformRuntimeException (soundTransformException);
+            }
+        }
+    }
+
     public enum TargetDataLineRecordSoundProcessorErrorCode implements ErrorCode {
 
         NOT_READY ("Not ready to record a sound"), AUDIO_FORMAT_EXPECTED ("An audio format was expected (%1s)"), TARGET_LINE_UNAVAILABLE ("Target record line unavailable"), AUDIO_FORMAT_NOT_SUPPORTED ("Audio format not supported by AudioSystem");
@@ -145,16 +165,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         bytesExporter.init (TargetDataLineRecordSoundProcessor.DEFAULT_BYTE_BUFFER_SIZE);
         this.startRecording (audioFormat, bytesExporter);
 
-        new Thread () {
-            @Override
-            public void run () {
-                try {
-                    processor.stopProperly (stop);
-                } catch (final SoundTransformException soundTransformException) {
-                    throw new SoundTransformRuntimeException (soundTransformException);
-                }
-            }
-        }.start ();
+        new StopProperlyThread (stop, processor).start ();
         return bytesExporter.getOutput ();
     }
 }

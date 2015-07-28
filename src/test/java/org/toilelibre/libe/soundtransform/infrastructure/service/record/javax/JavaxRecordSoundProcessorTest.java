@@ -99,13 +99,15 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         buffers [14] = new byte [0];
         this.mockRecordSoundProcessor (buffers);
 
+        FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+        
         final Object stop = new Object ();
-        new Thread () {
+        new Thread ("Wait300MillisInTheTest") {
 
             @Override
             public void run () {
                 try {
-                    Thread.sleep (4000);
+                    Thread.sleep (300);
                 } catch (final InterruptedException e) {
                     throw new RuntimeException (e);
                 }
@@ -121,8 +123,8 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
         }.start ();
 
-        final Sound resultSound = FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json")).whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stop).findLoudestFrequencies ()
-                .shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100f)).stopWithSound ();
+        final Sound resultSound = FluentClient.start ().whileRecordingASound (new StreamInfo (2, 1024, 2, 8000.0f, false, true, null), stop).findLoudestFrequencies ()
+                .shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 8000f)).stopWithSound ();
         
         Assert.assertThat (resultSound, new IsNot<Sound> (new IsNull<Sound> ()));
         Assert.assertNotNull (resultSound.getChannels ());

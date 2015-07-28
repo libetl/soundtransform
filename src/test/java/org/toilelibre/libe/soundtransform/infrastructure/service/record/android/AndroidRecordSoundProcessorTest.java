@@ -134,7 +134,7 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
             }
         });
         final Object stop = new Object ();
-        new Thread () {
+        new Thread ("Wait4000msInTheTest") {
 
             @Override
             public void run () {

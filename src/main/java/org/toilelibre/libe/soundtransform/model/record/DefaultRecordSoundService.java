@@ -23,6 +23,120 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoundService> implements RecordSoundService<AbstractLogAware<DefaultRecordSoundService>> {
 
+    private static class StreamReaderThread extends Thread {
+        private final List<Sound>                  results;
+        private final StreamInfo                   streamInfo;
+        private final ByteBuffer                   targetByteBuffer;
+        private final AudioFileService<?>          audioFileService1;
+        private final InputStreamToSoundService<?> isToSoundService1;
+        private boolean waiting;
+
+        private StreamReaderThread (List<Sound> results, StreamInfo streamInfo, ByteBuffer targetByteBuffer, AudioFileService<?> audioFileService1, InputStreamToSoundService<?> isToSoundService1) {
+            this.results = results;
+            this.streamInfo = streamInfo;
+            this.targetByteBuffer = targetByteBuffer;
+            this.audioFileService1 = audioFileService1;
+            this.isToSoundService1 = isToSoundService1;
+            this.waiting = true;
+            this.setName (this.getClass ().getSimpleName ());
+        }
+
+        private void waitForNewBytes (final ByteBuffer targetByteBuffer) throws SoundTransformException {
+            boolean waited = false;
+            synchronized (targetByteBuffer) {
+                try {
+                    while (!waited) {
+                        targetByteBuffer.wait ();
+                        waited = true;
+                    }
+                } catch (final InterruptedException e) {
+                    new LogEvent (DefaultRecordSoundServiceEventCode.STREAM_READER_STOPPED, e);
+                }
+            }
+        }
+
+        private void stopWaiting () {
+            waiting = false;
+        }
+        
+        @Override
+        public void run () {
+            while (waiting) {
+                try {
+                    this.waitForNewBytes (targetByteBuffer);
+                    final InputStream inputStream = audioFileService1.streamFromRawStream (new ByteArrayInputStream (targetByteBuffer.array ()), streamInfo);
+                    if (inputStream.available () > 0) {
+                        results.add (isToSoundService1.fromInputStream (inputStream, streamInfo));
+                    }
+                } catch (final IOException e) {
+                    throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING, e));
+                } catch (final SoundTransformException e) {
+                    throw new SoundTransformRuntimeException (e);
+                }
+            }
+        }
+    }
+
+
+    private final class StopDetectorThread extends Thread {
+        private final ByteBuffer         targetByteBuffer;
+        private final Object             stop;
+        private final StreamReaderThread streamReader;
+
+        private StopDetectorThread (final ByteBuffer targetByteBuffer, final Object stop, final StreamReaderThread streamReader) {
+            this.targetByteBuffer = targetByteBuffer;
+            this.stop = stop;
+            this.streamReader = streamReader;
+            this.setName (this.getClass ().getSimpleName ());
+        }
+
+        @Override
+        public void run () {
+            synchronized (stop) {
+                try {
+                    boolean waited = false;
+                    while (!waited) {
+                        stop.wait ();
+                        waited = true;
+                    }
+                    synchronized (targetByteBuffer){
+                        if (waited) {
+                            targetByteBuffer.notifyAll ();
+                        }
+                    }
+                } catch (final InterruptedException e) {
+                    targetByteBuffer.notifyAll ();
+                }
+            }
+            streamReader.stopWaiting ();
+        }
+    }
+
+
+    private static class SleepThread extends Thread {
+        private final Object stop;
+        private final long   millis;
+
+        private SleepThread (Object stop, long millis) {
+            this.stop = stop;
+            this.millis = millis;
+            this.setName (this.getClass ().getSimpleName ());
+        }
+
+        @Override
+        public void run () {
+            try {
+                Thread.sleep (millis);
+            } catch (final InterruptedException e) {
+                throw new SoundTransformRuntimeException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e, e.getMessage ());
+            }
+            synchronized (stop) {
+                stop.notify ();
+            }
+        }
+    }
+
+
     enum DefaultRecordSoundServiceErrorCode implements ErrorCode {
 
         NOT_ABLE ("Not able to wait for a recording (%1s)"), PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING ("Problem while reading the buffer in a continuous recording");
@@ -83,19 +197,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
     public InputStream recordLimitedTimeRawInputStream (final StreamInfo streamInfo) throws SoundTransformException {
         final long millis = (long) (streamInfo.getFrameLength () / streamInfo.getSampleRate () * DefaultRecordSoundService.MS_PER_SECOND);
         final Object stop = new Object ();
-        new Thread () {
-            @Override
-            public void run () {
-                try {
-                    Thread.sleep (millis);
-                } catch (final InterruptedException e) {
-                    throw new SoundTransformRuntimeException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e, e.getMessage ());
-                }
-                synchronized (stop) {
-                    stop.notify ();
-                }
-            }
-        }.start ();
+        new SleepThread (stop, millis).start ();
         return this.recordRawInputStream (streamInfo, stop);
     }
 
@@ -107,7 +209,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         final ByteBuffer targetByteBuffer = this.startRecordingAndReturnByteBuffer (streamInfo, stop);
         final List<Sound> results = new ArrayList<Sound> ();
 
-        final Thread streamReader = this.getStreamReader (streamInfo, targetByteBuffer, results);
+        final StreamReaderThread streamReader = this.getStreamReader (streamInfo, targetByteBuffer, results);
         streamReader.start ();
         try {
             Thread.sleep (DefaultRecordSoundService.ARBITRARY_SLEEP_TIME_TO_ENSURE_THE_STREAMING_IS_INITIALIZED);
@@ -120,69 +222,14 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         return results;
     }
 
-    private Thread stopDetector (final Object stop, final Thread streamReader, final ByteBuffer targetByteBuffer) {
-        return new Thread () {
-            @Override
-            public void run () {
-                synchronized (stop) {
-                    try {
-                        boolean waited = false;
-                        while (!waited) {
-                            stop.wait ();
-                            waited = true;
-                        }
-                        synchronized (targetByteBuffer){
-                            if (waited) {
-                                targetByteBuffer.notifyAll ();
-                            }
-                        }
-                        streamReader.interrupt ();
-                    } catch (final InterruptedException e) {
-                        targetByteBuffer.notify();
-                        streamReader.interrupt ();
-                    }
-                }
-                streamReader.interrupt ();
-            }
-        };
+    private Thread stopDetector (final Object stop, final StreamReaderThread streamReader, final ByteBuffer targetByteBuffer) {
+        return new StopDetectorThread (targetByteBuffer, stop, streamReader);
     }
 
-    private Thread getStreamReader (final StreamInfo streamInfo, final ByteBuffer targetByteBuffer, final List<Sound> results) {
+    private StreamReaderThread getStreamReader (final StreamInfo streamInfo, final ByteBuffer targetByteBuffer, final List<Sound> results) {
         final AudioFileService<?> audioFileService1 = this.audioFileService;
         final InputStreamToSoundService<?> isToSoundService1 = this.isToSoundService;
-        return new Thread () {
-
-
-            private void waitForNewBytes (final ByteBuffer targetByteBuffer) throws SoundTransformException {
-                boolean waited = false;
-                synchronized (targetByteBuffer) {
-                    try {
-                        while (!waited) {
-                            targetByteBuffer.wait ();
-                            waited = true;
-                        }
-                    } catch (final InterruptedException e) {
-                        new LogEvent (DefaultRecordSoundServiceEventCode.STREAM_READER_STOPPED, e);
-                    }
-                }
-            }
-            @Override
-            public void run () {
-                while (true) {
-                    try {
-                        this.waitForNewBytes (targetByteBuffer);
-                        final InputStream inputStream = audioFileService1.streamFromRawStream (new ByteArrayInputStream (targetByteBuffer.array ()), streamInfo);
-                        if (inputStream.available () > 0) {
-                            results.add (isToSoundService1.fromInputStream (inputStream, streamInfo));
-                        }
-                    } catch (final IOException e) {
-                        throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING, e));
-                    } catch (final SoundTransformException e) {
-                        throw new SoundTransformRuntimeException (e);
-                    }
-                }
-            }
-        };
+        return new StreamReaderThread (results, streamInfo, targetByteBuffer, audioFileService1, isToSoundService1);
     }
 
 

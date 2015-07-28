@@ -19,6 +19,7 @@ final class TargetDataLineReaderThread extends Thread {
     TargetDataLineReaderThread (final TargetDataLine dataLine1, final BytesExporterFromThread<?> exporter1) {
         this.dataLine = dataLine1;
         this.exporter = exporter1;
+        this.setName (this.getClass ().getSimpleName ());
     }
 
     public void stopRecording () {
