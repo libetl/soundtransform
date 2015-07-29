@@ -77,7 +77,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         }
     }
 
-    private final class StopDetectorThread extends Thread {
+    private final static class StopDetectorThread extends Thread {
         private final ByteBuffer         targetByteBuffer;
         private final Object             stop;
         private final StreamReaderThread streamReader;
@@ -92,22 +92,26 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         @Override
         public void run () {
             synchronized (this.stop) {
+                boolean waited = false;
                 try {
-                    boolean waited = false;
                     while (!waited) {
-                        this.stop.wait ();
                         waited = true;
+                        this.stop.wait ();
                     }
-                    synchronized (this.targetByteBuffer) {
-                        if (waited) {
-                            this.targetByteBuffer.notifyAll ();
-                        }
-                    }
+                    this.notifyTargetByteBuffer (waited);
                 } catch (final InterruptedException e) {
-                    this.targetByteBuffer.notifyAll ();
+                    this.notifyTargetByteBuffer (waited);
                 }
             }
             this.streamReader.stopWaiting ();
+        }
+
+        private void notifyTargetByteBuffer (final boolean waited) {
+            synchronized (this.targetByteBuffer) {
+                if (waited) {
+                    this.targetByteBuffer.notifyAll ();
+                }
+            }
         }
     }
 
