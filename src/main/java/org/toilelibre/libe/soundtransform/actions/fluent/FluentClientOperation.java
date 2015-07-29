@@ -23,11 +23,11 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
 BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
 
     public abstract class Step {
-        void run (final FluentClientInterface client) throws SoundTransformException {
+        protected void run (final FluentClientInterface client) throws SoundTransformException {
             client.hashCode ();
         }
 
-        void run (final FluentClientInterface client, final int invocationNumber) throws SoundTransformException {
+        protected void run (final FluentClientInterface client, final int invocationNumber) throws SoundTransformException {
             this.run (client);
         }
     }

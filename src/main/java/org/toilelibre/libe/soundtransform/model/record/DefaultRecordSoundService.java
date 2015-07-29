@@ -77,7 +77,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         }
     }
 
-    private final static class StopDetectorThread extends Thread {
+    private static final class StopDetectorThread extends Thread {
         private final ByteBuffer         targetByteBuffer;
         private final Object             stop;
         private final StreamReaderThread streamReader;
