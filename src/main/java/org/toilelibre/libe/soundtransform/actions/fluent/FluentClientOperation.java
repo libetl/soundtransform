@@ -22,12 +22,20 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 public class FluentClientOperation implements BuildableFluentClientOperationSoundImported, BuildableFluentClientOperationWithInputStream, BuildableFluentClientOperationWithFile, BuildableFluentClientOperationWithFreqs, BuildableFluentClientOperationWithParallelizedClients,
 BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
 
-    public abstract class Step {
-        protected void run (final FluentClientInterface client) throws SoundTransformException {
+    public interface StepInterface {
+        void run (final FluentClientInterface client) throws SoundTransformException;
+
+        void run (final FluentClientInterface client, final int invocationNumber) throws SoundTransformException;
+    }
+
+    public abstract class Step implements StepInterface {
+        @Override
+        public void run (final FluentClientInterface client) throws SoundTransformException {
             client.hashCode ();
         }
 
-        protected void run (final FluentClientInterface client, final int invocationNumber) throws SoundTransformException {
+        @Override
+        public void run (final FluentClientInterface client, final int invocationNumber) throws SoundTransformException {
             this.run (client);
         }
     }
