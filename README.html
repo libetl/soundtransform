@@ -832,9 +832,8 @@ function setDocumentScrollTop(ypos)
 <p>Tells the client to open the microphone, to start recording a sound and to return in the pipeline The result will be a Segmented sound (a sound consisting of several mono sounds). The frameLength in the streamInfo will be ignored. The further actions are started just after the start of the recording.</p> 
 <ul> 
  <li>/!\ : It is your responsibility to call stop.notifyAll () in another thread, else the recording will not finish </li> 
- <li>/!\ : This method should only be used</li> 
+ <li>/!\ : This method should only be used if the next operation costs more time than the recording itself. In any other case, use the withRecordedInputStream method.</li> 
 </ul> 
-<p>if the next operation costs more time than the recording itself. In any other case, use the withRecordedInputStream method.</p> 
 <p>Parameters: <code>streamInfo</code> - the future input stream info</p> 
 <p><code>stop</code> - the method notifyAll must be called to stop the recording</p> 
 <p>Returns:<br /> the client, with an imported sound (segmented)</p> 
