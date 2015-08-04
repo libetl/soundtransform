@@ -300,7 +300,7 @@ The further actions are started just after the start of the recording.
 * /!\ : This method should only be used if the next operation costs more time than the recording itself. 
         In any other case, use the withRecordedInputStream method.
 
-Parameters: 
+Parameters:  
 `streamInfo` - the future input stream info
 
 `stop`       - the method notifyAll must be called to stop the recording

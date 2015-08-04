@@ -834,7 +834,7 @@ function setDocumentScrollTop(ypos)
  <li>/!\ : It is your responsibility to call stop.notifyAll () in another thread, else the recording will not finish </li> 
  <li>/!\ : This method should only be used if the next operation costs more time than the recording itself. In any other case, use the withRecordedInputStream method.</li> 
 </ul> 
-<p>Parameters: <code>streamInfo</code> - the future input stream info</p> 
+<p>Parameters:<br /> <code>streamInfo</code> - the future input stream info</p> 
 <p><code>stop</code> - the method notifyAll must be called to stop the recording</p> 
 <p>Returns:<br /> the client, with an imported sound (segmented)</p> 
 <p>Throws:<br /> <code>SoundTransformException</code> - the mic could not be read, the recorder could not start, or the buffer did not record anything</p> 
