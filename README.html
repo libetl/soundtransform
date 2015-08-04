@@ -825,6 +825,17 @@ function setDocumentScrollTop(ypos)
 <p><code>classpathResources</code> - a list of classpathResources</p> 
 <p>Returns:<br /> the client, with a list of clients inside holding a value each</p> 
 <p>Throws:<br /> <code>SoundTransformException</code> - can happen if there was a problem during the flow, or if the threads were interrupted</p> 
+<h5> <a id="user-content-fluentclientreadywhilerecordingasound" class="anchor" href="#fluentclientreadywhilerecordingasound" aria-hidden="true"><span class="octicon octicon-link"></span></a>FluentClientReady.whileRecordingASound</h5> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-smi">FluentClientSoundImported</span> whileRecordingASound (<span class="pl-smi">StreamInfo</span> streamInfo, <span class="pl-smi">Object</span> stop) throws <span class="pl-smi">SoundTransformException</span></pre>
+</div> 
+<p>Tells the client to open the microphone, to start recording a sound and to return in the pipeline The result will be a Segmented sound (a sound consisting of several mono sounds). The frameLength in the streamInfo will be ignored. The further actions are started just after the start of the recording.</p> 
+<p>/!\ : It is your responsibility to call stop.notifyAll () in another thread, else the recording will not finish /!\ : This method should only be used</p> 
+<p>if the next operation costs more time than the recording itself. In any other case, use the withRecordedInputStream method.</p> 
+<p>Parameters: <code>streamInfo</code> - the future input stream info</p> 
+<p><code>stop</code> - the method notifyAll must be called to stop the recording</p> 
+<p>Returns:<br /> the client, with an imported sound (segmented)</p> 
+<p>Throws:<br /> <code>SoundTransformException</code> - the mic could not be read, the recorder could not start, or the buffer did not record anything</p> 
 <h5> <a id="user-content-fluentclientreadywithamixedsound" class="anchor" href="#fluentclientreadywithamixedsound" aria-hidden="true"><span class="octicon octicon-link"></span></a>FluentClientReady.withAMixedSound</h5> 
 <div class="highlight highlight-java">
  <pre><span class="pl-smi">FluentClientSoundImported</span> withAMixedSound (<span class="pl-smi">Sound</span><span class="pl-k">.</span><span class="pl-c1">..</span> sounds) throws <span class="pl-smi">SoundTransformException</span>;</pre>

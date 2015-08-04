@@ -285,6 +285,33 @@ the client, with a list of clients inside holding a value each
 Throws:  
 `SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
 
+#####   FluentClientReady.whileRecordingASound 
+
+```java
+FluentClientSoundImported whileRecordingASound (StreamInfo streamInfo, Object stop) throws SoundTransformException
+```
+
+
+Tells the client to open the microphone, to start recording a sound and to return in the pipeline The result will 
+be a Segmented sound (a sound consisting of several mono sounds). The frameLength in the streamInfo will be ignored. 
+The further actions are started just after the start of the recording.
+
+ /!\ : It is your responsibility to call stop.notifyAll () in another thread, else the recording will not finish 
+ /!\ : This method should only be used
+
+if the next operation costs more time than the recording itself. In any other case, use the withRecordedInputStream method.
+
+Parameters: 
+`streamInfo` - the future input stream info
+
+`stop`       - the method notifyAll must be called to stop the recording
+
+Returns:  
+the client, with an imported sound (segmented)
+
+Throws:  
+`SoundTransformException` - the mic could not be read, the recorder could not start, or the buffer did not record anything
+
 #####   FluentClientReady.withAMixedSound 
 
 ```java
@@ -302,8 +329,6 @@ the client, with an imported sound
 
 Throws:  
 `SoundTransformException` - the sound files are invalid
-
-
 
 #####   FluentClientReady.withAPack (Json InputStream) (before another with.. method)
 

@@ -345,7 +345,7 @@ public interface FluentClientReady extends FluentClientCommon {
      * will be ignored. The further actions are started just after the start of
      * the recording.
      *
-     * /!\ : It is your responsibility to call stop.notify () in another thread,
+     * /!\ : It is your responsibility to call stop.notifyAll () in another thread,
      * else the recording will not finish /!\ : This method should only be used
      * if the next operation costs more time than the recording itself. In any
      * other case, use the withRecordedInputStream method.
@@ -353,8 +353,8 @@ public interface FluentClientReady extends FluentClientCommon {
      * @param streamInfo
      *            the future input stream info
      * @param stop
-     *            the method notify must be called to stop the recording
-     * @return the client, with an input stream
+     *            the method notifyAll must be called to stop the recording
+     * @return the client, with a sound (segmented)
      * @throws SoundTransformException
      *             the mic could not be read, the recorder could not start, or
      *             the buffer did not record anything
