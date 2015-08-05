@@ -17,9 +17,6 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
-import org.toilelibre.libe.soundtransform.model.observer.EventCode;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
 final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoundService> implements RecordSoundService<AbstractLogAware<DefaultRecordSoundService>> {
 
@@ -50,7 +47,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
                         waited = true;
                     }
                 } catch (final InterruptedException e) {
-                    new LogEvent (DefaultRecordSoundServiceEventCode.STREAM_READER_STOPPED, e);
+                    waited = true;
                 }
             }
         }
@@ -154,28 +151,6 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         }
     }
 
-    public enum DefaultRecordSoundServiceEventCode implements EventCode {
-        STREAM_READER_STOPPED (LogLevel.INFO, "Stream reader stopped");
-
-        private final String   messageFormat;
-        private final LogLevel logLevel;
-
-        DefaultRecordSoundServiceEventCode (final LogLevel ll, final String mF) {
-            this.messageFormat = mF;
-            this.logLevel = ll;
-        }
-
-        @Override
-        public LogLevel getLevel () {
-            return this.logLevel;
-        }
-
-        @Override
-        public String getMessageFormat () {
-            return this.messageFormat;
-        }
-
-    }
 
     private static final float                 MS_PER_SECOND                                               = 1000.0f;
     private static final long                  ARBITRARY_SLEEP_TIME_TO_ENSURE_THE_STREAMING_IS_INITIALIZED = 1000;
