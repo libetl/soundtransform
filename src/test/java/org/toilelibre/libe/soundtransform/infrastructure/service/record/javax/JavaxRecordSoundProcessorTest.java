@@ -28,6 +28,7 @@ import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 
@@ -128,6 +129,97 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         Assert.assertNotNull (resultSound.getChannels ());
         Assert.assertEquals (resultSound.getChannels ().length, 1);
         Assert.assertNotEquals (resultSound.getChannels () [0].getSamplesLength (), 0);
+    }
+
+    @Test (expected = SoundTransformRuntimeException.class)
+    public void stopBeforeInitRecordedSoundInParallel () throws Exception {
+        this.rule.hashCode ();
+        final byte [][] buffers = new byte [15] [1024];
+        for (int i = 0 ; i < 14 ; i++) {
+            new Random ().nextBytes (buffers [i]);
+        }
+        buffers [14] = new byte [0];
+        this.mockRecordSoundProcessor (buffers);
+
+        FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+
+        final Object stop = new Object ();
+        new Thread ("Wait400MillisInTheTest") {
+
+            @Override
+            public void run () {
+                try {
+                    Thread.sleep (400);
+                } catch (final InterruptedException e) {
+                    throw new RuntimeException (e);
+                }
+
+                this.stopThread ("main");
+            }
+
+            private void stopThread (final String name) {
+                final Thread [] threads = new Thread [Thread.activeCount ()];
+                Thread.enumerate (threads);
+                for (final Thread thread : threads) {
+                    if (name.equals (thread.getName ())) {
+                        thread.interrupt ();
+                    }
+                }
+            }
+
+        }.start ();
+
+        FluentClient.start ().whileRecordingASound (new StreamInfo (2, 1024, 2, 8000.0f, false, true, null), stop);
+
+        try {
+            Thread.sleep (1500);
+        } catch (final InterruptedException e) {
+        }
+    }
+
+    @Test
+    public void startAndInterruptBackgroundRecording () throws Exception {
+        this.rule.hashCode ();
+        final byte [][] buffers = new byte [15] [1024];
+        for (int i = 0 ; i < 14 ; i++) {
+            new Random ().nextBytes (buffers [i]);
+        }
+        buffers [14] = new byte [0];
+        this.mockRecordSoundProcessor (buffers);
+
+        final Object stop = new Object ();
+        new Thread ("Wait1100MillisInTheTest") {
+
+            @Override
+            public void run () {
+                try {
+                    Thread.sleep (1100);
+                } catch (final InterruptedException e) {
+                    throw new RuntimeException (e);
+                }
+                this.stopThread ("StreamReaderThread");
+                this.stopThread ("StopDetectorThread");
+                this.stopThread ("SleepThread");
+            }
+
+            private void stopThread (final String name) {
+                final Thread [] threads = new Thread [Thread.activeCount ()];
+                Thread.enumerate (threads);
+                for (final Thread thread : threads) {
+                    if (name.equals (thread.getName ())) {
+                        thread.interrupt ();
+                    }
+                }
+            }
+
+        }.start ();
+
+        FluentClient.start ().whileRecordingASound (new StreamInfo (2, 1024, 2, 8000.0f, false, true, null), stop);
+        try {
+            Thread.sleep (1500);
+        } catch (final InterruptedException e) {
+            throw new RuntimeException (e);
+        }
     }
 
     private void mockRecordSoundProcessor (final byte [][] buffers) throws Exception {
