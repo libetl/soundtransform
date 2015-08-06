@@ -23,9 +23,9 @@ import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
-import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
@@ -107,7 +107,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
             @Override
             public void run () {
                 try {
-                    Thread.sleep (300);
+                    Thread.sleep (2000);
                 } catch (final InterruptedException e) {
                     throw new RuntimeException (e);
                 }
@@ -123,15 +123,21 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
         }.start ();
 
-        final Sound resultSound = FluentClient.start ().whileRecordingASound (new StreamInfo (2, 1024, 2, 8000.0f, false, true, null), stop).findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 8000f)).stopWithSound ();
+        final Sound resultSound = FluentClient.start ().whileRecordingASound (new StreamInfo (2, 1024, 2, 8000.0f, false, true, null), stop).stopWithSound ();
 
+        try {
+            Thread.sleep (2500);
+        } catch (final InterruptedException e) {
+            throw new RuntimeException (e);
+        }
+        
         Assert.assertThat (resultSound, new IsNot<Sound> (new IsNull<Sound> ()));
         Assert.assertNotNull (resultSound.getChannels ());
         Assert.assertEquals (resultSound.getChannels ().length, 1);
         Assert.assertNotEquals (resultSound.getChannels () [0].getSamplesLength (), 0);
     }
 
-    @Test (expected = SoundTransformRuntimeException.class)
+    @Test
     public void stopBeforeInitRecordedSoundInParallel () throws Exception {
         this.rule.hashCode ();
         final byte [][] buffers = new byte [15] [1024];
@@ -154,14 +160,31 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
                     throw new RuntimeException (e);
                 }
 
+                boolean notified = false;
+                synchronized (stop) {
+                    while (!notified) {
+                        stop.notifyAll ();
+                        notified = true;
+                    }
+                }
                 this.stopThread ("main");
+
+                try {
+                    Thread.sleep (400);
+                } catch (final InterruptedException e) {
+                    throw new RuntimeException (e);
+                }
+                this.stopThread ("StreamReaderThread");
+                this.stopThread ("StopDetectorThread");
+                this.stopThread ("SleepThread");
+                
             }
 
             private void stopThread (final String name) {
                 final Thread [] threads = new Thread [Thread.activeCount ()];
                 Thread.enumerate (threads);
                 for (final Thread thread : threads) {
-                    if (name.equals (thread.getName ())) {
+                    if (thread != null && name.equals (thread.getName ())) {
                         thread.interrupt ();
                     }
                 }
@@ -169,7 +192,11 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
         }.start ();
 
-        FluentClient.start ().whileRecordingASound (new StreamInfo (2, 1024, 2, 8000.0f, false, true, null), stop);
+        try {
+            FluentClient.start ().whileRecordingASound (new StreamInfo (2, 1024, 2, 8000.0f, false, true, null), stop);
+        } catch (final SoundTransformRuntimeException stre) {
+            new Slf4jObserver ().notify (stre.toString ());
+        }
 
         try {
             Thread.sleep (1500);
@@ -188,17 +215,26 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         this.mockRecordSoundProcessor (buffers);
 
         final Object stop = new Object ();
-        new Thread ("Wait1100MillisInTheTest") {
+        new Thread ("Wait1500MillisInTheTest") {
 
             @Override
             public void run () {
                 try {
-                    Thread.sleep (1100);
+                    Thread.sleep (1500);
                 } catch (final InterruptedException e) {
                     throw new RuntimeException (e);
                 }
+                boolean notified = false;
+                synchronized (stop) {
+                    while (!notified) {
+                        stop.notifyAll ();
+                        notified = true;
+                    }
+                }
+                this.stopThread ("TargetDataLineReaderThread");
                 this.stopThread ("StreamReaderThread");
                 this.stopThread ("StopDetectorThread");
+                this.stopThread ("StopProperlyThread");
                 this.stopThread ("SleepThread");
             }
 
@@ -206,7 +242,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
                 final Thread [] threads = new Thread [Thread.activeCount ()];
                 Thread.enumerate (threads);
                 for (final Thread thread : threads) {
-                    if (name.equals (thread.getName ())) {
+                    if (thread != null && name.equals (thread.getName ())) {
                         thread.interrupt ();
                     }
                 }
@@ -214,7 +250,9 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
         }.start ();
 
+
         FluentClient.start ().whileRecordingASound (new StreamInfo (2, 1024, 2, 8000.0f, false, true, null), stop);
+
         try {
             Thread.sleep (1500);
         } catch (final InterruptedException e) {
