@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor.FrameProcessorErrorCode;
@@ -39,7 +40,7 @@ public class ByteArrayFrameProcessorTest {
     @Test (expected = SoundTransformException.class)
     public void simulateReadFailure () throws IOException, SoundTransformException {
         final InputStream ais = Mockito.mock (InputStream.class);
-        Mockito.when (ais.read (Mockito.any (byte [].class))).thenThrow (new IOException ("Could not read stream"));
+        Mockito.when (ais.read (Matchers.any (byte [].class))).thenThrow (new IOException ("Could not read stream"));
         try {
             new ByteArrayFrameProcessor ().fromInputStream (ais, new StreamInfo (2, 200000, 2, 441000.0f, false, true, null));
         } catch (final SoundTransformException ste) {

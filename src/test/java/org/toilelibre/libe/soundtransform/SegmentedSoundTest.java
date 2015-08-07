@@ -75,43 +75,43 @@ public class SegmentedSoundTest {
 
         Assert.assertEquals (sound1.getChannels () [0].viewSamplesArray (), sound12Bis.getChannels () [0].viewSamplesArray ());
     }
-    
+
     @Test
     public void segmentedSoundBrowse () {
-        Sound sound1 = new Sound (new Channel [] {new Channel (this.generateSequence (0, 13), new FormatInfo (1, 1), 0)});
-        Sound sound2 = new Sound (new Channel [] {new Channel (this.generateSequence (14, 27), new FormatInfo (1, 1), 0)});
-        Sound sound3 = new Sound (new Channel [] {new Channel (this.generateSequence (28, 41), new FormatInfo (1, 1), 0)});
-        Sound sound4 = new Sound (new Channel [] {new Channel (this.generateSequence (42, 55), new FormatInfo (1, 1), 0)});
-        Sound sound5 = new Sound (new Channel [] {new Channel (this.generateSequence (56, 69), new FormatInfo (1, 1), 0)});
-        
-        Sound sound = new SegmentedSound(new FormatInfo (1, 1), Arrays.asList (sound1, sound2, sound3, sound4, sound5));
-        Assert.assertEquals(sound.getChannels() [0].getSampleAt (10), 10);
-        Assert.assertEquals(sound.getChannels() [0].getSampleAt (25), 25);
-        Assert.assertEquals(sound.getChannels() [0].getSampleAt (26), 26);
-        Assert.assertEquals(sound.getChannels() [0].getSampleAt (25), 25);
-        Assert.assertEquals(sound.getChannels() [0].getSampleAt (42), 42);
-        Assert.assertEquals(sound.getChannels() [0].getSampleAt (40), 40);
+        final Sound sound1 = new Sound (new Channel [] { new Channel (this.generateSequence (0, 13), new FormatInfo (1, 1), 0) });
+        final Sound sound2 = new Sound (new Channel [] { new Channel (this.generateSequence (14, 27), new FormatInfo (1, 1), 0) });
+        final Sound sound3 = new Sound (new Channel [] { new Channel (this.generateSequence (28, 41), new FormatInfo (1, 1), 0) });
+        final Sound sound4 = new Sound (new Channel [] { new Channel (this.generateSequence (42, 55), new FormatInfo (1, 1), 0) });
+        final Sound sound5 = new Sound (new Channel [] { new Channel (this.generateSequence (56, 69), new FormatInfo (1, 1), 0) });
+
+        final Sound sound = new SegmentedSound (new FormatInfo (1, 1), Arrays.asList (sound1, sound2, sound3, sound4, sound5));
+        Assert.assertEquals (sound.getChannels () [0].getSampleAt (10), 10);
+        Assert.assertEquals (sound.getChannels () [0].getSampleAt (25), 25);
+        Assert.assertEquals (sound.getChannels () [0].getSampleAt (26), 26);
+        Assert.assertEquals (sound.getChannels () [0].getSampleAt (25), 25);
+        Assert.assertEquals (sound.getChannels () [0].getSampleAt (42), 42);
+        Assert.assertEquals (sound.getChannels () [0].getSampleAt (40), 40);
         try {
-            sound.getChannels() [0].getSampleAt (70);
-            Assert.fail("should have failed");
-        } catch (SoundTransformRuntimeException stre) {
-            
+            sound.getChannels () [0].getSampleAt (70);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException stre) {
+
         }
-        
+
         try {
-            sound.getChannels() [0].getSampleAt (-5);
-            Assert.fail("should have failed");
-        } catch (SoundTransformRuntimeException stre) {
-            
+            sound.getChannels () [0].getSampleAt (-5);
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformRuntimeException stre) {
+
         }
     }
 
-    private long[] generateSequence(int i, int j) {
-        final long [] result = new long [ j - i + 1 ];
-        for (int k = i ; k <= j ; k++ ) {
-            result [k - i] = k; 
+    private long [] generateSequence (final int i, final int j) {
+        final long [] result = new long [j - i + 1];
+        for (int k = i ; k <= j ; k++) {
+            result [k - i] = k;
         }
         return result;
-    }        
+    }
 
 }

@@ -151,7 +151,6 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         }
     }
 
-
     private static final float                 MS_PER_SECOND                                               = 1000.0f;
     private static final long                  ARBITRARY_SLEEP_TIME_TO_ENSURE_THE_STREAMING_IS_INITIALIZED = 1000;
     private final RecordSoundProcessor         processor;

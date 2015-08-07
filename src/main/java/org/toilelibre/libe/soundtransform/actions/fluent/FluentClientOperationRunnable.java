@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
 public class FluentClientOperationRunnable implements Runnable {
 
     private final FluentClientOperation operation;
-    private final FluentClientInterface       clientInterface;
+    private final FluentClientInterface clientInterface;
     private final int                   clientId;
 
     public FluentClientOperationRunnable (final FluentClientOperation operation1, final FluentClientInterface clientInterface1, final int clientId1) {

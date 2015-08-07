@@ -27,21 +27,21 @@ public class SegmentedChannel extends Channel {
 
     public static final String THIS_CHANNEL_IS_SEGMENTED_AND_CANNOT_BE_DISPLAYED = "This channel is segmented and cannot be displayed";
     private final List<Sound>  channelParts;
-    private int recentlyViewedIndex = 0;
-    private int recentlyViewedSamplesArrayIndex = 0;
-    private int recentlyViewedSamplesArrayPosition = 0;
-    private int recentlyViewedSamplesLength = 0;
-    private int recentlyViewedSamplesArrayNumber = 0;
+    private int                recentlyViewedIndex                               = 0;
+    private int                recentlyViewedSamplesArrayIndex                   = 0;
+    private int                recentlyViewedSamplesArrayPosition                = 0;
+    private int                recentlyViewedSamplesLength                       = 0;
+    private int                recentlyViewedSamplesArrayNumber                  = 0;
 
     public SegmentedChannel (final FormatInfo formatInfo, final List<Sound> sounds) {
         super (null, formatInfo, 0);
         this.channelParts = sounds;
     }
-    
+
     private void updateRecentlyViewedChannelLength () {
 
-        int segmentIndex = recentlyViewedSamplesArrayNumber;
-        int numberOfSamples = recentlyViewedSamplesLength;
+        int segmentIndex = this.recentlyViewedSamplesArrayNumber;
+        int numberOfSamples = this.recentlyViewedSamplesLength;
         while (segmentIndex < this.channelParts.size ()) {
             numberOfSamples += this.channelParts.get (segmentIndex).getSamplesLength ();
             segmentIndex++;
@@ -67,18 +67,17 @@ public class SegmentedChannel extends Channel {
         return SegmentedChannel.THIS_CHANNEL_IS_SEGMENTED_AND_CANNOT_BE_DISPLAYED;
     }
 
+    private void updateRecentlyViewedIndex (final int wantedIndex) {
 
-    private void updateRecentlyViewedIndex (int wantedIndex) {
-        
         int currentGlobalIndex = this.recentlyViewedIndex;
         int currentIndex = this.recentlyViewedSamplesArrayIndex;
         int currentPosition = this.recentlyViewedSamplesArrayPosition;
-        
+
         while (currentGlobalIndex != wantedIndex) {
-            int delta = (int) Math.signum (wantedIndex - currentGlobalIndex);
+            final int delta = (int) Math.signum (wantedIndex - currentGlobalIndex);
             currentGlobalIndex += delta;
             currentPosition += delta;
-            
+
             if (currentPosition < 0) {
                 currentIndex--;
                 if (currentIndex < 0) {
@@ -93,13 +92,13 @@ public class SegmentedChannel extends Channel {
                     throw new SoundTransformRuntimeException (new SoundTransformException (SegmentedChannelErrorCode.ARRAY_INDEX_OUT_OF_BOUNDS, new ArrayIndexOutOfBoundsException (), currentIndex));
                 }
                 currentPosition = 0;
-            }        }
-        
+            }
+        }
+
         this.recentlyViewedIndex = wantedIndex;
         this.recentlyViewedSamplesArrayIndex = currentIndex;
         this.recentlyViewedSamplesArrayPosition = currentPosition;
     }
-    
 
     @Override
     public int getSamplesLength () {

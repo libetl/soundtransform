@@ -11,6 +11,7 @@ import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -53,7 +54,7 @@ public class JavazoomAudioFileHelperTest {
     public void getAudioInputSreamFromWavFileFromMP3IOException () throws SoundTransformException {
         try {
             final MpegAudioFileReader mock = Mockito.mock (MpegAudioFileReader.class);
-            Mockito.when (mock.getAudioInputStream (Mockito.any (File.class))).thenThrow (new IOException ());
+            Mockito.when (mock.getAudioInputStream (Matchers.any (File.class))).thenThrow (new IOException ());
             PowerMockito.whenNew (MpegAudioFileReader.class).withNoArguments ().thenReturn (mock);
             new JavazoomAudioFileHelper ().getAudioInputStream (new File (Thread.currentThread ().getContextClassLoader ().getResource ("mp3test.mp3").getFile ()));
         } catch (final SoundTransformException ste) {

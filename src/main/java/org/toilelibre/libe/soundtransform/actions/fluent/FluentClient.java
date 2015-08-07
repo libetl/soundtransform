@@ -939,10 +939,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * will be ignored. The further actions are started just after the start of
      * the recording.
      *
-     * /!\ : It is your responsibility to call stop.notifyAll () in another thread,
-     * else the recording will not finish /!\ : This method should only be used
-     * if the next operation costs more time than the recording itself. In any
-     * other case, use the withRecordedInputStream method.
+     * /!\ : It is your responsibility to call stop.notifyAll () in another
+     * thread, else the recording will not finish /!\ : This method should only
+     * be used if the next operation costs more time than the recording itself.
+     * In any other case, use the withRecordedInputStream method.
      *
      * @param streamInfo
      *            the future input stream info

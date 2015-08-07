@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
@@ -16,7 +17,7 @@ public class WriteInputStreamToByteArrayTest {
             final WriteInputStreamToByteArray writer = new WriteInputStreamToByteArray ();
             final InputStream failingInputStream = Mockito.mock (InputStream.class);
             try {
-                Mockito.when (failingInputStream.read (Mockito.any (byte [].class), Mockito.any (int.class), Mockito.any (int.class))).thenThrow (new IOException ("Forced failure"));
+                Mockito.when (failingInputStream.read (Matchers.any (byte [].class), Matchers.any (int.class), Matchers.any (int.class))).thenThrow (new IOException ("Forced failure"));
             } catch (final IOException e) {
                 throw new RuntimeException (e);
             }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient.FluentClientErrorCode;
@@ -316,7 +317,7 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
     public void importInvalidPack () throws SoundTransformException {
         final InputStream is = Mockito.mock (InputStream.class);
         try {
-            Mockito.when (is.read (Mockito.any (byte [].class))).thenThrow (new IOException ("Could not read from InputStream"));
+            Mockito.when (is.read (Matchers.any (byte [].class))).thenThrow (new IOException ("Could not read from InputStream"));
             FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("nullInputStreamPack", is);
         } catch (final SoundTransformException ste) {
             Assert.assertEquals (ImportPackServiceErrorCode.INVALID_INPUT_STREAM, ste.getErrorCode ());

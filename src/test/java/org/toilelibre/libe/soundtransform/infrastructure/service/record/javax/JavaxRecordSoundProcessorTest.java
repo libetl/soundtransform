@@ -130,7 +130,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         } catch (final InterruptedException e) {
             throw new RuntimeException (e);
         }
-        
+
         Assert.assertThat (resultSound, new IsNot<Sound> (new IsNull<Sound> ()));
         Assert.assertNotNull (resultSound.getChannels ());
         Assert.assertEquals (resultSound.getChannels ().length, 1);
@@ -177,7 +177,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
                 this.stopThread ("StreamReaderThread");
                 this.stopThread ("StopDetectorThread");
                 this.stopThread ("SleepThread");
-                
+
             }
 
             private void stopThread (final String name) {
@@ -249,7 +249,6 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
             }
 
         }.start ();
-
 
         FluentClient.start ().whileRecordingASound (new StreamInfo (2, 1024, 2, 8000.0f, false, true, null), stop);
 
