@@ -85,12 +85,17 @@ public class SegmentedSoundTest {
         final Sound sound5 = new Sound (new Channel [] { new Channel (this.generateSequence (56, 69), new FormatInfo (1, 1), 0) });
 
         final Sound sound = new SegmentedSound (new FormatInfo (1, 1), Arrays.asList (sound1, sound2, sound3, sound4, sound5));
+
         Assert.assertEquals (sound.getChannels () [0].getSampleAt (10), 10);
         Assert.assertEquals (sound.getChannels () [0].getSampleAt (25), 25);
         Assert.assertEquals (sound.getChannels () [0].getSampleAt (26), 26);
         Assert.assertEquals (sound.getChannels () [0].getSampleAt (25), 25);
         Assert.assertEquals (sound.getChannels () [0].getSampleAt (42), 42);
         Assert.assertEquals (sound.getChannels () [0].getSampleAt (40), 40);
+        Assert.assertEquals (sound.getChannels () [0].getSampleAt (0), 0);
+        Assert.assertEquals (sound.getChannels () [0].getSampleAt (10), 10);
+        Assert.assertEquals (sound.getChannels () [0].getSampleAt (0), 0);
+        Assert.assertEquals (sound.getChannels () [0].getSampleAt (69), 69);
         try {
             sound.getChannels () [0].getSampleAt (70);
             Assert.fail ("should have failed");
