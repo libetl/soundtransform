@@ -7,6 +7,7 @@ import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
+import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
@@ -29,6 +30,25 @@ public class SoundToStringTest extends SoundTransformTest {
             public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
                 fs.toString ();
                 return super.transformFrequencies (fs);
+            }
+
+        }.transform (s);
+        
+        new SimpleFrequencySoundTransform<Complex []> () {
+
+            @Override
+            public boolean rawSpectrumPrefered () {
+                return true;
+            }
+            
+            @Override
+            public void transformFrequencies (final double [][] spectrumAsDoubles, final float sampleRate) {
+                super.transformFrequencies (spectrumAsDoubles, sampleRate);
+                final Complex [] complexArray = new Complex [spectrumAsDoubles [0].length];
+                for (int i = 0 ; i < complexArray.length ; i++) {
+                    complexArray [i] = new Complex (spectrumAsDoubles [0] [i], spectrumAsDoubles [1] [i]);
+                }
+                new Spectrum<Complex []> (complexArray, new FormatInfo (2, sampleRate)).toString ();
             }
 
         }.transform (s);
