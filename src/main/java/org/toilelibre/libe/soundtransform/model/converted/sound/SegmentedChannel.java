@@ -9,7 +9,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
 
 public class SegmentedChannel extends Channel {
 
-    class IndexData {
+    static class IndexData {
         int globalIndex;
         int arrayIndex;
         int arrayPosition;
@@ -67,7 +67,7 @@ public class SegmentedChannel extends Channel {
     }
 
     @Override
-    public long getSampleAt (final int index) {
+    public synchronized long getSampleAt (final int index) {
         this.updateRecentlyViewedIndex (index);
 
         return this.channelParts.get (this.recentlyViewedIndex.arrayIndex).getChannels () [0].getSampleAt (this.recentlyViewedIndex.arrayPosition);
