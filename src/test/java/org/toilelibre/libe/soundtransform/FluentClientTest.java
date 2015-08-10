@@ -68,7 +68,7 @@ public class FluentClientTest extends SoundTransformTest {
                 .append (FluentClient.start ().withClasspathResource ("piano5g.wav").convertIntoSound ().stopWithSound ())
                 .apply (new EightBitsSoundTransform (25))
                 .changeFormat (new FormatInfo (2, 44100))
-                .mergeChannels()
+                .mergeChannels ()
                 .cutSubSound (0, 1000)
                 .exportToStream ()
                 .writeToClasspathResource ("after.wav")
