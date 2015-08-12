@@ -17,13 +17,19 @@ import org.toilelibre.libe.soundtransform.actions.fluent.FluentClientOperation;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CompositeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HammingWindowSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HanningWindowSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.InsertPartSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MaximumLikelihoodSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NoOpSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ReplacePartSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.UseWindowFunctionSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
@@ -33,6 +39,14 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class FluentClientTest extends SoundTransformTest {
 
+    @Test
+    public void applyCompositeTransform () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().applyAndStop(new CompositeSoundTransform<Channel, Channel, float[]>(
+                new UseWindowFunctionSoundTransform (new HammingWindowSoundTransform ()), new MaximumLikelihoodSoundTransform (8000, 8000, 100, 800)));
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().applyAndStop(new CompositeSoundTransform<Channel, Channel, float[]>(
+                new UseWindowFunctionSoundTransform (new HanningWindowSoundTransform ()), new MaximumLikelihoodSoundTransform (8000, 8000, 100, 800)));
+    }
+    
     @Test
     public void appendTest () throws SoundTransformException {
         final Sound sound2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().stopWithSound ();
