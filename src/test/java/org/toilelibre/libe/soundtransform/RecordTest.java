@@ -86,7 +86,7 @@ public class RecordTest extends SoundTransformTest {
             }
             stop.notify ();
             try {
-                stop.wait (500);
+                stop.wait (8000);
             } catch (final InterruptedException e) {
                 throw new SoundTransformException (RecordTestErrorCode.TEST_ERROR, e);
             }
