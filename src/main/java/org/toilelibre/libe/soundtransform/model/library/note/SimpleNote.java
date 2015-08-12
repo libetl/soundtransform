@@ -92,8 +92,9 @@ public class SimpleNote implements Note {
     private Channel soundToSubSound (final Channel input, final int beginning, final int end) {
         long [] newsamples = new long [0];
         if (beginning < end) {
-            newsamples = new long [end - beginning];
-            input.copyTo (newsamples, beginning, 0, end - beginning);
+            final int size = Math.min (end - beginning, input.getSamplesLength () - beginning);
+            newsamples = new long [size];
+            input.copyTo (newsamples, beginning, 0, size);
         }
         return new Channel (newsamples, input.getFormatInfo (), input.getChannelNum ());
     }
