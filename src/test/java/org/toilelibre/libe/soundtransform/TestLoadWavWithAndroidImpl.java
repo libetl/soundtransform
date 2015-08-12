@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android;
+package org.toilelibre.libe.soundtransform;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -15,7 +15,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper.AudioFileHelperErrorCode;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-public class LoadWav extends SoundTransformAndroidTest {
+public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
 
     private String iToS (final int n) {
         String result = "";
