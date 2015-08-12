@@ -172,16 +172,14 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
         org.junit.Assert.assertNotEquals (sound.getChannels ().length, 0);
         org.junit.Assert.assertEquals (((StreamInfo) sound.getFormatInfo ()).getTaggedInfo (), listInfo);
     }
-    
+
     @Test
     public void writeSoundWithMetadataInfo () throws SoundTransformException {
-        long [] samples = new long [1000];
+        final long [] samples = new long [1000];
         for (int i = 0 ; i < samples.length ; i++) {
             samples [i] = new Random ().nextLong ();
         }
-        Sound sound = new Sound (new Channel [] {new Channel (
-                samples, 
-                new StreamInfo (1, samples.length, 1, 44100, false, true, "my brand new song"), 0)});
+        final Sound sound = new Sound (new Channel [] { new Channel (samples, new StreamInfo (1, samples.length, 1, 44100, false, true, "my brand new song"), 0) });
         FluentClient.start ().withSound (sound).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 

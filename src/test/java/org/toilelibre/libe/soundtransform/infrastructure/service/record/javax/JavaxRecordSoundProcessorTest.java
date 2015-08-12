@@ -278,13 +278,13 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         MemberModifier.stub (MemberMatcher.method (TargetDataLineRecordSoundProcessor.class, "getDataLine", Info.class)).toReturn (dataLine);
         MemberModifier.stub (MemberMatcher.method (TargetDataLineRecordSoundProcessor.class, "checkLineSupported", Info.class)).toReturn (true);
     }
-    
+
     @Test
     public void notAudioFormatObjectShouldFail () throws SoundTransformException {
         try {
             new TargetDataLineRecordSoundProcessor ().recordRawInputStream (new Object (), new Object ());
             Assert.fail ("should have failed");
-        } catch (SoundTransformException ste) {
+        } catch (final SoundTransformException ste) {
             Assert.assertEquals (ste.getErrorCode (), TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_EXPECTED);
         }
     }
@@ -294,7 +294,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         try {
             new TargetDataLineRecordSoundProcessor ().startRecordingAndReturnByteBuffer (new Object (), new Object ());
             Assert.fail ("should have failed");
-        } catch (SoundTransformException ste) {
+        } catch (final SoundTransformException ste) {
             Assert.assertEquals (ste.getErrorCode (), TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_EXPECTED);
         }
     }

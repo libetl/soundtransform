@@ -158,12 +158,12 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
         }
     }
 
-    private void readOneFrame (InputStream ais, byte [] frame) throws IOException {
+    private void readOneFrame (final InputStream ais, final byte [] frame) throws IOException {
         final int size = ais.read (frame);
         if (size == -1) {
             this.log (new LogEvent (FrameProcessorEventCode.END_OF_STREAM));
         }
-        
+
     }
 
 }
