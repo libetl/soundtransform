@@ -1,4 +1,4 @@
-package org.toilelibre.libe.soundtransform;
+package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -13,8 +13,9 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper.AudioFileHelperErrorCode;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
+public class LoadWav extends SoundTransformAndroidTest {
 
     private String iToS (final int n) {
         String result = "";
@@ -151,12 +152,23 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
     }
 
     @Test
-    public void importCDHEader () throws SoundTransformException {
+    public void importCDHeader () throws SoundTransformException {
         org.junit.Assert.assertEquals (this.sToI (this.iToS (44100)), 44100);
         final String input = "RIFF1000WAVEfmt     " + '\1' + '\0' + '\1' + '\0' + this.iToS (44100) + this.iToS (0) + '\2' + '\0' + Character.toChars (16) [0] + '\0' + "data" + this.iToS (44);
         final byte [] byteArray = this.toBytes (input.toCharArray ());
         final Sound sound = FluentClient.start ().withAudioInputStream (new ByteArrayInputStream (byteArray)).importToSound ().stopWithSound ();
         org.junit.Assert.assertNotEquals (sound.getChannels ().length, 0);
+    }
+    
+    @Test
+    public void importHeaderWithMetadataInfo () throws SoundTransformException {
+        org.junit.Assert.assertEquals (this.sToI (this.iToS (44100)), 44100);
+        final String listInfo = "my brand new song";
+        final String input = "RIFF1000WAVEfmt     " + '\1' + '\0' + '\1' + '\0' + this.iToS (44100) + this.iToS (0) + '\2' + '\0' + Character.toChars (16) [0] + '\0' + "LIST" + this.iToS (listInfo.length ()) + listInfo + "data" + this.iToS (44);
+        final byte [] byteArray = this.toBytes (input.toCharArray ());
+        final Sound sound = FluentClient.start ().withAudioInputStream (new ByteArrayInputStream (byteArray)).importToSound ().stopWithSound ();
+        org.junit.Assert.assertNotEquals (sound.getChannels ().length, 0);
+        org.junit.Assert.assertEquals (((StreamInfo) sound.getFormatInfo ()).getTaggedInfo (), listInfo);
     }
 
     @Test (expected = SoundTransformException.class)
