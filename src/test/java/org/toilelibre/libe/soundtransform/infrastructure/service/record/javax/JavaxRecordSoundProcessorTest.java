@@ -24,6 +24,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
+import org.toilelibre.libe.soundtransform.infrastructure.service.record.javax.TargetDataLineRecordSoundProcessor.TargetDataLineRecordSoundProcessorErrorCode;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -277,4 +278,25 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         MemberModifier.stub (MemberMatcher.method (TargetDataLineRecordSoundProcessor.class, "getDataLine", Info.class)).toReturn (dataLine);
         MemberModifier.stub (MemberMatcher.method (TargetDataLineRecordSoundProcessor.class, "checkLineSupported", Info.class)).toReturn (true);
     }
+    
+    @Test
+    public void notAudioFormatObjectShouldFail () throws SoundTransformException {
+        try {
+            new TargetDataLineRecordSoundProcessor ().recordRawInputStream (new Object (), new Object ());
+            Assert.fail ("should have failed");
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (ste.getErrorCode (), TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_EXPECTED);
+        }
+    }
+
+    @Test
+    public void notAudioFormatObjectShouldFail2 () throws SoundTransformException {
+        try {
+            new TargetDataLineRecordSoundProcessor ().startRecordingAndReturnByteBuffer (new Object (), new Object ());
+            Assert.fail ("should have failed");
+        } catch (SoundTransformException ste) {
+            Assert.assertEquals (ste.getErrorCode (), TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_EXPECTED);
+        }
+    }
+
 }
