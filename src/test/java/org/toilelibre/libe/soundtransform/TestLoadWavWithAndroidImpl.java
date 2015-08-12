@@ -3,11 +3,13 @@ package org.toilelibre.libe.soundtransform;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.util.Random;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformAndroidTest;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
@@ -169,6 +171,18 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
         final Sound sound = FluentClient.start ().withAudioInputStream (new ByteArrayInputStream (byteArray)).importToSound ().stopWithSound ();
         org.junit.Assert.assertNotEquals (sound.getChannels ().length, 0);
         org.junit.Assert.assertEquals (((StreamInfo) sound.getFormatInfo ()).getTaggedInfo (), listInfo);
+    }
+    
+    @Test
+    public void writeSoundWithMetadataInfo () throws SoundTransformException {
+        long [] samples = new long [1000];
+        for (int i = 0 ; i < samples.length ; i++) {
+            samples [i] = new Random ().nextLong ();
+        }
+        Sound sound = new Sound (new Channel [] {new Channel (
+                samples, 
+                new StreamInfo (1, samples.length, 1, 44100, false, true, "my brand new song"), 0)});
+        FluentClient.start ().withSound (sound).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
     }
 
     @Test (expected = SoundTransformException.class)
