@@ -72,6 +72,11 @@ public class FluentClientTest extends SoundTransformTest {
     }
 
     @Test
+    public void hpsOnThirtyPercentOfTheSpectrum () throws SoundTransformException {
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().findLoudestFrequencies (new HarmonicProductSpectrumSoundTransform<Serializable> (true, true, 0.30f));
+    }
+    
+    @Test
     public void processInParallel () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
         FluentClient.start ().inParallel (
