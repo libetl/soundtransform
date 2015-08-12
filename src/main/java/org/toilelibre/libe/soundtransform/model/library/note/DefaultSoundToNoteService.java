@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.model.library.note;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.ComputeMagnitudeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -13,6 +14,8 @@ final class DefaultSoundToNoteService implements SoundToNoteService {
     private final ADSRHelper      adsrHelper;
 
     private final FrequencyHelper frequencyHelper;
+    
+    private static final int ACCURATE_STEP = 100;
 
     public DefaultSoundToNoteService (final ADSRHelper helper1, final FrequencyHelper helper2) {
         this.adsrHelper = helper1;
@@ -34,10 +37,13 @@ final class DefaultSoundToNoteService implements SoundToNoteService {
 
         final Map<String, Object> noteInfoValues = new HashMap<String, Object> ();
 
+        final ComputeMagnitudeSoundTransform soundTransform = new ComputeMagnitudeSoundTransform (DefaultSoundToNoteService.ACCURATE_STEP);
+        final double [] magnitudeArray = soundTransform.transform (channel1);
+        
         noteInfoValues.put (SimpleNoteInfo.ATTACK_KEY, noteInfo.hasAttack () ? noteInfo.getAttack () : 0);
-        noteInfoValues.put (SimpleNoteInfo.DECAY_KEY, noteInfo.hasDecay () ? noteInfo.getDecay () : this.adsrHelper.findDecay (channel1, ((Integer) noteInfoValues.get (SimpleNoteInfo.ATTACK_KEY)).intValue ()));
-        noteInfoValues.put (SimpleNoteInfo.SUSTAIN_KEY, noteInfo.hasSustain () ? noteInfo.getSustain () : this.adsrHelper.findSustain (channel1, ((Integer) noteInfoValues.get (SimpleNoteInfo.DECAY_KEY)).intValue ()));
-        noteInfoValues.put (SimpleNoteInfo.RELEASE_KEY, noteInfo.hasRelease () ? noteInfo.getRelease () : this.adsrHelper.findRelease (channel1));
+        noteInfoValues.put (SimpleNoteInfo.DECAY_KEY, noteInfo.hasDecay () ? noteInfo.getDecay () : this.adsrHelper.findDecay (magnitudeArray, ((Integer) noteInfoValues.get (SimpleNoteInfo.ATTACK_KEY)).intValue ()));
+        noteInfoValues.put (SimpleNoteInfo.SUSTAIN_KEY, noteInfo.hasSustain () ? noteInfo.getSustain () : this.adsrHelper.findSustain (magnitudeArray, ((Integer) noteInfoValues.get (SimpleNoteInfo.DECAY_KEY)).intValue ()));
+        noteInfoValues.put (SimpleNoteInfo.RELEASE_KEY, noteInfo.hasRelease () ? noteInfo.getRelease () : this.adsrHelper.findRelease (magnitudeArray, channel1.getSamplesLength ()));
         noteInfoValues.put (SimpleNoteInfo.FREQUENCY_KEY, noteInfo.hasFrequency () ? noteInfo.getFrequency () : this.frequencyHelper.findFrequency (sound));
         noteInfoValues.put (SimpleNoteInfo.NAME_KEY, noteInfo.getName ());
 

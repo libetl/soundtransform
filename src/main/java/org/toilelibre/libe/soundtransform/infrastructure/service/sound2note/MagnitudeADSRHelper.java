@@ -5,8 +5,6 @@ import java.util.Collections;
 
 import org.apache.commons.math3.exception.NonMonotonicSequenceException;
 import org.apache.commons.math3.util.MathArrays;
-import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.ComputeMagnitudeSoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
 import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
@@ -40,15 +38,12 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
 
     private static final int ACCURATE_STEP_FOR_ADSR_HELPER = 100;
 
-    private double []        magnitude                     = null;
-
     @Override
-    public int findDecay (final Channel channel1, final int attack) throws SoundTransformException {
+    public int findDecay (final double [] magnitudeArray, final int attack) throws SoundTransformException {
         int decayIndex = attack;
-        this.ensureComputedMagnitudeArray (channel1, MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER);
 
-        final double [] decayArray = new double [this.magnitude.length - attack];
-        System.arraycopy (this.magnitude, attack, decayArray, 0, this.magnitude.length - attack);
+        final double [] decayArray = new double [magnitudeArray.length - attack];
+        System.arraycopy (magnitudeArray, attack, decayArray, 0, magnitudeArray.length - attack);
         try {
             MathArrays.checkOrder (decayArray, MathArrays.OrderDirection.INCREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
@@ -59,30 +54,28 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
     }
 
     @Override
-    public int findRelease (final Channel channel1) throws SoundTransformException {
+    public int findRelease (final double [] magnitudeArray, final int samplesLength) throws SoundTransformException {
         int releaseIndexFromReversed = 0;
-        this.ensureComputedMagnitudeArray (channel1, MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER);
-        final double [] reversed = new double [this.magnitude.length];
-        System.arraycopy (this.magnitude, 0, reversed, 0, reversed.length);
+        final double [] reversed = new double [magnitudeArray.length];
+        System.arraycopy (magnitudeArray, 0, reversed, 0, reversed.length);
         Collections.reverse (Arrays.asList (reversed));
 
         try {
-            MathArrays.checkOrder (this.magnitude, MathArrays.OrderDirection.INCREASING, true);
+            MathArrays.checkOrder (magnitudeArray, MathArrays.OrderDirection.INCREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
             this.log (new LogEvent (MagnitudeADSRHelperEventCode.FOUND_EDGE, nmse));
             releaseIndexFromReversed = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER;
         }
-        return channel1.getSamplesLength () - releaseIndexFromReversed;
+        return samplesLength - releaseIndexFromReversed;
     }
 
     @Override
-    public int findSustain (final Channel channel1, final int decay) throws SoundTransformException {
+    public int findSustain (final double [] magnitudeArray, final int decay) throws SoundTransformException {
         int sustainIndex = decay;
-        this.ensureComputedMagnitudeArray (channel1, MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER);
 
         final int start = decay / MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER;
-        final double [] sustainArray = new double [this.magnitude.length - start];
-        System.arraycopy (this.magnitude, start, sustainArray, 0, this.magnitude.length - start);
+        final double [] sustainArray = new double [magnitudeArray.length - start];
+        System.arraycopy (magnitudeArray, start, sustainArray, 0, magnitudeArray.length - start);
         try {
             MathArrays.checkOrder (sustainArray, MathArrays.OrderDirection.DECREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
@@ -90,12 +83,5 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
             sustainIndex = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER;
         }
         return sustainIndex;
-    }
-
-    private void ensureComputedMagnitudeArray (final Channel sound, final int step) throws SoundTransformException {
-        if (this.magnitude == null) {
-            final ComputeMagnitudeSoundTransform soundTransform = new ComputeMagnitudeSoundTransform (step);
-            this.magnitude = soundTransform.transform (sound);
-        }
     }
 }
