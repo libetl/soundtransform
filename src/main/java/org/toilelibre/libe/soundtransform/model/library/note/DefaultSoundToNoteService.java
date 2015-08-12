@@ -41,9 +41,9 @@ final class DefaultSoundToNoteService implements SoundToNoteService {
         final double [] magnitudeArray = soundTransform.transform (channel1);
         
         noteInfoValues.put (SimpleNoteInfo.ATTACK_KEY, noteInfo.hasAttack () ? noteInfo.getAttack () : 0);
-        noteInfoValues.put (SimpleNoteInfo.DECAY_KEY, noteInfo.hasDecay () ? noteInfo.getDecay () : this.adsrHelper.findDecay (magnitudeArray, ((Integer) noteInfoValues.get (SimpleNoteInfo.ATTACK_KEY)).intValue ()));
-        noteInfoValues.put (SimpleNoteInfo.SUSTAIN_KEY, noteInfo.hasSustain () ? noteInfo.getSustain () : this.adsrHelper.findSustain (magnitudeArray, ((Integer) noteInfoValues.get (SimpleNoteInfo.DECAY_KEY)).intValue ()));
-        noteInfoValues.put (SimpleNoteInfo.RELEASE_KEY, noteInfo.hasRelease () ? noteInfo.getRelease () : this.adsrHelper.findRelease (magnitudeArray, channel1.getSamplesLength ()));
+        noteInfoValues.put (SimpleNoteInfo.DECAY_KEY, noteInfo.hasDecay () ? noteInfo.getDecay () : this.adsrHelper.findDecay (magnitudeArray, ((Integer) noteInfoValues.get (SimpleNoteInfo.ATTACK_KEY)).intValue ()) * DefaultSoundToNoteService.ACCURATE_STEP);
+        noteInfoValues.put (SimpleNoteInfo.SUSTAIN_KEY, noteInfo.hasSustain () ? noteInfo.getSustain () : this.adsrHelper.findSustain (magnitudeArray, ((Integer) noteInfoValues.get (SimpleNoteInfo.DECAY_KEY)).intValue ()) * DefaultSoundToNoteService.ACCURATE_STEP);
+        noteInfoValues.put (SimpleNoteInfo.RELEASE_KEY, noteInfo.hasRelease () ? noteInfo.getRelease () : this.adsrHelper.findRelease (magnitudeArray) * DefaultSoundToNoteService.ACCURATE_STEP);
         noteInfoValues.put (SimpleNoteInfo.FREQUENCY_KEY, noteInfo.hasFrequency () ? noteInfo.getFrequency () : this.frequencyHelper.findFrequency (sound));
         noteInfoValues.put (SimpleNoteInfo.NAME_KEY, noteInfo.getName ());
 

@@ -6,8 +6,7 @@ public interface ADSRHelper {
     
     int findDecay (final double [] magnitudeArray, int attack) throws SoundTransformException;
 
-    int findRelease (final double [] magnitudeArray, int samplesLength) throws SoundTransformException;
+    int findRelease (final double [] magnitudeArray) throws SoundTransformException;
 
     int findSustain (final double [] magnitudeArray, int decay) throws SoundTransformException;
-
 }

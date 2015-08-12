@@ -13,6 +13,6 @@ public class MagnitudeADSRHelperTest {
 
     @Test
     public void releaseWithoutException () throws SoundTransformException {
-        new MagnitudeADSRHelper ().findRelease (new double [] {1, 7, 15, 45, 80, 79, 78, 76, 76, 75}, 1000);
+        new MagnitudeADSRHelper ().findRelease (new double [] {1, 7, 15, 45, 80, 79, 78, 76, 76, 75});
     }
 }

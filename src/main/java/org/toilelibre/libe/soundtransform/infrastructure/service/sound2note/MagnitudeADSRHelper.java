@@ -36,7 +36,6 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
         }
     }
 
-    private static final int ACCURATE_STEP_FOR_ADSR_HELPER = 100;
 
     @Override
     public int findDecay (final double [] magnitudeArray, final int attack) throws SoundTransformException {
@@ -48,13 +47,13 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
             MathArrays.checkOrder (decayArray, MathArrays.OrderDirection.INCREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
             this.log (new LogEvent (MagnitudeADSRHelperEventCode.FOUND_EDGE, nmse));
-            decayIndex = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER;
+            decayIndex = nmse.getIndex () - 1;
         }
         return decayIndex;
     }
 
     @Override
-    public int findRelease (final double [] magnitudeArray, final int samplesLength) throws SoundTransformException {
+    public int findRelease (final double [] magnitudeArray) throws SoundTransformException {
         int releaseIndexFromReversed = 0;
         final double [] reversed = new double [magnitudeArray.length];
         System.arraycopy (magnitudeArray, 0, reversed, 0, reversed.length);
@@ -64,23 +63,23 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
             MathArrays.checkOrder (magnitudeArray, MathArrays.OrderDirection.INCREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
             this.log (new LogEvent (MagnitudeADSRHelperEventCode.FOUND_EDGE, nmse));
-            releaseIndexFromReversed = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER;
+            releaseIndexFromReversed = nmse.getIndex () - 1;
         }
-        return samplesLength - releaseIndexFromReversed;
+        return magnitudeArray.length - releaseIndexFromReversed;
     }
 
     @Override
     public int findSustain (final double [] magnitudeArray, final int decay) throws SoundTransformException {
         int sustainIndex = decay;
 
-        final int start = decay / MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER;
+        final int start = decay;
         final double [] sustainArray = new double [magnitudeArray.length - start];
         System.arraycopy (magnitudeArray, start, sustainArray, 0, magnitudeArray.length - start);
         try {
             MathArrays.checkOrder (sustainArray, MathArrays.OrderDirection.DECREASING, true);
         } catch (final NonMonotonicSequenceException nmse) {
             this.log (new LogEvent (MagnitudeADSRHelperEventCode.FOUND_EDGE, nmse));
-            sustainIndex = (nmse.getIndex () - 1) * MagnitudeADSRHelper.ACCURATE_STEP_FOR_ADSR_HELPER;
+            sustainIndex = nmse.getIndex () - 1;
         }
         return sustainIndex;
     }
