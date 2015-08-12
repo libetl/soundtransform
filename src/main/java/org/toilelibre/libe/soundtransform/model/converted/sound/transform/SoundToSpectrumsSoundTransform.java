@@ -21,8 +21,10 @@ public class SoundToSpectrumsSoundTransform implements SoundTransform<Channel, S
         /**
          * Default constructor
          */
+        @SuppressWarnings ("unchecked")
         public SoundToSpectrumsFrequencySoundTransform () {
             super ();
+            this.spectrums = new Spectrum [0];
         }
 
         @SuppressWarnings ("unchecked")

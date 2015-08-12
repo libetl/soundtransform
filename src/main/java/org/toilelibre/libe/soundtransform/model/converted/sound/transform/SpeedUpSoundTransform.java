@@ -59,6 +59,7 @@ public class SpeedUpSoundTransform<T extends Serializable> extends SimpleFrequen
         this.factor = factor1;
         this.step = step1;
         this.writeIfGreaterEqThanFactor = 0;
+        this.sound = null;
     }
 
     @Override

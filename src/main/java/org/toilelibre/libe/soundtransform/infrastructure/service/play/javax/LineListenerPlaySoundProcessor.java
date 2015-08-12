@@ -32,7 +32,7 @@ final class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
                     synchronized (clip) {
                         clip.stop ();
                         clip.close ();
-                        clip.notify ();
+                        clip.notifyAll ();
                     }
                 }
 

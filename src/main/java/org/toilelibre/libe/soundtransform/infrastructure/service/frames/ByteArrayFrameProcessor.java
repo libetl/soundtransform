@@ -145,8 +145,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
         for (int position = 0 ; position < frameLength ; position++) {
             final byte [] frame = new byte [isInfo.getSampleSize () * isInfo.getChannels ()];
             try {
-                final int frameSize = ais.read (frame);
-                this.log (new LogEvent (FrameProcessorEventCode.READ_FRAME_SIZE, frameSize));
+                this.readOneFrame (ais, frame);
             } catch (final IOException e) {
                 throw new SoundTransformException (FrameProcessorErrorCode.COULD_NOT_READ_STREAM, e);
             }
@@ -157,6 +156,14 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
             }
             this.byteArrayToFrame (frame, result, position, isInfo.isBigEndian (), isInfo.isPcmSigned (), neutral);
         }
+    }
+
+    private void readOneFrame (InputStream ais, byte [] frame) throws IOException {
+        final int size = ais.read (frame);
+        if (size == -1) {
+            this.log (new LogEvent (FrameProcessorEventCode.END_OF_STREAM));
+        }
+        
     }
 
 }

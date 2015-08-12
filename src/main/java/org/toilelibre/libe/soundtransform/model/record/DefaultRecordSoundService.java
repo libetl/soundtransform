@@ -130,7 +130,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
                 throw new SoundTransformRuntimeException (DefaultRecordSoundServiceErrorCode.NOT_ABLE, e, e.getMessage ());
             }
             synchronized (this.stop) {
-                this.stop.notify ();
+                this.stop.notifyAll ();
             }
         }
     }

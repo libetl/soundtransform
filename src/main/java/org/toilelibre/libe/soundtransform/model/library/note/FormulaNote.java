@@ -67,9 +67,6 @@ public abstract class FormulaNote implements Note {
     }
 
     @Override
-    public abstract String getName ();
-
-    @Override
     public Channel getRelease (final float frequency, final int channelnum, final float lengthInSeconds) {
         return this.generateFormulaNote (frequency, FormulaNote.ONE_FIFTH * lengthInSeconds, channelnum, FormulaNote.RELEASE_START_AMPLITUDE, FormulaNote.RELEASE_END_AMPLITUDE);
     }

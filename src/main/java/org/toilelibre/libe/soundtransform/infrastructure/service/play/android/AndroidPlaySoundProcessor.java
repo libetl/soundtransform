@@ -49,7 +49,7 @@ final class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundP
         }
     }
 
-    protected static final long ONE_SECOND = 1000;
+    private static final long ONE_SECOND = 1000;
 
     public AndroidPlaySoundProcessor () {
 

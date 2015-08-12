@@ -20,7 +20,7 @@ public class Range extends HashMap<Float, Note> {
                 nearest = i;
             }
         }
-        return this.get (new Float (nearest));
+        return this.get (Float.valueOf (nearest));
     }
 
     @Override

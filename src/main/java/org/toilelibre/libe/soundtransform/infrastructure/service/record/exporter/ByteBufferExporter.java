@@ -22,7 +22,7 @@ class ByteBufferExporter implements BytesExporterFromThread<ByteBuffer>, OutputA
         this.buffer.rewind ();
         this.buffer.put (byteArray, 0, readSize);
         synchronized (this.buffer) {
-            this.buffer.notify ();
+            this.buffer.notifyAll ();
         }
     }
 
