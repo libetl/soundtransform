@@ -159,7 +159,7 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
         final Sound sound = FluentClient.start ().withAudioInputStream (new ByteArrayInputStream (byteArray)).importToSound ().stopWithSound ();
         org.junit.Assert.assertNotEquals (sound.getChannels ().length, 0);
     }
-    
+
     @Test
     public void importHeaderWithMetadataInfo () throws SoundTransformException {
         org.junit.Assert.assertEquals (this.sToI (this.iToS (44100)), 44100);

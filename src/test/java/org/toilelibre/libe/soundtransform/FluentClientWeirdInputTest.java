@@ -276,12 +276,12 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
         try {
             FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().mergeChannels ().mergeChannels ().stopWithSound ();
             Assert.fail ("should have failed");
-        } catch (SoundTransformException ste) {
+        } catch (final SoundTransformException ste) {
             Assert.assertEquals (FluentClientErrorCode.STEREO_SOUND_EXPECTED, ste.getErrorCode ());
             throw ste;
         }
     }
-    
+
     @Test (expected = SoundTransformException.class)
     public void shapeWithoutPack () throws SoundTransformException {
         try {

@@ -10,7 +10,7 @@ public class UseWindowFunctionSoundTransform implements SoundTransform<Channel, 
     public UseWindowFunctionSoundTransform (final AbstractWindowSoundTransform windowFunction1) {
         this.windowFunction = windowFunction1;
     }
-    
+
     @Override
     public Channel transform (final Channel input) throws SoundTransformException {
         return this.windowFunction.transformWholeChannel (input);

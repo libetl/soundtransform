@@ -41,12 +41,12 @@ public class FluentClientTest extends SoundTransformTest {
 
     @Test
     public void applyCompositeTransform () throws SoundTransformException {
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().applyAndStop(new CompositeSoundTransform<Channel, Channel, float[]>(
-                new UseWindowFunctionSoundTransform (new HammingWindowSoundTransform ()), new MaximumLikelihoodSoundTransform (8000, 8000, 100, 800)));
-        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().applyAndStop(new CompositeSoundTransform<Channel, Channel, float[]>(
-                new UseWindowFunctionSoundTransform (new HanningWindowSoundTransform ()), new MaximumLikelihoodSoundTransform (8000, 8000, 100, 800)));
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ()
+        .applyAndStop (new CompositeSoundTransform<Channel, Channel, float []> (new UseWindowFunctionSoundTransform (new HammingWindowSoundTransform ()), new MaximumLikelihoodSoundTransform (8000, 8000, 100, 800)));
+        FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ()
+        .applyAndStop (new CompositeSoundTransform<Channel, Channel, float []> (new UseWindowFunctionSoundTransform (new HanningWindowSoundTransform ()), new MaximumLikelihoodSoundTransform (8000, 8000, 100, 800)));
     }
-    
+
     @Test
     public void appendTest () throws SoundTransformException {
         final Sound sound2 = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano4.wav").convertIntoSound ().stopWithSound ();
@@ -75,7 +75,7 @@ public class FluentClientTest extends SoundTransformTest {
     public void hpsOnThirtyPercentOfTheSpectrum () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").convertIntoSound ().findLoudestFrequencies (new HarmonicProductSpectrumSoundTransform<Serializable> (true, true, 0.30f));
     }
-    
+
     @Test
     public void processInParallel () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));

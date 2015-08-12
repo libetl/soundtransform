@@ -94,25 +94,25 @@ final class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundP
     private int getChannelConfiguration (final StreamInfo streamInfo) {
         final int channelConf;
         switch (streamInfo.getChannels ()) {
-            case AndroidPlaySoundProcessor.ONE :
+            case AndroidPlaySoundProcessor.ONE:
                 channelConf = AudioFormat.CHANNEL_OUT_MONO;
                 break;
-            case AndroidPlaySoundProcessor.TWO :
+            case AndroidPlaySoundProcessor.TWO:
                 channelConf = AudioFormat.CHANNEL_OUT_STEREO;
                 break;
-            case AndroidPlaySoundProcessor.FOUR :
+            case AndroidPlaySoundProcessor.FOUR:
                 channelConf = AudioFormat.CHANNEL_OUT_QUAD;
                 break;
-            case AndroidPlaySoundProcessor.FIVE :
+            case AndroidPlaySoundProcessor.FIVE:
                 channelConf = AudioFormat.CHANNEL_OUT_SURROUND;
                 break;
-            case AndroidPlaySoundProcessor.SIX :
+            case AndroidPlaySoundProcessor.SIX:
                 channelConf = AudioFormat.CHANNEL_OUT_5POINT1;
                 break;
-            case AndroidPlaySoundProcessor.EIGHT :
+            case AndroidPlaySoundProcessor.EIGHT:
                 channelConf = AudioFormat.CHANNEL_OUT_7POINT1;
                 break;
-            default :
+            default:
                 channelConf = 0;
         }
         return channelConf;

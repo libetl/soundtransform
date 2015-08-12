@@ -33,14 +33,14 @@ public class SoundToStringTest extends SoundTransformTest {
             }
 
         }.transform (s);
-        
+
         new SimpleFrequencySoundTransform<Complex []> () {
 
             @Override
             public boolean rawSpectrumPrefered () {
                 return true;
             }
-            
+
             @Override
             public void transformFrequencies (final double [][] spectrumAsDoubles, final float sampleRate) {
                 super.transformFrequencies (spectrumAsDoubles, sampleRate);

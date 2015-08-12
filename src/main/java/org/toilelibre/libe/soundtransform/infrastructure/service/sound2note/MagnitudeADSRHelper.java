@@ -36,7 +36,6 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
         }
     }
 
-
     @Override
     public int findDecay (final double [] magnitudeArray, final int attack) throws SoundTransformException {
         int decayIndex = attack;
