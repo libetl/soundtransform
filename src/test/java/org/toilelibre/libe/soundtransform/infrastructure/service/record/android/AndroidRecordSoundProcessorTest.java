@@ -201,4 +201,15 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
             throw ste;
         }
     }
+    
+    @Test (expected = SoundTransformException.class)
+    public void recordRawInputStreamWithBadAudioFormatObject () throws Exception {
+        try {
+            new AndroidRecordSoundProcessor ().recordRawInputStream (new Object (), new Object ());
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformException ste) {
+            Assert.assertEquals (AndroidRecordSoundProcessorErrorCode.STREAM_INFO_EXPECTED, ste.getErrorCode ());
+            throw ste;
+        }
+    }
 }
