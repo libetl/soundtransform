@@ -4,7 +4,6 @@ import org.apache.commons.math3.complex.Complex;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 /**
@@ -57,19 +56,12 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Channel, d
             return super.initSound (input);
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see
-         * org.toilelibre.libe.soundtransform.model.converted.sound.transform
-         * .SimpleFrequencySoundTransform
-         * #transformFrequencies(org.toilelibre.libe
-         * .soundtransform.model.converted.spectrum.Spectrum)
+        /* (non-Javadoc)
+         * @see org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform#transformFrequencies(double[][], float)
          */
         @Override
-        public Spectrum<Complex []> transformFrequencies (final Spectrum<Complex []> fs) {
-            this.magnitude [this.arraylength++] = this.computeMagnitude (fs);
-            return super.transformFrequencies (fs);
+        public void transformFrequencies (double [][] spectrumAsDoubles, float sampleRate) {
+            this.magnitude [this.arraylength++] = this.computeMagnitude (spectrumAsDoubles);
         }
 
         /**
@@ -79,13 +71,31 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Channel, d
             return this.magnitude;
         }
 
-        public int computeMagnitude (final Spectrum<Complex []> fs) {
+        public int computeMagnitude (double [][] spectrumAsDoubles) {
             double sum = 0;
-            for (int i = 0 ; i < fs.getState ().length ; i++) {
-                sum += fs.getState () [i].abs ();
+            for (int i = 0 ; i < spectrumAsDoubles [0].length ; i++) {
+                sum += Math.sqrt (spectrumAsDoubles [0] [i] * spectrumAsDoubles [0] [i] + spectrumAsDoubles [1] [i] * spectrumAsDoubles [1] [i]);
             }
-            return (int) (sum / fs.getState ().length);
+            return (int) (sum / spectrumAsDoubles [0].length);
         }
+
+        /* (non-Javadoc)
+         * @see org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform#isReverseNecessary()
+         */
+        @Override
+        public boolean isReverseNecessary () {
+            return false;
+        }
+
+        /* (non-Javadoc)
+         * @see org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform#rawSpectrumPrefered()
+         */
+        @Override
+        public boolean rawSpectrumPrefered () {
+            return true;
+        }
+        
+        
     }
 
     private final ComputeMagnitudeFrequenciesSoundTransform decoratedSoundTransform;
