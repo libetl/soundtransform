@@ -12,7 +12,7 @@ public class MagnitudeADSRHelperTest {
 
     @Test
     public void sustainWithoutException () throws SoundTransformException {
-        new MagnitudeADSRHelper ().findSustain (new double [] { 1, 7, 15, 45, 80, 84, 95, 96, 97, 99 }, 2);
+        new MagnitudeADSRHelper ().findSustain (new double [] { 1, 7, 15, 45, 80, 79, 78, 77, 76, 75 }, 4);
     }
 
     @Test
