@@ -31,6 +31,7 @@ public class SimpleNoteInfo {
     }
 
     public SimpleNoteInfo (final String fileName) {
+        this.adsrReady = false;
         this.frequency = SimpleNoteInfo.DEFAULT_VALUE;
         this.name = fileName;
         this.attack = SimpleNoteInfo.DEFAULT_VALUE;
