@@ -95,10 +95,10 @@ public class SimpleNoteInfo {
     public boolean hasFrequency () {
         return this.frequency != SimpleNoteInfo.DEFAULT_VALUE;
     }
-    
+
     private float safeParse (final Object object) {
         try {
-            float result = Float.parseFloat ("" + object);
+            final float result = Float.parseFloat ("" + object);
             if (result == -1) {
                 this.adsrReady = false;
             }

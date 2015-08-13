@@ -1703,6 +1703,24 @@ function setDocumentScrollTop(ypos)
    <li> <code>factor</code> — factor of compression (e.g. 2 means : twice as short)</li> 
   </ul> </li> 
 </ul> 
+<h5> <a id="user-content-usewindowfunctionsoundtransform" class="anchor" href="#usewindowfunctionsoundtransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>UseWindowFunctionSoundTransform</h5> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">UseWindowFunctionSoundTransform</span> <span class="pl-k">implements</span> <span class="pl-e">SoundTransform&lt;<span class="pl-smi">Channel</span>, <span class="pl-smi">Channel</span>&gt;</span></pre>
+</div> 
+<p>Proxy transform to pass a Window Transform and apply on a whole Channel</p> 
+<ul> 
+ <li><strong>Constructor:</strong></li> 
+</ul> 
+<div class="highlight highlight-java">
+ <pre><span class="pl-k">public</span> <span class="pl-smi">UseWindowFunctionSoundTransform</span> (<span class="pl-smi">AbstractWindowSoundTransform</span> windowFunction)</pre>
+</div> 
+<p>Default constructor</p> 
+<ul> 
+ <li> <strong>Parameters:</strong> 
+  <ul> 
+   <li> <code>windowFunction</code> — nested window transform</li> 
+  </ul> </li> 
+</ul> 
 <h3> <a id="user-content-window-transforms" class="anchor" href="#window-transforms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Window transforms</h3> 
 <p>A window transform is used to improve a frequency domain transform (on a musical note) so the transform is not impacted by a varying signal over time. Each of these transform extends the class <code>AbstractWindowSoundTransform</code></p> 
 <h4> <a id="user-content-blackmanharriswindowsoundtransform" class="anchor" href="#blackmanharriswindowsoundtransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>BlackmanHarrisWindowSoundTransform</h4> 

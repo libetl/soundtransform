@@ -1712,6 +1712,23 @@ Default constructor
    * `step` — iteration step value
    * `factor` — factor of compression (e.g. 2 means : twice as short)
 
+##### UseWindowFunctionSoundTransform
+```java
+public class UseWindowFunctionSoundTransform implements SoundTransform<Channel, Channel>
+```
+
+Proxy transform to pass a Window Transform and apply on a whole Channel
+
+ * **Constructor:**
+```java
+public UseWindowFunctionSoundTransform (AbstractWindowSoundTransform windowFunction)
+```
+
+Default constructor
+
+ * **Parameters:**
+   * `windowFunction` — nested window transform
+
 ### Window transforms
 A window transform is used to improve a frequency domain transform (on a musical note) so the transform is not impacted by a varying signal over time.
 Each of these transform extends the class `AbstractWindowSoundTransform`

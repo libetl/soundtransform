@@ -120,6 +120,7 @@ public class WavTest extends SoundTransformTest {
     public void testLevel () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ().apply (new LevelSoundTransform (300)).exportToFile (this.output);
     }
+
     @Test
     public void testLinearReg () throws SoundTransformException {
         // will remove the high freqs and smooth the signal

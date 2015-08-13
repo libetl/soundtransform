@@ -56,11 +56,16 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Channel, d
             return super.initSound (input);
         }
 
-        /* (non-Javadoc)
-         * @see org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform#transformFrequencies(double[][], float)
+        /*
+         * (non-Javadoc)
+         *
+         * @see
+         * org.toilelibre.libe.soundtransform.model.converted.sound.transform
+         * .SimpleFrequencySoundTransform#transformFrequencies(double[][],
+         * float)
          */
         @Override
-        public void transformFrequencies (double [][] spectrumAsDoubles, float sampleRate) {
+        public void transformFrequencies (final double [][] spectrumAsDoubles, final float sampleRate) {
             this.magnitude [this.arraylength++] = this.computeMagnitude (spectrumAsDoubles);
         }
 
@@ -71,7 +76,7 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Channel, d
             return this.magnitude;
         }
 
-        public int computeMagnitude (double [][] spectrumAsDoubles) {
+        public int computeMagnitude (final double [][] spectrumAsDoubles) {
             double sum = 0;
             for (int i = 0 ; i < spectrumAsDoubles [0].length ; i++) {
                 sum += Math.sqrt (spectrumAsDoubles [0] [i] * spectrumAsDoubles [0] [i] + spectrumAsDoubles [1] [i] * spectrumAsDoubles [1] [i]);
@@ -79,23 +84,30 @@ public class ComputeMagnitudeSoundTransform implements SoundTransform<Channel, d
             return (int) (sum / spectrumAsDoubles [0].length);
         }
 
-        /* (non-Javadoc)
-         * @see org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform#isReverseNecessary()
+        /*
+         * (non-Javadoc)
+         *
+         * @see
+         * org.toilelibre.libe.soundtransform.model.converted.sound.transform
+         * .SimpleFrequencySoundTransform#isReverseNecessary()
          */
         @Override
         public boolean isReverseNecessary () {
             return false;
         }
 
-        /* (non-Javadoc)
-         * @see org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform#rawSpectrumPrefered()
+        /*
+         * (non-Javadoc)
+         *
+         * @see
+         * org.toilelibre.libe.soundtransform.model.converted.sound.transform
+         * .SimpleFrequencySoundTransform#rawSpectrumPrefered()
          */
         @Override
         public boolean rawSpectrumPrefered () {
             return true;
         }
-        
-        
+
     }
 
     private final ComputeMagnitudeFrequenciesSoundTransform decoratedSoundTransform;
