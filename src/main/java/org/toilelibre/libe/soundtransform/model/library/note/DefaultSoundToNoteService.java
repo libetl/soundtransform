@@ -37,7 +37,7 @@ final class DefaultSoundToNoteService implements SoundToNoteService {
 
         final Map<String, Object> noteInfoValues = new HashMap<String, Object> ();
 
-        if (noteInfo.hasAttack ()) {
+        if (noteInfo.isAdsrReady ()) {
             return this.newNoteFromExistingInfo (noteInfo, sound, noteInfoValues);
         }
         

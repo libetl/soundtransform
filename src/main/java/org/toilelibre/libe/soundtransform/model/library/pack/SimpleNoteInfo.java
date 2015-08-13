@@ -18,8 +18,10 @@ public class SimpleNoteInfo {
     private final int          decay;
     private final int          sustain;
     private final int          release;
+    private boolean            adsrReady;
 
     public SimpleNoteInfo (final Map<String, Object> noteElement) {
+        this.adsrReady = true;
         this.frequency = this.safeParse (noteElement.get (SimpleNoteInfo.FREQUENCY_KEY));
         this.name = noteElement.get (SimpleNoteInfo.NAME_KEY).toString ();
         this.attack = (int) this.safeParse (noteElement.get (SimpleNoteInfo.ATTACK_KEY));
@@ -80,6 +82,13 @@ public class SimpleNoteInfo {
     }
 
     /**
+     * @return the adsrReady
+     */
+    public boolean isAdsrReady () {
+        return this.adsrReady;
+    }
+    
+    /**
      * @return the attack
      */
     public boolean hasAttack () {
@@ -116,8 +125,13 @@ public class SimpleNoteInfo {
 
     private float safeParse (final Object object) {
         try {
-            return Float.parseFloat ("" + object);
+            float result = Float.parseFloat ("" + object);
+            if (result == -1) {
+                this.adsrReady = false;
+            }
+            return result;
         } catch (final NumberFormatException nfe) {
+            this.adsrReady = false;
             return -1;
         }
     }
