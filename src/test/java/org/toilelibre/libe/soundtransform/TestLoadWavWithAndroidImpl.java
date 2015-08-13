@@ -176,8 +176,9 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
     @Test
     public void writeSoundWithMetadataInfo () throws SoundTransformException {
         final long [] samples = new long [1000];
+        final Random random = new Random ();
         for (int i = 0 ; i < samples.length ; i++) {
-            samples [i] = new Random ().nextLong ();
+            samples [i] = random.nextLong ();
         }
         final Sound sound = new Sound (new Channel [] { new Channel (samples, new StreamInfo (1, samples.length, 1, 44100, false, true, "my brand new song"), 0) });
         FluentClient.start ().withSound (sound).exportToClasspathResourceWithSiblingResource ("after.wav", "before.wav");
