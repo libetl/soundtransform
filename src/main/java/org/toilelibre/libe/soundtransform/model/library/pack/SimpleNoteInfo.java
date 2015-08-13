@@ -88,20 +88,6 @@ public class SimpleNoteInfo {
     public boolean isAdsrReady () {
         return this.adsrReady;
     }
-    
-    /**
-     * @return the attack
-     */
-    public boolean hasAttack () {
-        return this.attack != SimpleNoteInfo.DEFAULT_VALUE;
-    }
-
-    /**
-     * @return the decay
-     */
-    public boolean hasDecay () {
-        return this.decay != SimpleNoteInfo.DEFAULT_VALUE;
-    }
 
     /**
      * @return the frequency
@@ -109,21 +95,7 @@ public class SimpleNoteInfo {
     public boolean hasFrequency () {
         return this.frequency != SimpleNoteInfo.DEFAULT_VALUE;
     }
-
-    /**
-     * @return the release
-     */
-    public boolean hasRelease () {
-        return this.release != SimpleNoteInfo.DEFAULT_VALUE;
-    }
-
-    /**
-     * @return the sustain
-     */
-    public boolean hasSustain () {
-        return this.sustain != SimpleNoteInfo.DEFAULT_VALUE;
-    }
-
+    
     private float safeParse (final Object object) {
         try {
             float result = Float.parseFloat ("" + object);
