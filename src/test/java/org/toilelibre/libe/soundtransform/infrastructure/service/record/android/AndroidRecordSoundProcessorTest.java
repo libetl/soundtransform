@@ -190,4 +190,15 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
         final InputStream is = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 80000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
         Assert.assertThat (is.available (), new GreaterThan<Integer> (0));
     }
+    
+    @Test (expected = SoundTransformException.class)
+    public void startRecordingWithBadAudioFormatObject () throws Exception {
+        try {
+            new AndroidRecordSoundProcessor ().startRecordingAndReturnByteBuffer (new Object (), new Object ());
+            Assert.fail ("should have failed");
+        } catch (final SoundTransformException ste) {
+            Assert.assertEquals (AndroidRecordSoundProcessorErrorCode.STREAM_INFO_EXPECTED, ste.getErrorCode ());
+            throw ste;
+        }
+    }
 }
