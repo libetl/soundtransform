@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
-import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.LevelSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.PralongAndCarlileSoundTransform;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
@@ -42,10 +41,9 @@ public class PeakFindClassesScoreTest {
     }
 
     private void addKnownMethods (final Map<String, SoundTransform<Channel, float []>> peakFindMethods, final Map<String, Integer> peakFindMethodsScore) {
-        this.addMethod (peakFindMethods, peakFindMethodsScore, "cepstrum", new CompositeSoundTransform<Channel, Channel, float []> (new LevelSoundTransform (300), new CepstrumSoundTransform<Serializable> (1, true)));
-        this.addMethod (peakFindMethods, peakFindMethodsScore, "hps", new HarmonicProductSpectrumSoundTransform<Serializable> (true, false));
-        this.addMethod (peakFindMethods, peakFindMethodsScore, "hpsWithRawSpectrums", new HarmonicProductSpectrumSoundTransform<Serializable> (true, true));
-        this.addMethod (peakFindMethods, peakFindMethodsScore, "maxlikelihood", new CompositeSoundTransform<Channel, Channel, float []> (new PralongAndCarlileSoundTransform (), new MaximumLikelihoodSoundTransform (8000, 8000, 100, 800)));
+        this.addMethod (peakFindMethods, peakFindMethodsScore, "cepstrum", new CepstrumSoundTransform<Serializable> (10000, false));
+        this.addMethod (peakFindMethods, peakFindMethodsScore, "hps", new HarmonicProductSpectrumSoundTransform<Serializable> (true, true));
+        this.addMethod (peakFindMethods, peakFindMethodsScore, "maxlikelihood", new CompositeSoundTransform<Channel, Channel, float []> (new PralongAndCarlileSoundTransform (),  new MaximumLikelihoodSoundTransform (8000, 8000, 100, 800)));
     }
 
     private void answerScores (final Map<String, Integer> peakFindMethodsScore, final float total) {
