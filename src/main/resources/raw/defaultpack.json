@@ -4,7 +4,7 @@
   "g-piano": [
     {
       "frequency": 97.75,
-      "name": "gpiano6.wav",
+      "name": "gpiano6",
       "attack": 0,
       "decay": 400,
       "sustain": 400,
@@ -12,7 +12,7 @@
     },
     {
       "frequency": 221.0,
-      "name": "gpiano3.wav",
+      "name": "gpiano3",
       "attack": 0,
       "decay": 400,
       "sustain": 400,
@@ -20,7 +20,7 @@
     },
     {
       "frequency": 55.0,
-      "name": "gpiano1.wav",
+      "name": "gpiano1",
       "attack": 0,
       "decay": 400,
       "sustain": 400,
@@ -29,7 +29,7 @@
     },
     {
       "frequency": 197.5,
-      "name": "gpiano4.wav",
+      "name": "gpiano4",
       "attack": 0,
       "decay": 400,
       "sustain": 400,
@@ -37,7 +37,7 @@
     },
     {
       "frequency": 278.5,
-      "name": "gpiano5.wav",
+      "name": "gpiano5",
       "attack": 0,
       "decay": 400,
       "sustain": 400,
@@ -47,7 +47,7 @@
   "chord_piano": [
     {
       "frequency": 329.0,
-      "name": "gpiano3.wav",
+      "name": "gpiano3",
       "attack": 0,
       "decay": 0,
       "sustain": 0,
@@ -55,7 +55,7 @@
     },
     {
       "frequency": 293.0,
-      "name": "gpiano4.wav",
+      "name": "gpiano4",
       "attack": 0,
       "decay": 0,
       "sustain": 0,
@@ -66,7 +66,7 @@
   "simple_piano": [
     {
       "frequency": 499.14285,
-      "name": "piano7b.wav",
+      "name": "piano7b",
       "attack": 0,
       "decay": 300,
       "sustain": 300,
@@ -74,7 +74,7 @@
     },
     {
       "frequency": 332.0,
-      "name": "piano3e.wav",
+      "name": "piano3e",
       "attack": 0,
       "decay": 300,
       "sustain": 300,
@@ -82,7 +82,7 @@
     },
     {
       "frequency": 387.0,
-      "name": "piano5g.wav",
+      "name": "piano5g",
       "attack": 0,
       "decay": 300,
       "sustain": 300,
@@ -90,7 +90,7 @@
     },
     {
       "frequency": 451.42856,
-      "name": "piano6a.wav",
+      "name": "piano6a",
       "attack": 0,
       "decay": 300,
       "sustain": 300,
@@ -98,7 +98,7 @@
     },
     {
       "frequency": 344.0,
-      "name": "piano4f.wav",
+      "name": "piano4f",
       "attack": 0,
       "decay": 300,
       "sustain": 300,
@@ -106,7 +106,7 @@
     },
     {
       "frequency": 293.0,
-      "name": "piano2d.wav",
+      "name": "piano2d",
       "attack": 0,
       "decay": 300,
       "sustain": 300,
@@ -114,7 +114,7 @@
     },
     {
       "frequency": 260.66666,
-      "name": "piano1c.wav",
+      "name": "piano1c",
       "attack": 0,
       "decay": 300,
       "sustain": 300,
@@ -122,7 +122,7 @@
     },
     {
       "frequency": 524.0,
-      "name": "piano8c.wav",
+      "name": "piano8c",
       "attack": 0,
       "decay": 300,
       "sustain": 300,
