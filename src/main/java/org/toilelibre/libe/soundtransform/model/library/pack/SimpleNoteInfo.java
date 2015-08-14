@@ -4,13 +4,14 @@ import java.util.Map;
 
 public class SimpleNoteInfo {
 
-    public static final int    DEFAULT_VALUE = -1;
-    public static final String ATTACK_KEY    = "attack";
-    public static final String DECAY_KEY     = "decay";
-    public static final String SUSTAIN_KEY   = "sustain";
-    public static final String RELEASE_KEY   = "release";
-    public static final String NAME_KEY      = "name";
-    public static final String FREQUENCY_KEY = "frequency";
+    public static final int    DEFAULT_VALUE  = -1;
+    public static final String ATTACK_KEY     = "attack";
+    public static final String DECAY_KEY      = "decay";
+    public static final String SUSTAIN_KEY    = "sustain";
+    public static final String RELEASE_KEY    = "release";
+    public static final String NAME_KEY       = "name";
+    public static final String FREQUENCY_KEY  = "frequency";
+    public static final String ADSR_READY_KEY = "adsrReady";
 
     private final float        frequency;
     private final String       name;
@@ -28,6 +29,7 @@ public class SimpleNoteInfo {
         this.decay = (int) this.safeParse (noteElement.get (SimpleNoteInfo.DECAY_KEY));
         this.sustain = (int) this.safeParse (noteElement.get (SimpleNoteInfo.SUSTAIN_KEY));
         this.release = (int) this.safeParse (noteElement.get (SimpleNoteInfo.RELEASE_KEY));
+        this.adsrReady |= new Boolean (true).equals (noteElement.get (SimpleNoteInfo.ADSR_READY_KEY));
     }
 
     public SimpleNoteInfo (final String fileName) {

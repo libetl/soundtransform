@@ -80,6 +80,6 @@ final class MagnitudeADSRHelper extends AbstractLogAware<MagnitudeADSRHelper> im
             this.log (new LogEvent (MagnitudeADSRHelperEventCode.FOUND_EDGE, nmse));
             sustainIndex = nmse.getIndex () - 1;
         }
-        return sustainIndex;
+        return Math.max (decay, sustainIndex);
     }
 }

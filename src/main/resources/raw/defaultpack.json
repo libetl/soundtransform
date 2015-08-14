@@ -3,50 +3,51 @@
   "org.toilelibre.libe.soundtransform.model.library.note.ComputedOrganNote": [],
   "g-piano": [
     {
-      "frequency": 110.0,
-      "name": "gpiano1",
+      "frequency": 97.75,
+      "name": "gpiano6.wav",
       "attack": 0,
-      "decay": 300,
-      "sustain": 500,
-      "release": 14732
+      "decay": 400,
+      "sustain": 400,
+      "release": 14700
     },
     {
-      "frequency": 220.5,
-      "name": "gpiano3",
+      "frequency": 221.0,
+      "name": "gpiano3.wav",
       "attack": 0,
-      "decay": 300,
-      "sustain": 500,
-      "release": 11370
+      "decay": 400,
+      "sustain": 400,
+      "release": 11300
     },
     {
-      "frequency": 98.0,
-      "name": "gpiano6",
+      "frequency": 55.0,
+      "name": "gpiano1.wav",
       "attack": 0,
-      "decay": 300,
-      "sustain": 500,
-      "release": 14768
+      "decay": 400,
+      "sustain": 400,
+      "release": 14700,
+      "adsrReady": true
     },
     {
       "frequency": 197.5,
-      "name": "gpiano4",
+      "name": "gpiano4.wav",
       "attack": 0,
-      "decay": 300,
-      "sustain": 500,
-      "release": 13112
+      "decay": 400,
+      "sustain": 400,
+      "release": 13100
     },
     {
       "frequency": 278.5,
-      "name": "gpiano5",
+      "name": "gpiano5.wav",
       "attack": 0,
-      "decay": 300,
-      "sustain": 500,
-      "release": 12524
+      "decay": 400,
+      "sustain": 400,
+      "release": 12500
     }
   ],
   "chord_piano": [
     {
       "frequency": 329.0,
-      "name": "gpiano3",
+      "name": "gpiano3.wav",
       "attack": 0,
       "decay": 0,
       "sustain": 0,
@@ -54,7 +55,7 @@
     },
     {
       "frequency": 293.0,
-      "name": "gpiano4",
+      "name": "gpiano4.wav",
       "attack": 0,
       "decay": 0,
       "sustain": 0,
@@ -65,67 +66,67 @@
   "simple_piano": [
     {
       "frequency": 499.14285,
-      "name": "piano7b",
+      "name": "piano7b.wav",
       "attack": 0,
       "decay": 300,
-      "sustain": 500,
-      "release": 3041
+      "sustain": 300,
+      "release": 3100
     },
     {
       "frequency": 332.0,
-      "name": "piano3e",
+      "name": "piano3e.wav",
       "attack": 0,
       "decay": 300,
-      "sustain": 500,
-      "release": 2976
+      "sustain": 300,
+      "release": 3000
     },
     {
       "frequency": 387.0,
-      "name": "piano5g",
+      "name": "piano5g.wav",
       "attack": 0,
       "decay": 300,
-      "sustain": 500,
-      "release": 2845
+      "sustain": 300,
+      "release": 2900
     },
     {
       "frequency": 451.42856,
-      "name": "piano6a",
+      "name": "piano6a.wav",
       "attack": 0,
       "decay": 300,
-      "sustain": 500,
-      "release": 2649
+      "sustain": 300,
+      "release": 2700
     },
     {
       "frequency": 344.0,
-      "name": "piano4f",
+      "name": "piano4f.wav",
       "attack": 0,
       "decay": 300,
-      "sustain": 500,
-      "release": 2910
+      "sustain": 300,
+      "release": 3000
     },
     {
       "frequency": 293.0,
-      "name": "piano2d",
+      "name": "piano2d.wav",
       "attack": 0,
       "decay": 300,
-      "sustain": 500,
-      "release": 3238
+      "sustain": 300,
+      "release": 3300
     },
     {
       "frequency": 260.66666,
-      "name": "piano1c",
+      "name": "piano1c.wav",
       "attack": 0,
       "decay": 300,
-      "sustain": 500,
-      "release": 3172
+      "sustain": 300,
+      "release": 3200
     },
     {
       "frequency": 524.0,
-      "name": "piano8c",
+      "name": "piano8c.wav",
       "attack": 0,
       "decay": 300,
-      "sustain": 500,
-      "release": 3107
+      "sustain": 300,
+      "release": 3200
     }
   ]
 }
