@@ -216,7 +216,7 @@ the client, with a list of clients inside holding a value each
 Throws:  
 `SoundTransformException` - can happen if there was a problem during the flow, or if the threads were interrupted
 
-#####   FluentClient.inParallel 
+#####   FluentClientReady.inParallel 
 
 ```java
 FluentClientWithParallelizedClients inParallel (FluentClientOperation op, int timeoutInSeconds, File... files) throws SoundTransformException
