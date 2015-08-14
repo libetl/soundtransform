@@ -944,9 +944,9 @@ function setDocumentScrollTop(ypos)
  <pre><span class="pl-smi">FluentClientWithInputStream</span> withRecordedInputStream (<span class="pl-smi">StreamInfo</span> streamInfo, <span class="pl-smi">Object</span> stop) throws <span class="pl-smi">SoundTransformException</span></pre>
 </div> 
 <p>Tells the client to open the microphone and to record a sound The result will be of an InputStream type. The frameLength in the streamInfo will be ignored</p> 
-<p>/!\ : blocking method, the <code>stop.notify</code> method must be called in another thread.</p> 
+<p>/!\ : blocking method, the <code>stop.notifyAll ()</code> method must be called in another thread.</p> 
 <p>Parameters:<br /> <code>streamInfo</code> - the future input stream info</p> 
-<p><code>stop</code> - the method notify must be called to stop the recording</p> 
+<p><code>stop</code> - the method notifyAll must be called to stop the recording</p> 
 <p>Returns:<br /> the client, with an input stream</p> 
 <p>Throws:<br /> <code>SoundTransformException</code> - the mic could not be read, the recorder could not start, or the buffer did not record anything</p> 
 <h5> <a id="user-content-fluentclientreadywithsound" class="anchor" href="#fluentclientreadywithsound" aria-hidden="true"><span class="octicon octicon-link"></span></a>FluentClientReady.withSound</h5> 

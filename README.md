@@ -530,12 +530,12 @@ Tells the client to open the microphone and to record a sound
 The result will be of an InputStream type.
 The frameLength in the streamInfo will be ignored
 
- /!\ : blocking method, the `stop.notify` method must be called in another thread.
+ /!\ : blocking method, the `stop.notifyAll ()` method must be called in another thread.
 
 Parameters:  
 `streamInfo` - the future input stream info
 
-`stop` - the method notify must be called to stop the recording
+`stop` - the method notifyAll must be called to stop the recording
 
 Returns:  
 the client, with an input stream
