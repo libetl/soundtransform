@@ -21,8 +21,8 @@ public class SimpleNoteInfo {
     private boolean            adsrReady;
 
     public SimpleNoteInfo (final Map<String, Object> noteElement) {
-        this.adsrReady = true;
         this.frequency = this.safeParse (noteElement.get (SimpleNoteInfo.FREQUENCY_KEY));
+        this.adsrReady = true;
         this.name = noteElement.get (SimpleNoteInfo.NAME_KEY).toString ();
         this.attack = (int) this.safeParse (noteElement.get (SimpleNoteInfo.ATTACK_KEY));
         this.decay = (int) this.safeParse (noteElement.get (SimpleNoteInfo.DECAY_KEY));
