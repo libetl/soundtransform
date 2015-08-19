@@ -233,19 +233,19 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.1.2</version>
+			<version>1.1.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>2.0.5-beta</version>
+			<version>1.10.19</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -281,26 +281,32 @@
 		<dependency>
 			<groupId>org.openjdk.jmh</groupId>
 			<artifactId>jmh-core</artifactId>
-			<version>1.10</version>
+			<version>1.10.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openjdk.jmh</groupId>
 			<artifactId>jmh-generator-annprocess</artifactId>
-			<version>1.10</version>
+			<version>1.10.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.xeiam</groupId>
+			<groupId>com.xeiam.xchart</groupId>
 			<artifactId>xchart</artifactId>
-			<version>1.2.1</version>
+			<version>2.5.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.tony19</groupId>
 			<artifactId>logback-android-classic</artifactId>
-			<version>1.1.1-3</version>
+			<version>1.1.1-4</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>4.1.1.4</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.soundlibs</groupId>
@@ -309,15 +315,9 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.google.android</groupId>
-			<artifactId>android</artifactId>
-			<version>2.3.3</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
-			<version>3.3</version>
+			<version>3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.soundlibs</groupId>
@@ -337,7 +337,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.10</version>
+			<version>1.7.12</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
