@@ -20,9 +20,9 @@ import com.xeiam.xchart.SwingWrapper;
  *
  */
 @SuppressWarnings ("unchecked")
-@Ignore
 // to run the tests, comment this line, and keep the tests debugging
 // after being run
+@Ignore
 public class ViewCepstrumIDETest {
 
     @Test
@@ -115,11 +115,13 @@ public class ViewCepstrumIDETest {
             }
         }
         final Chart chart = QuickChart.getChart ("Cepstrums", "f (Hz)", "ampl", notes, xData, yData);
-        chart.setBackgroundColor (Color.BLACK);
-        chart.setLegendBackgroundColor (Color.BLACK);
-        chart.setForegroundColor (Color.BLACK);
-        chart.setGridLinesColor (Color.LIGHT_GRAY);
-        chart.setFontColor (Color.WHITE);
+        chart.getStyleManager ().setChartBackgroundColor (Color.BLACK);
+        chart.getStyleManager ().setPlotBackgroundColor (Color.BLACK);
+        chart.getStyleManager ().setLegendBackgroundColor (Color.BLACK);
+        chart.getStyleManager ().setChartFontColor (Color.BLACK);
+        chart.getStyleManager ().setPlotGridLinesColor (Color.LIGHT_GRAY);
+        chart.getStyleManager ().setChartFontColor (Color.WHITE);
+        chart.getStyleManager ().setAxisTickLabelsColor (Color.WHITE);
         return chart;
 
     }

@@ -17,9 +17,9 @@ import com.xeiam.xchart.Chart;
 import com.xeiam.xchart.QuickChart;
 import com.xeiam.xchart.SwingWrapper;
 
-@Ignore
 // to run the tests, comment this line, and keep the tests debugging
 // after being run
+@Ignore
 public class ViewSpectrumIDETest {
 
     @Test
@@ -98,11 +98,14 @@ public class ViewSpectrumIDETest {
             }
         }
         final Chart chart = QuickChart.getChart ("Spectrum", "f (Hz)", "ampl", notes, xData, yData);
-        chart.setBackgroundColor (Color.YELLOW);
-        chart.setLegendBackgroundColor (Color.YELLOW);
-        chart.setForegroundColor (Color.YELLOW);
-        chart.setGridLinesColor (Color.LIGHT_GRAY);
-        chart.setFontColor (Color.BLACK);
+
+        chart.getStyleManager ().setChartBackgroundColor (Color.YELLOW);
+        chart.getStyleManager ().setPlotBackgroundColor (Color.YELLOW);
+        chart.getStyleManager ().setLegendBackgroundColor (Color.YELLOW);
+        chart.getStyleManager ().setChartFontColor (Color.YELLOW);
+        chart.getStyleManager ().setPlotGridLinesColor (Color.LIGHT_GRAY);
+        chart.getStyleManager ().setChartFontColor (Color.BLACK);
+        chart.getStyleManager ().setAxisTickLabelsColor (Color.BLACK);
         return chart;
 
     }
