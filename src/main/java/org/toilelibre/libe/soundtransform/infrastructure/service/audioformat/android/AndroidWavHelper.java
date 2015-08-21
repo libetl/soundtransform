@@ -112,7 +112,10 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
     }
 
     public void writeMetadata (final ByteArrayWithAudioFormatInputStream audioInputStream, final WavOutputStream outputStream) throws IOException {
-        final StreamInfo info = audioInputStream.getInfo ();
+        this.writeMetadata (audioInputStream.getInfo (), outputStream);
+    }
+    
+    public void writeMetadata (final StreamInfo info, final WavOutputStream outputStream) throws IOException {
         final int otherInfosSize = info.getTaggedInfo () == null ? 0 : info.getTaggedInfo ().length ();
         final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + otherInfosSize + info.getFrameLength () * info.getSampleSize () * info.getChannels ());
         final int chunkSize = AndroidWavHelper.INFO_CHUNK_SIZE;

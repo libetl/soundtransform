@@ -345,9 +345,9 @@
 			<version>2.3.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.gagravarr</groupId>
-			<artifactId>vorbis-java-core</artifactId>
-			<version>0.7</version>
+			<groupId>org.jcraft</groupId>
+			<artifactId>jorbis</artifactId>
+			<version>0.0.17</version>
 		</dependency>
 	</dependencies>
 	<properties>
