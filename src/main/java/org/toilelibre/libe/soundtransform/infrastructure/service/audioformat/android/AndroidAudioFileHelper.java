@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android.AndroidFileToWavFileConverter.Converters;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
@@ -19,7 +20,7 @@ final class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHelp
         final byte [] byteArray = new byte [(int) inputFile.length ()];
         FileInputStream fileInputStream = null;
         try {
-            fileInputStream = new FileInputStream (inputFile);
+            fileInputStream = new FileInputStream (this.convertToWavIfNecessary (inputFile));
             fileInputStream.read (byteArray);
         } catch (final FileNotFoundException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, inputFile.getName ());
@@ -36,6 +37,16 @@ final class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHelp
         }
 
         return new ByteArrayInputStream (byteArray);
+    }
+
+    private File convertToWavIfNecessary (File inputFile) throws SoundTransformException {
+        File outputFile = inputFile;
+        for (Converters converters : Converters.values ()) {
+            if (inputFile.getName ().endsWith ("." + converters.name ().toLowerCase ())) {
+                outputFile = converters.getConverter ().convert (inputFile);
+            }
+        }
+        return outputFile == null ? inputFile : outputFile;
     }
 
     @Override
