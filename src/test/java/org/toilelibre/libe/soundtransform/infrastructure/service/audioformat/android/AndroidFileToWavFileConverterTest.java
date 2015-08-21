@@ -10,6 +10,7 @@ public class AndroidFileToWavFileConverterTest {
     
     @Test
     public void oggConvertToWav () throws SoundTransformException {
-        new AndroidFileToWavFileConverter.OGGConverter ().convert (new File ("C:/Users/Administrator/Downloads/Fresh_Moods_-_Shiny_Cage.ogg"));
+        new AndroidFileToWavFileConverter.OGGConverter ().convert (
+                new File (Thread.currentThread ().getContextClassLoader ().getResource ("raw/short.ogg").getFile ()));
     }
 }
