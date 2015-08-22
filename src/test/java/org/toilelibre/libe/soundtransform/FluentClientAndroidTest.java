@@ -80,4 +80,9 @@ public class FluentClientAndroidTest extends SoundTransformAndroidTest {
         Mockito.when (resources.openRawResource (Matchers.any (int.class))).then (this.findAmongRFields);
         return context;
     }
+    
+    @Test
+    public void readOgg () throws SoundTransformException {
+        FluentClient.start ().withClasspathResource ("raw/short.ogg").convertIntoSound ().exportToClasspathResource ("short.wav");
+    }
 }
