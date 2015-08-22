@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.android;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -60,6 +61,8 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
     private static final int    INFO_CHUNK_SIZE     = 16;
 
     private static final int    TWO_BYTES_NB_VALUES = 1 << 2 * Byte.SIZE;
+    
+    private static final int    WORD_ALIGN_LENGTH   = 4;
 
     public AndroidWavHelper () {
 
@@ -138,9 +141,12 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
         outputStream.writeShortInt (frameSize);
         outputStream.writeShortInt (sampleSize);
         if (info.getTaggedInfo () != null) {
+            final int complementaryLength = AndroidWavHelper.WORD_ALIGN_LENGTH - 1 - (info.getTaggedInfo ().length () - 1) % AndroidWavHelper.WORD_ALIGN_LENGTH;
+            final char [] complementaryCharArray = new char [complementaryLength];
+            Arrays.fill (new char [complementaryLength], ' ');
             outputStream.write (AndroidWavHelper.LIST.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
-            outputStream.writeInt (info.getTaggedInfo ().length ());
-            outputStream.write (info.getTaggedInfo ().getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
+            outputStream.writeInt (info.getTaggedInfo ().length () + complementaryLength);
+            outputStream.write ((info.getTaggedInfo () + new String (complementaryCharArray)).getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         }
         outputStream.write (AndroidWavHelper.DATA.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         outputStream.writeInt (dataSize);

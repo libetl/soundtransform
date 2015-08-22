@@ -49,7 +49,7 @@ public class JorbisDirtyConverter {
     }
 
     public StreamInfo getStreamInfo () {
-        return new StreamInfo (this.jorbisInfo.channels, this.baos == null ? 0 : (int) (this.baos.size () * 1.0 / this.jorbisInfo.channels), 2, this.jorbisInfo.rate, false, true, null);
+        return new StreamInfo (this.jorbisInfo.channels, this.baos == null ? 0 : (int) (this.baos.size () * 1.0 / this.jorbisInfo.channels), 2, this.jorbisInfo.rate, false, true, "Converted from OGG Vorbis.");
     }
 
     /**
