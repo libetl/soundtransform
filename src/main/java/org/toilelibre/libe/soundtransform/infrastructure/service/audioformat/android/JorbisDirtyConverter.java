@@ -16,7 +16,8 @@ import com.jcraft.jorbis.DspState;
 import com.jcraft.jorbis.Info;
 
 public class JorbisDirtyConverter {
-    private static final int      BUFFER_SIZE     = 8192;
+    private static final int      BUFFER_SIZE     = (int) Math.pow (2, 11);
+    
     private final Packet          joggPacket      = new Packet ();
     private final Page            joggPage        = new Page ();
     private final StreamState     joggStreamState = new StreamState ();
@@ -31,7 +32,6 @@ public class JorbisDirtyConverter {
      * stuff used with read().
      */
     private byte []               buffer          = null;
-    private final int             bufferSize      = 2048;
     private int                   count           = 0;
     private int                   index           = 0;
 
@@ -122,7 +122,7 @@ public class JorbisDirtyConverter {
         while (needMoreData) {
             // Read from the oggInputStream.
             try {
-                this.count = oggInputStream.read (this.buffer, this.index, this.bufferSize);
+                this.count = oggInputStream.read (this.buffer, this.index, JorbisDirtyConverter.BUFFER_SIZE);
             } catch (final IOException exception) {
                 System.err.println ("Could not read from the input stream.");
                 System.err.println (exception);
@@ -285,7 +285,7 @@ public class JorbisDirtyConverter {
             }
 
             // We get the new index and an updated buffer.
-            this.index = this.joggSyncState.buffer (this.bufferSize);
+            this.index = this.joggSyncState.buffer (JorbisDirtyConverter.BUFFER_SIZE);
             this.buffer = this.joggSyncState.data;
 
             /*
@@ -313,7 +313,7 @@ public class JorbisDirtyConverter {
     private boolean initializeSound () {
 
         // This buffer is used by the decoding method.
-        this.convertedBufferSize = this.bufferSize * 2;
+        this.convertedBufferSize = JorbisDirtyConverter.BUFFER_SIZE * 2;
         this.convertedBuffer = new byte [this.convertedBufferSize];
 
         // Initializes the DSP synthesis.
@@ -396,12 +396,12 @@ public class JorbisDirtyConverter {
             // If we need more data
             if (needMoreData) {
                 // We get the new index and an updated buffer.
-                this.index = this.joggSyncState.buffer (this.bufferSize);
+                this.index = this.joggSyncState.buffer (JorbisDirtyConverter.BUFFER_SIZE);
                 this.buffer = this.joggSyncState.data;
 
                 // Read from the oggInputStream.
                 try {
-                    this.count = oggInputStream.read (this.buffer, this.index, this.bufferSize);
+                    this.count = oggInputStream.read (this.buffer, this.index, JorbisDirtyConverter.BUFFER_SIZE);
                 } catch (final Exception e) {
                     System.err.println (e);
                     return;
@@ -455,17 +455,17 @@ public class JorbisDirtyConverter {
                      * Get the PCM value for the channel at the correct
                      * position.
                      */
-                    int value = (int) (this.pcmInfo [0] [i] [this.pcmIndex [i] + j] * 32767);
+                    int value = (int) (this.pcmInfo [0] [i] [this.pcmIndex [i] + j] * Short.MAX_VALUE);
 
                     /*
                      * We make sure our value doesn't exceed or falls below
                      * +-32767.
                      */
-                    if (value > 32767) {
-                        value = 32767;
+                    if (value > Short.MAX_VALUE) {
+                        value = Short.MAX_VALUE;
                     }
-                    if (value < -32768) {
-                        value = -32768;
+                    if (value < Short.MIN_VALUE) {
+                        value = Short.MIN_VALUE;
                     }
 
                     /*
@@ -473,7 +473,7 @@ public class JorbisDirtyConverter {
                      * 32768 (which is 1000000000000000 = 10^15).
                      */
                     if (value < 0) {
-                        value = value | 32768;
+                        value = value | (Short.MAX_VALUE + 1);
                     }
 
                     /*
