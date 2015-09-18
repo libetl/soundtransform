@@ -29,7 +29,8 @@ public interface AudioFileHelper {
     }
 
     public enum AudioFileHelperEventCode implements EventCode {
-        COULD_NOT_CLOSE (LogLevel.ERROR, "Could not close the output stream");
+        COULD_NOT_CLOSE (LogLevel.ERROR, "Could not close the output stream"), 
+        CONVERTING_FIRST (LogLevel.INFO, "Converting first into %1s");
 
         private final String   messageFormat;
         private final LogLevel logLevel;

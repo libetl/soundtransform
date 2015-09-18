@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.ioc;
 
 import java.util.Map.Entry;
 
+import org.toilelibre.libe.soundtransform.model.audioformat.converter.ConverterLauncher;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundToStringHelper;
@@ -37,6 +38,7 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
         super.bind (RecordSoundProcessor.class).to (this.provideRecordSoundProcessor ());
         super.bind (PlaySoundProcessor.class).to (this.providePlaySoundProcessor ());
         super.bind (AudioFileHelper.class).to (this.provideAudioFileHelper ());
+        super.bind (ConverterLauncher.class).to (this.provideConverterLauncher ());
         super.bind (AudioFormatParser.class).to (this.provideAudioFormatParser ());
         super.bind (ContextLoader.class).to (this.provideContextLoader ());
 
