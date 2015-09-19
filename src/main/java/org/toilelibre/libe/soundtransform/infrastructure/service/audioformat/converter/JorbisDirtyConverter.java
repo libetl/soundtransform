@@ -34,35 +34,38 @@ public class JorbisDirtyConverter implements Converter {
         final Info     info     = new Info ();
     }
 
+    static class PcmData {
+        /*
+         * We need a buffer, it's size, a count to know how many bytes we have read
+         * and an index to keep track of where we are. This is standard networking
+         * stuff used with read().
+         */
+        byte []               buffer = null;
+        int                   count  = 0;
+        int                   index  = 0;
+
+        // A three-dimensional an array with PCM information.
+        float [][][]          pcmInfo;
+
+        // The index for the PCM information.
+        int []                pcmIndex;
+        int                   convertedBufferSize;
+        byte []               convertedBuffer;
+        ByteArrayOutputStream baos;
+    }
+    
     static class ConverterData {
         final JorbisData jorbisData = new JorbisData ();
         final JoggData   joggData   = new JoggData ();
+        final PcmData    pcmData    = new PcmData ();
     }
 
-    /*
-     * We need a buffer, it's size, a count to know how many bytes we have read
-     * and an index to keep track of where we are. This is standard networking
-     * stuff used with read().
-     */
-    private byte []               buffer = null;
-    private int                   count  = 0;
-    private int                   index  = 0;
-
-    // A three-dimensional an array with PCM information.
-    private float [][][]          pcmInfo;
-
-    // The index for the PCM information.
-    private int []                pcmIndex;
-    private int                   convertedBufferSize;
-    private byte []               convertedBuffer;
-    private ByteArrayOutputStream baos;
-
-    public ByteArrayOutputStream getOutputStream () {
-        return this.baos;
+    public ByteArrayOutputStream getOutputStream (ConverterData converterData) {
+        return converterData.pcmData.baos;
     }
 
     public StreamInfo getStreamInfo (ConverterData converterData) {
-        return new StreamInfo (converterData.jorbisData.info.channels, this.baos == null ? 0 : (int) (this.baos.size () * 1.0 / converterData.jorbisData.info.channels), 2, converterData.jorbisData.info.rate, false, true, "Converted from OGG Vorbis.");
+        return new StreamInfo (converterData.jorbisData.info.channels, converterData.pcmData.baos == null ? 0 : (int) (converterData.pcmData.baos.size () * 1.0 / converterData.jorbisData.info.channels), 2, converterData.jorbisData.info.rate, false, true, "Converted from OGG Vorbis.");
     }
 
     /**
@@ -113,7 +116,7 @@ public class JorbisDirtyConverter implements Converter {
          * Fill the buffer with the data from SyncState's internal buffer. Note
          * how the size of this new buffer is different from bufferSize.
          */
-        this.buffer = converterData.joggData.syncState.data;
+        converterData.pcmData.buffer = converterData.joggData.syncState.data;
 
     }
 
@@ -141,14 +144,14 @@ public class JorbisDirtyConverter implements Converter {
         while (needMoreData) {
             // Read from the oggInputStream.
             try {
-                this.count = oggInputStream.read (this.buffer, this.index, JorbisDirtyConverter.BUFFER_SIZE);
+                converterData.pcmData.count = oggInputStream.read (converterData.pcmData.buffer, converterData.pcmData.index, JorbisDirtyConverter.BUFFER_SIZE);
             } catch (final IOException exception) {
                 System.err.println ("Could not read from the input stream.");
                 System.err.println (exception);
             }
 
             // We let SyncState know how many bytes we read.
-            converterData.joggData.syncState.wrote (this.count);
+            converterData.joggData.syncState.wrote (converterData.pcmData.count);
 
             /*
              * We want to read the first three packets. For the first packet, we
@@ -304,14 +307,14 @@ public class JorbisDirtyConverter implements Converter {
             }
 
             // We get the new index and an updated buffer.
-            this.index = converterData.joggData.syncState.buffer (JorbisDirtyConverter.BUFFER_SIZE);
-            this.buffer = converterData.joggData.syncState.data;
+            converterData.pcmData.index = converterData.joggData.syncState.buffer (JorbisDirtyConverter.BUFFER_SIZE);
+            converterData.pcmData.buffer = converterData.joggData.syncState.data;
 
             /*
              * If we need more data but can't get it, the stream doesn't contain
              * enough information.
              */
-            if (this.count == 0 && needMoreData) {
+            if (converterData.pcmData.count == 0 && needMoreData) {
                 System.err.println ("Not enough header data was supplied.");
                 return false;
             }
@@ -332,8 +335,8 @@ public class JorbisDirtyConverter implements Converter {
     private boolean initializeSound (ConverterData converterData) {
 
         // This buffer is used by the decoding method.
-        this.convertedBufferSize = JorbisDirtyConverter.BUFFER_SIZE * 2;
-        this.convertedBuffer = new byte [this.convertedBufferSize];
+        converterData.pcmData.convertedBufferSize = JorbisDirtyConverter.BUFFER_SIZE * 2;
+        converterData.pcmData.convertedBuffer = new byte [converterData.pcmData.convertedBufferSize];
 
         // Initializes the DSP synthesis.
         converterData.jorbisData.dspState.synthesis_init (converterData.jorbisData.info);
@@ -341,14 +344,14 @@ public class JorbisDirtyConverter implements Converter {
         // Make the Block object aware of the DSP.
         converterData.jorbisData.block.init (converterData.jorbisData.dspState);
 
-        this.baos = new ByteArrayOutputStream ();
+        converterData.pcmData.baos = new ByteArrayOutputStream ();
 
         /*
          * We create the PCM variables. The index is an array with the same
          * length as the number of audio channels.
          */
-        this.pcmInfo = new float [1] [] [];
-        this.pcmIndex = new int [converterData.jorbisData.info.channels];
+        converterData.pcmData.pcmInfo = new float [1] [] [];
+        converterData.pcmData.pcmIndex = new int [converterData.jorbisData.info.channels];
         return true;
     }
 
@@ -415,22 +418,22 @@ public class JorbisDirtyConverter implements Converter {
             // If we need more data
             if (needMoreData) {
                 // We get the new index and an updated buffer.
-                this.index = converterData.joggData.syncState.buffer (JorbisDirtyConverter.BUFFER_SIZE);
-                this.buffer = converterData.joggData.syncState.data;
+                converterData.pcmData.index = converterData.joggData.syncState.buffer (JorbisDirtyConverter.BUFFER_SIZE);
+                converterData.pcmData.buffer = converterData.joggData.syncState.data;
 
                 // Read from the oggInputStream.
                 try {
-                    this.count = oggInputStream.read (this.buffer, this.index, JorbisDirtyConverter.BUFFER_SIZE);
+                    converterData.pcmData.count = oggInputStream.read (converterData.pcmData.buffer, converterData.pcmData.index, JorbisDirtyConverter.BUFFER_SIZE);
                 } catch (final Exception e) {
                     System.err.println (e);
                     return;
                 }
 
                 // We let SyncState know how many bytes we read.
-                converterData.joggData.syncState.wrote (this.count);
+                converterData.joggData.syncState.wrote (converterData.pcmData.count);
 
                 // There's no more data in the stream.
-                if (this.count == 0) {
+                if (converterData.pcmData.count == 0) {
                     needMoreData = false;
                 }
             }
@@ -456,12 +459,12 @@ public class JorbisDirtyConverter implements Converter {
          * Get the PCM information and count the samples. And while these
          * samples are more than zero...
          */
-        while ((samples = converterData.jorbisData.dspState.synthesis_pcmout (this.pcmInfo, this.pcmIndex)) > 0) {
+        while ((samples = converterData.jorbisData.dspState.synthesis_pcmout (converterData.pcmData.pcmInfo, converterData.pcmData.pcmIndex)) > 0) {
             // We need to know for how many samples we are going to process.
-            if (samples < this.convertedBufferSize) {
+            if (samples < converterData.pcmData.convertedBufferSize) {
                 range = samples;
             } else {
-                range = this.convertedBufferSize;
+                range = converterData.pcmData.convertedBufferSize;
             }
 
             // For each channel...
@@ -474,7 +477,7 @@ public class JorbisDirtyConverter implements Converter {
                      * Get the PCM value for the channel at the correct
                      * position.
                      */
-                    int value = (int) (this.pcmInfo [0] [i] [this.pcmIndex [i] + j] * Short.MAX_VALUE);
+                    int value = (int) (converterData.pcmData.pcmInfo [0] [i] [converterData.pcmData.pcmIndex [i] + j] * Short.MAX_VALUE);
 
                     /*
                      * We make sure our value doesn't exceed or falls below
@@ -499,8 +502,8 @@ public class JorbisDirtyConverter implements Converter {
                      * Take our value and split it into two, one with the last
                      * byte and one with the first byte.
                      */
-                    this.convertedBuffer [sampleIndex] = (byte) value;
-                    this.convertedBuffer [sampleIndex + 1] = (byte) (value >>> 8);
+                    converterData.pcmData.convertedBuffer [sampleIndex] = (byte) value;
+                    converterData.pcmData.convertedBuffer [sampleIndex + 1] = (byte) (value >>> 8);
 
                     /*
                      * Move the sample index forward by two (since that's how
@@ -511,7 +514,7 @@ public class JorbisDirtyConverter implements Converter {
             }
 
             // Write the buffer to the baos.
-            this.baos.write (this.convertedBuffer, 0, 2 * converterData.jorbisData.info.channels * range);
+            converterData.pcmData.baos.write (converterData.pcmData.convertedBuffer, 0, 2 * converterData.jorbisData.info.channels * range);
 
             // Update the DspState object.
             converterData.jorbisData.dspState.synthesis_read (range);
@@ -544,6 +547,6 @@ public class JorbisDirtyConverter implements Converter {
     @Override
     public SimpleImmutableEntry<StreamInfo, ByteArrayOutputStream> convert (InputStream input) throws SoundTransformException {
         ConverterData converterData = this.run (input);
-        return new SimpleImmutableEntry<StreamInfo, ByteArrayOutputStream> (this.getStreamInfo (converterData), this.getOutputStream ());
+        return new SimpleImmutableEntry<StreamInfo, ByteArrayOutputStream> (this.getStreamInfo (converterData), this.getOutputStream (converterData));
     }
 }
