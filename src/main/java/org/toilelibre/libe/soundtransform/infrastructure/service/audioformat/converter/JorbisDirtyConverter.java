@@ -92,9 +92,8 @@ public class JorbisDirtyConverter implements Converter {
          * could initialize the sound system, we try to read the body.
          */
         if (this.readHeader (converterData, oggInputStream)) {
-            if (this.initializeSound (converterData)) {
-                this.readBody (converterData, oggInputStream);
-            }
+            this.initializeSound (converterData);
+            this.readBody (converterData, oggInputStream);
         }
 
         // Afterwards, we clean up.
@@ -329,10 +328,8 @@ public class JorbisDirtyConverter implements Converter {
      * <code>Block</code> object. Last but not least, it opens a line to the
      * source data line.
      *
-     * @return true if the sound system was successfully started, false
-     *         otherwise
      */
-    private boolean initializeSound (ConverterData converterData) {
+    private void initializeSound (ConverterData converterData) {
 
         // This buffer is used by the decoding method.
         converterData.pcmData.convertedBufferSize = JorbisDirtyConverter.BUFFER_SIZE * 2;
@@ -352,7 +349,6 @@ public class JorbisDirtyConverter implements Converter {
          */
         converterData.pcmData.pcmInfo = new float [1] [] [];
         converterData.pcmData.pcmIndex = new int [converterData.jorbisData.info.channels];
-        return true;
     }
 
     /**
