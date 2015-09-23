@@ -17,7 +17,7 @@ import com.jcraft.jorbis.Comment;
 import com.jcraft.jorbis.DspState;
 import com.jcraft.jorbis.Info;
 
-public class JorbisDirtyConverter2 implements Converter {
+public class JorbisCleanConverter implements Converter {
     private static final int HEADERS_NB_STEPS    = 4;
     private static final int BUFFER_SIZE         = (int) Math.pow (2, 11);
     private static final int ERROR_WHILE_READING = -1;
@@ -141,7 +141,7 @@ public class JorbisDirtyConverter2 implements Converter {
         converterData.joggData.syncState.init ();
 
         // Prepare the to SyncState internal buffer
-        converterData.joggData.syncState.buffer (JorbisDirtyConverter2.BUFFER_SIZE);
+        converterData.joggData.syncState.buffer (JorbisCleanConverter.BUFFER_SIZE);
 
         /*
          * Fill the buffer with the data from SyncState's internal buffer. Note
@@ -167,10 +167,10 @@ public class JorbisDirtyConverter2 implements Converter {
          * <code>switch</code> statement which does what it's supposed to do in
          * regards to the current packet.
          */
-        while (step < JorbisDirtyConverter2.HEADERS_NB_STEPS) {
+        while (step < JorbisCleanConverter.HEADERS_NB_STEPS) {
             // Read from the oggInputStream.
             try {
-                converterData.pcmData.count = oggInputStream.read (converterData.pcmData.buffer, converterData.pcmData.index, JorbisDirtyConverter2.BUFFER_SIZE);
+                converterData.pcmData.count = oggInputStream.read (converterData.pcmData.buffer, converterData.pcmData.index, JorbisCleanConverter.BUFFER_SIZE);
             } catch (final IOException exception) {
                 throw new JorbisReadException ("Could not read from the input stream.", exception);
             }
@@ -272,7 +272,7 @@ public class JorbisDirtyConverter2 implements Converter {
     private void updatePcmDataHeaders (ConverterData converterData) {
 
         // We get the new index and an updated buffer.
-        converterData.pcmData.index = converterData.joggData.syncState.buffer (JorbisDirtyConverter2.BUFFER_SIZE);
+        converterData.pcmData.index = converterData.joggData.syncState.buffer (JorbisCleanConverter.BUFFER_SIZE);
         converterData.pcmData.buffer = converterData.joggData.syncState.data;
 
     }
@@ -287,7 +287,7 @@ public class JorbisDirtyConverter2 implements Converter {
     private void initializeSound (ConverterData converterData) {
 
         // This buffer is used by the decoding method.
-        converterData.pcmData.convertedBufferSize = JorbisDirtyConverter2.BUFFER_SIZE * 2;
+        converterData.pcmData.convertedBufferSize = JorbisCleanConverter.BUFFER_SIZE * 2;
         converterData.pcmData.convertedBuffer = new byte [converterData.pcmData.convertedBufferSize];
 
         // Initializes the DSP synthesis.
@@ -369,12 +369,12 @@ public class JorbisDirtyConverter2 implements Converter {
             // If we need more data
             if (needMoreData) {
                 // We get the new index and an updated buffer.
-                converterData.pcmData.index = converterData.joggData.syncState.buffer (JorbisDirtyConverter2.BUFFER_SIZE);
+                converterData.pcmData.index = converterData.joggData.syncState.buffer (JorbisCleanConverter.BUFFER_SIZE);
                 converterData.pcmData.buffer = converterData.joggData.syncState.data;
 
                 // Read from the oggInputStream.
                 try {
-                    converterData.pcmData.count = oggInputStream.read (converterData.pcmData.buffer, converterData.pcmData.index, JorbisDirtyConverter2.BUFFER_SIZE);
+                    converterData.pcmData.count = oggInputStream.read (converterData.pcmData.buffer, converterData.pcmData.index, JorbisCleanConverter.BUFFER_SIZE);
                 } catch (final Exception e) {
                     System.err.println (e);
                     return;
