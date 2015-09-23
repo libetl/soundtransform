@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.co
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Map.Entry;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
@@ -58,6 +58,33 @@ public class JorbisDirtyConverter implements Converter {
         final JorbisData jorbisData = new JorbisData ();
         final JoggData   joggData   = new JoggData ();
         final PcmData    pcmData    = new PcmData ();
+    }
+    
+    static class ResultEntry implements Entry<StreamInfo, ByteArrayOutputStream> {
+
+        private StreamInfo streamInfo;
+        private ByteArrayOutputStream outputStream;
+
+        public ResultEntry (StreamInfo streamInfo1, ByteArrayOutputStream outputStream1) {
+            this.streamInfo = streamInfo1;
+            this.outputStream = outputStream1;
+        }
+        
+        @Override
+        public StreamInfo getKey () {
+            return this.streamInfo;
+        }
+
+        @Override
+        public ByteArrayOutputStream getValue () {
+            return this.outputStream;
+        }
+
+        @Override
+        public ByteArrayOutputStream setValue (ByteArrayOutputStream object) {
+            throw new UnsupportedOperationException ();
+        }
+        
     }
 
     public ByteArrayOutputStream getOutputStream (ConverterData converterData) {
@@ -541,8 +568,8 @@ public class JorbisDirtyConverter implements Converter {
     }
 
     @Override
-    public SimpleImmutableEntry<StreamInfo, ByteArrayOutputStream> convert (InputStream input) throws SoundTransformException {
+    public Entry<StreamInfo, ByteArrayOutputStream> convert (InputStream input) throws SoundTransformException {
         ConverterData converterData = this.run (input);
-        return new SimpleImmutableEntry<StreamInfo, ByteArrayOutputStream> (this.getStreamInfo (converterData), this.getOutputStream (converterData));
+        return new ResultEntry (this.getStreamInfo (converterData), this.getOutputStream (converterData));
     }
 }

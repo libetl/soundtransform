@@ -7,7 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Map.Entry;
 
 import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.converter.ConverterMapping;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
@@ -68,7 +68,7 @@ final class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHelp
         return outputFile;
     }
 
-    private File createTempFileFromStream (SimpleImmutableEntry<StreamInfo, ByteArrayOutputStream> streamPair) throws SoundTransformException {
+    private File createTempFileFromStream (Entry<StreamInfo, ByteArrayOutputStream> streamPair) throws SoundTransformException {
         File result = null;
         WavOutputStream outputStream = null;
         try {
