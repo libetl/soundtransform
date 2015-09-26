@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.Map.Entry;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper.AudioFileHelperErrorCode;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 import com.jcraft.jogg.Packet;
@@ -514,8 +515,8 @@ class JorbisCleanConverter implements Converter {
         try {
             converterData = this.run (input);
             return new ResultEntry (this.getStreamInfo (converterData), this.getOutputStream (converterData));
-        } catch (final JorbisReadException e) {
-            return null;
+        } catch (final JorbisReadException jre) {
+            throw new SoundTransformException (AudioFileHelperErrorCode.CUSTOM_CONVERSION_FAILED, jre, "OGG");
         }
     }
 }
