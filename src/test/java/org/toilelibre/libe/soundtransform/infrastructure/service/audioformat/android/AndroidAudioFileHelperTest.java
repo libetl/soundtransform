@@ -88,7 +88,7 @@ public class AndroidAudioFileHelperTest extends SoundTransformAndroidTest {
             PowerMockito.whenNew (WavOutputStream.class).withAnyArguments ().thenReturn (wos);
             Mockito.doThrow (new IOException ("Mocked IO Exception")).when (wos).close ();
             Mockito.doThrow (new IOException ("Mocked IO Exception")).when (wos).write (Matchers.any (byte [].class));
-            new AndroidAudioFileHelper ().writeInputStream (new ByteArrayWithAudioFormatInputStream (new byte [0], new StreamInfo (2, 10000, 2, 44100, false, true, null)), new File (Thread.currentThread ().getContextClassLoader ().getResource ("after.wav").getFile ()));
+            new AndroidAudioFileHelper ().writeInputStream (new ByteArrayWithAudioFormatInputStream (new byte [0], new StreamInfo (2, 10000, 2, 44100, false, true, null)), new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano_low.wav").getFile ()));
             Assert.fail ("Should have thrown an exception here");
         } catch (final SoundTransformException e) {
             Assert.assertEquals (e.getErrorCode (), AudioFileHelperErrorCode.COULD_NOT_CONVERT);
