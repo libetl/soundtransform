@@ -17,7 +17,7 @@ import com.jcraft.jorbis.Comment;
 import com.jcraft.jorbis.DspState;
 import com.jcraft.jorbis.Info;
 
-public class JorbisCleanConverter implements Converter {
+class JorbisCleanConverter implements Converter {
     private static final int HEADERS_NB_STEPS    = 4;
     private static final int BUFFER_SIZE         = (int) Math.pow (2, 11);
     private static final int ERROR_WHILE_READING = -1;
@@ -312,51 +312,35 @@ public class JorbisCleanConverter implements Converter {
     /**
      * This method reads the entire stream body. Whenever it extracts a packet,
      * it will decode it by calling <code>decodeCurrentPacket()</code>.
+     *
+     * @throws JorbisReadException
      */
-    private void readBody (final ConverterData converterData, final InputStream oggInputStream) {
+    private void readBody (final ConverterData converterData, final InputStream oggInputStream) throws JorbisReadException {
 
         /*
          * Variable used in loops below, like in readHeader(). While we need
          * more data, we will continue to read from the oggInputStream.
          */
-        boolean needMoreData = true;
+        boolean readingBody = true;
 
-        while (needMoreData) {
+        while (readingBody) {
             switch (converterData.joggData.syncState.pageout (converterData.joggData.page)) {
-
-                // If we need more data, we break to get it.
-                case 0: {
+                case ERROR_WHILE_READING:
+                default:
+                    throw new JorbisReadException ("There is a hole in the body.");
+                    // If we need more data, we break to get it.
+                case PARTIAL_READ:
                     break;
-                }
-
-                // If we have successfully checked out a page, we continue.
-                case 1: {
+                    // If we have successfully checked out a page, we continue.
+                case PAGE_READ: {
                     // Give the page to the StreamState object.
                     converterData.joggData.streamState.pagein (converterData.joggData.page);
 
-                    // If granulepos() returns "0", we don't need more data.
+                    // If granulepos () returns "0", we don't need more data.
                     if (converterData.joggData.page.granulepos () == 0) {
-                        needMoreData = false;
-                        break;
-                    }
-
-                    // Here is where we process the packets.
-                    processPackets : while (true) {
-                        switch (converterData.joggData.streamState.packetout (converterData.joggData.packet)) {
-
-                            // If we need more data, we break to get it.
-                            case 0: {
-                                break processPackets;
-                            }
-
-                            /*
-                             * If we have the data we need, we decode the
-                             * packet.
-                             */
-                            case 1: {
-                                this.decodeCurrentPacket (converterData);
-                            }
-                        }
+                        readingBody = false;
+                    } else {
+                        this.processPackets (converterData);
                     }
 
                     /*
@@ -364,32 +348,55 @@ public class JorbisCleanConverter implements Converter {
                      * data.
                      */
                     if (converterData.joggData.page.eos () != 0) {
-                        needMoreData = false;
+                        readingBody = false;
                     }
                 }
             }
 
             // If we need more data
-            if (needMoreData) {
-                // We get the new index and an updated buffer.
-                converterData.pcmData.index = converterData.joggData.syncState.buffer (JorbisCleanConverter.BUFFER_SIZE);
-                converterData.pcmData.buffer = converterData.joggData.syncState.data;
+            if (readingBody) {
+                readingBody = !this.updatePcmDataBodyAndTellIfBodyRead (converterData, oggInputStream);
+            }
+        }
+    }
 
-                // Read from the oggInputStream.
-                try {
-                    converterData.pcmData.count = oggInputStream.read (converterData.pcmData.buffer, converterData.pcmData.index, JorbisCleanConverter.BUFFER_SIZE);
-                } catch (final Exception e) {
-                    System.err.println (e);
-                    return;
-                }
+    private boolean updatePcmDataBodyAndTellIfBodyRead (final ConverterData converterData, final InputStream oggInputStream) throws JorbisReadException {
+        // We get the new index and an updated buffer.
+        converterData.pcmData.index = converterData.joggData.syncState.buffer (JorbisCleanConverter.BUFFER_SIZE);
+        converterData.pcmData.buffer = converterData.joggData.syncState.data;
 
-                // We let SyncState know how many bytes we read.
-                converterData.joggData.syncState.wrote (converterData.pcmData.count);
+        // Read from the oggInputStream.
+        try {
+            converterData.pcmData.count = oggInputStream.read (converterData.pcmData.buffer, converterData.pcmData.index, JorbisCleanConverter.BUFFER_SIZE);
+        } catch (final IOException e) {
+            throw new JorbisReadException ("Error while reading ogg stream", e);
+        }
 
-                // There's no more data in the stream.
-                if (converterData.pcmData.count == 0) {
-                    needMoreData = false;
-                }
+        // We let SyncState know how many bytes we read.
+        converterData.joggData.syncState.wrote (converterData.pcmData.count);
+
+        // Check if there's no more data in the stream.
+        return converterData.pcmData.count == 0;
+    }
+
+    private void processPackets (final ConverterData converterData) throws JorbisReadException {
+        // Here is where we process the packets.
+        boolean readingPacket = true;
+        while (readingPacket) {
+            switch (converterData.joggData.streamState.packetout (converterData.joggData.packet)) {
+                // If we need more data, we break to get it.
+                case PARTIAL_READ:
+                    readingPacket = false;
+                    break;
+                    /*
+                     * If we have the data we need, we decode the packet.
+                     */
+                case PAGE_READ:
+                    this.decodeCurrentPacket (converterData);
+                    break;
+                case ERROR_WHILE_READING:
+                default:
+                    throw new JorbisReadException ("There is a hole in a body packet.");
             }
         }
     }
@@ -431,26 +438,7 @@ public class JorbisCleanConverter implements Converter {
                      * Get the PCM value for the channel at the correct
                      * position.
                      */
-                    int value = (int) (converterData.pcmData.pcmInfo [0] [i] [converterData.pcmData.pcmIndex [i] + j] * Short.MAX_VALUE);
-
-                    /*
-                     * We make sure our value doesn't exceed or falls below
-                     * +-32767.
-                     */
-                    if (value > Short.MAX_VALUE) {
-                        value = Short.MAX_VALUE;
-                    }
-                    if (value < Short.MIN_VALUE) {
-                        value = Short.MIN_VALUE;
-                    }
-
-                    /*
-                     * It the value is less than zero, we bitwise-or it with
-                     * 32768 (which is 1000000000000000 = 10^15).
-                     */
-                    if (value < 0) {
-                        value = value | Short.MAX_VALUE + 1;
-                    }
+                    final int value = this.surroundValueInReasonableRange ((int) (converterData.pcmData.pcmInfo [0] [i] [converterData.pcmData.pcmIndex [i] + j] * Short.MAX_VALUE));
 
                     /*
                      * Take our value and split it into two, one with the last
@@ -473,6 +461,28 @@ public class JorbisCleanConverter implements Converter {
             // Update the DspState object.
             converterData.jorbisData.dspState.synthesis_read (range);
         }
+    }
+
+    private int surroundValueInReasonableRange (final int value) {
+        int result = value;
+        /*
+         * We make sure our value doesn't exceed or falls below +-32767.
+         */
+        if (result > Short.MAX_VALUE) {
+            result = Short.MAX_VALUE;
+        }
+        if (result < Short.MIN_VALUE) {
+            result = Short.MIN_VALUE;
+        }
+
+        /*
+         * It the value is less than zero, we bitwise-or it with 32768 (which is
+         * 1000000000000000 = 10^15).
+         */
+        if (result < 0) {
+            result = value | Short.MAX_VALUE + 1;
+        }
+        return result;
     }
 
     /**

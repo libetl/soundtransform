@@ -34,10 +34,6 @@ final class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHelp
         return result == null ? new ByteArrayInputStream ($.select (InputStreamToByteArrayHelper.class).convertToByteArray (inputStream)) : result;
     }
 
-    private InputStream readyInputStreamFully (final InputStream inputStream) throws SoundTransformException {
-        return new ByteArrayInputStream ($.select (InputStreamToByteArrayHelper.class).convertToByteArray (inputStream));
-    }
-
     private InputStream createWavStreamFromStream (final Entry<StreamInfo, ByteArrayOutputStream> streamPair) throws SoundTransformException {
         WavReadableOutputStream outputStream = null;
         try {
