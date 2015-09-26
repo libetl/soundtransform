@@ -96,7 +96,7 @@ public class JorbisCleanConverter implements Converter {
     }
 
     public StreamInfo getStreamInfo (final ConverterData converterData) {
-        return new StreamInfo (converterData.jorbisData.info.channels, converterData.pcmData.baos == null ? 0 : (int) (converterData.pcmData.baos.size () * 1.0 * converterData.jorbisData.info.channels * 2 / Byte.SIZE), 2, converterData.jorbisData.info.rate, false, true, "Converted from OGG Vorbis.");
+        return new StreamInfo (converterData.jorbisData.info.channels, converterData.pcmData.baos == null ? 0 : (int) (converterData.pcmData.baos.size () * 1.0 * converterData.jorbisData.info.channels / Byte.SIZE), 2, converterData.jorbisData.info.rate, false, true, "Converted from OGG Vorbis.");
     }
 
     /**
