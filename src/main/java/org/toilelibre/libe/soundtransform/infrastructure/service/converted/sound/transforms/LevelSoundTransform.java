@@ -1,6 +1,7 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ComputeMagnitudeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 

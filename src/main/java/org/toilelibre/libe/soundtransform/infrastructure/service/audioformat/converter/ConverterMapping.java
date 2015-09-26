@@ -1,8 +1,7 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.converter;
 
 public enum ConverterMapping {
-    OGG (new JorbisCleanConverter ()),
-    OGG_DIRTY (new JorbisDirtyConverter ());
+    OGG (new JorbisCleanConverter ()), OGG_DIRTY (new JorbisDirtyConverter ());
 
     private final Converter converter;
 

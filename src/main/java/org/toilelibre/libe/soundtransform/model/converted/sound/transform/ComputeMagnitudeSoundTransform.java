@@ -1,9 +1,8 @@
-package org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms;
+package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 
-import org.apache.commons.math3.complex.Complex;
+import java.io.Serializable;
+
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
-import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
 /**
@@ -11,7 +10,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
  *
  */
 public class ComputeMagnitudeSoundTransform implements SoundTransform<Channel, double []> {
-    static class ComputeMagnitudeFrequenciesSoundTransform extends SimpleFrequencySoundTransform<Complex []> {
+    static class ComputeMagnitudeFrequenciesSoundTransform extends SimpleFrequencySoundTransform<Serializable> {
 
         private int          arraylength;
         private double []    magnitude;

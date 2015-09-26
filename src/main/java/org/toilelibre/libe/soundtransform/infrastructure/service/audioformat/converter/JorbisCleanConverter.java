@@ -66,10 +66,10 @@ public class JorbisCleanConverter implements Converter {
 
     static class ResultEntry implements Entry<StreamInfo, ByteArrayOutputStream> {
 
-        private StreamInfo            streamInfo;
-        private ByteArrayOutputStream outputStream;
+        private final StreamInfo            streamInfo;
+        private final ByteArrayOutputStream outputStream;
 
-        public ResultEntry (StreamInfo streamInfo1, ByteArrayOutputStream outputStream1) {
+        public ResultEntry (final StreamInfo streamInfo1, final ByteArrayOutputStream outputStream1) {
             this.streamInfo = streamInfo1;
             this.outputStream = outputStream1;
         }
@@ -85,18 +85,18 @@ public class JorbisCleanConverter implements Converter {
         }
 
         @Override
-        public ByteArrayOutputStream setValue (ByteArrayOutputStream object) {
+        public ByteArrayOutputStream setValue (final ByteArrayOutputStream object) {
             throw new UnsupportedOperationException ();
         }
 
     }
 
-    public ByteArrayOutputStream getOutputStream (ConverterData converterData) {
+    public ByteArrayOutputStream getOutputStream (final ConverterData converterData) {
         return converterData.pcmData.baos;
     }
 
-    public StreamInfo getStreamInfo (ConverterData converterData) {
-        return new StreamInfo (converterData.jorbisData.info.channels, converterData.pcmData.baos == null ? 0 : (int) (converterData.pcmData.baos.size () * 1.0 / Byte.SIZE), 2, converterData.jorbisData.info.rate, false, true, "Converted from OGG Vorbis.");
+    public StreamInfo getStreamInfo (final ConverterData converterData) {
+        return new StreamInfo (converterData.jorbisData.info.channels, converterData.pcmData.baos == null ? 0 : (int) (converterData.pcmData.baos.size () * 1.0 * converterData.jorbisData.info.channels * 2 / Byte.SIZE), 2, converterData.jorbisData.info.rate, false, true, "Converted from OGG Vorbis.");
     }
 
     /**
@@ -104,7 +104,7 @@ public class JorbisCleanConverter implements Converter {
      * However, it will - if no problems occur - call methods to initialize the
      * JOgg JOrbis libraries, read the header, initialize the sound system, read
      * the body of the stream and clean up.
-     * 
+     *
      * @return
      * @throws JorbisReadException
      */
@@ -114,7 +114,7 @@ public class JorbisCleanConverter implements Converter {
             System.err.println ("We don't have an input stream and therefore cannot continue.");
             return null;
         }
-        ConverterData converterData = new ConverterData ();
+        final ConverterData converterData = new ConverterData ();
 
         // Initialize JOrbis.
         this.initializeJorbis (converterData);
@@ -135,7 +135,7 @@ public class JorbisCleanConverter implements Converter {
         return converterData;
     }
 
-    private void initializeJorbis (ConverterData converterData) {
+    private void initializeJorbis (final ConverterData converterData) {
 
         // Initialize SyncState
         converterData.joggData.syncState.init ();
@@ -151,8 +151,7 @@ public class JorbisCleanConverter implements Converter {
 
     }
 
-    private boolean readHeader (ConverterData converterData, final InputStream oggInputStream) throws JorbisReadException {
-
+    private boolean readHeader (final ConverterData converterData, final InputStream oggInputStream) throws JorbisReadException {
 
         /*
          * We will read the first three packets of the header. We start off by
@@ -184,23 +183,23 @@ public class JorbisCleanConverter implements Converter {
              * things. For packet two and three, the procedure is the same: we
              * take out a page, and then we take out the packet.
              */
-            int status = converterData.joggData.syncState.pageout (converterData.joggData.page);
+            final int status = converterData.joggData.syncState.pageout (converterData.joggData.page);
 
             switch (status) {
-                case ERROR_WHILE_READING :
+                case ERROR_WHILE_READING:
                     throw new JorbisReadException ("Error while reading packet " + step);
-                case PARTIAL_READ :
+                case PARTIAL_READ:
                     this.updatePcmDataHeaders (converterData);
                     if (converterData.pcmData.count == 0) {
                         throw new JorbisReadException ("Not enough header data recieved");
                     }
                     break;
-                case PAGE_READ :
+                case PAGE_READ:
                     this.handleNewCompleteHeaderPage (step, converterData);
                     this.updatePcmDataHeaders (converterData);
                     step++;
                     break;
-                default :
+                default:
                     throw new JorbisReadException ("Unknown status while reading at step " + step);
             }
         }
@@ -208,7 +207,7 @@ public class JorbisCleanConverter implements Converter {
         return true;
     }
 
-    private void handleNewCompleteHeaderPage (int step, ConverterData converterData) throws JorbisReadException {
+    private void handleNewCompleteHeaderPage (final int step, final ConverterData converterData) throws JorbisReadException {
         if (step == 1) {
             this.initConverterDataFromPage (converterData);
         } else if (step == 2 || step == 3) {
@@ -217,7 +216,7 @@ public class JorbisCleanConverter implements Converter {
 
     }
 
-    private void readAdditionalHeaderFromPage (ConverterData converterData) throws JorbisReadException {
+    private void readAdditionalHeaderFromPage (final ConverterData converterData) throws JorbisReadException {
         // Share the page with the StreamState object.
         converterData.joggData.streamState.pagein (converterData.joggData.page);
 
@@ -225,18 +224,22 @@ public class JorbisCleanConverter implements Converter {
          * Just like the switch(...packetout...) lines above.
          */
         switch (converterData.joggData.streamState.packetout (converterData.joggData.packet)) {
-        // If there is a hole in the data, we must exit.
-            case ERROR_WHILE_READING : {
+            // If there is a hole in the data, we must exit.
+            case ERROR_WHILE_READING: {
                 throw new JorbisReadException ("There is a hole in the first" + "packet data.");
 
             }
             // We got a packet, let's process it.
-            case PAGE_READ : converterData.jorbisData.info.synthesis_headerin (converterData.jorbisData.comment, converterData.joggData.packet);break;
+            case PAGE_READ:
+                converterData.jorbisData.info.synthesis_headerin (converterData.jorbisData.comment, converterData.joggData.packet);
+                break;
+            default:
+                break;
         }
 
     }
 
-    private void initConverterDataFromPage (ConverterData converterData) throws JorbisReadException {
+    private void initConverterDataFromPage (final ConverterData converterData) throws JorbisReadException {
         // Initializes and resets StreamState.
         converterData.joggData.streamState.init (converterData.joggData.page.serialno ());
         converterData.joggData.streamState.reset ();
@@ -269,7 +272,7 @@ public class JorbisCleanConverter implements Converter {
 
     }
 
-    private void updatePcmDataHeaders (ConverterData converterData) {
+    private void updatePcmDataHeaders (final ConverterData converterData) {
 
         // We get the new index and an updated buffer.
         converterData.pcmData.index = converterData.joggData.syncState.buffer (JorbisCleanConverter.BUFFER_SIZE);
@@ -284,7 +287,7 @@ public class JorbisCleanConverter implements Converter {
      * source data line.
      *
      */
-    private void initializeSound (ConverterData converterData) {
+    private void initializeSound (final ConverterData converterData) {
 
         // This buffer is used by the decoding method.
         converterData.pcmData.convertedBufferSize = JorbisCleanConverter.BUFFER_SIZE * 2;
@@ -310,7 +313,7 @@ public class JorbisCleanConverter implements Converter {
      * This method reads the entire stream body. Whenever it extracts a packet,
      * it will decode it by calling <code>decodeCurrentPacket()</code>.
      */
-    private void readBody (ConverterData converterData, final InputStream oggInputStream) {
+    private void readBody (final ConverterData converterData, final InputStream oggInputStream) {
 
         /*
          * Variable used in loops below, like in readHeader(). While we need
@@ -321,13 +324,13 @@ public class JorbisCleanConverter implements Converter {
         while (needMoreData) {
             switch (converterData.joggData.syncState.pageout (converterData.joggData.page)) {
 
-            // If we need more data, we break to get it.
-                case 0 : {
+                // If we need more data, we break to get it.
+                case 0: {
                     break;
                 }
 
                 // If we have successfully checked out a page, we continue.
-                case 1 : {
+                case 1: {
                     // Give the page to the StreamState object.
                     converterData.joggData.streamState.pagein (converterData.joggData.page);
 
@@ -341,8 +344,8 @@ public class JorbisCleanConverter implements Converter {
                     processPackets : while (true) {
                         switch (converterData.joggData.streamState.packetout (converterData.joggData.packet)) {
 
-                        // If we need more data, we break to get it.
-                            case 0 : {
+                            // If we need more data, we break to get it.
+                            case 0: {
                                 break processPackets;
                             }
 
@@ -350,7 +353,7 @@ public class JorbisCleanConverter implements Converter {
                              * If we have the data we need, we decode the
                              * packet.
                              */
-                            case 1 : {
+                            case 1: {
                                 this.decodeCurrentPacket (converterData);
                             }
                         }
@@ -394,7 +397,7 @@ public class JorbisCleanConverter implements Converter {
     /**
      * Decodes the current packet and sends it to the audio output line.
      */
-    private void decodeCurrentPacket (ConverterData converterData) {
+    private void decodeCurrentPacket (final ConverterData converterData) {
         int samples;
 
         // Check that the packet is a audio data packet etc.
@@ -446,7 +449,7 @@ public class JorbisCleanConverter implements Converter {
                      * 32768 (which is 1000000000000000 = 10^15).
                      */
                     if (value < 0) {
-                        value = value | (Short.MAX_VALUE + 1);
+                        value = value | Short.MAX_VALUE + 1;
                     }
 
                     /*
@@ -476,7 +479,7 @@ public class JorbisCleanConverter implements Converter {
      * A clean-up method, called when everything is finished. Clears the
      * JOgg/JOrbis objects and closes the <code>oggInputStream</code>.
      */
-    private void cleanUp (ConverterData converterData, final InputStream oggInputStream) {
+    private void cleanUp (final ConverterData converterData, final InputStream oggInputStream) {
 
         // Clear the necessary JOgg/JOrbis objects.
         converterData.joggData.streamState.clear ();
@@ -496,12 +499,12 @@ public class JorbisCleanConverter implements Converter {
     }
 
     @Override
-    public Entry<StreamInfo, ByteArrayOutputStream> convert (InputStream input) throws SoundTransformException {
+    public Entry<StreamInfo, ByteArrayOutputStream> convert (final InputStream input) throws SoundTransformException {
         ConverterData converterData;
         try {
             converterData = this.run (input);
             return new ResultEntry (this.getStreamInfo (converterData), this.getOutputStream (converterData));
-        } catch (JorbisReadException e) {
+        } catch (final JorbisReadException e) {
             return null;
         }
     }

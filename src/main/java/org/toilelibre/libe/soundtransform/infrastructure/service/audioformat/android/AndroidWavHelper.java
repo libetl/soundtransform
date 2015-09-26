@@ -15,7 +15,7 @@ import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
     public enum AudioWavHelperErrorCode implements ErrorCode {
 
-        NO_MAGIC_NUMBER ("Expected a RIFF magic number"), NO_WAVE_HEADER ("RIFF file but not WAVE"), NOT_UNDERSTANDABLE_WAV ("Wave file was not understood"), NON_PCM_WAV ("Can not understand non PCM WAVE"), NO_DATA_SEPARATOR ("Could not find the data separator");
+        NO_MAGIC_NUMBER ("Expected a RIFF magic number"), NO_WAVE_HEADER ("RIFF file but not WAVE"), NOT_READABLE_INPUT ("Not readable input. Is this a file ?"), NON_PCM_WAV ("Can not understand non PCM WAVE"), NO_DATA_SEPARATOR ("Could not find the data separator");
 
         private final String messageFormat;
 
@@ -61,7 +61,7 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
     private static final int    INFO_CHUNK_SIZE     = 16;
 
     private static final int    TWO_BYTES_NB_VALUES = 1 << 2 * Byte.SIZE;
-    
+
     private static final int    WORD_ALIGN_LENGTH   = 4;
 
     public AndroidWavHelper () {
@@ -69,7 +69,12 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
     }
 
     private void readMagicChars (final AudioInputStream ais) throws IOException {
-        String string = ais.readFourChars ();
+        String string = "";
+        try {
+            string = ais.readFourChars ();
+        } catch (final SoundTransformRuntimeException stre) {
+            throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NOT_READABLE_INPUT, stre));
+        }
         if (!AndroidWavHelper.RIFF.equals (string)) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_MAGIC_NUMBER, new IllegalArgumentException ()));
         }
@@ -117,7 +122,7 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
     public void writeMetadata (final ByteArrayWithAudioFormatInputStream audioInputStream, final WavOutputStream outputStream) throws IOException {
         this.writeMetadata (audioInputStream.getInfo (), outputStream);
     }
-    
+
     public void writeMetadata (final StreamInfo info, final WavOutputStream outputStream) throws IOException {
         final int otherInfosSize = info.getTaggedInfo () == null ? 0 : info.getTaggedInfo ().length ();
         final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + otherInfosSize + info.getFrameLength () * info.getSampleSize () * info.getChannels ());
@@ -130,25 +135,25 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
         final int sampleSize = info.getSampleSize () * Byte.SIZE;
         final int dataSize = (int) info.getFrameLength () * info.getSampleSize ();
         outputStream.write (AndroidWavHelper.RIFF.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
-        outputStream.writeInt (fileSize);
+        outputStream.writeInteger (fileSize);
         outputStream.write (AndroidWavHelper.WAVE.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         outputStream.write (AndroidWavHelper.FMT.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
-        outputStream.writeInt (chunkSize);
+        outputStream.writeInteger (chunkSize);
         outputStream.writeShortInt (typeOfEncoding);
         outputStream.writeShortInt (channels);
-        outputStream.writeInt (sampleRate);
-        outputStream.writeInt (byterate);
+        outputStream.writeInteger (sampleRate);
+        outputStream.writeInteger (byterate);
         outputStream.writeShortInt (frameSize);
         outputStream.writeShortInt (sampleSize);
         if (info.getTaggedInfo () != null) {
             final int complementaryLength = AndroidWavHelper.WORD_ALIGN_LENGTH - 1 - (info.getTaggedInfo ().length () - 1) % AndroidWavHelper.WORD_ALIGN_LENGTH;
             final char [] complementaryCharArray = new char [complementaryLength];
-            Arrays.fill (new char [complementaryLength], ' ');
+            Arrays.fill (complementaryCharArray, ' ');
             outputStream.write (AndroidWavHelper.LIST.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
-            outputStream.writeInt (info.getTaggedInfo ().length () + complementaryLength);
+            outputStream.writeInteger (info.getTaggedInfo ().length () + complementaryLength);
             outputStream.write ((info.getTaggedInfo () + new String (complementaryCharArray)).getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         }
         outputStream.write (AndroidWavHelper.DATA.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
-        outputStream.writeInt (dataSize);
+        outputStream.writeInteger (dataSize);
     }
 }

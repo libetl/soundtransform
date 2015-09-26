@@ -1,6 +1,6 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat;
 
-import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -9,8 +9,6 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToByteArrayHelper;
 
 final class WriteInputStreamToByteArray implements InputStreamToByteArrayHelper {
-
-    private static final int ARBITRARY_ARRAY_LENGTH = 16384;
 
     public enum WriteInputStreamToByteArrayErrorCode implements ErrorCode {
 
@@ -33,22 +31,16 @@ final class WriteInputStreamToByteArray implements InputStreamToByteArrayHelper 
     }
 
     @Override
-    public byte [] convertToByteArray (final InputStream is) throws SoundTransformException {
-        final ByteArrayOutputStream buffer = new ByteArrayOutputStream ();
-
-        int nRead;
-        final byte [] data = new byte [WriteInputStreamToByteArray.ARBITRARY_ARRAY_LENGTH];
+    public byte [] convertToByteArray (final InputStream inputStream) throws SoundTransformException {
+        final DataInputStream dataInputStream = new DataInputStream (inputStream);
+        byte [] byteArray;
         try {
-            while ((nRead = is.read (data, 0, data.length)) != -1) {
-                buffer.write (data, 0, nRead);
-            }
-
-            buffer.flush ();
-        } catch (final IOException exception) {
-            throw new SoundTransformException (WriteInputStreamToByteArrayErrorCode.ERROR_WHILE_READING_STREAM, exception);
+            byteArray = new byte [dataInputStream.available ()];
+            dataInputStream.read (byteArray);
+            return byteArray;
+        } catch (final IOException e) {
+            throw new SoundTransformException (WriteInputStreamToByteArrayErrorCode.ERROR_WHILE_READING_STREAM, e, inputStream.toString ());
         }
-
-        return buffer.toByteArray ();
 
     }
 

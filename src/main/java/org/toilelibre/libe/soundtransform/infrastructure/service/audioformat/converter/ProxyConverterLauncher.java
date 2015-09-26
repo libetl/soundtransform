@@ -12,7 +12,7 @@ import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
 class ProxyConverterLauncher extends AbstractLogAware<ProxyConverterLauncher> implements ConverterLauncher<Converter> {
 
     @Override
-    public Entry<StreamInfo, ByteArrayOutputStream> convert (Converter converter, InputStream inputStream) throws SoundTransformException {
+    public Entry<StreamInfo, ByteArrayOutputStream> convert (final Converter converter, final InputStream inputStream) throws SoundTransformException {
 
         return converter.convert (inputStream);
     }

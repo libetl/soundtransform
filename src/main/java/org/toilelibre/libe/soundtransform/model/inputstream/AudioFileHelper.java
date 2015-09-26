@@ -12,9 +12,9 @@ public interface AudioFileHelper {
 
     public enum AudioFileHelperErrorCode implements ErrorCode {
 
-        COULD_NOT_CONVERT ("%1s could not be converted"), COULD_NOT_CREATE_A_TEMP_FILE ("Could not create a temp file"), NO_SOURCE_INPUT_STREAM ("%1s did not provide any source input stream"), NO_DEST_INPUT_STREAM ("%1s did not provide any converted input stream"), WRONG_TYPE (
-                "%1s is of wrong type"), AUDIO_FORMAT_COULD_NOT_BE_READ ("Audio format object could not be read"), COULD_NOT_CREATE_AN_OUTPUT_FILE ("Could not create an output file"), PROBLEM_IN_THE_LIBRARY ("Internal error in the library, could not convert a sound file"), MP3_CONVERSION_FAILED (
-                        "The conversion from a MP3 file failed"), COULD_NOT_CONVERT_IS ("Input Stream could not be read");
+        COULD_NOT_CONVERT ("%1s could not be converted"), NO_SOURCE_INPUT_STREAM ("%1s did not provide any source input stream"), NO_DEST_INPUT_STREAM ("%1s did not provide any converted input stream"), WRONG_TYPE ("%1s is of wrong type"), AUDIO_FORMAT_COULD_NOT_BE_READ (
+                "Audio format object could not be read"), COULD_NOT_CREATE_AN_OUTPUT_FILE ("Could not create an output file"), PROBLEM_IN_THE_LIBRARY ("Internal error in the library, could not convert a sound file"), MP3_CONVERSION_FAILED ("The conversion from a MP3 file failed"), COULD_NOT_CONVERT_IS (
+                        "Input Stream could not be read");
 
         private final String messageFormat;
 
@@ -29,8 +29,7 @@ public interface AudioFileHelper {
     }
 
     public enum AudioFileHelperEventCode implements EventCode {
-        COULD_NOT_CLOSE (LogLevel.ERROR, "Could not close the output stream"), 
-        CONVERTING_FIRST (LogLevel.INFO, "Converting first into %1s");
+        COULD_NOT_CLOSE (LogLevel.ERROR, "Could not close the output stream"), CONVERTING_FIRST (LogLevel.INFO, "Converting first into %1s");
 
         private final String   messageFormat;
         private final LogLevel logLevel;

@@ -13,8 +13,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
@@ -103,24 +101,6 @@ public class JavazoomAudioFileHelperTest {
             new JavazoomAudioFileHelper ().getAudioInputStream (Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json"));
         } catch (final SoundTransformException ste) {
             Assert.assertEquals (AudioFileHelperErrorCode.WRONG_TYPE, ste.getErrorCode ());
-            throw ste;
-        }
-    }
-
-    @Test (expected = SoundTransformException.class)
-    public void createSoundTransformTempFileIOException () throws SoundTransformException {
-        PowerMockito.mockStatic (File.class, new Answer<File> () {
-
-            @Override
-            public File answer (final InvocationOnMock invocation) throws Throwable {
-                throw new IOException ("Unable to create temporary file");
-            }
-
-        });
-        try {
-            new JavazoomAudioFileHelper ().getAudioInputStream (new File (Thread.currentThread ().getContextClassLoader ().getResource ("mp3test.mp3").getFile ()));
-        } catch (final SoundTransformException ste) {
-            Assert.assertEquals (AudioFileHelperErrorCode.COULD_NOT_CREATE_A_TEMP_FILE, ste.getErrorCode ());
             throw ste;
         }
     }

@@ -3,15 +3,15 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.co
 public class JorbisReadException extends Exception {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -6967135552733918866L;
 
-    public JorbisReadException (String detailMessage, Throwable throwable) {
+    public JorbisReadException (final String detailMessage, final Throwable throwable) {
         super (detailMessage, throwable);
     }
 
-    public JorbisReadException (String detailMessage) {
+    public JorbisReadException (final String detailMessage) {
         super (detailMessage);
     }
 

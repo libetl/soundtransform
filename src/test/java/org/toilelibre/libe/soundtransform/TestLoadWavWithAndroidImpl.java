@@ -49,7 +49,7 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
         try {
             $.select (AudioFileHelper.class).getAudioInputStream (new File ("fileNotFound"));
         } catch (final SoundTransformException ste) {
-            org.junit.Assert.assertEquals (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, ((SoundTransformException) ste.getCause ()).getErrorCode ());
+            org.junit.Assert.assertEquals (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, ste.getErrorCode ());
             throw ste;
         }
     }
