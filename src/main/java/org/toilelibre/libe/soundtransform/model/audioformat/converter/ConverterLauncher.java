@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-public interface ConverterLauncher<TConverter> {
+public interface ConverterLauncher<T> {
 
-    Entry<StreamInfo, ByteArrayOutputStream> convert (TConverter converter, InputStream inputStream) throws SoundTransformException;
+    Entry<StreamInfo, ByteArrayOutputStream> convert (T converter, InputStream inputStream) throws SoundTransformException;
 }
