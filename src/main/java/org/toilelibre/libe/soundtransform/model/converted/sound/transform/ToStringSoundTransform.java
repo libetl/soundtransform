@@ -30,9 +30,9 @@ public class ToStringSoundTransform implements SoundTransform<Channel, String> {
     }
 
     private void diplayFooter (final Channel input, final double compression) {
-        this.sb.append ("L");
+        this.sb.append ('L');
         for (int i = 0 ; i < this.length ; i++) {
-            this.sb.append ("-");
+            this.sb.append ('-');
         }
         this.sb.append ("> ").append (Integer.valueOf ((int) (this.length * compression / input.getSampleRate ()))).append ("s (time)\n");
 
@@ -43,18 +43,18 @@ public class ToStringSoundTransform implements SoundTransform<Channel, String> {
             this.sb.append ("^ ").append (Long.valueOf (maxMagn)).append (" (magnitude)\n");
             return;
         } else {
-            this.sb.append ("|");
+            this.sb.append ('|');
         }
         for (int i = 0 ; i < this.length ; i++) {
             if (valuesOnPlot [i] == j) {
-                this.sb.append ("_");
+                this.sb.append ('_');
             } else if (valuesOnPlot [i] > j) {
-                this.sb.append ("#");
+                this.sb.append ('#');
             } else {
-                this.sb.append (" ");
+                this.sb.append (' ');
             }
         }
-        this.sb.append ("\n");
+        this.sb.append ('\n');
 
     }
 

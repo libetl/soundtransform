@@ -419,11 +419,10 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      */
     public FluentClientSoundImported importToSound () throws SoundTransformException {
         Sound sound1;
-        if (this.audioInputStream != null) {
-            sound1 = new ConvertFromInputStream (this.getObservers ()).fromInputStream (this.audioInputStream);
-        } else {
+        if (this.audioInputStream == null) {
             throw new SoundTransformException (FluentClientErrorCode.INPUT_STREAM_NOT_READY, new NullPointerException ());
         }
+        sound1 = new ConvertFromInputStream (this.getObservers ()).fromInputStream (this.audioInputStream);
         this.cleanData ();
         this.sound = sound1;
         return this;

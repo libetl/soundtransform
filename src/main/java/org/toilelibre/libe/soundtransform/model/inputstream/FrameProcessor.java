@@ -49,8 +49,8 @@ public interface FrameProcessor<T> extends LogAware<T> {
         }
     }
 
-    public abstract byte [] framesToByteArray (Channel [] channels, StreamInfo streamInfo);
+    byte [] framesToByteArray (Channel [] channels, StreamInfo streamInfo);
 
-    public abstract Channel [] fromInputStream (InputStream ais, StreamInfo isInfo) throws SoundTransformException;
+    Channel [] fromInputStream (InputStream ais, StreamInfo isInfo) throws SoundTransformException;
 
 }

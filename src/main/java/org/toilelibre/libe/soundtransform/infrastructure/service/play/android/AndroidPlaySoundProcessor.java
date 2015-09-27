@@ -114,6 +114,7 @@ final class AndroidPlaySoundProcessor extends AbstractLogAware<AndroidPlaySoundP
                 break;
             default:
                 channelConf = 0;
+                break;
         }
         return channelConf;
     }

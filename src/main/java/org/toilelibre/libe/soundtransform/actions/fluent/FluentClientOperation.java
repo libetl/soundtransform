@@ -28,7 +28,7 @@ BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
         void run (final FluentClientInterface client, final int invocationNumber) throws SoundTransformException;
     }
 
-    public abstract class Step implements StepInterface {
+    class Step implements StepInterface {
         @Override
         public void run (final FluentClientInterface client) throws SoundTransformException {
             client.hashCode ();

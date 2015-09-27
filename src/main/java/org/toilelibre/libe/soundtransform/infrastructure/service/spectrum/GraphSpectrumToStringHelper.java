@@ -20,9 +20,9 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
     }
 
     private void diplayFooter (final StringBuilder sb, final int length, final SpectrumHelper<Complex []> spectrumHelper, final int compression, final float lastFrequency) {
-        sb.append ("L");
+        sb.append ('L');
         for (int i = 0 ; i < length ; i++) {
-            sb.append ("-");
+            sb.append ('-');
         }
         sb.append ("> ").append (spectrumHelper.freqFromSampleRate (length * compression, (int) lastFrequency * GraphSpectrumToStringHelper.TWICE, (int) lastFrequency * GraphSpectrumToStringHelper.TWICE)).append ("Hz (freq)\n");
     }
@@ -32,18 +32,18 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
             sb.append ("^ ").append (Double.valueOf (maxMagn)).append (" (magnitude)\n");
             return;
         } else {
-            sb.append ("|");
+            sb.append ('|');
         }
         for (int i = 0 ; i < length ; i++) {
             if (valuesOnPlot [i] == j) {
-                sb.append ("_");
+                sb.append ('_');
             } else if (valuesOnPlot [i] > j) {
-                sb.append ("#");
+                sb.append ('#');
             } else {
-                sb.append (" ");
+                sb.append (' ');
             }
         }
-        sb.append ("\n");
+        sb.append ('\n');
 
     }
 
@@ -53,7 +53,7 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
             sb.append (" ");
             if (i == maxIndex / compression) {
                 final float foundFreq = spectrumHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * GraphSpectrumToStringHelper.TWICE, (int) lastFrequency * GraphSpectrumToStringHelper.TWICE);
-                sb.append ("^").append (Float.valueOf (foundFreq)).append ("Hz");
+                sb.append ('^').append (Float.valueOf (foundFreq)).append ("Hz");
                 i += (foundFreq == 0 ? 1 : Math.log10 (foundFreq)) + GraphSpectrumToStringHelper.TWO;
             }
             i++;

@@ -35,7 +35,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
             final int cursor = bigEndian ? frame.length - j - 1 : j;
             final int fromIndex = cursor < destination ? cursor : destination;
             final int toIndex = cursor < destination ? destination : cursor;
-            final int currentChannel = !bigEndian ? j / (frame.length / sound.length) : sound.length - 1 - j / (frame.length / sound.length);
+            final int currentChannel = bigEndian ? sound.length - 1 - j / (frame.length / sound.length) : j / (frame.length / sound.length);
             final int numByte = j % (frame.length / sound.length);
             if (fromIndex <= toIndex) {
                 value [currentChannel] += frame [cursor] + (pcmSigned ? -Byte.MIN_VALUE : 0) << Byte.SIZE * numByte;

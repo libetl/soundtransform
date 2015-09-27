@@ -22,8 +22,8 @@ public interface ModifySoundService {
 
     }
 
-    public abstract Sound append (Sound sounds1, Sound sounds2) throws SoundTransformException;
+    Sound append (Sound sounds1, Sound sounds2) throws SoundTransformException;
 
-    public abstract Sound changeFormat (Sound input, FormatInfo formatInfo);
+    Sound changeFormat (Sound input, FormatInfo formatInfo);
 
 }

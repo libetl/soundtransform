@@ -49,8 +49,8 @@ public interface AddNoteService<T> extends LogAware<T> {
 
     }
 
-    public abstract void addNote (Range range, SimpleNoteInfo noteInfo, InputStream is) throws SoundTransformException;
+    void addNote (Range range, SimpleNoteInfo noteInfo, InputStream is) throws SoundTransformException;
 
-    public abstract void addNote (Range range, SimpleNoteInfo noteInfo) throws SoundTransformException;
+    void addNote (Range range, SimpleNoteInfo noteInfo) throws SoundTransformException;
 
 }

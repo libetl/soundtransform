@@ -9,10 +9,10 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 
 public interface PlaySoundService<T extends Serializable> {
 
-    public abstract Object play (InputStream is) throws SoundTransformException;
+    Object play (InputStream is) throws SoundTransformException;
 
-    public abstract Object play (Sound sound) throws SoundTransformException;
+    Object play (Sound sound) throws SoundTransformException;
 
-    public abstract Object play (Spectrum<T> spectrum) throws SoundTransformException;
+    Object play (Spectrum<T> spectrum) throws SoundTransformException;
 
 }

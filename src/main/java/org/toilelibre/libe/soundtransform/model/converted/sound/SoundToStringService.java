@@ -2,6 +2,6 @@ package org.toilelibre.libe.soundtransform.model.converted.sound;
 
 interface SoundToStringService {
 
-    public abstract String convert (Channel input);
+    String convert (Channel input);
 
 }

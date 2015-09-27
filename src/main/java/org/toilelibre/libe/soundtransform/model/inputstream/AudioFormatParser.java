@@ -22,9 +22,9 @@ public interface AudioFormatParser {
         }
     }
 
-    public abstract Object audioFormatfromStreamInfo (StreamInfo info);
+    Object audioFormatfromStreamInfo (StreamInfo info);
 
-    public abstract StreamInfo fromAudioFormat (Object audioFormat1, long l) throws SoundTransformException;
+    StreamInfo fromAudioFormat (Object audioFormat1, long l) throws SoundTransformException;
 
-    public abstract StreamInfo getStreamInfo (InputStream ais) throws SoundTransformException;
+    StreamInfo getStreamInfo (InputStream ais) throws SoundTransformException;
 }

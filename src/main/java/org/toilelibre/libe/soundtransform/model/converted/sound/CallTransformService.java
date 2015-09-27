@@ -48,6 +48,6 @@ public interface CallTransformService<T> extends LogAware<T> {
         }
     }
 
-    public abstract <U, V> V [] apply (U [] input, SoundTransform<U, V> transform) throws SoundTransformException;
+    <U, V> V [] apply (U [] input, SoundTransform<U, V> transform) throws SoundTransformException;
 
 }
