@@ -138,11 +138,11 @@ final class DefaultImportPackService extends AbstractLogAware<DefaultImportPackS
     private Range technicalInstrument (final String title, final String instrument) {
         final Range range = new Range ();
         final TechnicalInstrument technicalInstrument = TechnicalInstrument.of (instrument);
-        if (technicalInstrument != null) {
+        if (technicalInstrument == null) {
+            this.log (new LogEvent (ImportPackServiceEventCode.TECHNICAL_INSTRUMENT_DOES_NOT_EXIST, title, instrument));
+        } else {
             this.log (new LogEvent (ImportPackServiceEventCode.READING_A_TECHNICAL_INSTRUMENT, title, instrument));
             range.put (Float.valueOf (-1), technicalInstrument.getUniformNote ());
-        } else {
-            this.log (new LogEvent (ImportPackServiceEventCode.TECHNICAL_INSTRUMENT_DOES_NOT_EXIST, title, instrument));
         }
         return range;
     }
