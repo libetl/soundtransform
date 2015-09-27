@@ -50,11 +50,11 @@ public interface AudioFileHelper {
         }
     }
 
-    public InputStream getAudioInputStream (File inputFile) throws SoundTransformException;
+    InputStream getAudioInputStream (File inputFile) throws SoundTransformException;
 
-    public InputStream getAudioInputStream (InputStream rawInputStream) throws SoundTransformException;
+    InputStream getAudioInputStream (InputStream rawInputStream) throws SoundTransformException;
 
-    public InputStream toStream (byte [] byteArray, Object audioFormatfromStreamInfo) throws SoundTransformException;
+    InputStream toStream (byte [] byteArray, Object audioFormatfromStreamInfo) throws SoundTransformException;
 
-    public void writeInputStream (InputStream ais2, File fDest) throws SoundTransformException;
+    void writeInputStream (InputStream ais2, File fDest) throws SoundTransformException;
 }

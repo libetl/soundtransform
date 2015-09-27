@@ -29,7 +29,7 @@ public class SimpleNoteInfo {
         this.decay = (int) this.safeParse (noteElement.get (SimpleNoteInfo.DECAY_KEY));
         this.sustain = (int) this.safeParse (noteElement.get (SimpleNoteInfo.SUSTAIN_KEY));
         this.release = (int) this.safeParse (noteElement.get (SimpleNoteInfo.RELEASE_KEY));
-        this.adsrReady |= Boolean.valueOf (true).equals (noteElement.get (SimpleNoteInfo.ADSR_READY_KEY));
+        this.adsrReady |= Boolean.TRUE.equals (noteElement.get (SimpleNoteInfo.ADSR_READY_KEY));
     }
 
     public SimpleNoteInfo (final String fileName) {
@@ -100,7 +100,7 @@ public class SimpleNoteInfo {
 
     private float safeParse (final Object object) {
         try {
-            final float result = Float.parseFloat ("" + object);
+            final float result = Float.parseFloat (object == null ? "-1" : object.toString ());
             if (result == -1) {
                 this.adsrReady = false;
             }

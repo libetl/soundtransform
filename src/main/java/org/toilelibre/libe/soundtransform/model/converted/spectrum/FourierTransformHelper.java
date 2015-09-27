@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.Abstra
 
 public interface FourierTransformHelper<T extends Serializable> {
 
-    public Channel reverse (Spectrum<T> spectrum);
+    Channel reverse (Spectrum<T> spectrum);
 
-    public Channel transform (AbstractFrequencySoundTransform<T> st, Channel sound);
+    Channel transform (AbstractFrequencySoundTransform<T> st, Channel sound);
 }

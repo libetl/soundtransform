@@ -60,7 +60,7 @@ final class LineListenerPlaySoundProcessor implements PlaySoundProcessor {
 
     private Clip prepareClip (final InputStream ais) throws PlaySoundException {
         if (!(ais instanceof AudioInputStream)) {
-            throw new PlaySoundException (new IllegalArgumentException ("" + ais));
+            throw new PlaySoundException (new IllegalArgumentException (ais == null ? "null" : ais.toString ()));
         }
         try {
             final Line.Info linfo = new Line.Info (Clip.class);

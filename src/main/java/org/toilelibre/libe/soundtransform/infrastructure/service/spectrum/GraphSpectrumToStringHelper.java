@@ -50,7 +50,7 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
     private void displayLoudestFrequency (final StringBuilder sb, final int length, final SpectrumHelper<Complex []> spectrumHelper, final int maxIndex, final int compression, final float lastFrequency) {
         int i = 0;
         while (i < length) {
-            sb.append (" ");
+            sb.append (' ');
             if (i == maxIndex / compression) {
                 final float foundFreq = spectrumHelper.freqFromSampleRate (maxIndex, (int) lastFrequency * GraphSpectrumToStringHelper.TWICE, (int) lastFrequency * GraphSpectrumToStringHelper.TWICE);
                 sb.append ('^').append (Float.valueOf (foundFreq)).append ("Hz");
