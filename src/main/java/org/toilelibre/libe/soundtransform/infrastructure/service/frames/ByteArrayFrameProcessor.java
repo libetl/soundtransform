@@ -86,7 +86,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
                 value = channels [currentChannel].getSampleAt (currentFrame) + neutral;
                 rightShift = 0;
             }
-            byteValueSigned = ((int) value >> rightShift * Byte.SIZE & ByteArrayFrameProcessor.MAX_BYTE_VALUE) + (pcmSigned ? Byte.MIN_VALUE : 0);
+            byteValueSigned = (int) value >> rightShift * Byte.SIZE & ByteArrayFrameProcessor.MAX_BYTE_VALUE + (pcmSigned ? Byte.MIN_VALUE : 0);
 
             data [i + (!bigEndian ? 0 : sampleSize - ByteArrayFrameProcessor.TWICE * numByte - 1)] = (byte) byteValueSigned;
             rightShift++;
