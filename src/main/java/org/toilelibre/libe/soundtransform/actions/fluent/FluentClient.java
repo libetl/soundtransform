@@ -777,7 +777,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         final SoundTransform<float [], Channel> soundTransform = new ShapeSoundTransform (packName, instrumentName, fi);
         final List<float []> savedFreqs = this.freqs;
         this.cleanData ();
-        this.sound = new Sound (new ApplySoundTransform (this.getObservers ()).<float [], Channel> apply (savedFreqs.toArray (new float [0] [0]), soundTransform));
+        this.sound = new Sound (new ApplySoundTransform (this.getObservers ()).<float [], Channel> apply (savedFreqs.toArray (new float [savedFreqs.size ()] []), soundTransform));
         return this;
     }
 
