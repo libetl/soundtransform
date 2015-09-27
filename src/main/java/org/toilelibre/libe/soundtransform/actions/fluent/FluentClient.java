@@ -46,6 +46,8 @@ import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 public class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums, FluentClientInterface {
 
+    private static final String UNCHECKED = "unchecked";
+
     public enum FluentClientErrorCode implements ErrorCode {
 
         PROBLEM_WITH_SIMULTANEOUS_FLOWS ("Problem with simultaneous flows : %1s"), MISSING_SOUND_IN_INPUT ("Missing sound in input"), INPUT_STREAM_NOT_READY ("Input Stream not ready"), NOTHING_TO_WRITE ("Nothing to write to a File"), NO_FILE_IN_INPUT ("No file in input"), CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE (
@@ -178,7 +180,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      *             if the transform does not work
      */
     @Override
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings (FluentClient.UNCHECKED)
     public <T> T [] applyAndStop (final SoundTransform<Channel, T> st) throws SoundTransformException {
         final Object result = new ApplySoundTransform (this.getObservers ()).apply (this.sound.getChannels (), st);
         return (T []) result;
@@ -317,7 +319,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         if (this.spectrums == null || this.spectrums.isEmpty () || this.spectrums.get (0).length == 0) {
             throw new SoundTransformException (FluentClientErrorCode.NO_SPECTRUM_IN_INPUT, new IllegalArgumentException ());
         }
-        @SuppressWarnings ("unchecked")
+        @SuppressWarnings (FluentClient.UNCHECKED)
         final Channel [] sound1 = new ApplySoundTransform (this.getObservers ()).<Spectrum<Serializable> [], Channel> apply (this.spectrums.toArray (new Spectrum [0] [0]), new SpectrumsToSoundSoundTransform ());
         this.cleanData ();
         this.sound = new Sound (sound1);
@@ -855,7 +857,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
      * @return an array of results
      */
     @Override
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings (FluentClient.UNCHECKED)
     public <T> T [] stopWithResults (final Class<T> resultClass) {
         final T [] results = (T []) Array.newInstance (resultClass, this.parallelizedClients.length);
         int i = 0;
@@ -865,7 +867,7 @@ public class FluentClient implements FluentClientSoundImported, FluentClientRead
         return results;
     }
 
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings (FluentClient.UNCHECKED)
     public <T> T getResult (final Class<T> resultClass) {
         T result = null;
         if (resultClass == List.class) {
