@@ -76,7 +76,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
 
         double value = 0;
         int rightShift = 0;
-        byte byteValueSigned = 0;
+        int byteValueSigned = 0;
         final long neutral = pcmSigned ? this.getNeutral (sampleSize) : 0;
         for (int i = 0 ; i < data.length ; i++) {
             final int numByte = i % sampleSize;
@@ -86,9 +86,9 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
                 value = channels [currentChannel].getSampleAt (currentFrame) + neutral;
                 rightShift = 0;
             }
-            byteValueSigned = Integer.valueOf (((int) value >> rightShift * Byte.SIZE & ByteArrayFrameProcessor.MAX_BYTE_VALUE) + (pcmSigned ? Byte.MIN_VALUE : 0)).byteValue ();
+            byteValueSigned = ((int) value >> rightShift * Byte.SIZE & ByteArrayFrameProcessor.MAX_BYTE_VALUE) + (pcmSigned ? Byte.MIN_VALUE : 0);
 
-            data [i + (!bigEndian ? 0 : sampleSize - ByteArrayFrameProcessor.TWICE * numByte - 1)] = byteValueSigned;
+            data [i + (!bigEndian ? 0 : sampleSize - ByteArrayFrameProcessor.TWICE * numByte - 1)] = (byte) byteValueSigned;
             rightShift++;
         }
         return data;
