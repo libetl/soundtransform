@@ -127,13 +127,13 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
         this.initializeJorbis (converterData);
 
         /*
-         * If we can read the header, we try to inialize the sound system. If we
-         * could initialize the sound system, we try to read the body.
+         * we try to read the header,
+         *  then we try to initialize the sound system. 
+         *  then we try to read the body.
          */
-        if (this.readHeader (converterData, oggInputStream)) {
-            this.initializeSound (converterData);
-            this.readBody (converterData, oggInputStream);
-        }
+        this.readHeader (converterData, oggInputStream);
+        this.initializeSound (converterData);
+        this.readBody (converterData, oggInputStream);
 
         // Afterwards, we clean up.
         this.cleanUp (converterData, oggInputStream);
@@ -158,7 +158,7 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
 
     }
 
-    private boolean readHeader (final ConverterData converterData, final InputStream oggInputStream) throws JorbisReadException {
+    private void readHeader (final ConverterData converterData, final InputStream oggInputStream) throws JorbisReadException {
 
         /*
          * We will read the first three packets of the header. We start off by
@@ -188,8 +188,6 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
                 step++;
             }
         }
-
-        return true;
     }
 
     private boolean readNextPageAndDecideIfStepShouldBeIncreased (final ConverterData converterData, final int step) throws JorbisReadException {
