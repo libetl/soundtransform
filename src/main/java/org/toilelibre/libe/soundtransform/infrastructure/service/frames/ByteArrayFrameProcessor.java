@@ -87,11 +87,11 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
                 rightShift = 0;
             }
             final int byteValueWithoutSign = (int) value >> rightShift * Byte.SIZE & ByteArrayFrameProcessor.MAX_BYTE_VALUE;
-            
-            byteValueSigned = byteValueWithoutSign + (pcmSigned ? Byte.MIN_VALUE : 0);
 
-            data [i + (bigEndian ? sampleSize - ByteArrayFrameProcessor.TWICE * numByte - 1 : 0)] = (byte) byteValueSigned;
-            rightShift++;
+        byteValueSigned = byteValueWithoutSign + (pcmSigned ? Byte.MIN_VALUE : 0);
+
+        data [i + (bigEndian ? sampleSize - ByteArrayFrameProcessor.TWICE * numByte - 1 : 0)] = (byte) byteValueSigned;
+        rightShift++;
         }
         return data;
     }

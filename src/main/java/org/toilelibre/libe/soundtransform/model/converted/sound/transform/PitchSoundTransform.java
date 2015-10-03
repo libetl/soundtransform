@@ -9,8 +9,8 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
  */
 public class PitchSoundTransform implements SoundTransform<Channel, Channel> {
 
-    private static final float A_HUNDRED             = 100;
-    private final  float       percent;
+    private static final float A_HUNDRED = 100;
+    private final float        percent;
 
     /**
      * Default constructor

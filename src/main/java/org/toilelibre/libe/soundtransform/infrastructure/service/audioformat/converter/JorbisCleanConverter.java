@@ -71,33 +71,6 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
         final PcmData    pcmData    = new PcmData ();
     }
 
-    static class ResultEntry implements Entry<StreamInfo, ByteArrayOutputStream> {
-
-        private final StreamInfo            streamInfo;
-        private final ByteArrayOutputStream outputStream;
-
-        public ResultEntry (final StreamInfo streamInfo1, final ByteArrayOutputStream outputStream1) {
-            this.streamInfo = streamInfo1;
-            this.outputStream = outputStream1;
-        }
-
-        @Override
-        public StreamInfo getKey () {
-            return this.streamInfo;
-        }
-
-        @Override
-        public ByteArrayOutputStream getValue () {
-            return this.outputStream;
-        }
-
-        @Override
-        public ByteArrayOutputStream setValue (final ByteArrayOutputStream object) {
-            throw new UnsupportedOperationException ();
-        }
-
-    }
-
     public ByteArrayOutputStream getOutputStream (final ConverterData converterData) {
         return converterData.pcmData.baos;
     }
@@ -127,9 +100,8 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
         this.initializeJorbis (converterData);
 
         /*
-         * we try to read the header,
-         *  then we try to initialize the sound system. 
-         *  then we try to read the body.
+         * we try to read the header, then we try to initialize the sound
+         * system. then we try to read the body.
          */
         this.readHeader (converterData, oggInputStream);
         this.initializeSound (converterData);
@@ -200,17 +172,17 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
         final int status = converterData.joggData.syncState.pageout (converterData.joggData.page);
 
         switch (status) {
-            case ERROR_WHILE_READING:
+            case ERROR_WHILE_READING :
                 throw new JorbisReadException ("Error while reading packet " + step);
-            case PARTIAL_READ:
+            case PARTIAL_READ :
                 this.updatePcmDataHeaders (converterData);
                 this.ensurePcmDataCountIsNotZero (converterData);
                 break;
-            case PAGE_READ:
+            case PAGE_READ :
                 this.handleNewCompleteHeaderPage (step, converterData);
                 this.updatePcmDataHeaders (converterData);
                 return true;
-            default:
+            default :
                 throw new JorbisReadException ("Unknown status while reading at step " + step);
         }
         return false;
@@ -225,7 +197,7 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
     private void handleNewCompleteHeaderPage (final int step, final ConverterData converterData) throws JorbisReadException {
         if (step == 1) {
             this.initConverterDataFromPage (converterData);
-        } else if (step == ADDITIONAL_HEADER1_STEP || step == ADDITIONAL_HEADER2_STEP) {
+        } else if (step == JorbisCleanConverter.ADDITIONAL_HEADER1_STEP || step == JorbisCleanConverter.ADDITIONAL_HEADER2_STEP) {
             this.readAdditionalHeaderFromPage (converterData);
         }
 
@@ -240,13 +212,13 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
          */
         switch (converterData.joggData.streamState.packetout (converterData.joggData.packet)) {
             // If there is a hole in the data, we must exit.
-            case ERROR_WHILE_READING:
+            case ERROR_WHILE_READING :
                 throw new JorbisReadException ("There is a hole in the first packet data.");
-            // We got a packet, let's process it.
-            case PAGE_READ:
+                // We got a packet, let's process it.
+            case PAGE_READ :
                 converterData.jorbisData.info.synthesis_headerin (converterData.jorbisData.comment, converterData.joggData.packet);
                 break;
-            default:
+            default :
                 break;
         }
 
@@ -303,7 +275,7 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
     private void initializeSound (final ConverterData converterData) {
 
         // This buffer is used by the decoding method.
-        converterData.pcmData.convertedBufferSize = JorbisCleanConverter.BUFFER_SIZE * SAMPLE_SIZE;
+        converterData.pcmData.convertedBufferSize = JorbisCleanConverter.BUFFER_SIZE * JorbisCleanConverter.SAMPLE_SIZE;
         converterData.pcmData.convertedBuffer = new byte [converterData.pcmData.convertedBufferSize];
 
         // Initializes the DSP synthesis.
@@ -339,14 +311,14 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
         while (readingBody) {
             switch (converterData.joggData.syncState.pageout (converterData.joggData.page)) {
                 // If we need more data, we break to get it.
-                case PARTIAL_READ:
+                case PARTIAL_READ :
                     break;
                     // If we have successfully checked out a page, we continue.
-                case PAGE_READ: 
+                case PAGE_READ :
                     readingBody = this.readBodyPacketAndDecideIfStillReading (converterData);
                     break;
-                case ERROR_WHILE_READING:
-                default:
+                case ERROR_WHILE_READING :
+                default :
                     throw new JorbisReadException ("There is a hole in the body.");
             }
 
@@ -377,7 +349,7 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
         }
         return readingBody;
     }
-    
+
     private boolean updatePcmDataBodyAndTellIfBodyRead (final ConverterData converterData, final InputStream oggInputStream) throws JorbisReadException {
         // We get the new index and an updated buffer.
         converterData.pcmData.index = converterData.joggData.syncState.buffer (JorbisCleanConverter.BUFFER_SIZE);
@@ -403,15 +375,15 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
         while (readingPacket) {
             switch (converterData.joggData.streamState.packetout (converterData.joggData.packet)) {
                 // If we need more data, we break to get it.
-                case PARTIAL_READ:
+                case PARTIAL_READ :
                     readingPacket = false;
                     break;
                     // If we have the data we need, we decode the packet.
-                case PAGE_READ:
+                case PAGE_READ :
                     this.decodeCurrentPacket (converterData);
                     break;
-                case ERROR_WHILE_READING:
-                default:
+                case ERROR_WHILE_READING :
+                default :
                     throw new JorbisReadException ("There is a hole in a body packet.");
             }
         }
@@ -446,7 +418,7 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
 
             // For each channel...
             for (int i = 0 ; i < converterData.jorbisData.info.channels ; i++) {
-                int sampleIndex = i * SAMPLE_SIZE;
+                int sampleIndex = i * JorbisCleanConverter.SAMPLE_SIZE;
 
                 // For every sample in our range...
                 for (int j = 0 ; j < range ; j++) {
@@ -467,12 +439,12 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
                      * Move the sample index forward by two (since that's how
                      * many values we get at once) times the number of channels.
                      */
-                    sampleIndex += SAMPLE_SIZE * converterData.jorbisData.info.channels;
+                    sampleIndex += JorbisCleanConverter.SAMPLE_SIZE * converterData.jorbisData.info.channels;
                 }
             }
 
             // Write the buffer to the baos.
-            converterData.pcmData.baos.write (converterData.pcmData.convertedBuffer, 0, SAMPLE_SIZE * converterData.jorbisData.info.channels * range);
+            converterData.pcmData.baos.write (converterData.pcmData.convertedBuffer, 0, JorbisCleanConverter.SAMPLE_SIZE * converterData.jorbisData.info.channels * range);
 
             // Update the DspState object.
             converterData.jorbisData.dspState.synthesis_read (range);

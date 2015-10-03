@@ -85,4 +85,9 @@ public class FluentClientAndroidTest extends SoundTransformAndroidTest {
     public void readOgg () throws SoundTransformException {
         FluentClient.start ().withClasspathResource ("raw/short.ogg").convertIntoSound ().exportToClasspathResource ("short.wav");
     }
+
+    @Test
+    public void readMp3 () throws SoundTransformException {
+        FluentClient.start ().withClasspathResource ("mp3test.mp3").convertIntoSound ().exportToClasspathResource ("mp3test.wav");
+    }
 }

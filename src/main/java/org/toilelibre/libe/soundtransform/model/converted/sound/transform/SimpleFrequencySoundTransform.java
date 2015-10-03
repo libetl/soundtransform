@@ -66,7 +66,7 @@ public class SimpleFrequencySoundTransform<T extends Serializable> extends Abstr
     }
 
     public void transformFrequencies (final double [][] spectrumAsDoubles, final float sampleRate) {
-        //To be overridden
+        // To be overridden
     }
 
     public void transformFrequencies (final double [][] spectrumAsDoubles, final float sampleRate, final int offset) {
