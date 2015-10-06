@@ -26,7 +26,7 @@ final class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHelp
     private InputStream convertToWavIfNecessary (final InputStream inputStream, final String fileName) throws SoundTransformException {
         InputStream result = null;
         for (final ConverterMapping converters : ConverterMapping.values ()) {
-            if (fileName.endsWith ("." + converters.name ().toLowerCase ())) {
+            if (fileName.toLowerCase ().endsWith ("." + converters.name ().toLowerCase ())) {
                 this.log (new LogEvent (AudioFileHelperEventCode.CONVERTING_FIRST, converters.name ()));
                 result = this.createWavStreamFromStream ($.select (ConverterLauncher.class).convert (converters.getConverter (), inputStream));
             }

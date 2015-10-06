@@ -20,6 +20,8 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 public class MP3JLayerConverter implements Converter {
 
+    private static final String NOT_A_MP3_FILE = "Not a mp3 file";
+
     private class StreamBuffer extends Obuffer {
         private static final int ONE_FILLED_BYTE = Byte.MAX_VALUE - Byte.MIN_VALUE;
         private final int        nChannels;
@@ -114,6 +116,9 @@ public class MP3JLayerConverter implements Converter {
             final Bitstream stream = new Bitstream (sourceStream);
 
             Header header = stream.readFrame ();
+            if (header == null) {
+                throw new JavaLayerException (MP3JLayerConverter.NOT_A_MP3_FILE);
+            }
             channels = header.mode () == Header.SINGLE_CHANNEL ? MP3JLayerConverter.MONO : MP3JLayerConverter.STEREO;
             sampleRate = header.frequency ();
             outBuffer = new StreamBuffer (channels, MP3JLayerConverter.BIG_ENDIAN);

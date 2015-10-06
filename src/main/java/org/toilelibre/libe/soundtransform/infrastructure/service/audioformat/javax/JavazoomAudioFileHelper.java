@@ -2,50 +2,51 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.ja
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Locale;
+import java.util.Map.Entry;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.sound.sampled.spi.AudioFileReader;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.converter.ConverterMapping;
+import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.model.audioformat.converter.ConverterLauncher;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
+import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 final class JavazoomAudioFileHelper implements AudioFileHelper {
 
-    private static final int HIGH_SAMPLE_RATE = 48000;
-    private static final int TWO_BYTES_SAMPLE = 2 * Byte.SIZE;
-    private static final int STEREO           = 2;
-
+    @SuppressWarnings ("unchecked")
     private InputStream convertIntoWavStream (final File inputFile) throws SoundTransformException {
-        final AudioFileReader afr = this.getMpegAudioFileReader ();
-        final AudioInputStream ais = this.getAudioInputStreamFromAudioFileReader (afr, inputFile);
-        final AudioFormat cdFormat = new AudioFormat (JavazoomAudioFileHelper.HIGH_SAMPLE_RATE, JavazoomAudioFileHelper.TWO_BYTES_SAMPLE, JavazoomAudioFileHelper.STEREO, true, false);
-        return this.getDecodedAudioInputStream (cdFormat, ais);
-    }
-
-    private AudioInputStream getAudioInputStreamFromAudioFileReader (final AudioFileReader afr, final File inputFile) throws SoundTransformException {
-        try {
-            return afr.getAudioInputStream (inputFile);
-        } catch (final UnsupportedAudioFileException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.WRONG_TYPE, e, inputFile.getName ());
-        } catch (final IOException e) {
-            throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, inputFile.getName ());
+        
+        InputStream result = null;
+        InputStream inputStream = this.getFileInputSreamFromFile (inputFile);
+        for (final ConverterMapping converters : ConverterMapping.values ()) {
+            if (inputFile.getName ().toLowerCase ().endsWith ("." + converters.name ().toLowerCase ())) {
+                result = this.createWavStreamFromStream ($.select (ConverterLauncher.class).convert (converters.getConverter (), inputStream));
+            }
         }
+        return result == null ? this.getAudioInputStream (inputStream) : result;
     }
 
-    private InputStream getAudioInputSreamFromWavFile (final File readFile) throws SoundTransformException {
+    private InputStream createWavStreamFromStream (Entry<StreamInfo, ByteArrayOutputStream> resultEntry) throws SoundTransformException {
+        Object audioFormat = $.select (AudioFormatParser.class).audioFormatfromStreamInfo (resultEntry.getKey ());
+        return this.toStream (resultEntry.getValue ().toByteArray (), audioFormat);
+    }
+
+    private InputStream getFileInputSreamFromFile (final File readFile) throws SoundTransformException {
         try {
-            final BufferedInputStream inputStream = new BufferedInputStream (new FileInputStream (readFile));
-            return this.getAudioInputStream (inputStream);
+            return new BufferedInputStream (new FileInputStream (readFile));
         } catch (final FileNotFoundException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, e, readFile.getPath ());
         }
@@ -53,11 +54,7 @@ final class JavazoomAudioFileHelper implements AudioFileHelper {
 
     @Override
     public InputStream getAudioInputStream (final File inputFile) throws SoundTransformException {
-        final File readFile = inputFile;
-        if (inputFile.getName ().toLowerCase (Locale.getDefault ()).endsWith (".mp3")) {
-            return this.convertIntoWavStream (inputFile);
-        }
-        return this.getAudioInputSreamFromWavFile (readFile);
+        return this.convertIntoWavStream (inputFile);
     }
 
     @Override
@@ -69,14 +66,6 @@ final class JavazoomAudioFileHelper implements AudioFileHelper {
         } catch (final IOException e) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, e, rawInputStream.toString ());
         }
-    }
-
-    private AudioInputStream getDecodedAudioInputStream (final AudioFormat cdFormat, final AudioInputStream ais) throws SoundTransformException {
-        return new javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream (cdFormat, ais);
-    }
-
-    private AudioFileReader getMpegAudioFileReader () throws SoundTransformException {
-        return new javazoom.spi.mpeg.sampled.file.MpegAudioFileReader ();
     }
 
     @Override

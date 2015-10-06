@@ -309,20 +309,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode.soundlibs</groupId>
-			<artifactId>tritonus-share</artifactId>
-			<version>0.3.7-2</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
 			<version>3.5</version>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.soundlibs</groupId>
-			<artifactId>mp3spi</artifactId>
-			<version>1.9.5-1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.soundlibs</groupId>

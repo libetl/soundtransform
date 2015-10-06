@@ -6,14 +6,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
-
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
@@ -21,7 +16,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper.AudioFileHelperErrorCode;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 
-@PrepareForTest ({ JavazoomAudioFileHelper.class, File.class, MpegAudioFileReader.class })
+@PrepareForTest ({ JavazoomAudioFileHelper.class, File.class})
 public class JavazoomAudioFileHelperTest {
 
     @Rule
@@ -43,23 +38,8 @@ public class JavazoomAudioFileHelperTest {
         try {
             new JavazoomAudioFileHelper ().getAudioInputStream (new File (Thread.currentThread ().getContextClassLoader ().getResource ("notamp3file.mp3").getFile ()));
         } catch (final SoundTransformException ste) {
-            Assert.assertEquals (AudioFileHelperErrorCode.WRONG_TYPE, ste.getErrorCode ());
+            Assert.assertEquals (AudioFileHelperErrorCode.CUSTOM_CONVERSION_FAILED, ste.getErrorCode ());
             throw ste;
-        }
-    }
-
-    @Test (expected = SoundTransformException.class)
-    public void getAudioInputSreamFromWavFileFromMP3IOException () throws SoundTransformException {
-        try {
-            final MpegAudioFileReader mock = Mockito.mock (MpegAudioFileReader.class);
-            Mockito.when (mock.getAudioInputStream (Matchers.any (File.class))).thenThrow (new IOException ());
-            PowerMockito.whenNew (MpegAudioFileReader.class).withNoArguments ().thenReturn (mock);
-            new JavazoomAudioFileHelper ().getAudioInputStream (new File (Thread.currentThread ().getContextClassLoader ().getResource ("mp3test.mp3").getFile ()));
-        } catch (final SoundTransformException ste) {
-            Assert.assertEquals (AudioFileHelperErrorCode.COULD_NOT_CONVERT, ste.getErrorCode ());
-            throw ste;
-        } catch (final Exception e) {
-            throw new RuntimeException (e);
         }
     }
 
