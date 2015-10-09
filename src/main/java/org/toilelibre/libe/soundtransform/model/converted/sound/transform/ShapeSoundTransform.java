@@ -7,13 +7,13 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.Library;
-import org.toilelibre.libe.soundtransform.model.library.note.Note;
-import org.toilelibre.libe.soundtransform.model.library.note.Silence;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
-import org.toilelibre.libe.soundtransform.model.observer.EventCode;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.Note;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.Silence;
+import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.logging.EventCode;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
 
 /**
  * Create a sound with notes matching the input sound loudest frequencies. It

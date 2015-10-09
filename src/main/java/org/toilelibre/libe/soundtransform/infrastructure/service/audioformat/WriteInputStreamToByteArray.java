@@ -6,7 +6,7 @@ import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToByteArrayHelper;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToByteArrayHelper;
 
 final class WriteInputStreamToByteArray implements InputStreamToByteArrayHelper {
 

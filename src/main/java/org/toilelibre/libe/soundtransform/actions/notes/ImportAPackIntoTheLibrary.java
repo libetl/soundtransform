@@ -5,7 +5,7 @@ import java.io.InputStream;
 import org.toilelibre.libe.soundtransform.actions.Action;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
 public class ImportAPackIntoTheLibrary extends Action {
 

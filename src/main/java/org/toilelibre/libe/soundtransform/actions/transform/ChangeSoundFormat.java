@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform.actions.transform;
 import org.toilelibre.libe.soundtransform.actions.Action;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
 public class ChangeSoundFormat extends Action {
 

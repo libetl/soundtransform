@@ -5,10 +5,10 @@ import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.FrameProcessor;
+import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
 
 final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProcessor> implements FrameProcessor<AbstractLogAware<ByteArrayFrameProcessor>> {
 

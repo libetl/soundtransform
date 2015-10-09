@@ -9,8 +9,8 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper.AudioFileHelperErrorCode;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper.AudioFileHelperEventCode;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
 
 import com.jcraft.jogg.Packet;
 import com.jcraft.jogg.Page;

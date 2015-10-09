@@ -14,9 +14,9 @@ import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper.AudioFileHelperErrorCode;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
 
-@PrepareForTest ({ JavazoomAudioFileHelper.class, File.class})
+@PrepareForTest ({ JavazoomAudioFileHelper.class, File.class })
 public class JavazoomAudioFileHelperTest {
 
     @Rule
@@ -26,7 +26,7 @@ public class JavazoomAudioFileHelperTest {
     public void getAudioInputSreamFromWavFileIOException () throws SoundTransformException {
         this.rule.hashCode ();
         try {
-            new JavazoomAudioFileHelper ().getAudioInputStream (new File ("notAFile"));
+            new JavazoomAudioFileHelper ().getUnknownInputStreamFromFile (new File ("notAFile"));
         } catch (final SoundTransformException ste) {
             Assert.assertEquals (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, ste.getErrorCode ());
             throw ste;
@@ -36,7 +36,7 @@ public class JavazoomAudioFileHelperTest {
     @Test (expected = SoundTransformException.class)
     public void getAudioInputSreamFromWavInputStreamNotAMP3FileWithMP3Ext () throws SoundTransformException {
         try {
-            new JavazoomAudioFileHelper ().getAudioInputStream (new File (Thread.currentThread ().getContextClassLoader ().getResource ("notamp3file.mp3").getFile ()));
+            new JavazoomAudioFileHelper ().getUnknownInputStreamFromFile (new File (Thread.currentThread ().getContextClassLoader ().getResource ("notamp3file.mp3").getFile ()));
         } catch (final SoundTransformException ste) {
             Assert.assertEquals (AudioFileHelperErrorCode.CUSTOM_CONVERSION_FAILED, ste.getErrorCode ());
             throw ste;
@@ -68,7 +68,7 @@ public class JavazoomAudioFileHelperTest {
     @Test (expected = SoundTransformException.class)
     public void getAudioInputSreamFromWavFileUnsupportedAudioFileException () throws SoundTransformException {
         try {
-            new JavazoomAudioFileHelper ().getAudioInputStream (new File (Thread.currentThread ().getContextClassLoader ().getResource ("defaultpack.json").getFile ()));
+            new JavazoomAudioFileHelper ().getUnknownInputStreamFromFile (new File (Thread.currentThread ().getContextClassLoader ().getResource ("defaultpack.json").getFile ()));
         } catch (final SoundTransformException ste) {
             Assert.assertEquals (AudioFileHelperErrorCode.WRONG_TYPE, ste.getErrorCode ());
             throw ste;
@@ -87,7 +87,7 @@ public class JavazoomAudioFileHelperTest {
 
     @Test (expected = SoundTransformException.class)
     public void writeInputStreamBadAudioInputStream () throws SoundTransformException {
-        final InputStream ais = new JavazoomAudioFileHelper ().getAudioInputStream (new File (Thread.currentThread ().getContextClassLoader ().getResource ("mp3test.mp3").getFile ()));
+        final InputStream ais = new JavazoomAudioFileHelper ().getUnknownInputStreamFromFile (new File (Thread.currentThread ().getContextClassLoader ().getResource ("mp3test.mp3").getFile ()));
         try {
             new JavazoomAudioFileHelper ().writeInputStream (ais, new File ("sftp://notafile"));
         } catch (final SoundTransformException ste) {

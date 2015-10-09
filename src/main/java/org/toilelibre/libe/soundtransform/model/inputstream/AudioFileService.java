@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.observer.LogAware;
+import org.toilelibre.libe.soundtransform.model.logging.LogAware;
 
 public interface AudioFileService<T> extends LogAware<T> {
 

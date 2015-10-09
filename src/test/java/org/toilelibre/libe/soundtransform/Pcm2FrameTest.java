@@ -11,10 +11,10 @@ import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.FrameProcessor;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToSoundService;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
 
 public class Pcm2FrameTest extends SoundTransformTest {
 

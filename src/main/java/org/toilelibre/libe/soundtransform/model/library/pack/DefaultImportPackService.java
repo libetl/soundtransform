@@ -8,10 +8,11 @@ import java.util.Map.Entry;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.Library;
-import org.toilelibre.libe.soundtransform.model.library.note.TechnicalInstrument;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.SimpleNoteInfo;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.TechnicalInstrument;
+import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
+import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
 final class DefaultImportPackService extends AbstractLogAware<DefaultImportPackService> implements ImportPackService<AbstractLogAware<DefaultImportPackService>> {
 

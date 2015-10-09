@@ -2,7 +2,6 @@ package org.toilelibre.libe.soundtransform.ioc;
 
 import java.util.Map.Entry;
 
-import org.toilelibre.libe.soundtransform.model.audioformat.converter.ConverterLauncher;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundToStringHelper;
@@ -17,16 +16,18 @@ import org.toilelibre.libe.soundtransform.model.freqs.FilterFrequenciesProcessor
 import org.toilelibre.libe.soundtransform.model.freqs.ReplaceFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.SurroundInRangeProcessor;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
-import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
-import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToByteArrayHelper;
+import org.toilelibre.libe.soundtransform.model.inputstream.convert.ConvertProcessor;
+import org.toilelibre.libe.soundtransform.model.inputstream.convert.ConverterLauncher;
+import org.toilelibre.libe.soundtransform.model.inputstream.format.AudioFormatParser;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.FrameProcessor;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToByteArrayHelper;
 import org.toilelibre.libe.soundtransform.model.library.Library;
-import org.toilelibre.libe.soundtransform.model.library.note.ADSRHelper;
-import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
-import org.toilelibre.libe.soundtransform.model.library.note.PackToStringHelper;
 import org.toilelibre.libe.soundtransform.model.library.pack.ContextLoader;
 import org.toilelibre.libe.soundtransform.model.library.pack.PackConfigParser;
-import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
+import org.toilelibre.libe.soundtransform.model.library.pack.PackToStringHelper;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.ADSRHelper;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.FrequencyHelper;
+import org.toilelibre.libe.soundtransform.model.play.PlayObjectProcessor;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteArrayOutputStream;
 import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteBuffer;
@@ -36,9 +37,10 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
     @Override
     protected void declare () {
         super.bind (RecordSoundProcessor.class).to (this.provideRecordSoundProcessor ());
-        super.bind (PlaySoundProcessor.class).to (this.providePlaySoundProcessor ());
+        super.bind (PlayObjectProcessor.class).to (this.providePlaySoundProcessor ());
         super.bind (AudioFileHelper.class).to (this.provideAudioFileHelper ());
         super.bind (ConverterLauncher.class).to (this.provideConverterLauncher ());
+        super.bind (ConvertProcessor.class).to (this.provideConvertProcessor ());
         super.bind (AudioFormatParser.class).to (this.provideAudioFormatParser ());
         super.bind (ContextLoader.class).to (this.provideContextLoader ());
 
@@ -79,9 +81,11 @@ abstract class ImplAgnosticRootModule extends ImplAgnosticFinalAccessor {
 
     protected abstract AudioFormatParser provideAudioFormatParser ();
 
+    protected abstract ConvertProcessor provideConvertProcessor ();
+
     protected abstract ContextLoader provideContextLoader ();
 
-    protected abstract PlaySoundProcessor providePlaySoundProcessor ();
+    protected abstract PlayObjectProcessor providePlaySoundProcessor ();
 
     protected abstract RecordSoundProcessor provideRecordSoundProcessor ();
 

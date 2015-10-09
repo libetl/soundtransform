@@ -2,7 +2,8 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.ja
 
 import org.toilelibre.libe.soundtransform.ioc.AllAgnosticAccessorsAndBindings;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper;
-import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
+import org.toilelibre.libe.soundtransform.model.inputstream.convert.ConvertProcessor;
+import org.toilelibre.libe.soundtransform.model.inputstream.format.AudioFormatParser;
 
 public abstract class JavaxAudioFormatAccessor extends AllAgnosticAccessorsAndBindings {
 
@@ -14,6 +15,11 @@ public abstract class JavaxAudioFormatAccessor extends AllAgnosticAccessorsAndBi
     @Override
     protected AudioFormatParser provideAudioFormatParser () {
         return new WavAudioFormatParser ();
+    }
+
+    @Override
+    protected ConvertProcessor provideConvertProcessor () {
+        return new JavaxConvertProcessor ();
     }
 
 }

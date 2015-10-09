@@ -4,7 +4,7 @@ import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.library.note.Note;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.Note;
 
 final class ConvertedSoundAppender implements SoundAppender {
 

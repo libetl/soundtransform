@@ -9,6 +9,6 @@ public class AndroidFileToWavFileConverterTest {
 
     @Test
     public void oggConvertToWav () throws SoundTransformException {
-        new AndroidAudioFileHelper ().getAudioInputStream (new File (Thread.currentThread ().getContextClassLoader ().getResource ("raw/short.ogg").getFile ()));
+        new AndroidAudioFileHelper ().getUnknownInputStreamFromFile (new File (Thread.currentThread ().getContextClassLoader ().getResource ("raw/short.ogg").getFile ()));
     }
 }

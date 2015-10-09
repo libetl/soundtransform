@@ -9,9 +9,9 @@ import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelpe
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.freqs.PianoFrequency;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
+import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
 /**
  * Transforms a sound into a list of cepstrums (log modulus of the spectrums).

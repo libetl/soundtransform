@@ -5,9 +5,9 @@ import java.io.InputStream;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.Library;
-import org.toilelibre.libe.soundtransform.model.observer.EventCode;
-import org.toilelibre.libe.soundtransform.model.observer.LogAware;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.logging.EventCode;
+import org.toilelibre.libe.soundtransform.model.logging.LogAware;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
 
 public interface ImportPackService<T> extends LogAware<T> {
 

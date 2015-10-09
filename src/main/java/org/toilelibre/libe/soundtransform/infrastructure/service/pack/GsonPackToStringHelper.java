@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.toilelibre.libe.soundtransform.model.library.note.Note;
-import org.toilelibre.libe.soundtransform.model.library.note.PackToStringHelper;
-import org.toilelibre.libe.soundtransform.model.library.note.SimpleNote;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
+import org.toilelibre.libe.soundtransform.model.library.pack.PackToStringHelper;
 import org.toilelibre.libe.soundtransform.model.library.pack.Range;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.Note;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.SimpleNote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

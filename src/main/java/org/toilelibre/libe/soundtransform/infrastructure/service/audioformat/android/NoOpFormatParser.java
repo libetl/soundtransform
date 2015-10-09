@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.format.AudioFormatParser;
 
 final class NoOpFormatParser implements AudioFormatParser {
 

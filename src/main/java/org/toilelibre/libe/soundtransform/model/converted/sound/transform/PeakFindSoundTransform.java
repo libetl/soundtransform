@@ -3,9 +3,9 @@ package org.toilelibre.libe.soundtransform.model.converted.sound.transform;
 import java.io.Serializable;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
-import org.toilelibre.libe.soundtransform.model.observer.EventCode;
-import org.toilelibre.libe.soundtransform.model.observer.LogAware;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.logging.EventCode;
+import org.toilelibre.libe.soundtransform.model.logging.LogAware;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
 
 public interface PeakFindSoundTransform<T extends Serializable, U extends LogAware<U>> extends SoundTransform<Channel, float []>, LogAware<U> {
 

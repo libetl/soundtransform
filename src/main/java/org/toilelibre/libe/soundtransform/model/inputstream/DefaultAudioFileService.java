@@ -4,17 +4,22 @@ import java.io.File;
 import java.io.InputStream;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.inputstream.convert.FormatConvertService;
+import org.toilelibre.libe.soundtransform.model.inputstream.format.AudioFormatService;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToByteArrayHelper;
+import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 
 final class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileService> implements AudioFileService<AbstractLogAware<DefaultAudioFileService>> {
 
     private final AudioFileHelper              audioFileHelper;
-    private final AudioFormatParser            audioFormatParser;
+    private final AudioFormatService           audioFormatService;
+    private final FormatConvertService<?>      formatConvertService;
     private final InputStreamToByteArrayHelper inputStreamToByteArrayHelper;
 
-    public DefaultAudioFileService (final AudioFileHelper helper1, final AudioFormatParser audioFormatParser1, final InputStreamToByteArrayHelper inputStreamToByteArrayHelper1) {
+    public DefaultAudioFileService (final AudioFileHelper helper1, final AudioFormatService audioFormatService1, final InputStreamToByteArrayHelper inputStreamToByteArrayHelper1, final FormatConvertService<?> formatConvertService1) {
         this.audioFileHelper = helper1;
-        this.audioFormatParser = audioFormatParser1;
+        this.audioFormatService = audioFormatService1;
+        this.formatConvertService = formatConvertService1;
         this.inputStreamToByteArrayHelper = inputStreamToByteArrayHelper1;
     }
 
@@ -27,7 +32,8 @@ final class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileSer
      */
     @Override
     public InputStream streamFromFile (final File file) throws SoundTransformException {
-        return this.audioFileHelper.getAudioInputStream (file);
+        final InputStream unknownInputStream = this.audioFileHelper.getUnknownInputStreamFromFile (file);
+        return this.formatConvertService.convertToWav (unknownInputStream, file.getName ());
     }
 
     /*
@@ -40,7 +46,7 @@ final class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileSer
      */
     @Override
     public InputStream streamFromRawStream (final InputStream is, final StreamInfo streamInfo) throws SoundTransformException {
-        return this.audioFileHelper.toStream (this.inputStreamToByteArrayHelper.convertToByteArray (is), this.audioFormatParser.audioFormatfromStreamInfo (streamInfo));
+        return this.audioFileHelper.toStream (this.inputStreamToByteArrayHelper.convertToByteArray (is), this.audioFormatService.audioFormatfromStreamInfo (streamInfo));
     }
 
     /*
@@ -58,7 +64,7 @@ final class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileSer
     @Override
     public InputStream streamFromInputStream (final InputStream is) throws SoundTransformException {
         final InputStream ais = this.audioFileHelper.getAudioInputStream (is);
-        final StreamInfo si = this.audioFormatParser.getStreamInfo (ais);
+        final StreamInfo si = this.audioFormatService.getStreamInfo (ais);
         return this.streamFromRawStream (ais, si);
     }
 }

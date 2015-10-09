@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor.FrameProcessorErrorCode;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.FrameProcessor.FrameProcessorErrorCode;
 
 public class ByteArrayFrameProcessorTest {
 

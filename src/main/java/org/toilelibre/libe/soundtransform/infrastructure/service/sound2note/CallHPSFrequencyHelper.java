@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFindSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.library.note.FrequencyHelper;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.FrequencyHelper;
 
 final class CallHPSFrequencyHelper implements FrequencyHelper {
 

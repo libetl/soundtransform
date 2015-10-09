@@ -11,8 +11,8 @@ import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ShapeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
+import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
 public class TestDetectNotes extends SoundTransformTest {
 

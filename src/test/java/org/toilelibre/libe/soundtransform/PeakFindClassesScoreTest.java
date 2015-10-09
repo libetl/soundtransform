@@ -17,7 +17,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.Harmon
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.MaximumLikelihoodSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
 
 public class PeakFindClassesScoreTest {
 

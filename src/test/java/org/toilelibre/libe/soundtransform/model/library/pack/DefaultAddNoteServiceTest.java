@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.SimpleNoteInfo;
 
 public class DefaultAddNoteServiceTest {
 

@@ -1,7 +1,7 @@
 package org.toilelibre.libe.soundtransform.actions.fluent;
 
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
 public interface FluentClientCommon {
 

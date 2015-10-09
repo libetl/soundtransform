@@ -18,7 +18,6 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jO
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
-import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.CompositeSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
@@ -33,9 +32,10 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.UseWin
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.logging.Observer;
+import org.toilelibre.libe.soundtransform.model.play.PlayObjectException;
 
 public class FluentClientTest extends SoundTransformTest {
 
@@ -309,7 +309,7 @@ public class FluentClientTest extends SoundTransformTest {
     public void playIt () throws SoundTransformException {
         try {
             FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource ("gpiano3.wav").playIt ().convertIntoSound ().splitIntoSpectrums ().playIt ().extractSound ().playIt ().exportToStream ().playIt ();
-        } catch (final PlaySoundException pse) {
+        } catch (final PlayObjectException pse) {
             new Slf4jObserver ().notify ("This build environment cannot play a sound (ignoring) " + pse);
         }
     }

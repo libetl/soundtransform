@@ -7,12 +7,13 @@ import java.net.URL;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
-import org.toilelibre.libe.soundtransform.model.library.note.Note;
-import org.toilelibre.libe.soundtransform.model.library.note.SoundToNoteService;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToSoundService;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.Note;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.SimpleNoteInfo;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.SoundToNoteService;
+import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
+import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
 final class DefaultAddNoteService extends AbstractLogAware<DefaultAddNoteService> implements AddNoteService<AbstractLogAware<DefaultAddNoteService>> {
 

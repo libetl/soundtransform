@@ -4,10 +4,10 @@ import java.util.MissingFormatArgumentException;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
-import org.toilelibre.libe.soundtransform.model.observer.EventCode;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.logging.EventCode;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
 public class Slf4JObserverTest {
 

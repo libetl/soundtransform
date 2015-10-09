@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
-import org.toilelibre.libe.soundtransform.model.observer.TextLogEvent;
+import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.logging.Observer;
+import org.toilelibre.libe.soundtransform.model.logging.TextLogEvent;
 
 public class Slf4jObserver implements Observer {
 

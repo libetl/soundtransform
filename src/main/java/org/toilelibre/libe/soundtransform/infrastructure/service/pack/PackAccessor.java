@@ -1,8 +1,8 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.pack;
 
 import org.toilelibre.libe.soundtransform.infrastructure.service.freqs.FreqsAccessor;
-import org.toilelibre.libe.soundtransform.model.library.note.PackToStringHelper;
 import org.toilelibre.libe.soundtransform.model.library.pack.PackConfigParser;
+import org.toilelibre.libe.soundtransform.model.library.pack.PackToStringHelper;
 
 public abstract class PackAccessor extends FreqsAccessor {
 

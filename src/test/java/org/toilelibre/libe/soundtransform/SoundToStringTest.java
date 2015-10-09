@@ -13,7 +13,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.Simple
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToSoundService;
 
 public class SoundToStringTest extends SoundTransformTest {
 

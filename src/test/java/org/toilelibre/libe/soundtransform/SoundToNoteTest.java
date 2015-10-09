@@ -18,14 +18,14 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToSoundService;
 import org.toilelibre.libe.soundtransform.model.library.Library;
-import org.toilelibre.libe.soundtransform.model.library.note.Note;
-import org.toilelibre.libe.soundtransform.model.library.note.SoundToNoteService;
 import org.toilelibre.libe.soundtransform.model.library.pack.AddNoteService;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.library.pack.Range;
-import org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.Note;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.SimpleNoteInfo;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.SoundToNoteService;
 
 public class SoundToNoteTest extends SoundTransformTest {
 

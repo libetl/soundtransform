@@ -12,9 +12,9 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
-import org.toilelibre.libe.soundtransform.model.inputstream.SoundToInputStreamService;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.fromsound.SoundToInputStreamService;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToSoundService;
 
 public class TestUpsample extends SoundTransformTest {
 

@@ -1,7 +1,7 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.library.note.Note;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.Note;
 
 public interface SoundAppender {
 

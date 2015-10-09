@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.actions.Action;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.play.PlaySoundService;
+import org.toilelibre.libe.soundtransform.model.play.PlayObjectService;
 
 public class PlaySound extends Action {
 
@@ -22,6 +22,6 @@ public class PlaySound extends Action {
     @SuppressWarnings ("unchecked")
     public void play (final Spectrum<? extends Serializable> spectrum1) throws SoundTransformException {
         final Spectrum<Serializable> spectrum = (Spectrum<Serializable>) spectrum1;
-        ((PlaySoundService<Serializable>) this.playSound).play (spectrum);
+        ((PlayObjectService<Serializable>) this.playSound).play (spectrum);
     }
 }

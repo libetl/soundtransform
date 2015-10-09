@@ -3,7 +3,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.ja
 import org.junit.Assert;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
+import org.toilelibre.libe.soundtransform.model.inputstream.format.AudioFormatParser;
 
 public class WavAudioFormatParserTest {
 

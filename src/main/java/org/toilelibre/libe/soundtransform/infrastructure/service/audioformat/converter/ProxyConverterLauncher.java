@@ -4,10 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Map.Entry;
 
-import org.toilelibre.libe.soundtransform.model.audioformat.converter.ConverterLauncher;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.inputstream.convert.ConverterLauncher;
+import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 
 class ProxyConverterLauncher extends AbstractLogAware<ProxyConverterLauncher> implements ConverterLauncher<Converter> {
 

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 
 public abstract class AbstractFrequencySoundTransform<T extends Serializable> extends AbstractLogAware<AbstractFrequencySoundTransform<T>> implements SoundTransform<Channel, Channel> {
 

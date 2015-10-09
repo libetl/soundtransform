@@ -12,12 +12,12 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToSoundService;
 import org.toilelibre.libe.soundtransform.model.library.Library;
-import org.toilelibre.libe.soundtransform.model.library.note.SoundToNoteService;
 import org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService;
-import org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.SimpleNoteInfo;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.SoundToNoteService;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
 
 public class ShapeTest extends SoundTransformTest {
 

@@ -3,8 +3,7 @@ package org.toilelibre.libe.soundtransform.model.library.pack;
 import java.util.HashMap;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
-import org.toilelibre.libe.soundtransform.model.library.note.Note;
-import org.toilelibre.libe.soundtransform.model.library.note.PackToStringHelper;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.Note;
 
 public class Range extends HashMap<Float, Note> {
 

@@ -47,7 +47,7 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
     @Test (expected = SoundTransformException.class)
     public void testConvertToBaosWithFileNotFound () throws SoundTransformException {
         try {
-            $.select (AudioFileHelper.class).getAudioInputStream (new File ("fileNotFound"));
+            $.select (AudioFileHelper.class).getUnknownInputStreamFromFile (new File ("fileNotFound"));
         } catch (final SoundTransformException ste) {
             org.junit.Assert.assertEquals (AudioFileHelperErrorCode.NO_SOURCE_INPUT_STREAM, ste.getErrorCode ());
             throw ste;

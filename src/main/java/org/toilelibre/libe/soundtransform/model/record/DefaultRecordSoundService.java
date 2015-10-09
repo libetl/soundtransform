@@ -13,10 +13,10 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
-import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.inputstream.format.AudioFormatService;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToSoundService;
+import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 
 final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoundService> implements RecordSoundService<AbstractLogAware<DefaultRecordSoundService>> {
 
@@ -154,20 +154,20 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
     private static final float                 MS_PER_SECOND                                               = 1000.0f;
     private static final long                  ARBITRARY_SLEEP_TIME_TO_ENSURE_THE_STREAMING_IS_INITIALIZED = 1000;
     private final RecordSoundProcessor         processor;
-    private final AudioFormatParser            audioFormatParser;
+    private final AudioFormatService           audioFormatService;
     private final AudioFileService<?>          audioFileService;
     private final InputStreamToSoundService<?> isToSoundService;
 
-    public DefaultRecordSoundService (final RecordSoundProcessor processor1, final AudioFormatParser audioFormatParser1, final AudioFileService<?> audioFileService1, final InputStreamToSoundService<?> isToSoundService1) {
+    public DefaultRecordSoundService (final RecordSoundProcessor processor1, final AudioFormatService audioFormatService1, final AudioFileService<?> audioFileService1, final InputStreamToSoundService<?> isToSoundService1) {
         this.processor = processor1;
-        this.audioFormatParser = audioFormatParser1;
+        this.audioFormatService = audioFormatService1;
         this.audioFileService = audioFileService1;
         this.isToSoundService = isToSoundService1;
     }
 
     @Override
     public InputStream recordRawInputStream (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
-        return this.processor.recordRawInputStream (this.audioFormatParser.audioFormatfromStreamInfo (streamInfo), stop);
+        return this.processor.recordRawInputStream (this.audioFormatService.audioFormatfromStreamInfo (streamInfo), stop);
     }
 
     @Override
@@ -179,7 +179,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
     }
 
     private ByteBuffer startRecordingAndReturnByteBuffer (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
-        return this.processor.startRecordingAndReturnByteBuffer (this.audioFormatParser.audioFormatfromStreamInfo (streamInfo), stop);
+        return this.processor.startRecordingAndReturnByteBuffer (this.audioFormatService.audioFormatfromStreamInfo (streamInfo), stop);
     }
 
     private List<Sound> recordInBackgroundTask (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {

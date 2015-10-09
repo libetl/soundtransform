@@ -1,8 +1,8 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.frames;
 
 import org.toilelibre.libe.soundtransform.infrastructure.service.fourier.FourierAccessor;
-import org.toilelibre.libe.soundtransform.model.inputstream.FrameProcessor;
-import org.toilelibre.libe.soundtransform.model.observer.AbstractLogAware;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.FrameProcessor;
+import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 
 public abstract class FrameProcessorAccessor extends FourierAccessor {
 

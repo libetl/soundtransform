@@ -13,12 +13,12 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
-import org.toilelibre.libe.soundtransform.model.inputstream.AudioFormatParser;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
-import org.toilelibre.libe.soundtransform.model.inputstream.SoundToInputStreamService;
-import org.toilelibre.libe.soundtransform.model.library.note.Note;
-import org.toilelibre.libe.soundtransform.model.library.note.SoundToNoteService;
-import org.toilelibre.libe.soundtransform.model.library.pack.SimpleNoteInfo;
+import org.toilelibre.libe.soundtransform.model.inputstream.format.AudioFormatParser;
+import org.toilelibre.libe.soundtransform.model.inputstream.fromsound.SoundToInputStreamService;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToSoundService;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.Note;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.SimpleNoteInfo;
+import org.toilelibre.libe.soundtransform.model.library.pack.note.SoundToNoteService;
 
 public class PitchAndSpeedHelperTest extends SoundTransformTest {
 

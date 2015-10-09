@@ -6,12 +6,12 @@ import java.io.InputStream;
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
-import org.toilelibre.libe.soundtransform.model.converted.sound.PlaySoundException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
-import org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSoundService;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
-import org.toilelibre.libe.soundtransform.model.play.PlaySoundProcessor;
+import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToSoundService;
+import org.toilelibre.libe.soundtransform.model.play.PlayObjectException;
+import org.toilelibre.libe.soundtransform.model.play.PlayObjectProcessor;
 
 public class TestPlaySound extends SoundTransformTest {
     private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
@@ -19,7 +19,7 @@ public class TestPlaySound extends SoundTransformTest {
 
     @Test
     public void playBeforeWav () throws SoundTransformException {
-        final PlaySoundProcessor ps = $.select (PlaySoundProcessor.class);
+        final PlayObjectProcessor ps = $.select (PlayObjectProcessor.class);
         final AudioFileService<?> convertAudioFileService = $.select (AudioFileService.class);
         final InputStream ais = convertAudioFileService.streamFromFile (this.input);
         final StreamInfo streamInfo = $.select (InputStreamToSoundService.class).getStreamInfo (ais);
@@ -29,7 +29,7 @@ public class TestPlaySound extends SoundTransformTest {
             if (!"No line matching interface Clip is supported.".equals (iae.getMessage ())) {
                 throw iae;
             }
-        } catch (final PlaySoundException e) {
+        } catch (final PlayObjectException e) {
             // javax.sound.sampled.LineUnavailableException for some JDK
             // versions
             if (!javax.sound.sampled.LineUnavailableException.class.equals (e.getCause ().getClass ()) && !java.lang.IllegalArgumentException.class.equals (e.getCause ().getClass ())) {
