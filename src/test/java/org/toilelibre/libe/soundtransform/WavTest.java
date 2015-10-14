@@ -174,7 +174,7 @@ public class WavTest extends SoundTransformTest {
     @Test
     public void testRemoveLowFreqs () throws SoundTransformException {
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ()
-        .apply (new EqualizerSoundTransform (new double [] { 0, 100, 200, 300, 400, 500, 600, 1000, 2000, 3000, 4000, 5000, 8000, 15000, 20000 }, new double [] { 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0 })).exportToFile (this.output);
+                .apply (new EqualizerSoundTransform (new double [] { 0, 100, 200, 300, 400, 500, 600, 1000, 2000, 3000, 4000, 5000, 8000, 15000, 20000 }, new double [] { 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0 })).exportToFile (this.output);
     }
 
     @Test
@@ -187,7 +187,7 @@ public class WavTest extends SoundTransformTest {
         // WARN : quite long
         FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withFile (this.input).convertIntoSound ().findLoudestFrequencies (new HarmonicProductSpectrumSoundTransform<Serializable> (100, true, 0.1f)).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100))
-        .exportToFile (this.output);
+                .exportToFile (this.output);
 
     }
 
@@ -197,7 +197,7 @@ public class WavTest extends SoundTransformTest {
         // WARN : quite long
         FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.VERBOSE)).withFile (this.input).convertIntoSound ().apply (new LevelSoundTransform (300)).findLoudestFrequencies (new CepstrumSoundTransform<Serializable> (100, false))
-        .shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100)).exportToFile (this.output);
+                .shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 44100)).exportToFile (this.output);
 
     }
 
@@ -215,8 +215,8 @@ public class WavTest extends SoundTransformTest {
         final String s3 = Arrays
                 .toString (
                         FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.VERBOSE)).withSound (sound).apply (new PralongAndCarlileSoundTransform ()).findLoudestFrequencies (new MaximumLikelihoodSoundTransform (sound.getSamplesLength (), sound.getSamplesLength () + 1, 0, 500))
-                        .stopWithFreqs ().get (0)).replaceAll ("(\\[| )([0-9])\\.([0-9])(\\]|,)", "$100$2.$300$4").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9]),", " $1$2$3.$400,").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9]),", " $1$2$3.$4$50,")
-                        .replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9])([0-9])([0-9]*),", " $1$2$3.$4$5$6,");
+                                .stopWithFreqs ().get (0)).replaceAll ("(\\[| )([0-9])\\.([0-9])(\\]|,)", "$100$2.$300$4").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9]),", " $1$2$3.$400,").replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9]),", " $1$2$3.$4$50,")
+                .replaceAll (" ([0-9])([0-9])([0-9])\\.([0-9])([0-9])([0-9])([0-9]*),", " $1$2$3.$4$5$6,");
         new Slf4jObserver (LogLevel.INFO).notify (s1);
         new Slf4jObserver (LogLevel.INFO).notify (s2);
         new Slf4jObserver (LogLevel.INFO).notify (s3);

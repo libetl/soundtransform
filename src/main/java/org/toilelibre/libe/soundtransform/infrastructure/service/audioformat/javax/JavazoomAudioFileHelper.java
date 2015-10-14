@@ -45,7 +45,7 @@ final class JavazoomAudioFileHelper implements AudioFileHelper {
 
     @Override
     public InputStream toStream (final byte [] byteArray, final Object audioFormat1) throws SoundTransformException {
-        if (!(audioFormat1 instanceof AudioFormat)) {
+        if (! (audioFormat1 instanceof AudioFormat)) {
             throw new SoundTransformException (AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ, new IllegalArgumentException (audioFormat1 == null ? "null" : audioFormat1.toString ()));
         }
         final AudioFormat audioFormat = (AudioFormat) audioFormat1;
@@ -55,7 +55,7 @@ final class JavazoomAudioFileHelper implements AudioFileHelper {
 
     @Override
     public void writeInputStream (final InputStream ais, final File fDest) throws SoundTransformException {
-        if (!(ais instanceof AudioInputStream)) {
+        if (! (ais instanceof AudioInputStream)) {
             throw new SoundTransformException (AudioFileHelperErrorCode.COULD_NOT_CONVERT, new IllegalArgumentException (ais == null ? "null" : ais.toString ()), ais);
         }
         try {

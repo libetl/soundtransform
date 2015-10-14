@@ -211,7 +211,7 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
          * Reading a page below.
          */
         switch (converterData.joggData.streamState.packetout (converterData.joggData.packet)) {
-            // If there is a hole in the data, we must exit.
+        // If there is a hole in the data, we must exit.
             case ERROR_WHILE_READING :
                 throw new JorbisReadException ("There is a hole in the first packet data.");
                 // We got a packet, let's process it.
@@ -310,10 +310,10 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
 
         while (readingBody) {
             switch (converterData.joggData.syncState.pageout (converterData.joggData.page)) {
-                // If we need more data, we break to get it.
+            // If we need more data, we break to get it.
                 case PARTIAL_READ :
                     break;
-                    // If we have successfully checked out a page, we continue.
+                // If we have successfully checked out a page, we continue.
                 case PAGE_READ :
                     readingBody = this.readBodyPacketAndDecideIfStillReading (converterData);
                     break;
@@ -374,11 +374,11 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
         boolean readingPacket = true;
         while (readingPacket) {
             switch (converterData.joggData.streamState.packetout (converterData.joggData.packet)) {
-                // If we need more data, we break to get it.
+            // If we need more data, we break to get it.
                 case PARTIAL_READ :
                     readingPacket = false;
                     break;
-                    // If we have the data we need, we decode the packet.
+                // If we have the data we need, we decode the packet.
                 case PAGE_READ :
                     this.decodeCurrentPacket (converterData);
                     break;
@@ -408,7 +408,7 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
          * Get the PCM information and count the samples. And while these
          * samples are more than zero...
          */
-        while ((samples = converterData.jorbisData.dspState.synthesis_pcmout (converterData.pcmData.pcmInfo, converterData.pcmData.pcmIndex)) > 0) {
+        while ( (samples = converterData.jorbisData.dspState.synthesis_pcmout (converterData.pcmData.pcmInfo, converterData.pcmData.pcmIndex)) > 0) {
             // We need to know for how many samples we are going to process.
             if (samples < converterData.pcmData.convertedBufferSize) {
                 range = samples;

@@ -29,7 +29,7 @@ final class DefaultPlayObjectService<T extends Serializable> implements PlayObje
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.play.PlaySoundService#play(java
      * .io.InputStream)
@@ -41,7 +41,7 @@ final class DefaultPlayObjectService<T extends Serializable> implements PlayObje
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.play.PlaySoundService#play(org
      * .toilelibre.libe.soundtransform.model.converted.sound.Sound[])
@@ -59,7 +59,7 @@ final class DefaultPlayObjectService<T extends Serializable> implements PlayObje
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.play.PlaySoundService#play(org
      * .toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum)

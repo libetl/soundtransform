@@ -151,7 +151,7 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
             Arrays.fill (complementaryCharArray, ' ');
             outputStream.write (AndroidWavHelper.LIST.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
             outputStream.writeInteger (info.getTaggedInfo ().length () + complementaryLength);
-            outputStream.write ((info.getTaggedInfo () + new String (complementaryCharArray)).getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
+            outputStream.write ( (info.getTaggedInfo () + new String (complementaryCharArray)).getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         }
         outputStream.write (AndroidWavHelper.DATA.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         outputStream.writeInteger (dataSize);

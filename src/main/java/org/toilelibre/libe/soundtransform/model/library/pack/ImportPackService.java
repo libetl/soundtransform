@@ -29,7 +29,7 @@ public interface ImportPackService<T> extends LogAware<T> {
     public enum ImportPackServiceEventCode implements EventCode {
         STARTING_IMPORT (LogLevel.VERBOSE, "starting the import of a pack : %1s"), STARTING_ANALYSIS_OF_AN_INSTRUMENT (LogLevel.VERBOSE, "%1s, starting the analysis of an instrument : %2s"), READING_A_NOTE (LogLevel.VERBOSE, "%1s, instrument %2s, reading a note : %3s"), FINISHED_ANALYSIS_OF_AN_INSTRUMENT (
                 LogLevel.VERBOSE, "%1s, finished the analysis of an instrument : %2s"), FINISHED_IMPORT (LogLevel.VERBOSE, "finished the import of a pack : %1s"), READING_A_TECHNICAL_INSTRUMENT (LogLevel.VERBOSE, "%1s, reading a technical instrument : %2s"), TECHNICAL_INSTRUMENT_DOES_NOT_EXIST (
-                        LogLevel.WARN, "%1s, the technical instrument : %2s does not exist"), COULD_NOT_READ_A_NOTE (LogLevel.ERROR, "Could not read a note : %s");
+                LogLevel.WARN, "%1s, the technical instrument : %2s does not exist"), COULD_NOT_READ_A_NOTE (LogLevel.ERROR, "Could not read a note : %s");
 
         private final String   messageFormat;
         private final LogLevel logLevel;

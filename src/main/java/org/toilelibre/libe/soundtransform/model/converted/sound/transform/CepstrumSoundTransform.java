@@ -98,7 +98,7 @@ public class CepstrumSoundTransform<T extends Serializable> extends AbstractLogA
         public Spectrum<T> transformFrequencies (final Spectrum<T> fs, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
             final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.length / this.step));
-            if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.length / this.step))) {
+            if (percent > Math.floor (100.0 * ( (offset - this.step) / this.step) / (this.length / this.step))) {
                 this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.length / this.step), percent));
             }
 

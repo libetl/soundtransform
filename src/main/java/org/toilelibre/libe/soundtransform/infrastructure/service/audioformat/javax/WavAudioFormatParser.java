@@ -28,7 +28,7 @@ final class WavAudioFormatParser implements AudioFormatParser {
 
     @Override
     public StreamInfo fromAudioFormat (final Object audioFormat1, final long frameLength) throws SoundTransformException {
-        if (!(audioFormat1 instanceof AudioFormat)) {
+        if (! (audioFormat1 instanceof AudioFormat)) {
             throw new SoundTransformException (AudioFormatParserErrorCode.READ_ERROR, new IllegalArgumentException ());
         }
         final AudioFormat audioFormat = (AudioFormat) audioFormat1;

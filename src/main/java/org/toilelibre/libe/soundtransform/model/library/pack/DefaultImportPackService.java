@@ -49,7 +49,7 @@ final class DefaultImportPackService extends AbstractLogAware<DefaultImportPackS
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService
      * #getAPack(org.toilelibre.libe.soundtransform.model.library.Library,
@@ -62,7 +62,7 @@ final class DefaultImportPackService extends AbstractLogAware<DefaultImportPackS
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService
      * #importPack(org.toilelibre.libe.soundtransform.model.library.Library,
@@ -75,7 +75,7 @@ final class DefaultImportPackService extends AbstractLogAware<DefaultImportPackS
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService
      * #importPack(org.toilelibre.libe.soundtransform.model.library.Library,
@@ -96,7 +96,7 @@ final class DefaultImportPackService extends AbstractLogAware<DefaultImportPackS
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.library.pack.ImportPackService
      * #importPack(org.toilelibre.libe.soundtransform.model.library.Library,

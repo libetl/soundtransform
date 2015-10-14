@@ -125,7 +125,7 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
                 leftEdge++;
             }
             int rightEdge = leftEdge;
-            while (rightEdge < peaks.length && Math.abs ((peaks [rightEdge] - peaks [leftEdge]) * 1.0 / peaks [rightEdge]) * 100.0 < 10) {
+            while (rightEdge < peaks.length && Math.abs ( (peaks [rightEdge] - peaks [leftEdge]) * 1.0 / peaks [rightEdge]) * 100.0 < 10) {
                 rightEdge++;
             }
             int sum = 0;
@@ -185,7 +185,7 @@ public class HarmonicProductSpectrumSoundTransform<T extends Serializable> exten
         public void transformFrequencies (final Object spectrum, final float sampleRate, final int offset, final int powOf2NearestLength, final int length, final float soundLevelInDB) {
 
             final int percent = (int) Math.floor (100.0 * (offset / this.step) / (this.input.getSamplesLength () / this.step));
-            if (percent > Math.floor (100.0 * ((offset - this.step) / this.step) / (this.input.getSamplesLength () / this.step))) {
+            if (percent > Math.floor (100.0 * ( (offset - this.step) / this.step) / (this.input.getSamplesLength () / this.step))) {
                 this.log (new LogEvent (PeakFindSoundTransformEventCode.ITERATION_IN_PROGRESS, (int) (offset / this.step), (int) Math.ceil (this.input.getSamplesLength () / this.step), percent));
             }
             float f0 = 0;

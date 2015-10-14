@@ -30,7 +30,7 @@ public class SlowdownSoundTest extends SoundTransformTest {
 
         final InputStream is = $.select (AudioFileService.class).streamFromFile (input);
         Sound sound = ((InputStreamToSoundService<InputStreamToSoundService<?>>) $.select (InputStreamToSoundService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).fromInputStream (is);
-        sound = new Sound (((CallTransformService<CallTransformService<?>>) $.select (CallTransformService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).apply (sound.getChannels (), new SlowdownSoundTransform (1024, 2.5f, 2048)));
+        sound = new Sound ( ((CallTransformService<CallTransformService<?>>) $.select (CallTransformService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).apply (sound.getChannels (), new SlowdownSoundTransform (1024, 2.5f, 2048)));
         ((SoundToInputStreamService<SoundToInputStreamService<?>>) $.select (SoundToInputStreamService.class)).setObservers (new Slf4jObserver (LogLevel.WARN)).toStream (sound, StreamInfo.from (sound.getFormatInfo (), sound));
         $.select (AudioFileService.class).fileFromStream (is, output);
     }

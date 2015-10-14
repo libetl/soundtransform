@@ -102,7 +102,7 @@ final class CommonsMath3FourierTransformHelper implements FourierTransformHelper
                     minValue = channel.getSampleAt (j);
                 }
             }
-            transformeddata [j - i] = windowSoundTransform.transform ((j - i) / (iterationLength - 1.0)) * channel.getSampleAt (j);
+            transformeddata [j - i] = windowSoundTransform.transform ( (j - i) / (iterationLength - 1.0)) * channel.getSampleAt (j);
         }
         return Math.abs (maxValue - minValue);
     }

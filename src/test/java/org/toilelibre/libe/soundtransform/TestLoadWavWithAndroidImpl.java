@@ -170,7 +170,7 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
         final byte [] byteArray = this.toBytes (input.toCharArray ());
         final Sound sound = FluentClient.start ().withAudioInputStream (new ByteArrayInputStream (byteArray)).importToSound ().stopWithSound ();
         org.junit.Assert.assertNotEquals (sound.getChannels ().length, 0);
-        org.junit.Assert.assertEquals (((StreamInfo) sound.getFormatInfo ()).getTaggedInfo (), listInfo);
+        org.junit.Assert.assertEquals ( ((StreamInfo) sound.getFormatInfo ()).getTaggedInfo (), listInfo);
     }
 
     @Test
@@ -187,7 +187,8 @@ public class TestLoadWavWithAndroidImpl extends SoundTransformAndroidTest {
     @Test (expected = SoundTransformException.class)
     public void testNotRiffFile () throws SoundTransformException {
         try {
-            FluentClient.start ().withClasspathResource ("defaultpackjavax.json").importToStream ().importToSound ();;
+            FluentClient.start ().withClasspathResource ("defaultpackjavax.json").importToStream ().importToSound ();
+            ;
         } catch (final SoundTransformRuntimeException stre) {
             final SoundTransformException ste = (SoundTransformException) stre.getCause ();
             org.junit.Assert.assertEquals ("NO_MAGIC_NUMBER", ste.getErrorCode ().name ());

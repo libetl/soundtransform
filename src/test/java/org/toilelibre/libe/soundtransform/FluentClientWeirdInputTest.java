@@ -56,7 +56,7 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
     @Test (expected = SoundTransformRuntimeException.class)
     public void replacePartOutOfBounds () throws SoundTransformException {
         FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().apply (new ReplacePartSoundTransform (FluentClient.start ().withClasspathResource ("before.wav").convertIntoSound ().extractSubSound (600000, 700000).stopWithSound (), -100000))
-        .exportToClasspathResource ("after.wav");
+                .exportToClasspathResource ("after.wav");
     }
 
     @Test (expected = SoundTransformException.class)
@@ -259,15 +259,15 @@ public class FluentClientWeirdInputTest extends SoundTransformTest {
     @Test (expected = SoundTransformException.class)
     public void mixAllInOneSoundOnlyWorksWithSounds () throws SoundTransformException {
         FluentClient.start ()
-        .inParallel (FluentClientOperation.prepare ().importToStream ().build (), 5, new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano1c.wav").getFile ()), new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano8c.wav").getFile ()))
-        .mixAllInOneSound ();
+                .inParallel (FluentClientOperation.prepare ().importToStream ().build (), 5, new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano1c.wav").getFile ()), new File (Thread.currentThread ().getContextClassLoader ().getResource ("piano8c.wav").getFile ()))
+                .mixAllInOneSound ();
     }
 
     @Test
     public void canAskToDoALotOfThingsToTheFluentClientOperationAndNothingShouldBeDone () throws SoundTransformException {
         FluentClientOperation.prepare ().importToSound ().append (null).apply (null).changeFormat (null).cutSubSound (0, 0).playIt ().changeFormat (null).exportToClasspathResource (null).playIt ().importToStream ().playIt ().importToSound ().exportToClasspathResourceWithSiblingResource (null, null)
-        .convertIntoSound ().exportToFile (null).convertIntoSound ().exportToStream ().importToSound ().findLoudestFrequencies (null).shapeIntoSound (null, null, null).findLoudestFrequencies ().compress (0).filterRange (0, 0).insertPart (null, 0).octaveDown ().octaveUp ()
-        .surroundInRange (0, 1).replacePart (null, 0).shapeIntoSound (null, null, null).loop (0).mixWith (null).splitIntoSpectrums ().playIt ().extractSound ();
+                .convertIntoSound ().exportToFile (null).convertIntoSound ().exportToStream ().importToSound ().findLoudestFrequencies (null).shapeIntoSound (null, null, null).findLoudestFrequencies ().compress (0).filterRange (0, 0).insertPart (null, 0).octaveDown ().octaveUp ()
+                .surroundInRange (0, 1).replacePart (null, 0).shapeIntoSound (null, null, null).loop (0).mixWith (null).splitIntoSpectrums ().playIt ().extractSound ();
 
     }
 

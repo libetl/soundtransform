@@ -29,7 +29,7 @@ final class DefaultSoundToInputStreamService extends AbstractLogAware<DefaultSou
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.model.inputstream.
      * SoundToInputStreamService
      * #toStream(org.toilelibre.libe.soundtransform.model

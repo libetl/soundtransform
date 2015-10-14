@@ -6,7 +6,7 @@ final class SimpleCompressFrequenciesProcessor implements CompressFrequenciesPro
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.freqs.
      * CompressFrequenciesProcessor#compress(float[], float)
      */

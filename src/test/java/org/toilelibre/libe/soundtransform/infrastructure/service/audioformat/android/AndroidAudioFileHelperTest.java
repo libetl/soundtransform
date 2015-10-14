@@ -46,7 +46,7 @@ public class AndroidAudioFileHelperTest extends SoundTransformAndroidTest {
             Mockito.doThrow (new IOException ("Mocked IO Exception")).when (is).read (Matchers.any (byte [].class));
             Mockito.doThrow (new IOException ("Mocked IO Exception")).when (is).close ();
             final File input = new File (Thread.currentThread ().getContextClassLoader ().getResource ("before.wav").getFile ());
-            new AndroidConvertProcessor ().convertToWavStream ((ConverterLauncher<?>)$.select (ConverterLauncher.class), new FileInputStream (input), input.getName ());
+            new AndroidConvertProcessor ().convertToWavStream ((ConverterLauncher<?>) $.select (ConverterLauncher.class), new FileInputStream (input), input.getName ());
             Assert.fail ("Should have thrown an exception here");
         } catch (final SoundTransformException e) {
             Assert.assertEquals (e.getErrorCode ().toString (), "ERROR_WHILE_READING_STREAM");

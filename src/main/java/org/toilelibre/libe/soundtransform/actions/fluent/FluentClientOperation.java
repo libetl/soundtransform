@@ -20,7 +20,7 @@ import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
 public class FluentClientOperation implements BuildableFluentClientOperationSoundImported, BuildableFluentClientOperationWithInputStream, BuildableFluentClientOperationWithFile, BuildableFluentClientOperationWithFreqs, BuildableFluentClientOperationWithParallelizedClients,
-BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
+        BuildableFluentClientOperationWithSpectrums, FluentClientInterface {
 
     public interface StepInterface {
         void run (final FluentClientInterface client) throws SoundTransformException;

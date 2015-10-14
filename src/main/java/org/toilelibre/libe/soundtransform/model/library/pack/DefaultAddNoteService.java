@@ -29,7 +29,7 @@ final class DefaultAddNoteService extends AbstractLogAware<DefaultAddNoteService
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.library.pack.addNoteService#
      * addNote(org.toilelibre.libe.soundtransform.model.library.pack.Range,
@@ -49,7 +49,7 @@ final class DefaultAddNoteService extends AbstractLogAware<DefaultAddNoteService
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.library.pack.addNoteService#
      * addNote(org.toilelibre.libe.soundtransform.model.library.pack.Range,

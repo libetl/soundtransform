@@ -49,20 +49,26 @@ public class MP3JLayerConverter implements Converter {
                 secondByte = (byte) (value >>> Byte.SIZE & StreamBuffer.ONE_FILLED_BYTE);
             }
             this.buffer [this.bufferPointers [nChannel] % this.buffer.length] = firstByte;
-            this.buffer [(this.bufferPointers [nChannel] + 1) % this.buffer.length] = secondByte;
+            this.buffer [ (this.bufferPointers [nChannel] + 1) % this.buffer.length] = secondByte;
             this.bufferPointers [nChannel] += this.nChannels * MP3JLayerConverter.SAMPLE_SIZE;
         }
 
         @Override
         public void set_stop_flag () {
+            // not relevant in this impl (the interface from the JLayer lib may
+            // not be clean enough)
         }
 
         @Override
         public void close () {
+            // not relevant in this impl (the interface from the JLayer lib may
+            // not be clean enough)
         }
 
         @Override
         public void write_buffer (final int nValue) {
+            // not relevant in this impl (the interface from the JLayer lib may
+            // not be clean enough)
         }
 
         @Override
@@ -97,23 +103,24 @@ public class MP3JLayerConverter implements Converter {
         }
     }
 
-    public synchronized Entry<StreamInfo, ByteArrayOutputStream> convert (InputStream sourceStream, final Decoder.Params decoderParams) throws JavaLayerException {
+    public synchronized Entry<StreamInfo, ByteArrayOutputStream> convert (final InputStream sourceStream, final Decoder.Params decoderParams) throws JavaLayerException {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream ();
         int channels = 1;
         float sampleRate = 1;
         FormatInfo formatInfo = null;
         StreamBuffer outBuffer = null;
+        InputStream realSourceStream = sourceStream;
         try {
-            if (!(sourceStream instanceof BufferedInputStream)) {
-                sourceStream = new BufferedInputStream (sourceStream);
+            if (! (realSourceStream instanceof BufferedInputStream)) {
+                realSourceStream = new BufferedInputStream (realSourceStream);
             }
-            if (sourceStream.markSupported ()) {
-                sourceStream.mark (-1);
-                sourceStream.reset ();
+            if (realSourceStream.markSupported ()) {
+                realSourceStream.mark (-1);
+                realSourceStream.reset ();
             }
 
             final Decoder decoder = new Decoder (decoderParams);
-            final Bitstream stream = new Bitstream (sourceStream);
+            final Bitstream stream = new Bitstream (realSourceStream);
 
             Header header = stream.readFrame ();
             if (header == null) {

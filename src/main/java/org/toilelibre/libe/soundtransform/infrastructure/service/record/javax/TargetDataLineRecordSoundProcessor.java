@@ -71,7 +71,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
 
     @Override
     public InputStream recordRawInputStream (final Object audioFormat1, final Object stop) throws SoundTransformException {
-        if (!(audioFormat1 instanceof AudioFormat)) {
+        if (! (audioFormat1 instanceof AudioFormat)) {
             throw new SoundTransformException (TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_EXPECTED, new IllegalArgumentException ());
         }
         final AudioFormat audioFormat = (AudioFormat) audioFormat1;
@@ -156,7 +156,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
     @Override
     public ByteBuffer startRecordingAndReturnByteBuffer (final Object audioFormat1, final Object stop) throws SoundTransformException {
         final RecordSoundProcessor processor = this;
-        if (!(audioFormat1 instanceof AudioFormat)) {
+        if (! (audioFormat1 instanceof AudioFormat)) {
             throw new SoundTransformException (TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_EXPECTED, new IllegalArgumentException ());
         }
         final AudioFormat audioFormat = (AudioFormat) audioFormat1;

@@ -39,7 +39,7 @@ public abstract class FormulaNote implements Note {
     private long [] generateLongArray (final float frequency, final int nbSamples, final float sampleRate, final int maxVal, final float startAmplitude, final float endAmplitude) {
         final long [] signal = new long [nbSamples];
         for (int j = 0 ; j < nbSamples ; j++) {
-            final float coeff = (float) ((j * endAmplitude + (nbSamples - j) * startAmplitude) / (1.0 * nbSamples));
+            final float coeff = (float) ( (j * endAmplitude + (nbSamples - j) * startAmplitude) / (1.0 * nbSamples));
             signal [j] = (long) (this.applyFormula (j, frequency, sampleRate) * maxVal * coeff);
         }
 

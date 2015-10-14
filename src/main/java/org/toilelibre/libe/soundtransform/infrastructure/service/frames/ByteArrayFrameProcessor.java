@@ -22,7 +22,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
      * FrameProcessor#byteArrayToFrame(byte[],
      * org.toilelibre.libe.soundtransform.model.sound.Sound[], int, boolean,
@@ -59,7 +59,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
      * FrameProcessor
      * #framesToByteArray(org.toilelibre.libe.soundtransform.model.
@@ -88,10 +88,10 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
             }
             final int byteValueWithoutSign = (int) value >> rightShift * Byte.SIZE & ByteArrayFrameProcessor.MAX_BYTE_VALUE;
 
-        byteValueSigned = byteValueWithoutSign + (pcmSigned ? Byte.MIN_VALUE : 0);
+            byteValueSigned = byteValueWithoutSign + (pcmSigned ? Byte.MIN_VALUE : 0);
 
-        data [i + (bigEndian ? sampleSize - ByteArrayFrameProcessor.TWICE * numByte - 1 : 0)] = (byte) byteValueSigned;
-        rightShift++;
+            data [i + (bigEndian ? sampleSize - ByteArrayFrameProcessor.TWICE * numByte - 1 : 0)] = (byte) byteValueSigned;
+            rightShift++;
         }
         return data;
     }
@@ -109,7 +109,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.toilelibre.libe.soundtransform.infrastructure.service.frames.
      * FrameProcessor#getNeutral(int)
      */

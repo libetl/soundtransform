@@ -95,7 +95,7 @@ public class SlowdownSoundTransform extends SimpleFrequencySoundTransform<Comple
         if (this.windowLength < SlowdownSoundTransform.TWICE * this.step) {
             throw new SoundTransformException (SlowdownSoundTransformErrorCode.WINDOW_LENGTH_IS_LOWER_THAN_TWICE_THE_STEP, new IllegalArgumentException (), this.windowLength, this.step);
         }
-        if ((this.windowLength & -this.windowLength) != this.windowLength) {
+        if ( (this.windowLength & -this.windowLength) != this.windowLength) {
             throw new SoundTransformException (SlowdownSoundTransformErrorCode.WINDOW_LENGTH_IS_NOT_A_POWER_OF_2, new IllegalArgumentException (), this.windowLength);
         }
     }

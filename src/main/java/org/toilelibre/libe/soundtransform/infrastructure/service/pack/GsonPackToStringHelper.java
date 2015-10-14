@@ -20,7 +20,7 @@ final class GsonPackToStringHelper implements PackToStringHelper {
 
     private JsonElement toJsonElement (final Note note) {
         if (note instanceof SimpleNote) {
-            return new Gson ().toJsonTree (((SimpleNote) note).getNoteInfo ());
+            return new Gson ().toJsonTree ( ((SimpleNote) note).getNoteInfo ());
         }
         return new Gson ().toJsonTree (Collections.emptyList ());
     }
@@ -34,7 +34,7 @@ final class GsonPackToStringHelper implements PackToStringHelper {
     }
 
     private JsonElement toJsonElement (final Range range) {
-        if (range.size () == 1 && !(range.get (0) instanceof SimpleNote)) {
+        if (range.size () == 1 && ! (range.get (0) instanceof SimpleNote)) {
             return new JsonArray ();
         }
         final JsonElement [] noteJsons = new JsonElement [range.size ()];

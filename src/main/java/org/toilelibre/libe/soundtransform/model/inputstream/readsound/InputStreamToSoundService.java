@@ -23,7 +23,7 @@ public interface InputStreamToSoundService<T> extends LogAware<T> {
 
         /*
          * (non-Javadoc)
-         *
+         * 
          * @see
          * org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSound
          * #getLevel()
@@ -35,7 +35,7 @@ public interface InputStreamToSoundService<T> extends LogAware<T> {
 
         /*
          * (non-Javadoc)
-         *
+         * 
          * @see
          * org.toilelibre.libe.soundtransform.model.inputstream.InputStreamToSound
          * #getMessageFormat()

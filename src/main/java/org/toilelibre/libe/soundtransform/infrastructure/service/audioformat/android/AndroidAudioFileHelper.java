@@ -37,7 +37,7 @@ final class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHelp
 
     @Override
     public InputStream toStream (final byte [] byteArray, final Object audioFormat1) throws SoundTransformException {
-        if (!(audioFormat1 instanceof StreamInfo)) {
+        if (! (audioFormat1 instanceof StreamInfo)) {
             throw new SoundTransformException (AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ, new IllegalArgumentException ());
         }
         return new ByteArrayWithAudioFormatInputStream (byteArray, (StreamInfo) audioFormat1);
@@ -45,7 +45,7 @@ final class AndroidAudioFileHelper extends AbstractLogAware<AndroidAudioFileHelp
 
     @Override
     public void writeInputStream (final InputStream ais, final File fDest) throws SoundTransformException {
-        if (!(ais instanceof ByteArrayWithAudioFormatInputStream)) {
+        if (! (ais instanceof ByteArrayWithAudioFormatInputStream)) {
             throw new SoundTransformException (AudioFileHelperErrorCode.AUDIO_FORMAT_COULD_NOT_BE_READ, new IllegalArgumentException ());
         }
         final ByteArrayWithAudioFormatInputStream audioInputStream = (ByteArrayWithAudioFormatInputStream) ais;

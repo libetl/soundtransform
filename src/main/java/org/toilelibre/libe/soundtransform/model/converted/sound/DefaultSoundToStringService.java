@@ -10,7 +10,7 @@ final class DefaultSoundToStringService implements SoundToStringService {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.converted.sound.Sound2StringService
      * #convert(org.toilelibre.libe.soundtransform.model.converted.sound.Sound)

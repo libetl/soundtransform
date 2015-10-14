@@ -25,7 +25,7 @@ final class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileSer
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.inputstream.AudioFIleService
      * #streamFromFile(java.io.File)
@@ -38,7 +38,7 @@ final class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileSer
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.inputstream.AudioFIleService
      * #streamFromRawStream(java.io.InputStream,
@@ -51,7 +51,7 @@ final class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileSer
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * org.toilelibre.libe.soundtransform.model.inputstream.AudioFIleService
      * #fileFromStream(java.io.InputStream, java.io.File)

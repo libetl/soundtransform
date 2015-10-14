@@ -87,8 +87,8 @@ public class ViewSpectrumIDETest {
     }
 
     private Chart getChart (final String [] notes, final Spectrum<?>... spectrums) {
-        final double [] xData = new double [((Complex []) spectrums [0].getState ()).length];
-        final double [][] yData = new double [spectrums.length] [((Complex []) spectrums [0].getState ()).length];
+        final double [] xData = new double [ ((Complex []) spectrums [0].getState ()).length];
+        final double [][] yData = new double [spectrums.length] [ ((Complex []) spectrums [0].getState ()).length];
         for (int i = 10 ; i < 1000 ; i++) {
             xData [i] = $.select (SpectrumHelper.class).freqFromSampleRate (i, ((Complex []) spectrums [0].getState ()).length * 2, spectrums [0].getSampleRate ());
         }

@@ -50,7 +50,7 @@ public class PeakFindClassesScoreTest {
         final StringBuffer scoresStringBuffer = new StringBuffer ("Scores : ");
         boolean first = true;
         for (final Entry<String, Integer> scoreEntry : peakFindMethodsScore.entrySet ()) {
-            scoresStringBuffer.append ((first ? "" : ", ") + scoreEntry.getKey () + " -> " + String.format ("%2.2f", scoreEntry.getValue () / total * 100) + "%");
+            scoresStringBuffer.append ( (first ? "" : ", ") + scoreEntry.getKey () + " -> " + String.format ("%2.2f", scoreEntry.getValue () / total * 100) + "%");
             first = false;
         }
 
@@ -69,7 +69,7 @@ public class PeakFindClassesScoreTest {
                     boolean first = true;
                     for (final Entry<String, SoundTransform<Channel, float []>> methodEntry : peakFindMethods.entrySet ()) {
                         final float [][] freqs = FluentClient.start ().withAnObserver (new Slf4jObserver (LogLevel.WARN)).withClasspathResource (classpathResource).convertIntoSound ().changeFormat (formatInfo).mergeChannels ().applyAndStop (methodEntry.getValue ());
-                        channelStringBuffer.append ((first ? "" : ", ") + methodEntry.getKey () + "(" + formatInfo.getSampleSize () + ", " + formatInfo.getSampleRate () + ") -> " + freqs [channel] [0]);
+                        channelStringBuffer.append ( (first ? "" : ", ") + methodEntry.getKey () + "(" + formatInfo.getSampleSize () + ", " + formatInfo.getSampleRate () + ") -> " + freqs [channel] [0]);
                         first = false;
                         if (Math.abs (freqs [channel] [0] - expectedValues [expectedValuesIndex]) < allowedDelta) {
                             peakFindMethodsScore.put (methodEntry.getKey (), peakFindMethodsScore.get (methodEntry.getKey ()) + 1);

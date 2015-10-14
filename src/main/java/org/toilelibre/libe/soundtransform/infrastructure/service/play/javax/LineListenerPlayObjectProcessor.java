@@ -59,13 +59,9 @@ final class LineListenerPlayObjectProcessor implements PlayObjectProcessor {
     }
 
     private Clip prepareClip (final InputStream ais) throws PlayObjectException {
-        if (!(ais instanceof AudioInputStream)) {
-            throw new PlayObjectException (new IllegalArgumentException (ais == null ? "null" : ais.toString ()));
-        }
+        this.ensureCompatibleInputStream (ais);
         try {
-            final Line.Info linfo = new Line.Info (Clip.class);
-            final Line line = this.getLine (linfo);
-            final Clip clip = (Clip) line;
+            final Clip clip = this.getClip ();
             this.addLineListener (clip);
             clip.open ((AudioInputStream) ais);
 
@@ -77,6 +73,21 @@ final class LineListenerPlayObjectProcessor implements PlayObjectProcessor {
         } catch (final IllegalArgumentException e) {
             throw new PlayObjectException (e);
         }
+    }
+
+    private Clip getClip () throws LineUnavailableException {
+        final Line.Info linfo = new Line.Info (Clip.class);
+        final Line line = this.getLine (linfo);
+        return (Clip) line;
+
+    }
+
+    private void ensureCompatibleInputStream (final InputStream ais) throws PlayObjectException {
+
+        if (! (ais instanceof AudioInputStream)) {
+            throw new PlayObjectException (new IllegalArgumentException (ais == null ? "null" : ais.toString ()));
+        }
+
     }
 
     private Line getLine (final Info linfo) throws LineUnavailableException {

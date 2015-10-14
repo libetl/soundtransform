@@ -17,7 +17,7 @@ final class GuessConverterFormatConvertService extends AbstractLogAware<GuessCon
 
     @Override
     public InputStream convertToWav (final InputStream compressedInputStream, final String fileName) throws SoundTransformException {
-        return this.convertProcessor.convertToWavStream (converterLauncher, compressedInputStream, fileName);
+        return this.convertProcessor.convertToWavStream (this.converterLauncher, compressedInputStream, fileName);
 
     }
 }
