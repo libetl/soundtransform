@@ -17,7 +17,7 @@ final class JavaxConvertProcessor implements ConvertProcessor {
 
     @SuppressWarnings ("unchecked")
     @Override
-    public InputStream convertToWavStream (final InputStream inputStream, final String fileName) throws SoundTransformException {
+    public <T> InputStream convertToWavStream (final ConverterLauncher<T> launcher, final InputStream inputStream, final String fileName) throws SoundTransformException {
 
         InputStream result = null;
 

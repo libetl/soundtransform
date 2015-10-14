@@ -22,12 +22,12 @@ final class AndroidConvertProcessor extends AbstractLogAware<AndroidConvertProce
 
     @Override
     @SuppressWarnings ("unchecked")
-    public InputStream convertToWavStream (final InputStream inputStream, final String fileName) throws SoundTransformException {
+    public <T> InputStream convertToWavStream (final ConverterLauncher<T> launcher, final InputStream inputStream, final String fileName) throws SoundTransformException {
         InputStream result = null;
         for (final ConverterMapping converters : ConverterMapping.values ()) {
             if (fileName.toLowerCase ().endsWith ("." + converters.name ().toLowerCase ())) {
                 this.log (new LogEvent (AudioFileHelperEventCode.CONVERTING_FIRST, converters.name ()));
-                result = this.createWavStreamFromStream ($.select (ConverterLauncher.class).convert (converters.getConverter (), inputStream));
+                result = this.createWavStreamFromStream (launcher.convert ((T) converters.getConverter (), inputStream));
             }
         }
         result = result == null ? this.convertToSimpleByteArrayInputStream (inputStream) : result;
