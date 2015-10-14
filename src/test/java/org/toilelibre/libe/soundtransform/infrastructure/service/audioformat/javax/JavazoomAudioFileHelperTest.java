@@ -38,7 +38,7 @@ public class JavazoomAudioFileHelperTest {
         try {
             new JavazoomAudioFileHelper ().getAudioInputStream (Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("notamp3file.mp3"));
         } catch (final SoundTransformException ste) {
-            Assert.assertEquals (AudioFileHelperErrorCode.CUSTOM_CONVERSION_FAILED, ste.getErrorCode ());
+            Assert.assertEquals (AudioFileHelperErrorCode.WRONG_TYPE, ste.getErrorCode ());
             throw ste;
         }
     }
