@@ -51,9 +51,9 @@ class JorbisCleanConverter extends AbstractLogAware<JorbisCleanConverter> implem
          * read and an index to keep track of where we are. This is standard
          * networking stuff used with read().
          */
-        byte []               buffer = null;
-        int                   count  = 0;
-        int                   index  = 0;
+        byte []               buffer;
+        int                   count;
+        int                   index;
 
         // A three-dimensional an array with PCM information.
         float [][][]          pcmInfo;

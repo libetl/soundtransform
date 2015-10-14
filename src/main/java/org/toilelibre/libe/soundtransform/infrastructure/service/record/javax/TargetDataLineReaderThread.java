@@ -9,7 +9,7 @@ final class TargetDataLineReaderThread extends Thread {
      *
      */
     private final TargetDataLine             dataLine;
-    private boolean                          isRecording = false;
+    private boolean                          isRecording;
     private final BytesExporterFromThread<?> exporter;
     private static final int                 FIVE        = 5;
 
