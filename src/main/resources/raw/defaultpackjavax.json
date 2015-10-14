@@ -34,7 +34,7 @@
   	       "sustain"   : 0,
   	       "release"   : 0}
     ],
-  "org.toilelibre.libe.soundtransform.model.library.note.PureNote" : [],
-  "org.toilelibre.libe.soundtransform.model.library.note.ComputedOrganNote" : [],
-  "org.toilelibre.libe.soundtransform.model.library.note.ComputedChordNote" : []
+  "org.toilelibre.libe.soundtransform.model.library.pack.note.PureNote" : [],
+  "org.toilelibre.libe.soundtransform.model.library.pack.note.ComputedOrganNote" : [],
+  "org.toilelibre.libe.soundtransform.model.library.pack.note.ComputedChordNote" : []
 }
