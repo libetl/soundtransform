@@ -34,7 +34,7 @@ Android & Pure Java library to shape a voice with an instrument.
 	</exclusions>
 </dependency>
 ``` 
-* Remove the ```<exclusions/>``` tag if your enclosing project is a Java project (and not android)
+* Remove the ```<exclusions/>``` tag if your enclosing project is a Java project, or if version >= 1.0.20
 * Replace x.x.x with the version you need (do not hesitate to use the latest one).
 * Make sure you have access to the FluentClient class in your project (try the autocompletion feature of your IDE if you have one)
 * Read the below documentation about the FluentClient facility
