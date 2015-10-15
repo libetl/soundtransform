@@ -22,7 +22,7 @@ class MP3JLayerConverter implements Converter {
 
     private static final String NOT_A_MP3_FILE = "Not a mp3 file";
 
-    private class StreamBuffer extends Obuffer {
+    private static class StreamBuffer extends Obuffer {
         private static final int ONE_FILLED_BYTE = Byte.MAX_VALUE - Byte.MIN_VALUE;
         private final int        nChannels;
         private final byte []    buffer;
@@ -103,7 +103,7 @@ class MP3JLayerConverter implements Converter {
         }
     }
 
-    public synchronized Entry<StreamInfo, ByteArrayOutputStream> convert (final InputStream sourceStream, final Decoder.Params decoderParams) throws JavaLayerException {
+    private Entry<StreamInfo, ByteArrayOutputStream> convert (final InputStream sourceStream, final Decoder.Params decoderParams) throws JavaLayerException {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream ();
         int channels = 1;
         float sampleRate = 1;
