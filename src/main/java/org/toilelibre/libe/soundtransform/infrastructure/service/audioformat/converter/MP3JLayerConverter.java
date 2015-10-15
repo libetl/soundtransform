@@ -18,7 +18,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileHelper.AudioFileHelperErrorCode;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
-public class MP3JLayerConverter implements Converter {
+class MP3JLayerConverter implements Converter {
 
     private static final String NOT_A_MP3_FILE = "Not a mp3 file";
 
