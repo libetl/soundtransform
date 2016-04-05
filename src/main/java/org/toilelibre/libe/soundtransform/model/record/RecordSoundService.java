@@ -13,6 +13,6 @@ public interface RecordSoundService<T> extends LogAware<T> {
 
     InputStream recordLimitedTimeRawInputStream (StreamInfo streamInfo) throws SoundTransformException;
 
-    Sound startRecordingASound (StreamInfo streamInfo, Object stop) throws SoundTransformException;
+    Sound startRecordingASound (StreamInfo streamInfo, AmplitudeObserver amplitudeObserver, Object stop) throws SoundTransformException;
 
 }

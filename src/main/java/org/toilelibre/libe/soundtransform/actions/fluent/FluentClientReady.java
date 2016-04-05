@@ -11,6 +11,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.logging.Observer;
+import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
 
 public interface FluentClientReady extends FluentClientCommon {
 
@@ -361,6 +362,24 @@ public interface FluentClientReady extends FluentClientCommon {
      */
     FluentClientSoundImported whileRecordingASound (final StreamInfo streamInfo, Object stop) throws SoundTransformException;
 
+    /**
+     * Does exactly the same as the other whileRecordingASound method, and will 
+     * trigger the amplitude events to the amplitudeObserver object
+     *
+     * @see whileRecordingASound
+     * @param streamInfo
+     *            the future input stream info
+     * @param amplitudeObserver
+     *            the update method will be called with the amplitude value (useful to display a VUmeter)
+     * @param stop
+     *            the method notifyAll must be called to stop the recording
+     * @return the client, with a sound (segmented)
+     * @throws SoundTransformException
+     *             the mic could not be read, the recorder could not start, or
+     *             the buffer did not record anything
+     */
+    FluentClientSoundImported whileRecordingASound (final StreamInfo streamInfo, final AmplitudeObserver amplitudeObserver, Object stop) throws SoundTransformException;
+    
     /**
      * Tells the client to open the microphone and to record a sound The result
      * will be of an InputStream type The frameLength in the streamInfo will be

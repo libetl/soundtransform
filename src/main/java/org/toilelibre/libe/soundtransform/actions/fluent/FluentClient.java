@@ -43,6 +43,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.logging.Observer;
+import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
 
 public final class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums, FluentClientInterface {
 
@@ -956,8 +957,29 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      */
     @Override
     public FluentClientSoundImported whileRecordingASound (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
+        return this.whileRecordingASound (streamInfo, null, stop);
+    }
+
+    /**
+     * Does exactly the same as the other whileRecordingASound method, and will 
+     * trigger the amplitude events to the amplitudeObserver object
+     *
+     * @see whileRecordingASound
+     * @param streamInfo
+     *            the future input stream info
+     * @param amplitudeObserver
+     *            the update method will be called with the amplitude value (useful to display a VUmeter)
+     * @param stop
+     *            the method notifyAll must be called to stop the recording
+     * @return the client, with a sound (segmented)
+     * @throws SoundTransformException
+     *             the mic could not be read, the recorder could not start, or
+     *             the buffer did not record anything
+     */
+    @Override
+    public FluentClientSoundImported whileRecordingASound (final StreamInfo streamInfo, final AmplitudeObserver amplitudeObserver, final Object stop) throws SoundTransformException {
         this.cleanData ();
-        this.sound = new RecordSound ().startRecordingASound (streamInfo, stop);
+        this.sound = new RecordSound ().startRecordingASound (streamInfo, amplitudeObserver, stop);
         return this;
     }
 

@@ -6,6 +6,7 @@ import org.toilelibre.libe.soundtransform.actions.Action;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
+import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
 
 public class RecordSound extends Action {
 
@@ -17,7 +18,7 @@ public class RecordSound extends Action {
         return this.recordSound.recordLimitedTimeRawInputStream (streamInfo);
     }
 
-    public Sound startRecordingASound (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
-        return this.recordSound.startRecordingASound (streamInfo, stop);
+    public Sound startRecordingASound (final StreamInfo streamInfo, final AmplitudeObserver amplitudeObserver, Object stop) throws SoundTransformException {
+        return this.recordSound.startRecordingASound (streamInfo, amplitudeObserver, stop);
     }
 }

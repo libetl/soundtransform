@@ -60,7 +60,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
 
     private static final int           DEFAULT_BUFFER_SIZE      = 32;
 
-    private static final int           DEFAULT_BYTE_BUFFER_SIZE = 16384;
+    private static final int           DEFAULT_BYTE_BUFFER_SIZE = 2 << 15;
 
     private TargetDataLine             line;
     private TargetDataLineReaderThread readerThread;

@@ -17,10 +17,12 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.infrastructure.service.record.android.AndroidRecordSoundProcessor.AndroidRecordSoundProcessorErrorCode;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformAndroidTest;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
+import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
 
 import android.media.AudioRecord;
 
@@ -155,7 +157,14 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
 
         }.start ();
 
-        final List<float []> resultFloats = FluentClient.start ().whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stop).findLoudestFrequencies ().stopWithFreqs ();
+        final List<float []> resultFloats = FluentClient.start ().whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), 
+            new AmplitudeObserver () {
+
+            @Override
+            public void update (float soundLevel) {
+                new Slf4jObserver ().notify ("recorded sound level " + soundLevel);
+            }
+        },stop).findLoudestFrequencies ().stopWithFreqs ();
 
         Assert.assertThat (resultFloats, new IsNot<List<float []>> (new IsNull<List<float []>> ()));
         Assert.assertNotEquals (resultFloats.size (), 0);

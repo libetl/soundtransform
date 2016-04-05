@@ -3,12 +3,15 @@ package org.toilelibre.libe.soundtransform.model.record;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.toilelibre.libe.soundtransform.model.converted.sound.SegmentedSound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
@@ -20,21 +23,44 @@ import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 
 final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoundService> implements RecordSoundService<AbstractLogAware<DefaultRecordSoundService>> {
 
-    private static class StreamReaderThread extends Thread {
-        private final List<Sound>                  results;
-        private final StreamInfo                   streamInfo;
-        private final ByteBuffer                   targetByteBuffer;
-        private final AudioFileService<?>          audioFileService1;
-        private final InputStreamToSoundService<?> isToSoundService1;
-        private boolean                            waiting;
+    private static class StreamReaderThread<T extends Serializable> extends Thread {
+        private final List<Sound>                      results;
+        private final StreamInfo                       streamInfo;
+        private final ByteBuffer                       targetByteBuffer;
+        private final AudioFileService<T>              audioFileService1;
+        private final InputStreamToSoundService<T>     isToSoundService1;
+        private final AmplitudeObserver                amplitudeObserver;
+        private final FourierTransformHelper<T>        fourierTransformHelper;
+        private final SimpleFrequencySoundTransform<T> findAmplitude;
+        private boolean                                waiting;
 
-        private StreamReaderThread (final List<Sound> results, final StreamInfo streamInfo, final ByteBuffer targetByteBuffer, final AudioFileService<?> audioFileService1, final InputStreamToSoundService<?> isToSoundService1) {
+        private StreamReaderThread (final List<Sound> results, final AmplitudeObserver amplitudeObserver, final StreamInfo streamInfo, final ByteBuffer targetByteBuffer, 
+                final AudioFileService<T> audioFileService1, final InputStreamToSoundService<T> isToSoundService1, final FourierTransformHelper<T> fourierTransformHelper1) {
             this.results = results;
+            this.amplitudeObserver = amplitudeObserver;
             this.streamInfo = streamInfo;
             this.targetByteBuffer = targetByteBuffer;
             this.audioFileService1 = audioFileService1;
             this.isToSoundService1 = isToSoundService1;
+            this.fourierTransformHelper = fourierTransformHelper1;
             this.waiting = true;
+            this.findAmplitude = new SimpleFrequencySoundTransform<T> () {
+
+                @Override
+                public boolean isReverseNecessary () {
+                    return false;
+                }
+
+                @Override
+                public boolean rawSpectrumPrefered () {
+                    return true;
+                }
+
+                @Override
+                public void transformFrequencies (final double [][] spectrumAsDoubles, final float sampleRate, final int offset, final int powOf2NearestLength, final int length, final float soundLevel) {
+                    StreamReaderThread.this.amplitudeObserver.update (soundLevel);
+                }
+            };
             this.setName (this.getClass ().getSimpleName ());
         }
 
@@ -64,6 +90,9 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
                     final InputStream inputStream = this.audioFileService1.streamFromRawStream (new ByteArrayInputStream (this.targetByteBuffer.array ()), this.streamInfo);
                     if (inputStream.available () > 0) {
                         this.results.add (this.isToSoundService1.fromInputStream (inputStream, this.streamInfo));
+                        if (this.amplitudeObserver != null) {
+                            this.fourierTransformHelper.transform (this.findAmplitude, this.results.get (this.results.size () - 1).getChannels () [0]);
+                        }
                     }
                 } catch (final IOException e) {
                     throw new SoundTransformRuntimeException (new SoundTransformException (DefaultRecordSoundServiceErrorCode.PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING, e));
@@ -77,9 +106,9 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
     private static final class StopDetectorThread extends Thread {
         private final ByteBuffer         targetByteBuffer;
         private final Object             stop;
-        private final StreamReaderThread streamReader;
+        private final StreamReaderThread<Serializable> streamReader;
 
-        private StopDetectorThread (final ByteBuffer targetByteBuffer, final Object stop, final StreamReaderThread streamReader) {
+        private StopDetectorThread (final ByteBuffer targetByteBuffer, final Object stop, final StreamReaderThread<Serializable> streamReader) {
             this.targetByteBuffer = targetByteBuffer;
             this.stop = stop;
             this.streamReader = streamReader;
@@ -157,12 +186,15 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
     private final AudioFormatService           audioFormatService;
     private final AudioFileService<?>          audioFileService;
     private final InputStreamToSoundService<?> isToSoundService;
+    private final FourierTransformHelper<?>    fourierTransformHelper;
 
-    public DefaultRecordSoundService (final RecordSoundProcessor processor1, final AudioFormatService audioFormatService1, final AudioFileService<?> audioFileService1, final InputStreamToSoundService<?> isToSoundService1) {
+    public DefaultRecordSoundService (final RecordSoundProcessor processor1, final AudioFormatService audioFormatService1, final AudioFileService<?> audioFileService1, 
+            final InputStreamToSoundService<?> isToSoundService1, final FourierTransformHelper<?> fourierTransformHelper1) {
         this.processor = processor1;
         this.audioFormatService = audioFormatService1;
         this.audioFileService = audioFileService1;
         this.isToSoundService = isToSoundService1;
+        this.fourierTransformHelper = fourierTransformHelper1;
     }
 
     @Override
@@ -182,11 +214,11 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         return this.processor.startRecordingAndReturnByteBuffer (this.audioFormatService.audioFormatfromStreamInfo (streamInfo), stop);
     }
 
-    private List<Sound> recordInBackgroundTask (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
+    private List<Sound> recordInBackgroundTask (final StreamInfo streamInfo, final AmplitudeObserver amplitudeObserver, Object stop) throws SoundTransformException {
         final ByteBuffer targetByteBuffer = this.startRecordingAndReturnByteBuffer (streamInfo, stop);
         final List<Sound> results = new ArrayList<Sound> ();
 
-        final StreamReaderThread streamReader = this.getStreamReader (streamInfo, targetByteBuffer, results);
+        final StreamReaderThread<Serializable>  streamReader = this.getStreamReader (streamInfo, targetByteBuffer, amplitudeObserver, results);
         streamReader.start ();
         try {
             Thread.sleep (DefaultRecordSoundService.ARBITRARY_SLEEP_TIME_TO_ENSURE_THE_STREAMING_IS_INITIALIZED);
@@ -199,18 +231,20 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         return results;
     }
 
-    private Thread stopDetector (final Object stop, final StreamReaderThread streamReader, final ByteBuffer targetByteBuffer) {
+    private Thread stopDetector (final Object stop, final StreamReaderThread<Serializable>  streamReader, final ByteBuffer targetByteBuffer) {
         return new StopDetectorThread (targetByteBuffer, stop, streamReader);
     }
 
-    private StreamReaderThread getStreamReader (final StreamInfo streamInfo, final ByteBuffer targetByteBuffer, final List<Sound> results) {
-        final AudioFileService<?> audioFileService1 = this.audioFileService;
-        final InputStreamToSoundService<?> isToSoundService1 = this.isToSoundService;
-        return new StreamReaderThread (results, streamInfo, targetByteBuffer, audioFileService1, isToSoundService1);
+    @SuppressWarnings ("unchecked")
+    private StreamReaderThread<Serializable> getStreamReader (final StreamInfo streamInfo, final ByteBuffer targetByteBuffer, final AmplitudeObserver amplitudeObserver, final List<Sound> results) {
+        final AudioFileService<Serializable> audioFileService1 = (AudioFileService<Serializable>) this.audioFileService;
+        final InputStreamToSoundService<Serializable> isToSoundService1 = (InputStreamToSoundService<Serializable>) this.isToSoundService;
+        final FourierTransformHelper<Serializable> fourierTransformHelper1 = (FourierTransformHelper<Serializable>) this.fourierTransformHelper;
+        return new StreamReaderThread<Serializable> (results, amplitudeObserver, streamInfo, targetByteBuffer, audioFileService1, isToSoundService1, fourierTransformHelper1);
     }
 
     @Override
-    public Sound startRecordingASound (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
-        return new SegmentedSound (streamInfo, this.recordInBackgroundTask (streamInfo, stop));
+    public Sound startRecordingASound (final StreamInfo streamInfo, final AmplitudeObserver amplitudeObserver, final Object stop) throws SoundTransformException {
+        return new SegmentedSound (streamInfo, this.recordInBackgroundTask (streamInfo, amplitudeObserver, stop));
     }
 }
