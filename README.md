@@ -1,4 +1,4 @@
-# soundtransform
+﻿# soundtransform
 [![Maven Central](https://img.shields.io/maven-central/v/org.toile-libre.libe/soundtransform.svg)](http://search.maven.org/#browse%7C1267098955) [![Build Status](https://travis-ci.org/libetl/soundtransform.svg?branch=master)](https://travis-ci.org/libetl/soundtransform) [![Codacy Badge](https://api.codacy.com/project/badge/76df4bd7ec074d9683901b34fa189173)](https://www.codacy.com/app/libetl/soundtransform) [![Coverage Status](https://coveralls.io/repos/libetl/soundtransform/badge.svg)](https://coveralls.io/r/libetl/soundtransform) [![API](https://img.shields.io/badge/API-8%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=8) [![Licence](https://img.shields.io/badge/licence-Apache%20Licence%20%282.0%29-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 ================
 
@@ -29,7 +29,7 @@ Android & Pure Java library to shape a voice with an instrument.
 </dependency>
 ``` 
 * Make sure you have access to the FluentClient class in your project (try the autocompletion feature of your IDE if you have one)
-* Read the below documentation about the FluentClient facility
+* Read the following documentation about the FluentClient facility
 * Have a look at the available SoundTransform classes
 * Use the lib by yourself
 
@@ -834,7 +834,7 @@ FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException
 
 Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically
  Caution : the original sound will be lost, and it will be impossible to revert this conversion.
- When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with
+ When shaped into a sound, the new sound will only sound like the instrument you shaped the freqs with
 
 Returns:  
 the client, with a loudest frequencies float array
