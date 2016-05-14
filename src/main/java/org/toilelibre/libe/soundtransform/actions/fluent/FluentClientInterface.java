@@ -323,6 +323,29 @@ public interface FluentClientInterface {
      *             could not play the current audio data
      */
     FluentClientInterface playIt () throws SoundTransformException;
+    
+    /**
+     * Plays the current audio data and (if needed) converts it temporarily to a
+     * sound
+     *
+     * @param stopMonitor calling notifyAll stops the player
+     * @return the client, with a sound
+     * @throws SoundTransformException
+     *             could not play the current audio data
+     */
+    FluentClientSoundImported playIt (Object stopMonitor) throws SoundTransformException;
+    
+    /**
+     * Plays the current audio data and (if needed) converts it temporarily to a
+     * sound
+     *
+     * @param stopMonitor calling notifyAll stops the player
+     * @param skipMilliSeconds starts playing at 'skipMilliSeconds' ms from the begining of the sound
+     * @return the client, with a sound
+     * @throws SoundTransformException
+     *             could not play the current audio data
+     */
+    FluentClientSoundImported playIt (Object stopMonitor, int skipMilliSeconds) throws SoundTransformException;
 
     /**
      * Replaces some of the values of the loudest freqs array from the "start"

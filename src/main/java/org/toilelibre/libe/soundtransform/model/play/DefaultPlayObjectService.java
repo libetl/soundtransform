@@ -35,8 +35,8 @@ final class DefaultPlayObjectService<T extends Serializable> implements PlayObje
      * .io.InputStream)
      */
     @Override
-    public Object play (final InputStream is) throws SoundTransformException {
-        return this.processor.play (is, this.is2SoundService.getStreamInfo (is));
+    public Object play (final InputStream is, Object stopMonitor, int skipMilliSeconds) throws SoundTransformException {
+        return this.processor.play (is, this.is2SoundService.getStreamInfo (is), stopMonitor, skipMilliSeconds);
     }
 
     /*
@@ -47,14 +47,14 @@ final class DefaultPlayObjectService<T extends Serializable> implements PlayObje
      * .toilelibre.libe.soundtransform.model.converted.sound.Sound[])
      */
     @Override
-    public Object play (final Sound sound) throws SoundTransformException {
+    public Object play (final Sound sound, Object stopMonitor, int skipMilliSeconds) throws SoundTransformException {
 
         if (sound.getNumberOfChannels () == 0) {
             return new Object ();
         }
 
         final InputStream ais = this.sound2IsService.toStream (sound, StreamInfo.from (sound.getFormatInfo (), sound));
-        return this.processor.play (ais, this.is2SoundService.getStreamInfo (ais));
+        return this.processor.play (ais, this.is2SoundService.getStreamInfo (ais), stopMonitor, skipMilliSeconds);
     }
 
     /*
@@ -65,7 +65,7 @@ final class DefaultPlayObjectService<T extends Serializable> implements PlayObje
      * .toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum)
      */
     @Override
-    public Object play (final Spectrum<T> spectrum) throws SoundTransformException {
-        return this.play (new Sound (new Channel [] { this.fourierTransformHelper.reverse (spectrum) }));
+    public Object play (final Spectrum<T> spectrum, Object stopMonitor, int skipMilliSeconds) throws SoundTransformException {
+        return this.play (new Sound (new Channel [] { this.fourierTransformHelper.reverse (spectrum) }), stopMonitor, skipMilliSeconds);
     }
 }

@@ -6,5 +6,5 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 public interface PlayObjectProcessor {
 
-    Object play (InputStream ais, StreamInfo streamInfo) throws PlayObjectException;
+    Object play (InputStream ais, StreamInfo streamInfo, Object stopMonitor, int skipMilliSeconds) throws PlayObjectException;
 }

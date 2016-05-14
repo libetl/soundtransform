@@ -44,7 +44,7 @@ public class AndroidPlayObjectProcessorTest extends SoundTransformAndroidTest {
         final InputStream inputStream = FluentClient.start ().withClasspathResource ("before.wav").importToStream ().stopWithInputStream ();
         final StreamInfo streamInfo = FluentClient.start ().withAudioInputStream (inputStream).stopWithStreamInfo ();
         final AndroidPlayObjectProcessor processor = new AndroidPlayObjectProcessor ();
-        final Object o = processor.play (inputStream, streamInfo);
+        final Object o = processor.play (inputStream, streamInfo, null, 0);
         boolean waited = false;
         synchronized (o) {
             while (!waited) {
@@ -111,7 +111,7 @@ public class AndroidPlayObjectProcessorTest extends SoundTransformAndroidTest {
             final InputStream inputStream = this.generateRandomBytes ();
             final StreamInfo streamInfo = new StreamInfo (j, 100000, 2, 44100, false, true, null);
             final AndroidPlayObjectProcessor processor = new AndroidPlayObjectProcessor ();
-            final Object o = processor.play (inputStream, streamInfo);
+            final Object o = processor.play (inputStream, streamInfo, null, 0);
             boolean waited = false;
             synchronized (o) {
                 while (!waited) {

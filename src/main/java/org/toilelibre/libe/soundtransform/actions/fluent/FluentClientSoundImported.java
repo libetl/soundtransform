@@ -207,6 +207,27 @@ public interface FluentClientSoundImported extends FluentClientCommon {
      *             could not play the current audio data
      */
     FluentClientSoundImported playIt () throws SoundTransformException;
+    
+    /**
+     * Plays the current audio data
+     *
+     * @param stopMonitor calling notifyAll stops the player
+     * @return the client, with a sound
+     * @throws SoundTransformException
+     *             could not play the current audio data
+     */
+    FluentClientSoundImported playIt (Object stopMonitor) throws SoundTransformException;
+    
+    /**
+     * Plays the current audio data
+     *
+     * @param stopMonitor calling notifyAll stops the player
+     * @param skipMilliSeconds starts playing at 'skipMilliSeconds' ms from the begining of the sound
+     * @return the client, with a sound
+     * @throws SoundTransformException
+     *             could not play the current audio data
+     */
+    FluentClientSoundImported playIt (Object stopMonitor, int skipMilliSeconds) throws SoundTransformException;
 
     /**
      * Uses the current sound to pick its spectrums and set that as the current

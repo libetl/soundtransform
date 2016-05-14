@@ -30,6 +30,29 @@ public interface BuildableFluentClientOperationWithSpectrums extends FluentClien
      */
     @Override
     BuildableFluentClientOperationWithSpectrums playIt () throws SoundTransformException;
+    
+    /**
+     * Plays the current audio data and convert it temporarily into a sound
+     *
+     * @param stopMonitor calling notifyAll stops the player
+     * @return the client, with a sound
+     * @throws SoundTransformException
+     *             could not play the current audio data
+     */
+    @Override
+    BuildableFluentClientOperationWithSpectrums playIt (Object stopMonitor) throws SoundTransformException;
+    
+    /**
+     * Plays the current audio data and convert it temporarily into a sound
+     *
+     * @param stopMonitor calling notifyAll stops the player
+     * @param skipMilliSeconds starts playing at 'skipMilliSeconds' ms from the begining of the sound
+     * @return the client, with a sound
+     * @throws SoundTransformException
+     *             could not play the current audio data
+     */
+    @Override
+    BuildableFluentClientOperationWithSpectrums playIt (Object stopMonitor, int skipMilliSeconds) throws SoundTransformException;
 
     /**
      * Stops the client pipeline and returns the obtained spectrums

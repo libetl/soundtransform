@@ -724,27 +724,55 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this;
     }
 
+    
+    /**
+     * Plays the current audio data and (if needed) converts it temporarily to a
+     * sound
+     *
+     * @return the client, with a sound
+     * @throws SoundTransformException
+     *             could not play the current audio data
+     */
+    public FluentClient playIt () throws SoundTransformException {
+        return this.playIt (null);
+    }
+    
+    /**
+     * Plays the current audio data and (if needed) converts it temporarily to a
+     * sound
+     *
+     * @param stopMonitor calling notifyAll stops the player
+     * @return the client, with a sound
+     * @throws SoundTransformException
+     *             could not play the current audio data
+     */
+    public FluentClient playIt (Object stopMonitor) throws SoundTransformException {
+        return this.playIt (stopMonitor, 0);
+    }
+    
     @Override
     /**
      * Plays the current audio data and (if needed) convert it temporarily to a sound
+     * @param stopMonitor calling notifyAll stops the player
+     * @param skipMilliSeconds starts playing at 'skipMilliSeconds' ms from the begining of the sound
      * @return the client, in its current state.
      * @throws SoundTransformException could not play the current audio data
      */
-    public FluentClient playIt () throws SoundTransformException {
+    public FluentClient playIt (final Object stopMonitor, final int skipMilliSeconds) throws SoundTransformException {
         if (this.sound != null) {
-            new PlaySound ().play (this.sound);
+            new PlaySound ().play (this.sound, stopMonitor, skipMilliSeconds);
         } else if (this.audioInputStream != null) {
-            new PlaySound ().play (this.audioInputStream);
+            new PlaySound ().play (this.audioInputStream, stopMonitor, skipMilliSeconds);
         } else if (this.spectrums != null) {
             final List<Spectrum<Serializable> []> savedSpectrums = this.spectrums;
             this.extractSound ();
-            new PlaySound ().play (this.sound);
+            new PlaySound ().play (this.sound, stopMonitor, skipMilliSeconds);
             this.cleanData ();
             this.spectrums = savedSpectrums;
         } else if (this.file != null) {
             final File f = this.file;
             this.importToStream ();
-            new PlaySound ().play (this.audioInputStream);
+            new PlaySound ().play (this.audioInputStream, stopMonitor, skipMilliSeconds);
             this.cleanData ();
             this.file = f;
         }

@@ -155,6 +155,30 @@ public class FluentClientOperation implements BuildableFluentClientOperationSoun
     }
 
     @Override
+    public FluentClientOperation playIt (final Object stopMonitor) throws SoundTransformException {
+        this.steps.add (new Step () {
+
+            @Override
+            public void run (final FluentClientInterface client) throws SoundTransformException {
+                client.playIt (stopMonitor);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public FluentClientOperation playIt (final Object stopMonitor, final int skipMilliSeconds) throws SoundTransformException {
+        this.steps.add (new Step () {
+
+            @Override
+            public void run (final FluentClientInterface client) throws SoundTransformException {
+                client.playIt (stopMonitor, skipMilliSeconds);
+            }
+        });
+        return this;
+    }
+
+    @Override
     public BuildableFluentClientOperationWithFreqs adjust () {
         this.steps.add (new Step () {
 

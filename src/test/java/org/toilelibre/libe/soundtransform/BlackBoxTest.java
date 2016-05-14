@@ -28,7 +28,7 @@ public class BlackBoxTest extends SoundTransformTest {
 
     @Test
     public void callPlaySoundFromOutside () throws SoundTransformException {
-        new PlaySound ().play (new Sound (null));
+        new PlaySound ().play (new Sound (null), null, 0);
     }
 
     @Test

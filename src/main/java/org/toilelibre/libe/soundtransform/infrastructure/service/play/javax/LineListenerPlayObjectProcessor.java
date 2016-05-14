@@ -18,53 +18,73 @@ import org.toilelibre.libe.soundtransform.model.play.PlayObjectProcessor;
 
 final class LineListenerPlayObjectProcessor implements PlayObjectProcessor {
 
+    private static final String SOUND_PLAYER_MONITOR = "SoundPlayerMonitor";
+
     public LineListenerPlayObjectProcessor () {
 
     }
 
-    private void addLineListener (final Clip clip) {
-        clip.addLineListener (new LineListener () {
+    private LineListener addLineListener (final Clip clip, final Object stopMonitor) {
+        LineListener lineListener = new LineListener () {
 
             @Override
             public void update (final LineEvent event) {
                 final LineEvent.Type type = event.getType ();
                 if (type == LineEvent.Type.STOP) {
                     synchronized (clip) {
-                        clip.stop ();
-                        clip.close ();
-                        clip.notifyAll ();
+                        if (stopMonitor != null) {
+                            synchronized (stopMonitor) {
+                                stopMonitor.notifyAll ();
+                            }
+                        }
+                        if (event.getFramePosition () != -1) {
+                            clip.stop ();
+                            clip.close ();
+                            clip.notifyAll ();
+                        }
                     }
                 }
 
             }
 
-        });
-
+        };
+        clip.addLineListener (lineListener);
+        return lineListener;
     }
 
-    @Override
-    public Object play (final InputStream ais, final StreamInfo streamInfo) throws PlayObjectException {
-        try {
-            final Clip clip = this.prepareClip (ais);
-            clip.start ();
-            synchronized (clip) {
-                while (clip.isOpen ()) {
-                    clip.wait ();
+    private void addSoundPlayerMonitor (final Clip clip, final LineListener lineListener, final Object stopMonitor) {
+        if (stopMonitor != null) {
+            new Thread (LineListenerPlayObjectProcessor.SOUND_PLAYER_MONITOR) {
+                public void run () {
+                    synchronized (stopMonitor) {
+                        try {
+                            stopMonitor.wait ();
+                        } catch (InterruptedException e) {
+                        }
+                        lineListener.update (new LineEvent (clip, LineEvent.Type.STOP, -1));
+                    }
                 }
-            }
-            return clip;
-        } catch (final InterruptedException e) {
-            throw new PlayObjectException (e);
+            }.start ();
         }
     }
 
-    private Clip prepareClip (final InputStream ais) throws PlayObjectException {
+    @Override
+    public Object play (final InputStream ais, final StreamInfo streamInfo, final Object stopMonitor, int skipMilliSeconds) throws PlayObjectException {
+        final Clip clip = this.prepareClip (ais, stopMonitor, skipMilliSeconds);
+        clip.start ();
+        return clip;
+    }
+
+    private Clip prepareClip (final InputStream ais, final Object stopMonitor, int skipMilliSeconds) throws PlayObjectException {
         this.ensureCompatibleInputStream (ais);
         try {
             final Clip clip = this.getClip ();
-            this.addLineListener (clip);
-            clip.open ((AudioInputStream) ais);
-
+            this.addSoundPlayerMonitor (clip, this.addLineListener (clip, stopMonitor), stopMonitor);
+            AudioInputStream aisCasted = (AudioInputStream) ais;
+            int framePosition = (int) (aisCasted.getFormat ().getSampleRate () * 1.0 * skipMilliSeconds / 1000.0);
+            clip.open (aisCasted);
+            
+            clip.setFramePosition (framePosition);
             return clip;
         } catch (final LineUnavailableException lineUnavailableException) {
             throw new PlayObjectException (lineUnavailableException);

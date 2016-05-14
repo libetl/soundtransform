@@ -25,6 +25,27 @@ public interface FluentClientWithInputStream extends FluentClientCommon {
      *             could not play the current audio data
      */
     FluentClientWithInputStream playIt () throws SoundTransformException;
+    
+    /**
+     * Plays the current audio data and converts it temporarily into a sound
+     *
+     * @param stopMonitor calling notifyAll stops the player
+     * @return the client, with a sound
+     * @throws SoundTransformException
+     *             could not play the current audio data
+     */
+    FluentClientWithInputStream playIt (Object stopMonitor) throws SoundTransformException;
+    
+    /**
+     * Plays the current audio data and converts it temporarily into a sound
+     *
+     * @param stopMonitor calling notifyAll stops the player
+     * @param skipMilliSeconds starts playing at 'skipMilliSeconds' ms from the begining of the sound
+     * @return the client, with a sound
+     * @throws SoundTransformException
+     *             could not play the current audio data
+     */
+    FluentClientWithInputStream playIt (Object stopMonitor, int skipMilliSeconds) throws SoundTransformException;
 
     /**
      * Stops the client pipeline and returns the obtained input stream

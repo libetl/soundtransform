@@ -213,7 +213,7 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
     BuildableFluentClientOperationSoundImported mixWith (Sound sound) throws SoundTransformException;
 
     /**
-     * Plays the current audio data
+     * Plays the current audio data entirely
      *
      * @return the client, with a sound
      * @throws SoundTransformException
@@ -221,6 +221,29 @@ public interface BuildableFluentClientOperationSoundImported extends FluentClien
      */
     @Override
     BuildableFluentClientOperationSoundImported playIt () throws SoundTransformException;
+    
+    /**
+     * Plays the current audio data
+     *
+     * @param stopMonitor calling notifyAll stops the player
+     * @return the client, with a sound
+     * @throws SoundTransformException
+     *             could not play the current audio data
+     */
+    @Override
+    BuildableFluentClientOperationSoundImported playIt (Object stopMonitor) throws SoundTransformException;
+    
+    /**
+     * Plays the current audio data
+     *
+     * @param stopMonitor calling notifyAll stops the player
+     * @param skipMilliSeconds starts playing at 'skipMilliSeconds' ms from the begining of the sound
+     * @return the client, with a sound
+     * @throws SoundTransformException
+     *             could not play the current audio data
+     */
+    @Override
+    BuildableFluentClientOperationSoundImported playIt (Object stopMonitor, int skipMilliSeconds) throws SoundTransformException;
 
     /**
      * Uses the current sound to pick its spectrums and set that as the current

@@ -20,6 +20,7 @@ import android.media.AudioTrack;
 
 final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjectProcessor> implements PlayObjectProcessor {
 
+    private static final String SOUND_PLAYER_MONITOR = "SoundPlayerMonitor";
     private static final int EIGHT = 8;
     private static final int SIX   = 6;
     private static final int FIVE  = 5;
@@ -56,7 +57,7 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
     }
 
     @Override
-    public Object play (final InputStream ais, final StreamInfo streamInfo) throws PlayObjectException {
+    public Object play (final InputStream ais, final StreamInfo streamInfo, final Object stopMonitor, int skipMilliSeconds) throws PlayObjectException {
         final int channelConf = this.getChannelConfiguration (streamInfo);
         final AudioTrack audioTrack = new AudioTrack (AudioManager.STREAM_MUSIC, (int) streamInfo.getSampleRate (), channelConf, streamInfo.getSampleSize () == AndroidPlayObjectProcessor.TWO ? AudioFormat.ENCODING_PCM_16BIT : AudioFormat.ENCODING_PCM_8BIT, (int) streamInfo.getFrameLength ()
                 * streamInfo.getSampleSize (), AudioTrack.MODE_STATIC);
@@ -69,9 +70,34 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
         }
         audioTrack.write (baSoundByteArray, 0, baSoundByteArray.length);
         audioTrack.flush ();
+        audioTrack.setPlaybackHeadPosition ((int) (streamInfo.getSampleRate () * 1.0 * skipMilliSeconds / 1000.0));
         audioTrack.play ();
 
-        final Thread thread = new Thread () {
+        final Thread soundMonitorThread = this.getSoundMonitorThread (stopMonitor, audioTrack);
+        final Thread playFrameMonitorThread = this.getPlayFrameMonitorThread (stopMonitor, audioTrack);
+        playFrameMonitorThread.start ();
+        soundMonitorThread.start ();
+        return playFrameMonitorThread;
+    }
+
+    private Thread getSoundMonitorThread (final Object stopMonitor, final AudioTrack audioTrack) {
+        return new Thread (AndroidPlayObjectProcessor.SOUND_PLAYER_MONITOR) {
+            public void run () {
+                synchronized (stopMonitor) {
+                    try {
+                        stopMonitor.wait ();
+                    } catch (InterruptedException e) {
+                    }
+
+                    audioTrack.stop ();
+                    audioTrack.release ();
+                }
+            }
+        };
+    }
+
+    private Thread getPlayFrameMonitorThread (final Object stopMonitor, final AudioTrack audioTrack) {
+        final Thread thread = new Thread ("PlayFrameMonitor") {
             @Override
             public void run () {
                 int lastFrame = -AndroidPlayObjectProcessor.ONE;
@@ -83,11 +109,9 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
                         throw new SoundTransformRuntimeException (new PlayObjectException (new SoundTransformException (PlaySoundErrorCode.COULD_NOT_PLAY_SOUND, e)));
                     }
                 }
-                audioTrack.stop ();
-                audioTrack.release ();
+                stopMonitor.notifyAll ();
             }
         };
-        thread.start ();
         return thread;
     }
 
