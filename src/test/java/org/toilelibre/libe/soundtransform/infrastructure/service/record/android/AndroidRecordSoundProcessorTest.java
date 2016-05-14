@@ -10,7 +10,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.GreaterThan;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
@@ -115,7 +114,8 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
         });
         PowerMockito.whenNew (AudioRecord.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class).withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioRecord);
         final InputStream is = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
-        Assert.assertThat (is.available (), new GreaterThan<Integer> (0));
+
+        Assert.assertTrue (is.available () > 0);
     }
 
     @Test
@@ -197,7 +197,8 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
         });
         PowerMockito.whenNew (AudioRecord.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class).withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioRecord);
         final InputStream is = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 80000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
-        Assert.assertThat (is.available (), new GreaterThan<Integer> (0));
+
+        Assert.assertTrue (is.available () > 0);
     }
 
     @Test (expected = SoundTransformException.class)

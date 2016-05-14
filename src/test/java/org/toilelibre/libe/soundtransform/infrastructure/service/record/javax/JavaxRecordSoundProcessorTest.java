@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.GreaterThan;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
@@ -52,7 +51,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         buffers [14] = new byte [0];
         this.mockRecordSoundProcessor (buffers);
         final InputStream is = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
-        Assert.assertThat (is.available (), new GreaterThan<Integer> (0));
+        Assert.assertTrue (is.available () > 0);
     }
 
     @Test
@@ -87,7 +86,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         }
         Thread.sleep (1000);
 
-        Assert.assertThat (is [0].available (), new GreaterThan<Integer> (0));
+        Assert.assertTrue (is [0].available () > 0);
     }
 
     @Test

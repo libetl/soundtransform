@@ -24,22 +24,30 @@ public class TestPlaySound extends SoundTransformTest {
         final InputStream ais = convertAudioFileService.streamFromFile (this.input);
         final StreamInfo streamInfo = $.select (InputStreamToSoundService.class).getStreamInfo (ais);
         final Object monitor = new Object ();
+        boolean noSoundCardTestDevice = false;
         try {
             ps.play (ais, streamInfo, monitor, 0);
         } catch (final java.lang.IllegalArgumentException iae) {
             if (!"No line matching interface Clip is supported.".equals (iae.getMessage ())) {
                 throw iae;
+            } else {
+                noSoundCardTestDevice = true;
             }
         } catch (final PlayObjectException e) {
             // javax.sound.sampled.LineUnavailableException for some JDK
             // versions
             if (!javax.sound.sampled.LineUnavailableException.class.equals (e.getCause ().getClass ()) && !java.lang.IllegalArgumentException.class.equals (e.getCause ().getClass ())) {
                 throw e;
+            } else {
+                noSoundCardTestDevice = true;
             }
         } catch (final RuntimeException e) {
             if (!"Stub!".equals (e.getMessage ())) {
                 throw e;
             }
+        }
+        if (noSoundCardTestDevice == true) {
+            return;
         }
         synchronized (monitor) {
             try {
