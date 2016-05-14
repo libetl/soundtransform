@@ -78,6 +78,11 @@ public class JavaxPlayObjectProcessorTest extends SoundTransformTest {
 
         FluentClient.start ().withClasspathResource ("gpiano3.wav").playIt ().convertIntoSound ().splitIntoSpectrums ().playIt ().extractSound ().playIt ().exportToStream ().playIt ();
         FluentClient.start ().inParallel (FluentClientOperation.prepare ().playIt ().build (), 10, FluentClient.start ().withClasspathResource ("gpiano3.wav"));
+        try {
+            Thread.sleep (8000);
+        } catch (final InterruptedException e) {
+            throw new RuntimeException ("error during test");
+        }
         Mockito.verify (clip).stop ();
         Mockito.verify (clip).close ();
     }

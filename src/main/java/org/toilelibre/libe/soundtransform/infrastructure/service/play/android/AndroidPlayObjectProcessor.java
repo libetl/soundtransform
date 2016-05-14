@@ -76,11 +76,16 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
         final Thread soundMonitorThread = this.getSoundMonitorThread (stopMonitor, audioTrack);
         final Thread playFrameMonitorThread = this.getPlayFrameMonitorThread (stopMonitor, audioTrack);
         playFrameMonitorThread.start ();
-        soundMonitorThread.start ();
+        if (soundMonitorThread != null) {
+            soundMonitorThread.start ();
+        }
         return playFrameMonitorThread;
     }
 
     private Thread getSoundMonitorThread (final Object stopMonitor, final AudioTrack audioTrack) {
+        if (stopMonitor == null) {
+            return null;
+        }
         return new Thread (AndroidPlayObjectProcessor.SOUND_PLAYER_MONITOR) {
             public void run () {
                 synchronized (stopMonitor) {
@@ -109,7 +114,12 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
                         throw new SoundTransformRuntimeException (new PlayObjectException (new SoundTransformException (PlaySoundErrorCode.COULD_NOT_PLAY_SOUND, e)));
                     }
                 }
-                stopMonitor.notifyAll ();
+                if (stopMonitor != null) {
+                    stopMonitor.notifyAll ();
+                } else {
+                    audioTrack.stop ();
+                    audioTrack.release ();
+                }
             }
         };
         return thread;
