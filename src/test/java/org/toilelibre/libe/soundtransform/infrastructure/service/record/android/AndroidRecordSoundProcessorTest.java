@@ -158,13 +158,13 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
         }.start ();
 
         final List<float []> resultFloats = FluentClient.start ().whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), 
-            new AmplitudeObserver () {
+          stop, new AmplitudeObserver () {
 
             @Override
             public void update (float soundLevel) {
                 new Slf4jObserver ().notify ("recorded sound level " + soundLevel);
             }
-        },stop).findLoudestFrequencies ().stopWithFreqs ();
+        }).findLoudestFrequencies ().stopWithFreqs ();
 
         Assert.assertThat (resultFloats, new IsNot<List<float []>> (new IsNull<List<float []>> ()));
         Assert.assertNotEquals (resultFloats.size (), 0);
