@@ -369,16 +369,16 @@ public interface FluentClientReady extends FluentClientCommon {
      * @see whileRecordingASound
      * @param streamInfo
      *            the future input stream info
-     * @param amplitudeObserver
-     *            the update method will be called with the amplitude value (useful to display a VUmeter)
      * @param stop
      *            the method notifyAll must be called to stop the recording
+     * @param amplitudeObserver
+     *            the update method will be called with the amplitude value (useful to display a VUmeter)
      * @return the client, with a sound (segmented)
      * @throws SoundTransformException
      *             the mic could not be read, the recorder could not start, or
      *             the buffer did not record anything
      */
-    FluentClientSoundImported whileRecordingASound (final StreamInfo streamInfo, final AmplitudeObserver amplitudeObserver, Object stop) throws SoundTransformException;
+    FluentClientSoundImported whileRecordingASound (final StreamInfo streamInfo, Object stop, final AmplitudeObserver amplitudeObserver) throws SoundTransformException;
     
     /**
      * Tells the client to open the microphone and to record a sound The result

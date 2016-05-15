@@ -985,7 +985,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      */
     @Override
     public FluentClientSoundImported whileRecordingASound (final StreamInfo streamInfo, final Object stop) throws SoundTransformException {
-        return this.whileRecordingASound (streamInfo, null, stop);
+        return this.whileRecordingASound (streamInfo, stop, null);
     }
 
     /**
@@ -1005,7 +1005,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      *             the buffer did not record anything
      */
     @Override
-    public FluentClientSoundImported whileRecordingASound (final StreamInfo streamInfo, final AmplitudeObserver amplitudeObserver, final Object stop) throws SoundTransformException {
+    public FluentClientSoundImported whileRecordingASound (final StreamInfo streamInfo, final Object stop, final AmplitudeObserver amplitudeObserver) throws SoundTransformException {
         this.cleanData ();
         this.sound = new RecordSound ().startRecordingASound (streamInfo, amplitudeObserver, stop);
         return this;

@@ -281,6 +281,8 @@ Throws:
 
 ```java
 FluentClientSoundImported whileRecordingASound (StreamInfo streamInfo, Object stop) throws SoundTransformException
+
+FluentClientSoundImported whileRecordingASound (StreamInfo streamInfo, Object stop, AmplitudeObserver amplitudeObserver) throws SoundTransformException
 ```
 
 
@@ -296,6 +298,8 @@ Parameters:
 `streamInfo` - the future input stream info
 
 `stop`       - the method notifyAll must be called to stop the recording
+
+`amplitudeObserver` - (optional) the update method will be called frequently to let the client code know what is the peak in DB. To be used for a VUmeter
 
 Returns:  
 the client, with an imported sound (segmented)
@@ -829,30 +833,16 @@ Throws:
 
 ```java
 FluentClientWithFreqs findLoudestFrequencies () throws SoundTransformException
+
+FluentClientWithFreqs findLoudestFrequencies (PeakFindSoundTransform<?, ?> peakFindSoundTransform) throws SoundTransformException
 ```
 
+Parameter:  (Optional) 
+`peakFindSoundTransform` - a sound transform whose role is to find the loudest freqs array
 
 Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically
  Caution : the original sound will be lost, and it will be impossible to revert this conversion.
  When shaped into a sound, the new sound will only sound like the instrument you shaped the freqs with
-
-Returns:  
-the client, with a loudest frequencies float array
-
-Throws:  
-`SoundTransformException` - if the convert fails
-
-```java
-FluentClientWithFreqs findLoudestFrequencies (PeakFindSoundTransform<?, ?> peakFindSoundTransform) throws SoundTransformException
-```
-
-
-Will invoke a soundtransform to find the loudest frequencies of the sound, chronologically
- Caution : the original sound will be lost, and it will be impossible to revert this conversion.
- When shaped into a sound, the new sound will only sounds like the instrument you shaped the freqs with
-
-Parameter:  
-`peakFindSoundTransform` - a sound transform whose role is to find the loudest freqs array
 
 Returns:  
 the client, with a loudest frequencies float array
@@ -1000,8 +990,16 @@ the client, with a loudest frequencies float array
 
 ```java
 <T> T playIt () throws SoundTransformException
+
+<T> T playIt (Object stopMonitor) throws SoundTransformException
+
+<T> T playIt (Object stopMonitor, int skipMilliseconds) throws SoundTransformException
 ```
 
+Parameters: (optional)  
+`stopMonitor` - calling notifyAll stops the player
+
+`skipMilliSeconds` - starts playing at 'skipMilliSeconds' ms from the begining of the sound
 
 Plays the current audio data
 
