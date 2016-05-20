@@ -6,9 +6,9 @@ Android & Pure Java library to shape a voice with an instrument.
 
 **Table of Contents** 
 - [How to use the library](#how-to-use-the-library)
-- [Android ? Pure Java ? Same code ?](#android-java-same-code)
 - [FluentClient](#fluentclient)
 	- [FluentClient samples](#fluentclient-samples)
+	- [Android ? Pure Java ? Same code ?](#fluentclient-android-java-same-code)
 	- [FluentClient Javadoc](#fluentclient-javadoc)
 		- [1. static init](#1-static-init)
 		- [2. start of the flow](#2-start-of-the-flow)
@@ -33,60 +33,6 @@ Android & Pure Java library to shape a voice with an instrument.
 * Read the following documentation about the FluentClient facility
 * Have a look at the available SoundTransform classes
 * Use the lib by yourself
-
-## Android ? Pure Java ? Same code ?
-It would be a great thing but unfortunately the Android SDK is made to be incompatible with the Java SDK. Because a lot of security features and facilities were (and are being) implemented to protect the users in Android, whereas the Java SDK is using the OS kernel features.
-
-For example, you cannot read a resource on an Android device. Because it is considered as a security breach by the Android SDK. 
-
-It is preventing anyone from opening any file to steal data without a consent (a permission).
-
-The soundtransform lib needs to adapt to these two contexts (Pure Java lib / android lib) to be able to proceed data in the same way. Only input and output processing are different as described below.
-
-The Pure Java sample will be shown first because it is simpler.
-
-### Pack import
-
-#### With Pure Java, you do :
-
-```java
- FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("yourpack.json"))
-```
- 
-#### With Android, you do :
-
-```java
- FluentClient.start ().withAPack ("default", androidContext, yourpackage.R.raw.class, yourpackage.R.raw.yourpack)
-```
-
-### Open a sound input
-
-#### With Pure Java, you do :
-
-```java
- FluentClient.start ().withFile (new File ("/path/to/file.wav")).convertIntoSound ()
-```
- 
-#### With Android, you do (with the `android.permission.READ_EXTERNAL_STORAGE` permission) :
-
-```java
- FluentClient.start ().withFile (new File (Environment.getExternalStorageDirectory ().getPath () + "/file.wav")).convertIntoSound ()
-```
-
-### Save a sound output
-
-#### With Pure Java, you do :
-
-```java
- //...
- fluentClientWithSoundImported.exportToFile (new File ("/path/to/file.wav"));
-```
- 
-#### With Android, you do (with the `android.permission.WRITE_EXTERNAL_STORAGE` permission):
-
-```java
- fluentClientWithSoundImported.exportToFile (new File (Environment.getExternalStorageDirectory () + "/file.wav"));
-```
 
 ## FluentClient
 The FluentClient service provider interface is a simple class to give a shortcut to all the features of the lib without walking in the nested classes.
@@ -138,6 +84,60 @@ public void method (){
 ```
 
 Please have a look at the many different actions that you can ask to the FluentClient in this [JUnit Test](src/test/java/org/toilelibre/libe/soundtransform/FluentClientTest.java)
+
+### Android ? Pure Java ? Same code ?
+It would be a great thing but unfortunately the Android SDK is made to be incompatible with the Java SDK. Because a lot of security features and facilities were (and are being) implemented to protect the users in Android, whereas the Java SDK is using the OS kernel features.
+
+For example, you cannot read a resource on an Android device. Because it is considered as a security breach by the Android SDK. 
+
+It is preventing anyone from opening any file to steal data without a consent (a permission).
+
+The soundtransform lib needs to adapt to these two contexts (Pure Java lib / android lib) to be able to proceed data in the same way. Only input and output processing are different as described below.
+
+The Pure Java sample will be shown first because it is simpler.
+
+#### Pack import
+
+##### With Pure Java, you do :
+
+```java
+ FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("yourpack.json"))
+```
+ 
+##### With Android, you do :
+
+```java
+ FluentClient.start ().withAPack ("default", androidContext, yourpackage.R.raw.class, yourpackage.R.raw.yourpack)
+```
+
+#### Open a sound input
+
+##### With Pure Java, you do :
+
+```java
+ FluentClient.start ().withFile (new File ("/path/to/file.wav")).convertIntoSound ()
+```
+ 
+##### With Android, you do (with the `android.permission.READ_EXTERNAL_STORAGE` permission) :
+
+```java
+ FluentClient.start ().withFile (new File (Environment.getExternalStorageDirectory ().getPath () + "/file.wav")).convertIntoSound ()
+```
+
+#### Save a sound output
+
+##### With Pure Java, you do :
+
+```java
+ //...
+ fluentClientWithSoundImported.exportToFile (new File ("/path/to/file.wav"));
+```
+ 
+##### With Android, you do (with the `android.permission.WRITE_EXTERNAL_STORAGE` permission):
+
+```java
+ fluentClientWithSoundImported.exportToFile (new File (Environment.getExternalStorageDirectory () + "/file.wav"));
+```
 
 ### FluentClient Javadoc
 
