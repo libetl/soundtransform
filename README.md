@@ -56,7 +56,7 @@ The Pure Java sample will be shown first because it is simpler.
 #### With Android, you do :
 
 ```java
- FluentClient.start ().withAPack ("default", this, org.toilelibre.libe.soundtransform.R.raw.class, org.toilelibre.libe.soundtransform.R.raw.defaultpack)
+ FluentClient.start ().withAPack ("default", androidContext, yourpackage.R.raw.class, yourpackage.R.raw.yourpack)
 ```
 
 ### Open a sound input
