@@ -6,6 +6,7 @@ Android & Pure Java library to shape a voice with an instrument.
 
 **Table of Contents** 
 - [How to use the library](#how-to-use-the-library)
+- [Android ? Pure Java ? Same code ?](#android-java-same-code)
 - [FluentClient](#fluentclient)
 	- [FluentClient samples](#fluentclient-samples)
 	- [FluentClient Javadoc](#fluentclient-javadoc)
@@ -32,6 +33,57 @@ Android & Pure Java library to shape a voice with an instrument.
 * Read the following documentation about the FluentClient facility
 * Have a look at the available SoundTransform classes
 * Use the lib by yourself
+
+## Android ? Pure Java ? Same code ?
+It would be a great thing but unfortunately the Android SDK is made to be incompatible with the Java SDK. Because a lot of security features and facilities were (and are being) implemented to protect the users in Android, whereas the Java SDK is using the OS kernel features.
+For example, you cannot read a resource on the device. Because it is considered as a security breach by Android. It is preveting anyone from opening any file to steal data without a consent (a permission).
+
+The lib needs to adapt to these two contexts (Pure Java lib / android lib) to be able to proceed data in the same way. Only input and output processing are different : 
+
+The Pure Java sample will be shown first because it is simpler.
+
+### Importing a pack
+
+#### With Pure Java, you do :
+
+```java
+ FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json"))
+```
+ 
+#### With Android, you do :
+
+```java
+ FluentClient.start ().withAPack ("default", this, org.toilelibre.libe.soundtransform.R.raw.class, org.toilelibre.libe.soundtransform.R.raw.defaultpack)
+```
+
+### Open a sound input
+
+#### With Pure Java, you do :
+
+```java
+ FluentClient.start ().withFile (new File ("/path/to/file.wav")).convertIntoSound ()
+```
+ 
+#### With Android, you do (with the `android.permission.READ_EXTERNAL_STORAGE` permission) :
+
+```java
+ FluentClient.start ().withFile (new File (Environment.getExternalStorageDirectory ().getPath () + "/file.wav")).convertIntoSound ()
+```
+
+### Save a sound output
+
+#### With Pure Java, you do :
+
+```java
+ //...
+ fluentClientWithSoundImported.exportToFile (new File ("/path/to/file.wav"));
+```
+ 
+#### With Android, you do (with the `android.permission.WRITE_EXTERNAL_STORAGE` permission):
+
+```java
+ fluentClientWithSoundImported.exportToFile (new File (Environment.getExternalStorageDirectory () + "/file.wav"));
+```
 
 ## FluentClient
 The FluentClient service provider interface is a simple class to give a shortcut to all the features of the lib without walking in the nested classes.
