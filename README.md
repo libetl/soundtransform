@@ -50,7 +50,7 @@ The Pure Java sample will be shown first because it is simpler.
 #### With Pure Java, you do :
 
 ```java
- FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpack.json"))
+ FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("yourpack.json"))
 ```
  
 #### With Android, you do :
