@@ -40,7 +40,7 @@ Android & Pure Java library to shape a voice with an instrument.
 ``` 
 
 * It also works as a gradle dependency :
-```
+```gradle
 repositories {
         mavenCentral()
     }
