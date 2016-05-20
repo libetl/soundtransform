@@ -36,7 +36,10 @@ Android & Pure Java library to shape a voice with an instrument.
 
 ## Android ? Pure Java ? Same code ?
 It would be a great thing but unfortunately the Android SDK is made to be incompatible with the Java SDK. Because a lot of security features and facilities were (and are being) implemented to protect the users in Android, whereas the Java SDK is using the OS kernel features.
-For example, you cannot read a resource on the device. Because it is considered as a security breach by Android. It is preveting anyone from opening any file to steal data without a consent (a permission).
+
+For example, you cannot read a resource on the device. Because it is considered as a security breach by Android. 
+
+It is preventing anyone from opening any file to steal data without a consent (a permission).
 
 The lib needs to adapt to these two contexts (Pure Java lib / android lib) to be able to proceed data in the same way. Only input and output processing are different : 
 
