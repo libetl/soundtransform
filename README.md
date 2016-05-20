@@ -8,7 +8,7 @@ Android & Pure Java library to shape a voice with an instrument.
 - [How to use the library](#how-to-use-the-library)
 - [FluentClient](#fluentclient)
 	- [FluentClient samples](#fluentclient-samples)
-	- [Android ? Pure Java ? Same code ?](#fluentclient-android-java-same-code)
+	- [Android ? Pure Java ? Same code ?](#android--pure-java--same-code-)
 	- [FluentClient Javadoc](#fluentclient-javadoc)
 		- [1. static init](#1-static-init)
 		- [2. start of the flow](#2-start-of-the-flow)
