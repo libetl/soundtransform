@@ -20,7 +20,16 @@ Android & Pure Java library to shape a voice with an instrument.
 	- [Window transforms](#window-transforms)
 
 ## How to use the library
-* Insert the aar into your project dependencies :
+* Insert the jar into your project dependencies :
+```xml
+<dependency>
+	<groupId>org.toile-libre.libe</groupId>
+	<artifactId>soundtransform</artifactId>
+	<version>1.0.20</version>
+</dependency>
+``` 
+
+* Or as an android library :
 ```xml
 <dependency>
 	<groupId>org.toile-libre.libe</groupId>
@@ -29,6 +38,19 @@ Android & Pure Java library to shape a voice with an instrument.
 	<type>aar</type>
 </dependency>
 ``` 
+
+* It also works as a gradle dependency :
+```
+repositories {
+        mavenCentral()
+    }
+
+
+dependencies {
+    compile 'org.toile-libre.libe:soundtransform:1.0.20'
+}
+
+```
 * Make sure you have access to the FluentClient class in your project (try the autocompletion feature of your IDE if you have one)
 * Read the following documentation about the FluentClient facility
 * Have a look at the available SoundTransform classes
@@ -136,6 +158,7 @@ The Pure Java sample will be shown first because it is simpler.
 ##### With Android, you do (with the `android.permission.WRITE_EXTERNAL_STORAGE` permission):
 
 ```java
+ //...
  fluentClientWithSoundImported.exportToFile (new File (Environment.getExternalStorageDirectory () + "/file.wav"));
 ```
 
