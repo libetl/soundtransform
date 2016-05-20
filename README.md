@@ -45,7 +45,7 @@ The lib needs to adapt to these two contexts (Pure Java lib / android lib) to be
 
 The Pure Java sample will be shown first because it is simpler.
 
-### Importing a pack
+### Pack import
 
 #### With Pure Java, you do :
 
