@@ -59,9 +59,16 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
     @Override
     public Object play (final InputStream ais, final StreamInfo streamInfo, final Object stopMonitor, int skipMilliSeconds) throws PlayObjectException {
         final int channelConf = this.getChannelConfiguration (streamInfo);
-        final AudioTrack audioTrack = new AudioTrack (AudioManager.STREAM_MUSIC, (int) streamInfo.getSampleRate (), channelConf, streamInfo.getSampleSize () == AndroidPlayObjectProcessor.TWO ? AudioFormat.ENCODING_PCM_16BIT : AudioFormat.ENCODING_PCM_8BIT, (int) streamInfo.getFrameLength ()
-                * streamInfo.getSampleSize (), AudioTrack.MODE_STATIC);
-        final byte [] baSoundByteArray = new byte [(int) streamInfo.getFrameLength () * streamInfo.getSampleSize ()];
+        final int frameLength;
+        try {
+            frameLength = findFrameLength (ais, streamInfo);
+        } catch (IOException ioe) {
+            throw new PlayObjectException (new SoundTransformException (PlaySoundErrorCode.COULD_NOT_PLAY_SOUND, ioe));
+        }
+ 
+        final AudioTrack audioTrack = new AudioTrack (AudioManager.STREAM_MUSIC, (int) streamInfo.getSampleRate (), channelConf, streamInfo.getSampleSize () == AndroidPlayObjectProcessor.TWO ? AudioFormat.ENCODING_PCM_16BIT : AudioFormat.ENCODING_PCM_8BIT, 
+                frameLength * streamInfo.getSampleSize (), AudioTrack.MODE_STATIC);
+        final byte [] baSoundByteArray = new byte [(int) frameLength * streamInfo.getSampleSize ()];
         try {
             final int byteArraySize = ais.read (baSoundByteArray);
             this.log (new LogEvent (AndroidPlaySoundProcessorEventCode.READ_BYTEARRAY_SIZE, byteArraySize));
@@ -80,6 +87,10 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
             soundMonitorThread.start ();
         }
         return playFrameMonitorThread;
+    }
+
+    private int findFrameLength (InputStream ais, StreamInfo streamInfo) throws IOException {
+        return (int) (streamInfo.getFrameLength () != -1 ? streamInfo.getFrameLength () : ais.available () * 1.0 / (streamInfo.getSampleSize () * streamInfo.getChannels ()));
     }
 
     private Thread getSoundMonitorThread (final Object stopMonitor, final AudioTrack audioTrack) {

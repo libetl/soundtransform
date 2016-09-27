@@ -26,7 +26,8 @@ public class FluentClientAndroidTest extends SoundTransformAndroidTest {
                                                            @Override
                                                            public InputStream answer (final InvocationOnMock invocation) throws Throwable {
                                                                final int id = invocation.getArgumentAt (0, int.class);
-                                                               for (final Field f : org.toilelibre.libe.soundtransform.R.raw.class.getDeclaredFields ()) {
+                                                               Class<?> clazz = TestR.raw.class;
+                                                               for (final Field f : clazz.getDeclaredFields ()) {
 
                                                                    try {
                                                                        if (f.getInt (null) == id) {
@@ -45,29 +46,49 @@ public class FluentClientAndroidTest extends SoundTransformAndroidTest {
                                                                        new Slf4jObserver (LogLevel.INFO).notify ("openRawResource : " + e);
                                                                    }
                                                                }
-                                                               throw new RuntimeException ("" + id);
+                                                               throw Mockito.mock (Resources.NotFoundException.class);
                                                            }
 
                                                        };
 
     @Test (expected = SoundTransformException.class)
-    public void loadPackWithMissingFile () throws SoundTransformException {
+    public void loadPackWithMissingFile () throws SoundTransformException, ClassNotFoundException {
         final Context context = this.given ();
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
         try {
-            FluentClient.start ().withAPack ("default", context, TestR.raw.class, TestR.raw.badidpack).stopWithAPack ("default");
+            FluentClient.start ().withAPack ("default", context, TestR.raw.class, -1).stopWithAPack ("default");
         } catch (final SoundTransformException ste) {
             Assert.assertEquals ("COULD_NOT_READ_ID", ste.getErrorCode ().name ());
             throw ste;
         }
     }
 
+    @Test (expected = SoundTransformException.class)
+    public void loadPackOk () throws SoundTransformException, ClassNotFoundException {
+        final Context context = this.given ();
+        FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
+        try {
+            FluentClient.start ().withAPack ("default", context, TestR.raw.class, TestR.raw.badidpack).stopWithAPack ("default");
+        } catch (final SoundTransformException ste) {
+            Assert.assertEquals ("EMPTY_INPUT_STREAM", ste.getErrorCode ().name ());
+            throw ste;
+        }
+    }
+
     @Test
-    public void loadPack () throws SoundTransformException {
+    public void loadPack () throws SoundTransformException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+        try {
+            Class.forName ("org.toilelibre.libe.soundtransform.R.raw");
+        } catch (ClassNotFoundException cnfe) {
+            //this test cannot be launched on non android platform
+            return;
+        }
+        
         final Context context = this.given ();
 
         FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.WARN));
-        final Pack pack = FluentClient.start ().withAPack ("default", context, R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
+        final Pack pack = FluentClient.start ().withAPack ("default", context, TestR.raw.class, 
+                (Integer)Class.forName ("org.toilelibre.libe.soundtransform.R.raw").getDeclaredField ("defaultpack").get (null)).stopWithAPack ("default");
         pack.toString ();
         Assert.assertNotNull (pack);
         Assert.assertNotEquals (pack.size (), 0);

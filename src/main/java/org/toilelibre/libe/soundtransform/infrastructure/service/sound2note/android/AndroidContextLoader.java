@@ -8,6 +8,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.library.pack.ContextLoader;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 final class AndroidContextLoader implements ContextLoader {
 
@@ -46,7 +47,11 @@ final class AndroidContextLoader implements ContextLoader {
 
     @Override
     public InputStream read (final Object context, final int id) throws SoundTransformException {
-        return ((Context) context).getResources ().openRawResource (id);
+        try {
+            return ((Context) context).getResources ().openRawResource (id);
+        } catch (Resources.NotFoundException nfe) {
+            throw new SoundTransformException (AndroidContextReaderErrorCode.COULD_NOT_READ_ID, nfe, id);
+        }
     }
 
     @Override

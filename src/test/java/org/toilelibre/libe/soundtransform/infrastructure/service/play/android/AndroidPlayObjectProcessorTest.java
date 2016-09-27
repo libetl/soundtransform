@@ -94,6 +94,28 @@ public class AndroidPlayObjectProcessorTest extends SoundTransformAndroidTest {
     }
 
     @Test
+    public void playAnUndefinedLengthSoundInParallel () throws Exception {
+        this.rule.hashCode ();
+        final AudioTrack audioTrack = Mockito.mock (AudioTrack.class);
+        Mockito.when (audioTrack.getPlaybackHeadPosition ()).thenAnswer (new Answer<Integer> () {
+            int i = 0;
+
+            @Override
+            public Integer answer (final InvocationOnMock invocation) throws Throwable {
+                return Math.min (5, this.i++ / 2);
+            }
+
+        });
+        PowerMockito.whenNew (AudioTrack.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class, int.class)
+                .withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioTrack);
+        FluentClient.start ().inParallel (FluentClientOperation.prepare ().playIt ().build (), 10, 
+                FluentClient.start ().withRawInputStream (Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("gpiano3.wav"), 
+                        new StreamInfo (1, -1, 2, 8000, false, true, "info")));
+        Mockito.verify (audioTrack, Mockito.atLeast (1)).write (Matchers.any (byte [].class), Matchers.anyInt (), Matchers.anyInt ());
+    }
+
+
+    @Test
     public void playRandomBytes () throws Exception {
         for (final int j : new int [] { 1, 2, 4, 5, 6, 8 }) {
             final AudioTrack audioTrack = Mockito.mock (AudioTrack.class);

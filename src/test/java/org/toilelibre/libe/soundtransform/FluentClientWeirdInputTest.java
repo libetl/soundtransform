@@ -39,9 +39,11 @@ import android.content.Context;
 public class FluentClientWeirdInputTest extends SoundTransformTest {
 
     @Test
-    public void androidImportPackDoesNotWorkInJavaxMode () throws SoundTransformException {
+    public void androidImportPackDoesNotWorkInJavaxMode () throws SoundTransformException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
         try {
-            FluentClient.start ().withAPack ("default", Mockito.mock (Context.class), R.raw.class, R.raw.defaultpack).stopWithAPack ("default");
+            FluentClient.start ().withAPack ("default", Mockito.mock (Context.class), 
+                    TestR.raw.class, 
+                    TestR.raw.badidpack).stopWithAPack ("default");
             Assert.fail ("android import should have failed");
         } catch (final SoundTransformException ste) {
             Assert.assertEquals (ste.getErrorCode ().name (), "STUB_IMPLEMENTATION");
