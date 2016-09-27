@@ -126,7 +126,9 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
                     }
                 }
                 if (stopMonitor != null) {
-                    stopMonitor.notifyAll ();
+                    synchronized (stopMonitor) {
+                      stopMonitor.notifyAll ();
+                    }
                 } else {
                     audioTrack.stop ();
                     audioTrack.release ();
