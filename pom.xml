@@ -66,7 +66,7 @@
 				<groupId>com.simpligility.maven.plugins</groupId>
 				<artifactId>android-maven-plugin</artifactId>
 				<extensions>true</extensions>
-				<version>4.4.3</version>
+				<version>4.4.1</version>
 				<configuration>
 					<sdk>
 						<platform>8</platform>
