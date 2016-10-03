@@ -18,11 +18,14 @@ import com.google.gson.JsonElement;
 
 final class GsonPackToStringHelper implements PackToStringHelper {
 
+    private static final Gson SMALL_GSON_OBJECT = new Gson ();
+    private static final Gson GSON_OBJECT = new GsonBuilder ().setPrettyPrinting ().create ();
+
     private JsonElement toJsonElement (final Note note) {
         if (note instanceof SimpleNote) {
-            return new Gson ().toJsonTree ( ((SimpleNote) note).getNoteInfo ());
+            return SMALL_GSON_OBJECT.toJsonTree ( ((SimpleNote) note).getNoteInfo ());
         }
-        return new Gson ().toJsonTree (Collections.emptyList ());
+        return SMALL_GSON_OBJECT.toJsonTree (Collections.emptyList ());
     }
 
     private JsonElement toJsonElement (final Pack pack) {
@@ -30,34 +33,34 @@ final class GsonPackToStringHelper implements PackToStringHelper {
         for (final Entry<String, Range> entry : pack.entrySet ()) {
             map.put (entry.getKey (), this.toJsonElement (entry.getValue ()));
         }
-        return new Gson ().toJsonTree (map);
+        return SMALL_GSON_OBJECT.toJsonTree (map);
     }
 
     private JsonElement toJsonElement (final Range range) {
-        if (range.size () == 1 && ! (range.get (0) instanceof SimpleNote)) {
+        if (range.size () == 1 && ! (range.values ().iterator ().next () instanceof SimpleNote)) {
             return new JsonArray ();
         }
         final JsonElement [] noteJsons = new JsonElement [range.size ()];
         int i = 0;
         for (final Note note : range.values ()) {
-            noteJsons [i++] = new Gson ().toJsonTree (this.toJsonElement (note));
+            noteJsons [i++] = SMALL_GSON_OBJECT.toJsonTree (this.toJsonElement (note));
         }
-        return new Gson ().toJsonTree (noteJsons);
+        return SMALL_GSON_OBJECT.toJsonTree (noteJsons);
     }
 
     @Override
     public String toString (final Note note) {
-        return new GsonBuilder ().setPrettyPrinting ().create ().toJson (this.toJsonElement (note));
+        return GSON_OBJECT.toJson (this.toJsonElement (note));
     }
 
     @Override
     public String toString (final Pack pack) {
-        return new GsonBuilder ().setPrettyPrinting ().create ().toJson (this.toJsonElement (pack));
+        return GSON_OBJECT.toJson (this.toJsonElement (pack));
     }
 
     @Override
     public String toString (final Range range) {
-        return new GsonBuilder ().setPrettyPrinting ().create ().toJson (this.toJsonElement (range));
+        return GSON_OBJECT.toJson (this.toJsonElement (range));
     }
 
 }
