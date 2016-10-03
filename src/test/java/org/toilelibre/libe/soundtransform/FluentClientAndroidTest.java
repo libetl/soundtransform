@@ -30,6 +30,7 @@ public class FluentClientAndroidTest extends SoundTransformAndroidTest {
                                                                for (final Field f : clazz.getDeclaredFields ()) {
 
                                                                    try {
+                                                                       f.setAccessible (true);
                                                                        if (f.getInt (null) == id) {
                                                                            InputStream result = Thread.currentThread ().getContextClassLoader ().getResourceAsStream (f.getName ());
                                                                            if (result == null) {
