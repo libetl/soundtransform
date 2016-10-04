@@ -31,7 +31,7 @@ public class FluentClientAndroidTest extends SoundTransformAndroidTest {
 
                                                                    try {
                                                                        f.setAccessible (true);
-                                                                       if (f.getInt (null) == id) {
+                                                                       if (f.getType () == int.class && f.getInt (null) == id) {
                                                                            InputStream result = Thread.currentThread ().getContextClassLoader ().getResourceAsStream (f.getName ());
                                                                            if (result == null) {
                                                                                result = Thread.currentThread ().getContextClassLoader ().getResourceAsStream (f.getName () + ".wav");
