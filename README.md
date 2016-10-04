@@ -25,7 +25,7 @@ Android & Pure Java library to shape a voice with an instrument.
 <dependency>
 	<groupId>org.toile-libre.libe</groupId>
 	<artifactId>soundtransform</artifactId>
-	<version>![LATEST](https://img.shields.io/maven-central/v/org.toile-libre.libe/soundtransform.svg?logoWidth=-102)</version>
+	<version>LATEST</version>
 </dependency>
 ``` 
 
@@ -34,8 +34,8 @@ Android & Pure Java library to shape a voice with an instrument.
 <dependency>
 	<groupId>org.toile-libre.libe</groupId>
 	<artifactId>soundtransform</artifactId>
-	<version>1.0.20</version>
-	<type>![LATEST](https://img.shields.io/maven-central/v/org.toile-libre.libe/soundtransform.svg?logoWidth=-102)</type>
+	<version>LATEST</version>
+	<type>aar</type>
 </dependency>
 ``` 
 
@@ -47,7 +47,7 @@ repositories {
 
 
 dependencies {
-    compile 'org.toile-libre.libe:soundtransform:![LATEST](https://img.shields.io/maven-central/v/org.toile-libre.libe/soundtransform.svg?logoWidth=-102)'
+    compile 'org.toile-libre.libe:soundtransform:LATEST'
 }
 
 ```
