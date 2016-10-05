@@ -7,9 +7,9 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
-public final class InputStreamToAudioInputStream extends Action {
+public final class AddStreamInfoToInputStream extends Action {
 
-    public InputStreamToAudioInputStream (final Observer... observers) {
+    public AddStreamInfoToInputStream (final Observer... observers) {
         super (observers);
     }
 

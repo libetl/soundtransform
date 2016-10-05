@@ -22,8 +22,8 @@ import org.toilelibre.libe.soundtransform.actions.transform.ChangeSoundFormat;
 import org.toilelibre.libe.soundtransform.actions.transform.ConvertFromInputStream;
 import org.toilelibre.libe.soundtransform.actions.transform.ExportAFile;
 import org.toilelibre.libe.soundtransform.actions.transform.GetStreamInfo;
-import org.toilelibre.libe.soundtransform.actions.transform.InputStreamToAudioInputStream;
-import org.toilelibre.libe.soundtransform.actions.transform.ToInputStream;
+import org.toilelibre.libe.soundtransform.actions.transform.AddStreamInfoToInputStream;
+import org.toilelibre.libe.soundtransform.actions.transform.ConvertToInputStream;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -304,7 +304,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      */
     public FluentClientWithInputStream exportToStream () throws SoundTransformException {
         final FormatInfo currentInfo = this.sound.getFormatInfo ();
-        final InputStream audioInputStream1 = new ToInputStream (this.getObservers ()).toStream (this.sound, StreamInfo.from (currentInfo, this.sound));
+        final InputStream audioInputStream1 = new ConvertToInputStream (this.getObservers ()).toStream (this.sound, StreamInfo.from (currentInfo, this.sound));
         this.cleanData ();
         this.audioInputStream = audioInputStream1;
         return this;
@@ -441,7 +441,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         if (this.file == null) {
             throw new SoundTransformException (FluentClientErrorCode.NO_FILE_IN_INPUT, new NullPointerException ());
         }
-        final InputStream inputStream = new ToInputStream (this.getObservers ()).toStream (this.file);
+        final InputStream inputStream = new ConvertToInputStream (this.getObservers ()).toStream (this.file);
         this.cleanData ();
         this.audioInputStream = inputStream;
         return this;
@@ -1213,7 +1213,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      */
     public FluentClientWithInputStream withRawInputStream (final InputStream is, final StreamInfo isInfo) throws SoundTransformException {
         this.cleanData ();
-        this.audioInputStream = new InputStreamToAudioInputStream (this.getObservers ()).transformRawInputStream (is, isInfo);
+        this.audioInputStream = new AddStreamInfoToInputStream (this.getObservers ()).transformRawInputStream (is, isInfo);
         return this;
     }
 

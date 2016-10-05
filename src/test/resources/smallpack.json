@@ -1,0 +1,12 @@
+{
+  "g-piano": [
+    {
+      "frequency": 97.75,
+      "name": "gpiano6",
+      "attack": 0,
+      "decay": 400,
+      "sustain": 400,
+      "release": 14700
+    }
+  ]
+}
