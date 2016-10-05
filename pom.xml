@@ -94,7 +94,8 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.19.1</version>
 				<configuration>
-					<forkedProcessTimeoutInSeconds>0</forkedProcessTimeoutInSeconds> 
+					<reuseForks>false</reuseForks>
+					<rerunFailingTestsCount>1</rerunFailingTestsCount>
 					<classpathDependencyExcludes>
 						<classpathDependencyExclude>com.github.tony19:logback-android-classic</classpathDependencyExclude>
 					</classpathDependencyExcludes>
