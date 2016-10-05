@@ -111,8 +111,9 @@
 				<version>0.7.7.201606060606</version>
 				<configuration>
 					<excludes>
-						<exclude>org.toilelibre.libe.soundtransform.R</exclude>
-						<exclude>org.toilelibre.libe.soundtransform.BuildConfig</exclude>
+						<exclude>**/R.class</exclude>
+						<exclude>**/R$*.class</exclude>
+						<exclude>**/BuildConfig.class</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
