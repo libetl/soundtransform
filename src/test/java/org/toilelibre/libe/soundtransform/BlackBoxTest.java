@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
@@ -17,6 +18,8 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jO
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.EightBitsSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundToSpectrumsSoundTransform;
+import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
@@ -29,6 +32,12 @@ public class BlackBoxTest extends SoundTransformTest {
     @Test
     public void callPlaySoundFromOutside () throws SoundTransformException {
         new PlaySound ().play (new Sound (null), null, 0);
+
+        final InputStream is = new ConvertToInputStream ().toStream (this.input);
+        Sound sound = new ConvertFromInputStream ().fromInputStream (is);
+        final SoundToSpectrumsSoundTransform sound2Spectrums = new SoundToSpectrumsSoundTransform ();
+        final Spectrum<Serializable> [][] spectrums = new ApplySoundTransform ().apply (sound.getChannels (), sound2Spectrums);
+        new PlaySound ().play (spectrums [0] [0], new Object (), 0);
     }
 
     @Test
