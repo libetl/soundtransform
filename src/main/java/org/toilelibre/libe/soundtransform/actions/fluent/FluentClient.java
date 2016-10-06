@@ -324,7 +324,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
             throw new SoundTransformException (FluentClientErrorCode.NO_SPECTRUM_IN_INPUT, new IllegalArgumentException ());
         }
         @SuppressWarnings (FluentClient.UNCHECKED)
-        final Channel [] sound1 = new ApplySoundTransform (this.getObservers ()).apply (this.spectrums.toArray (new Spectrum [0] [0]), new SpectrumsToSoundSoundTransform ());
+        final Channel [] sound1 = new ApplySoundTransform (this.getObservers ()).<Spectrum<Serializable> [], Channel> apply (this.spectrums.toArray (new Spectrum [0] [0]), new SpectrumsToSoundSoundTransform ());
         this.cleanData ();
         this.sound = new Sound (sound1);
         return this;
