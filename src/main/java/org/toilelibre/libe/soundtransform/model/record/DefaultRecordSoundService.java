@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.toilelibre.libe.soundtransform.model.Service;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SegmentedSound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SimpleFrequencySoundTransform;
@@ -21,6 +22,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.format.AudioFormatSe
 import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToSoundService;
 import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 
+@Service
 final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoundService> implements RecordSoundService<AbstractLogAware<DefaultRecordSoundService>> {
 
     private static class StreamReaderThread<T extends Serializable> extends Thread {
@@ -164,7 +166,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         }
     }
 
-    enum DefaultRecordSoundServiceErrorCode implements ErrorCode {
+    private enum DefaultRecordSoundServiceErrorCode implements ErrorCode {
 
         NOT_ABLE ("Not able to wait for a recording (%1s)"), PROBLEM_WHILE_READING_THE_BUFFER_IN_A_CONTINUOUS_RECORDING ("Problem while reading the buffer in a continuous recording");
 

@@ -7,7 +7,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 public interface AudioFormatParser {
-    public enum AudioFormatParserErrorCode implements ErrorCode {
+    enum AudioFormatParserErrorCode implements ErrorCode {
 
         WRONG_TYPE ("incorrect stream type"), READ_ERROR ("Could not parse the format of the stream");
 

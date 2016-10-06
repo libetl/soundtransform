@@ -1,8 +1,10 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.freqs;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.freqs.AdjustFrequenciesProcessor;
 import org.toilelibre.libe.soundtransform.model.freqs.PianoFrequency.PianoValues;
 
+@Processor
 final class AdjustFrequenciesToPianoProcessor implements AdjustFrequenciesProcessor {
 
     @Override

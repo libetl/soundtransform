@@ -1,5 +1,6 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
+import org.toilelibre.libe.soundtransform.model.Service;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -7,6 +8,7 @@ import org.toilelibre.libe.soundtransform.model.logging.EventCode;
 import org.toilelibre.libe.soundtransform.model.logging.LogAware;
 import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
 
+@Service
 public interface CallTransformService<T> extends LogAware<T> {
 
     public enum CallTransformServiceErrorCode implements ErrorCode {

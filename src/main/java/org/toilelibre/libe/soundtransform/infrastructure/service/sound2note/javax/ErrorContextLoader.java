@@ -2,13 +2,15 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.sound2note.jav
 
 import java.io.InputStream;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.pack.ContextLoader;
 
+@Processor
 final class ErrorContextLoader implements ContextLoader {
 
-    public enum ErrorContextReaderErrorCode implements ErrorCode {
+    private enum ErrorContextReaderErrorCode implements ErrorCode {
         STUB_IMPLEMENTATION ("Stub implementation of the context reader with javax. This json pack cannot be imported in the javax impl.");
 
         private final String messageFormat;

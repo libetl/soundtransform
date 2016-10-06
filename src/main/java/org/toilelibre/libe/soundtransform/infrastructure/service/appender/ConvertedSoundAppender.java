@@ -1,11 +1,13 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.appender;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundAppender;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.pack.note.Note;
 
+@Processor
 final class ConvertedSoundAppender implements SoundAppender {
 
     private static final int HALF           = 2;

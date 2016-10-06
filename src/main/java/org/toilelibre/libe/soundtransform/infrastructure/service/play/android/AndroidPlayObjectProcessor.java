@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.play.android;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
@@ -18,6 +19,7 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 
+@Processor
 final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjectProcessor> implements PlayObjectProcessor {
 
     private static final String SOUND_PLAYER_MONITOR = "SoundPlayerMonitor";
@@ -28,7 +30,7 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
     private static final int TWO   = 2;
     private static final int ONE   = 1;
 
-    public enum AndroidPlaySoundProcessorEventCode implements EventCode {
+    private enum AndroidPlaySoundProcessorEventCode implements EventCode {
         READ_BYTEARRAY_SIZE (LogLevel.PARANOIAC, "Byte array size read : %1d");
 
         private final String   messageFormat;
@@ -52,7 +54,7 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
 
     private static final long ONE_SECOND = 1000;
 
-    public AndroidPlayObjectProcessor () {
+    AndroidPlayObjectProcessor () {
 
     }
 
@@ -68,7 +70,7 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
  
         final AudioTrack audioTrack = new AudioTrack (AudioManager.STREAM_MUSIC, (int) streamInfo.getSampleRate (), channelConf, streamInfo.getSampleSize () == AndroidPlayObjectProcessor.TWO ? AudioFormat.ENCODING_PCM_16BIT : AudioFormat.ENCODING_PCM_8BIT, 
                 frameLength * streamInfo.getSampleSize (), AudioTrack.MODE_STATIC);
-        final byte [] baSoundByteArray = new byte [(int) frameLength * streamInfo.getSampleSize ()];
+        final byte [] baSoundByteArray = new byte [frameLength * streamInfo.getSampleSize ()];
         try {
             final int byteArraySize = ais.read (baSoundByteArray);
             this.log (new LogEvent (AndroidPlaySoundProcessorEventCode.READ_BYTEARRAY_SIZE, byteArraySize));
@@ -113,7 +115,7 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
     }
 
     private Thread getPlayFrameMonitorThread (final Object stopMonitor, final AudioTrack audioTrack) {
-        final Thread thread = new Thread ("PlayFrameMonitor") {
+        return new Thread ("PlayFrameMonitor") {
             @Override
             public void run () {
                 int lastFrame = -AndroidPlayObjectProcessor.ONE;
@@ -135,7 +137,6 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
                 }
             }
         };
-        return thread;
     }
 
     private int getChannelConfiguration (final StreamInfo streamInfo) {

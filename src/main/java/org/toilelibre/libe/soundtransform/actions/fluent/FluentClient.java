@@ -6,12 +6,14 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.toilelibre.libe.soundtransform.actions.Action;
 import org.toilelibre.libe.soundtransform.actions.notes.ImportAPackIntoTheLibrary;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
 import org.toilelibre.libe.soundtransform.actions.record.RecordSound;
@@ -45,6 +47,7 @@ import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.logging.Observer;
 import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
 
+@Action
 public final class FluentClient implements FluentClientSoundImported, FluentClientReady, FluentClientWithInputStream, FluentClientWithFile, FluentClientWithFreqs, FluentClientWithParallelizedClients, FluentClientWithSpectrums, FluentClientInterface {
 
     private static final String UNCHECKED = "unchecked";
@@ -98,7 +101,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      *
      */
     public static void setDefaultObservers (final Observer... defaultObservers1) {
-        FluentClient.defaultObservers = new LinkedList<Observer> (Arrays.<Observer> asList (defaultObservers1));
+        FluentClient.defaultObservers = new LinkedList<Observer> (Arrays.asList (defaultObservers1));
     }
 
     /**
@@ -148,17 +151,17 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      */
     @Override
     public FluentClientSoundImported append (final Sound sound1) throws SoundTransformException {
-        this.sound = new AppendSound (this.getObservers ()).append (this.sound, sound1);
+        this.sound = new AppendSound ().append (this.sound, sound1);
         return this;
     }
 
-    @Override
     /**
      * Applies one transform and continues with the result sound
      * @param st the SoundTransform to apply
      * @return the client with a sound imported
      * @throws SoundTransformException if the transform does not work
      */
+    @Override
     public FluentClientSoundImported apply (final SoundTransform<Channel, Channel> st) throws SoundTransformException {
         final Channel [] channels1 = new ApplySoundTransform (this.getObservers ()).apply (this.sound.getChannels (), st);
         this.cleanData ();
@@ -196,7 +199,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      */
     @Override
     public FluentClientSoundImported changeFormat (final FormatInfo formatInfo) {
-        this.sound = new ChangeSoundFormat (this.getObservers ()).changeFormat (this.sound, formatInfo);
+        this.sound = new ChangeSoundFormat ().changeFormat (this.sound, formatInfo);
         return this;
     }
 
@@ -219,7 +222,6 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         this.observers = new LinkedList<Observer> (FluentClient.defaultObservers);
     }
 
-    @Override
     /**
      * Compresses the loudest freq array (speedup or slowdown) When shaped into
      * a sound, the result will have a different tempo than the original sound
@@ -231,17 +233,18 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      *            the original)
      * @return the client, with a loudest frequencies float array
      */
+    @Override
     public FluentClientWithFreqs compress (final float factor) {
         this.freqs = new ChangeLoudestFreqs ().compress (this.freqs, factor);
         return this;
     }
 
-    @Override
     /**
      * Shortcut for importToStream ().importToSound () : Conversion from a File to a Sound
      * @return the client, with a sound imported
      * @throws SoundTransformException if one of the two import fails
      */
+    @Override
     public FluentClientSoundImported convertIntoSound () throws SoundTransformException {
         return this.importToStream ().importToSound ();
     }
@@ -262,18 +265,17 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this.apply (new CutSoundTransform (start, end));
     }
 
-    @Override
     /**
      * Shortcut for exportToStream ().writeToClasspathResource (resource) : Conversion from a Sound to a File
      * @param resource a resource that can be found in the classpath
      * @return the client, with a file written
      * @throws SoundTransformException if one of the two operations fails
      */
+    @Override
     public FluentClientWithFile exportToClasspathResource (final String resource) throws SoundTransformException {
         return this.exportToStream ().writeToClasspathResource (resource);
     }
 
-    @Override
     /**
      * Shortcut for exportToStream ().writeToClasspathResourceWithSiblingResource (resource, siblingResource)
      * @param resource a resource that may or may not exist in the classpath
@@ -281,27 +283,28 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      * @return the client, with a file written
      * @throws SoundTransformException if one of the two operations fails
      */
+    @Override
     public FluentClientWithFile exportToClasspathResourceWithSiblingResource (final String resource, final String siblingResource) throws SoundTransformException {
         return this.exportToStream ().writeToClasspathResourceWithSiblingResource (resource, siblingResource);
     }
 
-    @Override
     /**
      * Shortcut for exportToStream ().writeToFile (file)
      * @param file1 the destination file
      * @return the client, with a file written
      * @throws SoundTransformException if one of the two operations fails
      */
+    @Override
     public FluentClientWithFile exportToFile (final File file1) throws SoundTransformException {
         return this.exportToStream ().writeToFile (file1);
     }
 
-    @Override
     /**
      * Uses the current imported sound and converts it into an InputStream, ready to be written to a file (or to be read again)
      * @return the client, with an inputStream
      * @throws SoundTransformException if the metadata format object is invalid, or if the sound cannot be converted
      */
+    @Override
     public FluentClientWithInputStream exportToStream () throws SoundTransformException {
         final FormatInfo currentInfo = this.sound.getFormatInfo ();
         final InputStream audioInputStream1 = new ConvertToInputStream (this.getObservers ()).toStream (this.sound, StreamInfo.from (currentInfo, this.sound));
@@ -310,12 +313,12 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this;
     }
 
-    @Override
     /**
      * Uses the current available spectrums objects to convert them into a sound (with one or more channels)
      * @return the client, with a sound imported
      * @throws SoundTransformException if the spectrums are in an invalid format, or if the transform to sound does not work
      */
+    @Override
     public FluentClientSoundImported extractSound () throws SoundTransformException {
         if (this.spectrums == null || this.spectrums.isEmpty () || this.spectrums.get (0).length == 0) {
             throw new SoundTransformException (FluentClientErrorCode.NO_SPECTRUM_IN_INPUT, new IllegalArgumentException ());
@@ -414,12 +417,12 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this.observers.toArray (new Observer [this.observers.size ()]);
     }
 
-    @Override
     /**
      * Uses the current input stream object to convert it into a sound
      * @return the client, with a sound imported
      * @throws SoundTransformException the inputStream is invalid, or the convert did not work
      */
+    @Override
     public FluentClientSoundImported importToSound () throws SoundTransformException {
         Sound sound1;
         if (this.audioInputStream == null) {
@@ -431,12 +434,12 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this;
     }
 
-    @Override
     /**
      * Opens the current file and converts it into an InputStream, ready to be read (or to be written to a file)
      * @return the client, with an inputStream
      * @throws SoundTransformException the current file is not valid, or the conversion did not work
      */
+    @Override
     public FluentClientWithInputStream importToStream () throws SoundTransformException {
         if (this.file == null) {
             throw new SoundTransformException (FluentClientErrorCode.NO_FILE_IN_INPUT, new NullPointerException ());
@@ -484,9 +487,8 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
     @Override
     public <T extends FluentClientCommon> FluentClientWithParallelizedClients inParallel (final FluentClientOperation operation, final int timeoutInSeconds, final T... clients) throws SoundTransformException {
         final ExecutorService threadService = Executors.newFixedThreadPool (clients.length);
-        for (int i = 0 ; i < clients.length ; i++) {
-            final FluentClientCommon client = clients [i];
-            final int invocationNumber = i;
+        for (int invocationNumber = 0 ; invocationNumber < clients.length ; invocationNumber++) {
+            final FluentClientCommon client = clients [invocationNumber];
             threadService.submit (new FluentClientOperationRunnable (operation, (FluentClientInterface) client, invocationNumber));
         }
         try {
@@ -661,18 +663,18 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         final Sound channel1AsASound = new Sound (new Channel [] { this.sound.getChannels () [0] });
         final Sound channel2AsASound = new Sound (new Channel [] { this.sound.getChannels () [1] });
         this.sound = channel1AsASound;
-        return this.apply (new MixSoundTransform (Arrays.<Sound> asList (channel2AsASound)));
+        return this.apply (new MixSoundTransform (Collections.singletonList(channel2AsASound)));
     }
 
-    @Override
     /**
      * Combines the current sound with another sound. The operation is not reversible
-     * @param sound the sound to mix the current sound with
+     * @param sound1 the sound to mix the current sound with
      * @return the client, with a sound imported
      * @throws SoundTransformException if the sound is null or if there is a problem with the mix
      */
+    @Override
     public FluentClientSoundImported mixWith (final Sound sound1) throws SoundTransformException {
-        return this.apply (new MixSoundTransform (Arrays.<Sound> asList (sound1)));
+        return this.apply (new MixSoundTransform (Collections.singletonList(sound1)));
     }
 
     /**
@@ -696,7 +698,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
 
         for (int i = 1 ; i < savedClients.length ; i++) {
             final Sound otherSound = ((FluentClient) savedClients [i]).sound;
-            this.apply (new MixSoundTransform (Arrays.<Sound> asList (otherSound)));
+            this.apply (new MixSoundTransform (Collections.singletonList(otherSound)));
         }
 
         return this;
@@ -749,8 +751,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
     public FluentClient playIt (Object stopMonitor) throws SoundTransformException {
         return this.playIt (stopMonitor, 0);
     }
-    
-    @Override
+
     /**
      * Plays the current audio data and (if needed) convert it temporarily to a sound
      * @param stopMonitor calling notifyAll stops the player
@@ -758,6 +759,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      * @return the client, in its current state.
      * @throws SoundTransformException could not play the current audio data
      */
+    @Override
     public FluentClient playIt (final Object stopMonitor, final int skipMilliSeconds) throws SoundTransformException {
         if (this.sound != null) {
             new PlaySound ().play (this.sound, stopMonitor, skipMilliSeconds);
@@ -779,7 +781,6 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this;
     }
 
-    @Override
     /**
      * Replaces some of the values of the loudest freqs array from the "start"
      * index (replace them by the values of subfreqs)
@@ -790,12 +791,12 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      *            index where to start the replacement
      * @return the client, with a loudest frequencies float array
      */
+    @Override
     public FluentClientWithFreqs replacePart (final List<float []> subFreqs, final int start) {
         this.freqs = new ChangeLoudestFreqs ().replacePart (this.freqs, subFreqs, start);
         return this;
     }
 
-    @Override
     /**
      * Shapes these loudest frequencies array into a sound and set the converted sound in the pipeline
      * @param packName reference to an existing imported pack (must be invoked before the shapeIntoSound method by using withAPack)
@@ -804,20 +805,21 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      * @return the client, with a sound imported
      * @throws SoundTransformException could not call the soundtransform to shape the freqs
      */
+    @Override
     public FluentClientSoundImported shapeIntoSound (final String packName, final String instrumentName, final FormatInfo fi) throws SoundTransformException {
         final SoundTransform<float [], Channel> soundTransform = new ShapeSoundTransform (packName, instrumentName, fi);
         final List<float []> savedFreqs = this.freqs;
         this.cleanData ();
-        this.sound = new Sound (new ApplySoundTransform (this.getObservers ()).<float [], Channel> apply (savedFreqs.toArray (new float [savedFreqs.size ()] []), soundTransform));
+        this.sound = new Sound (new ApplySoundTransform (this.getObservers ()).apply (savedFreqs.toArray (new float [savedFreqs.size ()] []), soundTransform));
         return this;
     }
 
-    @Override
     /**
      * Uses the current sound to pick its spectrums and set that as the current data in the pipeline
      * @return the client, with the spectrums
      * @throws SoundTransformException could not convert the sound into some spectrums
      */
+    @Override
     public FluentClientWithSpectrums splitIntoSpectrums () throws SoundTransformException {
         final SoundToSpectrumsSoundTransform sound2Spectrums = new SoundToSpectrumsSoundTransform ();
         final Sound savedSound = this.sound;
@@ -839,38 +841,38 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return new ImportAPackIntoTheLibrary (this.getObservers ()).getPack (title);
     }
 
-    @Override
     /**
      * Stops the client pipeline and returns the obtained file
      * @return a file
      */
+    @Override
     public File stopWithFile () {
         return this.file;
     }
 
-    @Override
     /**
      * Stops the client pipeline and returns the obtained loudest frequencies
      * @return loudest frequencies array
      */
+    @Override
     public List<float []> stopWithFreqs () {
         return this.freqs;
     }
 
-    @Override
     /**
      * Stops the client pipeline and returns the obtained input stream
      * @return an input stream
      */
+    @Override
     public InputStream stopWithInputStream () {
         return this.audioInputStream;
     }
 
-    @Override
     /**
      * Stops the client pipeline and returns the currently subscribed observers
      * @return the observers
      */
+    @Override
     public Observer [] stopWithObservers () {
         return this.getObservers ();
     }
@@ -897,7 +899,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
     }
 
     @SuppressWarnings (FluentClient.UNCHECKED)
-    public <T> T getResult (final Class<T> resultClass) {
+    private <T> T getResult (final Class<T> resultClass) {
         T result = null;
         if (resultClass == List.class) {
             result = (T) this.stopWithFreqs ();
@@ -911,25 +913,24 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return result;
     }
 
-    @Override
     /**
      * Stops the client pipeline and returns the obtained sound
      * @return a sound value object
      */
+    @Override
     public Sound stopWithSound () {
         return this.sound;
     }
 
-    @Override
     /**
      * Stops the client pipeline and returns the obtained spectrums
      * @return a list of spectrums for each channel
      */
+    @Override
     public List<Spectrum<Serializable> []> stopWithSpectrums () {
         return this.spectrums;
     }
 
-    @Override
     /**
      * Stops the client pipeline and returns the obtained stream info
      * object
@@ -939,6 +940,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      *             could not read the StreamInfo from the current
      *             inputstream
      */
+    @Override
     public StreamInfo stopWithStreamInfo () throws SoundTransformException {
         return new GetStreamInfo (this.getObservers ()).getStreamInfo (this.audioInputStream);
     }
@@ -992,7 +994,6 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      * Does exactly the same as the other whileRecordingASound method, and will 
      * trigger the amplitude events to the amplitudeObserver object
      *
-     * @see whileRecordingASound
      * @param streamInfo
      *            the future input stream info
      * @param amplitudeObserver
@@ -1011,7 +1012,6 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this;
     }
 
-    @Override
     /**
      * Tells the client to add an observer that will be notified of different kind of updates
      * from the library. It is ok to call withAnObserver several times.<br/>
@@ -1021,21 +1021,22 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      *            one or more observer(s)
      * @return the client, ready to start
      */
+    @Override
     public FluentClientReady withAnObserver (final Observer... observers1) {
-        this.observers.addAll (Arrays.<Observer> asList (observers1));
+        this.observers.addAll (Arrays.asList (observers1));
         return this;
     }
 
-    @Override
     /**
      * Tells the client to use the sound passed in parameter by mixing them all into one
      *
-     * @param sound
+     * @param sounds
      *            a var-arg value of arrays of sound (each value inside the arrays is a sound channel)
      * @return the client, with an imported sound
      * @throws SoundTransformException
      *             the sound files are invalid
      */
+    @Override
     public FluentClientSoundImported withAMixedSound (final Sound... sounds) throws SoundTransformException {
         final FluentClientCommon [] clients = new FluentClientCommon [sounds.length];
         for (int i = 0 ; i < sounds.length ; i++) {
@@ -1045,7 +1046,6 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this.mixAllInOneSound ();
     }
 
-    @Override
     /**
      * Tells the client to work with a pack. Reads the whole inputStream. A
      * pattern must be followed in the jsonStream to enable the import.
@@ -1059,12 +1059,12 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      *             the input stream cannot be read, or the json format is not
      *             correct, or some sound files are missing
      */
+    @Override
     public FluentClient withAPack (final String packName, final InputStream jsonStream) throws SoundTransformException {
         new ImportAPackIntoTheLibrary (this.getObservers ()).importAPack (packName, jsonStream);
         return this;
     }
 
-    @Override
     /**
      * Tells the client to work with a pack. Uses the context object to find the resource from the R object
      * passed in parameter
@@ -1081,12 +1081,12 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      *             the input stream cannot be read, or the json format is not
      *             correct, or some sound files are missing
      */
+    @Override
     public FluentClientReady withAPack (final String packName, final Object context, final Class<?> rClass, final int packJsonId) throws SoundTransformException {
         new ImportAPackIntoTheLibrary (this.getObservers ()).importAPack (packName, context, rClass, packJsonId);
         return this;
     }
 
-    @Override
     /**
      * Tells the client to work with a pack. Reads the whole string content. A
      * pattern must be followed in the jsonContent to enable the import.<br/>
@@ -1123,31 +1123,32 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      *             the json content is invalid, the json format is not correct,
      *             or some sound files are missing
      */
+    @Override
     public FluentClient withAPack (final String packName, final String jsonContent) throws SoundTransformException {
         new ImportAPackIntoTheLibrary (this.getObservers ()).importAPack (packName, jsonContent);
         return this;
     }
 
-    @Override
     /**
      * Tells the client to work first with an InputStream. It will not be read yet<br/>
      * The passed inputStream must own a format metadata object. Therefore it must be an AudioInputStream.
      * @param ais the input stream
      * @return the client, with an input stream
      */
+    @Override
     public FluentClientWithInputStream withAudioInputStream (final InputStream ais) {
         this.cleanData ();
         this.audioInputStream = ais;
         return this;
     }
 
-    @Override
     /**
      * Tells the client to work first with a classpath resource. It will be converted in a File
      * @param resource a classpath resource that must exist
      * @return the client, with a file
      * @throws SoundTransformException the classpath resource was not found
      */
+    @Override
     public FluentClientWithFile withClasspathResource (final String resource) throws SoundTransformException {
         this.cleanData ();
         final URL fileURL = Thread.currentThread ().getContextClassLoader ().getResource (resource);
@@ -1159,24 +1160,24 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this;
     }
 
-    @Override
     /**
      * Tells the client to work first with a file. It will not be read yet
-     * @param file source file
+     * @param file1 source file
      * @return the client, with a file
      */
+    @Override
     public FluentClientWithFile withFile (final File file1) {
         this.cleanData ();
         this.file = file1;
         return this;
     }
 
-    @Override
     /**
      * Tells the client to work first with a loudest frequencies float array. It will not be used yet
      * @param freqs1 the loudest frequencies integer array
      * @return the client, with a loudest frequencies float array
      */
+    @Override
     public FluentClientWithFreqs withFreqs (final List<float []> freqs1) {
         this.cleanData ();
         this.freqs = new LinkedList<float []> (freqs1);
@@ -1201,7 +1202,6 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this.withRawInputStream (new RecordSound ().recordLimitedTimeRawInputStream (streamInfo), streamInfo);
     }
 
-    @Override
     /**
      * Tells the client to work first with a byte array InputStream or any readable DataInputStream.
      * It will be read and transformed into an AudioInputStream<br/>
@@ -1211,6 +1211,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      * @return the client, with an input stream
      * @throws SoundTransformException the input stream cannot be read, or the conversion did not work
      */
+    @Override
     public FluentClientWithInputStream withRawInputStream (final InputStream is, final StreamInfo isInfo) throws SoundTransformException {
         this.cleanData ();
         this.audioInputStream = new AddStreamInfoToInputStream (this.getObservers ()).transformRawInputStream (is, isInfo);
@@ -1240,19 +1241,18 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this.withRawInputStream (new RecordSound ().recordRawInputStream (streamInfo, stop), streamInfo);
     }
 
-    @Override
     /**
      * Tells the client to work first with a sound object
      * @param sound1 the sound object
      * @return the client, with an imported sound
      */
+    @Override
     public FluentClientSoundImported withSound (final Sound sound1) {
         this.cleanData ();
         this.sound = sound1;
         return this;
     }
 
-    @Override
     /**
      * Tells the client to work first with a spectrum formatted sound.<br/>
      * The spectrums inside must be in a list (each item must correspond to a channel)
@@ -1260,13 +1260,13 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      * @param spectrums the spectrums
      * @return the client, with the spectrums
      */
+    @Override
     public FluentClientWithSpectrums withSpectrums (final List<Spectrum<Serializable> []> spectrums) {
         this.cleanData ();
         this.spectrums = spectrums;
         return this;
     }
 
-    @Override
     /**
      * Writes the current InputStream in a classpath resource in the same folder as a previously imported classpath resource.
      * Caution : if no classpath resource was imported before, this operation will not work. Use writeToClasspathResourceWithSiblingResource instead
@@ -1274,6 +1274,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      * @return the client, with a file
      * @throws SoundTransformException there is no predefined classpathresource directory, or the file could not be written
      */
+    @Override
     public FluentClientWithFile writeToClasspathResource (final String resource) throws SoundTransformException {
         if (this.sameDirectoryAsClasspathResource == null) {
             throw new SoundTransformException (FluentClientErrorCode.CLIENT_NOT_STARTED_WITH_A_CLASSPATH_RESOURCE, new IllegalAccessException ());
@@ -1281,7 +1282,6 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this.writeToFile (new File (this.sameDirectoryAsClasspathResource + "/" + resource));
     }
 
-    @Override
     /**
      * Writes the current InputStream in a classpath resource in the same folder as a the sibling resource.
      * @param resource a classpath resource that may or may not exist yet
@@ -1289,6 +1289,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      * @return the client, with a file
      * @throws SoundTransformException no such sibling resource, or the file could not be written
      */
+    @Override
     public FluentClientWithFile writeToClasspathResourceWithSiblingResource (final String resource, final String siblingResource) throws SoundTransformException {
         final InputStream is = this.audioInputStream;
         this.withClasspathResource (siblingResource);
@@ -1297,13 +1298,13 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
         return this.writeToFile (new File (this.sameDirectoryAsClasspathResource + "/" + resource));
     }
 
-    @Override
     /**
      * Writes the current InputStream in a file
      * @param file1 the destination file
      * @return the client, with a file
      * @throws SoundTransformException The file could not be written
      */
+    @Override
     public FluentClientWithFile writeToFile (final File file1) throws SoundTransformException {
         if (this.audioInputStream == null) {
             throw new SoundTransformException (FluentClientErrorCode.NOTHING_TO_WRITE, new NullPointerException ());

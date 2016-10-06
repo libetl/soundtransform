@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.toilelibre.libe.soundtransform.model.Service;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.Library;
 import org.toilelibre.libe.soundtransform.model.library.pack.note.SimpleNoteInfo;
@@ -14,6 +15,7 @@ import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
 import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
+@Service
 final class DefaultImportPackService extends AbstractLogAware<DefaultImportPackService> implements ImportPackService<AbstractLogAware<DefaultImportPackService>> {
 
     private static final String     DEFAULT_CHARSET_NAME = "UTF-8";

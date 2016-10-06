@@ -3,12 +3,14 @@ package org.toilelibre.libe.soundtransform.model.inputstream;
 import java.io.File;
 import java.io.InputStream;
 
+import org.toilelibre.libe.soundtransform.model.Service;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.convert.FormatConvertService;
 import org.toilelibre.libe.soundtransform.model.inputstream.format.AudioFormatService;
 import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToByteArrayHelper;
 import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 
+@Service
 final class DefaultAudioFileService extends AbstractLogAware<DefaultAudioFileService> implements AudioFileService<AbstractLogAware<DefaultAudioFileService>> {
 
     private final AudioFileHelper              audioFileHelper;

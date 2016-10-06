@@ -2,8 +2,10 @@ package org.toilelibre.libe.soundtransform.model.freqs;
 
 import java.util.List;
 
+import org.toilelibre.libe.soundtransform.model.Service;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
+@Service
 public interface LoudestFreqsService {
 
     List<float []> adjust (List<float []> freqs);

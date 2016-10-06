@@ -12,15 +12,17 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.play.PlayObjectException;
 import org.toilelibre.libe.soundtransform.model.play.PlayObjectProcessor;
 
+@Processor
 final class LineListenerPlayObjectProcessor implements PlayObjectProcessor {
 
     private static final String SOUND_PLAYER_MONITOR = "SoundPlayerMonitor";
 
-    public LineListenerPlayObjectProcessor () {
+    LineListenerPlayObjectProcessor () {
 
     }
 

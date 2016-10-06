@@ -3,8 +3,10 @@ package org.toilelibre.libe.soundtransform.model.freqs;
 import java.util.Arrays;
 import java.util.List;
 
+import org.toilelibre.libe.soundtransform.model.Service;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
+@Service
 final class DefaultLoudestFreqsService implements LoudestFreqsService {
 
     private static final float                 HALF  = 0.5f;

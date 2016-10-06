@@ -3,10 +3,12 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.pack;
 import java.util.List;
 import java.util.Map;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.library.pack.PackConfigParser;
 
 import com.google.gson.Gson;
 
+@Processor
 final class GsonPackConfigParser implements PackConfigParser {
 
     @Override

@@ -4,12 +4,14 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.AbstractFrequencySoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.AbstractWindowSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 
+@Processor
 final class CommonsMath3FourierTransformHelper implements FourierTransformHelper<Complex []> {
 
     private static final float COEFFICIENT = 10.0f;

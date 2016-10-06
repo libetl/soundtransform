@@ -3,10 +3,12 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.an
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.inputstream.format.AudioFormatParser;
 
+@Processor
 final class NoOpFormatParser implements AudioFormatParser {
 
     @Override

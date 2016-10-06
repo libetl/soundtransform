@@ -1,10 +1,12 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.spectrum;
 
 import org.apache.commons.math3.complex.Complex;
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToStringHelper;
 
+@Processor
 final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Complex []> {
 
     private static final int                 TWICE                        = 2;
@@ -15,7 +17,7 @@ final class GraphSpectrumToStringHelper implements SpectrumToStringHelper<Comple
     private static final float               DECIBELS_FORMULA_COEFFICIENT = 20.0f;
     private final SpectrumHelper<Complex []> spectrumHelper;
 
-    public GraphSpectrumToStringHelper (final SpectrumHelper<Complex []> spectrumHelper1) {
+    GraphSpectrumToStringHelper (final SpectrumHelper<Complex []> spectrumHelper1) {
         this.spectrumHelper = spectrumHelper1;
     }
 
