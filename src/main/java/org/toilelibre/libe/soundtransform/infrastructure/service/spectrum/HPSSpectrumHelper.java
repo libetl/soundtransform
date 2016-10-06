@@ -1,16 +1,18 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.spectrum;
 
 import org.apache.commons.math3.complex.Complex;
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumHelper;
 
+@Processor
 final class HPSSpectrumHelper implements SpectrumHelper<Complex []> {
 
     private static final int TWICE = 2;
     private static final int HALF  = 2;
 
-    public HPSSpectrumHelper () {
+    HPSSpectrumHelper () {
 
     }
 

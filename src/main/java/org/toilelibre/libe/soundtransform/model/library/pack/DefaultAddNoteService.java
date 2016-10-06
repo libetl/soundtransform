@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.toilelibre.libe.soundtransform.model.Service;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.AudioFileService;
 import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToSoundService;
@@ -15,6 +16,7 @@ import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
 import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
+@Service
 final class DefaultAddNoteService extends AbstractLogAware<DefaultAddNoteService> implements AddNoteService<AbstractLogAware<DefaultAddNoteService>> {
 
     private final SoundToNoteService           sound2NoteService;

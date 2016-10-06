@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.appender;
 
 import java.io.Serializable;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.SlowdownSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundPitchAndTempoHelper;
@@ -9,6 +10,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PitchS
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SpeedUpSoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
+@Processor
 final class ConvertedSoundPitchAndTempoHelper implements SoundPitchAndTempoHelper {
 
     private static final int   THRESHOLD_DOWN_PITCH               = 98;

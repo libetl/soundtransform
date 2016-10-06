@@ -2,14 +2,16 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.record.exporte
 
 import java.nio.ByteBuffer;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.record.exporter.BytesExporterFromThread;
 import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteBuffer;
 
+@Processor
 class ByteBufferExporter implements BytesExporterFromThread<ByteBuffer>, OutputAsByteBuffer {
 
     private ByteBuffer buffer;
 
-    public ByteBufferExporter () {
+    ByteBufferExporter () {
     }
 
     @Override

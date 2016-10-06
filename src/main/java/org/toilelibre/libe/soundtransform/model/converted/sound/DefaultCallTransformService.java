@@ -2,12 +2,14 @@ package org.toilelibre.libe.soundtransform.model.converted.sound;
 
 import java.lang.reflect.Array;
 
+import org.toilelibre.libe.soundtransform.model.Service;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundTransform;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.logging.LogAware;
 import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
 
+@Service
 final class DefaultCallTransformService extends AbstractLogAware<DefaultCallTransformService> implements CallTransformService<AbstractLogAware<DefaultCallTransformService>> {
 
     public DefaultCallTransformService () {

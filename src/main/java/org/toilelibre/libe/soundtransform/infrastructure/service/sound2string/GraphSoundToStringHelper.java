@@ -1,9 +1,11 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.sound2string;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.SoundToStringHelper;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.ToStringSoundTransform;
 
+@Processor
 final class GraphSoundToStringHelper implements SoundToStringHelper {
 
     private static final int ARBITRARY_LENGTH = 8000;

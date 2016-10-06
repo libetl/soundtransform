@@ -4,13 +4,15 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToByteArrayHelper;
 
+@Processor
 final class WriteInputStreamToByteArray implements InputStreamToByteArrayHelper {
 
-    public enum WriteInputStreamToByteArrayErrorCode implements ErrorCode {
+    enum WriteInputStreamToByteArrayErrorCode implements ErrorCode {
 
         ERROR_WHILE_READING_STREAM ("System error while reading stream");
 
@@ -26,7 +28,7 @@ final class WriteInputStreamToByteArray implements InputStreamToByteArrayHelper 
         }
     }
 
-    public WriteInputStreamToByteArray () {
+    WriteInputStreamToByteArray () {
 
     }
 

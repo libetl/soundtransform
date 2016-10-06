@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.model.play;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import org.toilelibre.libe.soundtransform.model.Service;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.FourierTransformHelper;
@@ -12,6 +13,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.inputstream.fromsound.SoundToInputStreamService;
 import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStreamToSoundService;
 
+@Service
 final class DefaultPlayObjectService<T extends Serializable> implements PlayObjectService<T> {
 
     private final PlayObjectProcessor          processor;

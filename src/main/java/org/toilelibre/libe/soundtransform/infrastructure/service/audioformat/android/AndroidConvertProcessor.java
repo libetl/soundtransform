@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map.Entry;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.converter.ConverterMapping;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -18,6 +19,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.readsound.InputStrea
 import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
 
+@Processor
 final class AndroidConvertProcessor extends AbstractLogAware<AndroidConvertProcessor> implements ConvertProcessor {
 
     @Override

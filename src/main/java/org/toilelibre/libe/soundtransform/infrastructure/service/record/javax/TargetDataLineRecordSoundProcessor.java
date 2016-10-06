@@ -11,6 +11,7 @@ import javax.sound.sampled.DataLine.Info;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -20,6 +21,7 @@ import org.toilelibre.libe.soundtransform.model.record.exporter.BytesExporterFro
 import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteArrayOutputStream;
 import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteBuffer;
 
+@Processor
 final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
 
     private static class StopProperlyThread extends Thread {
@@ -42,7 +44,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
         }
     }
 
-    public enum TargetDataLineRecordSoundProcessorErrorCode implements ErrorCode {
+    enum TargetDataLineRecordSoundProcessorErrorCode implements ErrorCode {
 
         NOT_READY ("Not ready to record a sound"), AUDIO_FORMAT_EXPECTED ("An audio format was expected (%1s)"), TARGET_LINE_UNAVAILABLE ("Target record line unavailable"), AUDIO_FORMAT_NOT_SUPPORTED ("Audio format not supported by AudioSystem");
 
@@ -65,7 +67,7 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
     private TargetDataLine             line;
     private TargetDataLineReaderThread readerThread;
 
-    public TargetDataLineRecordSoundProcessor () {
+    TargetDataLineRecordSoundProcessor () {
 
     }
 
@@ -84,8 +86,8 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
     }
 
     /**
-     * @param stop
-     * @throws SoundTransformException
+     * @param stop stop object
+     * @throws SoundTransformException if could not stop properly
      */
     @Override
     public void stopProperly (final Object stop) throws SoundTransformException {
@@ -94,8 +96,8 @@ final class TargetDataLineRecordSoundProcessor implements RecordSoundProcessor {
     }
 
     /**
-     * @param stop
-     * @throws SoundTransformException
+     * @param stop stop object
+     * @throws SoundTransformException if could not wait properly
      */
 
     private void waitForStop (final Object stop) throws SoundTransformException {

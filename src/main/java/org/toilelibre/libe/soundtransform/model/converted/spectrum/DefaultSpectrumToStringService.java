@@ -1,5 +1,8 @@
 package org.toilelibre.libe.soundtransform.model.converted.spectrum;
 
+import org.toilelibre.libe.soundtransform.model.Service;
+
+@Service
 final class DefaultSpectrumToStringService<T> implements SpectrumToStringService<T> {
 
     private final SpectrumToStringHelper<T> spectrumHelper;

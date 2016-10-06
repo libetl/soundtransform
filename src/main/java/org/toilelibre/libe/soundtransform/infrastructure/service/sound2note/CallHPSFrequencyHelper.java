@@ -2,6 +2,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.sound2note;
 
 import java.io.Serializable;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.HarmonicProductSpectrumSoundTransform;
@@ -9,6 +10,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.PeakFi
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.library.pack.note.FrequencyHelper;
 
+@Processor
 final class CallHPSFrequencyHelper implements FrequencyHelper {
 
     @Override

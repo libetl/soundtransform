@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.frames;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
@@ -10,6 +11,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.readsound.FrameProce
 import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
 import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
 
+@Processor
 final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProcessor> implements FrameProcessor<AbstractLogAware<ByteArrayFrameProcessor>> {
 
     private static final int   NB_BYTE_VALUES           = 1 << Byte.SIZE;
@@ -28,7 +30,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
      * org.toilelibre.libe.soundtransform.model.sound.Sound[], int, boolean,
      * boolean, long)
      */
-    public void byteArrayToFrame (final byte [] frame, final Channel [] sound, final int position, final boolean bigEndian, final boolean pcmSigned, final long neutral) {
+    private void byteArrayToFrame (final byte [] frame, final Channel [] sound, final int position, final boolean bigEndian, final boolean pcmSigned, final long neutral) {
         final long [] value = new long [sound.length];
         final int destination = bigEndian ? 0 : frame.length - 1;
         for (int j = 0 ; j < frame.length ; j++) {
@@ -76,7 +78,7 @@ final class ByteArrayFrameProcessor extends AbstractLogAware<ByteArrayFrameProce
 
         double value = 0;
         int rightShift = 0;
-        int byteValueSigned = 0;
+        int byteValueSigned;
         final long neutral = pcmSigned ? this.getNeutral (sampleSize) : 0;
         for (int i = 0 ; i < data.length ; i++) {
             final int numByte = i % sampleSize;

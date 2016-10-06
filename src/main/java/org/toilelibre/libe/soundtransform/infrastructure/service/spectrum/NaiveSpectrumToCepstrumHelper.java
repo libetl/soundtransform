@@ -4,9 +4,11 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 
+@Processor
 final class NaiveSpectrumToCepstrumHelper implements SpectrumToCepstrumHelper<Complex []> {
 
     private static final double A_CONSTANT_TO_REDUCE_OCTAVE_ERRORS = 10.0;

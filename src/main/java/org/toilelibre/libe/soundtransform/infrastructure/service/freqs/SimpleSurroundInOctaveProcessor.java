@@ -1,8 +1,10 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.freqs;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.freqs.SurroundInRangeProcessor;
 
+@Processor
 final class SimpleSurroundInOctaveProcessor implements SurroundInRangeProcessor {
 
     private static final float OCTAVE_HALF = 1.5f;

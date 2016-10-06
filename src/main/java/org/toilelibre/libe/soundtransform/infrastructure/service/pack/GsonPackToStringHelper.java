@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.library.pack.Pack;
 import org.toilelibre.libe.soundtransform.model.library.pack.PackToStringHelper;
 import org.toilelibre.libe.soundtransform.model.library.pack.Range;
@@ -16,6 +17,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
+@Processor
 final class GsonPackToStringHelper implements PackToStringHelper {
 
     private static final Gson SMALL_GSON_OBJECT = new Gson ();

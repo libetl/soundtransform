@@ -1,9 +1,9 @@
-package org.toilelibre.libe.soundtransform.actions;
+package org.toilelibre.libe.soundtransform.model;
 
 import java.lang.annotation.*;
 
 @Documented
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
-public @interface Action {
+public @interface Service {
 }

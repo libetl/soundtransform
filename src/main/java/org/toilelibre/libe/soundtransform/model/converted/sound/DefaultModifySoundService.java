@@ -1,8 +1,10 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
+import org.toilelibre.libe.soundtransform.model.Service;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
+@Service
 final class DefaultModifySoundService implements ModifySoundService {
 
     private final SoundAppender soundAppender;

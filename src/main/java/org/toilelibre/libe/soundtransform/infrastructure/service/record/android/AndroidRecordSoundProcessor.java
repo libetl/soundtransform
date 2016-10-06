@@ -5,14 +5,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.logging.AbstractLogAware;
-import org.toilelibre.libe.soundtransform.model.logging.EventCode;
-import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 import org.toilelibre.libe.soundtransform.model.record.exporter.BytesExporterFromThread;
 import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteArrayOutputStream;
@@ -22,6 +21,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder.AudioSource;
 
+@Processor
 final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSoundProcessor> implements RecordSoundProcessor {
 
     private static class StopProperlyThread extends Thread {
@@ -44,30 +44,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         }
     }
 
-    public enum AndroidRecordSoundProcessorEvent implements EventCode {
-
-        NOT_ABLE_TO_READ (LogLevel.ERROR, "Not able to read the recorded data");
-
-        private final String   messageFormat;
-        private final LogLevel logLevel;
-
-        AndroidRecordSoundProcessorEvent (final LogLevel ll, final String mF) {
-            this.messageFormat = mF;
-            this.logLevel = ll;
-        }
-
-        @Override
-        public String getMessageFormat () {
-            return this.messageFormat;
-        }
-
-        @Override
-        public LogLevel getLevel () {
-            return this.logLevel;
-        }
-    }
-
-    public enum AndroidRecordSoundProcessorErrorCode implements ErrorCode {
+    enum AndroidRecordSoundProcessorErrorCode implements ErrorCode {
 
         NOT_READY ("Not ready to record a sound"), STREAM_INFO_NOT_SUPPORTED ("Stream Info not supported by Recorder"), STREAM_INFO_EXPECTED ("A stream info was expected");
 
@@ -91,7 +68,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
     private AndroidRecorderThread      recordingThread;
     private BytesExporterFromThread<?> bytesExporter;
 
-    public AudioRecord findAudioRecorder (final StreamInfo streamInfo) throws SoundTransformException {
+    private AudioRecord findAudioRecorder (final StreamInfo streamInfo) throws SoundTransformException {
         final int audioFormat = streamInfo.getSampleSize () == 1 ? AudioFormat.ENCODING_PCM_8BIT : AudioFormat.ENCODING_PCM_16BIT;
         final int channelConfig = streamInfo.getChannels () == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
         final int rate = (int) streamInfo.getSampleRate ();

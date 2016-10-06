@@ -1,8 +1,10 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.freqs;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.freqs.FilterFrequenciesProcessor;
 
+@Processor
 final class SimpleFilterFrequenciesProcessor implements FilterFrequenciesProcessor {
 
     @Override

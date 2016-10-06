@@ -1,7 +1,9 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.freqs;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.freqs.ChangeOctaveProcessor;
 
+@Processor
 final class SimpleChangeOctaveProcessor implements ChangeOctaveProcessor {
 
     @Override

@@ -1,7 +1,9 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.freqs;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.freqs.ReplaceFrequenciesProcessor;
 
+@Processor
 final class SimpleReplaceFrequenciesProcessor implements ReplaceFrequenciesProcessor {
 
     @Override

@@ -3,6 +3,7 @@ package org.toilelibre.libe.soundtransform.infrastructure.service.audioformat.an
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.toilelibre.libe.soundtransform.infrastructure.service.Processor;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
@@ -12,8 +13,9 @@ import org.toilelibre.libe.soundtransform.model.logging.EventCode;
 import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
 import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
 
+@Processor
 final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
-    public enum AudioWavHelperErrorCode implements ErrorCode {
+    private enum AudioWavHelperErrorCode implements ErrorCode {
 
         NO_MAGIC_NUMBER ("Expected a RIFF magic number"), NO_WAVE_HEADER ("RIFF file but not WAVE"), NOT_READABLE_INPUT ("Not readable input. Is this a file ?"), NON_PCM_WAV ("Can not understand non PCM WAVE"), NO_DATA_SEPARATOR ("Could not find the data separator");
 
@@ -29,7 +31,7 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
         }
     }
 
-    public enum AudioWavHelperEventCode implements EventCode {
+    private enum AudioWavHelperEventCode implements EventCode {
         WAV_LIST_INFO_SIZE (LogLevel.PARANOIAC, "Wav list info size in bits : %1d"), READING_A_TECHNICAL_INSTRUMENT (LogLevel.VERBOSE, "%1s, reading a technical instrument : %2s"), TECHNICAL_INSTRUMENT_DOES_NOT_EXIST (LogLevel.WARN, "%1s, the technical instrument : %2s does not exist");
 
         private final String   messageFormat;
@@ -64,34 +66,34 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
 
     private static final int    WORD_ALIGN_LENGTH   = 4;
 
-    public AndroidWavHelper () {
+    AndroidWavHelper () {
 
     }
 
     private void readMagicChars (final AudioInputStream ais) throws IOException {
-        String string = "";
+        String magicChars;
         try {
-            string = ais.readFourChars ();
+            magicChars = ais.readFourChars ();
         } catch (final SoundTransformRuntimeException stre) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NOT_READABLE_INPUT, stre));
         }
-        if (!AndroidWavHelper.RIFF.equals (string)) {
+        if (!AndroidWavHelper.RIFF.equals (magicChars)) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_MAGIC_NUMBER, new IllegalArgumentException ()));
         }
         ais.readInt2 ();
-        string = ais.readFourChars ();
-        if (!AndroidWavHelper.WAVE.equals (string)) {
+        magicChars = ais.readFourChars ();
+        if (!AndroidWavHelper.WAVE.equals (magicChars)) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_WAVE_HEADER, new IllegalArgumentException ()));
         }
-        string = ais.readFourChars ();
-        if (!AndroidWavHelper.FMT.equals (string)) {
+        magicChars = ais.readFourChars ();
+        if (!AndroidWavHelper.FMT.equals (magicChars)) {
             throw new SoundTransformRuntimeException (new SoundTransformException (AudioWavHelperErrorCode.NO_WAVE_HEADER, new IllegalArgumentException ()));
         }
         ais.readInt2 ();
 
     }
 
-    public StreamInfo readMetadata (final AudioInputStream ais) throws IOException {
+    StreamInfo readMetadata (final AudioInputStream ais) throws IOException {
         this.readMagicChars (ais);
         final int typeOfEncoding = ais.readShort2 ();
         if (typeOfEncoding != 1) {
@@ -103,7 +105,7 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
         final int frameSize = ais.readShort2 ();
         final int sampleSize = ais.readShort2 ();
         String string = ais.readFourChars ();
-        int otherInfosSize = 0;
+        int otherInfosSize;
         String list = null;
         if (AndroidWavHelper.LIST.equals (string)) {
             otherInfosSize = ais.readInt2 ();
@@ -119,14 +121,14 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
         return new StreamInfo (channels, dataSize / frameSize, sampleSize / Byte.SIZE, sampleRate, false, true, list);
     }
 
-    public void writeMetadata (final ByteArrayWithAudioFormatInputStream audioInputStream, final WavOutputStream outputStream) throws IOException {
+    void writeMetadata (final ByteArrayWithAudioFormatInputStream audioInputStream, final WavOutputStream outputStream) throws IOException {
         this.writeMetadata (audioInputStream.getInfo (), outputStream);
     }
 
-    public void writeMetadata (final StreamInfo info, final WavOutputStream outputStream) throws IOException {
+    void writeMetadata (final StreamInfo info, final WavOutputStream outputStream) throws IOException {
         final int otherInfosSize = info.getTaggedInfo () == null ? 0 : info.getTaggedInfo ().length ();
         final int fileSize = (int) (AndroidWavHelper.INFO_METADATA_SIZE + otherInfosSize + info.getFrameLength () * info.getSampleSize () * info.getChannels ());
-        final int chunkSize = AndroidWavHelper.INFO_CHUNK_SIZE;
+        //chunkSize is AndroidWavHelper.INFO_CHUNK_SIZE;
         final int typeOfEncoding = 1;
         final int channels = info.getChannels ();
         final int sampleRate = (int) info.getSampleRate ();
@@ -138,7 +140,7 @@ final class AndroidWavHelper extends AbstractLogAware<AndroidWavHelper> {
         outputStream.writeInteger (fileSize);
         outputStream.write (AndroidWavHelper.WAVE.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
         outputStream.write (AndroidWavHelper.FMT.getBytes (AudioInputStream.DEFAULT_CHARSET_NAME));
-        outputStream.writeInteger (chunkSize);
+        outputStream.writeInteger (AndroidWavHelper.INFO_CHUNK_SIZE);
         outputStream.writeShortInt (typeOfEncoding);
         outputStream.writeShortInt (channels);
         outputStream.writeInteger (sampleRate);

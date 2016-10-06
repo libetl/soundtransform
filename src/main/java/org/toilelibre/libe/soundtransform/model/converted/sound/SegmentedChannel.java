@@ -1,11 +1,11 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
-import java.util.List;
-
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
+
+import java.util.List;
 
 public class SegmentedChannel extends Channel {
 
