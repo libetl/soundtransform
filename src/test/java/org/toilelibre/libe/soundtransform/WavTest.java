@@ -202,7 +202,6 @@ public class WavTest extends SoundTransformTest {
     }
 
     @Test
-    @Ignore
     public void compareLoudestFreqsArray () throws SoundTransformException {
         // WARN : quite long
         final Sound sound = FluentClient.start ().withFile (this.shortInput).convertIntoSound ().apply (new LevelSoundTransform (100)).apply (new NormalizeSoundTransform (1)).stopWithSound ();
