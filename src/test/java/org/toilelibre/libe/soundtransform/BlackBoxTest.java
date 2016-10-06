@@ -11,9 +11,9 @@ import org.junit.Test;
 import org.toilelibre.libe.soundtransform.actions.play.PlaySound;
 import org.toilelibre.libe.soundtransform.actions.transform.ApplySoundTransform;
 import org.toilelibre.libe.soundtransform.actions.transform.ConvertFromInputStream;
+import org.toilelibre.libe.soundtransform.actions.transform.ConvertToInputStream;
 import org.toilelibre.libe.soundtransform.actions.transform.ExportAFile;
 import org.toilelibre.libe.soundtransform.actions.transform.GetStreamInfo;
-import org.toilelibre.libe.soundtransform.actions.transform.ConvertToInputStream;
 import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jObserver;
 import org.toilelibre.libe.soundtransform.ioc.SoundTransformTest;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -22,6 +22,7 @@ import org.toilelibre.libe.soundtransform.model.converted.sound.transform.SoundT
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
+import org.toilelibre.libe.soundtransform.model.play.PlayObjectException;
 
 public class BlackBoxTest extends SoundTransformTest {
     private final ClassLoader classLoader = Thread.currentThread ().getContextClassLoader ();
@@ -37,7 +38,11 @@ public class BlackBoxTest extends SoundTransformTest {
         Sound sound = new ConvertFromInputStream ().fromInputStream (is);
         final SoundToSpectrumsSoundTransform sound2Spectrums = new SoundToSpectrumsSoundTransform ();
         final Spectrum<Serializable> [][] spectrums = new ApplySoundTransform ().apply (sound.getChannels (), sound2Spectrums);
-        new PlaySound ().play (spectrums [0] [0], new Object (), 0);
+        try {
+            new PlaySound ().play (spectrums [0] [0], new Object (), 0);
+        } catch (PlayObjectException poe) {
+            
+        }
     }
 
     @Test
