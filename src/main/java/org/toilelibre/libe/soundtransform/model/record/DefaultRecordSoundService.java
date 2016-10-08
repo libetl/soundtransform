@@ -216,7 +216,7 @@ final class DefaultRecordSoundService extends AbstractLogAware<DefaultRecordSoun
         return this.processor.startRecordingAndReturnByteBuffer (this.audioFormatService.audioFormatfromStreamInfo (streamInfo), stop);
     }
 
-    private List<Sound> recordInBackgroundTask (final StreamInfo streamInfo, final AmplitudeObserver amplitudeObserver, Object stop) throws SoundTransformException {
+    private List<Sound> recordInBackgroundTask (final StreamInfo streamInfo, final AmplitudeObserver amplitudeObserver, final Object stop) throws SoundTransformException {
         final ByteBuffer targetByteBuffer = this.startRecordingAndReturnByteBuffer (streamInfo, stop);
         final List<Sound> results = new ArrayList<Sound> ();
 

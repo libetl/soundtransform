@@ -12,7 +12,7 @@ import org.toilelibre.libe.soundtransform.model.logging.Observer;
 @Action
 public final class AddStreamInfoToInputStream {
 
-    private AudioFileService<?> audioFile;
+    private final AudioFileService<?> audioFile;
 
     public AddStreamInfoToInputStream (final Observer... observers) {
         this.audioFile = (AudioFileService<?>) ApplicationInjector.$.select (AudioFileService.class).setObservers (observers);

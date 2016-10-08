@@ -19,16 +19,16 @@ public class PlaySound {
         this.playSound = ApplicationInjector.$.select (PlayObjectService.class);
     }
 
-    public void play (final InputStream is, Object stopMonitor, int skipMilliSeconds) throws SoundTransformException {
+    public void play (final InputStream is, final Object stopMonitor, final int skipMilliSeconds) throws SoundTransformException {
         this.playSound.play (is, stopMonitor, skipMilliSeconds);
     }
 
-    public void play (final Sound sound, Object stopMonitor, int skipMilliSeconds) throws SoundTransformException {
+    public void play (final Sound sound, final Object stopMonitor, final int skipMilliSeconds) throws SoundTransformException {
         this.playSound.play (sound, stopMonitor, skipMilliSeconds);
     }
 
     @SuppressWarnings ("unchecked")
-    public void play (final Spectrum<? extends Serializable> spectrum1, Object stopMonitor, int skipMilliSeconds) throws SoundTransformException {
+    public void play (final Spectrum<? extends Serializable> spectrum1, final Object stopMonitor, int skipMilliSeconds) throws SoundTransformException {
         final Spectrum<Serializable> spectrum = (Spectrum<Serializable>) spectrum1;
         ((PlayObjectService<Serializable>) this.playSound).play (spectrum, stopMonitor, skipMilliSeconds);
     }

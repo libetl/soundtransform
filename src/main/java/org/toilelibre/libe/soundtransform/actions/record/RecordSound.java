@@ -27,7 +27,7 @@ public class RecordSound {
         return this.recordSound.recordLimitedTimeRawInputStream (streamInfo);
     }
 
-    public Sound startRecordingASound (final StreamInfo streamInfo, final AmplitudeObserver amplitudeObserver, Object stop) throws SoundTransformException {
+    public Sound startRecordingASound (final StreamInfo streamInfo, final AmplitudeObserver amplitudeObserver, final Object stop) throws SoundTransformException {
         return this.recordSound.startRecordingASound (streamInfo, amplitudeObserver, stop);
     }
 }

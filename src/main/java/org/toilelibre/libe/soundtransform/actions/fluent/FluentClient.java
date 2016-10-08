@@ -748,7 +748,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
      * @throws SoundTransformException
      *             could not play the current audio data
      */
-    public FluentClient playIt (Object stopMonitor) throws SoundTransformException {
+    public FluentClient playIt (final Object stopMonitor) throws SoundTransformException {
         return this.playIt (stopMonitor, 0);
     }
 

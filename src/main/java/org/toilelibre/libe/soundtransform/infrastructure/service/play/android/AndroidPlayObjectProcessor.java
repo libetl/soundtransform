@@ -59,7 +59,7 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
     }
 
     @Override
-    public Object play (final InputStream ais, final StreamInfo streamInfo, final Object stopMonitor, int skipMilliSeconds) throws PlayObjectException {
+    public Object play (final InputStream ais, final StreamInfo streamInfo, final Object stopMonitor, final int skipMilliSeconds) throws PlayObjectException {
         final int channelConf = this.getChannelConfiguration (streamInfo);
         final int frameLength;
         try {
@@ -91,7 +91,7 @@ final class AndroidPlayObjectProcessor extends AbstractLogAware<AndroidPlayObjec
         return playFrameMonitorThread;
     }
 
-    private int findFrameLength (InputStream ais, StreamInfo streamInfo) throws IOException {
+    private int findFrameLength (final InputStream ais, final StreamInfo streamInfo) throws IOException {
         return (int) (streamInfo.getFrameLength () != -1 ? streamInfo.getFrameLength () : ais.available () * 1.0 / (streamInfo.getSampleSize () * streamInfo.getChannels ()));
     }
 

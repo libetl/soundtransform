@@ -27,7 +27,7 @@ final class LineListenerPlayObjectProcessor implements PlayObjectProcessor {
     }
 
     private LineListener addLineListener (final Clip clip, final Object stopMonitor) {
-        LineListener lineListener = new LineListener () {
+        final LineListener lineListener = new LineListener () {
 
             @Override
             public void update (final LineEvent event) {
@@ -71,19 +71,19 @@ final class LineListenerPlayObjectProcessor implements PlayObjectProcessor {
     }
 
     @Override
-    public Object play (final InputStream ais, final StreamInfo streamInfo, final Object stopMonitor, int skipMilliSeconds) throws PlayObjectException {
+    public Object play (final InputStream ais, final StreamInfo streamInfo, final Object stopMonitor, final int skipMilliSeconds) throws PlayObjectException {
         final Clip clip = this.prepareClip (ais, stopMonitor, skipMilliSeconds);
         clip.start ();
         return clip;
     }
 
-    private Clip prepareClip (final InputStream ais, final Object stopMonitor, int skipMilliSeconds) throws PlayObjectException {
+    private Clip prepareClip (final InputStream ais, final Object stopMonitor, final int skipMilliSeconds) throws PlayObjectException {
         this.ensureCompatibleInputStream (ais);
         try {
             final Clip clip = this.getClip ();
             this.addSoundPlayerMonitor (clip, this.addLineListener (clip, stopMonitor), stopMonitor);
-            AudioInputStream aisCasted = (AudioInputStream) ais;
-            int framePosition = (int) (aisCasted.getFormat ().getSampleRate () * 1.0 * skipMilliSeconds / 1000.0);
+            final AudioInputStream aisCasted = (AudioInputStream) ais;
+            final int framePosition = (int) (aisCasted.getFormat ().getSampleRate () * 1.0 * skipMilliSeconds / 1000.0);
             clip.open (aisCasted);
             
             clip.setFramePosition (framePosition);
@@ -109,7 +109,6 @@ final class LineListenerPlayObjectProcessor implements PlayObjectProcessor {
         if (! (ais instanceof AudioInputStream)) {
             throw new PlayObjectException (new IllegalArgumentException (ais == null ? "null" : ais.toString ()));
         }
-
     }
 
     private Line getLine (final Info linfo) throws LineUnavailableException {
