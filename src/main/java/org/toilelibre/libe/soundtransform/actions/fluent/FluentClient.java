@@ -1014,7 +1014,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
 
     /**
      * Tells the client to add an observer that will be notified of different kind of updates
-     * from the library. It is ok to call withAnObserver several times.<br/>
+     * from the library. It is ok to call withAnObserver several times.<br></br>
      * If the andAfterStart method is called, the subscribed observers are removed
      *
      * @param observers1
@@ -1089,7 +1089,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
 
     /**
      * Tells the client to work with a pack. Reads the whole string content. A
-     * pattern must be followed in the jsonContent to enable the import.<br/>
+     * pattern must be followed in the jsonContent to enable the import.<br></br>
      *
      * Here is the format allowed in the file
      *
@@ -1130,7 +1130,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
     }
 
     /**
-     * Tells the client to work first with an InputStream. It will not be read yet<br/>
+     * Tells the client to work first with an InputStream. It will not be read yet<br></br>
      * The passed inputStream must own a format metadata object. Therefore it must be an AudioInputStream.
      * @param ais the input stream
      * @return the client, with an input stream
@@ -1204,7 +1204,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
 
     /**
      * Tells the client to work first with a byte array InputStream or any readable DataInputStream.
-     * It will be read and transformed into an AudioInputStream<br/>
+     * It will be read and transformed into an AudioInputStream<br></br>
      * The passed inputStream must not contain any metadata piece of information.
      * @param is the input stream
      * @param isInfo the stream info
@@ -1254,7 +1254,7 @@ public final class FluentClient implements FluentClientSoundImported, FluentClie
     }
 
     /**
-     * Tells the client to work first with a spectrum formatted sound.<br/>
+     * Tells the client to work first with a spectrum formatted sound.<br></br>
      * The spectrums inside must be in a list (each item must correspond to a channel)
      * The spectrums are ordered in an array in chronological order
      * @param spectrums the spectrums
