@@ -1,10 +1,14 @@
 package org.toilelibre.libe.soundtransform.model.converted.spectrum;
 
+import java.io.Serializable;
+
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 
-public class Spectrum<T> {
+public class Spectrum<T> implements Serializable {
 
+    private static final long serialVersionUID = -4609743181877386829L;
+    
     private final T          state;
     private final FormatInfo formatInfo;
 

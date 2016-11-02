@@ -5,11 +5,20 @@ import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class SegmentedChannel extends Channel {
 
-    static class IndexData {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6449765160667797939L;
+
+    static class IndexData implements Serializable {
+        
+        private static final long serialVersionUID = 7655211423479465218L;
+        
         int globalIndex;
         int arrayIndex;
         int arrayPosition;

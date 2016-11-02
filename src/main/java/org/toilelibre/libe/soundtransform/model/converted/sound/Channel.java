@@ -1,12 +1,15 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 
-public class Channel {
+public class Channel implements Serializable {
 
+    private static final long serialVersionUID = -5103187767053290813L;
+    
     protected final long []  samples;
     private final FormatInfo formatInfo;
     private final int        channelNum;

@@ -1,7 +1,7 @@
 {
   "org.toilelibre.libe.soundtransform.model.library.pack.note.PureNote": [],
   "org.toilelibre.libe.soundtransform.model.library.pack.note.ComputedOrganNote": [],
-  "g-piano": [
+  "gpiano": [
     {
       "frequency": 97.75,
       "name": "gpiano6",

@@ -1,9 +1,13 @@
 package org.toilelibre.libe.soundtransform.model.converted.sound;
 
+import java.io.Serializable;
+
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 
-public class Sound {
+public class Sound implements Serializable {
 
+    private static final long serialVersionUID = 8150171679999317728L;
+    
     private final Channel [] channels;
 
     public Sound (final Channel [] channels1) {

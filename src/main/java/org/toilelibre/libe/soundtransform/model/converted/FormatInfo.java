@@ -5,10 +5,8 @@ import java.util.Locale;
 
 public class FormatInfo implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 2807016563144431421L;
+    
     private final int         sampleSize;
 
     private final float       sampleRate;
