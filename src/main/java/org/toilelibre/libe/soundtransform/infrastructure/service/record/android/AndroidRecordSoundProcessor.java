@@ -62,6 +62,8 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
 
     private static final int           TWICE = 2;
 
+    private static final int           TEN   = 10;
+
     private int                        bufferSize;
     private AudioRecord                recorder;
 
@@ -73,14 +75,44 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         final int channelConfig = streamInfo.getChannels () == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
         final int rate = (int) streamInfo.getSampleRate ();
         this.bufferSize = AndroidRecordSoundProcessor.TWICE * AudioRecord.getMinBufferSize (rate, channelConfig, audioFormat);
-        final AudioRecord candidateRecorder = new AudioRecord (AudioSource.DEFAULT, rate, channelConfig, audioFormat, this.bufferSize);
 
-        if (this.bufferSize != AudioRecord.ERROR_BAD_VALUE && candidateRecorder.getState () == AudioRecord.STATE_INITIALIZED) {
-            // check if we can instantiate and have a success
-            return candidateRecorder;
+        final AudioRecord candidateRecorder = getRecorderAndInitBufferSize (rate, channelConfig, audioFormat);
+
+        return maybeNull(candidateRecorder, streamInfo);
+    }
+
+    private AudioRecord maybeNull (final AudioRecord candidateRecorder, final StreamInfo streamInfo) throws SoundTransformException {
+
+        if (candidateRecorder == null) {
+            throw new SoundTransformException (AndroidRecordSoundProcessorErrorCode.STREAM_INFO_NOT_SUPPORTED, new UnsupportedOperationException (), streamInfo);
         }
+        
+        return candidateRecorder;
+    }
 
-        throw new SoundTransformException (AndroidRecordSoundProcessorErrorCode.STREAM_INFO_NOT_SUPPORTED, new UnsupportedOperationException (), streamInfo);
+    private AudioRecord getRecorderAndInitBufferSize (final int rate, final int channelConfig, final int audioFormat) {
+        int foundBufferSize = AudioRecord.getMinBufferSize (rate, channelConfig, audioFormat) / AndroidRecordSoundProcessor.TWICE;
+        
+        AudioRecord candidateRecorder = null;
+        int stopIfValueIsTen = 0;
+        
+        while (!this.recorderIsInitialized(candidateRecorder) && stopIfValueIsTen < AndroidRecordSoundProcessor.TEN) {
+            foundBufferSize *= AndroidRecordSoundProcessor.TWICE;
+            candidateRecorder = new AudioRecord (AudioSource.DEFAULT, rate, channelConfig, audioFormat, foundBufferSize);
+            stopIfValueIsTen++;
+        }
+        if (stopIfValueIsTen == AndroidRecordSoundProcessor.TEN) {
+            return null;
+        }
+        
+        this.bufferSize = foundBufferSize;
+        
+        return candidateRecorder;
+    }
+
+    private boolean recorderIsInitialized (AudioRecord candidateRecorder) {
+        return candidateRecorder != null && 
+                bufferSize != AudioRecord.ERROR_BAD_VALUE && candidateRecorder.getState () == AudioRecord.STATE_INITIALIZED;
     }
 
     @Override
@@ -142,7 +174,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         final StreamInfo streamInfo = (StreamInfo) audioFormat;
         this.recorder = this.findAudioRecorder (streamInfo);
         this.bytesExporter = $.select (OutputAsByteBuffer.class);
-        this.bytesExporter.init (this.bufferSize);
+        this.bytesExporter.init (AndroidRecordSoundProcessor.TWICE * this.bufferSize);
         this.recordingThread = new AndroidRecorderThread (this.recorder, this.bytesExporter);
         this.recorder.startRecording ();
         this.recordingThread.start ();
