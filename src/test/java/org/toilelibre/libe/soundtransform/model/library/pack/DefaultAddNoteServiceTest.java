@@ -5,7 +5,9 @@ import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
+import org.toilelibre.libe.soundtransform.model.exception.ErrorCode;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeException;
 import org.toilelibre.libe.soundtransform.model.library.pack.note.SimpleNoteInfo;
 
 public class DefaultAddNoteServiceTest {
@@ -18,6 +20,10 @@ public class DefaultAddNoteServiceTest {
     @Test (expected = SoundTransformException.class)
     public void addNoteWithValidAbsoluteFile () throws SoundTransformException, UnsupportedEncodingException {
         $.select (AddNoteService.class).addNote (new Range (), new SimpleNoteInfo ("/dev/null"));
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            throw new SoundTransformException(AddNoteService.AddNoteErrorCode.NOT_SUPPORTED,
+                    new UnsupportedOperationException("dev null does not exist"));
+        }
     }
 
     @Test

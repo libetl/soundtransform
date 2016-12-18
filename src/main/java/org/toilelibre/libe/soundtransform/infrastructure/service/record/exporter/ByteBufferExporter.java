@@ -10,13 +10,20 @@ import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteBuff
 class ByteBufferExporter implements BytesExporterFromThread<ByteBuffer>, OutputAsByteBuffer {
 
     private ByteBuffer buffer;
+    private int bufferSize;
 
     ByteBufferExporter () {
     }
 
     @Override
-    public void init (final int bufferSize) {
-        this.buffer = ByteBuffer.allocate (bufferSize);
+    public void init (final int bufferSize1) {
+        this.bufferSize = bufferSize1;
+        this.buffer = ByteBuffer.allocate (bufferSize1);
+    }
+
+    @Override
+    public int getReportedBufferSize () {
+        return this.bufferSize;
     }
 
     @Override

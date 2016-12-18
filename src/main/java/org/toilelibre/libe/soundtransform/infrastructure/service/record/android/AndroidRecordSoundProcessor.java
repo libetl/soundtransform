@@ -74,7 +74,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         final int audioFormat = streamInfo.getSampleSize () == 1 ? AudioFormat.ENCODING_PCM_8BIT : AudioFormat.ENCODING_PCM_16BIT;
         final int channelConfig = streamInfo.getChannels () == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
         final int rate = (int) streamInfo.getSampleRate ();
-        this.bufferSize = AndroidRecordSoundProcessor.TWICE * AudioRecord.getMinBufferSize (rate, channelConfig, audioFormat);
+        this.bufferSize = AudioRecord.getMinBufferSize (rate, channelConfig, audioFormat);
 
         final AudioRecord candidateRecorder = getRecorderAndInitBufferSize (rate, channelConfig, audioFormat);
 
@@ -104,7 +104,7 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         if (stopIfValueIsTen == AndroidRecordSoundProcessor.TEN) {
             return null;
         }
-        
+
         this.bufferSize = foundBufferSize;
         
         return candidateRecorder;

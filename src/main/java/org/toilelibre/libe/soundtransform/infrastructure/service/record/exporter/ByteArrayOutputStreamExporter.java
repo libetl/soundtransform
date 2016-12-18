@@ -10,14 +10,22 @@ import org.toilelibre.libe.soundtransform.model.record.exporter.OutputAsByteArra
 class ByteArrayOutputStreamExporter implements BytesExporterFromThread<ByteArrayOutputStream>, OutputAsByteArrayOutputStream {
 
     private ByteArrayOutputStream outputStream;
+    private int bufferSize;
 
     ByteArrayOutputStreamExporter () {
     }
 
     @Override
-    public void init (final int bufferSize) {
+    public void init (final int bufferSize1) {
+        this.bufferSize = bufferSize1;
         this.outputStream = new ByteArrayOutputStream (bufferSize);
     }
+
+    @Override
+    public int getReportedBufferSize () {
+        return this.bufferSize;
+    }
+
 
     @Override
     public void export (final byte [] byteArray, final int readSize) {

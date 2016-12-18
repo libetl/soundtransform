@@ -10,20 +10,15 @@ import android.media.AudioRecord;
 
 final class AndroidRecorderThread extends Thread {
 
-    private static final int                 ARBITRARY_BUFFER = 8192;
     private static final int                 EIGHT            = 8;
     private static final int                 TWO              = 2;
-    /**
-     *
-     */
     private final AudioRecord                audioRecord;
     private boolean                          recording;
     private final BytesExporterFromThread<?> bytesExporter;
 
     /**
-     * @param bufferSize
-     * @param androidRecordSoundProcessor
-     * @param bytesExporter1
+     * @param audioRecord1   the audioRecord object
+     * @param bytesExporter1 used exporter
      */
     AndroidRecorderThread (final AudioRecord audioRecord1, final BytesExporterFromThread<?> bytesExporter1) {
         this.audioRecord = audioRecord1;
@@ -57,7 +52,7 @@ final class AndroidRecorderThread extends Thread {
     private void writeAudioDataToFile () throws IOException {
         // Write the output audio in byte
 
-        final short [] sData = new short [AndroidRecorderThread.ARBITRARY_BUFFER];
+        final short [] sData = new short [this.bytesExporter.getReportedBufferSize() / AndroidRecorderThread.TWO];
 
         while (this.recording) {
             // gets the voice output from microphone to byte format
@@ -72,7 +67,7 @@ final class AndroidRecorderThread extends Thread {
         }
     }
 
-    public void stopRecording () {
+    void stopRecording () {
         this.recording = false;
     }
 }
