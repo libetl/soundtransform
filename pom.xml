@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.toile-libre.libe</groupId>
 	<artifactId>soundtransform</artifactId>
-	<version>1.0.23-SNAPSHOT</version>
+	<version>1.0.23</version>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<packaging>aar</packaging>
-	<description>Android library to shape a voice with an instrument.</description>
+	<description>Android and Pure java library to modify a sound</description>
 	<url>https://github.com/libetl/soundtransform</url>
 	<licenses>
 		<license>
