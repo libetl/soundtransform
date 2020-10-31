@@ -5,15 +5,16 @@ import java.awt.Color;
 import org.apache.commons.math3.complex.Complex;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.knowm.xchart.XYChart;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.ioc.ApplicationInjector.$;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.Spectrum;
 import org.toilelibre.libe.soundtransform.model.converted.spectrum.SpectrumToCepstrumHelper;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 
-import com.xeiam.xchart.Chart;
-import com.xeiam.xchart.QuickChart;
-import com.xeiam.xchart.SwingWrapper;
+import org.knowm.xchart.XYChart;
+import org.knowm.xchart.QuickChart;
+import org.knowm.xchart.SwingWrapper;
 
 /**
  * To be used only in a IDE environment
@@ -27,7 +28,7 @@ public class ViewCepstrumIDETest {
 
     @Test
     public void viewCepstrumOfPianoNotes () throws SoundTransformException {
-        final Chart chart = this.getChart (new String [] { "C3", "D3", "E3", "F3", "G3", "A4", "B4", "C4" },
+        final XYChart chart = this.getChart (new String [] { "C3", "D3", "E3", "F3", "G3", "A4", "B4", "C4" },
                 $.select (SpectrumToCepstrumHelper.class).spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano1c.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
                 $.select (SpectrumToCepstrumHelper.class).spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano2d.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
                 $.select (SpectrumToCepstrumHelper.class).spectrumToCepstrum (FluentClient.start ().withClasspathResource ("piano3e.wav").convertIntoSound ().splitIntoSpectrums ().stopWithSpectrums ().get (0) [0]),
@@ -102,7 +103,7 @@ public class ViewCepstrumIDETest {
         new SwingWrapper (this.getChart (new String [] { "A3 (221Hz) + C3 (260Hz)" }, cepstrum)).displayChart ();
     }
 
-    private Chart getChart (final String [] notes, final Spectrum<Complex []>... fs) {
+    private XYChart getChart (final String [] notes, final Spectrum<Complex []>... fs) {
         final double [] xData = new double [fs [0].getState ().length];
         final double [][] yData = new double [fs.length] [fs [0].getState ().length];
         final float timelapseInTheCepstrum = fs [0].getState ().length * 1.0f / fs [0].getSampleRate ();
@@ -114,14 +115,14 @@ public class ViewCepstrumIDETest {
                 yData [j] [i] = i > 10 && i < fs [j].getState ().length - 10 ? fs [j].getState () [i].abs () : 0;
             }
         }
-        final Chart chart = QuickChart.getChart ("Cepstrums", "f (Hz)", "ampl", notes, xData, yData);
-        chart.getStyleManager ().setChartBackgroundColor (Color.BLACK);
-        chart.getStyleManager ().setPlotBackgroundColor (Color.BLACK);
-        chart.getStyleManager ().setLegendBackgroundColor (Color.BLACK);
-        chart.getStyleManager ().setChartFontColor (Color.BLACK);
-        chart.getStyleManager ().setPlotGridLinesColor (Color.LIGHT_GRAY);
-        chart.getStyleManager ().setChartFontColor (Color.WHITE);
-        chart.getStyleManager ().setAxisTickLabelsColor (Color.WHITE);
+        final XYChart chart = QuickChart.getChart ("Cepstrums", "f (Hz)", "ampl", notes, xData, yData);
+        chart.getStyler ().setChartBackgroundColor (Color.BLACK);
+        chart.getStyler ().setPlotBackgroundColor (Color.BLACK);
+        chart.getStyler ().setLegendBackgroundColor (Color.BLACK);
+        chart.getStyler ().setChartFontColor (Color.BLACK);
+        chart.getStyler ().setPlotGridLinesColor (Color.LIGHT_GRAY);
+        chart.getStyler ().setChartFontColor (Color.WHITE);
+        chart.getStyler ().setAxisTickLabelsColor (Color.WHITE);
         return chart;
 
     }
