@@ -32,6 +32,8 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformRuntimeE
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.record.RecordSoundProcessor;
 
+import static org.toilelibre.libe.soundtransform.infrastructure.service.record.javax.TargetDataLineRecordSoundProcessor.TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_NOT_SUPPORTED;
+
 @PrepareForTest ({ ApplicationInjector.class, TargetDataLine.class, TargetDataLineRecordSoundProcessor.class })
 public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
@@ -50,8 +52,14 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         }
         buffers [14] = new byte [0];
         this.mockRecordSoundProcessor (buffers);
-        final InputStream is = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
-        Assert.assertTrue (is.available () > 0);
+        try {
+            final InputStream is = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
+            Assert.assertTrue (is.available() > 0);
+        } catch (SoundTransformException e) {
+            if (e.getErrorCode () != AUDIO_FORMAT_NOT_SUPPORTED) {
+                throw e;
+            }
+        }
     }
 
     @Test
@@ -65,13 +73,17 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         this.mockRecordSoundProcessor (buffers);
         final Object stopObject = new Object ();
         final InputStream [] is = new InputStream [1];
+        final boolean[] testCannotBeRun = {false};
         new Thread () {
             @Override
             public void run () {
                 try {
                     is [0] = FluentClient.start ().withRecordedInputStream (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), stopObject).stopWithInputStream ();
                 } catch (final SoundTransformException e) {
-                    throw new RuntimeException (e);
+                    if (e.getErrorCode() != AUDIO_FORMAT_NOT_SUPPORTED) {
+                        throw new RuntimeException (e);
+                    }
+                    testCannotBeRun[0] = true;
                 }
             }
         }.start ();
@@ -86,55 +98,62 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         }
         Thread.sleep (1000);
 
-        Assert.assertTrue (is [0].available () > 0);
+        if (!testCannotBeRun[0])
+            Assert.assertTrue (is [0].available () > 0);
     }
 
     @Test
     public void shapeAndMockRecordedSoundInParallel () throws Exception {
-        this.rule.hashCode ();
-        final byte [][] buffers = new byte [15] [1024];
-        for (int i = 0 ; i < 14 ; i++) {
-            new Random ().nextBytes (buffers [i]);
+        this.rule.hashCode();
+        final byte[][] buffers = new byte[15][1024];
+        for (int i = 0; i < 14; i++) {
+            new Random().nextBytes(buffers[i]);
         }
-        buffers [14] = new byte [0];
-        this.mockRecordSoundProcessor (buffers);
-
-        FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
-
-        final Object stop = new Object ();
-        new Thread ("Wait300MillisInTheTest") {
-
-            @Override
-            public void run () {
-                try {
-                    Thread.sleep (2000);
-                } catch (final InterruptedException e) {
-                    throw new RuntimeException (e);
-                }
-
-                boolean notified = false;
-                synchronized (stop) {
-                    while (!notified) {
-                        stop.notifyAll ();
-                        notified = true;
-                    }
-                }
-            }
-
-        }.start ();
-
-        final Sound resultSound = FluentClient.start ().whileRecordingASound (new StreamInfo (2, 1024, 2, 8000.0f, false, true, null), stop).stopWithSound ();
+        buffers[14] = new byte[0];
+        this.mockRecordSoundProcessor(buffers);
 
         try {
-            Thread.sleep (2500);
-        } catch (final InterruptedException e) {
-            throw new RuntimeException (e);
-        }
+            FluentClient.start().withAPack("default", Thread.currentThread().getContextClassLoader().getResourceAsStream("defaultpackjavax.json"));
 
-        Assert.assertThat (resultSound, new IsNot<Sound> (new IsNull<Sound> ()));
-        Assert.assertNotNull (resultSound.getChannels ());
-        Assert.assertEquals (resultSound.getChannels ().length, 1);
-        Assert.assertNotEquals (resultSound.getChannels () [0].getSamplesLength (), 0);
+            final Object stop = new Object();
+            new Thread("Wait300MillisInTheTest") {
+
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (final InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    boolean notified = false;
+                    synchronized (stop) {
+                        while (!notified) {
+                            stop.notifyAll();
+                            notified = true;
+                        }
+                    }
+                }
+
+            }.start();
+
+            final Sound resultSound = FluentClient.start().whileRecordingASound(new StreamInfo(2, 1024, 2, 8000.0f, false, true, null), stop).stopWithSound();
+
+            try {
+                Thread.sleep(2500);
+            } catch (final InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            Assert.assertThat(resultSound, new IsNot<Sound>(new IsNull<Sound>()));
+            Assert.assertNotNull(resultSound.getChannels());
+            Assert.assertEquals(resultSound.getChannels().length, 1);
+            Assert.assertNotEquals(resultSound.getChannels()[0].getSamplesLength(), 0);
+        } catch (SoundTransformException e) {
+            if (e.getErrorCode () != AUDIO_FORMAT_NOT_SUPPORTED) {
+                throw e;
+            }
+        }
     }
 
     @Test
@@ -147,60 +166,66 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
         buffers [14] = new byte [0];
         this.mockRecordSoundProcessor (buffers);
 
-        FluentClient.start ().withAPack ("default", Thread.currentThread ().getContextClassLoader ().getResourceAsStream ("defaultpackjavax.json"));
+        try {
+            FluentClient.start().withAPack("default", Thread.currentThread().getContextClassLoader().getResourceAsStream("defaultpackjavax.json"));
 
-        final Object stop = new Object ();
-        new Thread ("Wait400MillisInTheTest") {
+            final Object stop = new Object();
+            new Thread("Wait400MillisInTheTest") {
 
-            @Override
-            public void run () {
-                try {
-                    Thread.sleep (400);
-                } catch (final InterruptedException e) {
-                    throw new RuntimeException (e);
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(400);
+                    } catch (final InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    boolean notified = false;
+                    synchronized (stop) {
+                        while (!notified) {
+                            stop.notifyAll();
+                            notified = true;
+                        }
+                    }
+                    this.stopThread("main");
+
+                    try {
+                        Thread.sleep(400);
+                    } catch (final InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    this.stopThread("StreamReaderThread");
+                    this.stopThread("StopDetectorThread");
+                    this.stopThread("SleepThread");
+
                 }
 
-                boolean notified = false;
-                synchronized (stop) {
-                    while (!notified) {
-                        stop.notifyAll ();
-                        notified = true;
+                private void stopThread(final String name) {
+                    final Thread[] threads = new Thread[Thread.activeCount()];
+                    Thread.enumerate(threads);
+                    for (final Thread thread : threads) {
+                        if (thread != null && name.equals(thread.getName())) {
+                            thread.interrupt();
+                        }
                     }
                 }
-                this.stopThread ("main");
 
-                try {
-                    Thread.sleep (400);
-                } catch (final InterruptedException e) {
-                    throw new RuntimeException (e);
-                }
-                this.stopThread ("StreamReaderThread");
-                this.stopThread ("StopDetectorThread");
-                this.stopThread ("SleepThread");
+            }.start();
 
+            try {
+                FluentClient.start().whileRecordingASound(new StreamInfo(2, 1024, 2, 8000.0f, false, true, null), stop);
+            } catch (final SoundTransformRuntimeException stre) {
+                new Slf4jObserver().notify(stre.toString());
             }
 
-            private void stopThread (final String name) {
-                final Thread [] threads = new Thread [Thread.activeCount ()];
-                Thread.enumerate (threads);
-                for (final Thread thread : threads) {
-                    if (thread != null && name.equals (thread.getName ())) {
-                        thread.interrupt ();
-                    }
-                }
+            try {
+                Thread.sleep(1500);
+            } catch (final InterruptedException e) {
             }
-
-        }.start ();
-
-        try {
-            FluentClient.start ().whileRecordingASound (new StreamInfo (2, 1024, 2, 8000.0f, false, true, null), stop);
-        } catch (final SoundTransformRuntimeException stre) {
-            new Slf4jObserver ().notify (stre.toString ());
-        }
-
-        try {
-            Thread.sleep (1500);
-        } catch (final InterruptedException e) {
+        } catch (SoundTransformException e) {
+            if (e.getErrorCode () != AUDIO_FORMAT_NOT_SUPPORTED) {
+                throw e;
+            }
         }
     }
 
@@ -250,7 +275,13 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
         }.start ();
 
-        FluentClient.start ().whileRecordingASound (new StreamInfo (2, 1024, 2, 8000.0f, false, true, null), stop);
+        try {
+            FluentClient.start().whileRecordingASound(new StreamInfo(2, 1024, 2, 8000.0f, false, true, null), stop);
+        } catch (SoundTransformException e) {
+            if (e.getErrorCode () != AUDIO_FORMAT_NOT_SUPPORTED) {
+                throw e;
+            }
+        }
 
         try {
             Thread.sleep (1500);
@@ -284,6 +315,8 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
             new TargetDataLineRecordSoundProcessor ().recordRawInputStream (new Object (), new Object ());
             Assert.fail ("should have failed");
         } catch (final SoundTransformException ste) {
+            if (ste.getErrorCode() == AUDIO_FORMAT_NOT_SUPPORTED)
+                return;
             Assert.assertEquals (ste.getErrorCode (), TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_EXPECTED);
         }
     }
@@ -294,6 +327,8 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
             new TargetDataLineRecordSoundProcessor ().startRecordingAndReturnByteBuffer (new Object (), new Object ());
             Assert.fail ("should have failed");
         } catch (final SoundTransformException ste) {
+            if (ste.getErrorCode() == AUDIO_FORMAT_NOT_SUPPORTED)
+                return;
             Assert.assertEquals (ste.getErrorCode (), TargetDataLineRecordSoundProcessorErrorCode.AUDIO_FORMAT_EXPECTED);
         }
     }
