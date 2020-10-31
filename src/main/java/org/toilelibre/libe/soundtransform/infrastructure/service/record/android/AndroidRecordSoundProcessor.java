@@ -74,11 +74,33 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
         final int audioFormat = streamInfo.getSampleSize () == 1 ? AudioFormat.ENCODING_PCM_8BIT : AudioFormat.ENCODING_PCM_16BIT;
         final int channelConfig = streamInfo.getChannels () == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
         final int rate = (int) streamInfo.getSampleRate ();
-        this.bufferSize = AudioRecord.getMinBufferSize (rate, channelConfig, audioFormat);
+        this.bufferSize = getMinBufferSize (rate, channelConfig, audioFormat);
 
         final AudioRecord candidateRecorder = getRecorderAndInitBufferSize (rate, channelConfig, audioFormat);
 
         return maybeNull(candidateRecorder, streamInfo);
+    }
+
+    private int getMinBufferSize (final int rate, final int channelConfig, final int audioFormat) {
+        try {
+            return AudioRecord.getMinBufferSize(rate, channelConfig, audioFormat);
+        } catch (RuntimeException e) {
+            if ("Stub!".equals (e.getMessage ()) && TestAudioRecordInitializer.minBufferSize != null) {
+                return TestAudioRecordInitializer.minBufferSize;
+            }
+            throw e;
+        }
+    }
+
+    private AudioRecord newAudioRecord(int audioSource, int rate, int channelConfig, int audioFormat, int foundBufferSize) {
+        try {
+            return new AudioRecord (audioSource, rate, channelConfig, audioFormat, foundBufferSize);
+        } catch (RuntimeException e) {
+            if ("Stub!".equals (e.getMessage ()) && TestAudioRecordInitializer.audioRecord != null) {
+                return TestAudioRecordInitializer.audioRecord;
+            }
+            throw e;
+        }
     }
 
     private AudioRecord maybeNull (final AudioRecord candidateRecorder, final StreamInfo streamInfo) throws SoundTransformException {
@@ -91,14 +113,14 @@ final class AndroidRecordSoundProcessor extends AbstractLogAware<AndroidRecordSo
     }
 
     private AudioRecord getRecorderAndInitBufferSize (final int rate, final int channelConfig, final int audioFormat) {
-        int foundBufferSize = AudioRecord.getMinBufferSize (rate, channelConfig, audioFormat) / AndroidRecordSoundProcessor.TWICE;
+        int foundBufferSize = getMinBufferSize (rate, channelConfig, audioFormat) / AndroidRecordSoundProcessor.TWICE;
         
         AudioRecord candidateRecorder = null;
         int stopIfValueIsTen = 0;
         
         while (!this.recorderIsInitialized(candidateRecorder) && stopIfValueIsTen < AndroidRecordSoundProcessor.TEN) {
             foundBufferSize *= AndroidRecordSoundProcessor.TWICE;
-            candidateRecorder = new AudioRecord (AudioSource.DEFAULT, rate, channelConfig, audioFormat, foundBufferSize);
+            candidateRecorder = newAudioRecord (AudioSource.DEFAULT, rate, channelConfig, audioFormat, foundBufferSize);
             stopIfValueIsTen++;
         }
         if (stopIfValueIsTen == AndroidRecordSoundProcessor.TEN) {

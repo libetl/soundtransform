@@ -98,7 +98,7 @@ public class JavaxPlayObjectProcessorTest extends SoundTransformTest {
         PowerMockito.doAnswer (new Answer<Void> () {
             @Override
             public Void answer (final InvocationOnMock invocation) throws Throwable {
-                ll [0] = invocation.getArgumentAt (0, LineListener.class);
+                ll [0] = invocation.getArgument (0, LineListener.class);
                 return null;
             }
         }).when (clip).addLineListener (Matchers.any (LineListener.class));

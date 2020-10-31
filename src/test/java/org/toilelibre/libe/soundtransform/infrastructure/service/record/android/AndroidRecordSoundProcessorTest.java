@@ -8,11 +8,9 @@ import org.hamcrest.core.IsNull;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
@@ -25,6 +23,8 @@ import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
 
 import android.media.AudioRecord;
 
+import static org.mockito.ArgumentMatchers.any;
+
 @PrepareForTest ({ AudioRecord.class, AndroidRecordSoundProcessor.class })
 public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
 
@@ -32,21 +32,10 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
     public PowerMockRule rule = new PowerMockRule ();
 
     @Test
-    public void unintialized () throws Exception {
+    public void unintialized () {
         this.rule.hashCode ();
-        final AudioRecord audioRecord = Mockito.mock (AudioRecord.class);
-        Mockito.when (audioRecord.getState ()).thenReturn (AudioRecord.STATE_UNINITIALIZED);
-        PowerMockito.mockStatic (AudioRecord.class, new Answer<Object> () {
-
-            @Override
-            public Object answer (final InvocationOnMock invocation) throws Throwable {
-                if ("getMinBufferSize".equals (invocation.getMethod ().getName ())) {
-                    return 1024;
-                }
-                return invocation.callRealMethod ();
-            }
-        });
-        PowerMockito.whenNew (AudioRecord.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class).withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioRecord);
+        TestAudioRecordInitializer.audioRecord = Mockito.mock (AudioRecord.class);
+        TestAudioRecordInitializer.minBufferSize = 1024;
         try {
             FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 100000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
             Assert.fail ("Record should have failed because the recorder in not initialized");
@@ -56,19 +45,9 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
     }
 
     @Test
-    public void audioBufferBadValue () throws Exception {
-        final AudioRecord audioRecord = Mockito.mock (AudioRecord.class);
-        PowerMockito.mockStatic (AudioRecord.class, new Answer<Object> () {
-
-            @Override
-            public Object answer (final InvocationOnMock invocation) throws Throwable {
-                if ("getMinBufferSize".equals (invocation.getMethod ().getName ())) {
-                    return AudioRecord.ERROR_BAD_VALUE;
-                }
-                return invocation.callRealMethod ();
-            }
-        });
-        PowerMockito.whenNew (AudioRecord.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class).withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioRecord);
+    public void audioBufferBadValue () {
+        TestAudioRecordInitializer.audioRecord = Mockito.mock (AudioRecord.class);
+        TestAudioRecordInitializer.minBufferSize = AudioRecord.ERROR_BAD_VALUE;
         try {
             FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 100000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
             Assert.fail ("Record should have failed because the recorder in not initialized");
@@ -81,17 +60,9 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
     public void stateOkButNotRecording () throws Exception {
         final AudioRecord audioRecord = Mockito.mock (AudioRecord.class);
         Mockito.when (audioRecord.getState ()).thenReturn (AudioRecord.STATE_INITIALIZED);
-        PowerMockito.mockStatic (AudioRecord.class, new Answer<Object> () {
 
-            @Override
-            public Object answer (final InvocationOnMock invocation) throws Throwable {
-                if ("getMinBufferSize".equals (invocation.getMethod ().getName ())) {
-                    return 1024;
-                }
-                return invocation.callRealMethod ();
-            }
-        });
-        PowerMockito.whenNew (AudioRecord.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class).withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioRecord);
+        TestAudioRecordInitializer.audioRecord = audioRecord;
+        TestAudioRecordInitializer.minBufferSize = 1024;
         final InputStream is = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 100000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
         Assert.assertEquals (0, is.available ());
     }
@@ -101,18 +72,10 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
         final AudioRecord audioRecord = Mockito.mock (AudioRecord.class);
         Mockito.when (audioRecord.getState ()).thenReturn (AudioRecord.STATE_INITIALIZED);
         Mockito.when (audioRecord.getRecordingState ()).thenReturn (AudioRecord.STATE_INITIALIZED);
-        Mockito.when (audioRecord.read (Matchers.any (short [].class), Matchers.any (int.class), Matchers.any (int.class))).thenReturn (1024);
-        PowerMockito.mockStatic (AudioRecord.class, new Answer<Object> () {
+        Mockito.when (audioRecord.read (any (short [].class), any (int.class), any (int.class))).thenReturn (1024);
 
-            @Override
-            public Object answer (final InvocationOnMock invocation) throws Throwable {
-                if ("getMinBufferSize".equals (invocation.getMethod ().getName ())) {
-                    return 1024;
-                }
-                return invocation.callRealMethod ();
-            }
-        });
-        PowerMockito.whenNew (AudioRecord.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class).withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioRecord);
+        TestAudioRecordInitializer.audioRecord = audioRecord;
+        TestAudioRecordInitializer.minBufferSize = 1024;
         final InputStream is = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
 
         Assert.assertTrue (is.available () > 0);
@@ -123,18 +86,10 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
         final AudioRecord audioRecord = Mockito.mock (AudioRecord.class);
         Mockito.when (audioRecord.getState ()).thenReturn (AudioRecord.STATE_INITIALIZED);
         Mockito.when (audioRecord.getRecordingState ()).thenReturn (AudioRecord.STATE_INITIALIZED);
-        Mockito.when (audioRecord.read (Matchers.any (short [].class), Matchers.any (int.class), Matchers.any (int.class))).thenReturn (1024);
-        PowerMockito.whenNew (AudioRecord.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class).withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioRecord);
-        PowerMockito.mockStatic (AudioRecord.class, new Answer<Object> () {
+        Mockito.when (audioRecord.read (any (short [].class), any (int.class), any (int.class))).thenReturn (1024);
 
-            @Override
-            public Object answer (final InvocationOnMock invocation) throws Throwable {
-                if ("getMinBufferSize".equals (invocation.getMethod ().getName ())) {
-                    return 2048;
-                }
-                return invocation.callRealMethod ();
-            }
-        });
+        TestAudioRecordInitializer.audioRecord = audioRecord;
+        TestAudioRecordInitializer.minBufferSize = 1024;
         final Object stop = new Object ();
         new Thread ("Wait4000msInTheTest") {
 
@@ -157,7 +112,7 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
 
         }.start ();
 
-        final List<float []> resultFloats = FluentClient.start ().whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null), 
+        final List<float []> resultFloats = FluentClient.start ().whileRecordingASound (new StreamInfo (2, 10000, 2, 44100.0f, false, true, null),
           stop, new AmplitudeObserver () {
 
             @Override
@@ -176,7 +131,7 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
         final AudioRecord audioRecord = Mockito.mock (AudioRecord.class);
         Mockito.when (audioRecord.getState ()).thenReturn (AudioRecord.STATE_INITIALIZED);
         Mockito.when (audioRecord.getRecordingState ()).thenReturn (AudioRecord.STATE_INITIALIZED);
-        Mockito.when (audioRecord.read (Matchers.any (short [].class), Matchers.any (int.class), Matchers.any (int.class))).thenAnswer (new Answer<Integer> () {
+        Mockito.when (audioRecord.read (any (short [].class), any (int.class), any (int.class))).thenAnswer (new Answer<Integer> () {
             int i = 0;
 
             @Override
@@ -185,17 +140,9 @@ public class AndroidRecordSoundProcessorTest extends SoundTransformAndroidTest {
             }
 
         });
-        PowerMockito.mockStatic (AudioRecord.class, new Answer<Object> () {
 
-            @Override
-            public Object answer (final InvocationOnMock invocation) throws Throwable {
-                if ("getMinBufferSize".equals (invocation.getMethod ().getName ())) {
-                    return 8192;
-                }
-                return invocation.callRealMethod ();
-            }
-        });
-        PowerMockito.whenNew (AudioRecord.class).withParameterTypes (int.class, int.class, int.class, int.class, int.class).withArguments (Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class), Matchers.any (int.class)).thenReturn (audioRecord);
+        TestAudioRecordInitializer.audioRecord = audioRecord;
+        TestAudioRecordInitializer.minBufferSize = 1024;
         final InputStream is = FluentClient.start ().withLimitedTimeRecordedInputStream (new StreamInfo (2, 80000, 2, 44100.0f, false, true, null)).stopWithInputStream ();
 
         Assert.assertTrue (is.available () > 0);

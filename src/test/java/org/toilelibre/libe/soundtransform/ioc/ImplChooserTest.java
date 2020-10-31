@@ -25,7 +25,7 @@ public class ImplChooserTest {
 
             @Override
             public Object answer (final InvocationOnMock invocation) throws Throwable {
-                return !invocation.getMethod ().getName ().equals ("getProperty") || !invocation.getArgumentAt (0, String.class).equals (ApplicationInjector.RUNTIME_SYSTEM_PROPERTY) ? invocation.callRealMethod () : "Not a real runtime";
+                return !invocation.getMethod ().getName ().equals ("getProperty") || !invocation.getArgument (0, String.class).equals (ApplicationInjector.RUNTIME_SYSTEM_PROPERTY) ? invocation.callRealMethod () : "Not a real runtime";
             }
 
         });
@@ -43,7 +43,7 @@ public class ImplChooserTest {
 
             @Override
             public Object answer (final InvocationOnMock invocation) throws Throwable {
-                return !invocation.getMethod ().getName ().equals ("getProperty") || !invocation.getArgumentAt (0, String.class).equals (ApplicationInjector.RUNTIME_SYSTEM_PROPERTY) ? invocation.callRealMethod () : "The Android Project";
+                return !invocation.getMethod ().getName ().equals ("getProperty") || !invocation.getArgument (0, String.class).equals (ApplicationInjector.RUNTIME_SYSTEM_PROPERTY) ? invocation.callRealMethod () : "The Android Project";
             }
 
         });

@@ -267,7 +267,7 @@ public class JavaxRecordSoundProcessorTest extends SoundTransformTest {
 
             @Override
             public Integer answer (final InvocationOnMock invocation) throws Throwable {
-                System.arraycopy (buffers [Math.min (14, this.i)], 0, invocation.getArgumentAt (0, Object.class), 0, buffers [Math.min (14, this.i)].length);
+                System.arraycopy (buffers [Math.min (14, this.i)], 0, invocation.getArgument (0, Object.class), 0, buffers [Math.min (14, this.i)].length);
                 return buffers [Math.min (14, this.i++)].length;
             }
 

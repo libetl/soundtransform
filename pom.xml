@@ -5,7 +5,7 @@
 	<artifactId>soundtransform</artifactId>
 	<version>1.0.23</version>
 	<name>${project.groupId}:${project.artifactId}</name>
-	<packaging>aar</packaging>
+	<packaging>jar</packaging>
 	<description>Android and Pure java library to modify a sound</description>
 	<url>https://github.com/libetl/soundtransform</url>
 	<licenses>
@@ -63,30 +63,11 @@
 		</testResources>
 		<plugins>
 			<plugin>
-				<groupId>com.simpligility.maven.plugins</groupId>
-				<artifactId>android-maven-plugin</artifactId>
-				<extensions>true</extensions>
-				<version>4.4.1</version>
-				<configuration>
-					<sdk>
-						<platform>8</platform>
-					</sdk>
-					<sign>
-						<debug>both</debug>
-					</sign>
-					<resourceDirectory>${basedir}/src/main/resources</resourceDirectory>
-					<androidManifestFile>${basedir}/AndroidManifest.xml</androidManifestFile>
-					<excludeJarResources>
-						<excludeJarResource>.*\.jar$</excludeJarResource>
-					</excludeJarResources>
-				</configuration>
-			</plugin>
-			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.5.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>14</source>
+					<target>14</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -96,6 +77,7 @@
 				<configuration>
 					<reuseForks>false</reuseForks>
 					<rerunFailingTestsCount>1</rerunFailingTestsCount>
+					<argLine>-Djdk.attach.allowAttachSelf=true --add-opens java.base/jdk.internal.loader=ALL-UNNAMED --add-opens jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED</argLine>
 					<classpathDependencyExcludes>
 						<classpathDependencyExclude>com.github.tony19:logback-android-classic</classpathDependencyExclude>
 					</classpathDependencyExcludes>
@@ -146,6 +128,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.10.4</version>
+				<configuration>
+					<source>8</source>
+				</configuration>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -188,54 +173,19 @@
 								<argument>-classpath</argument>
 								<classpath/>
 								<argument>org.openjdk.jmh.Main</argument>
-								<argument>.*</argument>
 							</arguments>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											com.simpligility.maven.plugins
-										</groupId>
-										<artifactId>
-											android-maven-plugin
-										</artifactId>
-										<versionRange>
-											[4.1.0,)
-										</versionRange>
-										<goals>
-											<goal>emma</goal>
-											<goal>
-												generate-sources
-											</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 	<dependencies>
+		<dependency>
+			<groupId>de.erichseifert.vectorgraphics2d</groupId>
+			<artifactId>VectorGraphics2D</artifactId>
+			<version>0.13</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -245,55 +195,55 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.1.7</version>
+			<version>1.3.0-alpha5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>2.0.2-beta</version>
+			<artifactId>mockito-core</artifactId>
+			<version>3.6.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-core</artifactId>
-			<version>1.6.5</version>
+			<version>2.0.7</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-module-junit4-rule-agent</artifactId>
-			<version>1.6.5</version>
+			<version>2.0.7</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-mockito</artifactId>
-			<version>1.6.5</version>
+			<artifactId>powermock-api-mockito2</artifactId>
+			<version>2.0.7</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-classloading-base</artifactId>
-			<version>1.6.5</version>
+			<version>2.0.7</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-classloading-xstream</artifactId>
-			<version>1.6.5</version>
+			<version>2.0.7</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openjdk.jmh</groupId>
 			<artifactId>jmh-core</artifactId>
-			<version>1.15</version>
+			<version>1.26</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openjdk.jmh</groupId>
 			<artifactId>jmh-generator-annprocess</artifactId>
-			<version>1.15</version>
+			<version>1.26</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -332,12 +282,12 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.21</version>
+			<version>2.0.0-alpha1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.7</version>
+			<version>2.8.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jcraft</groupId>

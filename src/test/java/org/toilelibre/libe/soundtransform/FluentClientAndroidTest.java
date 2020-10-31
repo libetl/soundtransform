@@ -25,7 +25,7 @@ public class FluentClientAndroidTest extends SoundTransformAndroidTest {
 
                                                            @Override
                                                            public InputStream answer (final InvocationOnMock invocation) throws Throwable {
-                                                               final int id = invocation.getArgumentAt (0, int.class);
+                                                               final int id = invocation.getArgument ( 0, Integer.class);
                                                                Class<?> clazz = TestR.raw.class;
                                                                for (final Field f : clazz.getDeclaredFields ()) {
 
