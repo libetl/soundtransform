@@ -1,171 +1,155 @@
 package org.toilelibre.libe.soundtransform.infrastructure.service.math;
 
 /**
- * Pure Java implementation of Fast Fourier Transform using Cooley-Tukey algorithm
- * Replaces commons-math3 FastFourierTransformer without external dependencies
+ * Pure Java implementation of Fast Fourier Transform (Cooley-Tukey algorithm)
+ * without external dependencies
  */
 public final class FastFourierTransformer {
 
+    private static final int MIN_POWER_OF_TWO = 1;
+
     /**
-     * Transform type enumeration
+     * Perform forward FFT on real-valued input
+     * 
+     * @param input array of real values (length must be a power of 2)
+     * @return array of complex values
      */
-    public enum TransformType {
-        FORWARD, INVERSE
+    public static Complex[] transform (final double[] input) {
+        return FastFourierTransformer.fft (input, false);
     }
 
     /**
-     * DFT normalization enumeration
+     * Perform inverse FFT
+     * 
+     * @param input array of complex values (length must be a power of 2)
+     * @return array of complex values
      */
-    public enum DftNormalization {
-        STANDARD, UNITARY
-    }
-
-    private final DftNormalization normalization;
-
-    /**
-     * Constructor with normalization parameter
-     */
-    public FastFourierTransformer (final DftNormalization normalization) {
-        this.normalization = normalization;
+    public static Complex[] inverseTransform (final Complex[] input) {
+        return FastFourierTransformer.ifft (input);
     }
 
     /**
-     * Transform a real-valued input array to complex array using FFT
-     * Input array must have length that is a power of 2
+     * Perform in-place FFT on 2D array [real[], imag[]]
+     * 
+     * @param data 2D array where data[0] = real parts, data[1] = imaginary parts
+     * @param forward true for forward, false for inverse
      */
-    public Complex [] transform (final double [] input, final TransformType type) {
-        final int n = input.length;
-        this.ensurePowerOfTwo (n);
-
-        final Complex [] complexInput = new Complex [n];
-        for (int i = 0; i < n; i++) {
-            complexInput [i] = new Complex (input [i], 0);
+    public static void transformInPlace (final double[][] data, final boolean forward) {
+        if (data.length != 2 || data[0].length != data[1].length) {
+            throw new IllegalArgumentException ("Input must be [real[], imag[]] with equal lengths");
         }
 
-        return this.transformInternalComplex (complexInput, type == TransformType.INVERSE);
-    }
-
-    /**
-     * Transform a complex array using FFT
-     */
-    public Complex [] transform (final Complex [] input, final TransformType type) {
-        final int n = input.length;
-        this.ensurePowerOfTwo (n);
-
-        final Complex [] data = new Complex [n];
-        System.arraycopy (input, 0, data, 0, n);
-
-        return this.transformInternalComplex (data, type == TransformType.INVERSE);
-    }
-
-    /**
-     * Transform in-place using double[][] format [real, imaginary]
-     */
-    public static void transformInPlace (final double [][] data, final DftNormalization normalization, final TransformType type) {
-        final int n = data [0].length;
-        if (n != data [1].length) {
-            throw new IllegalArgumentException ("Real and imaginary arrays must have same length");
+        final int n = data[0].length;
+        final Complex[] input = new Complex[n];
+        for (int i = 0; i < n; i++) {
+            input[i] = new Complex (data[0][i], data[1][i]);
         }
 
-        final FastFourierTransformer transformer = new FastFourierTransformer (normalization);
-        final Complex [] complexData = new Complex [n];
-        for (int i = 0; i < n; i++) {
-            complexData [i] = new Complex (data [0] [i], data [1] [i]);
-        }
-
-        final Complex [] result = transformer.transformInternalComplex (complexData, type == TransformType.INVERSE);
+        final Complex[] output = forward ? FastFourierTransformer.fft (input, false) : FastFourierTransformer.ifft (input);
 
         for (int i = 0; i < n; i++) {
-            data [0] [i] = result [i].getReal ();
-            data [1] [i] = result [i].getImaginary ();
+            data[0][i] = output[i].getReal ();
+            data[1][i] = output[i].getImaginary ();
         }
     }
 
     /**
      * Internal FFT implementation using Cooley-Tukey algorithm
      */
-    private Complex [] transformInternalComplex (final Complex [] data, final boolean inverse) {
-        final int n = data.length;
-
-        if (n == 1) {
-            return data;
-        }
-
-        // Bit reversal permutation
-        this.bitReversalPermutation (data);
-
-        // FFT computation
-        for (int s = 1; s <= Math.log (n) / Math.log (2); s++) {
-            final int m = 1 << s; // 2^s
-            final double angle = (inverse ? 1 : -1) * 2 * Math.PI / m;
-            final Complex wm = new Complex (Math.cos (angle), Math.sin (angle));
-
-            for (int k = 0; k < n; k += m) {
-                Complex w = new Complex (1, 0);
-
-                for (int j = 0; j < m / 2; j++) {
-                    final Complex t = w.multiply (data [k + j + m / 2]);
-                    final Complex u = data [k + j];
-
-                    data [k + j] = u.add (t);
-                    data [k + j + m / 2] = u.subtract (t);
-
-                    w = w.multiply (wm);
-                }
-            }
-        }
-
-        // Apply normalization
-        if (this.normalization == DftNormalization.STANDARD && inverse) {
-            final double factor = 1.0 / n;
-            for (int i = 0; i < n; i++) {
-                data [i] = data [i].multiply (factor);
-            }
-        } else if (this.normalization == DftNormalization.UNITARY) {
-            final double factor = 1.0 / Math.sqrt (n);
-            for (int i = 0; i < n; i++) {
-                data [i] = data [i].multiply (factor);
-            }
-        }
-
-        return data;
-    }
-
-    /**
-     * Perform bit reversal permutation on the array
-     */
-    private void bitReversalPermutation (final Complex [] data) {
-        final int n = data.length;
-        final int bits = (int) (Math.log (n) / Math.log (2));
-
-        for (int i = 0; i < n; i++) {
-            final int j = this.reverseBits (i, bits);
-            if (i < j) {
-                final Complex temp = data [i];
-                data [i] = data [j];
-                data [j] = temp;
-            }
-        }
-    }
-
-    /**
-     * Reverse the bits of a number
-     */
-    private int reverseBits (final int x, final int bits) {
-        int result = 0;
-        for (int i = 0; i < bits; i++) {
-            result = (result << 1) | (x & 1);
-            x >>= 1;
-        }
-        return result;
-    }
-
-    /**
-     * Ensure that the input length is a power of 2
-     */
-    private void ensurePowerOfTwo (final int n) {
-        if (n == 0 || (n & (n - 1)) != 0) {
+    private static Complex[] fft (final double[] input, final boolean inverse) {
+        final int n = input.length;
+        if (!FastFourierTransformer.isPowerOfTwo (n)) {
             throw new IllegalArgumentException ("Input length must be a power of 2, got: " + n);
         }
+
+        final Complex[] complex = new Complex[n];
+        for (int i = 0; i < n; i++) {
+            complex[i] = new Complex (input[i], 0);
+        }
+
+        return FastFourierTransformer.fft (complex, inverse);
+    }
+
+    /**
+     * Internal FFT implementation for complex input
+     */
+    private static Complex[] fft (final Complex[] input, final boolean inverse) {
+        final int n = input.length;
+
+        if (n == 1) {
+            return input;
+        }
+
+        if (!FastFourierTransformer.isPowerOfTwo (n)) {
+            throw new IllegalArgumentException ("Input length must be a power of 2");
+        }
+
+        // Divide
+        final Complex[] even = new Complex[n / 2];
+        final Complex[] odd = new Complex[n / 2];
+        for (int i = 0; i < n / 2; i++) {
+            even[i] = input[2 * i];
+            odd[i] = input[2 * i + 1];
+        }
+
+        // Conquer
+        final Complex[] evenFFT = FastFourierTransformer.fft (even, inverse);
+        final Complex[] oddFFT = FastFourierTransformer.fft (odd, inverse);
+
+        // Combine
+        final Complex[] output = new Complex[n];
+        for (int k = 0; k < n / 2; k++) {
+            final double angle = (inverse ? 2 : -2) * Math.PI * k / n;
+            final Complex t = new Complex (Math.cos (angle), Math.sin (angle)).multiply (oddFFT[k]);
+            output[k] = evenFFT[k].add (t);
+            output[k + n / 2] = evenFFT[k].subtract (t);
+        }
+
+        return output;
+    }
+
+    /**
+     * Inverse FFT
+     */
+    private static Complex[] ifft (final Complex[] input) {
+        final int n = input.length;
+
+        // Conjugate input
+        final Complex[] conjugate = new Complex[n];
+        for (int i = 0; i < n; i++) {
+            conjugate[i] = input[i].conjugate ();
+        }
+
+        // Forward FFT on conjugate
+        final Complex[] result = FastFourierTransformer.fft (conjugate, true);
+
+        // Conjugate and scale output
+        final Complex[] output = new Complex[n];
+        for (int i = 0; i < n; i++) {
+            output[i] = result[i].conjugate ().multiply (1.0 / n);
+        }
+
+        return output;
+    }
+
+    /**
+     * Check if a number is a power of 2
+     */
+    private static boolean isPowerOfTwo (final int n) {
+        return n > 0 && (n & (n - 1)) == 0;
+    }
+
+    /**
+     * Get next power of 2 that is >= n
+     */
+    public static int nextPowerOfTwo (final int n) {
+        if (n <= FastFourierTransformer.MIN_POWER_OF_TWO) {
+            return FastFourierTransformer.MIN_POWER_OF_TWO;
+        }
+        int power = FastFourierTransformer.MIN_POWER_OF_TWO;
+        while (power < n) {
+            power *= 2;
+        }
+        return power;
     }
 }
